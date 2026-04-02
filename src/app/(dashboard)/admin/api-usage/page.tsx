@@ -104,76 +104,20 @@ export default function AdminApiUsagePage() {
       const stats = await res.json()
       const totalCost = stats.total_api_costs_30d ?? 0
 
-      const mockServices: ServiceUsage[] = [
-        {
-          service: 'claude',
-          requests_today: 0,
-          requests_week: 0,
-          requests_month: 0,
-          avg_response_ms: 0,
-          error_rate: 0,
-          cost_today: 0,
-          cost_month: totalCost * 0.35,
-          status: 'operational',
-        },
-        {
-          service: 'elevenlabs',
-          requests_today: 0,
-          requests_week: 0,
-          requests_month: 0,
-          avg_response_ms: 0,
-          error_rate: 0,
-          cost_today: 0,
-          cost_month: totalCost * 0.25,
-          status: 'operational',
-        },
-        {
-          service: 'runpod',
-          requests_today: 0,
-          requests_week: 0,
-          requests_month: 0,
-          avg_response_ms: 0,
-          error_rate: 0,
-          cost_today: 0,
-          cost_month: totalCost * 0.2,
-          status: 'operational',
-        },
-        {
-          service: 'suno',
-          requests_today: 0,
-          requests_week: 0,
-          requests_month: 0,
-          avg_response_ms: 0,
-          error_rate: 0,
-          cost_today: 0,
-          cost_month: totalCost * 0.1,
-          status: 'operational',
-        },
-        {
-          service: 'shotstack',
-          requests_today: 0,
-          requests_week: 0,
-          requests_month: 0,
-          avg_response_ms: 0,
-          error_rate: 0,
-          cost_today: 0,
-          cost_month: totalCost * 0.07,
-          status: 'operational',
-        },
-        {
-          service: 'pexels',
-          requests_today: 0,
-          requests_week: 0,
-          requests_month: 0,
-          avg_response_ms: 0,
-          error_rate: 0,
-          cost_today: 0,
-          cost_month: totalCost * 0.03,
-          status: 'operational',
-        },
-      ]
+      const serviceNames = ['claude', 'elevenlabs', 'runpod', 'suno', 'shotstack', 'pexels']
+      const realServices: ServiceUsage[] = serviceNames.map((service) => ({
+        service,
+        requests_today: 0,
+        requests_week: 0,
+        requests_month: 0,
+        avg_response_ms: 0,
+        error_rate: 0,
+        cost_today: 0,
+        cost_month: 0,
+        status: 'operational' as const,
+      }))
 
-      setServices(mockServices)
+      setServices(realServices)
       setRunpod({
         gpu_time_hours: 0,
         cost_per_video_avg: 0,

@@ -25,6 +25,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Input } from '@/components/ui/Input'
 import type { ClonedVoice } from '@/types'
@@ -50,23 +51,28 @@ export default function VoicesPage() {
   const canClone = limits.voices > 0
   const hasReachedLimit = clonedVoices.length >= limits.voices
 
-  useEffect(() => {
-    if (authLoading || !profile) return
-
-    async function fetchVoices() {
-      setLoading(true)
+  const fetchVoices = useCallback(async () => {
+    if (!profile?.id) return
+    setLoading(true)
+    try {
       const { data } = await supabase
         .from('cloned_voices')
         .select('*')
-        .eq('user_id', profile!.id)
+        .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
 
       if (data) setClonedVoices(data as ClonedVoice[])
+    } catch {
+      setClonedVoices([])
+    } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile?.id])
 
-    fetchVoices()
-  }, [authLoading, profile])
+  useEffect(() => {
+    if (!authLoading && profile?.id) fetchVoices()
+  }, [authLoading, profile?.id, fetchVoices])
 
   // Audio playback
   const playPreview = useCallback(
@@ -180,20 +186,21 @@ export default function VoicesPage() {
     }
   }, [])
 
-  if (loading || authLoading) {
-    return (
-      <div className="space-y-6" data-testid="voices-loading">
-        <Skeleton width={200} height={32} rounded="lg" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} width="100%" height={140} rounded="xl" />
-          ))}
-        </div>
+  const voicesSkeleton = (
+    <div className="space-y-6" data-testid="voices-loading">
+      <Skeleton width={200} height={32} rounded="lg" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} width="100%" height={140} rounded="xl" />
+        ))}
       </div>
-    )
-  }
+    </div>
+  )
+
+  if (authLoading) return voicesSkeleton
 
   return (
+    <LoadingTimeout loading={loading} onRetry={fetchVoices} skeleton={voicesSkeleton}>
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -336,14 +343,16 @@ export default function VoicesPage() {
                         <button
                           onClick={() => {
                             if (voice.preview_url) playPreview(voice.id, voice.preview_url)
-                            else toast.info('Pas de preview disponible')
                           }}
+                          disabled={!voice.preview_url}
                           data-testid={`play-cloned-${voice.id}`}
                           className={cn(
                             'h-8 w-8 rounded-lg flex items-center justify-center transition-colors',
-                            playingId === voice.id
-                              ? 'bg-violet-500/20 text-violet-400'
-                              : 'bg-white/5 text-white/40 hover:text-white hover:bg-white/10'
+                            !voice.preview_url
+                              ? 'bg-white/[0.02] text-white/15 cursor-not-allowed'
+                              : playingId === voice.id
+                                ? 'bg-violet-500/20 text-violet-400'
+                                : 'bg-white/5 text-white/40 hover:text-white hover:bg-white/10'
                           )}
                         >
                           {playingId === voice.id ? (
@@ -497,5 +506,6 @@ export default function VoicesPage() {
         )}
       </AnimatePresence>
     </motion.div>
+    </LoadingTimeout>
   )
 }

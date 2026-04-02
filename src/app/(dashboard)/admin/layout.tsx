@@ -29,7 +29,7 @@ export default function AdminLayout({
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
+    requestAnimationFrame(() => setMounted(true))
   }, [])
 
   useEffect(() => {

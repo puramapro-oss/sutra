@@ -20,6 +20,7 @@ import { KPICard } from '@/components/dashboard/KPICard'
 import { VideoCard } from '@/components/dashboard/VideoCard'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { Video as VideoType, Plan } from '@/types'
 
@@ -80,8 +81,12 @@ export default function DashboardPage() {
   useEffect(() => {
     if (profile?.id) {
       fetchDashboard(profile.id)
+    } else if (!authLoading) {
+      // Auth finished but no profile — stop loading, show empty state
+      setLoading(false)
+      setData({ videosThisMonth: 0, videosTotal: 0, recentVideos: [] })
     }
-  }, [profile?.id, fetchDashboard])
+  }, [profile?.id, authLoading, fetchDashboard])
 
   const plan = (profile?.plan ?? 'free') as Plan
   const planLimits = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
@@ -100,11 +105,16 @@ export default function DashboardPage() {
               ? 'Admin'
               : 'Gratuit'
 
-  if (authLoading || loading) {
+  if (authLoading) {
     return <DashboardSkeleton />
   }
 
   return (
+    <LoadingTimeout
+      loading={loading}
+      onRetry={() => profile?.id && fetchDashboard(profile.id)}
+      skeleton={<DashboardSkeleton />}
+    >
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -260,6 +270,7 @@ export default function DashboardPage() {
         )}
       </div>
     </motion.div>
+    </LoadingTimeout>
   )
 }
 

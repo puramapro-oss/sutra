@@ -1,10 +1,16 @@
 'use client'
 
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import Sidebar from '@/components/layout/Sidebar'
 import Header from '@/components/layout/Header'
 import MobileNav from '@/components/layout/MobileNav'
+
+const CosmicParticles = dynamic(
+  () => import('@/components/shared/CosmicParticles'),
+  { ssr: false }
+)
 
 export default function DashboardLayout({
   children,
@@ -14,7 +20,12 @@ export default function DashboardLayout({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="flex min-h-dvh bg-[#06050e]">
+    <div className="relative flex min-h-dvh bg-[#06050e]">
+      {/* Cosmic particles background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <CosmicParticles />
+      </div>
+
       {/* Desktop sidebar */}
       <Sidebar />
 
@@ -45,7 +56,7 @@ export default function DashboardLayout({
       </AnimatePresence>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="relative z-10 flex-1 flex flex-col min-w-0">
         <Header onMenuToggle={() => setMobileMenuOpen((prev) => !prev)} />
 
         <main className="flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden">

@@ -10,6 +10,8 @@ const PUBLIC_ROUTES = [
   "/ecosystem",
   "/how-it-works",
   "/offline",
+  "/privacy",
+  "/terms",
 ];
 
 const PUBLIC_PREFIXES = [

@@ -13,8 +13,8 @@ interface StatItem {
 }
 
 const stats: StatItem[] = [
-  { icon: Video, value: 10000, suffix: '+', label: 'Videos generees' },
-  { icon: Users, value: 2000, suffix: '+', label: 'Createurs actifs' },
+  { icon: Video, value: 6, suffix: '', label: 'Formats video IA' },
+  { icon: Users, value: 12, suffix: '', label: 'Apps Purama' },
   { icon: Layers, value: 50, suffix: '+', label: 'Niches supportees' },
   { icon: Zap, value: 5, suffix: ' min', prefix: '< ', label: 'Temps de creation' },
 ]

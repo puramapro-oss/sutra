@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Sparkles, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
@@ -8,6 +8,15 @@ import { cn } from '@/lib/utils'
 
 export default function CTASection() {
   const ref = useRef<HTMLDivElement>(null)
+  const particles = useMemo(() =>
+    Array.from({ length: 20 }, (_, i) => ({
+      i,
+      left: ((i * 37 + 13) % 100),
+      top: ((i * 53 + 7) % 100),
+      delay: (i * 0.3) % 6,
+      duration: 4 + (i % 5),
+    })),
+  [])
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   return (
@@ -34,15 +43,15 @@ export default function CTASection() {
 
           {/* CSS particle dots */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-            {Array.from({ length: 20 }, (_, i) => (
+            {particles.map((p) => (
               <div
-                key={i}
+                key={p.i}
                 className="absolute w-1 h-1 rounded-full bg-violet-400/30 animate-[float_6s_ease-in-out_infinite]"
                 style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 6}s`,
-                  animationDuration: `${4 + Math.random() * 4}s`,
+                  left: `${p.left}%`,
+                  top: `${p.top}%`,
+                  animationDelay: `${p.delay}s`,
+                  animationDuration: `${p.duration}s`,
                 }}
               />
             ))}

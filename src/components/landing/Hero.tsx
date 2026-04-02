@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Play, Sparkles, Users } from 'lucide-react'
+import { Sparkles, Users } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
@@ -208,7 +208,7 @@ export default function Hero() {
           </Link>
 
           <Link
-            href="#demo"
+            href="/how-it-works"
             data-testid="hero-cta-secondary"
             className={cn(
               'inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl',
@@ -217,8 +217,7 @@ export default function Hero() {
               'transition-all duration-200 active:scale-[0.97]'
             )}
           >
-            <Play className="w-5 h-5" />
-            Voir la demo
+            Comment ca marche
           </Link>
         </motion.div>
 
@@ -249,9 +248,7 @@ export default function Hero() {
             ))}
           </div>
           <span className="text-sm text-white/50">
-            Rejoins{' '}
-            <span className="text-violet-400 font-semibold">+2,000</span>{' '}
-            createurs
+            Rejoins les createurs qui utilisent SUTRA
           </span>
         </motion.div>
       </div>

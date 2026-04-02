@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
+import { cached, invalidateCache } from '@/lib/redis'
 
 const templateSchema = z.object({
   name: z.string().min(2, 'Nom requis').max(100),
@@ -23,25 +24,31 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     const type = searchParams.get('type') ?? 'all'
 
-    const serviceClient = createServiceClient()
+    const templates = await cached(
+      `templates:${user.id}:${type}`,
+      async () => {
+        const serviceClient = createServiceClient()
+        let query = serviceClient
+          .from('user_templates')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(100)
 
-    let query = serviceClient
-      .from('user_templates')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(100)
+        if (type === 'mine') {
+          query = query.eq('user_id', user.id)
+        } else if (type === 'public') {
+          query = query.eq('is_public', true)
+        } else {
+          query = query.or(`user_id.eq.${user.id},is_public.eq.true`)
+        }
 
-    if (type === 'mine') {
-      query = query.eq('user_id', user.id)
-    } else if (type === 'public') {
-      query = query.eq('is_public', true)
-    } else {
-      query = query.or(`user_id.eq.${user.id},is_public.eq.true`)
-    }
+        const { data } = await query
+        return data ?? []
+      },
+      120
+    )
 
-    const { data: templates } = await query
-
-    return NextResponse.json({ templates: templates ?? [] })
+    return NextResponse.json({ templates })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
     return NextResponse.json({ error: 'Erreur recuperation templates', details: message }, { status: 500 })
@@ -108,6 +115,9 @@ export async function POST(req: Request) {
       })
       .select('*')
       .single()
+
+    await invalidateCache(`templates:${user.id}:all`)
+    await invalidateCache(`templates:${user.id}:mine`)
 
     return NextResponse.json({ template }, { status: 201 })
   } catch (err) {

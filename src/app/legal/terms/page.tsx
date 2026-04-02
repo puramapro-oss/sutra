@@ -65,7 +65,7 @@ export default function TermsPage() {
             Conditions Generales d&apos;Utilisation
           </h1>
           <p className="text-white/40 text-sm">
-            Derniere mise a jour : 29 mars 2026
+            Derniere mise a jour : 2 avril 2026
           </p>
         </div>
 
@@ -75,7 +75,9 @@ export default function TermsPage() {
               Les presentes Conditions Generales d&apos;Utilisation (ci-apres &quot;CGU&quot;)
               ont pour objet de definir les modalites et conditions d&apos;utilisation
               de la plateforme SUTRA (ci-apres &quot;le Service&quot;), accessible a
-              l&apos;adresse https://sutra.purama.dev, editee par Purama.
+              l&apos;adresse https://sutra.purama.dev, editee par PURAMA SASU,
+              societe par actions simplifiee unipersonnelle au capital de 1 euro,
+              dont le siege social est situe 8 Rue de la Chapelle, 25560 Frasne, France.
             </p>
             <p>
               SUTRA est une plateforme de generation de videos par intelligence

@@ -454,7 +454,7 @@ export default function SettingsPage() {
                       disabled
                       data-testid="settings-email"
                     />
-                    <p className="text-xs text-white/25">L'email ne peut pas etre modifie.</p>
+                    <p className="text-xs text-white/25">L&apos;email ne peut pas etre modifie.</p>
                   </CardContent>
                 </Card>
 
@@ -494,28 +494,6 @@ export default function SettingsPage() {
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardContent className="py-4">
-                    <h3 className="text-sm font-semibold text-white mb-2">Comptes connectes</h3>
-                    <div className="space-y-2">
-                      {['Google', 'YouTube', 'TikTok', 'Instagram'].map((provider) => (
-                        <div
-                          key={provider}
-                          className="flex items-center justify-between py-2"
-                        >
-                          <span className="text-sm text-white/60">{provider}</span>
-                          <button
-                            onClick={() => toast.info(`Connexion ${provider} bientot disponible`)}
-                            data-testid={`connect-${provider.toLowerCase()}`}
-                            className="px-3 py-1.5 rounded-lg bg-white/5 text-xs text-white/50 hover:bg-white/10 hover:text-white transition-colors"
-                          >
-                            Connecter
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
             )}
 
@@ -534,7 +512,7 @@ export default function SettingsPage() {
                       data-testid="settings-manage-subscription"
                     >
                       <ExternalLink className="h-4 w-4" />
-                      Gerer l'abonnement
+                      Gerer l&apos;abonnement
                     </Button>
                   </div>
 
@@ -672,7 +650,7 @@ export default function SettingsPage() {
                   <CardContent className="space-y-4">
                     <h3 className="text-sm font-semibold text-white">Brand Kit</h3>
                     <p className="text-xs text-white/30">
-                      Configure ton branding pour l'appliquer automatiquement a tes videos.
+                      Configure ton branding pour l&apos;appliquer automatiquement a tes videos.
                     </p>
 
                     {/* Logo */}

@@ -7,12 +7,13 @@ import type { MusicStyle } from '@/types'
 
 export async function generateVisualWithFallback(
   prompt: string,
-  _quality: string
+  _quality: string,
+  userEmail?: string | null
 ): Promise<string> {
-  // Attempt 1: RunPod + WAN 2.2
+  // Attempt 1: RunPod + WAN 2.2 (super admin → dedicated GPU if configured)
   try {
-    const jobId = await submitVideoJob({ prompt, width: 768, height: 512 })
-    return await pollVideoJob(jobId, 180_000)
+    const { jobId, baseUrl } = await submitVideoJob({ prompt, width: 768, height: 512 }, userEmail)
+    return await pollVideoJob(jobId, baseUrl, 180_000)
   } catch {
     // RunPod failed
   }

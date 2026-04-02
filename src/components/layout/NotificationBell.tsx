@@ -20,14 +20,18 @@ export default function NotificationBell() {
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
+  const userIdRef = useRef(user?.id)
+  userIdRef.current = user?.id
+
   const fetchNotifications = useCallback(async () => {
-    if (!user) return
+    const uid = userIdRef.current
+    if (!uid) return
     setLoading(true)
     try {
       const { data } = await supabase
-        .from('notifications')
+        .from('user_notifications')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', uid)
         .order('created_at', { ascending: false })
         .limit(10)
       setNotifications((data as UserNotification[]) ?? [])
@@ -36,11 +40,11 @@ export default function NotificationBell() {
     } finally {
       setLoading(false)
     }
-  }, [user])
+  }, [])
 
   useEffect(() => {
-    fetchNotifications()
-  }, [fetchNotifications])
+    if (user?.id) fetchNotifications()
+  }, [user?.id, fetchNotifications])
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -56,7 +60,7 @@ export default function NotificationBell() {
   }, [])
 
   const markAsRead = async (id: string) => {
-    await supabase.from('notifications').update({ read: true }).eq('id', id)
+    await supabase.from('user_notifications').update({ read: true }).eq('id', id)
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     )
@@ -65,7 +69,7 @@ export default function NotificationBell() {
   const markAllAsRead = async () => {
     if (!user) return
     await supabase
-      .from('notifications')
+      .from('user_notifications')
       .update({ read: true })
       .eq('user_id', user.id)
       .eq('read', false)

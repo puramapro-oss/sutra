@@ -8,7 +8,6 @@ import {
   Play,
   Bookmark,
   BookmarkCheck,
-  Eye,
   Plus,
   Search,
   Film,
@@ -22,6 +21,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { UserTemplate, VideoFormat } from '@/types'
 
@@ -34,7 +34,6 @@ interface PresetTemplate {
   format: VideoFormat
   thumbnail: string
   category: string
-  useCount: number
 }
 
 const PRESET_TEMPLATES: PresetTemplate[] = [
@@ -45,7 +44,6 @@ const PRESET_TEMPLATES: PresetTemplate[] = [
     format: '16:9',
     thumbnail: '/templates/youtube-edu.webp',
     category: 'YouTube',
-    useCount: 12400,
   },
   {
     id: 'tiktok-viral',
@@ -54,7 +52,6 @@ const PRESET_TEMPLATES: PresetTemplate[] = [
     format: '9:16',
     thumbnail: '/templates/tiktok-viral.webp',
     category: 'TikTok',
-    useCount: 28900,
   },
   {
     id: 'short-motivation',
@@ -63,7 +60,6 @@ const PRESET_TEMPLATES: PresetTemplate[] = [
     format: '9:16',
     thumbnail: '/templates/short-motivation.webp',
     category: 'Short',
-    useCount: 8700,
   },
   {
     id: 'faceless-top10',
@@ -72,7 +68,6 @@ const PRESET_TEMPLATES: PresetTemplate[] = [
     format: '16:9',
     thumbnail: '/templates/faceless-top10.webp',
     category: 'Faceless',
-    useCount: 15200,
   },
   {
     id: 'pub-produit',
@@ -81,7 +76,6 @@ const PRESET_TEMPLATES: PresetTemplate[] = [
     format: '1:1',
     thumbnail: '/templates/pub-produit.webp',
     category: 'Marketing',
-    useCount: 6300,
   },
 ]
 
@@ -97,23 +91,28 @@ export default function TemplatesPage() {
   const [activeCategory, setActiveCategory] = useState<string>('Tous')
   const [savedTemplates, setSavedTemplates] = useState<Set<string>>(new Set())
 
-  useEffect(() => {
-    if (authLoading || !profile) return
-
-    async function fetchTemplates() {
-      setLoading(true)
+  const fetchTemplates = useCallback(async () => {
+    if (!profile?.id) return
+    setLoading(true)
+    try {
       const { data } = await supabase
         .from('user_templates')
         .select('*')
-        .eq('user_id', profile!.id)
+        .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
 
       if (data) setUserTemplates(data as UserTemplate[])
+    } catch {
+      setUserTemplates([])
+    } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile?.id])
 
-    fetchTemplates()
-  }, [authLoading, profile])
+  useEffect(() => {
+    if (!authLoading && profile?.id) fetchTemplates()
+  }, [authLoading, profile?.id, fetchTemplates])
 
   const filteredPresets = PRESET_TEMPLATES.filter((t) => {
     const matchesSearch =
@@ -124,14 +123,14 @@ export default function TemplatesPage() {
     return matchesSearch && matchesCategory
   })
 
-  const useTemplate = useCallback(
+  const applyTemplate = useCallback(
     (templateId: string) => {
       router.push(`/create?template=${templateId}`)
     },
     [router]
   )
 
-  const useUserTemplate = useCallback(
+  const applyUserTemplate = useCallback(
     (template: UserTemplate) => {
       router.push(`/create?userTemplate=${template.id}`)
     },
@@ -175,21 +174,26 @@ export default function TemplatesPage() {
     return map[format] ?? format
   }, [])
 
-  if (loading || authLoading) {
-    return (
-      <div className="space-y-6" data-testid="templates-loading">
-        <Skeleton width={200} height={32} rounded="lg" />
-        <Skeleton width="100%" height={48} rounded="xl" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} width="100%" height={240} rounded="xl" />
-          ))}
-        </div>
+  const templatesSkeleton = (
+    <div className="space-y-6" data-testid="templates-loading">
+      <Skeleton width={200} height={32} rounded="lg" />
+      <Skeleton width="100%" height={48} rounded="xl" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} width="100%" height={240} rounded="xl" />
+        ))}
       </div>
-    )
-  }
+    </div>
+  )
+
+  if (authLoading) return templatesSkeleton
 
   return (
+    <LoadingTimeout
+      loading={loading}
+      onRetry={fetchTemplates}
+      skeleton={templatesSkeleton}
+    >
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -303,12 +307,12 @@ export default function TemplatesPage() {
                     </p>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1 text-xs text-white/25">
-                        <Eye className="h-3 w-3" />
-                        {template.useCount.toLocaleString('fr-FR')} utilisations
+                        <Film className="h-3 w-3" />
+                        {template.format}
                       </div>
                       <Button
                         size="sm"
-                        onClick={() => useTemplate(template.id)}
+                        onClick={() => applyTemplate(template.id)}
                         data-testid={`use-template-${template.id}`}
                       >
                         <Sparkles className="h-3.5 w-3.5" />
@@ -363,7 +367,7 @@ export default function TemplatesPage() {
                       <Button
                         size="sm"
                         variant="secondary"
-                        onClick={() => useUserTemplate(template)}
+                        onClick={() => applyUserTemplate(template)}
                         data-testid={`use-user-template-${template.id}`}
                       >
                         <Play className="h-3.5 w-3.5" />
@@ -385,5 +389,6 @@ export default function TemplatesPage() {
         )}
       </div>
     </motion.div>
+    </LoadingTimeout>
   )
 }

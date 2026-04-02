@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { createClient } from '@/lib/supabase'
 import type { Profile } from '@/types'
-import type { User, Session } from '@supabase/supabase-js'
+import type { User, Session, AuthChangeEvent } from '@supabase/supabase-js'
 
 const supabase = createClient()
 
@@ -12,38 +12,60 @@ export function useAuth() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
+  const profileIdRef = useRef<string | null>(null)
+  const initializedRef = useRef(false)
 
   const fetchProfile = useCallback(async (userId: string) => {
-    const { data } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
-    setProfile(data as Profile | null)
+    // Skip if we already have this profile loaded
+    if (profileIdRef.current === userId) return
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single()
+      if (data && !error) {
+        profileIdRef.current = userId
+        setProfile(data as Profile)
+      }
+    } catch {
+      // Supabase query failed — leave profile null, loading will still resolve
+    }
   }, [])
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session)
-        setUser(session?.user ?? null)
-        if (session?.user) {
-          await fetchProfile(session.user.id)
-        } else {
-          setProfile(null)
-        }
+    // Get initial session once
+    supabase.auth.getSession().then(({ data: { session: s } }) => {
+      setSession(s)
+      setUser(s?.user ?? null)
+      if (s?.user) {
+        fetchProfile(s.user.id).then(() => setLoading(false))
+      } else {
         setLoading(false)
       }
-    )
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        fetchProfile(session.user.id)
-      }
-      setLoading(false)
+      initializedRef.current = true
     })
+
+    // Listen for auth changes — only react to actual sign in/out
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event: AuthChangeEvent, s) => {
+        // Skip token refreshes and initial session (already handled above)
+        if (event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') return
+
+        setSession(s)
+        setUser(s?.user ?? null)
+
+        if (event === 'SIGNED_OUT') {
+          profileIdRef.current = null
+          setProfile(null)
+          setLoading(false)
+        } else if (s?.user && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
+          profileIdRef.current = null // Force refetch on sign in
+          await fetchProfile(s.user.id)
+          setLoading(false)
+        }
+      }
+    )
 
     return () => subscription.unsubscribe()
   }, [fetchProfile])

@@ -8,6 +8,7 @@ import PricingSection from '@/components/landing/PricingSection'
 import FAQ from '@/components/landing/FAQ'
 import CTASection from '@/components/landing/CTASection'
 import Footer from '@/components/landing/Footer'
+import CosmicParticlesWrapper from '@/components/shared/CosmicParticlesWrapper'
 
 export const metadata: Metadata = {
   title: 'SUTRA — Genere des videos IA en quelques minutes',
@@ -60,33 +61,20 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-[#06050e] text-white overflow-x-hidden">
-      {/* 1. Hero */}
-      <Hero />
+    <main className="relative min-h-screen bg-[#06050e] text-white overflow-x-hidden">
+      <CosmicParticlesWrapper />
 
-      {/* 2. Stats */}
-      <Stats />
-
-      {/* 3. Features */}
-      <Features />
-
-      {/* 4. How it works */}
-      <HowItWorks />
-
-      {/* 5. Testimonials */}
-      <Testimonials />
-
-      {/* 6. Pricing */}
-      <PricingSection />
-
-      {/* 7. FAQ */}
-      <FAQ />
-
-      {/* 8. CTA */}
-      <CTASection />
-
-      {/* 9. Footer */}
-      <Footer />
+      <div className="relative z-10">
+        <Hero />
+        <Stats />
+        <Features />
+        <HowItWorks />
+        <Testimonials />
+        <PricingSection />
+        <FAQ />
+        <CTASection />
+        <Footer />
+      </div>
     </main>
   )
 }

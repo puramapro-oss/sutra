@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerClient as createSSRClient } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
 export async function GET(request: Request) {
@@ -13,7 +13,7 @@ export async function GET(request: Request) {
 
   const cookieStore = await cookies()
 
-  const supabase = createSSRClient(
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -22,9 +22,13 @@ export async function GET(request: Request) {
           return cookieStore.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options)
-          })
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options)
+            })
+          } catch {
+            // Server Component context — middleware will refresh
+          }
         },
       },
     }
@@ -37,7 +41,18 @@ export async function GET(request: Request) {
         `${origin}/login?error=${encodeURIComponent(error.message)}`
       )
     }
-    return NextResponse.redirect(`${origin}${next}`)
+
+    // Use x-forwarded-host for Vercel proxy
+    const forwardedHost = request.headers.get('x-forwarded-host')
+    const isLocal = process.env.NODE_ENV === 'development'
+
+    if (isLocal) {
+      return NextResponse.redirect(`${origin}${next}`)
+    } else if (forwardedHost) {
+      return NextResponse.redirect(`https://${forwardedHost}${next}`)
+    } else {
+      return NextResponse.redirect(`${origin}${next}`)
+    }
   } catch {
     return NextResponse.redirect(`${origin}/login?error=callback_failed`)
   }

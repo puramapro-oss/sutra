@@ -23,6 +23,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Input } from '@/components/ui/Input'
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
@@ -88,12 +89,10 @@ export default function ContestPage() {
 
   const countdown = useCountdown(activeContest?.period_end ?? new Date().toISOString())
 
-  useEffect(() => {
-    if (authLoading || !profile) return
-
-    async function fetchData() {
-      setLoading(true)
-
+  const fetchData = useCallback(async () => {
+    if (!profile?.id) return
+    setLoading(true)
+    try {
       const [activeRes, pastRes, videosRes, submissionRes] = await Promise.all([
         supabase
           .from('contests')
@@ -111,13 +110,13 @@ export default function ContestPage() {
         supabase
           .from('videos')
           .select('*')
-          .eq('user_id', profile!.id)
+          .eq('user_id', profile.id)
           .in('status', ['ready', 'published'])
           .order('created_at', { ascending: false }),
         supabase
-          .from('contest_entries')
+          .from('contest_submissions')
           .select('id')
-          .eq('user_id', profile!.id)
+          .eq('user_id', profile.id)
           .limit(1),
       ])
 
@@ -126,11 +125,17 @@ export default function ContestPage() {
       if (videosRes.data) setVideos(videosRes.data as VideoType[])
       if (submissionRes.data && submissionRes.data.length > 0) setHasSubmitted(true)
 
+    } catch {
+      // Keep defaults
+    } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile?.id])
 
-    fetchData()
-  }, [authLoading, profile])
+  useEffect(() => {
+    if (!authLoading && profile?.id) fetchData()
+  }, [authLoading, profile?.id, fetchData])
 
   const handleSubmit = useCallback(async () => {
     if (!selectedVideoId) {
@@ -141,13 +146,13 @@ export default function ContestPage() {
       toast.error('Ajoute un titre')
       return
     }
-    if (!activeContest) return
+    if (!activeContest || !profile) return
 
     setSubmitting(true)
     try {
-      const { error } = await supabase.from('contest_entries').insert({
+      const { error } = await supabase.from('contest_submissions').insert({
         contest_id: activeContest.id,
-        user_id: profile!.id,
+        user_id: profile.id,
         video_id: selectedVideoId,
         title: submissionTitle.trim(),
         description: submissionDesc.trim() || null,
@@ -187,17 +192,18 @@ export default function ContestPage() {
       .slice(0, 5)
   }, [pastContests])
 
-  if (loading || authLoading) {
-    return (
-      <div className="space-y-6" data-testid="contest-loading">
-        <Skeleton width={200} height={32} rounded="lg" />
-        <Skeleton width="100%" height={200} rounded="xl" />
-        <Skeleton width="100%" height={300} rounded="xl" />
-      </div>
-    )
-  }
+  const contestSkeleton = (
+    <div className="space-y-6" data-testid="contest-loading">
+      <Skeleton width={200} height={32} rounded="lg" />
+      <Skeleton width="100%" height={200} rounded="xl" />
+      <Skeleton width="100%" height={300} rounded="xl" />
+    </div>
+  )
+
+  if (authLoading) return contestSkeleton
 
   return (
+    <LoadingTimeout loading={loading} onRetry={fetchData} skeleton={contestSkeleton}>
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -507,5 +513,6 @@ export default function ContestPage() {
         </Card>
       )}
     </motion.div>
+    </LoadingTimeout>
   )
 }

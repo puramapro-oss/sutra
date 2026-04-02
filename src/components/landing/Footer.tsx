@@ -3,22 +3,22 @@ import { Video } from 'lucide-react'
 
 const footerLinks = {
   Produit: [
-    { label: 'Fonctionnalites', href: '#features' },
-    { label: 'Tarifs', href: '#pricing' },
-    { label: 'Templates', href: '/templates' },
-    { label: 'Studio', href: '/studio' },
+    { label: 'Fonctionnalites', href: '/how-it-works' },
+    { label: 'Tarifs', href: '/pricing' },
+    { label: 'Templates', href: '/signup' },
+    { label: 'Ecosystem', href: '/ecosystem' },
   ],
   Ressources: [
     { label: 'Aide', href: '/help' },
     { label: 'Changelog', href: '/changelog' },
     { label: 'Statut', href: '/status' },
-    { label: 'API', href: '/api-docs' },
+    { label: 'Inscription', href: '/signup' },
   ],
   Legal: [
-    { label: 'Conditions', href: '/terms' },
-    { label: 'Confidentialite', href: '/privacy' },
+    { label: 'Conditions', href: '/legal/terms' },
+    { label: 'Confidentialite', href: '/legal/privacy' },
     { label: 'Mentions legales', href: '/legal' },
-    { label: 'Cookies', href: '/privacy#cookies' },
+    { label: 'Cookies', href: '/legal/cookies' },
   ],
 }
 

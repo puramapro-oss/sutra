@@ -1,8 +1,9 @@
 import { fetchWithRetry, sleep } from '@/lib/utils/api'
+import { isSuperAdmin } from '@/lib/utils'
 
 const RUNPOD_API_KEY = process.env.RUNPOD_API_KEY!
 const RUNPOD_ENDPOINT_ID = process.env.RUNPOD_ENDPOINT_ID!
-const RUNPOD_BASE_URL = `https://api.runpod.ai/v2/${RUNPOD_ENDPOINT_ID}`
+const RUNPOD_POD_URL = process.env.RUNPOD_POD_URL ?? ''
 
 interface VideoGenRequest {
   prompt: string
@@ -15,8 +16,22 @@ interface VideoGenRequest {
   cfg_scale?: number
 }
 
-export async function submitVideoJob(req: VideoGenRequest): Promise<string> {
-  const res = await fetchWithRetry(`${RUNPOD_BASE_URL}/run`, {
+function getBaseUrl(userEmail?: string | null): string {
+  // Super admin uses dedicated GPU pod if configured
+  if (userEmail && isSuperAdmin(userEmail) && RUNPOD_POD_URL) {
+    return RUNPOD_POD_URL.replace(/\/$/, '')
+  }
+  // Everyone else (and super admin fallback) uses serverless
+  return `https://api.runpod.ai/v2/${RUNPOD_ENDPOINT_ID}`
+}
+
+export async function submitVideoJob(
+  req: VideoGenRequest,
+  userEmail?: string | null
+): Promise<{ jobId: string; baseUrl: string }> {
+  const baseUrl = getBaseUrl(userEmail)
+
+  const res = await fetchWithRetry(`${baseUrl}/run`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -38,16 +53,19 @@ export async function submitVideoJob(req: VideoGenRequest): Promise<string> {
 
   const data = await res.json()
   if (!data.id) throw new Error(`RunPod: ${data.error ?? 'pas de job ID'}`)
-  return data.id
+  return { jobId: data.id, baseUrl }
 }
 
 export async function pollVideoJob(
   jobId: string,
+  baseUrl?: string,
   timeoutMs = 300_000
 ): Promise<string> {
+  const pollUrl = baseUrl ?? `https://api.runpod.ai/v2/${RUNPOD_ENDPOINT_ID}`
   const start = Date.now()
+
   while (Date.now() - start < timeoutMs) {
-    const res = await fetch(`${RUNPOD_BASE_URL}/status/${jobId}`, {
+    const res = await fetch(`${pollUrl}/status/${jobId}`, {
       headers: { Authorization: `Bearer ${RUNPOD_API_KEY}` },
     })
     const data = await res.json()
@@ -72,7 +90,8 @@ export async function pollVideoJob(
 
 export async function generateAllScenes(
   scenes: Array<{ prompt: string; duration_seconds: number }>,
-  quality: '720p' | '1080p' | '4k'
+  quality: '720p' | '1080p' | '4k',
+  userEmail?: string | null
 ): Promise<string[]> {
   const dimensions = {
     '720p': { width: 768, height: 512 },
@@ -81,19 +100,24 @@ export async function generateAllScenes(
   }
   const { width, height } = dimensions[quality]
 
-  const jobIds = await Promise.all(
+  const jobs = await Promise.all(
     scenes.map((scene) =>
-      submitVideoJob({
-        prompt: scene.prompt,
-        width,
-        height,
-        steps: 20,
-        num_frames: Math.round(scene.duration_seconds * 16),
-        cfg_scale: 6,
-      })
+      submitVideoJob(
+        {
+          prompt: scene.prompt,
+          width,
+          height,
+          steps: 20,
+          num_frames: Math.round(scene.duration_seconds * 16),
+          cfg_scale: 6,
+        },
+        userEmail
+      )
     )
   )
 
-  const results = await Promise.all(jobIds.map((id) => pollVideoJob(id)))
+  const results = await Promise.all(
+    jobs.map((job) => pollVideoJob(job.jobId, job.baseUrl))
+  )
   return results
 }

@@ -321,8 +321,9 @@ export default function PrivacyPage() {
               Contact
             </h3>
             <div className="text-sm text-white/50 space-y-1">
-              <p>Purama — Micro-entreprise</p>
-              <p>Responsable du traitement : Purama</p>
+              <p>PURAMA SASU — Capital 1 euro</p>
+              <p>8 Rue de la Chapelle, 25560 Frasne, France</p>
+              <p>Responsable du traitement : Matiss Frasne, President</p>
               <p>
                 Email :{' '}
                 <a

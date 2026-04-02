@@ -78,7 +78,7 @@ export async function POST(req: Request) {
             })
 
             const commissionAmount = (session.amount_total ?? 0) * 0.5
-            await serviceClient.from('commissions').insert({
+            await serviceClient.from('referral_commissions').insert({
               referral_id: referralCodeRow.id,
               beneficiary_id: referralCodeRow.user_id,
               type: 'first_payment_50pct',
@@ -152,7 +152,7 @@ export async function POST(req: Request) {
           if (referrals && referrals.length > 0) {
             for (const referral of referrals) {
               const recurringAmount = invoice.amount_paid * 0.1
-              await serviceClient.from('commissions').insert({
+              await serviceClient.from('referral_commissions').insert({
                 referral_id: referral.id,
                 beneficiary_id: referral.referrer_id,
                 type: 'recurring_10pct',

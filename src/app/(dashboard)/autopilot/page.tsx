@@ -25,6 +25,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Input } from '@/components/ui/Input'
 import type { AutopilotSeries } from '@/types'
@@ -64,23 +65,28 @@ export default function AutopilotPage() {
   const canCreate = series.length < limits.autopilot
   const hasAutopilot = limits.autopilot > 0
 
-  useEffect(() => {
-    if (authLoading || !profile) return
-
-    async function fetchSeries() {
-      setLoading(true)
+  const fetchSeries = useCallback(async () => {
+    if (!profile?.id) return
+    setLoading(true)
+    try {
       const { data } = await supabase
         .from('autopilot_series')
         .select('*')
-        .eq('user_id', profile!.id)
+        .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
 
       if (data) setSeries(data as AutopilotSeries[])
+    } catch {
+      setSeries([])
+    } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile?.id])
 
-    fetchSeries()
-  }, [authLoading, profile])
+  useEffect(() => {
+    if (!authLoading && profile?.id) fetchSeries()
+  }, [authLoading, profile?.id, fetchSeries])
 
   const resetForm = useCallback(() => {
     setFormName('')
@@ -175,17 +181,25 @@ export default function AutopilotPage() {
     }
   }, [])
 
-  if (loading || authLoading) {
-    return (
-      <div className="space-y-6" data-testid="autopilot-loading">
-        <Skeleton width={250} height={32} rounded="lg" />
-        <Skeleton width="100%" height={200} rounded="xl" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <Skeleton key={i} width="100%" height={180} rounded="xl" />
-          ))}
-        </div>
+  const autopilotSkeleton = (
+    <div className="space-y-6" data-testid="autopilot-loading">
+      <Skeleton width={250} height={32} rounded="lg" />
+      <Skeleton width="100%" height={200} rounded="xl" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <Skeleton key={i} width="100%" height={180} rounded="xl" />
+        ))}
       </div>
+    </div>
+  )
+
+  if (authLoading) return autopilotSkeleton
+
+  if (loading) {
+    return (
+      <LoadingTimeout loading={loading} onRetry={fetchSeries} skeleton={autopilotSkeleton}>
+        <div />
+      </LoadingTimeout>
     )
   }
 
@@ -477,15 +491,6 @@ export default function AutopilotPage() {
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 mt-4 pt-3 border-t border-white/[0.06]">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toast.info('Edition bientot disponible')}
-                      data-testid={`series-edit-${s.id}`}
-                    >
-                      <Settings className="h-3.5 w-3.5" />
-                      Modifier
-                    </Button>
                     <Button
                       variant="ghost"
                       size="sm"

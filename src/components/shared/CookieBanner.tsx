@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Cookie, X } from 'lucide-react'
 
@@ -11,7 +12,9 @@ export default function CookieBanner() {
 
   useEffect(() => {
     const consent = localStorage.getItem('sutra-cookie-consent')
-    if (!consent) setVisible(true)
+    if (!consent) {
+      requestAnimationFrame(() => setVisible(true))
+    }
   }, [])
 
   function accept() {
@@ -44,7 +47,8 @@ export default function CookieBanner() {
                 <div className="flex items-start gap-3 mb-4">
                   <Cookie className="h-5 w-5 text-violet-400 mt-0.5 shrink-0" />
                   <p className="text-sm text-white/70">
-                    Nous utilisons des cookies pour ameliorer ton experience. Tu peux accepter, personnaliser ou refuser.
+                    Nous utilisons des cookies pour ameliorer ton experience. Tu peux accepter, personnaliser ou refuser.{' '}
+                    <Link href="/legal/cookies" className="text-violet-400 hover:text-violet-300 underline">En savoir plus</Link>
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-3">

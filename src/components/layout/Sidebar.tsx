@@ -8,7 +8,6 @@ import {
   LayoutDashboard,
   Plus,
   Film,
-  Clapperboard,
   Share2,
   Bot,
   Mic,
@@ -44,13 +43,7 @@ const mainNav: NavItem[] = [
     icon: Film,
     testId: 'sidebar-library',
   },
-  {
-    label: 'Sutra Studio',
-    href: '/library',
-    icon: Clapperboard,
-    testId: 'sidebar-studio',
-  },
-  {
+{
     label: 'Publier',
     href: '/publish',
     icon: Share2,

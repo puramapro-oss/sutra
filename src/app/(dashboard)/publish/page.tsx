@@ -10,11 +10,7 @@ import {
   Camera,
   CheckCircle2,
   XCircle,
-  Link2,
-  ExternalLink,
   Video,
-  Loader2,
-  AlertTriangle,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
@@ -24,6 +20,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { Video as VideoType, ScheduledPost } from '@/types'
 
@@ -43,12 +40,6 @@ const PLATFORMS = [
 
 type PlatformId = (typeof PLATFORMS)[number]['id']
 
-interface ConnectedAccount {
-  platform: PlatformId
-  connected: boolean
-  username: string | null
-}
-
 interface PublishVideoState {
   videoId: string
   platforms: Record<PlatformId, boolean>
@@ -64,36 +55,28 @@ export default function PublishPage() {
   const [loading, setLoading] = useState(true)
   const [publishStates, setPublishStates] = useState<Record<string, PublishVideoState>>({})
   const [publishing, setPublishing] = useState<string | null>(null)
-  const [connectedAccounts] = useState<ConnectedAccount[]>([
-    { platform: 'youtube', connected: false, username: null },
-    { platform: 'tiktok', connected: false, username: null },
-    { platform: 'instagram', connected: false, username: null },
-  ])
 
-  // Fetch data
-  useEffect(() => {
-    if (authLoading || !profile) return
-
-    async function fetchData() {
-      setLoading(true)
-
+  const fetchData = useCallback(async () => {
+    if (!profile?.id) return
+    setLoading(true)
+    try {
       const [videosRes, scheduledRes, pastRes] = await Promise.all([
         supabase
           .from('videos')
           .select('*')
-          .eq('user_id', profile!.id)
+          .eq('user_id', profile.id)
           .in('status', ['ready', 'published'])
           .order('updated_at', { ascending: false }),
         supabase
           .from('scheduled_posts')
           .select('*')
-          .eq('user_id', profile!.id)
+          .eq('user_id', profile.id)
           .eq('status', 'scheduled')
           .order('scheduled_at', { ascending: true }),
         supabase
           .from('scheduled_posts')
           .select('*')
-          .eq('user_id', profile!.id)
+          .eq('user_id', profile.id)
           .in('status', ['published', 'failed'])
           .order('created_at', { ascending: false })
           .limit(20),
@@ -116,11 +99,17 @@ export default function PublishPage() {
         setPublishStates(states)
       }
 
+    } catch {
+      // Keep existing data on error
+    } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile?.id])
 
-    fetchData()
-  }, [authLoading, profile])
+  useEffect(() => {
+    if (!authLoading && profile?.id) fetchData()
+  }, [authLoading, profile?.id, fetchData])
 
   const togglePlatform = useCallback((videoId: string, platform: PlatformId) => {
     setPublishStates((prev) => ({
@@ -212,25 +201,23 @@ export default function PublishPage() {
     [publishStates]
   )
 
-  const connectAccount = useCallback((platform: PlatformId) => {
-    toast.info(`Connexion ${platform} bientot disponible`)
-  }, [])
 
-  if (loading || authLoading) {
-    return (
-      <div className="space-y-6" data-testid="publish-loading">
-        <Skeleton width={250} height={32} rounded="lg" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} width="100%" height={100} rounded="xl" />
-          ))}
-        </div>
-        <Skeleton width="100%" height={300} rounded="xl" />
+  const publishSkeleton = (
+    <div className="space-y-6" data-testid="publish-loading">
+      <Skeleton width={250} height={32} rounded="lg" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <Skeleton key={i} width="100%" height={100} rounded="xl" />
+        ))}
       </div>
-    )
-  }
+      <Skeleton width="100%" height={300} rounded="xl" />
+    </div>
+  )
+
+  if (authLoading) return publishSkeleton
 
   return (
+    <LoadingTimeout loading={loading} onRetry={fetchData} skeleton={publishSkeleton}>
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -245,55 +232,6 @@ export default function PublishPage() {
         <p className="text-sm text-white/40 mt-1">
           Publie tes videos sur YouTube, TikTok et Instagram
         </p>
-      </div>
-
-      {/* Connected accounts */}
-      <div>
-        <h2 className="text-sm font-semibold text-white/60 mb-3">Comptes connectes</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {connectedAccounts.map((account) => {
-            const platformDef = PLATFORMS.find((p) => p.id === account.platform)
-            if (!platformDef) return null
-            const Icon = platformDef.icon
-            return (
-              <Card key={account.platform}>
-                <CardContent className="py-4 flex items-center gap-3">
-                  <div
-                    className={cn(
-                      'h-10 w-10 rounded-xl flex items-center justify-center border',
-                      platformDef.color
-                    )}
-                  >
-                    <Icon />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white">{platformDef.label}</p>
-                    {account.connected ? (
-                      <p className="text-xs text-emerald-400 flex items-center gap-1">
-                        <CheckCircle2 className="h-3 w-3" />
-                        {account.username}
-                      </p>
-                    ) : (
-                      <p className="text-xs text-white/30">Non connecte</p>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => connectAccount(account.platform)}
-                    data-testid={`connect-${account.platform}`}
-                    className={cn(
-                      'px-3 py-1.5 rounded-lg text-xs font-medium transition-colors',
-                      account.connected
-                        ? 'bg-white/5 text-white/50 hover:bg-white/10'
-                        : 'bg-violet-500/20 text-violet-400 hover:bg-violet-500/30'
-                    )}
-                  >
-                    {account.connected ? 'Gerer' : 'Connecter'}
-                  </button>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
       </div>
 
       {/* Videos ready to publish */}
@@ -482,15 +420,6 @@ export default function PublishPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-xs text-white/30">{formatRelativeDate(post.created_at)}</span>
-                    {post.platform_post_id && (
-                      <a
-                        href="#"
-                        className="text-violet-400 hover:text-violet-300"
-                        title="Voir la publication"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
-                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -499,5 +428,6 @@ export default function PublishPage() {
         )}
       </div>
     </motion.div>
+    </LoadingTimeout>
   )
 }

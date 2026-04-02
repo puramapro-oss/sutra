@@ -38,7 +38,7 @@ export async function GET() {
       .eq('status', 'active')
 
     const { data: commissions } = await serviceClient
-      .from('commissions')
+      .from('referral_commissions')
       .select('id, type, amount, status, created_at')
       .eq('beneficiary_id', user.id)
       .order('created_at', { ascending: false })

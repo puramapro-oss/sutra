@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 interface ErrorPageProps {
   error: Error & { digest?: string };
@@ -80,13 +81,13 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             Reessayer
           </button>
 
-          <a
+          <Link
             href="/"
             data-testid="error-home-link"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-[var(--foreground-muted)] glass hover:bg-white/5 transition-all duration-200"
           >
             Retour a l&apos;accueil
-          </a>
+          </Link>
         </div>
       </div>
     </main>

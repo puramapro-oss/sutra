@@ -9,12 +9,14 @@ export function useTheme() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
-    const stored = localStorage.getItem('sutra-theme') as Theme | null
-    if (stored) {
-      setThemeState(stored)
-      document.documentElement.setAttribute('data-theme', stored)
-    }
+    requestAnimationFrame(() => {
+      const stored = localStorage.getItem('sutra-theme') as Theme | null
+      if (stored) {
+        setThemeState(stored)
+        document.documentElement.setAttribute('data-theme', stored)
+      }
+      setMounted(true)
+    })
   }, [])
 
   const setTheme = useCallback((t: Theme) => {

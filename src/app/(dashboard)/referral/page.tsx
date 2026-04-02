@@ -26,6 +26,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Input } from '@/components/ui/Input'
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
@@ -70,28 +71,26 @@ export default function ReferralPage() {
     ? `${window.location.origin}/pricing?ref=${referralCode}`
     : ''
 
-  useEffect(() => {
-    if (authLoading || !profile) return
-
-    async function fetchData() {
-      setLoading(true)
-
+  const fetchData = useCallback(async () => {
+    if (!profile?.id) return
+    setLoading(true)
+    try {
       const [filleulsRes, commissionsRes, walletRes] = await Promise.all([
         supabase
           .from('referrals')
           .select('referred_id, status, created_at, profiles!referrals_referred_id_fkey(id, email, name)')
-          .eq('referrer_id', profile!.id)
+          .eq('referrer_id', profile.id)
           .order('created_at', { ascending: false }),
         supabase
-          .from('commissions')
+          .from('referral_commissions')
           .select('*')
-          .eq('beneficiary_id', profile!.id)
+          .eq('beneficiary_id', profile.id)
           .order('created_at', { ascending: false })
           .limit(50),
         supabase
           .from('wallets')
           .select('balance, pending_balance, total_earned')
-          .eq('user_id', profile!.id)
+          .eq('user_id', profile.id)
           .single(),
       ])
 
@@ -112,11 +111,17 @@ export default function ReferralPage() {
       if (commissionsRes.data) setCommissions(commissionsRes.data as ReferralCommission[])
       if (walletRes.data) setWallet(walletRes.data as WalletData)
 
+    } catch {
+      // Keep defaults on error
+    } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile?.id])
 
-    fetchData()
-  }, [authLoading, profile])
+  useEffect(() => {
+    if (!authLoading && profile?.id) fetchData()
+  }, [authLoading, profile?.id, fetchData])
 
   const handleCopyCode = useCallback(async () => {
     const ok = await copyToClipboard(referralCode)
@@ -194,22 +199,23 @@ export default function ReferralPage() {
   const pendingCommissions = commissions.filter((c) => c.status === 'pending').reduce((a, c) => a + c.amount, 0)
   const activeFilleuls = filleuls.filter((f) => f.status === 'active').length
 
-  if (loading || authLoading) {
-    return (
-      <div className="space-y-6" data-testid="referral-loading">
-        <Skeleton width={200} height={32} rounded="lg" />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} width="100%" height={100} rounded="xl" />
-          ))}
-        </div>
-        <Skeleton width="100%" height={200} rounded="xl" />
-        <Skeleton width="100%" height={300} rounded="xl" />
+  const referralSkeleton = (
+    <div className="space-y-6" data-testid="referral-loading">
+      <Skeleton width={200} height={32} rounded="lg" />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <Skeleton key={i} width="100%" height={100} rounded="xl" />
+        ))}
       </div>
-    )
-  }
+      <Skeleton width="100%" height={200} rounded="xl" />
+      <Skeleton width="100%" height={300} rounded="xl" />
+    </div>
+  )
+
+  if (authLoading) return referralSkeleton
 
   return (
+    <LoadingTimeout loading={loading} onRetry={fetchData} skeleton={referralSkeleton}>
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -562,5 +568,6 @@ export default function ReferralPage() {
         )}
       </div>
     </motion.div>
+    </LoadingTimeout>
   )
 }

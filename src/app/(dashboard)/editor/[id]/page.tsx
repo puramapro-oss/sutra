@@ -926,15 +926,6 @@ export default function EditorPage() {
                       data-testid="editor-voice-volume"
                       className="w-full h-2 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
                     />
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="mt-3"
-                      onClick={() => toast.info('Remplacement de voix bientot disponible')}
-                      data-testid="editor-replace-voice"
-                    >
-                      Remplacer la voix
-                    </Button>
                   </div>
 
                   <div className="border-t border-white/[0.06] pt-6">
@@ -955,15 +946,6 @@ export default function EditorPage() {
                       data-testid="editor-music-volume"
                       className="w-full h-2 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
                     />
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      className="mt-3"
-                      onClick={() => toast.info('Remplacement de musique bientot disponible')}
-                      data-testid="editor-replace-music"
-                    >
-                      Remplacer la musique
-                    </Button>
                   </div>
                 </div>
               )}

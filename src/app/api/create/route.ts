@@ -103,7 +103,7 @@ export async function POST(req: Request) {
         script.scenes
           .filter((s) => !s.use_stock)
           .map(async (scene) => {
-            const url = await generateVisualWithFallback(scene.visual_prompt, quality)
+            const url = await generateVisualWithFallback(scene.visual_prompt, quality, user.email)
             await logApiCall(user.id, 'runpod', 'generateVisual', 'success')
             return { url, type: 'ia' as const }
           })

@@ -26,6 +26,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { UserNotification } from '@/types'
 
@@ -63,24 +64,29 @@ export default function NotificationsPage() {
   const [filter, setFilter] = useState<string>('all')
   const [markingAll, setMarkingAll] = useState(false)
 
-  useEffect(() => {
-    if (authLoading || !profile) return
-
-    async function fetchNotifications() {
-      setLoading(true)
+  const fetchNotifications = useCallback(async () => {
+    if (!profile?.id) return
+    setLoading(true)
+    try {
       const { data } = await supabase
-        .from('notifications')
+        .from('user_notifications')
         .select('*')
-        .eq('user_id', profile!.id)
+        .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
         .limit(100)
 
       if (data) setNotifications(data as UserNotification[])
+    } catch {
+      setNotifications([])
+    } finally {
       setLoading(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profile?.id])
 
-    fetchNotifications()
-  }, [authLoading, profile])
+  useEffect(() => {
+    if (!authLoading && profile?.id) fetchNotifications()
+  }, [authLoading, profile?.id, fetchNotifications])
 
   const markAsRead = useCallback(async (id: string) => {
     const notif = notifications.find((n) => n.id === id)
@@ -91,7 +97,7 @@ export default function NotificationsPage() {
     )
 
     await supabase
-      .from('notifications')
+      .from('user_notifications')
       .update({ read: true })
       .eq('id', id)
   }, [notifications])
@@ -101,7 +107,7 @@ export default function NotificationsPage() {
     setMarkingAll(true)
     try {
       const { error } = await supabase
-        .from('notifications')
+        .from('user_notifications')
         .update({ read: true })
         .eq('user_id', profile.id)
         .eq('read', false)
@@ -131,22 +137,23 @@ export default function NotificationsPage() {
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
-  if (loading || authLoading) {
-    return (
-      <div className="space-y-4" data-testid="notifications-loading">
-        <div className="flex items-center justify-between">
-          <Skeleton width={200} height={32} rounded="lg" />
-          <Skeleton width={150} height={36} rounded="lg" />
-        </div>
-        <Skeleton width="100%" height={48} rounded="lg" />
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} width="100%" height={80} rounded="xl" />
-        ))}
+  const notifsSkeleton = (
+    <div className="space-y-4" data-testid="notifications-loading">
+      <div className="flex items-center justify-between">
+        <Skeleton width={200} height={32} rounded="lg" />
+        <Skeleton width={150} height={36} rounded="lg" />
       </div>
-    )
-  }
+      <Skeleton width="100%" height={48} rounded="lg" />
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Skeleton key={i} width="100%" height={80} rounded="xl" />
+      ))}
+    </div>
+  )
+
+  if (authLoading) return notifsSkeleton
 
   return (
+    <LoadingTimeout loading={loading} onRetry={fetchNotifications} skeleton={notifsSkeleton}>
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
@@ -285,5 +292,6 @@ export default function NotificationsPage() {
         </div>
       )}
     </motion.div>
+    </LoadingTimeout>
   )
 }

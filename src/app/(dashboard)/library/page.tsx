@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils'
 import { VideoCard } from '@/components/dashboard/VideoCard'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { Video, VideoStatus } from '@/types'
 
@@ -147,11 +148,16 @@ export default function LibraryPage() {
 
   const activeSort = SORT_OPTIONS.find((s) => s.id === sort)
 
-  if (authLoading || loading) {
+  if (authLoading) {
     return <LibrarySkeleton />
   }
 
   return (
+    <LoadingTimeout
+      loading={loading}
+      onRetry={() => profile?.id && fetchVideos(profile.id, 0, false)}
+      skeleton={<LibrarySkeleton />}
+    >
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -325,6 +331,7 @@ export default function LibraryPage() {
         />
       )}
     </motion.div>
+    </LoadingTimeout>
   )
 }
 
