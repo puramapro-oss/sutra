@@ -7,10 +7,10 @@ let _redis: Redis | null = null
 function getRedis(): Redis | null {
   if (_redis) return _redis
 
-  const url = process.env.UPSTASH_REDIS_REST_URL?.trim()
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN?.trim()
+  const url = process.env.UPSTASH_REDIS_REST_URL?.trim().replace(/["\s]/g, '')
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN?.trim().replace(/["\s]/g, '')
 
-  if (!url || !token) return null
+  if (!url || !token || !url.startsWith('https://')) return null
 
   try {
     _redis = new Redis({ url, token })
