@@ -65,8 +65,8 @@ export function VideoCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -6, scale: 1.02 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       data-testid={testId ?? `video-card-${video.id}`}
       className={cn(
         'group relative overflow-hidden rounded-2xl cursor-pointer',

@@ -7,10 +7,10 @@ const CosmicParticles = dynamic(
   { ssr: false }
 )
 
-export default function CosmicParticlesWrapper() {
+export default function CosmicParticlesWrapper({ variant = 'landing' }: { variant?: 'landing' | 'dashboard' }) {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
-      <CosmicParticles />
+      <CosmicParticles variant={variant} />
     </div>
   )
 }

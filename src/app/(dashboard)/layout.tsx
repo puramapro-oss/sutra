@@ -7,8 +7,8 @@ import Sidebar from '@/components/layout/Sidebar'
 import Header from '@/components/layout/Header'
 import MobileNav from '@/components/layout/MobileNav'
 
-const CosmicParticles = dynamic(
-  () => import('@/components/shared/CosmicParticles'),
+const CosmicParticlesWrapper = dynamic(
+  () => import('@/components/shared/CosmicParticlesWrapper'),
   { ssr: false }
 )
 
@@ -22,9 +22,7 @@ export default function DashboardLayout({
   return (
     <div className="relative flex min-h-dvh bg-[#06050e]">
       {/* Cosmic particles background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <CosmicParticles />
-      </div>
+      <CosmicParticlesWrapper variant="dashboard" />
 
       {/* Desktop sidebar */}
       <Sidebar />
@@ -59,9 +57,14 @@ export default function DashboardLayout({
       <div className="relative z-10 flex-1 flex flex-col min-w-0">
         <Header onMenuToggle={() => setMobileMenuOpen((prev) => !prev)} />
 
-        <main className="flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden">
+        <motion.main
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden"
+        >
           {children}
-        </main>
+        </motion.main>
       </div>
 
       {/* Mobile bottom nav */}
