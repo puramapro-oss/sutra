@@ -92,18 +92,15 @@ export default function DashboardPage() {
   const planLimits = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
   const creditsRemaining = profile?.credits ?? 0
 
-  const planLabel =
-    plan === 'free'
-      ? 'Gratuit'
-      : plan === 'starter'
-        ? 'Starter'
-        : plan === 'creator'
-          ? 'Creator'
-          : plan === 'empire'
-            ? 'Empire'
-            : plan === 'admin'
-              ? 'Admin'
-              : 'Gratuit'
+  const planLabels: Record<string, string> = {
+    free: 'Gratuit',
+    starter: 'Starter',
+    creator: 'Creator',
+    empire: 'Empire',
+    enterprise: 'Enterprise',
+    admin: 'Admin',
+  }
+  const planLabel = planLabels[plan] ?? 'Gratuit'
 
   if (authLoading) {
     return <DashboardSkeleton />

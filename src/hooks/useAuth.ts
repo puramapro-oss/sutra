@@ -12,12 +12,12 @@ export function useAuth() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
-  const profileIdRef = useRef<string | null>(null)
-  const initializedRef = useRef(false)
+  const loadedRef = useRef(false)
+  const fetchingRef = useRef(false)
 
   const fetchProfile = useCallback(async (userId: string) => {
-    // Skip if we already have this profile loaded
-    if (profileIdRef.current === userId) return
+    if (fetchingRef.current) return
+    fetchingRef.current = true
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -25,42 +25,43 @@ export function useAuth() {
         .eq('id', userId)
         .single()
       if (data && !error) {
-        profileIdRef.current = userId
         setProfile(data as Profile)
       }
     } catch {
-      // Supabase query failed — leave profile null, loading will still resolve
+      // Query failed — profile stays null
+    } finally {
+      fetchingRef.current = false
     }
   }, [])
 
   useEffect(() => {
-    // Get initial session once
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
+    if (loadedRef.current) return
+    loadedRef.current = true
+
+    // 1. Get initial session
+    supabase.auth.getSession().then(async ({ data: { session: s } }) => {
       setSession(s)
       setUser(s?.user ?? null)
       if (s?.user) {
-        fetchProfile(s.user.id).then(() => setLoading(false))
-      } else {
-        setLoading(false)
+        await fetchProfile(s.user.id)
       }
-      initializedRef.current = true
+      setLoading(false)
+    }).catch(() => {
+      setLoading(false)
     })
 
-    // Listen for auth changes — only react to actual sign in/out
+    // 2. Listen for auth changes (sign in, sign out, user updated)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event: AuthChangeEvent, s) => {
-        // Skip token refreshes and initial session (already handled above)
+      async (event: AuthChangeEvent, s: Session | null) => {
         if (event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') return
 
         setSession(s)
         setUser(s?.user ?? null)
 
         if (event === 'SIGNED_OUT') {
-          profileIdRef.current = null
           setProfile(null)
           setLoading(false)
         } else if (s?.user && (event === 'SIGNED_IN' || event === 'USER_UPDATED')) {
-          profileIdRef.current = null // Force refetch on sign in
           await fetchProfile(s.user.id)
           setLoading(false)
         }
@@ -106,7 +107,10 @@ export function useAuth() {
   }, [])
 
   const refetch = useCallback(async () => {
-    if (user) await fetchProfile(user.id)
+    if (user) {
+      fetchingRef.current = false
+      await fetchProfile(user.id)
+    }
   }, [user, fetchProfile])
 
   return {

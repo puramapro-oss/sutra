@@ -78,6 +78,7 @@ export async function middleware(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      db: { schema: process.env.NEXT_PUBLIC_APP_SCHEMA || "sutra" },
       cookies: {
         getAll() {
           return request.cookies.getAll();
@@ -122,42 +123,37 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  if (isAdminRoute(pathname)) {
+  if (isAdminRoute(pathname) || isInfluencerRoute(pathname)) {
     const { data: profile } = await supabase
       .from("profiles")
-      .select("role, email")
+      .select("is_admin, email")
       .eq("id", user.id)
       .single();
 
-    const isAuthorized =
-      profile?.role === "super_admin" &&
-      profile?.email === SUPER_ADMIN_EMAIL;
+    if (isAdminRoute(pathname)) {
+      const isAuthorized =
+        profile?.is_admin === true &&
+        profile?.email === SUPER_ADMIN_EMAIL;
 
-    if (!isAuthorized) {
-      const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/dashboard";
-      redirectUrl.search = "";
-      return NextResponse.redirect(redirectUrl);
+      if (!isAuthorized) {
+        const redirectUrl = request.nextUrl.clone();
+        redirectUrl.pathname = "/dashboard";
+        redirectUrl.search = "";
+        return NextResponse.redirect(redirectUrl);
+      }
     }
-  }
 
-  if (isInfluencerRoute(pathname)) {
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role, email")
-      .eq("id", user.id)
-      .single();
+    if (isInfluencerRoute(pathname)) {
+      const isAuthorized =
+        profile?.is_admin === true &&
+        profile?.email === SUPER_ADMIN_EMAIL;
 
-    const isAuthorized =
-      profile?.role === "influencer" ||
-      (profile?.role === "super_admin" &&
-        profile?.email === SUPER_ADMIN_EMAIL);
-
-    if (!isAuthorized) {
-      const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/dashboard";
-      redirectUrl.search = "";
-      return NextResponse.redirect(redirectUrl);
+      if (!isAuthorized) {
+        const redirectUrl = request.nextUrl.clone();
+        redirectUrl.pathname = "/dashboard";
+        redirectUrl.search = "";
+        return NextResponse.redirect(redirectUrl);
+      }
     }
   }
 

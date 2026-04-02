@@ -19,6 +19,7 @@ export const PLAN_LIMITS: Record<Plan, {
   starter: { videos: 10, quality: '720p', voices: 0, autopilot: 0, rate: 15, templates: 10, networks: 1, studio: 'basic' },
   creator: { videos: 50, quality: '1080p', voices: 3, autopilot: 1, rate: 30, templates: 999, networks: 3, studio: 'full' },
   empire: { videos: 9999, quality: '4k', voices: 99, autopilot: 5, rate: 60, templates: 999, networks: 99, studio: 'full+export' },
+  enterprise: { videos: 9999, quality: '4k', voices: 99, autopilot: 5, rate: 60, templates: 999, networks: 99, studio: 'full+export' },
   admin: { videos: Infinity, quality: '4k', voices: Infinity, autopilot: Infinity, rate: Infinity, templates: Infinity, networks: Infinity, studio: 'full+export' },
 }
 

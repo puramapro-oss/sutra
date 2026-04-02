@@ -1,4 +1,4 @@
-export type Plan = 'free' | 'starter' | 'creator' | 'empire' | 'admin'
+export type Plan = 'free' | 'starter' | 'creator' | 'empire' | 'enterprise' | 'admin'
 export type Role = 'user' | 'admin' | 'super_admin' | 'influencer'
 export type VideoStatus = 'draft' | 'generating' | 'ready' | 'published' | 'failed'
 export type VideoQuality = '720p' | '1080p' | '4k'

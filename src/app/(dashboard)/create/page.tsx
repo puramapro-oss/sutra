@@ -103,7 +103,7 @@ export default function CreatePage() {
   const isOverLimit = plan !== 'admin' && videosUsed >= planLimits.videos
 
   // Check which quality options are available
-  const planRank: Record<Plan, number> = { free: 0, starter: 1, creator: 2, empire: 3, admin: 4 }
+  const planRank: Record<Plan, number> = { free: 0, starter: 1, creator: 2, empire: 3, enterprise: 3, admin: 4 }
   const currentPlanRank = planRank[plan] ?? 0
 
   const isQualityAvailable = (minPlan: Plan): boolean => {

@@ -296,6 +296,7 @@ export default function SettingsPage() {
     starter: 'Starter',
     creator: 'Creator',
     empire: 'Empire',
+    enterprise: 'Enterprise',
     admin: 'Admin',
   }
 
