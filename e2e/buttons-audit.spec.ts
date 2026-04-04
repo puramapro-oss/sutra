@@ -112,6 +112,23 @@ test.describe('Auth Pages - No Dead Buttons', () => {
 
     const submitBtn = page.locator('button[type="submit"]').first()
     await expect(submitBtn).toBeVisible()
+
+    // "Inscris-toi" link must point to /signup
+    const signupLink = page.locator('a[href="/signup"]')
+    await expect(signupLink).toBeVisible()
+
+    // Click it and verify we land on /signup, NOT /dashboard
+    await signupLink.click()
+    await page.waitForURL(/signup/, { timeout: 10000 })
+    expect(page.url()).toContain('/signup')
+    expect(page.url()).not.toContain('/dashboard')
+  })
+
+  test('Signup page is accessible even with session cookie', async ({ page }) => {
+    // Navigate to signup directly — must NOT redirect to dashboard
+    const res = await page.goto('/signup', { waitUntil: 'networkidle', timeout: 15000 })
+    expect(res?.status()).toBeLessThan(400)
+    await expect(page.locator('button[type="submit"]')).toBeVisible()
   })
 
   test('Forgot password page loads', async ({ page }) => {

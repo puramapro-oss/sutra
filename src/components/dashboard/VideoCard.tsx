@@ -172,7 +172,13 @@ export function VideoCard({
             <button
               onClick={(e) => {
                 e.stopPropagation()
+                if (video.video_url) {
+                  navigator.clipboard.writeText(video.video_url)
+                } else {
+                  navigator.clipboard.writeText(`${window.location.origin}/library/${video.id}`)
+                }
                 setShowActions(false)
+                import('sonner').then(({ toast }) => toast.success('Lien copie'))
               }}
               className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
             >

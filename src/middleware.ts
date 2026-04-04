@@ -12,6 +12,7 @@ const PUBLIC_ROUTES = [
   "/offline",
   "/privacy",
   "/terms",
+  "/signup",
 ];
 
 const PUBLIC_PREFIXES = [
@@ -22,7 +23,7 @@ const PUBLIC_PREFIXES = [
   "/auth/callback",
 ];
 
-const AUTH_ROUTES = ["/login", "/signup", "/forgot-password"];
+const AUTH_ROUTES = ["/login", "/forgot-password"];
 
 const SUPER_ADMIN_EMAIL = "matiss.frasne@gmail.com";
 
