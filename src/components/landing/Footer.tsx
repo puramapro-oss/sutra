@@ -15,9 +15,10 @@ const footerLinks = {
     { label: 'Inscription', href: '/signup' },
   ],
   Legal: [
-    { label: 'Conditions', href: '/legal/terms' },
+    { label: 'Mentions legales', href: '/legal/mentions' },
     { label: 'Confidentialite', href: '/legal/privacy' },
-    { label: 'Mentions legales', href: '/legal' },
+    { label: 'CGV', href: '/legal/cgv' },
+    { label: 'CGU', href: '/legal/terms' },
     { label: 'Cookies', href: '/legal/cookies' },
   ],
 }

@@ -13,6 +13,10 @@ const PUBLIC_ROUTES = [
   "/privacy",
   "/terms",
   "/signup",
+  "/mentions-legales",
+  "/politique-confidentialite",
+  "/cgv",
+  "/cgu",
 ];
 
 const PUBLIC_PREFIXES = [

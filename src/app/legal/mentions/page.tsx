@@ -42,13 +42,14 @@ export default function MentionsLegalesPage() {
               <p>Societe par actions simplifiee unipersonnelle</p>
               <p>Capital social : 1,00 euro</p>
               <p>Siege social : 8 Rue de la Chapelle, 25560 Frasne, France</p>
+              <p>SIRET : en cours d&apos;immatriculation</p>
               <p>RCS : en cours d&apos;immatriculation</p>
               <p>TVA non applicable — Article 293B du Code General des Impots</p>
             </div>
           </Section>
 
           <Section title="2. Directeur de la publication">
-            <p>Matiss Frasne, en qualite de President de PURAMA SASU.</p>
+            <p>Matiss Dornier, en qualite de President de PURAMA SASU.</p>
             <p>Contact : matiss.frasne@gmail.com</p>
           </Section>
 
