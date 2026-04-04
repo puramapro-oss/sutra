@@ -80,11 +80,11 @@ export function useAuth() {
   )
 
   const signUp = useCallback(
-    async (email: string, password: string, name: string) => {
+    async (email: string, password: string, name: string, referralCode?: string) => {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { full_name: name, name } },
+        options: { data: { full_name: name, name, referral_code: referralCode ?? null } },
       })
       if (error) throw error
     },

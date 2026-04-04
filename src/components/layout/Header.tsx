@@ -58,7 +58,7 @@ export default function Header({ onMenuToggle }: HeaderProps) {
   const handleSignOut = async () => {
     setDropdownOpen(false)
     await signOut()
-    router.push('/login')
+    window.location.href = '/login'
   }
 
   const displayName = profile?.name ?? user?.email?.split('@')[0] ?? 'Utilisateur'

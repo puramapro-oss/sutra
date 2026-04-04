@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { Suspense, useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import { toast } from 'sonner'
@@ -29,7 +30,25 @@ function getPasswordStrength(password: string): {
 }
 
 export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupContent />
+    </Suspense>
+  )
+}
+
+function SignupContent() {
   const { signUp, signInWithGoogle } = useAuth()
+  const searchParams = useSearchParams()
+  const refCode = searchParams.get('ref') ?? ''
+
+  // Store referral code in localStorage for post-signup processing
+  useEffect(() => {
+    if (refCode) {
+      localStorage.setItem('sutra-referral-code', refCode)
+    }
+  }, [refCode])
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -73,8 +92,10 @@ export default function SignupPage() {
 
     setLoading(true)
     try {
-      await signUp(email, password, name)
+      const storedRef = localStorage.getItem('sutra-referral-code') ?? refCode
+      await signUp(email, password, name, storedRef || undefined)
       setSuccess(true)
+      localStorage.removeItem('sutra-referral-code')
       toast.success('Compte cree avec succes !')
     } catch (err: unknown) {
       const message =
