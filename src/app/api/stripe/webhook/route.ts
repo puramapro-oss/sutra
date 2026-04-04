@@ -60,37 +60,57 @@ export async function POST(req: Request) {
         })
 
         if (referralCode && referralCode.length > 0) {
-          const { data: referralCodeRow } = await serviceClient
-            .from('referral_codes')
-            .select('id, user_id')
-            .eq('code', referralCode)
-            .eq('is_active', true)
+          const { data: referrer } = await serviceClient
+            .from('profiles')
+            .select('id')
+            .eq('referral_code', referralCode)
             .single()
 
-          if (referralCodeRow && referralCodeRow.user_id !== userId) {
+          if (referrer && referrer.id !== userId) {
             await serviceClient.from('referrals').insert({
-              referrer_id: referralCodeRow.user_id,
+              referrer_id: referrer.id,
               referred_id: userId,
-              referral_code_id: referralCodeRow.id,
+              referral_code: referralCode,
               status: 'active',
-              referred_subscription_id: session.subscription as string,
-              first_payment_processed: false,
             })
 
             const commissionAmount = (session.amount_total ?? 0) * 0.5
             await serviceClient.from('referral_commissions').insert({
-              referral_id: referralCodeRow.id,
-              beneficiary_id: referralCodeRow.user_id,
+              referrer_id: referrer.id,
+              referred_id: userId,
+              beneficiary_id: referrer.id,
               type: 'first_payment_50pct',
-              amount: commissionAmount,
-              source_payment_amount: session.amount_total ?? 0,
+              amount: commissionAmount / 100,
               status: 'pending',
             })
 
-            await sendNotification(referralCodeRow.user_id, {
+            // Credit wallet
+            const { data: wallet } = await serviceClient
+              .from('wallets')
+              .select('balance, total_earned')
+              .eq('user_id', referrer.id)
+              .single()
+
+            if (wallet) {
+              await serviceClient.from('wallets').update({
+                balance: (wallet.balance ?? 0) + commissionAmount / 100,
+                total_earned: (wallet.total_earned ?? 0) + commissionAmount / 100,
+              }).eq('user_id', referrer.id)
+            }
+
+            // Record wallet transaction
+            await serviceClient.from('wallet_transactions').insert({
+              user_id: referrer.id,
+              type: 'credit',
+              amount: commissionAmount / 100,
+              source: 'referral',
+              description: `Commission 50% premier paiement plan ${plan}`,
+            })
+
+            await sendNotification(referrer.id, {
               type: 'referral',
               title: 'Nouveau filleul !',
-              message: `Un nouveau filleul a souscrit au plan ${plan}. Commission de ${(commissionAmount / 100).toFixed(2)} EUR en attente.`,
+              message: `Un nouveau filleul a souscrit au plan ${plan}. Commission de ${(commissionAmount / 100).toFixed(2)} EUR creditee.`,
             })
           }
         }
@@ -151,14 +171,36 @@ export async function POST(req: Request) {
 
           if (referrals && referrals.length > 0) {
             for (const referral of referrals) {
-              const recurringAmount = invoice.amount_paid * 0.1
+              const recurringAmount = (invoice.amount_paid * 0.1) / 100
               await serviceClient.from('referral_commissions').insert({
-                referral_id: referral.id,
+                referrer_id: referral.referrer_id,
+                referred_id: profile.id,
                 beneficiary_id: referral.referrer_id,
                 type: 'recurring_10pct',
                 amount: recurringAmount,
-                source_payment_amount: invoice.amount_paid,
                 status: 'pending',
+              })
+
+              // Credit wallet
+              const { data: w } = await serviceClient
+                .from('wallets')
+                .select('balance, total_earned')
+                .eq('user_id', referral.referrer_id)
+                .single()
+
+              if (w) {
+                await serviceClient.from('wallets').update({
+                  balance: (w.balance ?? 0) + recurringAmount,
+                  total_earned: (w.total_earned ?? 0) + recurringAmount,
+                }).eq('user_id', referral.referrer_id)
+              }
+
+              await serviceClient.from('wallet_transactions').insert({
+                user_id: referral.referrer_id,
+                type: 'credit',
+                amount: recurringAmount,
+                source: 'referral',
+                description: 'Commission recurrente 10%',
               })
             }
           }
