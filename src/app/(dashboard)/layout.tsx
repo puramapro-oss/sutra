@@ -12,6 +12,11 @@ const CosmicParticlesWrapper = dynamic(
   { ssr: false }
 )
 
+const TutorialOverlay = dynamic(
+  () => import('@/components/shared/TutorialOverlay'),
+  { ssr: false }
+)
+
 export default function DashboardLayout({
   children,
 }: {
@@ -69,6 +74,9 @@ export default function DashboardLayout({
 
       {/* Mobile bottom nav */}
       <MobileNav />
+
+      {/* Tutorial overlay - first login only */}
+      <TutorialOverlay />
     </div>
   )
 }

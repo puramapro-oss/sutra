@@ -30,6 +30,7 @@ export interface Profile {
   theme_mode: 'dark' | 'light'
   email_preferences: EmailPreferences
   onboarding_completed: boolean
+  tutorial_completed: boolean
   monthly_video_count: number
   created_at: string
   updated_at: string

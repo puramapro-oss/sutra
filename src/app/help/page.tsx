@@ -505,13 +505,21 @@ export default function HelpPage() {
             })}
           </div>
 
-          <div className="text-center mt-8">
+          <div className="text-center mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/signup"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold transition-colors active:scale-[0.97]"
             >
               Commencer maintenant
               <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/guide"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 text-sm font-medium transition-colors"
+              data-testid="help-guide-link"
+            >
+              <BookOpen className="w-4 h-4" />
+              Guide interactif complet
             </Link>
           </div>
         </div>

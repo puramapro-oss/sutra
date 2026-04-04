@@ -20,6 +20,7 @@ import {
   Crown,
   ChevronLeft,
   ChevronRight,
+  BookOpen,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -93,6 +94,12 @@ const mainNav: NavItem[] = [
     href: '/settings',
     icon: Settings,
     testId: 'sidebar-settings',
+  },
+  {
+    label: 'Guide',
+    href: '/guide',
+    icon: BookOpen,
+    testId: 'sidebar-guide',
   },
 ]
 
