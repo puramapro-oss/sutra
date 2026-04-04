@@ -1,0 +1,27 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/contest-weekly",
+      "schedule": "0 12 * * 1"
+    },
+    {
+      "path": "/api/cron/contest-monthly",
+      "schedule": "0 12 1 * *"
+    },
+    {
+      "path": "/api/cron/contest-judge",
+      "schedule": "59 23 28-31 * *"
+    }
+  ],
+  "functions": {
+    "src/app/api/cron/contest-judge/route.ts": {
+      "maxDuration": 120
+    },
+    "src/app/api/cron/contest-weekly/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/cron/contest-monthly/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}

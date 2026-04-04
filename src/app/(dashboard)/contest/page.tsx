@@ -80,6 +80,8 @@ export default function ContestPage() {
   const [videos, setVideos] = useState<VideoType[]>([])
   const [expandedContest, setExpandedContest] = useState<string | null>(null)
 
+  const [userEntries, setUserEntries] = useState(0)
+
   // Submission form
   const [selectedVideoId, setSelectedVideoId] = useState('')
   const [submissionTitle, setSubmissionTitle] = useState('')
@@ -124,6 +126,13 @@ export default function ContestPage() {
       if (pastRes.data) setPastContests(pastRes.data as Contest[])
       if (videosRes.data) setVideos(videosRes.data as VideoType[])
       if (submissionRes.data && submissionRes.data.length > 0) setHasSubmitted(true)
+
+      // Fetch user entries count separately (5th promise result)
+      const entriesRes = await supabase
+        .from('contest_entries')
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', profile.id)
+      setUserEntries(entriesRes.count ?? 1)
 
     } catch {
       // Keep defaults
@@ -280,8 +289,22 @@ export default function ContestPage() {
               </div>
             </div>
 
-            <p className="text-xs text-white/30 text-center mt-3">
-              {activeContest.total_submissions} participant{activeContest.total_submissions !== 1 ? 's' : ''}
+            {/* User entries count */}
+            <div className="mt-4 flex items-center justify-center gap-6">
+              <div className="text-center">
+                <p className="text-lg font-bold text-violet-400 font-mono">
+                  <AnimatedCounter value={userEntries} className="" />
+                </p>
+                <p className="text-[10px] text-white/30">Tes places</p>
+              </div>
+              <div className="w-px h-8 bg-white/[0.06]" />
+              <div className="text-center">
+                <p className="text-lg font-bold text-white/60 font-mono">{activeContest.total_submissions}</p>
+                <p className="text-[10px] text-white/30">Participants</p>
+              </div>
+            </div>
+            <p className="text-[10px] text-white/20 text-center mt-2">
+              +1 place par inscription, +1 par parrainage
             </p>
           </CardContent>
         </Card>
