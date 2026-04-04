@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Crown, Shield, BarChart3, Users, DollarSign, Activity, Heart, Settings, Trophy } from 'lucide-react'
+import { Crown, Shield, BarChart3, Users, DollarSign, Activity, Heart, Settings, Trophy, Wallet, Award } from 'lucide-react'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
@@ -17,6 +17,8 @@ const adminNavItems = [
   { href: '/admin/health', label: 'Services Health', icon: Heart, id: 'health' },
   { href: '/admin/config', label: 'Configuration', icon: Settings, id: 'config' },
   { href: '/admin/contest', label: 'Concours', icon: Trophy, id: 'contest' },
+  { href: '/admin/withdrawals', label: 'Retraits', icon: Wallet, id: 'withdrawals' },
+  { href: '/admin/classement', label: 'Classement', icon: Award, id: 'classement' },
 ]
 
 export default function AdminLayout({

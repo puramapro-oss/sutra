@@ -183,6 +183,7 @@ test.describe('Dashboard Pages - Redirect or Load', () => {
     '/contest',
     '/wallet',
     '/classement',
+    '/admin',
   ]
 
   for (const path of dashboardPages) {

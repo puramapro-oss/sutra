@@ -17,6 +17,7 @@ const PUBLIC_ROUTES = [
   "/politique-confidentialite",
   "/cgv",
   "/cgu",
+  "/aide",
 ];
 
 const PUBLIC_PREFIXES = [

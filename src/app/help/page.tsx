@@ -102,6 +102,30 @@ const faqs: FAQItem[] = [
     answer:
       "L'Autopilot te permet de creer des series de videos automatiques. Tu definis un theme, une frequence de publication, et SUTRA genere et publie automatiquement tes videos selon ton calendrier. Ideal pour maintenir une presence constante sans effort. Disponible a partir du plan Createur (1 serie) et Empire (5 series).",
   },
+  {
+    category: 'abonnement',
+    question: 'Comment fonctionne le wallet et les retraits ?',
+    answer:
+      "Tes gains de parrainage et de concours sont credites automatiquement sur ton wallet SUTRA. Tu peux retirer tes gains a partir de 5 EUR par virement bancaire (IBAN). Les retraits sont traites sous 48 heures ouvrees. Tu consultes ton solde et l'historique complet depuis la page Wallet.",
+  },
+  {
+    category: 'general',
+    question: 'Quels formats de video sont disponibles ?',
+    answer:
+      "SUTRA propose 3 formats : 16:9 (horizontal, ideal pour YouTube), 9:16 (vertical, parfait pour TikTok et Reels Instagram), et 1:1 (carre, pour les fils LinkedIn et Facebook). Tu choisis le format avant la generation, et notre IA adapte automatiquement le cadrage et les sous-titres.",
+  },
+  {
+    category: 'creation',
+    question: 'Puis-je utiliser mes propres images ou videos ?',
+    answer:
+      "Pour le moment, SUTRA genere tous les visuels par IA ou utilise des stocks HD (Pexels). L'import d'images personnalisees sera disponible prochainement. Tu peux cependant influencer le style visuel via le prompt, le choix de niche et les preferences de ton profil.",
+  },
+  {
+    category: 'technique',
+    question: 'Comment participer aux concours et au classement ?',
+    answer:
+      "Chaque utilisateur inscrit recoit automatiquement des places pour le tirage au sort hebdomadaire et mensuel. Plus tu parraines, plus tu as de places. Pour le classement mensuel Purama Impact, tu soumets ta meilleure video creee sur SUTRA. Notre IA l'evalue sur 5 criteres (Amour, Impact, Creativite, Qualite, Inspiration) et le top 10 se partage 3% du CA du mois.",
+  },
 ]
 
 const categories = [
@@ -489,6 +513,86 @@ export default function HelpPage() {
               Commencer maintenant
               <ArrowRight className="w-4 h-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Detailed guides */}
+      <section className="relative py-16 sm:py-20 border-t border-white/[0.04]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-16">
+          <div className="text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3" style={{ fontFamily: 'var(--font-orbitron)' }}>
+              Guides complets
+            </h2>
+            <p className="text-white/50">Tout ce que tu dois savoir pour maitriser SUTRA</p>
+          </div>
+
+          {/* Guide 1: Créer ta première vidéo */}
+          <div id="guide-premiere-video" className="space-y-4 scroll-mt-24">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
+                <Video className="h-5 w-5 text-violet-400" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Creer ta premiere video</h3>
+            </div>
+            <div className="space-y-3 text-sm text-white/60 leading-relaxed">
+              <p><strong className="text-white/80">Etape 1 — Choisis ton sujet.</strong> Depuis le dashboard, clique sur &quot;Creer une video&quot;. Decris ton sujet en une ou deux phrases. Par exemple : &quot;5 astuces pour mieux dormir&quot; ou &quot;Les tendances mode ete 2026&quot;. Plus tu es precis, meilleur sera le resultat.</p>
+              <p><strong className="text-white/80">Etape 2 — Configure les options.</strong> Choisis le format (16:9 pour YouTube, 9:16 pour TikTok), la qualite (selon ton plan), et la voix. Tu peux ecouter un apercu de chaque voix avant de choisir.</p>
+              <p><strong className="text-white/80">Etape 3 — Genere.</strong> Clique sur &quot;Generer&quot;. Notre pipeline IA travaille en 5 etapes : script, voix, visuels, musique, montage. Tu suis la progression en temps reel. La generation prend 3 a 8 minutes.</p>
+              <p><strong className="text-white/80">Etape 4 — Revise et publie.</strong> Une fois ta video prete, tu peux la previsualiser, la telecharger, ou la publier directement depuis SUTRA. Avec le plan Creator+, tu accedes a SUTRA Studio pour modifier chaque element.</p>
+            </div>
+          </div>
+
+          {/* Guide 2: Styles de vidéos */}
+          <div id="guide-styles" className="space-y-4 scroll-mt-24">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                <Palette className="h-5 w-5 text-cyan-400" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Les styles de videos disponibles</h3>
+            </div>
+            <div className="space-y-3 text-sm text-white/60 leading-relaxed">
+              <p><strong className="text-white/80">Cinematique.</strong> Style narratif inspiré des documentaires Netflix. Visuels immersifs, musique orchestrale, narration posée. Parfait pour les sujets sérieux, historiques ou inspirants.</p>
+              <p><strong className="text-white/80">Dynamique.</strong> Rythme rapide, transitions percutantes, musique énergique. Idéal pour TikTok, les tops 5/10, et les sujets tendance.</p>
+              <p><strong className="text-white/80">Educatif.</strong> Structure claire avec introduction, points clés et conclusion. Graphiques et schémas animés. Parfait pour les tutoriels et les explications.</p>
+              <p><strong className="text-white/80">Motivationnel.</strong> Visuels inspirants, musique épique, narration puissante. Pour les contenus développement personnel et motivation.</p>
+              <p><strong className="text-white/80">Lo-fi / Chill.</strong> Ambiance relaxante, visuels doux, musique lo-fi. Pour les contenus lifestyle, bien-être et méditation.</p>
+              <p><strong className="text-white/80">Corporate.</strong> Ton professionnel, visuels sobres, structure business. Pour les présentations, pitchs et contenus B2B.</p>
+            </div>
+          </div>
+
+          {/* Guide 3: Publier et partager */}
+          <div id="guide-publier" className="space-y-4 scroll-mt-24">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                <Send className="h-5 w-5 text-emerald-400" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Publier et partager</h3>
+            </div>
+            <div className="space-y-3 text-sm text-white/60 leading-relaxed">
+              <p><strong className="text-white/80">Telecharger.</strong> Depuis ta bibliotheque, clique sur une video puis &quot;Telecharger&quot;. Tu obtiens un fichier MP4 haute qualite que tu peux utiliser partout.</p>
+              <p><strong className="text-white/80">Publier directement.</strong> Avec la fonction Publier (plan Creator+), connecte tes comptes YouTube, TikTok et Instagram. SUTRA publie ta video en un clic avec le titre, la description et les hashtags optimises par IA.</p>
+              <p><strong className="text-white/80">Planifier.</strong> Programme tes publications a l&apos;avance. Choisis la date et l&apos;heure, et SUTRA publie automatiquement au moment optimal. L&apos;Autopilot (plan Empire) planifie et genere des series entieres.</p>
+              <p><strong className="text-white/80">Partager.</strong> Chaque video a un lien de partage unique. Tu peux aussi exporter le script, les sous-titres (SRT), ou le storyboard separement.</p>
+            </div>
+          </div>
+
+          {/* Guide 4: Parrainage & Wallet */}
+          <div id="guide-parrainage" className="space-y-4 scroll-mt-24">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                <Users className="h-5 w-5 text-amber-400" />
+              </div>
+              <h3 className="text-lg font-bold text-white">Parrainage et Wallet</h3>
+            </div>
+            <div className="space-y-3 text-sm text-white/60 leading-relaxed">
+              <p><strong className="text-white/80">Ton code de parrainage.</strong> Chaque compte SUTRA recoit un code unique (format SUTRA-XXXXX). Tu le trouves dans la page Parrainage. Partage-le ou utilise ton lien personnalise.</p>
+              <p><strong className="text-white/80">Avantages filleul.</strong> Ton filleul obtient -50% sur son premier mois d&apos;abonnement payant. Le code s&apos;applique automatiquement a l&apos;inscription.</p>
+              <p><strong className="text-white/80">Tes commissions.</strong> Tu recois 50% du premier paiement de chaque filleul + 10% recurrent chaque mois tant qu&apos;il est abonne. Tous les 10 filleuls, tu debloques un bonus de 30%.</p>
+              <p><strong className="text-white/80">Paliers.</strong> 6 niveaux de parrainage : Bronze (5 filleuls), Argent (10), Or (25), Platine (50), Diamant (75), Legende (100). Chaque palier debloque des avantages supplementaires.</p>
+              <p><strong className="text-white/80">Wallet et retrait.</strong> Tous tes gains (parrainage + concours) sont credites sur ton wallet SUTRA. Tu peux retirer a partir de 5 EUR par virement bancaire IBAN. Les retraits sont traites sous 48h.</p>
+              <p><strong className="text-white/80">Places concours.</strong> Chaque inscription te donne 1 place pour les tirages au sort. Chaque parrainage donne +1 place au parrain ET au filleul. Plus tu parraines, plus tu as de chances de gagner.</p>
+            </div>
           </div>
         </div>
       </section>
