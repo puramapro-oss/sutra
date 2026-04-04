@@ -3,14 +3,14 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { LayoutDashboard, Plus, Film, Share2, User } from 'lucide-react'
+import { LayoutDashboard, Plus, Film, Trophy, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const items = [
   { label: 'Accueil', href: '/dashboard', icon: LayoutDashboard, testId: 'mobile-dashboard' },
   { label: 'Creer', href: '/create', icon: Plus, testId: 'mobile-create' },
   { label: 'Videos', href: '/library', icon: Film, testId: 'mobile-library' },
-  { label: 'Publier', href: '/publish', icon: Share2, testId: 'mobile-publish' },
+  { label: 'Concours', href: '/contest', icon: Trophy, testId: 'mobile-contest' },
   { label: 'Profil', href: '/profile', icon: User, testId: 'mobile-profile' },
 ]
 
