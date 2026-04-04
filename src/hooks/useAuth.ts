@@ -38,7 +38,16 @@ export function useAuth() {
     if (loadedRef.current) return
     loadedRef.current = true
 
-    // 1. Get initial session
+    // 1. Get initial session (skip if user manually signed out)
+    const wasSignedOut = (() => {
+      try { return sessionStorage.getItem('sutra_signed_out') === 'true' } catch { return false }
+    })()
+
+    if (wasSignedOut) {
+      setLoading(false)
+      return
+    }
+
     supabase.auth.getSession().then(async ({ data: { session: s } }) => {
       setSession(s)
       setUser(s?.user ?? null)
@@ -100,7 +109,32 @@ export function useAuth() {
   }, [])
 
   const signOut = useCallback(async () => {
+    // 1. Sign out from Supabase
     await supabase.auth.signOut()
+
+    // 2. Clear ALL localStorage
+    try {
+      localStorage.clear()
+    } catch {
+      // SSR guard
+    }
+
+    // 3. Clear ALL Supabase session cookies
+    document.cookie.split(';').forEach((c) => {
+      const name = c.trim().split('=')[0]
+      if (name) {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`
+      }
+    })
+
+    // 4. Mark as manually signed out to prevent auto-reconnect
+    try {
+      sessionStorage.setItem('sutra_signed_out', 'true')
+    } catch {
+      // SSR guard
+    }
+
     setUser(null)
     setProfile(null)
     setSession(null)

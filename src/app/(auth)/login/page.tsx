@@ -20,6 +20,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
+  const [rememberMe, setRememberMe] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('sutra_remember_me') === 'true'
+    }
+    return false
+  })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,7 +46,22 @@ export default function LoginPage() {
 
     setLoading(true)
     try {
+      // Store remember me preference
+      localStorage.setItem('sutra_remember_me', String(rememberMe))
+      // Remove signed-out flag
+      sessionStorage.removeItem('sutra_signed_out')
+
       await signIn(email, password)
+
+      // Set session persistence cookie
+      if (rememberMe) {
+        const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString()
+        document.cookie = `sutra_persist=true;expires=${expires};path=/;SameSite=Lax`
+      } else {
+        // Session cookie — expires when browser closes
+        document.cookie = 'sutra_persist=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
+      }
+
       toast.success('Connexion reussie')
       router.push('/dashboard')
     } catch (err: unknown) {
@@ -61,6 +82,17 @@ export default function LoginPage() {
   const handleGoogle = async () => {
     setGoogleLoading(true)
     try {
+      // Store remember me preference before redirect
+      localStorage.setItem('sutra_remember_me', String(rememberMe))
+      sessionStorage.removeItem('sutra_signed_out')
+
+      if (rememberMe) {
+        const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString()
+        document.cookie = `sutra_persist=true;expires=${expires};path=/;SameSite=Lax`
+      } else {
+        document.cookie = 'sutra_persist=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
+      }
+
       await signInWithGoogle()
     } catch {
       toast.error('Erreur de connexion Google')
@@ -178,7 +210,22 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="remember-me"
+                className="flex items-center gap-2 cursor-pointer select-none"
+                data-testid="remember-me-label"
+              >
+                <input
+                  id="remember-me"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  data-testid="remember-me-checkbox"
+                  className="w-4 h-4 rounded border-white/20 bg-white/5 text-violet-500 focus:ring-violet-500/30 focus:ring-offset-0 cursor-pointer accent-violet-500"
+                />
+                <span className="text-xs text-white/50">Rester connecte</span>
+              </label>
               <Link
                 href="/forgot-password"
                 className="text-xs text-violet-400 hover:text-violet-300 transition-colors"
