@@ -19,14 +19,18 @@ export async function GET(request: Request) {
     const now = new Date()
     const weekAgo = new Date(now.getTime() - 7 * 86400000)
 
-    const charges = await stripe.charges.list({
-      created: { gte: Math.floor(weekAgo.getTime() / 1000) },
-      limit: 100,
-    })
-
-    const weeklyRevenue = charges.data
-      .filter((c) => c.status === 'succeeded')
-      .reduce((sum, c) => sum + c.amount, 0) / 100
+    let weeklyRevenue = 0
+    try {
+      const charges = await stripe.charges.list({
+        created: { gte: Math.floor(weekAgo.getTime() / 1000) },
+        limit: 100,
+      })
+      weeklyRevenue = charges.data
+        .filter((c) => c.status === 'succeeded')
+        .reduce((sum, c) => sum + c.amount, 0) / 100
+    } catch {
+      // Stripe unreachable — continue with 0 revenue
+    }
 
     // 2. Close previous weekly contest and pick winner
     const { data: prevContest } = await supabase

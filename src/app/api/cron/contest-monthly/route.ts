@@ -20,14 +20,18 @@ export async function GET(request: Request) {
     const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, 1)
 
     // 1. Get Stripe revenue for past month
-    const charges = await stripe.charges.list({
-      created: { gte: Math.floor(monthAgo.getTime() / 1000) },
-      limit: 100,
-    })
-
-    const monthlyRevenue = charges.data
-      .filter((c) => c.status === 'succeeded')
-      .reduce((sum, c) => sum + c.amount, 0) / 100
+    let monthlyRevenue = 0
+    try {
+      const charges = await stripe.charges.list({
+        created: { gte: Math.floor(monthAgo.getTime() / 1000) },
+        limit: 100,
+      })
+      monthlyRevenue = charges.data
+        .filter((c) => c.status === 'succeeded')
+        .reduce((sum, c) => sum + c.amount, 0) / 100
+    } catch {
+      // Stripe unreachable — continue with 0 revenue
+    }
 
     // 2. Close previous monthly contest
     const { data: prevContest } = await supabase

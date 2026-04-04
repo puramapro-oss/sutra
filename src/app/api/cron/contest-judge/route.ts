@@ -120,14 +120,18 @@ Sois juste, rigoureux et exigeant. Note sur le potentiel creatif et emotionnel, 
 
     // 5. Calculate prize pool from monthly Stripe revenue
     const monthStart = new Date(contest.period_start)
-    const charges = await stripe.charges.list({
-      created: { gte: Math.floor(monthStart.getTime() / 1000) },
-      limit: 100,
-    })
-
-    const monthlyRevenue = charges.data
-      .filter((c) => c.status === 'succeeded')
-      .reduce((sum, c) => sum + c.amount, 0) / 100
+    let monthlyRevenue = 0
+    try {
+      const charges = await stripe.charges.list({
+        created: { gte: Math.floor(monthStart.getTime() / 1000) },
+        limit: 100,
+      })
+      monthlyRevenue = charges.data
+        .filter((c) => c.status === 'succeeded')
+        .reduce((sum, c) => sum + c.amount, 0) / 100
+    } catch {
+      // Stripe unreachable
+    }
 
     const totalPool = monthlyRevenue * JUDGE_POOL_PCT + (contest.carried_over_amount ?? 0)
 
