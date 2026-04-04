@@ -14,6 +14,8 @@ import {
   Copy,
   Users,
   Trophy,
+  Wallet,
+  BarChart3,
   Settings,
   Crown,
   ChevronLeft,
@@ -73,6 +75,18 @@ const mainNav: NavItem[] = [
     href: '/contest',
     icon: Trophy,
     testId: 'sidebar-contest',
+  },
+  {
+    label: 'Classement',
+    href: '/classement',
+    icon: BarChart3,
+    testId: 'sidebar-classement',
+  },
+  {
+    label: 'Wallet',
+    href: '/wallet',
+    icon: Wallet,
+    testId: 'sidebar-wallet',
   },
   {
     label: 'Parametres',

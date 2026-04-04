@@ -181,6 +181,8 @@ test.describe('Dashboard Pages - Redirect or Load', () => {
     '/notifications',
     '/referral',
     '/contest',
+    '/wallet',
+    '/classement',
   ]
 
   for (const path of dashboardPages) {
