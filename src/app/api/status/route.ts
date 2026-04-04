@@ -50,6 +50,8 @@ export async function GET() {
 
     return NextResponse.json({
       status: anyDown ? 'partial_outage' : allOperational ? 'ok' : 'degraded',
+      app: 'SUTRA',
+      version: '1.0.0',
       services,
       timestamp: new Date().toISOString(),
     })

@@ -1,10 +1,17 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, Page } from '@playwright/test'
 
 const BASE = 'https://sutra.purama.dev'
+
+async function dismissCookieBanner(page: Page) {
+  // Set consent in localStorage to prevent banner from appearing
+  await page.evaluate(() => localStorage.setItem('sutra-cookie-consent', JSON.stringify({ essential: true, analytics: false, marketing: false })))
+  await page.reload()
+}
 
 test.describe('Auth session security', () => {
   test('login page shows remember-me checkbox', async ({ page }) => {
     await page.goto(`${BASE}/login`)
+    await dismissCookieBanner(page)
     const checkbox = page.locator('[data-testid="remember-me-checkbox"]')
     await expect(checkbox).toBeVisible()
     // Default: unchecked
@@ -13,6 +20,7 @@ test.describe('Auth session security', () => {
 
   test('remember-me checkbox can be toggled', async ({ page }) => {
     await page.goto(`${BASE}/login`)
+    await dismissCookieBanner(page)
     const checkbox = page.locator('[data-testid="remember-me-checkbox"]')
     await expect(checkbox).not.toBeChecked()
     await checkbox.click()
@@ -31,10 +39,7 @@ test.describe('Auth session security', () => {
   })
 
   test('after signout, user lands on /login and is not auto-reconnected', async ({ page }) => {
-    // Go to login page
     await page.goto(`${BASE}/login`)
-
-    // Verify we are on the login page
     await expect(page.locator('[data-testid="login-button"]')).toBeVisible()
 
     // Simulate: set the signed_out flag (as signOut does)
@@ -46,12 +51,18 @@ test.describe('Auth session security', () => {
     // Reload: should stay on login, not redirect to dashboard
     await page.goto(`${BASE}/login`)
     await expect(page.locator('[data-testid="login-button"]')).toBeVisible()
-    // Verify we're still on login
     expect(page.url()).toContain('/login')
   })
 
   test('remember-me label text is visible', async ({ page }) => {
     await page.goto(`${BASE}/login`)
+    await dismissCookieBanner(page)
     await expect(page.locator('[data-testid="remember-me-label"]')).toContainText('Rester connecte')
+  })
+
+  test('cookie banner appears on first visit', async ({ page }) => {
+    await page.goto(`${BASE}/login`)
+    const banner = page.locator('button:has-text("Accepter tout")')
+    await expect(banner).toBeVisible({ timeout: 5000 })
   })
 })

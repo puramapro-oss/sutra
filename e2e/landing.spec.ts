@@ -41,7 +41,10 @@ test.describe('Auth Pages', () => {
   })
 
   test('07 — login with wrong credentials shows error', async ({ page }) => {
+    // Pre-set cookie consent to prevent banner overlay
     await page.goto('/login')
+    await page.evaluate(() => localStorage.setItem('sutra-cookie-consent', JSON.stringify({ essential: true, analytics: false, marketing: false })))
+    await page.reload()
     const emailInput = page.getByTestId('email-input').or(page.locator('input[type="email"]').first())
     const passInput = page.getByTestId('password-input').or(page.locator('input[type="password"]').first())
     await emailInput.fill('fake@test.com')

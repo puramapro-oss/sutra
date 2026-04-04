@@ -3,6 +3,7 @@ import { Orbitron, Exo_2 } from "next/font/google";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import CookieBanner from "@/components/shared/CookieBanner";
 import "./globals.css";
 
 const orbitron = Orbitron({
@@ -131,6 +132,7 @@ export default function RootLayout({
           richColors
           closeButton
         />
+        <CookieBanner />
         <Analytics />
         <SpeedInsights />
       </body>

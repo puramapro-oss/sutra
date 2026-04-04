@@ -113,6 +113,10 @@ test.describe('Auth Pages - No Dead Buttons', () => {
     const submitBtn = page.locator('button[type="submit"]').first()
     await expect(submitBtn).toBeVisible()
 
+    // Dismiss cookie banner by setting localStorage consent
+    await page.evaluate(() => localStorage.setItem('sutra-cookie-consent', JSON.stringify({ essential: true, analytics: false, marketing: false })))
+    await page.reload()
+
     // "Inscris-toi" link must point to /signup
     const signupLink = page.locator('a[href="/signup"]')
     await expect(signupLink).toBeVisible()
