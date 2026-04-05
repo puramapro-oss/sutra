@@ -18,13 +18,14 @@ import {
   ArrowRight,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
-import { PLAN_LIMITS, NICHES, VOICE_STYLES } from '@/lib/constants'
+import { PLAN_LIMITS, NICHES, VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { ModeToggle } from '@/components/create/ModeToggle'
 import { PipelineProgress } from '@/components/create/PipelineProgress'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import type { Plan, PipelineStep, VideoFormat, VideoQuality } from '@/types'
+import type { VideoEngine } from '@/lib/ltx'
 
 const FORMAT_OPTIONS: { id: VideoFormat; label: string; icon: React.ReactNode; desc: string }[] = [
   { id: '16:9', label: '16:9', icon: <Monitor className="h-5 w-5" />, desc: 'YouTube, Desktop' },
@@ -61,15 +62,18 @@ const NICHE_LABELS: Record<string, string> = {
   business: 'Business',
 }
 
-const PIPELINE_STEPS: PipelineStep[] = [
-  { id: 'script', label: 'Script genere par Claude', status: 'pending' },
-  { id: 'narration', label: 'Narration voix — ElevenLabs', status: 'pending' },
-  { id: 'music', label: 'Musique de fond — Suno', status: 'pending' },
-  { id: 'scenes', label: 'Scenes video IA — WAN 2.2', status: 'pending' },
-  { id: 'stock', label: 'Videos stock — Pexels', status: 'pending' },
-  { id: 'assembly', label: 'Assemblage final — Shotstack', status: 'pending' },
-  { id: 'thumbnail', label: 'Miniature', status: 'pending' },
-]
+function getPipelineSteps(engine: VideoEngine): PipelineStep[] {
+  const engineLabel = engine === 'ltx-pro' ? 'LTX 2.3 Pro' : engine === 'ltx-fast' ? 'LTX 2.3 Fast' : 'WAN 2.2'
+  return [
+    { id: 'script', label: 'Script genere par Claude', status: 'pending' },
+    { id: 'narration', label: 'Narration voix — ElevenLabs', status: 'pending' },
+    { id: 'music', label: 'Musique de fond — Suno', status: 'pending' },
+    { id: 'scenes', label: `Scenes video IA — ${engineLabel}`, status: 'pending' },
+    { id: 'stock', label: 'Videos stock — Pexels', status: 'pending' },
+    { id: 'assembly', label: 'Assemblage final — Shotstack', status: 'pending' },
+    { id: 'thumbnail', label: 'Miniature', status: 'pending' },
+  ]
+}
 
 // Manual mode wizard step count
 const MANUAL_STEPS = ['sujet', 'script', 'medias', 'options', 'confirmation'] as const
@@ -85,6 +89,7 @@ export default function CreatePage() {
   const [niche, setNiche] = useState('')
   const [style, setStyle] = useState('')
   const [voice, setVoice] = useState<string>(VOICE_STYLES[0].id)
+  const [engine, setEngine] = useState<VideoEngine>('wan-classic')
 
   // Manual mode
   const [manualStep, setManualStep] = useState(0)
@@ -92,7 +97,7 @@ export default function CreatePage() {
 
   // Pipeline state
   const [isGenerating, setIsGenerating] = useState(false)
-  const [pipelineSteps, setPipelineSteps] = useState<PipelineStep[]>(PIPELINE_STEPS)
+  const [pipelineSteps, setPipelineSteps] = useState<PipelineStep[]>(getPipelineSteps('wan-classic'))
   const [videoId, setVideoId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -110,6 +115,17 @@ export default function CreatePage() {
     return currentPlanRank >= (planRank[minPlan] ?? 0)
   }
 
+  const isEngineAvailable = (minPlan: Plan): boolean => {
+    return currentPlanRank >= (planRank[minPlan] ?? 0)
+  }
+
+  // Auto-select best available engine on plan change
+  useEffect(() => {
+    if (plan === 'admin') setEngine('ltx-pro')
+    else if (currentPlanRank >= 1) setEngine('ltx-fast')
+    else setEngine('wan-classic')
+  }, [plan, currentPlanRank])
+
   // Cleanup polling on unmount
   useEffect(() => {
     return () => {
@@ -124,7 +140,7 @@ export default function CreatePage() {
 
     setIsGenerating(true)
     setError(null)
-    setPipelineSteps(PIPELINE_STEPS.map((s) => ({ ...s, status: 'pending' as const })))
+    setPipelineSteps(getPipelineSteps(engine).map((s) => ({ ...s, status: 'pending' as const })))
 
     try {
       const response = await fetch('/api/create', {
@@ -134,6 +150,7 @@ export default function CreatePage() {
           topic: topic.trim(),
           format,
           quality,
+          engine,
           niche: niche || undefined,
           style: style || undefined,
           voice,
@@ -159,7 +176,7 @@ export default function CreatePage() {
       setError(message)
       setIsGenerating(false)
     }
-  }, [topic, format, quality, niche, style, voice, mode, script, isOverLimit])
+  }, [topic, format, quality, engine, niche, style, voice, mode, script, isOverLimit])
 
   const pollPipeline = useCallback((vid: string) => {
     const poll = async () => {
@@ -275,7 +292,7 @@ export default function CreatePage() {
                 variant="secondary"
                 size="lg"
                 onClick={() => {
-                  setPipelineSteps(PIPELINE_STEPS.map((s) => ({ ...s, status: 'pending' as const })))
+                  setPipelineSteps(getPipelineSteps(engine).map((s) => ({ ...s, status: 'pending' as const })))
                   setVideoId(null)
                   setTopic('')
                   setError(null)
@@ -309,6 +326,8 @@ export default function CreatePage() {
               setFormat={setFormat}
               quality={quality}
               setQuality={setQuality}
+              engine={engine}
+              setEngine={setEngine}
               niche={niche}
               setNiche={setNiche}
               style={style}
@@ -316,6 +335,7 @@ export default function CreatePage() {
               voice={voice}
               setVoice={setVoice}
               isQualityAvailable={isQualityAvailable}
+              isEngineAvailable={isEngineAvailable}
               isOverLimit={isOverLimit}
               onGenerate={startGeneration}
             />
@@ -330,6 +350,8 @@ export default function CreatePage() {
               setFormat={setFormat}
               quality={quality}
               setQuality={setQuality}
+              engine={engine}
+              setEngine={setEngine}
               niche={niche}
               setNiche={setNiche}
               style={style}
@@ -337,6 +359,7 @@ export default function CreatePage() {
               voice={voice}
               setVoice={setVoice}
               isQualityAvailable={isQualityAvailable}
+              isEngineAvailable={isEngineAvailable}
               isOverLimit={isOverLimit}
               step={manualStep}
               setStep={setManualStep}
@@ -360,6 +383,8 @@ interface AutoFormProps {
   setFormat: (v: VideoFormat) => void
   quality: VideoQuality
   setQuality: (v: VideoQuality) => void
+  engine: VideoEngine
+  setEngine: (v: VideoEngine) => void
   niche: string
   setNiche: (v: string) => void
   style: string
@@ -367,6 +392,7 @@ interface AutoFormProps {
   voice: string
   setVoice: (v: string) => void
   isQualityAvailable: (plan: Plan) => boolean
+  isEngineAvailable: (plan: Plan) => boolean
   isOverLimit: boolean
   onGenerate: () => void
 }
@@ -378,6 +404,8 @@ function AutoForm({
   setFormat,
   quality,
   setQuality,
+  engine,
+  setEngine,
   niche,
   setNiche,
   style,
@@ -385,6 +413,7 @@ function AutoForm({
   voice,
   setVoice,
   isQualityAvailable,
+  isEngineAvailable,
   isOverLimit,
   onGenerate,
 }: AutoFormProps) {
@@ -459,6 +488,33 @@ function AutoForm({
                 {!available && (
                   <span className="text-[10px] text-violet-400">
                     Plan {opt.minPlan}+
+                  </span>
+                )}
+              </OptionCard>
+            )
+          })}
+        </div>
+      </OptionSection>
+
+      {/* Video Engine */}
+      <OptionSection title="Moteur video">
+        <div className="grid grid-cols-3 gap-3">
+          {VIDEO_ENGINES.map((eng) => {
+            const available = isEngineAvailable(eng.minPlan)
+            return (
+              <OptionCard
+                key={eng.id}
+                selected={engine === eng.id}
+                onClick={() => available && setEngine(eng.id as VideoEngine)}
+                disabled={!available}
+                data-testid={`engine-${eng.id}`}
+              >
+                <span className="text-lg">{eng.icon}</span>
+                <span className="text-sm font-semibold">{eng.label}</span>
+                <span className="text-[11px] text-white/40">{eng.description}</span>
+                {!available && (
+                  <span className="text-[10px] text-violet-400">
+                    Plan {eng.minPlan}+
                   </span>
                 )}
               </OptionCard>
@@ -574,6 +630,8 @@ function ManualForm({
   setFormat,
   quality,
   setQuality,
+  engine,
+  setEngine,
   niche,
   setNiche,
   style,
@@ -581,6 +639,7 @@ function ManualForm({
   voice,
   setVoice,
   isQualityAvailable,
+  isEngineAvailable,
   isOverLimit,
   step,
   setStep,
@@ -814,6 +873,30 @@ function ManualForm({
                 </div>
               </OptionSection>
 
+              <OptionSection title="Moteur video">
+                <div className="grid grid-cols-3 gap-3">
+                  {VIDEO_ENGINES.map((eng) => {
+                    const available = isEngineAvailable(eng.minPlan)
+                    return (
+                      <OptionCard
+                        key={eng.id}
+                        selected={engine === eng.id}
+                        onClick={() => available && setEngine(eng.id as VideoEngine)}
+                        disabled={!available}
+                      >
+                        <span className="text-lg">{eng.icon}</span>
+                        <span className="text-sm font-semibold">{eng.label}</span>
+                        {!available && (
+                          <span className="text-[10px] text-violet-400">
+                            Plan {eng.minPlan}+
+                          </span>
+                        )}
+                      </OptionCard>
+                    )
+                  })}
+                </div>
+              </OptionSection>
+
               <OptionSection title="Voix">
                 <select
                   value={voice}
@@ -853,6 +936,7 @@ function ManualForm({
                 />
                 <SummaryRow label="Format" value={format} />
                 <SummaryRow label="Qualite" value={quality} />
+                <SummaryRow label="Moteur" value={VIDEO_ENGINES.find((e) => e.id === engine)?.label ?? engine} />
                 <SummaryRow label="Niche" value={niche ? (NICHE_LABELS[niche] ?? niche) : 'Aucune'} />
                 <SummaryRow
                   label="Voix"

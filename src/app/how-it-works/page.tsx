@@ -18,7 +18,9 @@ export const metadata: Metadata = {
     description:
       'Donne un sujet. Recois une video prete a publier. Decouvre le pipeline IA de SUTRA.',
     url: 'https://sutra.purama.dev/how-it-works',
+    images: [{ url: 'https://sutra.purama.dev/api/og', width: 1200, height: 630 }],
   },
+  twitter: { card: 'summary_large_image' },
   alternates: {
     canonical: 'https://sutra.purama.dev/how-it-works',
   },

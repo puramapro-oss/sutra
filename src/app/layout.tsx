@@ -3,6 +3,8 @@ import { Orbitron, Exo_2 } from "next/font/google";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import CookieBanner from "@/components/shared/CookieBanner";
 import "./globals.css";
 
@@ -104,18 +106,22 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
     <html
-      lang="fr"
+      lang={locale}
       className={`${orbitron.variable} ${exo2.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-dvh flex flex-col bg-[#06050e] text-[#f8fafc]">
+        <NextIntlClientProvider messages={messages}>
         {children}
         <Toaster
           position="top-right"
@@ -133,6 +139,7 @@ export default function RootLayout({
           closeButton
         />
         <CookieBanner />
+        </NextIntlClientProvider>
         <Analytics />
         <SpeedInsights />
       </body>

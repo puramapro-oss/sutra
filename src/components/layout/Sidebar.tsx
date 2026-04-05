@@ -21,6 +21,8 @@ import {
   ChevronLeft,
   ChevronRight,
   BookOpen,
+  Clapperboard,
+  Handshake,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -40,6 +42,7 @@ const mainNav: NavItem[] = [
     testId: 'sidebar-dashboard',
   },
   { label: 'Creer', href: '/create', icon: Plus, testId: 'sidebar-create' },
+  { label: 'Production', href: '/production', icon: Clapperboard, testId: 'sidebar-production' },
   {
     label: 'Bibliotheque',
     href: '/library',
@@ -70,6 +73,12 @@ const mainNav: NavItem[] = [
     href: '/referral',
     icon: Users,
     testId: 'sidebar-referral',
+  },
+  {
+    label: 'Partenariat',
+    href: '/dashboard/partenaire',
+    icon: Handshake,
+    testId: 'sidebar-partner',
   },
   {
     label: 'Concours',

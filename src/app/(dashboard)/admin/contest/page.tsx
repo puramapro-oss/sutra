@@ -96,6 +96,25 @@ export default function AdminContestPage() {
   const [error, setError] = useState<string | null>(null)
   const [judgingId, setJudgingId] = useState<string | null>(null)
   const [confirmingWinners, setConfirmingWinners] = useState(false)
+  const [triggeringDraw, setTriggeringDraw] = useState<string | null>(null)
+
+  const triggerDraw = async (type: 'weekly' | 'monthly') => {
+    setTriggeringDraw(type)
+    try {
+      const res = await fetch(`/api/cron/contest-${type}`)
+      const data = await res.json()
+      if (res.ok) {
+        toast.success(`Tirage ${type === 'weekly' ? 'hebdomadaire' : 'mensuel'} declenche`)
+        fetchData()
+      } else {
+        toast.error(data?.error ?? 'Erreur lors du tirage')
+      }
+    } catch {
+      toast.error('Erreur lors du declenchement')
+    } finally {
+      setTriggeringDraw(null)
+    }
+  }
 
   const fetchData = useCallback(async () => {
     try {
@@ -190,7 +209,29 @@ export default function AdminContestPage() {
 
   return (
     <div className="space-y-6" data-testid="admin-contest-page">
-      <h2 className="text-xl font-bold text-white">Gestion des concours</h2>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <h2 className="text-xl font-bold text-white">Gestion des concours</h2>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => triggerDraw('weekly')}
+            disabled={triggeringDraw !== null}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-medium hover:bg-violet-500/20 transition-colors disabled:opacity-50"
+            data-testid="trigger-weekly-draw"
+          >
+            {triggeringDraw === 'weekly' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
+            Tirage hebdo
+          </button>
+          <button
+            onClick={() => triggerDraw('monthly')}
+            disabled={triggeringDraw !== null}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium hover:bg-amber-500/20 transition-colors disabled:opacity-50"
+            data-testid="trigger-monthly-draw"
+          >
+            {triggeringDraw === 'monthly' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Play className="h-3.5 w-3.5" />}
+            Tirage mensuel
+          </button>
+        </div>
+      </div>
 
       {/* Active Contest */}
       <GoldCard glow className="p-5" data-testid="admin-contest-active">

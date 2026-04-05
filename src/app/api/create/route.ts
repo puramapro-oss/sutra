@@ -9,7 +9,7 @@ import { searchVideos } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
 import { assembleFinalVideo } from '@/lib/shotstack'
 import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
-import type { Profile, ScriptData } from '@/types'
+import type { Plan, Profile, ScriptData } from '@/types'
 
 export const maxDuration = 120
 
@@ -88,6 +88,8 @@ export async function POST(req: Request) {
 
     const selectedVoiceId = voice_id ?? 'EXAVITQu4vr4xnSDxMaL'
 
+    const userPlan = (profile as Profile).plan ?? 'free'
+
     const [voiceBuffer, musicUrl, sceneUrls, stockVideos] = await Promise.all([
       generateVoiceWithFallback(script.narration, selectedVoiceId)
         .then(async (buf) => {
@@ -103,9 +105,9 @@ export async function POST(req: Request) {
         script.scenes
           .filter((s) => !s.use_stock)
           .map(async (scene) => {
-            const url = await generateVisualWithFallback(scene.visual_prompt, quality, user.email)
-            await logApiCall(user.id, 'runpod', 'generateVisual', 'success')
-            return { url, type: 'ia' as const }
+            const result = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
+            await logApiCall(user.id, result.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
+            return { url: result.url, type: 'ia' as const }
           })
       ),
       Promise.all(

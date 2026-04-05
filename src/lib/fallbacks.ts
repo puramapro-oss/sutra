@@ -1,26 +1,31 @@
-import { submitVideoJob, pollVideoJob } from '@/lib/runpod'
+import { generateVideoSmart, type VideoEngine } from '@/lib/ltx'
 import { generateMusic } from '@/lib/suno'
 import { generateVoice } from '@/lib/elevenlabs'
 import { searchVideos } from '@/lib/pexels'
+import { uploadToStorage } from '@/lib/storage'
 import { sleep } from '@/lib/utils/api'
-import type { MusicStyle } from '@/types'
+import type { MusicStyle, Plan } from '@/types'
 
 export async function generateVisualWithFallback(
   prompt: string,
-  _quality: string,
-  userEmail?: string | null
-): Promise<string> {
-  // Attempt 1: RunPod + WAN 2.2 (super admin → dedicated GPU if configured)
+  quality: string,
+  userEmail: string | null = null,
+  plan: Plan = 'free',
+  format = '16:9'
+): Promise<{ url: string; engine: VideoEngine }> {
+  // Attempt 1: LTX (auto-falls back to WAN 2.2 internally via circuit breaker)
   try {
-    const { jobId, baseUrl } = await submitVideoJob({ prompt, width: 768, height: 512 }, userEmail)
-    return await pollVideoJob(jobId, baseUrl, 180_000)
+    const result = await generateVideoSmart(prompt, plan, userEmail, { quality, format })
+    const filename = `scenes/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.mp4`
+    const url = await uploadToStorage(filename, result.videoBuffer, 'video/mp4')
+    return { url, engine: result.engine }
   } catch {
-    // RunPod failed
+    // All video engines failed
   }
 
-  // Attempt 2: Pexels stock
+  // Attempt 2: Pexels stock (last resort)
   const stock = await searchVideos(prompt)
-  if (stock[0]) return stock[0].url
+  if (stock[0]) return { url: stock[0].url, engine: 'wan-classic' }
 
   throw new Error('Aucun service de generation video disponible')
 }
@@ -39,7 +44,6 @@ export async function generateMusicWithFallback(
     })
     return song.audio_url
   } catch {
-    // Suno failed — return empty string to skip music
     return ''
   }
 }
@@ -51,7 +55,6 @@ export async function generateVoiceWithFallback(
   try {
     return await generateVoice({ text, voice_id: voiceId })
   } catch {
-    // ElevenLabs rate limited — wait and retry
     await sleep(60_000)
     return await generateVoice({ text, voice_id: voiceId })
   }

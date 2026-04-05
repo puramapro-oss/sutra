@@ -78,11 +78,18 @@ export const TIMEOUTS = {
   claude: 30_000,
   elevenlabs: 60_000,
   runpod: 300_000,
+  ltx: 180_000,
   suno: 120_000,
   shotstack: 300_000,
   pexels: 10_000,
   falai: 180_000,
 } as const
+
+export const VIDEO_ENGINES = [
+  { id: 'ltx-pro', label: 'Cinema', description: 'LTX 2.3 Pro — qualite maximale', icon: '🎬', minPlan: 'admin' as Plan },
+  { id: 'ltx-fast', label: 'Rapide', description: 'LTX 2.3 Fast — generation rapide', icon: '⚡', minPlan: 'starter' as Plan },
+  { id: 'wan-classic', label: 'Classique', description: 'WAN 2.2 — inclus gratuit', icon: '🎥', minPlan: 'free' as Plan },
+] as const
 
 export const PURAMA_APPS = [
   { name: 'JurisPurama', slug: 'jurispurama', color: '#6D28D9', description: 'Assistant juridique IA' },

@@ -22,7 +22,9 @@ export const metadata: Metadata = {
       'Generation video IA a partir de 0 EUR/mois. Plans flexibles pour chaque ambition.',
     url: 'https://sutra.purama.dev/pricing',
     type: 'website',
+    images: [{ url: 'https://sutra.purama.dev/api/og', width: 1200, height: 630 }],
   },
+  twitter: { card: 'summary_large_image' },
   alternates: {
     canonical: 'https://sutra.purama.dev/pricing',
   },

@@ -25,7 +25,9 @@ export const metadata: Metadata = {
     description:
       'Un ecosysteme complet d\'applications IA. Chaque app, un domaine d\'expertise.',
     url: 'https://sutra.purama.dev/ecosystem',
+    images: [{ url: 'https://sutra.purama.dev/api/og', width: 1200, height: 630 }],
   },
+  twitter: { card: 'summary_large_image' },
   alternates: {
     canonical: 'https://sutra.purama.dev/ecosystem',
   },

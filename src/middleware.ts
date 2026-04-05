@@ -18,6 +18,9 @@ const PUBLIC_ROUTES = [
   "/cgv",
   "/cgu",
   "/aide",
+  "/partenariat",
+  "/partenaires",
+  "/impact",
 ];
 
 const PUBLIC_PREFIXES = [
@@ -26,6 +29,9 @@ const PUBLIC_PREFIXES = [
   "/api/",
   "/_next/",
   "/auth/callback",
+  "/scan/",
+  "/p/",
+  "/partenariat/",
 ];
 
 const AUTH_ROUTES = ["/login", "/forgot-password"];
