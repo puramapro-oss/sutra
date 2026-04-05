@@ -241,7 +241,7 @@ export interface ScheduledPost {
   id: string
   user_id: string
   video_id: string
-  platform: 'youtube' | 'tiktok' | 'instagram'
+  platform: 'youtube' | 'tiktok' | 'instagram' | 'facebook' | 'x' | 'linkedin'
   scheduled_at: string
   status: 'scheduled' | 'published' | 'failed'
   platform_post_id: string | null
@@ -264,4 +264,10 @@ export interface PipelineStep {
   label: string
   status: 'pending' | 'running' | 'completed' | 'error'
   duration?: string
+}
+
+export interface SubtitleEntry {
+  text: string
+  start: number
+  end: number
 }

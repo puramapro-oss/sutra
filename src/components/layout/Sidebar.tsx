@@ -12,10 +12,13 @@ import {
   Bot,
   Mic,
   Copy,
+  Palette,
+  Layers,
   Users,
   Trophy,
   Wallet,
   BarChart3,
+  TrendingUp,
   Settings,
   Crown,
   ChevronLeft,
@@ -23,6 +26,7 @@ import {
   BookOpen,
   Clapperboard,
   Handshake,
+  ListVideo,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -43,6 +47,7 @@ const mainNav: NavItem[] = [
   },
   { label: 'Creer', href: '/create', icon: Plus, testId: 'sidebar-create' },
   { label: 'Production', href: '/production', icon: Clapperboard, testId: 'sidebar-production' },
+  { label: 'Batch', href: '/batch', icon: ListVideo, testId: 'sidebar-batch' },
   {
     label: 'Bibliotheque',
     href: '/library',
@@ -69,6 +74,18 @@ const mainNav: NavItem[] = [
     testId: 'sidebar-templates',
   },
   {
+    label: 'Styles',
+    href: '/styles',
+    icon: Palette,
+    testId: 'sidebar-styles',
+  },
+  {
+    label: 'Storyboard',
+    href: '/storyboard',
+    icon: Layers,
+    testId: 'sidebar-storyboard',
+  },
+  {
     label: 'Parrainage',
     href: '/referral',
     icon: Users,
@@ -91,6 +108,12 @@ const mainNav: NavItem[] = [
     href: '/classement',
     icon: BarChart3,
     testId: 'sidebar-classement',
+  },
+  {
+    label: 'Analytics',
+    href: '/analytics',
+    icon: TrendingUp,
+    testId: 'sidebar-analytics',
   },
   {
     label: 'Wallet',

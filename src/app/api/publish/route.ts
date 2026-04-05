@@ -6,7 +6,7 @@ import { logActivity, sendNotification } from '@/lib/logger'
 
 const publishSchema = z.object({
   video_id: z.string().uuid('video_id invalide'),
-  platforms: z.array(z.enum(['youtube', 'tiktok', 'instagram'])).min(1, 'Au moins une plateforme requise'),
+  platforms: z.array(z.enum(['youtube', 'tiktok', 'instagram', 'facebook', 'x', 'linkedin'])).min(1, 'Au moins une plateforme requise'),
   scheduled_at: z.string().datetime().optional(),
 })
 
