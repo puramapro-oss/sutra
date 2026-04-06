@@ -33,6 +33,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { PublishEverywhereButton } from '@/components/social/PublishEverywhereButton'
 import type { Video, VideoStatus } from '@/types'
 
 const supabase = createClient()
@@ -583,6 +584,16 @@ export default function LibraryPage() {
                         <Share2 className="h-3.5 w-3.5" />
                       </button>
 
+                      {/* Publish everywhere — only ready videos */}
+                      {video.status === 'ready' && video.video_url && (
+                        <PublishEverywhereButton
+                          videoId={video.id}
+                          videoTitle={video.title ?? 'Video sans titre'}
+                          videoUrl={video.video_url}
+                          variant="compact"
+                        />
+                      )}
+
                       {/* Add to folder */}
                       {folders.length > 0 && (
                         <div className="relative">
@@ -777,6 +788,15 @@ export default function LibraryPage() {
                         >
                           <Share2 className="h-4 w-4" />
                         </button>
+
+                        {video.status === 'ready' && video.video_url && (
+                          <PublishEverywhereButton
+                            videoId={video.id}
+                            videoTitle={video.title ?? 'Video sans titre'}
+                            videoUrl={video.video_url}
+                            variant="compact"
+                          />
+                        )}
 
                         {video.script_data && (
                           <button

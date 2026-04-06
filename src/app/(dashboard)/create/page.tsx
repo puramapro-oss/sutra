@@ -24,6 +24,7 @@ import { ModeToggle } from '@/components/create/ModeToggle'
 import { PipelineProgress } from '@/components/create/PipelineProgress'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
+import { PublishEverywhereButton } from '@/components/social/PublishEverywhereButton'
 import type { Plan, PipelineStep, VideoFormat, VideoQuality } from '@/types'
 import type { VideoEngine } from '@/lib/ltx'
 
@@ -288,6 +289,11 @@ export default function CreatePage() {
                 Voir ma video
                 <ArrowRight className="h-4 w-4" />
               </Button>
+              <PublishEverywhereButton
+                videoId={videoId}
+                videoTitle={topic || 'Ma video'}
+                variant="primary"
+              />
               <Button
                 variant="secondary"
                 size="lg"

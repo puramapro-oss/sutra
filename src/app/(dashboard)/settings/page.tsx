@@ -20,7 +20,9 @@ import {
   Loader2,
   AlertTriangle,
   Upload,
+  Share2,
 } from 'lucide-react'
+import Link from 'next/link'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
@@ -43,6 +45,7 @@ const SETTINGS_TABS = [
   { id: 'profil', label: 'Profil', icon: <User className="h-4 w-4" /> },
   { id: 'compte', label: 'Compte', icon: <Lock className="h-4 w-4" /> },
   { id: 'abonnement', label: 'Abonnement', icon: <CreditCard className="h-4 w-4" /> },
+  { id: 'reseaux', label: 'Reseaux sociaux', icon: <Share2 className="h-4 w-4" /> },
   { id: 'notifications', label: 'Notifications', icon: <Bell className="h-4 w-4" /> },
   { id: 'apparence', label: 'Apparence', icon: <Palette className="h-4 w-4" /> },
   { id: 'donnees', label: 'Donnees', icon: <Database className="h-4 w-4" /> },
@@ -564,6 +567,24 @@ export default function SettingsPage() {
                       Passer au plan superieur
                     </Button>
                   )}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Reseaux sociaux */}
+            {activeTab === 'reseaux' && (
+              <Card data-testid="settings-reseaux">
+                <CardContent className="space-y-4">
+                  <h3 className="text-sm font-semibold text-white mb-2">Publication sociale automatique</h3>
+                  <p className="text-sm text-white/60">
+                    Connecte tes 14 reseaux (TikTok, YouTube, Instagram, Facebook, X, LinkedIn, Pinterest, Reddit, Threads, Snapchat, Tumblr, Mastodon, Bluesky, Vimeo) et configure l&apos;autopilot IA.
+                  </p>
+                  <Link href="/settings/social" data-testid="link-social-settings">
+                    <Button variant="primary" size="md">
+                      <Share2 className="h-4 w-4" />
+                      Gerer mes reseaux sociaux
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             )}

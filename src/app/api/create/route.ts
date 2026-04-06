@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import { createVideoSchema } from '@/lib/validators'
@@ -9,7 +10,149 @@ import { searchVideos } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
 import { assembleFinalVideo } from '@/lib/shotstack'
 import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
+import {
+  publishToPlatforms,
+  getOptimalFormat,
+  type SocialPlatform,
+  type PublishRequest,
+} from '@/lib/zernio'
+import { generateMultiPlatformCaptions } from '@/lib/ai/social-caption'
 import type { Plan, Profile, ScriptData } from '@/types'
+
+function createPublicServiceClient() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      db: { schema: 'public' },
+      auth: { autoRefreshToken: false, persistSession: false },
+    }
+  )
+}
+
+async function triggerAutopilot(args: {
+  userId: string
+  videoId: string
+  videoUrl: string
+  videoTitle: string
+  videoDescription: string
+  videoTags: string[]
+}): Promise<void> {
+  try {
+    const publicClient = createPublicServiceClient()
+
+    const { data: config, error: configError } = await publicClient
+      .from('social_autopilot_config')
+      .select('*')
+      .eq('user_id', args.userId)
+      .maybeSingle()
+
+    if (configError || !config) return
+    if (!config.enabled) return
+
+    const platforms = (config.default_platforms ?? []) as SocialPlatform[]
+    if (platforms.length === 0) return
+
+    // Fetch connected accounts for these platforms
+    const { data: accounts, error: accountsError } = await publicClient
+      .from('social_accounts')
+      .select('id, platform, status')
+      .eq('user_id', args.userId)
+      .in('platform', platforms)
+      .eq('status', 'connected')
+
+    if (accountsError) {
+      console.error('[autopilot] accounts fetch error:', accountsError.message)
+      return
+    }
+
+    const connectedSet = new Set((accounts ?? []).map((a) => a.platform as SocialPlatform))
+    const usablePlatforms = platforms.filter((p) => connectedSet.has(p))
+    if (usablePlatforms.length === 0) {
+      console.error('[autopilot] no connected accounts for default platforms')
+      return
+    }
+
+    const accountIds = {} as Record<SocialPlatform, string>
+    for (const acc of accounts ?? []) {
+      accountIds[acc.platform as SocialPlatform] = acc.id as string
+    }
+
+    // Generate captions if auto_caption
+    let captionsByPlatform: Partial<
+      Record<SocialPlatform, { caption: string; hashtags: string[] }>
+    > = {}
+    if (config.auto_caption) {
+      try {
+        captionsByPlatform = await generateMultiPlatformCaptions(
+          args.videoTitle,
+          args.videoDescription,
+          usablePlatforms,
+          {
+            language: 'fr',
+            style: config.caption_style ?? 'engaging',
+            includeCta: config.include_cta ?? true,
+            maxHashtags: config.max_hashtags ?? 10,
+          }
+        )
+      } catch (err) {
+        console.error('[autopilot] caption gen error:', err instanceof Error ? err.message : err)
+      }
+    }
+
+    const primary = usablePlatforms[0]
+    const primaryCaption = captionsByPlatform[primary]
+    const finalCaption = primaryCaption?.caption ?? args.videoTitle
+    const finalHashtags = primaryCaption?.hashtags ?? args.videoTags
+
+    const publishReq: PublishRequest = {
+      videoUrl: args.videoUrl,
+      caption: finalCaption,
+      hashtags: finalHashtags,
+      platforms: usablePlatforms,
+      accountIds,
+      format: getOptimalFormat(primary),
+    }
+
+    const results = await publishToPlatforms(publishReq)
+
+    const nowIso = new Date().toISOString()
+    const rows = results.map((r) => {
+      const perPlatform = captionsByPlatform[r.platform]
+      return {
+        user_id: args.userId,
+        video_id: args.videoId,
+        platform: r.platform,
+        account_id: accountIds[r.platform] ?? null,
+        zernio_post_id: r.postId ?? null,
+        external_post_id: r.postId ?? null,
+        post_url: r.postUrl ?? null,
+        caption: perPlatform?.caption ?? finalCaption,
+        hashtags: perPlatform?.hashtags ?? finalHashtags,
+        status: r.success ? 'published' : 'failed',
+        scheduled_for: null,
+        published_at: r.success ? nowIso : null,
+        error_message: r.error ?? null,
+        views: 0,
+        likes: 0,
+        shares: 0,
+        comments: 0,
+        metadata: { source: 'autopilot' },
+        created_at: nowIso,
+        updated_at: nowIso,
+      }
+    })
+
+    if (rows.length > 0) {
+      const { error: insertError } = await publicClient.from('social_posts').insert(rows)
+      if (insertError) {
+        console.error('[autopilot] insert error:', insertError.message)
+      }
+    }
+  } catch (err) {
+    console.error('[autopilot] unexpected error:', err instanceof Error ? err.message : err)
+  }
+}
 
 export const maxDuration = 120
 
@@ -182,6 +325,20 @@ export async function POST(req: Request) {
       .select('*')
       .eq('id', videoId)
       .single()
+
+    // Autopilot: trigger publish if enabled (non-blocking)
+    try {
+      await triggerAutopilot({
+        userId: user.id,
+        videoId,
+        videoUrl: assembled.url,
+        videoTitle: script.title ?? '',
+        videoDescription: script.description ?? '',
+        videoTags: script.tags ?? [],
+      })
+    } catch (err) {
+      console.error('[create] autopilot trigger failed:', err instanceof Error ? err.message : err)
+    }
 
     return NextResponse.json({ success: true, video })
   } catch (err) {

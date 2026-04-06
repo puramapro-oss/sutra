@@ -1,20 +1,58 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
-import { publishToSocial, schedulePost, getOptimalFormat } from '@/lib/zernio'
-import type { SocialPlatform, PublishResult } from '@/lib/zernio'
+import {
+  publishToPlatforms,
+  schedulePublication,
+  getOptimalFormat,
+  type SocialPlatform,
+  type PublishResult,
+  type PublishRequest,
+} from '@/lib/zernio'
+
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 const socialPublishSchema = z.object({
   videoId: z.string().uuid('videoId invalide'),
   platforms: z
-    .array(z.enum(['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin']))
+    .array(
+      z.enum([
+        'tiktok',
+        'youtube',
+        'instagram',
+        'facebook',
+        'x',
+        'linkedin',
+        'pinterest',
+        'reddit',
+        'threads',
+        'snapchat',
+        'tumblr',
+        'mastodon',
+        'bluesky',
+        'vimeo',
+      ])
+    )
     .min(1, 'Au moins une plateforme requise'),
   title: z.string().optional(),
   description: z.string().optional(),
   tags: z.array(z.string()).optional(),
   scheduledAt: z.string().datetime().optional(),
 })
+
+function createPublicServiceClient() {
+  return createSupabaseClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      db: { schema: 'public' },
+      auth: { autoRefreshToken: false, persistSession: false },
+    }
+  )
+}
 
 export async function POST(req: Request) {
   try {
@@ -39,6 +77,7 @@ export async function POST(req: Request) {
     }
 
     const { videoId, platforms, title, description, tags, scheduledAt } = parsed.data
+    const typedPlatforms = platforms as SocialPlatform[]
     const serviceClient = createServiceClient()
 
     // Fetch video details
@@ -68,69 +107,62 @@ export async function POST(req: Request) {
     const publishDesc = description ?? video.description ?? ''
     const publishTags = tags ?? video.tags ?? []
 
-    // Determine optimal format for the first platform (or auto per-platform via Zernio)
-    const primaryFormat = getOptimalFormat(platforms[0] as SocialPlatform)
+    // Fetch connected account IDs
+    const publicService = createPublicServiceClient()
+    const { data: accounts } = await publicService
+      .from('social_accounts')
+      .select('id, platform, status')
+      .eq('user_id', user.id)
+      .in('platform', typedPlatforms)
+      .eq('status', 'connected')
+
+    const accountIds = {} as Record<SocialPlatform, string>
+    for (const a of accounts ?? []) {
+      accountIds[a.platform as SocialPlatform] = a.id as string
+    }
+
+    const caption = [publishTitle, publishDesc].filter(Boolean).join('\n\n')
+    const hashtags = publishTags.map((t: string) =>
+      t.startsWith('#') ? t : `#${t}`
+    )
+
+    const primaryFormat = getOptimalFormat(typedPlatforms[0])
+
+    const publishReq: PublishRequest = {
+      videoUrl: video.video_url,
+      caption,
+      hashtags,
+      platforms: typedPlatforms,
+      accountIds,
+      scheduledAt,
+      format: primaryFormat,
+    }
 
     let results: PublishResult[]
 
     if (scheduledAt) {
-      // Schedule via Zernio
-      try {
-        const scheduleResult = await schedulePost({
-          videoUrl: video.video_url,
-          title: publishTitle,
-          description: publishDesc,
-          tags: publishTags,
-          platforms: platforms as SocialPlatform[],
-          scheduledAt,
-          format: primaryFormat,
-        })
+      results = await schedulePublication(publishReq)
 
-        results = platforms.map((p) => ({
-          platform: p as SocialPlatform,
-          success: true,
-          postUrl: undefined,
-          error: undefined,
-        }))
+      const posts = results.map((r) => ({
+        user_id: user.id,
+        video_id: videoId,
+        platform: r.platform,
+        scheduled_at: scheduledAt,
+        status: r.success ? ('scheduled' as const) : ('failed' as const),
+        platform_post_id: r.postId ?? null,
+      }))
 
-        // Log scheduled posts to DB
-        const posts = platforms.map((platform) => ({
-          user_id: user.id,
-          video_id: videoId,
-          platform,
-          scheduled_at: scheduledAt,
-          status: 'scheduled' as const,
-          zernio_schedule_id: scheduleResult.scheduleId,
-        }))
-
-        await serviceClient.from('scheduled_posts').insert(posts)
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Erreur programmation Zernio'
-        results = platforms.map((p) => ({
-          platform: p as SocialPlatform,
-          success: false,
-          error: message,
-        }))
-      }
+      await serviceClient.from('scheduled_posts').insert(posts)
     } else {
-      // Publish immediately via Zernio
-      results = await publishToSocial({
-        videoUrl: video.video_url,
-        title: publishTitle,
-        description: publishDesc,
-        tags: publishTags,
-        platforms: platforms as SocialPlatform[],
-        format: primaryFormat,
-      })
+      results = await publishToPlatforms(publishReq)
 
-      // Log published posts to DB
       const posts = results.map((r) => ({
         user_id: user.id,
         video_id: videoId,
         platform: r.platform,
         scheduled_at: new Date().toISOString(),
         status: r.success ? ('published' as const) : ('failed' as const),
-        platform_post_id: r.postUrl ?? null,
+        platform_post_id: r.postId ?? r.postUrl ?? null,
       }))
 
       await serviceClient.from('scheduled_posts').insert(posts)
@@ -154,6 +186,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ results })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur publication sociale', details: message }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Erreur publication sociale', details: message },
+      { status: 500 }
+    )
   }
 }
