@@ -1,5 +1,15 @@
 import { z } from 'zod'
 
+export const stockSelectionSchema = z.object({
+  sceneIndex: z.number().int().min(0),
+  source: z.enum(['pexels', 'unsplash', 'coverr']).nullable(),
+  type: z.enum(['video', 'photo']).nullable(),
+  url: z.string().url().nullable(),
+  thumbnail: z.string().url().nullable(),
+  quality: z.enum(['1080p', '4k']).nullable(),
+  fallbackToAI: z.boolean().default(false),
+})
+
 export const createVideoSchema = z.object({
   topic: z.string().min(3, 'Le sujet doit contenir au moins 3 caracteres').max(500),
   format: z.enum(['16:9', '9:16', '1:1']).default('16:9'),
@@ -8,6 +18,8 @@ export const createVideoSchema = z.object({
   niche: z.string().optional(),
   style: z.string().optional(),
   mode: z.enum(['auto', 'manual']).default('auto'),
+  mediaMode: z.enum(['ai', 'stock', 'mixed']).default('ai'),
+  stockSelections: z.array(stockSelectionSchema).optional().default([]),
 })
 
 export const signupSchema = z.object({

@@ -194,7 +194,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const { topic, format, quality, voice_id, niche, style } = parsed.data
+    const { topic, format, quality, voice_id, niche, style, mediaMode, stockSelections } = parsed.data
 
     const { data: videoRow } = await serviceClient
       .from('videos')
@@ -204,6 +204,8 @@ export async function POST(req: Request) {
         format,
         quality,
         tags: [],
+        media_mode: mediaMode,
+        stock_sources: stockSelections ?? [],
       })
       .select('id')
       .single()
@@ -233,7 +235,53 @@ export async function POST(req: Request) {
 
     const userPlan = (profile as Profile).plan ?? 'free'
 
-    const [voiceBuffer, musicUrl, sceneUrls, stockVideos] = await Promise.all([
+    // Resolve each scene to a clip URL based on mediaMode + stockSelections
+    const stockByIndex = new Map<number, (typeof stockSelections)[number]>()
+    for (const sel of stockSelections ?? []) {
+      stockByIndex.set(sel.sceneIndex, sel)
+    }
+
+    const resolveSceneClip = async (
+      scene: ScriptData['scenes'][number],
+      idx: number
+    ): Promise<{ url: string; type: 'ia' | 'stock' } | null> => {
+      const sel = stockByIndex.get(idx)
+      const userChoseStock = sel && !sel.fallbackToAI && sel.url
+
+      // Stock mode: use user selection if any, else search Pexels for a fallback
+      if (mediaMode === 'stock') {
+        if (userChoseStock) return { url: sel!.url!, type: 'stock' }
+        const results = await searchVideos(scene.visual_prompt, 1)
+        await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'fallback')
+        if (results[0]) return { url: results[0].url, type: 'stock' }
+        // Last resort: fallback to IA so video is never broken
+        const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
+        await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'fallback')
+        return { url: ai.url, type: 'ia' }
+      }
+
+      // Mixed mode: respect user choice, IA on explicit fallback or unselected scenes
+      if (mediaMode === 'mixed') {
+        if (userChoseStock) return { url: sel!.url!, type: 'stock' }
+        if (sel?.fallbackToAI || !sel) {
+          const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
+          await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
+          return { url: ai.url, type: 'ia' }
+        }
+      }
+
+      // AI mode (default): legacy behavior — IA unless script flagged use_stock
+      if (scene.use_stock) {
+        const results = await searchVideos(scene.visual_prompt, 1)
+        await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'skipped')
+        return results[0] ? { url: results[0].url, type: 'stock' } : null
+      }
+      const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
+      await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
+      return { url: ai.url, type: 'ia' }
+    }
+
+    const [voiceBuffer, musicUrl, resolvedClips] = await Promise.all([
       generateVoiceWithFallback(script.narration, selectedVoiceId)
         .then(async (buf) => {
           await logApiCall(user.id, 'elevenlabs', 'generateVoice', 'success')
@@ -244,25 +292,14 @@ export async function POST(req: Request) {
           await logApiCall(user.id, 'suno', 'generateMusic', url ? 'success' : 'skipped')
           return url
         }),
-      Promise.all(
-        script.scenes
-          .filter((s) => !s.use_stock)
-          .map(async (scene) => {
-            const result = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-            await logApiCall(user.id, result.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
-            return { url: result.url, type: 'ia' as const }
-          })
+      Promise.all(script.scenes.map((s, i) => resolveSceneClip(s, i))).then(
+        (clips) => clips.filter(Boolean) as Array<{ url: string; type: 'ia' | 'stock' }>
       ),
-      Promise.all(
-        script.scenes
-          .filter((s) => s.use_stock)
-          .map(async (scene) => {
-            const results = await searchVideos(scene.visual_prompt, 1)
-            await logApiCall(user.id, 'pexels', 'searchVideos', 'success')
-            return results[0] ? { url: results[0].url, type: 'stock' as const } : null
-          })
-      ).then((results) => results.filter(Boolean) as Array<{ url: string; type: 'stock' }>),
     ])
+
+    // Compatibility shims for assembly + thumbnail logic below
+    const sceneUrls = resolvedClips.filter((c) => c.type === 'ia') as Array<{ url: string; type: 'ia' }>
+    const stockVideos = resolvedClips.filter((c) => c.type === 'stock') as Array<{ url: string; type: 'stock' }>
 
     const voicePath = `voices/${user.id}/${videoId}.mp3`
     const voiceUrl = await uploadToStorage(voicePath, voiceBuffer, 'audio/mpeg')
@@ -272,10 +309,8 @@ export async function POST(req: Request) {
       .update({ voice_url: voiceUrl, music_url: musicUrl || null })
       .eq('id', videoId)
 
-    const allClips = [
-      ...sceneUrls,
-      ...stockVideos,
-    ]
+    // Preserve scene order from the script
+    const allClips = resolvedClips
 
     const subtitles = generateSubtitles(script.narration, script.estimated_duration)
 
