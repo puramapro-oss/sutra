@@ -27,6 +27,7 @@ import {
   Clapperboard,
   Handshake,
   ListVideo,
+  Sparkles,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -65,6 +66,12 @@ const mainNav: NavItem[] = [
     href: '/autopilot',
     icon: Bot,
     testId: 'sidebar-autopilot',
+  },
+  {
+    label: 'Mode Auto',
+    href: '/auto',
+    icon: Sparkles,
+    testId: 'sidebar-auto',
   },
   { label: 'Voix', href: '/voices', icon: Mic, testId: 'sidebar-voices' },
   {

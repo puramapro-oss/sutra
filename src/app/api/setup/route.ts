@@ -89,8 +89,12 @@ CREATE TABLE IF NOT EXISTS sutra.videos (
   quality TEXT DEFAULT '1080p', format TEXT DEFAULT '16:9',
   duration INTEGER, status TEXT DEFAULT 'draft',
   cost_estimate DECIMAL(10,4), publish_data JSONB,
+  media_mode TEXT DEFAULT 'ai',
+  stock_sources JSONB DEFAULT '[]'::jsonb,
   created_at TIMESTAMPTZ DEFAULT now(), updated_at TIMESTAMPTZ DEFAULT now()
 );
+ALTER TABLE sutra.videos ADD COLUMN IF NOT EXISTS media_mode TEXT DEFAULT 'ai';
+ALTER TABLE sutra.videos ADD COLUMN IF NOT EXISTS stock_sources JSONB DEFAULT '[]'::jsonb;
 
 CREATE TABLE IF NOT EXISTS sutra.drafts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

@@ -22,6 +22,8 @@ import { PLAN_LIMITS, NICHES, VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constant
 import { cn } from '@/lib/utils'
 import { ModeToggle } from '@/components/create/ModeToggle'
 import { PipelineProgress } from '@/components/create/PipelineProgress'
+import { MediaModeCards, type MediaMode } from '@/components/create/MediaModeCards'
+import { SceneStockPicker, type StockResult } from '@/components/create/StockPicker'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { PublishEverywhereButton } from '@/components/social/PublishEverywhereButton'
@@ -76,8 +78,13 @@ function getPipelineSteps(engine: VideoEngine): PipelineStep[] {
   ]
 }
 
-// Manual mode wizard step count
-const MANUAL_STEPS = ['sujet', 'script', 'medias', 'options', 'confirmation'] as const
+// Manual mode wizard step count (mediaMode added as step 0)
+const MANUAL_STEPS = ['mode', 'sujet', 'script', 'medias', 'options', 'confirmation'] as const
+
+interface SceneStockState {
+  selected: StockResult | null
+  fallbackToAI: boolean
+}
 
 export default function CreatePage() {
   const router = useRouter()
@@ -95,6 +102,12 @@ export default function CreatePage() {
   // Manual mode
   const [manualStep, setManualStep] = useState(0)
   const [script, setScript] = useState('')
+
+  // Media mode (ai/stock/mixed) — new in wizard step 0 (manual) + auto form
+  const [mediaMode, setMediaMode] = useState<MediaMode>('ai')
+  const [sceneKeywords, setSceneKeywords] = useState<string[][]>([])
+  const [sceneSelections, setSceneSelections] = useState<SceneStockState[]>([])
+  const [keywordsLoading, setKeywordsLoading] = useState(false)
 
   // Pipeline state
   const [isGenerating, setIsGenerating] = useState(false)
@@ -127,6 +140,35 @@ export default function CreatePage() {
     else setEngine('wan-classic')
   }, [plan, currentPlanRank])
 
+  // Extract keywords for stock search when entering medias step in stock/mixed mode
+  const fetchKeywords = useCallback(
+    async (rawScript: string) => {
+      const scenes = rawScript
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean)
+      if (scenes.length === 0) return
+      setKeywordsLoading(true)
+      try {
+        const res = await fetch('/api/stock/keywords', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenes }),
+        })
+        const data = await res.json()
+        const kws: string[][] = Array.isArray(data.keywords) ? data.keywords : scenes.map(() => [])
+        setSceneKeywords(kws)
+        setSceneSelections(scenes.map(() => ({ selected: null, fallbackToAI: false })))
+      } catch {
+        setSceneKeywords(scenes.map((s) => s.split(/\s+/).slice(0, 3)))
+        setSceneSelections(scenes.map(() => ({ selected: null, fallbackToAI: false })))
+      } finally {
+        setKeywordsLoading(false)
+      }
+    },
+    []
+  )
+
   // Cleanup polling on unmount
   useEffect(() => {
     return () => {
@@ -157,6 +199,19 @@ export default function CreatePage() {
           voice,
           mode,
           script: mode === 'manual' ? script : undefined,
+          mediaMode,
+          stockSelections:
+            mediaMode === 'ai'
+              ? []
+              : sceneSelections.map((s, i) => ({
+                  sceneIndex: i,
+                  source: s.selected?.source ?? null,
+                  type: s.selected?.type ?? null,
+                  url: s.selected?.url ?? null,
+                  thumbnail: s.selected?.thumbnail ?? null,
+                  quality: s.selected?.quality ?? null,
+                  fallbackToAI: s.fallbackToAI,
+                })),
         }),
       })
 
@@ -177,7 +232,7 @@ export default function CreatePage() {
       setError(message)
       setIsGenerating(false)
     }
-  }, [topic, format, quality, engine, niche, style, voice, mode, script, isOverLimit])
+  }, [topic, format, quality, engine, niche, style, voice, mode, script, mediaMode, sceneSelections, isOverLimit])
 
   const pollPipeline = useCallback((vid: string) => {
     const poll = async () => {
@@ -344,6 +399,8 @@ export default function CreatePage() {
               isEngineAvailable={isEngineAvailable}
               isOverLimit={isOverLimit}
               onGenerate={startGeneration}
+              mediaMode={mediaMode}
+              setMediaMode={setMediaMode}
             />
           ) : (
             <ManualForm
@@ -368,8 +425,20 @@ export default function CreatePage() {
               isEngineAvailable={isEngineAvailable}
               isOverLimit={isOverLimit}
               step={manualStep}
-              setStep={setManualStep}
+              setStep={(s) => {
+                setManualStep(s)
+                // When entering medias step (step index 3) in stock/mixed mode, fetch keywords
+                if (s === 3 && mediaMode !== 'ai' && script.trim() && sceneKeywords.length === 0) {
+                  void fetchKeywords(script)
+                }
+              }}
               onGenerate={startGeneration}
+              mediaMode={mediaMode}
+              setMediaMode={setMediaMode}
+              sceneKeywords={sceneKeywords}
+              sceneSelections={sceneSelections}
+              setSceneSelections={setSceneSelections}
+              keywordsLoading={keywordsLoading}
             />
           )}
         </AnimatePresence>
@@ -401,6 +470,8 @@ interface AutoFormProps {
   isEngineAvailable: (plan: Plan) => boolean
   isOverLimit: boolean
   onGenerate: () => void
+  mediaMode: MediaMode
+  setMediaMode: (v: MediaMode) => void
 }
 
 function AutoForm({
@@ -422,6 +493,8 @@ function AutoForm({
   isEngineAvailable,
   isOverLimit,
   onGenerate,
+  mediaMode,
+  setMediaMode,
 }: AutoFormProps) {
   return (
     <motion.div
@@ -458,6 +531,11 @@ function AutoForm({
           Sois precis : plus ta description est detaillee, meilleur sera le resultat.
         </p>
       </div>
+
+      {/* Media Mode */}
+      <OptionSection title="Type de medias">
+        <MediaModeCards value={mediaMode} onChange={setMediaMode} />
+      </OptionSection>
 
       {/* Format */}
       <OptionSection title="Format">
@@ -625,6 +703,10 @@ interface ManualFormProps extends AutoFormProps {
   setScript: (v: string) => void
   step: number
   setStep: (v: number) => void
+  sceneKeywords: string[][]
+  sceneSelections: SceneStockState[]
+  setSceneSelections: React.Dispatch<React.SetStateAction<SceneStockState[]>>
+  keywordsLoading: boolean
 }
 
 function ManualForm({
@@ -650,23 +732,34 @@ function ManualForm({
   step,
   setStep,
   onGenerate,
+  mediaMode,
+  setMediaMode,
+  sceneKeywords,
+  sceneSelections,
+  setSceneSelections,
+  keywordsLoading,
 }: ManualFormProps) {
   const canProceed = (): boolean => {
     switch (step) {
       case 0:
-        return topic.trim().length > 0
+        return true // mediaMode always has a default
       case 1:
-        return script.trim().length > 0
+        return topic.trim().length > 0
       case 2:
-        return true
+        return script.trim().length > 0
       case 3:
         return true
       case 4:
+        return true
+      case 5:
         return !isOverLimit
       default:
         return false
     }
   }
+
+  const formatToOrientation = (f: VideoFormat): 'landscape' | 'portrait' | 'square' =>
+    f === '16:9' ? 'landscape' : f === '9:16' ? 'portrait' : 'square'
 
   return (
     <motion.div
@@ -717,7 +810,19 @@ function ManualForm({
           {step === 0 && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
-                Etape 1 — Sujet
+                Etape 1 — Type de medias
+              </h2>
+              <p className="text-sm text-white/40">
+                Choisis comment composer ta video : 100% IA, 100% reel ou un mix.
+              </p>
+              <MediaModeCards value={mediaMode} onChange={setMediaMode} />
+            </div>
+          )}
+
+          {step === 1 && (
+            <div className="space-y-4">
+              <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
+                Etape 2 — Sujet
               </h2>
               <textarea
                 data-testid="topic-input"
@@ -775,10 +880,10 @@ function ManualForm({
             </div>
           )}
 
-          {step === 1 && (
+          {step === 2 && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
-                Etape 2 — Script
+                Etape 3 — Script
               </h2>
               <p className="text-sm text-white/40">
                 Ecris ou colle ton script. Chaque paragraphe deviendra une scene.
@@ -803,41 +908,77 @@ function ManualForm({
             </div>
           )}
 
-          {step === 2 && (
-            <div className="space-y-6">
-              <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
-                Etape 3 — Medias (optionnel)
-              </h2>
-              <p className="text-sm text-white/40">
-                Tu peux uploader tes propres fichiers ou laisser l&apos;IA les generer.
-              </p>
-
-              <UploadZone
-                icon={Mic}
-                label="Voix off"
-                accept="audio/*"
-                testId="upload-voice"
-              />
-              <UploadZone
-                icon={Music}
-                label="Musique de fond"
-                accept="audio/*"
-                testId="upload-music"
-              />
-              <UploadZone
-                icon={FileVideo}
-                label="Clips video"
-                accept="video/*"
-                testId="upload-clips"
-                multiple
-              />
-            </div>
-          )}
-
           {step === 3 && (
             <div className="space-y-6">
               <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
-                Etape 4 — Options
+                Etape 4 — Medias
+              </h2>
+              <p className="text-sm text-white/40">
+                {mediaMode === 'ai'
+                  ? 'Tu peux uploader tes propres fichiers ou laisser l\u2019IA les generer.'
+                  : 'Choisis un media reel par scene. Bouton "Generer IA" comme fallback.'}
+              </p>
+
+              {mediaMode === 'ai' ? (
+                <>
+                  <UploadZone icon={Mic} label="Voix off" accept="audio/*" testId="upload-voice" />
+                  <UploadZone icon={Music} label="Musique de fond" accept="audio/*" testId="upload-music" />
+                  <UploadZone icon={FileVideo} label="Clips video" accept="video/*" testId="upload-clips" multiple />
+                </>
+              ) : keywordsLoading ? (
+                <div className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-6 text-center text-white/60 text-sm">
+                  Extraction des mots-cles par l&apos;IA...
+                </div>
+              ) : sceneSelections.length === 0 ? (
+                <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-6 text-center text-sm text-amber-200">
+                  Ecris d&apos;abord ton script (etape precedente) pour generer les recherches stock.
+                </div>
+              ) : (
+                <div className="space-y-3" data-testid="stock-pickers">
+                  {sceneSelections.map((sel, i) => {
+                    const sceneText =
+                      script
+                        .split('\n')
+                        .map((l) => l.trim())
+                        .filter(Boolean)[i] ?? ''
+                    return (
+                      <SceneStockPicker
+                        key={i}
+                        sceneIndex={i}
+                        sceneText={sceneText}
+                        keywords={sceneKeywords[i] ?? []}
+                        orientation={formatToOrientation(format)}
+                        selected={sel.selected}
+                        fallbackToAI={sel.fallbackToAI}
+                        allowFallback={mediaMode === 'mixed' || mediaMode === 'stock'}
+                        onSelect={(r) =>
+                          setSceneSelections((prev) =>
+                            prev.map((s, j) =>
+                              j === i ? { selected: r, fallbackToAI: false } : s
+                            )
+                          )
+                        }
+                        onFallbackAI={() =>
+                          setSceneSelections((prev) =>
+                            prev.map((s, j) =>
+                              j === i
+                                ? { selected: null, fallbackToAI: !s.fallbackToAI }
+                                : s
+                            )
+                          )
+                        }
+                      />
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+
+          {step === 4 && (
+            <div className="space-y-6">
+              <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
+                Etape 5 — Options
               </h2>
 
               <OptionSection title="Format">
@@ -924,13 +1065,23 @@ function ManualForm({
             </div>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
             <div className="space-y-6">
               <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
-                Etape 5 — Confirmation
+                Etape 6 — Confirmation
               </h2>
 
               <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-5 space-y-3">
+                <SummaryRow
+                  label="Type de medias"
+                  value={
+                    mediaMode === 'ai'
+                      ? '100% IA'
+                      : mediaMode === 'stock'
+                        ? '100% Reel'
+                        : 'Mixte'
+                  }
+                />
                 <SummaryRow label="Sujet" value={topic || '—'} />
                 <SummaryRow
                   label="Script"

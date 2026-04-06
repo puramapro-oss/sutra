@@ -11,6 +11,18 @@
     {
       "path": "/api/cron/contest-judge",
       "schedule": "59 23 28-31 * *"
+    },
+    {
+      "path": "/api/cron/auto-plan",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/auto-learn",
+      "schedule": "0 22 * * *"
+    },
+    {
+      "path": "/api/cron/auto-trends",
+      "schedule": "0 6 * * *"
     }
   ],
   "functions": {
@@ -22,6 +34,21 @@
     },
     "src/app/api/cron/contest-monthly/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/api/cron/auto-plan/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/cron/auto-learn/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/cron/auto-trends/route.ts": {
+      "maxDuration": 180
+    },
+    "src/app/api/auto/generate/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/auto/publish/route.ts": {
+      "maxDuration": 120
     }
   }
 }
