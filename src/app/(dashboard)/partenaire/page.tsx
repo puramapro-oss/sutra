@@ -17,10 +17,30 @@ import {
   Wrench,
 } from 'lucide-react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { cn, formatPrice } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
+
+const PartnerCommissionsChart = dynamic(
+  () => import('@/components/partner/PartnerCommissionsChart').then((m) => m.PartnerCommissionsChart),
+  { ssr: false, loading: () => <div className="h-64 rounded-lg bg-white/[0.02] animate-pulse" /> }
+)
+
+interface MonthlyPoint {
+  month: string
+  count: number
+  commissions: number
+}
+
+interface RecentReferral {
+  id: string
+  referred_email: string | null
+  status: string
+  created_at: string
+  first_payment_at: string | null
+}
 
 interface PartnerStats {
   partner_code: string
@@ -30,6 +50,8 @@ interface PartnerStats {
   tier: string
   pending_commissions: number
   share_url: string
+  monthly_graph?: MonthlyPoint[]
+  recent_referrals?: RecentReferral[]
 }
 
 interface Referral {
@@ -58,13 +80,24 @@ export default function PartenaireDashboard() {
       try {
         const [statsRes, referralsRes] = await Promise.all([
           fetch('/api/partner/stats'),
-          fetch('/api/partner/referrals'),
+          fetch('/api/partner/referrals').catch(() => null),
         ])
         if (statsRes.ok) {
-          const data = await statsRes.json()
+          const data = (await statsRes.json()) as PartnerStats
           setStats(data)
+          // Fallback : use stats.recent_referrals if dedicated endpoint failed
+          if (data.recent_referrals && (!referralsRes || !referralsRes.ok)) {
+            setReferrals(
+              data.recent_referrals.map((r) => ({
+                id: r.id,
+                email: r.referred_email ?? 'utilisateur',
+                created_at: r.created_at,
+                status: r.status === 'active' || r.status === 'converted' ? 'active' : 'pending',
+              }))
+            )
+          }
         }
-        if (referralsRes.ok) {
+        if (referralsRes?.ok) {
           const data = await referralsRes.json()
           setReferrals(data?.referrals ?? [])
         }
@@ -174,16 +207,13 @@ export default function PartenaireDashboard() {
           ))}
         </div>
 
-        {/* Graph placeholder */}
+        {/* Commissions evolution chart */}
         <div className="bg-white/[0.02] border border-white/[0.06] backdrop-blur-xl rounded-xl p-6 mb-8">
           <h2 className="text-lg font-semibold text-white mb-4">
             Évolution des commissions
           </h2>
-          <div
-            className="h-64 flex items-center justify-center rounded-lg bg-white/[0.02] border border-dashed border-white/[0.08]"
-            data-testid="chart-placeholder"
-          >
-            <p className="text-white/30 text-sm">Graphique Recharts</p>
+          <div data-testid="partner-commissions-chart">
+            <PartnerCommissionsChart data={stats?.monthly_graph ?? []} loading={loading} />
           </div>
         </div>
 

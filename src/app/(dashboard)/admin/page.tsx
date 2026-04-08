@@ -20,6 +20,12 @@ import {
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { cn, formatPrice, formatRelativeDate } from '@/lib/utils'
+import dynamic from 'next/dynamic'
+
+const AdminRevenueChart = dynamic(
+  () => import('@/components/admin/AdminRevenueChart').then((m) => m.AdminRevenueChart),
+  { ssr: false, loading: () => <div className="h-48 rounded-xl bg-white/[0.02] animate-pulse" /> }
+)
 
 interface AdminStats {
   total_users: number
@@ -38,6 +44,16 @@ interface ActivityEvent {
   description: string
   created_at: string
   metadata: Record<string, unknown> | null
+}
+
+interface ServiceCosts {
+  services: Record<string, number>
+}
+
+interface ReferralStats {
+  commissions_paid: number
+  commissions_pending: number
+  top_partners: { code: string; referrals: number; commissions: number }[]
 }
 
 const PLAN_COLORS: Record<string, string> = {
@@ -114,15 +130,19 @@ function StatSkeleton() {
 export default function AdminDashboard() {
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [activity, setActivity] = useState<ActivityEvent[]>([])
+  const [serviceCosts, setServiceCosts] = useState<ServiceCosts | null>(null)
+  const [referralStats, setReferralStats] = useState<ReferralStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [refreshing, setRefreshing] = useState(false)
 
   const fetchData = useCallback(async () => {
     try {
-      const [statsRes, activityRes] = await Promise.all([
+      const [statsRes, activityRes, costsRes, refRes] = await Promise.all([
         fetch('/api/admin/stats'),
         fetch('/api/admin/stats?type=activity').catch(() => null),
+        fetch('/api/admin/stats?type=service_costs').catch(() => null),
+        fetch('/api/admin/stats?type=referral_stats').catch(() => null),
       ])
 
       if (!statsRes.ok) throw new Error('Erreur chargement stats')
@@ -133,6 +153,18 @@ export default function AdminDashboard() {
       if (activityRes?.ok) {
         const activityData = await activityRes.json()
         setActivity(activityData.events ?? [])
+      }
+      if (costsRes?.ok) {
+        const costsData = await costsRes.json()
+        setServiceCosts({ services: costsData.services ?? {} })
+      }
+      if (refRes?.ok) {
+        const refData = await refRes.json()
+        setReferralStats({
+          commissions_paid: refData.commissions_paid ?? 0,
+          commissions_pending: refData.commissions_pending ?? 0,
+          top_partners: refData.top_partners ?? [],
+        })
       }
 
       setError(null)
@@ -289,12 +321,9 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Revenue chart placeholder */}
-        <div className="mt-4 h-48 rounded-xl bg-white/[0.02] border border-white/[0.04] flex items-center justify-center" data-testid="admin-revenue-chart">
-          <div className="text-center">
-            <Activity className="h-8 w-8 text-white/10 mx-auto mb-2" />
-            <p className="text-xs text-white/20">Graphique revenus 90j</p>
-          </div>
+        {/* Revenue chart 90j */}
+        <div className="mt-4" data-testid="admin-revenue-chart">
+          <AdminRevenueChart />
         </div>
       </GoldCard>
 
@@ -373,7 +402,10 @@ export default function AdminDashboard() {
           ) : (
             <div className="space-y-3">
               {SERVICE_COSTS.map((service) => {
-                const estimatedCost = (stats?.total_api_costs_30d ?? 0) / SERVICE_COSTS.length
+                const realCost = serviceCosts?.services?.[service.key]
+                const estimatedCost = realCost !== undefined
+                  ? realCost
+                  : (stats?.total_api_costs_30d ?? 0) / SERVICE_COSTS.length
                 return (
                   <div
                     key={service.key}
@@ -430,15 +462,36 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
               <p className="text-xs text-white/40 mb-1">Commissions payees</p>
-              <p className="text-xl font-bold text-emerald-400">{formatPrice(0)}</p>
+              <p className="text-xl font-bold text-emerald-400">
+                {formatPrice(referralStats?.commissions_paid ?? 0)}
+              </p>
             </div>
             <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
               <p className="text-xs text-white/40 mb-1">Commissions en attente</p>
-              <p className="text-xl font-bold text-amber-400">{formatPrice(0)}</p>
+              <p className="text-xl font-bold text-amber-400">
+                {formatPrice(referralStats?.commissions_pending ?? 0)}
+              </p>
             </div>
             <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4 col-span-1 sm:col-span-2">
               <p className="text-xs text-white/40 mb-2">Top 5 parrains</p>
-              <p className="text-sm text-white/20">Aucun parrain pour le moment</p>
+              {(referralStats?.top_partners ?? []).length === 0 ? (
+                <p className="text-sm text-white/20">Aucun parrain pour le moment</p>
+              ) : (
+                <ul className="space-y-1.5">
+                  {(referralStats?.top_partners ?? []).map((p, i) => (
+                    <li key={p.code} className="flex items-center justify-between text-xs">
+                      <span className="text-white/60">
+                        <span className="text-amber-400 font-semibold mr-2">#{i + 1}</span>
+                        <code className="text-white/80">{p.code}</code>
+                        <span className="text-white/30 ml-2">· {p.referrals} filleuls</span>
+                      </span>
+                      <span className="text-emerald-400 font-semibold">
+                        {formatPrice(p.commissions)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         )}
