@@ -18,6 +18,8 @@ import {
 import { Skeleton } from '@/components/ui/Skeleton'
 import { Badge } from '@/components/ui/Badge'
 import { cn, formatPrice, formatDate } from '@/lib/utils'
+import { toast } from 'sonner'
+import { UserDetailModal } from '@/components/admin/UserDetailModal'
 
 interface UserRow {
   id: string
@@ -87,6 +89,8 @@ export default function AdminUsersPage() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
   const [page, setPage] = useState(1)
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null)
+  const [viewingUserId, setViewingUserId] = useState<string | null>(null)
+  const [pendingActionId, setPendingActionId] = useState<string | null>(null)
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -156,6 +160,30 @@ export default function AdminUsersPage() {
     a.click()
     URL.revokeObjectURL(url)
   }
+
+  const handleToggleBan = useCallback(async (userId: string, currentStatus: string | null) => {
+    const willBan = currentStatus !== 'banned'
+    const action = willBan ? 'ban' : 'unban'
+    if (willBan && !confirm('Confirmer la desactivation de ce compte ?')) return
+    setPendingActionId(userId)
+    try {
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action }),
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err?.error ?? 'Erreur')
+      }
+      toast.success(willBan ? 'Compte desactive' : 'Compte reactive')
+      await fetchUsers()
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Erreur')
+    } finally {
+      setPendingActionId(null)
+    }
+  }, [fetchUsers])
 
   const SortIcon = ({ column }: { column: string }) => {
     if (sortBy !== column) return <ArrowUpDown className="h-3 w-3 text-white/20" />
@@ -364,6 +392,7 @@ export default function AdminUsersPage() {
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-1">
                           <button
+                            onClick={() => setViewingUserId(user.id)}
                             className="p-1.5 rounded-lg text-white/30 hover:text-amber-400 hover:bg-amber-500/10 transition-colors"
                             data-testid={`admin-user-view-${user.id}`}
                             title="Voir le profil"
@@ -371,9 +400,16 @@ export default function AdminUsersPage() {
                             <Eye className="h-4 w-4" />
                           </button>
                           <button
-                            className="p-1.5 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            onClick={() => handleToggleBan(user.id, user.subscription_status)}
+                            disabled={pendingActionId === user.id}
+                            className={cn(
+                              'p-1.5 rounded-lg transition-colors disabled:opacity-40',
+                              user.subscription_status === 'banned'
+                                ? 'text-red-400 bg-red-500/10'
+                                : 'text-white/30 hover:text-red-400 hover:bg-red-500/10'
+                            )}
                             data-testid={`admin-user-disable-${user.id}`}
-                            title="Desactiver le compte"
+                            title={user.subscription_status === 'banned' ? 'Reactiver le compte' : 'Desactiver le compte'}
                           >
                             <Ban className="h-4 w-4" />
                           </button>
@@ -431,6 +467,12 @@ export default function AdminUsersPage() {
           </div>
         )}
       </GoldCard>
+
+      <UserDetailModal
+        userId={viewingUserId}
+        open={viewingUserId !== null}
+        onClose={() => setViewingUserId(null)}
+      />
     </div>
   )
 }
