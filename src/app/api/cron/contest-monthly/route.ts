@@ -3,9 +3,10 @@ import { createServiceClient } from '@/lib/supabase'
 import Stripe from 'stripe'
 
 const CRON_SECRET = process.env.CRON_SECRET
-const MONTHLY_POOL_PCT = 0.03
+const MONTHLY_POOL_PCT = 0.04 // 4% du CA
 const MONTHLY_MIN = 50
-const MONTHLY_SPLIT = [0.60, 0.25, 0.15]
+// Distribution: 1er=1.2%, 2eme=0.8%, 3eme=0.6%, 4eme=0.4%, 5-10eme=0.2% each = 1.0%
+const PRIZE_DISTRIBUTION = [0.30, 0.20, 0.15, 0.10, 0.05, 0.05, 0.05, 0.05, 0.025, 0.025]
 
 export async function GET(request: Request) {
   if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
@@ -30,10 +31,10 @@ export async function GET(request: Request) {
         .filter((c) => c.status === 'succeeded')
         .reduce((sum, c) => sum + c.amount, 0) / 100
     } catch {
-      // Stripe unreachable — continue with 0 revenue
+      // Stripe unreachable — continue with 0
     }
 
-    // 2. Close previous monthly contest
+    // 2. Close previous monthly contest (TIRAGE = random)
     const { data: prevContest } = await supabase
       .from('contests')
       .select('*')
@@ -47,81 +48,110 @@ export async function GET(request: Request) {
       const carriedOver = prevContest.carried_over_amount ?? 0
       const rawPool = monthlyRevenue * MONTHLY_POOL_PCT + carriedOver
 
-      const { data: entries } = await supabase
-        .from('contest_entries')
+      // Get lottery tickets for this draw
+      const { data: tickets } = await supabase
+        .from('lottery_tickets')
         .select('user_id')
-        .eq('contest_id', prevContest.id)
+        .eq('draw_id', prevContest.id)
 
-      if (entries && entries.length >= 3 && rawPool >= MONTHLY_MIN) {
-        // Pick 3 unique winners (weighted random)
-        const shuffled = [...entries].sort(() => Math.random() - 0.5)
-        const uniqueWinners: string[] = []
-        for (const e of shuffled) {
-          if (!uniqueWinners.includes(e.user_id)) {
-            uniqueWinners.push(e.user_id)
-          }
-          if (uniqueWinners.length >= 3) break
-        }
+      // Fallback to contest entries if no lottery tickets
+      const entries = tickets && tickets.length > 0
+        ? tickets
+        : (await supabase
+            .from('contest_entries')
+            .select('user_id')
+            .eq('contest_id', prevContest.id)
+          ).data ?? []
 
-        const rankings = []
-        for (let i = 0; i < uniqueWinners.length; i++) {
-          const winnerId = uniqueWinners[i]
-          const prizeAmount = Math.round(rawPool * MONTHLY_SPLIT[i] * 100) / 100
+      const uniqueUserIds = [...new Set(entries.map(e => e.user_id))]
+
+      if (uniqueUserIds.length >= 3 && rawPool >= MONTHLY_MIN) {
+        // Random tirage — shuffle and pick 10
+        const shuffled = [...uniqueUserIds].sort(() => Math.random() - 0.5)
+        const winnerCount = Math.min(10, shuffled.length)
+        const winnerIds = shuffled.slice(0, winnerCount)
+
+        const rankings: Array<{ user_id: string; name: string; prize: number; rank: number; tickets: number }> = []
+        const amounts: number[] = []
+
+        for (let i = 0; i < winnerCount; i++) {
+          const distPct = PRIZE_DISTRIBUTION[i] ?? PRIZE_DISTRIBUTION[PRIZE_DISTRIBUTION.length - 1]
+          const prize = Math.round(rawPool * distPct * 100) / 100
 
           const { data: profile } = await supabase
             .from('profiles')
-            .select('name, email')
-            .eq('id', winnerId)
+            .select('name, email, wallet_balance')
+            .eq('id', winnerIds[i])
             .single()
 
           // Credit wallet
-          const { data: wallet } = await supabase
-            .from('wallets')
-            .select('balance, total_earned')
-            .eq('user_id', winnerId)
-            .single()
+          await supabase
+            .from('profiles')
+            .update({ wallet_balance: (profile?.wallet_balance ?? 0) + prize })
+            .eq('id', winnerIds[i])
 
-          if (wallet) {
-            await supabase
-              .from('wallets')
-              .update({
-                balance: (wallet.balance ?? 0) + prizeAmount,
-                total_earned: (wallet.total_earned ?? 0) + prizeAmount,
-              })
-              .eq('user_id', winnerId)
-          } else {
-            await supabase.from('wallets').insert({
-              user_id: winnerId,
-              balance: prizeAmount,
-              total_earned: prizeAmount,
-            })
-          }
-
-          await supabase.from('contest_results').insert({
-            contest_id: prevContest.id,
-            user_id: winnerId,
+          // Record lottery winner
+          await supabase.from('lottery_winners').insert({
+            draw_id: prevContest.id,
+            user_id: winnerIds[i],
             rank: i + 1,
-            prize_amount: prizeAmount,
+            amount_won: prize,
           })
 
+          // Notify winner
+          await supabase.from('user_notifications').insert({
+            user_id: winnerIds[i],
+            type: 'lottery_win',
+            title: `Tu as gagne au tirage mensuel !`,
+            message: `Place ${i + 1} — ${prize.toFixed(2)} EUR credites sur ton wallet !`,
+          })
+
+          const userTickets = entries.filter(e => e.user_id === winnerIds[i]).length
           rankings.push({
-            user_id: winnerId,
-            name: profile?.name ?? profile?.email ?? 'Anonyme',
-            score: entries.filter((e) => e.user_id === winnerId).length,
-            prize: prizeAmount,
+            user_id: winnerIds[i],
+            name: profile?.name ?? profile?.email ?? 'Createur',
+            prize,
             rank: i + 1,
+            tickets: userTickets,
           })
+          amounts.push(prize)
         }
 
+        // Save contest results
+        await supabase.from('contest_results').insert({
+          period: prevContest.period_label,
+          type: 'monthly',
+          winners: winnerIds.map((id, i) => ({ user_id: id, rank: i + 1, name: rankings[i].name })),
+          amounts,
+          total_pool: rawPool,
+        })
+
+        // Pool transaction
+        await supabase.from('pool_transactions').insert({
+          pool_type: 'reward',
+          amount: amounts.reduce((a, b) => a + b, 0),
+          direction: 'out',
+          reason: 'tirage_payout',
+          metadata: { contest_id: prevContest.id, type: 'monthly' },
+        })
+
+        // Close contest
         await supabase
           .from('contests')
           .update({
             status: 'completed',
             prize_pool_amount: rawPool,
-            winner_ids: uniqueWinners,
+            winner_ids: winnerIds,
             rankings,
           })
           .eq('id', prevContest.id)
+
+        // Update lottery_draws status
+        await supabase
+          .from('lottery_draws')
+          .update({ status: 'completed', pool_amount: rawPool })
+          .eq('id', prevContest.id)
+
       } else if (rawPool < MONTHLY_MIN) {
         await supabase
           .from('contests')
@@ -132,7 +162,7 @@ export async function GET(request: Request) {
         return NextResponse.json({
           action: 'carried_over',
           amount: rawPool,
-          reason: `Pool ${rawPool.toFixed(2)}€ < minimum ${MONTHLY_MIN}€`,
+          reason: `Pool ${rawPool.toFixed(2)} EUR < minimum ${MONTHLY_MIN} EUR`,
         })
       } else {
         await supabase
@@ -142,10 +172,15 @@ export async function GET(request: Request) {
       }
     }
 
-    // 3. Create new monthly contest
+    // 3. Create new monthly contest + lottery draw
     await createNextMonthlyContest(supabase, now, 0)
 
-    return NextResponse.json({ status: 'ok', monthlyRevenue, pool: monthlyRevenue * MONTHLY_POOL_PCT })
+    return NextResponse.json({
+      status: 'ok',
+      monthlyRevenue,
+      pool: monthlyRevenue * MONTHLY_POOL_PCT,
+      winners: 10,
+    })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
     return NextResponse.json({ error: message }, { status: 500 })
@@ -157,8 +192,8 @@ async function createNextMonthlyContest(
   now: Date,
   carriedOver: number
 ) {
-  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1)
-  endOfMonth.setHours(12, 0, 0, 0)
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+  endOfMonth.setHours(23, 59, 0, 0)
 
   const monthNames = ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
 
@@ -170,6 +205,13 @@ async function createNextMonthlyContest(
     prize_pool_amount: 0,
     carried_over_amount: carriedOver,
     status: 'open',
+  })
+
+  // Create corresponding lottery draw
+  await supabase.from('lottery_draws').insert({
+    draw_date: endOfMonth.toISOString(),
+    pool_amount: 0,
+    status: 'upcoming',
   })
 
   // Auto-enter all users
@@ -191,6 +233,24 @@ async function createNextMonthlyContest(
         source: 'signup',
       }))
       await supabase.from('contest_entries').insert(entries)
+
+      // Give each user 1 inscription ticket
+      const { data: draw } = await supabase
+        .from('lottery_draws')
+        .select('id')
+        .eq('status', 'upcoming')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single()
+
+      if (draw) {
+        const ticketEntries = profiles.map((p) => ({
+          user_id: p.id,
+          source: 'inscription' as const,
+          draw_id: draw.id,
+        }))
+        await supabase.from('lottery_tickets').insert(ticketEntries)
+      }
     }
   }
 }

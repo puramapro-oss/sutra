@@ -28,6 +28,12 @@ import {
   Handshake,
   ListVideo,
   Sparkles,
+  Gift,
+  ShoppingBag,
+  Medal,
+  Heart,
+  Ticket,
+  MessageCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -127,6 +133,30 @@ const mainNav: NavItem[] = [
     href: '/wallet',
     icon: Wallet,
     testId: 'sidebar-wallet',
+  },
+  {
+    label: 'Boutique',
+    href: '/boutique',
+    icon: ShoppingBag,
+    testId: 'sidebar-boutique',
+  },
+  {
+    label: 'Achievements',
+    href: '/achievements',
+    icon: Medal,
+    testId: 'sidebar-achievements',
+  },
+  {
+    label: 'Communaute',
+    href: '/community',
+    icon: Heart,
+    testId: 'sidebar-community',
+  },
+  {
+    label: 'Tirage',
+    href: '/lottery',
+    icon: Ticket,
+    testId: 'sidebar-lottery',
   },
   {
     label: 'Parametres',
