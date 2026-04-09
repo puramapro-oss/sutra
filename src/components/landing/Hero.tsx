@@ -154,11 +154,8 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
+        {/* Headline (no fade-in to keep LCP fast) */}
+        <h1
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6"
           style={{ fontFamily: 'var(--font-display)' }}
         >
@@ -172,7 +169,7 @@ export default function Hero() {
           >
             en quelques minutes
           </span>
-        </motion.h1>
+        </h1>
 
         {/* Subtext */}
         <motion.p

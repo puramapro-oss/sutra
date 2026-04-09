@@ -21,6 +21,7 @@ const PUBLIC_ROUTES = [
   "/partenariat",
   "/partenaires",
   "/impact",
+  "/contact",
 ];
 
 const PUBLIC_PREFIXES = [
