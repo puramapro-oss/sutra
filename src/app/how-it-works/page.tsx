@@ -78,7 +78,7 @@ export default function HowItWorksPage() {
           <Link
             href="/"
             className="text-xl font-bold tracking-tight"
-            style={{ fontFamily: 'var(--font-orbitron)' }}
+            style={{ fontFamily: 'var(--font-display)' }}
             data-testid="header-logo"
           >
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -110,7 +110,7 @@ export default function HowItWorksPage() {
           </span>
           <h1
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6"
-            style={{ fontFamily: 'var(--font-orbitron)' }}
+            style={{ fontFamily: 'var(--font-display)' }}
           >
             Comment ca{' '}
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
