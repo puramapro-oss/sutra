@@ -32,6 +32,14 @@ export interface Profile {
   onboarding_completed: boolean
   tutorial_completed: boolean
   monthly_video_count: number
+  purama_points: number
+  daily_questions: number
+  xp: number
+  level: number
+  streak: number
+  full_name: string | null
+  awakening_level: number
+  affirmations_seen: number
   created_at: string
   updated_at: string
 }

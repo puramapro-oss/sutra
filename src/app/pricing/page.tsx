@@ -63,6 +63,20 @@ export default function PricingPage() {
         </div>
       </nav>
 
+      {/* Financer banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-8">
+        <Link
+          href="/financer"
+          className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium hover:bg-green-500/15 transition-colors"
+          data-testid="financer-banner"
+        >
+          <span>💰</span>
+          <span>La plupart de nos clients ne paient rien grace aux aides.</span>
+          <span className="underline underline-offset-2 font-semibold">Verifier mon eligibilite</span>
+          <span>→</span>
+        </Link>
+      </div>
+
       {/* Pricing */}
       <PricingSection />
 

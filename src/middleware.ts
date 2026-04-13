@@ -22,6 +22,9 @@ const PUBLIC_ROUTES = [
   "/partenaires",
   "/impact",
   "/contact",
+  "/financer",
+  "/confidentialite",
+  "/devenir-influenceur",
 ];
 
 const PUBLIC_PREFIXES = [

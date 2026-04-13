@@ -16,8 +16,21 @@ SUTRA V3 — CLAUDE.md V3 ULTIMATE full feature set
 - [x] Phase 12: Email sequences CRON (10 types) + Streak multiplier CRON
 - [x] Phase 13: Notification settings IA adaptive + Confetti component
 - [x] Phase 14: Build 0 erreur, tsc 0 erreur
-- [ ] Phase 15: Deploy Vercel + verify live
-- [ ] Phase 16: Playwright E2E tests
+- [x] Phase 15: Deploy Vercel + verify live (sutra.purama.dev → 200, /api/status → 200)
+- [x] Phase 16: Playwright E2E tests (846 passed, 0 failed, 3 viewports: 1920/768/375)
+- [x] Phase 17: P7 MOBILE — Expo iOS+Android (34 screens, 10 Maestro tests, icons, store config 16 langues, EAS workflows)
+- [x] Phase 18: /financer wizard 4 etapes + 45 aides seed DB + bandeau pricing + API
+- [x] Phase 19: Couche spirituelle (SpiritualLayer, SubconsciousEngine, useAwakening, useEmpowerment, awakening.ts, 30 affirmations DB)
+- [x] Phase 20: Pages manquantes (/confidentialite RGPD, /invoices factures, /devenir-influenceur, sidebar Factures+Aide)
+- [x] Phase 21: /classement-points page (top 50 users, rank card, levels, streaks)
+- [x] Phase 22: Popup conversion (triggers: credits low, 3rd login, pending earnings, 7j cooldown, 1/session)
+- [x] Phase 23: Chatbot SAV (deja existant — /help + /api/chatbot complet)
+- [x] Phase 24: Daily Gift animation coffre (tremble + glow + streak progress dots)
+- [x] Phase 25: ShareableCard composant (story 9:16, 6 platforms, native share, +300pts)
+- [x] Phase 26: i18n 16 langues (22 sections/langue, locale switcher settings, API /api/locale)
+- [x] Phase 27: QA 21 SIM — Playwright E2E (873 passed, 0 failed, 12 skipped, 3 viewports)
+- [x] Phase 28: Lighthouse (landing 84, /pricing 90, /financer 92, accessibility 90-100, SEO 92-100)
+- [x] Phase 29: P7 Mobile Expo update — 5 new screens (financer, invoices, classement-points, guide, auto), 39 tsx total, 12 Maestro tests, GitHub Actions workflow, tsc 0, export 961 modules
 
 ## Decisions
 - Contest weekly: 10 winners, score-based (parrainages×10 + abos×50 + entries×5)
