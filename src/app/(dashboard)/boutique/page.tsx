@@ -169,18 +169,38 @@ export default function BoutiquePage() {
         </div>
       </div>
 
-      {/* Daily Gift */}
+      {/* Daily Gift — Animated Chest */}
       {dailyGift && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="glass rounded-2xl p-6 border border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-violet-500/5"
+          className="relative glass rounded-2xl p-6 border border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-violet-500/5 overflow-hidden"
         >
-          <div className="flex items-center justify-between">
+          {/* Glow effect behind chest */}
+          {dailyGift.canOpen && (
+            <div className="absolute top-1/2 left-8 -translate-y-1/2 w-24 h-24 rounded-full bg-amber-500/20 blur-2xl animate-pulse pointer-events-none" />
+          )}
+          <div className="relative flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
-                <Gift className="w-7 h-7 text-white" />
-              </div>
+              <motion.div
+                animate={dailyGift.canOpen ? {
+                  rotate: [-2, 2, -2],
+                  scale: [1, 1.05, 1],
+                } : {}}
+                transition={{
+                  repeat: Infinity,
+                  duration: 1.5,
+                  ease: "easeInOut",
+                }}
+                className={cn(
+                  "w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg",
+                  dailyGift.canOpen
+                    ? "bg-gradient-to-br from-amber-400 via-amber-500 to-orange-600 shadow-amber-500/30"
+                    : "bg-gradient-to-br from-white/10 to-white/5"
+                )}
+              >
+                <Gift className={cn("w-8 h-8", dailyGift.canOpen ? "text-white" : "text-white/40")} />
+              </motion.div>
               <div>
                 <h3 className="text-lg font-bold text-white">Coffre Quotidien</h3>
                 <p className="text-white/50 text-sm">
@@ -188,25 +208,42 @@ export default function BoutiquePage() {
                     ? 'Ton cadeau du jour t\'attend !'
                     : `Reviens demain ! Serie : ${dailyGift.streakCount} jours`}
                 </p>
+                {dailyGift.streakCount >= 7 && (
+                  <div className="flex items-center gap-1.5 text-amber-400/80 text-xs mt-1">
+                    <Zap className="w-3 h-3" />
+                    Serie {dailyGift.streakCount}j — bonus garanti
+                  </div>
+                )}
               </div>
             </div>
-            <Button
-              onClick={handleOpenGift}
-              disabled={!dailyGift.canOpen || openingGift}
-              className={cn(
-                'px-6',
-                dailyGift.canOpen
-                  ? 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700'
-                  : 'opacity-50 cursor-not-allowed'
-              )}
-            >
-              {openingGift ? <Loader2 className="w-4 h-4 animate-spin" /> : dailyGift.canOpen ? 'Ouvrir' : 'Ouvert'}
-            </Button>
+            <motion.div whileTap={{ scale: 0.95 }}>
+              <Button
+                onClick={handleOpenGift}
+                disabled={!dailyGift.canOpen || openingGift}
+                className={cn(
+                  'px-6 min-w-[100px]',
+                  dailyGift.canOpen
+                    ? 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-lg shadow-amber-500/20'
+                    : 'opacity-50 cursor-not-allowed'
+                )}
+              >
+                {openingGift ? <Loader2 className="w-4 h-4 animate-spin" /> : dailyGift.canOpen ? 'Ouvrir ✨' : 'Ouvert'}
+              </Button>
+            </motion.div>
           </div>
-          {dailyGift.streakCount >= 7 && (
-            <div className="mt-3 flex items-center gap-2 text-amber-400/80 text-sm">
-              <Zap className="w-4 h-4" />
-              Serie de {dailyGift.streakCount} jours — bonus garanti !
+          {/* Streak progress dots */}
+          {dailyGift.streakCount > 0 && dailyGift.streakCount < 7 && (
+            <div className="mt-4 flex items-center gap-1.5">
+              {Array.from({ length: 7 }).map((_, i) => (
+                <div
+                  key={i}
+                  className={cn(
+                    "h-1.5 flex-1 rounded-full transition-colors",
+                    i < dailyGift.streakCount ? "bg-amber-400" : "bg-white/10"
+                  )}
+                />
+              ))}
+              <span className="text-[10px] text-white/30 ml-1">{dailyGift.streakCount}/7</span>
             </div>
           )}
         </motion.div>

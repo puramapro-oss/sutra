@@ -17,6 +17,21 @@ const TutorialOverlay = dynamic(
   { ssr: false }
 )
 
+const SpiritualLayer = dynamic(
+  () => import('@/components/shared/SpiritualLayer'),
+  { ssr: false }
+)
+
+const SubconsciousEngine = dynamic(
+  () => import('@/components/shared/SubconsciousEngine'),
+  { ssr: false }
+)
+
+const ConversionPopup = dynamic(
+  () => import('@/components/shared/ConversionPopup'),
+  { ssr: false }
+)
+
 export default function DashboardLayout({
   children,
 }: {
@@ -77,6 +92,15 @@ export default function DashboardLayout({
 
       {/* Tutorial overlay - first login only */}
       <TutorialOverlay />
+
+      {/* Spiritual layer — affirmation + quotes */}
+      <SpiritualLayer />
+
+      {/* Subconscious engine — micro-pauses + subliminals */}
+      <SubconsciousEngine />
+
+      {/* Conversion popup — triggers: credits low, 3rd login, pending earnings */}
+      <ConversionPopup />
     </div>
   )
 }

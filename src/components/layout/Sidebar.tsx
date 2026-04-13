@@ -21,6 +21,7 @@ import {
   TrendingUp,
   Settings,
   Crown,
+  FileText,
   ChevronLeft,
   ChevronRight,
   BookOpen,
@@ -163,6 +164,24 @@ const mainNav: NavItem[] = [
     href: '/settings',
     icon: Settings,
     testId: 'sidebar-settings',
+  },
+  {
+    label: 'Top Points',
+    href: '/classement-points',
+    icon: TrendingUp,
+    testId: 'sidebar-classement-points',
+  },
+  {
+    label: 'Factures',
+    href: '/invoices',
+    icon: FileText,
+    testId: 'sidebar-invoices',
+  },
+  {
+    label: 'Aide',
+    href: '/aide',
+    icon: MessageCircle,
+    testId: 'sidebar-aide',
   },
   {
     label: 'Guide',

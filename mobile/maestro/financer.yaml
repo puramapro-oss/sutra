@@ -1,0 +1,10 @@
+appId: dev.purama.sutra
+---
+- launchApp
+- assertVisible: "Financement"
+- assertVisible: "Particulier"
+- assertVisible: "Entreprise"
+- assertVisible: "Association"
+- assertVisible: "Etudiant"
+- tapOn: "Particulier"
+- assertVisible: "Selectionne ton profil"

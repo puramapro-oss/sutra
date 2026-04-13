@@ -668,6 +668,52 @@ export default function SettingsPage() {
                   </CardContent>
                 </Card>
 
+                <Card data-testid="settings-language">
+                  <CardContent className="space-y-4">
+                    <h3 className="text-sm font-semibold text-white">Langue</h3>
+                    <select
+                      data-testid="language-select"
+                      defaultValue={typeof document !== 'undefined' ? (document.cookie.match(/sutra_locale=([^;]+)/)?.[1] || 'fr') : 'fr'}
+                      onChange={async (e) => {
+                        try {
+                          await fetch('/api/locale', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ locale: e.target.value }),
+                          })
+                          window.location.reload()
+                        } catch {
+                          toast.error('Erreur lors du changement de langue')
+                        }
+                      }}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/25 outline-none transition-colors appearance-none"
+                    >
+                      {[
+                        { code: 'fr', label: 'Francais' },
+                        { code: 'en', label: 'English' },
+                        { code: 'es', label: 'Espanol' },
+                        { code: 'de', label: 'Deutsch' },
+                        { code: 'it', label: 'Italiano' },
+                        { code: 'pt', label: 'Portugues' },
+                        { code: 'ar', label: 'العربية' },
+                        { code: 'zh', label: '中文' },
+                        { code: 'ja', label: '日本語' },
+                        { code: 'ko', label: '한국어' },
+                        { code: 'hi', label: 'हिन्दी' },
+                        { code: 'ru', label: 'Русский' },
+                        { code: 'tr', label: 'Turkce' },
+                        { code: 'nl', label: 'Nederlands' },
+                        { code: 'pl', label: 'Polski' },
+                        { code: 'sv', label: 'Svenska' },
+                      ].map((lang) => (
+                        <option key={lang.code} value={lang.code} className="bg-[#0A0A0F]">
+                          {lang.label}
+                        </option>
+                      ))}
+                    </select>
+                  </CardContent>
+                </Card>
+
                 <Card data-testid="settings-brandkit">
                   <CardContent className="space-y-4">
                     <h3 className="text-sm font-semibold text-white">Brand Kit</h3>
