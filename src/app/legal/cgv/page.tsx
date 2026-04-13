@@ -21,7 +21,7 @@ export default function CGVPage() {
     <main className="min-h-screen bg-[#06050e] text-white">
       <nav className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#06050e]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-orbitron)' }}>
+          <Link href="/" className="text-xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">SUTRA</span>
           </Link>
           <Link href="/legal" className="text-sm text-white/40 hover:text-white/60 transition-colors">Retour</Link>
@@ -31,7 +31,7 @@ export default function CGVPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <div className="mb-12">
           <span className="inline-block text-sm font-semibold text-violet-400 uppercase tracking-widest mb-4">Legal</span>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-orbitron)' }}>
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-display)' }}>
             Conditions Generales de <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Vente</span>
           </h1>
           <p className="text-white/40 text-sm">Derniere mise a jour : 2 avril 2026</p>

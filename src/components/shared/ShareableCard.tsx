@@ -194,7 +194,7 @@ export default function ShareableCard({
               <div className="absolute bottom-8 left-0 right-0 text-center">
                 <p
                   className="text-white/40 text-xs font-bold tracking-[0.3em] uppercase"
-                  style={{ fontFamily: "var(--font-orbitron)" }}
+                  style={{ fontFamily: "var(--font-display)" }}
                 >
                   SUTRA
                 </p>

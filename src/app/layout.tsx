@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Orbitron, Exo_2 } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -8,18 +8,11 @@ import { getLocale, getMessages } from "next-intl/server";
 import CookieBanner from "@/components/shared/CookieBanner";
 import "./globals.css";
 
-const orbitron = Orbitron({
-  subsets: ["latin"],
-  variable: "--font-orbitron",
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-const exo2 = Exo_2({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-exo2",
+  variable: "--font-space-grotesk",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const APP_NAME = "SUTRA";
@@ -117,7 +110,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${orbitron.variable} ${exo2.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-dvh flex flex-col bg-[#06050e] text-[#f8fafc]">

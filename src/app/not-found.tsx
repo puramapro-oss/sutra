@@ -11,13 +11,13 @@ export default function NotFound() {
     <main className="min-h-dvh flex items-center justify-center px-4">
       <div className="text-center max-w-md">
         <div className="relative mb-8 inline-block">
-          <span className="font-[family-name:var(--font-orbitron)] text-[8rem] font-black leading-none gradient-text select-none">
+          <span className="font-[family-name:var(--font-display)] text-[8rem] font-black leading-none gradient-text select-none">
             404
           </span>
           <div className="absolute inset-0 blur-3xl opacity-20 bg-[var(--primary)] rounded-full" />
         </div>
 
-        <h1 className="font-[family-name:var(--font-orbitron)] text-2xl font-bold text-[var(--foreground)] mb-3">
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold text-[var(--foreground)] mb-3">
           Signal perdu dans la galaxie
         </h1>
 

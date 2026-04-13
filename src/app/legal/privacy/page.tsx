@@ -43,7 +43,7 @@ export default function PrivacyPage() {
           <Link
             href="/"
             className="text-xl font-bold tracking-tight"
-            style={{ fontFamily: 'var(--font-orbitron)' }}
+            style={{ fontFamily: 'var(--font-display)' }}
             data-testid="header-logo"
           >
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
           </span>
           <h1
             className="text-3xl sm:text-4xl font-bold text-white mb-4"
-            style={{ fontFamily: 'var(--font-orbitron)' }}
+            style={{ fontFamily: 'var(--font-display)' }}
           >
             Politique de confidentialite
           </h1>

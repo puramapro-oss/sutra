@@ -15,7 +15,7 @@ export default function ConfidentialitePage() {
           <Link
             href="/"
             className="text-xl font-bold"
-            style={{ fontFamily: "var(--font-orbitron)" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
               SUTRA

@@ -403,7 +403,7 @@ export default function HelpPage() {
           <Link
             href="/"
             className="text-xl font-bold tracking-tight"
-            style={{ fontFamily: 'var(--font-orbitron)' }}
+            style={{ fontFamily: 'var(--font-display)' }}
             data-testid="header-logo"
           >
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -436,7 +436,7 @@ export default function HelpPage() {
           </span>
           <h1
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4"
-            style={{ fontFamily: 'var(--font-orbitron)' }}
+            style={{ fontFamily: 'var(--font-display)' }}
           >
             Comment pouvons-nous{' '}
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -468,7 +468,7 @@ export default function HelpPage() {
           >
             <h2
               className="text-2xl sm:text-3xl font-bold text-white mb-3"
-              style={{ fontFamily: 'var(--font-orbitron)' }}
+              style={{ fontFamily: 'var(--font-display)' }}
             >
               Guide de demarrage
             </h2>
@@ -529,7 +529,7 @@ export default function HelpPage() {
       <section className="relative py-16 sm:py-20 border-t border-white/[0.04]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-16">
           <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3" style={{ fontFamily: 'var(--font-orbitron)' }}>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3" style={{ fontFamily: 'var(--font-display)' }}>
               Guides complets
             </h2>
             <p className="text-white/50">Tout ce que tu dois savoir pour maitriser SUTRA</p>
@@ -616,7 +616,7 @@ export default function HelpPage() {
           >
             <h2
               className="text-2xl sm:text-3xl font-bold text-white mb-3"
-              style={{ fontFamily: 'var(--font-orbitron)' }}
+              style={{ fontFamily: 'var(--font-display)' }}
             >
               Questions{' '}
               <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
@@ -693,7 +693,7 @@ export default function HelpPage() {
           >
             <h2
               className="text-2xl sm:text-3xl font-bold text-white mb-3"
-              style={{ fontFamily: 'var(--font-orbitron)' }}
+              style={{ fontFamily: 'var(--font-display)' }}
             >
               Contacte-nous
             </h2>

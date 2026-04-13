@@ -35,6 +35,8 @@ import {
   Heart,
   Ticket,
   MessageCircle,
+  Wind,
+  BookHeart,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -176,6 +178,18 @@ const mainNav: NavItem[] = [
     href: '/invoices',
     icon: FileText,
     testId: 'sidebar-invoices',
+  },
+  {
+    label: 'Respiration',
+    href: '/breathe',
+    icon: Wind,
+    testId: 'sidebar-breathe',
+  },
+  {
+    label: 'Gratitude',
+    href: '/gratitude',
+    icon: BookHeart,
+    testId: 'sidebar-gratitude',
   },
   {
     label: 'Aide',

@@ -41,7 +41,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           </div>
         </div>
 
-        <h1 className="font-[family-name:var(--font-orbitron)] text-2xl font-bold text-[var(--foreground)] mb-3">
+        <h1 className="font-[family-name:var(--font-display)] text-2xl font-bold text-[var(--foreground)] mb-3">
           Perturbation detectee
         </h1>
 
