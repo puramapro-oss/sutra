@@ -29,7 +29,7 @@ interface StatusResponse {
   message?: string
 }
 
-const serviceLabels: Record<string, { label: string; icon: React.ElementType }> = {
+const serviceLabels: Record<string, { label: string; icon: React.ComponentType<{ className?: string }> }> = {
   supabase: { label: 'Base de donnees', icon: Database },
   stripe: { label: 'Paiements (Stripe)', icon: CreditCard },
   elevenlabs: { label: 'Synthese vocale', icon: Mic },
@@ -37,7 +37,7 @@ const serviceLabels: Record<string, { label: string; icon: React.ElementType }> 
   api: { label: 'API SUTRA', icon: Globe },
 }
 
-function getOverallLabel(status: string): { label: string; color: string; bgColor: string; icon: React.ElementType } {
+function getOverallLabel(status: string): { label: string; color: string; bgColor: string; icon: React.ComponentType<{ className?: string }> } {
   switch (status) {
     case 'ok':
       return {

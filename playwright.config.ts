@@ -15,7 +15,8 @@ export default defineConfig({
     timezoneId: 'Europe/Paris',
   },
   projects: [
-    { name: 'Desktop Chrome', use: { ...devices['Desktop Chrome'] } },
-    { name: 'iPhone 14', use: { ...devices['iPhone 14'] } },
+    { name: 'Desktop 1920', use: { ...devices['Desktop Chrome'], viewport: { width: 1920, height: 1080 } } },
+    { name: 'Tablet 768', use: { ...devices['Desktop Chrome'], viewport: { width: 768, height: 1024 } } },
+    { name: 'Mobile 375', use: { ...devices['iPhone 14'] } },
   ],
 })

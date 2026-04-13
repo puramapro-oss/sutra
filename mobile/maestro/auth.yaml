@@ -1,0 +1,43 @@
+appId: dev.purama.sutra
+---
+- launchApp
+- assertVisible: "SUTRA"
+- assertVisible: "Se connecter"
+
+# Test login form
+- tapOn:
+    id: "login-email"
+- inputText: "test@example.com"
+- tapOn:
+    id: "login-password"
+- inputText: "password123"
+- tapOn:
+    id: "login-submit"
+
+# Test Google OAuth button exists
+- scrollUntilVisible:
+    element: "Continuer avec Google"
+    direction: DOWN
+- assertVisible: "Continuer avec Google"
+
+# Test signup navigation
+- scrollUntilVisible:
+    element: "S'inscrire"
+    direction: DOWN
+- tapOn: "S'inscrire"
+- assertVisible: "Rejoins SUTRA"
+- assertVisible:
+    id: "signup-name"
+- assertVisible:
+    id: "signup-email"
+- assertVisible:
+    id: "signup-password"
+
+# Test forgot password
+- back
+- tapOn: "Mot de passe oublié ?"
+- assertVisible: "Mot de passe oublié"
+- assertVisible:
+    id: "forgot-email"
+
+- takeScreenshot: "auth_flow"

@@ -28,7 +28,7 @@ interface PointsData {
   lifetime_earned: number
 }
 
-const categoryIcons: Record<string, React.ElementType> = {
+const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   reduction: Tag,
   subscription: Star,
   ticket: Ticket,

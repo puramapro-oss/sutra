@@ -1,0 +1,17 @@
+appId: dev.purama.sutra
+---
+- launchApp
+- tapOn: "Profil"
+- tapOn: "Parrainage"
+
+# Check referral screen
+- assertVisible: "Parrainage"
+- assertVisible: "Ton code"
+- assertVisible: "Partager"
+
+# Check tier progression
+- scrollUntilVisible:
+    element: "Progression"
+    direction: DOWN
+
+- takeScreenshot: "referral_screen"

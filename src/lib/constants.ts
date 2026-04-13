@@ -29,7 +29,7 @@ export const PLAN_PRICES = {
   empire: { monthly: 99, annual: 950 },
 }
 
-export const WALLET_MIN_WITHDRAWAL = 50
+export const WALLET_MIN_WITHDRAWAL = 5
 export const WALLET_MAX_WITHDRAWAL = 1000
 
 export const REFERRAL_COMMISSIONS = {

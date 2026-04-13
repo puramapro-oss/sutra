@@ -160,13 +160,19 @@ export async function middleware(request: NextRequest) {
     }
 
     if (isInfluencerRoute(pathname)) {
+      const { data: influencerProfile } = await supabase
+        .from("influencer_profiles")
+        .select("id")
+        .eq("user_id", user.id)
+        .single();
+
       const isAuthorized =
-        profile?.is_admin === true &&
-        profile?.email === SUPER_ADMIN_EMAIL;
+        influencerProfile !== null ||
+        (profile?.is_admin === true && profile?.email === SUPER_ADMIN_EMAIL);
 
       if (!isAuthorized) {
         const redirectUrl = request.nextUrl.clone();
-        redirectUrl.pathname = "/dashboard";
+        redirectUrl.pathname = "/devenir-influenceur";
         redirectUrl.search = "";
         return NextResponse.redirect(redirectUrl);
       }

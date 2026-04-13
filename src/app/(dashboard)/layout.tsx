@@ -32,6 +32,11 @@ const ConversionPopup = dynamic(
   { ssr: false }
 )
 
+const CinematicIntro = dynamic(
+  () => import('@/components/shared/CinematicIntro'),
+  { ssr: false }
+)
+
 export default function DashboardLayout({
   children,
 }: {
@@ -101,6 +106,9 @@ export default function DashboardLayout({
 
       {/* Conversion popup — triggers: credits low, 3rd login, pending earnings */}
       <ConversionPopup />
+
+      {/* Cinematic intro — first visit only */}
+      <CinematicIntro />
     </div>
   )
 }

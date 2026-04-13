@@ -1,0 +1,40 @@
+appId: dev.purama.sutra
+---
+- launchApp
+- tapOn: "Créer"
+
+# Step 1: Topic
+- assertVisible: "De quoi parle ta vidéo"
+- tapOn:
+    id: "create-topic"
+- inputText: "Les 5 habitudes des entrepreneurs à succès qui changent tout"
+- tapOn: "Continuer"
+
+# Step 2: Niche
+- assertVisible: "Choisis ta niche"
+- tapOn: "Business"
+- tapOn: "Continuer"
+
+# Step 3: Voice
+- assertVisible: "Choisis la voix"
+- tapOn: "Thomas"
+- tapOn: "Continuer"
+
+# Step 4: Format
+- assertVisible: "Format de la vidéo"
+- tapOn: "9:16"
+- tapOn: "Continuer"
+
+# Step 5: Quality
+- assertVisible: "Qualité vidéo"
+- tapOn: "1080P"
+- tapOn: "Continuer"
+
+# Step 6: Confirm
+- assertVisible: "Récapitulatif"
+- assertVisible: "Business"
+- assertVisible: "Thomas"
+- assertVisible: "9:16"
+- assertVisible: "1080p"
+
+- takeScreenshot: "create_flow"

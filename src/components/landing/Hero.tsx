@@ -1,115 +1,15 @@
 'use client'
 
-import { useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, Users } from 'lucide-react'
+import { Sparkles, ShieldCheck } from 'lucide-react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { cn } from '@/lib/utils'
 
-function ParticleCanvas() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  const animate = useCallback(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    const dpr = window.devicePixelRatio || 1
-    canvas.width = canvas.offsetWidth * dpr
-    canvas.height = canvas.offsetHeight * dpr
-    ctx.scale(dpr, dpr)
-
-    const w = canvas.offsetWidth
-    const h = canvas.offsetHeight
-
-    interface Particle {
-      x: number
-      y: number
-      vx: number
-      vy: number
-      r: number
-      alpha: number
-      color: string
-    }
-
-    const particles: Particle[] = []
-    const count = Math.min(80, Math.floor(w / 15))
-    const colors = ['139,92,246', '168,85,247', '124,58,237', '99,102,241']
-
-    for (let i = 0; i < count; i++) {
-      particles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 2 + 0.5,
-        alpha: Math.random() * 0.5 + 0.1,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      })
-    }
-
-    let animId: number
-
-    function draw() {
-      ctx!.clearRect(0, 0, w, h)
-
-      for (const p of particles) {
-        p.x += p.vx
-        p.y += p.vy
-
-        if (p.x < 0) p.x = w
-        if (p.x > w) p.x = 0
-        if (p.y < 0) p.y = h
-        if (p.y > h) p.y = 0
-
-        ctx!.beginPath()
-        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx!.fillStyle = `rgba(${p.color},${p.alpha})`
-        ctx!.fill()
-      }
-
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < 120) {
-            ctx!.beginPath()
-            ctx!.moveTo(particles[i].x, particles[i].y)
-            ctx!.lineTo(particles[j].x, particles[j].y)
-            ctx!.strokeStyle = `rgba(139,92,246,${0.08 * (1 - dist / 120)})`
-            ctx!.lineWidth = 0.5
-            ctx!.stroke()
-          }
-        }
-      }
-
-      animId = requestAnimationFrame(draw)
-    }
-
-    draw()
-    return () => cancelAnimationFrame(animId)
-  }, [])
-
-  useEffect(() => {
-    const cleanup = animate()
-    const handleResize = () => animate()
-    window.addEventListener('resize', handleResize)
-    return () => {
-      cleanup?.()
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [animate])
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      aria-hidden="true"
-    />
-  )
-}
+const Hero3D = dynamic(() => import('@/components/landing/Hero3D'), {
+  ssr: false,
+  loading: () => <div className="absolute inset-0" />,
+})
 
 export default function Hero() {
   return (
@@ -135,7 +35,7 @@ export default function Hero() {
         }}
       />
 
-      <ParticleCanvas />
+      <Hero3D />
 
       {/* Aurora glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-violet-500/[0.04] blur-[120px] animate-pulse" />
@@ -218,35 +118,15 @@ export default function Hero() {
           </Link>
         </motion.div>
 
-        {/* Social proof */}
+        {/* Reassurance */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex items-center justify-center gap-3"
+          className="flex items-center justify-center gap-2 text-sm text-white/50"
         >
-          <div className="flex -space-x-2">
-            {[
-              'from-violet-400 to-purple-500',
-              'from-fuchsia-400 to-pink-500',
-              'from-indigo-400 to-violet-500',
-              'from-purple-400 to-fuchsia-500',
-            ].map((gradient, i) => (
-              <div
-                key={i}
-                className={cn(
-                  'w-8 h-8 rounded-full border-2 border-[#06050e]',
-                  `bg-gradient-to-br ${gradient}`,
-                  'flex items-center justify-center'
-                )}
-              >
-                <Users className="w-3.5 h-3.5 text-white/80" />
-              </div>
-            ))}
-          </div>
-          <span className="text-sm text-white/50">
-            Rejoins les createurs qui utilisent SUTRA
-          </span>
+          <ShieldCheck className="w-4 h-4 text-violet-400" />
+          <span>Sans carte bancaire — 2 videos offertes</span>
         </motion.div>
       </div>
 

@@ -20,7 +20,7 @@ interface PlanFeature {
 interface Plan {
   id: string
   name: string
-  icon: React.ElementType
+  icon: React.ComponentType<{ className?: string }>
   monthlyPrice: number
   annualPrice: number
   description: string

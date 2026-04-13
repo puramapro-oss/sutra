@@ -1,0 +1,83 @@
+name: Mobile Build & Submit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mobile/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: EAS Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build iOS
+        working-directory: mobile
+        run: eas build --platform ios --profile production --non-interactive
+
+      - name: Build Android
+        working-directory: mobile
+        run: eas build --platform android --profile production --non-interactive
+
+  submit:
+    name: Submit to Stores
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Submit iOS
+        working-directory: mobile
+        run: eas submit --platform ios --profile production --non-interactive --latest
+        continue-on-error: true
+
+      - name: Submit Android
+        working-directory: mobile
+        run: eas submit --platform android --profile production --non-interactive --latest
+        continue-on-error: true
+
+  ota:
+    name: OTA Update
+    if: contains(github.event.head_commit.message, '[ota]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: mobile
+        run: npm ci
+
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Publish OTA Update
+        working-directory: mobile
+        run: eas update --channel production --message "${{ github.event.head_commit.message }}" --non-interactive

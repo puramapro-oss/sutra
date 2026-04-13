@@ -1,0 +1,59 @@
+appId: dev.purama.sutra
+---
+- launchApp
+
+# Assume logged in - check bottom tabs
+- assertVisible: "Accueil"
+- assertVisible: "Créer"
+- assertVisible: "Vidéos"
+- assertVisible: "Communauté"
+- assertVisible: "Profil"
+
+# Navigate through tabs
+- tapOn: "Créer"
+- assertVisible: "Créer une vidéo"
+
+- tapOn: "Vidéos"
+- assertVisible: "Bibliothèque"
+
+- tapOn: "Communauté"
+- assertVisible: "Communauté"
+- assertVisible: "Mur d'amour"
+
+- tapOn: "Profil"
+- assertVisible: "Se déconnecter"
+
+# Navigate to sub-screens from dashboard
+- tapOn: "Accueil"
+- tapOn:
+    id: "nav-notifications"
+- assertVisible: "Notifications"
+- back
+
+- tapOn:
+    id: "nav-settings"
+- assertVisible: "Paramètres"
+- back
+
+# Quick actions
+- tapOn:
+    id: "quick-create"
+- assertVisible: "Créer une vidéo"
+- tapOn: "Accueil"
+
+- tapOn:
+    id: "quick-templates"
+- assertVisible: "Templates"
+- back
+
+- tapOn:
+    id: "quick-autopilot"
+- assertVisible: "Autopilot"
+- back
+
+- tapOn:
+    id: "quick-boutique"
+- assertVisible: "Boutique"
+- back
+
+- takeScreenshot: "navigation_flow"

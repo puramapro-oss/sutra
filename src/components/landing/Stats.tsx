@@ -5,7 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import { Video, Users, Layers, Zap } from 'lucide-react'
 
 interface StatItem {
-  icon: React.ElementType
+  icon: React.ComponentType<{ className?: string }>
   value: number
   suffix: string
   prefix?: string

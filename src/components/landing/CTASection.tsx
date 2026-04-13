@@ -80,8 +80,8 @@ export default function CTASection() {
             </h2>
 
             <p className="text-white/50 text-lg max-w-lg mx-auto mb-8">
-              Rejoins des milliers de createurs qui produisent des videos
-              professionnelles en quelques minutes avec SUTRA.
+              Decris ton sujet, recois une video prete a publier en quelques
+              minutes. Script, voix, visuels et montage — tout est genere par IA.
             </p>
 
             <Link

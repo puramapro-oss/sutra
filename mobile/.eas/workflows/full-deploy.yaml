@@ -1,0 +1,40 @@
+name: Full Deploy — Build, Test & Submit
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "mobile/**"
+
+jobs:
+  build-ios:
+    name: Build iOS
+    type: build
+    params:
+      platform: ios
+      profile: production
+
+  build-android:
+    name: Build Android
+    type: build
+    params:
+      platform: android
+      profile: production
+
+  submit-ios:
+    name: Submit iOS
+    type: submit
+    needs: [build-ios]
+    params:
+      platform: ios
+      profile: production
+      build_id: ${{ jobs.build-ios.output.build_id }}
+
+  submit-android:
+    name: Submit Android
+    type: submit
+    needs: [build-android]
+    params:
+      platform: android
+      profile: production
+      build_id: ${{ jobs.build-android.output.build_id }}

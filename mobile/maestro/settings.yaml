@@ -1,0 +1,36 @@
+appId: dev.purama.sutra
+---
+- launchApp
+- tapOn: "Profil"
+- tapOn: "Paramètres"
+
+# Check settings sections
+- assertVisible: "Paramètres"
+- assertVisible: "Notifications"
+- assertVisible: "Apparence"
+- assertVisible: "Compte"
+
+# Test notification toggle
+- scrollUntilVisible:
+    element: "Notifications push"
+    direction: DOWN
+- assertVisible: "Notifications push"
+
+# Test theme section
+- scrollUntilVisible:
+    element: "Thème sombre"
+    direction: DOWN
+- assertVisible: "Thème sombre"
+
+# Test account section
+- scrollUntilVisible:
+    element: "Exporter mes données"
+    direction: DOWN
+- assertVisible: "Exporter mes données"
+
+- scrollUntilVisible:
+    element: "Supprimer mon compte"
+    direction: DOWN
+- assertVisible: "Supprimer mon compte"
+
+- takeScreenshot: "settings_screen"

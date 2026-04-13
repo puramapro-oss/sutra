@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const formData = await req.formData()
+    const formData = await req.formData() as unknown as globalThis.FormData
     const audioFile = formData.get('audio') as File | null
     const name = formData.get('name') as string | null
 

@@ -1,0 +1,40 @@
+appId: dev.purama.sutra
+---
+- launchApp
+
+# Test empty email login
+- tapOn:
+    id: "login-submit"
+- assertVisible: "Remplis tous les champs"
+
+# Test invalid email format
+- tapOn:
+    id: "login-email"
+- inputText: "invalid-email"
+- tapOn:
+    id: "login-password"
+- inputText: "short"
+- tapOn:
+    id: "login-submit"
+
+# Test signup validation
+- tapOn: "S'inscrire"
+- tapOn:
+    id: "signup-submit"
+- assertVisible: "Remplis tous les champs"
+
+# Test short password
+- tapOn:
+    id: "signup-name"
+- inputText: "Test"
+- tapOn:
+    id: "signup-email"
+- inputText: "test@test.com"
+- tapOn:
+    id: "signup-password"
+- inputText: "12345"
+- tapOn:
+    id: "signup-submit"
+- assertVisible: "au moins 6 caractères"
+
+- takeScreenshot: "error_handling"
