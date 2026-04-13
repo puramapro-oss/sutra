@@ -1,17 +1,19 @@
 'use client'
 
-import { forwardRef, useId, useState } from 'react'
+import { forwardRef, useId, useState, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   error?: string
+  iconLeft?: ReactNode
+  iconRight?: ReactNode
   'data-testid'?: string
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className, id, onFocus, onBlur, ...props }, ref) => {
+  ({ label, error, iconLeft, iconRight, className, id, onFocus, onBlur, ...props }, ref) => {
     const generatedId = useId()
     const inputId = id ?? generatedId
     const [focused, setFocused] = useState(false)
@@ -38,10 +40,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              'absolute left-4 transition-all duration-200 pointer-events-none z-10',
+              'absolute transition-all duration-200 pointer-events-none z-10',
               isFloating
-                ? '-top-2.5 text-xs px-1 bg-[#06050e] rounded'
-                : 'top-1/2 -translate-y-1/2 text-sm',
+                ? '-top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded'
+                : iconLeft
+                  ? 'left-11 top-1/2 -translate-y-1/2 text-sm'
+                  : 'left-4 top-1/2 -translate-y-1/2 text-sm',
               focused
                 ? 'text-violet-400'
                 : error
@@ -51,6 +55,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           >
             {label}
           </label>
+        )}
+
+        {iconLeft && (
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none flex items-center justify-center">
+            {iconLeft}
+          </span>
         )}
 
         <input
@@ -63,7 +73,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             props.onChange?.(e)
           }}
           className={cn(
-            'w-full px-4 py-3 rounded-xl text-sm text-white/90 placeholder-white/30',
+            'w-full py-3 rounded-xl text-sm text-white/90 placeholder-white/30',
+            iconLeft ? 'pl-11' : 'pl-4',
+            iconRight ? 'pr-11' : 'pr-4',
             'bg-white/[0.03] backdrop-blur-xl',
             'border transition-all duration-200 outline-none',
             focused
@@ -76,6 +88,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           {...props}
         />
+
+        {iconRight && (
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center">
+            {iconRight}
+          </span>
+        )}
 
         {error && (
           <p className="mt-1.5 text-xs text-red-400 pl-1">{error}</p>

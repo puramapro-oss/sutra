@@ -647,6 +647,7 @@ export default function SettingsPage() {
                     <div className="flex gap-3">
                       {[
                         { id: 'dark' as const, label: 'Sombre', icon: Moon },
+                        { id: 'oled' as const, label: 'OLED', icon: Moon },
                         { id: 'light' as const, label: 'Clair', icon: Sun },
                       ].map((t) => (
                         <button

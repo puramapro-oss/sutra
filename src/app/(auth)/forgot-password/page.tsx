@@ -99,19 +99,16 @@ export default function ForgotPasswordPage() {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <Input
-                  data-testid="email-input"
-                  type="email"
-                  label="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  error={error}
-                  autoComplete="email"
-                  className="pl-11"
-                />
-                <Mail className="absolute left-4 top-3.5 w-4 h-4 text-white/30 pointer-events-none" />
-              </div>
+              <Input
+                data-testid="email-input"
+                type="email"
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={error}
+                autoComplete="email"
+                iconLeft={<Mail className="w-4 h-4" />}
+              />
 
               <Button
                 data-testid="reset-button"

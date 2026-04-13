@@ -6,19 +6,18 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Menu,
-  Search,
   Sun,
   Moon,
   LogOut,
   User,
   Settings,
   ChevronDown,
-  Command,
 } from 'lucide-react'
 import { cn, getInitials } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import { useTheme } from '@/hooks/useTheme'
 import NotificationBell from '@/components/layout/NotificationBell'
+import SearchModal from '@/components/layout/SearchModal'
 
 interface HeaderProps {
   onMenuToggle: () => void
@@ -42,17 +41,6 @@ export default function Header({ onMenuToggle }: HeaderProps) {
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault()
-        // Search modal would be opened here via a search context
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   const handleSignOut = async () => {
@@ -96,22 +84,8 @@ export default function Header({ onMenuToggle }: HeaderProps) {
           <div className="hidden lg:block" data-testid="header-logo" />
         </div>
 
-        {/* Center: Search */}
-        <button
-          className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.06] text-white/30 hover:text-white/50 hover:border-white/[0.12] transition-all max-w-xs w-full"
-          data-testid="header-search"
-        >
-          <Search className="w-4 h-4 shrink-0" />
-          <span className="text-sm">Rechercher...</span>
-          <div className="ml-auto flex items-center gap-0.5">
-            <kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/[0.08] text-[10px] font-mono text-white/30">
-              <Command className="w-2.5 h-2.5 inline-block" />
-            </kbd>
-            <kbd className="px-1.5 py-0.5 rounded bg-white/5 border border-white/[0.08] text-[10px] font-mono text-white/30">
-              K
-            </kbd>
-          </div>
-        </button>
+        {/* Center: Search (Cmd+K) */}
+        <SearchModal />
 
         {/* Right: Actions */}
         <div className="flex items-center gap-2">

@@ -1201,7 +1201,7 @@ function UploadZone({
   testId,
   multiple,
 }: {
-  icon: React.ElementType
+  icon: React.ComponentType<{ className?: string }>
   label: string
   accept: string
   testId: string

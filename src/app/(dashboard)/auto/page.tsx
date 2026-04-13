@@ -281,7 +281,7 @@ export default function AutoPage() {
   )
 }
 
-function StatCard({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string | number }) {
+function StatCard({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string | number }) {
   return (
     <Card>
       <CardContent className="space-y-2">

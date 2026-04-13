@@ -102,7 +102,7 @@ function parseCSV(text: string): Partial<BatchItem>[] {
   })
 }
 
-const statusConfig: Record<BatchItemStatus, { icon: React.ElementType; label: string; variant: 'default' | 'warning' | 'success' | 'error' }> = {
+const statusConfig: Record<BatchItemStatus, { icon: React.ComponentType<{ className?: string }>; label: string; variant: 'default' | 'warning' | 'success' | 'error' }> = {
   pending: { icon: Clock, label: 'En attente', variant: 'default' },
   generating: { icon: Loader2, label: 'Generation...', variant: 'warning' },
   done: { icon: CheckCircle2, label: 'Termine', variant: 'success' },

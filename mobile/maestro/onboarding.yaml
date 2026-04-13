@@ -1,0 +1,28 @@
+appId: dev.purama.sutra
+---
+- launchApp
+
+# Check app launches to login
+- assertVisible: "SUTRA"
+- assertVisible: "Crée des vidéos virales avec l'IA"
+- assertVisible: "Se connecter"
+- assertVisible: "Continuer avec Google"
+- assertVisible: "S'inscrire"
+
+# Test signup flow
+- tapOn: "S'inscrire"
+- assertVisible: "Rejoins SUTRA"
+- assertVisible: "Crée ton compte en 30 secondes"
+
+# Fill signup form
+- tapOn:
+    id: "signup-name"
+- inputText: "Test User"
+- tapOn:
+    id: "signup-email"
+- inputText: "test.maestro@example.com"
+- tapOn:
+    id: "signup-password"
+- inputText: "testpassword123"
+
+- takeScreenshot: "onboarding_flow"

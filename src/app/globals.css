@@ -479,3 +479,131 @@ body::after {
 .stagger-3 { animation-delay: 0.15s; }
 .stagger-4 { animation-delay: 0.2s; }
 .stagger-5 { animation-delay: 0.25s; }
+
+/* ============================================
+   THEME: LIGHT
+   ============================================ */
+
+.theme-light {
+  --background: #f8f9fc;
+  --foreground: #1a1a2e;
+  --foreground-muted: rgba(26, 26, 46, 0.6);
+  --primary: #7c3aed;
+  --primary-light: #8b5cf6;
+  --primary-dark: #6d28d9;
+  --primary-glow: rgba(124, 58, 237, 0.2);
+  --secondary: #3b82f6;
+  --accent: #0891b2;
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --surface: rgba(0, 0, 0, 0.03);
+  --surface-hover: rgba(0, 0, 0, 0.06);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.15);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.08);
+}
+
+.theme-light body,
+.theme-light {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.theme-light body::before {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 58, 237, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+    var(--background);
+}
+
+.theme-light body::after {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.theme-light .glass {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.theme-light .glass-strong {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.theme-light .gradient-text {
+  background: linear-gradient(135deg, #6d28d9 0%, #2563eb 50%, #0891b2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.theme-light .text-muted {
+  color: var(--foreground-muted);
+}
+
+.theme-light ::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.25);
+}
+
+.theme-light ::selection {
+  background: rgba(124, 58, 237, 0.2);
+  color: #1a1a2e;
+}
+
+/* ============================================
+   THEME: OLED (pure black)
+   ============================================ */
+
+.theme-oled {
+  --background: #000000;
+  --foreground: #e2e8f0;
+  --foreground-muted: rgba(226, 232, 240, 0.5);
+  --primary: #a78bfa;
+  --primary-light: #c4b5fd;
+  --primary-dark: #8b5cf6;
+  --primary-glow: rgba(167, 139, 250, 0.3);
+  --secondary: #60a5fa;
+  --accent: #22d3ee;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --surface: rgba(255, 255, 255, 0.02);
+  --surface-hover: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.04);
+  --border-hover: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.04);
+}
+
+.theme-oled body,
+.theme-oled {
+  background-color: #000000;
+  color: var(--foreground);
+}
+
+.theme-oled body::before {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(167, 139, 250, 0.04) 0%, transparent 60%),
+    #000000;
+}
+
+.theme-oled body::after {
+  display: none;
+}
+
+.theme-oled .glass {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+}
+
+.theme-oled .glass-strong {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
+}

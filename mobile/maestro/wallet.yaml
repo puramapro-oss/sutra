@@ -1,0 +1,17 @@
+appId: dev.purama.sutra
+---
+- launchApp
+- tapOn: "Profil"
+- tapOn: "Wallet"
+
+# Check wallet screen
+- assertVisible: "Wallet"
+- assertVisible: "Solde disponible"
+- assertVisible: "Historique"
+
+# Check withdrawal section exists
+- scrollUntilVisible:
+    element: "Retrait"
+    direction: DOWN
+
+- takeScreenshot: "wallet_screen"

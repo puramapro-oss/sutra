@@ -26,7 +26,7 @@ interface ChangelogEntry {
   description: string
 }
 
-const badgeConfig: Record<BadgeType, { label: string; color: string; icon: React.ElementType }> = {
+const badgeConfig: Record<BadgeType, { label: string; color: string; icon: React.ComponentType<{ className?: string }> }> = {
   new: { label: 'Nouveau', color: 'bg-green-500/10 text-green-400 border-green-500/20', icon: Sparkles },
   fix: { label: 'Correction', color: 'bg-orange-500/10 text-orange-400 border-orange-500/20', icon: Bug },
   improvement: { label: 'Amelioration', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20', icon: TrendingUp },

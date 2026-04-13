@@ -163,7 +163,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Purama. Tous droits reserves.
           </p>
           <p className="text-xs text-white/20">
-            Fait avec passion a Paris
+            Fait avec passion a Frasne
           </p>
         </div>
       </div>

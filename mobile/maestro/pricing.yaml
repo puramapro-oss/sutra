@@ -1,0 +1,18 @@
+appId: dev.purama.sutra
+---
+- launchApp
+
+# Navigate to profile to see plan
+- tapOn: "Profil"
+- assertVisible: "FREE"
+
+# Check boutique for upgrades
+- tapOn: "Points Purama"
+- assertVisible: "Boutique"
+
+# Check shop items exist
+- scrollUntilVisible:
+    element: "Boutique"
+    direction: DOWN
+
+- takeScreenshot: "pricing_screen"

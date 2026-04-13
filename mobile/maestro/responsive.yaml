@@ -1,0 +1,36 @@
+appId: dev.purama.sutra
+---
+- launchApp
+
+# Dashboard loads correctly
+- assertVisible: "Bonjour"
+- assertVisible: "Tes statistiques"
+- assertVisible: "Explorer"
+
+# Scroll to bottom
+- scrollUntilVisible:
+    element: "Dernières vidéos"
+    direction: DOWN
+
+# Check all quick actions visible
+- scroll:
+    direction: UP
+- assertVisible: "Créer"
+- assertVisible: "Templates"
+- assertVisible: "Autopilot"
+- assertVisible: "Boutique"
+
+# Check community responsive
+- tapOn: "Communauté"
+- assertVisible: "Mur d'amour"
+- assertVisible: "Cercles"
+- assertVisible: "Buddy"
+
+# Check profile responsive
+- tapOn: "Profil"
+- scrollUntilVisible:
+    element: "Se déconnecter"
+    direction: DOWN
+- assertVisible: "Se déconnecter"
+
+- takeScreenshot: "responsive_check"

@@ -37,7 +37,7 @@ interface StepConfig {
   id: ProductionStep
   label: string
   description: string
-  icon: React.ElementType
+  icon: React.ComponentType<{ className?: string }>
 }
 
 type TemplateId = 'youtube' | 'tiktok' | 'reel' | 'docu' | 'tuto'
@@ -629,7 +629,7 @@ function StepGenerateCard({
   isGenerating: boolean
   onGenerate: () => void
   buttonLabel: string
-  buttonIcon: React.ElementType
+  buttonIcon: React.ComponentType<{ className?: string }>
   disabled: boolean
   disabledMessage?: string
   data?: unknown

@@ -170,45 +170,38 @@ export default function LoginPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="relative">
-              <Input
-                data-testid="email-input"
-                type="email"
-                label="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                error={errors.email}
-                autoComplete="email"
-                className="pl-11"
-              />
-              <Mail className="absolute left-4 top-3.5 w-4 h-4 text-white/30 pointer-events-none" />
-            </div>
+            <Input
+              data-testid="email-input"
+              type="email"
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              error={errors.email}
+              autoComplete="email"
+              iconLeft={<Mail className="w-4 h-4" />}
+            />
 
-            <div className="relative">
-              <Input
-                data-testid="password-input"
-                type={showPassword ? 'text' : 'password'}
-                label="Mot de passe"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                error={errors.password}
-                autoComplete="current-password"
-                className="pl-11 pr-11"
-              />
-              <Lock className="absolute left-4 top-3.5 w-4 h-4 text-white/30 pointer-events-none" />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-4 top-3.5 text-white/30 hover:text-white/60 transition-colors"
-                tabIndex={-1}
-              >
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
-              </button>
-            </div>
+            <Input
+              data-testid="password-input"
+              type={showPassword ? 'text' : 'password'}
+              label="Mot de passe"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={errors.password}
+              autoComplete="current-password"
+              iconLeft={<Lock className="w-4 h-4" />}
+              iconRight={
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="text-white/30 hover:text-white/60 transition-colors pointer-events-auto"
+                  tabIndex={-1}
+                  aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              }
+            />
 
             <div className="flex items-center justify-between">
               <label
