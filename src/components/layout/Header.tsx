@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Menu,
   Sun,
   Moon,
   LogOut,
@@ -19,11 +18,7 @@ import { useTheme } from '@/hooks/useTheme'
 import NotificationBell from '@/components/layout/NotificationBell'
 import SearchModal from '@/components/layout/SearchModal'
 
-interface HeaderProps {
-  onMenuToggle: () => void
-}
-
-export default function Header({ onMenuToggle }: HeaderProps) {
+export default function Header() {
   const router = useRouter()
   const { user, profile, signOut } = useAuth()
   const { theme, toggleTheme, mounted } = useTheme()
@@ -58,16 +53,8 @@ export default function Header({ onMenuToggle }: HeaderProps) {
       data-testid="header"
     >
       <div className="flex items-center justify-between h-full px-4 lg:px-6">
-        {/* Left: Mobile menu + Logo */}
+        {/* Left: Mobile logo */}
         <div className="flex items-center gap-3">
-          <button
-            onClick={onMenuToggle}
-            className="lg:hidden p-2 rounded-lg text-white/50 hover:text-white hover:bg-white/5 transition-colors"
-            data-testid="mobile-menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-
           <Link
             href="/dashboard"
             className="lg:hidden flex items-center gap-2"
@@ -80,7 +67,6 @@ export default function Header({ onMenuToggle }: HeaderProps) {
             </div>
           </Link>
 
-          {/* Desktop: Hidden logo placeholder for alignment */}
           <div className="hidden lg:block" data-testid="header-logo" />
         </div>
 
