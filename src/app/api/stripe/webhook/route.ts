@@ -135,12 +135,56 @@ export async function POST(req: Request) {
             .single()
 
           if (referrer && referrer.id !== userId) {
+            const nowIso = new Date().toISOString()
             await serviceClient.from('referrals').insert({
               referrer_id: referrer.id,
               referred_id: userId,
               referral_code: referralCode,
               status: 'active',
+              level: 1,
+              active_since: nowIso,
             })
+
+            // V6 Section 10 — créer automatiquement N2 et N3
+            // N2 : parrain du parrain → userId
+            const { data: n2Referral } = await serviceClient
+              .from('referrals')
+              .select('referrer_id, referral_code')
+              .eq('referred_id', referrer.id)
+              .eq('level', 1)
+              .eq('status', 'active')
+              .maybeSingle()
+
+            if (n2Referral?.referrer_id && n2Referral.referrer_id !== userId) {
+              await serviceClient.from('referrals').insert({
+                referrer_id: n2Referral.referrer_id,
+                referred_id: userId,
+                referral_code: n2Referral.referral_code ?? 'N2_AUTO',
+                status: 'active',
+                level: 2,
+                active_since: nowIso,
+              })
+
+              // N3 : parrain du parrain du parrain
+              const { data: n3Referral } = await serviceClient
+                .from('referrals')
+                .select('referrer_id, referral_code')
+                .eq('referred_id', n2Referral.referrer_id)
+                .eq('level', 1)
+                .eq('status', 'active')
+                .maybeSingle()
+
+              if (n3Referral?.referrer_id && n3Referral.referrer_id !== userId) {
+                await serviceClient.from('referrals').insert({
+                  referrer_id: n3Referral.referrer_id,
+                  referred_id: userId,
+                  referral_code: n3Referral.referral_code ?? 'N3_AUTO',
+                  status: 'active',
+                  level: 3,
+                  active_since: nowIso,
+                })
+              }
+            }
 
             const commissionAmount = (session.amount_total ?? 0) * 0.5
             await serviceClient.from('referral_commissions').insert({
@@ -231,25 +275,40 @@ export async function POST(req: Request) {
             billing_period: 'monthly',
           })
 
+          // V6 section 10 — Parrainage V4 3 niveaux (N1=50%, N2=15%, N3=7%)
+          // Anti-fraude : 30j activité réelle avant versement (active_since + 30j)
           const { data: referrals } = await serviceClient
             .from('referrals')
-            .select('id, referrer_id')
+            .select('id, referrer_id, level, active_since')
             .eq('referred_id', profile.id)
             .eq('status', 'active')
 
+          const RATES: Record<number, number> = { 1: 0.5, 2: 0.15, 3: 0.07 }
+          const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000
+          const now = Date.now()
+
           if (referrals && referrals.length > 0) {
             for (const referral of referrals) {
-              const recurringAmount = (invoice.amount_paid * 0.1) / 100
+              const level = (referral.level as number) ?? 1
+              const rate = RATES[level] ?? 0
+              if (rate === 0) continue
+
+              // Anti-fraude 30j
+              const activeSince = referral.active_since ? new Date(referral.active_since).getTime() : now
+              if (now - activeSince < thirtyDaysMs) continue
+
+              const commissionAmount = (invoice.amount_paid * rate) / 100
+
               await serviceClient.from('referral_commissions').insert({
                 referrer_id: referral.referrer_id,
                 referred_id: profile.id,
                 beneficiary_id: referral.referrer_id,
-                type: 'recurring_10pct',
-                amount: recurringAmount,
+                type: `recurring_n${level}`,
+                level,
+                amount: commissionAmount,
                 status: 'pending',
               })
 
-              // Credit wallet
               const { data: w } = await serviceClient
                 .from('wallets')
                 .select('balance, total_earned')
@@ -258,17 +317,17 @@ export async function POST(req: Request) {
 
               if (w) {
                 await serviceClient.from('wallets').update({
-                  balance: (w.balance ?? 0) + recurringAmount,
-                  total_earned: (w.total_earned ?? 0) + recurringAmount,
+                  balance: (w.balance ?? 0) + commissionAmount,
+                  total_earned: (w.total_earned ?? 0) + commissionAmount,
                 }).eq('user_id', referral.referrer_id)
               }
 
               await serviceClient.from('wallet_transactions').insert({
                 user_id: referral.referrer_id,
                 type: 'credit',
-                amount: recurringAmount,
+                amount: commissionAmount,
                 source: 'referral',
-                description: 'Commission recurrente 10%',
+                description: `Commission parrainage N${level} (${Math.round(rate * 100)}%)`,
               })
             }
           }

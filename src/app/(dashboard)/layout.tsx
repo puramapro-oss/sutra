@@ -36,6 +36,11 @@ const CinematicIntro = dynamic(
   { ssr: false }
 )
 
+const FiscalBanner = dynamic(
+  () => import('@/components/shared/FiscalBanner').then(m => m.FiscalBanner),
+  { ssr: false }
+)
+
 export default function DashboardLayout({
   children,
 }: {
@@ -52,6 +57,9 @@ export default function DashboardLayout({
       {/* Main content */}
       <div className="relative z-10 flex-1 flex flex-col min-w-0">
         <Header />
+
+        {/* V6 — Banner fiscal si user >3000€ (avril-juin) */}
+        <FiscalBanner />
 
         <motion.main
           initial={{ opacity: 0, y: 8 }}
