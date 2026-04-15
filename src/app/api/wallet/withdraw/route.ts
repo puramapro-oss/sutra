@@ -95,6 +95,37 @@ export async function POST(req: Request) {
       })
       .eq('user_id', user.id)
 
+    // V6 section 10 — Magic Moment au 1er retrait
+    const { data: existingMagic } = await service
+      .from('magic_moments')
+      .select('first_withdrawal_at')
+      .eq('user_id', user.id)
+      .maybeSingle()
+
+    if (!existingMagic?.first_withdrawal_at) {
+      await service.from('magic_moments').upsert(
+        {
+          user_id: user.id,
+          first_withdrawal_at: new Date().toISOString(),
+          first_withdrawal_amount: amount,
+          animation_shown: false,
+        },
+        { onConflict: 'user_id' }
+      )
+
+      const { data: profile } = await service
+        .from('profiles')
+        .select('name')
+        .eq('id', user.id)
+        .single()
+
+      await service.from('social_feed').insert({
+        user_id: user.id,
+        event_type: 'first_withdrawal',
+        display_name: (profile?.name ?? 'Un membre').split(' ')[0],
+      })
+    }
+
     return NextResponse.json({ success: true, amount })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'

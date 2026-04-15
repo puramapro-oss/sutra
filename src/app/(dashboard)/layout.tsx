@@ -41,6 +41,11 @@ const FiscalBanner = dynamic(
   { ssr: false }
 )
 
+const MagicMoment = dynamic(
+  () => import('@/components/engagement/MagicMoment').then(m => m.MagicMoment),
+  { ssr: false }
+)
+
 export default function DashboardLayout({
   children,
 }: {
@@ -88,6 +93,9 @@ export default function DashboardLayout({
 
       {/* Cinematic intro — first visit only */}
       <CinematicIntro />
+
+      {/* V6 — Magic Moment (premier retrait) */}
+      <MagicMoment />
     </div>
   )
 }
