@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { AMBASSADOR_TIERS } from '@/lib/ambassador'
+import { creditWallet } from '@/lib/smart-split'
 import { sendNotification } from '@/lib/logger'
 
 // V6 Section 10 — CRON quotidien check paliers ambassadeur
@@ -43,25 +44,12 @@ export async function POST(req: Request) {
       if (!error) {
         primesGranted++
 
-        // Crédit wallet
-        const { data: w } = await service
-          .from('wallets')
-          .select('balance, total_earned')
-          .eq('user_id', profile.id)
-          .single()
-        if (w) {
-          await service.from('wallets').update({
-            balance: (w.balance ?? 0) + tier.prime_eur,
-            total_earned: (w.total_earned ?? 0) + tier.prime_eur,
-          }).eq('user_id', profile.id)
-        }
-
-        await service.from('wallet_transactions').insert({
-          user_id: profile.id,
-          type: 'credit',
+        await creditWallet({
+          userId: profile.id,
           amount: tier.prime_eur,
           source: 'ambassador_tier',
           description: `Palier ambassadeur ${tier.display} atteint — ${tier.prime_eur}€`,
+          mode: 'split',
         })
 
         await sendNotification(profile.id, {

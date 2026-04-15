@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
+import { creditWallet } from '@/lib/smart-split'
 import { z } from 'zod'
 
 const PostSchema = z.object({
@@ -194,30 +195,14 @@ export async function POST(req: Request) {
             .update({ wallet_balance: currentWallet + milestone.euros })
             .eq('id', user.id)
 
-          // Also update wallets table if it exists
-          const { data: wallet } = await service
-            .from('wallets')
-            .select('balance, total_earned')
-            .eq('user_id', user.id)
-            .single()
-
-          if (wallet) {
-            await service
-              .from('wallets')
-              .update({
-                balance: wallet.balance + milestone.euros,
-                total_earned: wallet.total_earned + milestone.euros,
-              })
-              .eq('user_id', user.id)
-
-            await service.from('wallet_transactions').insert({
-              user_id: user.id,
-              type: 'credit',
-              amount: milestone.euros,
-              source: 'points_milestone',
-              description: `Conversion auto : ${milestone.threshold} points atteints = ${milestone.euros} EUR`,
-            })
-          }
+          // V6 Section 10 — Smart Split auto
+          await creditWallet({
+            userId: user.id,
+            amount: milestone.euros,
+            source: 'points_milestone',
+            description: `Conversion auto : ${milestone.threshold} points atteints = ${milestone.euros} EUR`,
+            mode: 'split',
+          })
 
           newlyUnlocked.push(milestone)
         }

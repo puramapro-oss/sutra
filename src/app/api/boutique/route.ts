@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
+import { creditWallet } from '@/lib/smart-split'
 import { z } from 'zod'
 
 const PurchaseSchema = z.object({
@@ -186,30 +187,14 @@ export async function POST(req: Request) {
         .update({ wallet_balance: currentWallet + euros })
         .eq('id', user.id)
 
-      // Also update wallets table
-      const { data: wallet } = await service
-        .from('wallets')
-        .select('balance, total_earned')
-        .eq('user_id', user.id)
-        .single()
-
-      if (wallet) {
-        await service
-          .from('wallets')
-          .update({
-            balance: wallet.balance + euros,
-            total_earned: wallet.total_earned + euros,
-          })
-          .eq('user_id', user.id)
-
-        await service.from('wallet_transactions').insert({
-          user_id: user.id,
-          type: 'credit',
-          amount: euros,
-          source: 'points_shop',
-          description: `Conversion boutique : ${item.cost_points} points = ${euros} EUR`,
-        })
-      }
+      // V6 Section 10 — Smart Split auto (conversion points → euros)
+      await creditWallet({
+        userId: user.id,
+        amount: euros,
+        source: 'points_shop',
+        description: `Conversion boutique : ${item.cost_points} points = ${euros} EUR`,
+        mode: 'split',
+      })
     }
 
     if (itemType === 'subscription') {
