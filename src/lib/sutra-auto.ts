@@ -282,7 +282,7 @@ FORMAT (JSON strict, aucun texte autour)
 }`
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6',
     max_tokens: 2000,
     system,
     messages: [
@@ -443,7 +443,7 @@ export async function analyzePerformance(params: {
     .join('\n')
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6',
     max_tokens: 1500,
     system: `Tu es un analyste de performance video. Analyse les stats et identifie 3 a 5 insights actionnables. Reponds en JSON: { "insights": ["insight 1", "insight 2"] }`,
     messages: [

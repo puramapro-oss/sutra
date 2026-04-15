@@ -5,6 +5,11 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY!,
 })
 
+const MODEL_MAIN = process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6'
+const MODEL_FAST = process.env.ANTHROPIC_MODEL_FAST ?? 'claude-haiku-4-5-20251001'
+const MODEL_PRO = process.env.ANTHROPIC_MODEL_PRO ?? 'claude-opus-4-6'
+export { MODEL_MAIN, MODEL_FAST, MODEL_PRO }
+
 export async function generateScript(params: {
   topic: string
   niche: string
@@ -50,7 +55,7 @@ IMPORTANT :
 - Style : ${params.style}`
 
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: MODEL_MAIN,
     max_tokens: 4000,
     system: systemPrompt,
     messages: [{ role: 'user', content: `Cree une video sur : "${params.topic}"` }],
@@ -63,7 +68,7 @@ IMPORTANT :
 
 export async function askClaude(prompt: string, system?: string): Promise<string> {
   const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: MODEL_MAIN,
     max_tokens: 2048,
     system: system ?? 'Tu es un assistant IA pour SUTRA, une plateforme de generation video IA. Reponds en francais.',
     messages: [{ role: 'user', content: prompt }],
