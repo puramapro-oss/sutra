@@ -13,6 +13,7 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
 import { Input } from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
+import { SmartSplit } from '@/components/wallet/SmartSplit'
 
 interface WalletData {
   balance: number
@@ -135,6 +136,9 @@ export default function WalletPage() {
         <h1 className="text-2xl font-bold text-white">Wallet</h1>
         <p className="text-sm text-white/40 mt-1">Tes gains de parrainage et concours</p>
       </div>
+
+      {/* V6 — Smart Split 6 sous-wallets */}
+      <SmartSplit />
 
       {/* Balance cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

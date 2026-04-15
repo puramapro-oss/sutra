@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
+import { creditWallet } from '@/lib/smart-split'
 import Stripe from 'stripe'
 
 const CRON_SECRET = process.env.CRON_SECRET
@@ -84,11 +85,20 @@ export async function GET(request: Request) {
             .eq('id', winnerIds[i])
             .single()
 
-          // Credit wallet
+          // Legacy mirror sur profiles.wallet_balance
           await supabase
             .from('profiles')
             .update({ wallet_balance: (profile?.wallet_balance ?? 0) + prize })
             .eq('id', winnerIds[i])
+
+          // V6 Section 10 — Smart Split auto sur wallets.sub_wallets
+          await creditWallet({
+            userId: winnerIds[i],
+            amount: prize,
+            source: 'contest_monthly',
+            description: `Gain tirage mensuel : place #${i + 1}`,
+            mode: 'split',
+          })
 
           // Record lottery winner
           await supabase.from('lottery_winners').insert({

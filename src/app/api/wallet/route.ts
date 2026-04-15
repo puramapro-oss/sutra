@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
+import { normalizeSubWallets } from '@/lib/smart-split'
 
 export async function GET() {
   try {
@@ -12,11 +13,15 @@ export async function GET() {
 
     const service = createServiceClient()
 
-    const [walletRes, txRes, withdrawRes] = await Promise.all([
-      service.from('wallets').select('balance, pending_balance, total_earned, currency').eq('user_id', user.id).single(),
+    const [walletRes, txRes, withdrawRes, boostRes] = await Promise.all([
+      service.from('wallets').select('balance, pending_balance, total_earned, currency, sub_wallets').eq('user_id', user.id).single(),
       service.from('wallet_transactions').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(50),
       service.from('withdrawals').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(20),
+      service.from('boost_tranches').select('amount').eq('user_id', user.id).eq('status', 'locked'),
     ])
+
+    const sub_wallets = normalizeSubWallets(walletRes.data?.sub_wallets)
+    const boost_locked = (boostRes.data ?? []).reduce((s, t) => s + Number(t.amount ?? 0), 0)
 
     return NextResponse.json({
       wallet: {
@@ -25,6 +30,8 @@ export async function GET() {
         total_earned: walletRes.data?.total_earned ?? 0,
         currency: walletRes.data?.currency ?? 'EUR',
       },
+      sub_wallets,
+      boost_locked,
       transactions: txRes.data ?? [],
       withdrawals: withdrawRes.data ?? [],
     })
@@ -59,12 +66,16 @@ export async function POST(req: Request) {
 
     const { data: wallet } = await service
       .from('wallets')
-      .select('balance')
+      .select('balance, pending_balance, sub_wallets')
       .eq('user_id', user.id)
       .single()
 
-    if (!wallet || wallet.balance < amount) {
-      return NextResponse.json({ error: 'Solde insuffisant' }, { status: 400 })
+    const sw = normalizeSubWallets(wallet?.sub_wallets)
+    if (!wallet || sw.principal < amount) {
+      return NextResponse.json({
+        error: `Solde Principal insuffisant. Disponible : ${sw.principal.toFixed(2)} €.`,
+        principal_available: sw.principal,
+      }, { status: 400 })
     }
 
     // Create withdrawal request
@@ -76,21 +87,22 @@ export async function POST(req: Request) {
       status: 'pending',
     })
 
-    // Record transaction
-    await service.from('wallet_transactions').insert({
-      user_id: user.id,
-      type: 'debit',
+    // V6 Smart Split — débit UNIQUEMENT du Principal
+    const { debitPrincipal } = await import('@/lib/smart-split')
+    const result = await debitPrincipal({
+      userId: user.id,
       amount,
       source: 'withdrawal',
       description: `Retrait ${amount} EUR vers ${iban.slice(0, 4)}****`,
     })
+    if (!result.ok) {
+      return NextResponse.json({ error: 'Erreur débit Principal' }, { status: 500 })
+    }
 
-    // Update wallet balance
     await service
       .from('wallets')
       .update({
-        balance: wallet.balance - amount,
-        pending_balance: (wallet.balance ?? 0) > 0 ? amount : 0,
+        pending_balance: Number(wallet.pending_balance ?? 0) + amount,
       })
       .eq('user_id', user.id)
 

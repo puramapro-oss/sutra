@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
+import { debitPrincipal, normalizeSubWallets } from '@/lib/smart-split'
 
 export const dynamic = 'force-dynamic'
 
@@ -56,13 +57,21 @@ export async function POST(req: Request) {
 
     const { data: wallet } = await service
       .from('wallets')
-      .select('balance, pending_balance')
+      .select('balance, pending_balance, sub_wallets')
       .eq('user_id', user.id)
       .maybeSingle()
 
-    const balance = Number(wallet?.balance ?? 0)
-    if (!wallet || balance < amount) {
+    if (!wallet) {
       return NextResponse.json({ error: 'Solde insuffisant' }, { status: 400 })
+    }
+
+    // V6 Section 10 — Retrait UNIQUEMENT depuis le sous-wallet Principal
+    const sw = normalizeSubWallets(wallet.sub_wallets)
+    if (sw.principal < amount) {
+      return NextResponse.json({
+        error: `Solde Principal insuffisant. Disponible au retrait : ${sw.principal.toFixed(2)} €. Les sous-wallets Boost/Emergency/Dream/Pending/Solidaire ne sont pas retirables directement.`,
+        principal_available: sw.principal,
+      }, { status: 400 })
     }
 
     const safeDetails = method === 'bank'
@@ -78,20 +87,21 @@ export async function POST(req: Request) {
     })
     if (insertErr) throw insertErr
 
-    await service.from('wallet_transactions').insert({
-      user_id: user.id,
-      type: 'debit',
+    const result = await debitPrincipal({
+      userId: user.id,
       amount,
       source: 'withdrawal',
       description: `Retrait ${amount.toFixed(2)} EUR (${method})`,
     })
 
+    if (!result.ok) {
+      return NextResponse.json({ error: 'Erreur débit Principal' }, { status: 500 })
+    }
+
     await service
       .from('wallets')
       .update({
-        balance: balance - amount,
         pending_balance: Number(wallet.pending_balance ?? 0) + amount,
-        updated_at: new Date().toISOString(),
       })
       .eq('user_id', user.id)
 

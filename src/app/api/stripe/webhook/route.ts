@@ -3,6 +3,7 @@ import { stripe } from '@/lib/stripe'
 import { createServiceClient } from '@/lib/supabase'
 import { sendNotification, sendAdminNotification, logActivity } from '@/lib/logger'
 import { sendSubscriptionEmail } from '@/lib/emails'
+import { creditWallet } from '@/lib/smart-split'
 import type Stripe from 'stripe'
 
 export async function POST(req: Request) {
@@ -92,28 +93,28 @@ export async function POST(req: Request) {
           )
         }
 
-        // Créditer tranche 1 en wallet (25€ = 2500 points en phase 1)
+        // Créditer tranche 1 en wallet (25€ en euros ou 2500 points en phase 1)
         if (walletUnit === 'points') {
           const { data: p } = await serviceClient.from('profiles').select('purama_points').eq('id', userId).single()
           await serviceClient.from('profiles').update({
             purama_points: (p?.purama_points ?? 0) + 2500,
           }).eq('id', userId)
+          await serviceClient.from('wallet_transactions').insert({
+            user_id: userId,
+            type: 'credit',
+            amount: 25,
+            source: 'prime_welcome_t1',
+            description: 'Prime de bienvenue — tranche 1/3 (J0)',
+          })
         } else {
-          const { data: w } = await serviceClient.from('wallets').select('balance, total_earned').eq('user_id', userId).single()
-          if (w) {
-            await serviceClient.from('wallets').update({
-              balance: (w.balance ?? 0) + 25,
-              total_earned: (w.total_earned ?? 0) + 25,
-            }).eq('user_id', userId)
-          }
+          await creditWallet({
+            userId,
+            amount: 25,
+            source: 'prime_welcome_t1',
+            description: 'Prime de bienvenue — tranche 1/3 (J0)',
+            mode: 'split',
+          })
         }
-        await serviceClient.from('wallet_transactions').insert({
-          user_id: userId,
-          type: 'credit',
-          amount: 25,
-          source: 'prime_welcome_t1',
-          description: 'Prime de bienvenue — tranche 1/3 (J0)',
-        })
 
         await serviceClient.from('payments').insert({
           user_id: userId,
@@ -196,27 +197,12 @@ export async function POST(req: Request) {
               status: 'pending',
             })
 
-            // Credit wallet
-            const { data: wallet } = await serviceClient
-              .from('wallets')
-              .select('balance, total_earned')
-              .eq('user_id', referrer.id)
-              .single()
-
-            if (wallet) {
-              await serviceClient.from('wallets').update({
-                balance: (wallet.balance ?? 0) + commissionAmount / 100,
-                total_earned: (wallet.total_earned ?? 0) + commissionAmount / 100,
-              }).eq('user_id', referrer.id)
-            }
-
-            // Record wallet transaction
-            await serviceClient.from('wallet_transactions').insert({
-              user_id: referrer.id,
-              type: 'credit',
+            await creditWallet({
+              userId: referrer.id,
               amount: commissionAmount / 100,
               source: 'referral',
               description: `Commission 50% premier paiement plan ${plan}`,
+              mode: 'split',
             })
 
             await sendNotification(referrer.id, {
@@ -309,25 +295,12 @@ export async function POST(req: Request) {
                 status: 'pending',
               })
 
-              const { data: w } = await serviceClient
-                .from('wallets')
-                .select('balance, total_earned')
-                .eq('user_id', referral.referrer_id)
-                .single()
-
-              if (w) {
-                await serviceClient.from('wallets').update({
-                  balance: (w.balance ?? 0) + commissionAmount,
-                  total_earned: (w.total_earned ?? 0) + commissionAmount,
-                }).eq('user_id', referral.referrer_id)
-              }
-
-              await serviceClient.from('wallet_transactions').insert({
-                user_id: referral.referrer_id,
-                type: 'credit',
+              await creditWallet({
+                userId: referral.referrer_id,
                 amount: commissionAmount,
                 source: 'referral',
                 description: `Commission parrainage N${level} (${Math.round(rate * 100)}%)`,
+                mode: 'split',
               })
             }
           }
