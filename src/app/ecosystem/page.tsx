@@ -15,6 +15,7 @@ import {
   Users,
   ArrowRight,
 } from 'lucide-react'
+import { Flywheel } from '@/components/engagement/Flywheel'
 
 export const metadata: Metadata = {
   title: 'Ecosysteme Purama — Toutes les apps IA',
@@ -214,6 +215,9 @@ export default function EcosystemPage() {
           })}
         </div>
       </div>
+
+      {/* V6 — Flywheel stats temps réel */}
+      <Flywheel />
 
       {/* Footer */}
       <div className="border-t border-white/[0.06] py-8 text-center">
