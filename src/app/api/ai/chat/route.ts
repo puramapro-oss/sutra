@@ -3,10 +3,10 @@ import { createServiceClient } from '@/lib/supabase'
 import Anthropic from '@anthropic-ai/sdk'
 
 const PLAN_LIMITS: Record<string, { maxTokens: number; model: string }> = {
-  free: { maxTokens: 2048, model: 'claude-haiku-4-5-20241022' },
-  starter: { maxTokens: 4096, model: 'claude-sonnet-4-20250514' },
-  pro: { maxTokens: 8192, model: 'claude-sonnet-4-20250514' },
-  enterprise: { maxTokens: 16384, model: 'claude-sonnet-4-20250514' },
+  free: { maxTokens: 2048, model: process.env.ANTHROPIC_MODEL_FAST ?? 'claude-haiku-4-5-20251001' },
+  starter: { maxTokens: 4096, model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6' },
+  pro: { maxTokens: 8192, model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6' },
+  enterprise: { maxTokens: 16384, model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6' },
 }
 
 export async function POST(request: NextRequest) {

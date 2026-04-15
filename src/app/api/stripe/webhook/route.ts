@@ -37,6 +37,16 @@ export async function POST(req: Request) {
 
         if (!userId) break
 
+        // V6 section 10 — subscription_started_at (clé retrait wallet 30j)
+        // Ne l'écrase pas si déjà set (ex: réactivation après pause).
+        const { data: existingProfile } = await serviceClient
+          .from('profiles')
+          .select('subscription_started_at')
+          .eq('id', userId)
+          .single()
+
+        const startedAt = existingProfile?.subscription_started_at ?? new Date().toISOString()
+
         await serviceClient
           .from('profiles')
           .update({
@@ -44,8 +54,66 @@ export async function POST(req: Request) {
             stripe_customer_id: session.customer as string,
             stripe_subscription_id: session.subscription as string,
             subscription_status: 'active',
+            subscription_started_at: startedAt,
           })
           .eq('id', userId)
+
+        // V6 section 11 — source de vérité Stripe
+        await serviceClient.from('subscriptions').upsert(
+          {
+            user_id: userId,
+            app_id: 'sutra',
+            stripe_subscription_id: session.subscription as string,
+            stripe_customer_id: session.customer as string,
+            status: 'active',
+            plan,
+            started_at: startedAt,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: 'stripe_subscription_id' }
+        )
+
+        // V6 section 10 — Prime 3 paliers (J0: 25€, M+1: 25€, M+2: 50€)
+        // Tranche 1 créditée immédiatement en wallet (points en phase 1 = 2500pts = 25€).
+        const phase = process.env.PURAMA_PHASE === '2' ? 2 : 1
+        const walletUnit = phase === 2 ? 'euros' : 'points'
+        const now = new Date()
+        const m1 = new Date(now); m1.setMonth(m1.getMonth() + 1)
+        const m2 = new Date(now); m2.setMonth(m2.getMonth() + 2)
+        const tranches = [
+          { tranche: 1, amount_cents: 2500, scheduled_at: now.toISOString(), credited_at: now.toISOString(), status: 'credited' },
+          { tranche: 2, amount_cents: 2500, scheduled_at: m1.toISOString(), status: 'scheduled' },
+          { tranche: 3, amount_cents: 5000, scheduled_at: m2.toISOString(), status: 'scheduled' },
+        ]
+        for (const t of tranches) {
+          await serviceClient.from('prime_payouts').upsert(
+            { user_id: userId, app_id: 'sutra', ...t },
+            { onConflict: 'user_id,app_id,tranche' }
+          )
+        }
+
+        // Créditer tranche 1 en wallet (25€ = 2500 points en phase 1)
+        if (walletUnit === 'points') {
+          const { data: p } = await serviceClient.from('profiles').select('purama_points').eq('id', userId).single()
+          await serviceClient.from('profiles').update({
+            purama_points: (p?.purama_points ?? 0) + 2500,
+          }).eq('id', userId)
+        } else {
+          const { data: w } = await serviceClient.from('wallets').select('balance, total_earned').eq('user_id', userId).single()
+          if (w) {
+            await serviceClient.from('wallets').update({
+              balance: (w.balance ?? 0) + 25,
+              total_earned: (w.total_earned ?? 0) + 25,
+            }).eq('user_id', userId)
+          }
+        }
+        await serviceClient.from('wallet_transactions').insert({
+          user_id: userId,
+          type: 'credit',
+          amount: 25,
+          source: 'prime_welcome_t1',
+          description: 'Prime de bienvenue — tranche 1/3 (J0)',
+        })
 
         await serviceClient.from('payments').insert({
           user_id: userId,
@@ -265,6 +333,18 @@ export async function POST(req: Request) {
               stripe_subscription_id: subscription.id,
             })
             .eq('id', profile.id)
+
+          await serviceClient.from('subscriptions').upsert(
+            {
+              user_id: profile.id,
+              app_id: 'sutra',
+              stripe_subscription_id: subscription.id,
+              stripe_customer_id: customerId,
+              status: subscription.status as string,
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: 'stripe_subscription_id' }
+          )
         }
 
         break
@@ -281,6 +361,7 @@ export async function POST(req: Request) {
           .single()
 
         if (profile) {
+          const cancelledAt = new Date().toISOString()
           await serviceClient
             .from('profiles')
             .update({
@@ -290,6 +371,11 @@ export async function POST(req: Request) {
             })
             .eq('id', profile.id)
 
+          await serviceClient
+            .from('subscriptions')
+            .update({ status: 'cancelled', cancelled_at: cancelledAt, ends_at: cancelledAt })
+            .eq('stripe_subscription_id', subscription.id)
+
           await sendNotification(profile.id, {
             type: 'info',
             title: 'Abonnement annule',
@@ -298,6 +384,59 @@ export async function POST(req: Request) {
 
           await logActivity(profile.id, 'subscription_cancelled', 'Abonnement annule')
         }
+
+        break
+      }
+
+      // V6 section 11 — charge.refunded → rétractation + prime déduite si <30j
+      case 'charge.refunded': {
+        const charge = event.data.object as Stripe.Charge
+        const customerId = charge.customer as string
+        if (!customerId) break
+
+        const { data: profile } = await serviceClient
+          .from('profiles')
+          .select('id, subscription_started_at')
+          .eq('stripe_customer_id', customerId)
+          .single()
+
+        if (!profile) break
+
+        // Calcul prime déjà versée à déduire si annulation <30j après souscription
+        let primeDeductedCents = 0
+        if (profile.subscription_started_at) {
+          const startedAt = new Date(profile.subscription_started_at).getTime()
+          const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000
+          if (Date.now() - startedAt < thirtyDaysMs) {
+            const { data: credited } = await serviceClient
+              .from('prime_payouts')
+              .select('amount_cents')
+              .eq('user_id', profile.id)
+              .eq('status', 'credited')
+            primeDeductedCents = (credited ?? []).reduce((sum, p) => sum + (p.amount_cents ?? 0), 0)
+          }
+        }
+
+        await serviceClient.from('retractions').insert({
+          user_id: profile.id,
+          app_id: 'sutra',
+          amount_refunded_cents: charge.amount_refunded ?? 0,
+          prime_deducted_cents: primeDeductedCents,
+          stripe_charge_id: charge.id,
+          processed: true,
+          reason: (charge.refunds?.data?.[0]?.reason as string) ?? null,
+        })
+
+        await serviceClient
+          .from('profiles')
+          .update({ plan: 'free', subscription_status: 'refunded' })
+          .eq('id', profile.id)
+
+        await logActivity(profile.id, 'charge_refunded', 'Remboursement effectue', {
+          charge_id: charge.id,
+          amount_refunded: charge.amount_refunded,
+          prime_deducted_cents: primeDeductedCents,
+        })
 
         break
       }

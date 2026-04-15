@@ -80,7 +80,7 @@ Sois juste, rigoureux et exigeant. Note sur le potentiel creatif et emotionnel, 
 
       try {
         const response = await anthropic.messages.create({
-          model: 'claude-sonnet-4-20250514',
+          model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6',
           max_tokens: 200,
           messages: [{ role: 'user', content: prompt }],
         })
