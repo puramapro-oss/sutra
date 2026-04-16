@@ -26,6 +26,7 @@ const PUBLIC_ROUTES = [
   "/confidentialite",
   "/devenir-influenceur",
   "/devenir-ambassadeur",
+  "/confirmation",
 ];
 
 const PUBLIC_PREFIXES = [
