@@ -80,7 +80,7 @@ const ACHIEVEMENTS: AchievementDef[] = [
   },
   {
     id: 'ten_referrals',
-    name: 'Influenceur Bronze',
+    name: 'Ambassadeur Bronze',
     description: 'Parraine 10 personnes',
     icon: 'user-plus',
     xp: 250,
