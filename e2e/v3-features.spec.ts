@@ -40,15 +40,16 @@ test.describe("V3 Features — /confidentialite", () => {
   });
 });
 
-test.describe("V3 Features — /devenir-influenceur", () => {
-  test("influenceur page loads with form", async ({ page }) => {
+test.describe("V7 Features — /devenir-ambassadeur (legacy /devenir-influenceur redirects)", () => {
+  test("ambassadeur page loads with form (legacy URL redirects)", async ({ page }) => {
     await page.goto("/devenir-influenceur");
+    // Redirected to /devenir-ambassadeur
+    await expect(page).toHaveURL(/\/devenir-ambassadeur/);
     await expect(
-      page.locator("text=Programme Influenceur SUTRA")
+      page.locator("text=Programme Ambassadeur Purama")
     ).toBeVisible();
-    await expect(page.getByText("50%", { exact: true })).toBeVisible();
-    // Form visible
-    await expect(page.locator("text=Rejoins le programme")).toBeVisible();
+    await expect(page.locator('[data-testid="input-name"]')).toBeVisible();
+    await expect(page.locator('[data-testid="input-email"]')).toBeVisible();
   });
 });
 

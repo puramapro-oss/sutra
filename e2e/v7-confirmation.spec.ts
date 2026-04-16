@@ -22,12 +22,13 @@ test.describe('V7 — /confirmation page (magic moment)', () => {
     await expect(page.getByText(/L221-28/i).first()).toBeVisible()
   })
 
-  test('purama_promo cookie is cleared on confirmation load', async ({ page, context }) => {
+  test('purama_promo cookie is cleared on confirmation load', async ({ page, context, baseURL }) => {
+    const hostname = new URL(baseURL ?? 'https://sutra.purama.dev').hostname
     await context.addCookies([
       {
         name: 'purama_promo',
         value: JSON.stringify({ coupon: 'WELCOME50', source: 'midas' }),
-        domain: new URL(page.url() || 'https://sutra.purama.dev').hostname,
+        domain: hostname,
         path: '/',
       },
     ])

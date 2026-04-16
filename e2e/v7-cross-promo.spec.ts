@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test'
 
 test.describe('V7 — Cross-promo /go/[source]?coupon=WELCOME50', () => {
   test('GET /go/midas?coupon=WELCOME50 → sets purama_promo cookie and redirects to /signup', async ({
-    context,
     request,
   }) => {
     const res = await request.get('/go/midas?coupon=WELCOME50', { maxRedirects: 0 })
@@ -12,11 +11,10 @@ test.describe('V7 — Cross-promo /go/[source]?coupon=WELCOME50', () => {
     expect(location).toContain('promo=WELCOME50')
     expect(location).toContain('src=midas')
 
-    const cookies = await context.cookies()
-    const promo = cookies.find((c) => c.name === 'purama_promo')
-    expect(promo).toBeDefined()
-    expect(promo!.value).toContain('WELCOME50')
-    expect(promo!.value).toContain('midas')
+    const setCookie = res.headers()['set-cookie'] ?? ''
+    expect(setCookie).toContain('purama_promo=')
+    expect(setCookie).toContain('WELCOME50')
+    expect(setCookie).toContain('midas')
   })
 
   test('GET /go/kash?coupon=WELCOME50 → valid source_app accepted', async ({ request }) => {
@@ -42,27 +40,19 @@ test.describe('V7 — Cross-promo /go/[source]?coupon=WELCOME50', () => {
   })
 
   test('GET /go/midas without coupon → influencer/referral fallback, no cookie set', async ({
-    context,
     request,
   }) => {
-    await context.clearCookies()
     const res = await request.get('/go/midas', { maxRedirects: 0 })
     expect(res.status()).toBe(302)
-    const cookies = await context.cookies()
-    const promo = cookies.find((c) => c.name === 'purama_promo')
-    expect(promo).toBeUndefined()
+    const setCookie = res.headers()['set-cookie'] ?? ''
+    expect(setCookie).not.toContain('purama_promo=')
   })
 
-  test('GET /go/midas?coupon=INVALID123 → coupon ignored, no cookie set', async ({
-    context,
-    request,
-  }) => {
-    await context.clearCookies()
+  test('GET /go/midas?coupon=INVALID123 → coupon ignored, no cookie set', async ({ request }) => {
     const res = await request.get('/go/midas?coupon=INVALID123', { maxRedirects: 0 })
     expect(res.status()).toBe(302)
-    const cookies = await context.cookies()
-    const promo = cookies.find((c) => c.name === 'purama_promo')
-    expect(promo).toBeUndefined()
+    const setCookie = res.headers()['set-cookie'] ?? ''
+    expect(setCookie).not.toContain('purama_promo=')
   })
 
   test('cookie purama_promo has sameSite=lax and 7-day max-age', async ({ request }) => {
