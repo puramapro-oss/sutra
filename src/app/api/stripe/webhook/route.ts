@@ -35,8 +35,24 @@ export async function POST(req: Request) {
         const userId = session.metadata?.user_id
         const plan = session.metadata?.plan ?? 'starter'
         const referralCode = session.metadata?.referral_code
+        const crossPromoSource = session.metadata?.cross_promo_source
+        const crossPromoCoupon = session.metadata?.cross_promo_coupon
 
         if (!userId) break
+
+        // V7 — Marquer la conversion cross-promo si cookie purama_promo détecté au checkout
+        if (crossPromoSource && crossPromoCoupon) {
+          try {
+            await serviceClient
+              .from('cross_promos')
+              .update({ converted: true, converted_at: new Date().toISOString(), user_id: userId })
+              .eq('source_app', crossPromoSource)
+              .eq('coupon_code', crossPromoCoupon)
+              .eq('user_id', userId)
+          } catch {
+            // Non-blocking
+          }
+        }
 
         // V6 section 10 — subscription_started_at (clé retrait wallet 30j)
         // Ne l'écrase pas si déjà set (ex: réactivation après pause).

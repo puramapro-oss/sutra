@@ -22,6 +22,9 @@ import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { ReferralBlock } from '@/components/home/ReferralBlock'
+import { AmbassadorBlock } from '@/components/home/AmbassadorBlock'
+import { CrossPromoBlock } from '@/components/home/CrossPromoBlock'
 import type { Video as VideoType, Plan } from '@/types'
 
 const supabase = createClient()
@@ -129,6 +132,13 @@ export default function DashboardPage() {
         <p className="text-sm text-white/50 mt-1">
           Voici un apercu de ton activite video.
         </p>
+      </div>
+
+      {/* V7 — 3 blocs above-the-fold (parrainage, ambassadeur, cross-promo) */}
+      <div className="grid grid-cols-1 gap-4" data-testid="v7-home-blocks">
+        <ReferralBlock />
+        <AmbassadorBlock />
+        <CrossPromoBlock />
       </div>
 
       {/* KPI Cards */}

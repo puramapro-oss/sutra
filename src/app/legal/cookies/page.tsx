@@ -197,7 +197,7 @@ export default function CookiesPage() {
             <p>
               Ces cookies sont utilises pour le suivi du parrainage et des
               campagnes marketing. Ils nous permettent de crediter correctement
-              les parrains et les influenceurs.
+              les parrains et les ambassadeurs.
             </p>
             <CookieTable cookies={marketingCookies} />
           </Section>

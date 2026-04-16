@@ -31,11 +31,17 @@ export async function createCheckoutSession(params: {
   billingPeriod: 'monthly' | 'annual'
   priceId: string
   referralCode?: string
+  discountCoupon?: string
+  crossPromoSource?: string
 }): Promise<string> {
+  const hasDiscount = Boolean(params.discountCoupon)
+
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',
     payment_method_types: ['card'],
-    allow_promotion_codes: true,
+    ...(hasDiscount
+      ? { discounts: [{ coupon: params.discountCoupon! }] }
+      : { allow_promotion_codes: true }),
     customer_email: params.email,
     line_items: [{ price: params.priceId, quantity: 1 }],
     metadata: {
@@ -43,8 +49,10 @@ export async function createCheckoutSession(params: {
       app: 'sutra',
       plan: params.plan,
       referral_code: params.referralCode ?? '',
+      cross_promo_source: params.crossPromoSource ?? '',
+      cross_promo_coupon: params.discountCoupon ?? '',
     },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
   })
 

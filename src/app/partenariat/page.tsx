@@ -21,7 +21,7 @@ import { Button } from '@/components/ui/Button'
 const CHANNELS = [
   {
     id: 'influencer',
-    label: 'Influenceur',
+    label: 'Ambassadeur',
     icon: Star,
     description:
       'Tu as une audience sur les réseaux ? Monétise-la en recommandant SUTRA à ta communauté. Commissions récurrentes à vie.',
@@ -73,7 +73,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Puis-je cumuler plusieurs canaux ?',
-    a: 'Oui, tu peux être influenceur et organiser des ateliers physiques en même temps. Tes filleuls sont comptabilisés ensemble pour tes paliers de récompenses.',
+    a: 'Oui, tu peux être ambassadeur digital et organiser des ateliers physiques en même temps. Tes filleuls sont comptabilisés ensemble pour tes paliers de récompenses.',
   },
   {
     q: 'Y a-t-il un coût pour devenir partenaire ?',

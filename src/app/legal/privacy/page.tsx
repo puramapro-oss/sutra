@@ -243,7 +243,7 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong className="text-white/70">Cookies marketing :</strong>{' '}
-                suivi de parrainage et influenceurs (avec consentement)
+                suivi de parrainage et ambassadeurs (avec consentement)
               </li>
             </ul>
           </Section>

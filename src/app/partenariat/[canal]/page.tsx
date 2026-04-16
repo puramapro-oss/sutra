@@ -16,7 +16,7 @@ const CHANNEL_META: Record<
   { label: string; icon: typeof Star; color: string; description: string }
 > = {
   influencer: {
-    label: 'Influenceur',
+    label: 'Ambassadeur',
     icon: Star,
     color: 'from-violet-500 to-purple-600',
     description: 'Monétise ton audience en recommandant SUTRA à ta communauté.',
@@ -64,7 +64,7 @@ export default function CanalRegistrationPage() {
         <div className="text-center">
           <p className="text-2xl font-bold mb-4">Canal invalide</p>
           <p className="text-white/50 mb-6">
-            Les canaux disponibles sont : Influenceur, Website, Média, Physique.
+            Les canaux disponibles sont : Ambassadeur, Website, Média, Physique.
           </p>
           <Link href="/partenariat">
             <Button variant="secondary">Retour au programme</Button>
