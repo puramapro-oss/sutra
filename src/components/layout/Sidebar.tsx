@@ -37,6 +37,7 @@ import {
   MessageCircle,
   Wind,
   BookHeart,
+  Sprout,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
@@ -100,6 +101,12 @@ const mainNav: NavItem[] = [
     href: '/storyboard',
     icon: Layers,
     testId: 'sidebar-storyboard',
+  },
+  {
+    label: 'KARMA',
+    href: '/karma',
+    icon: Sprout,
+    testId: 'sidebar-karma',
   },
   {
     label: 'Parrainage',
