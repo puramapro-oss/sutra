@@ -22,6 +22,17 @@
 - Commits : 12 atomiques feat(karma-light), tous pushés sur main
 - Session 1 > 80% contexte → handoff F13 (tests) + F14 (deploy) pour session 2
 
+### KARMA LIGHT (2026-04-19) — SESSION 2 : F13 + F14 livrées (KARMA LIGHT 100% TERMINÉ)
+- F13 Tests E2E: e2e/karma.spec.ts — 19 scénarios (8 API auth 401, 1 CRON auth, 9 pages middleware, 1 smoke)
+  - Couverture: seeds GET, missions GET/POST, dharma POST, quete GET, vote POST, claim POST, vague POST, karma-defi CRON
+  - Pages: /karma, /karma/missions, /karma/dharma, /karma/defi-collectif, /karma/tournoi, /karma/jeu-creatif, /karma/vague, /karma/quete-rare, /karma/lightning
+  - Résultat: 57 passed (19 × 3 viewports: Desktop 1920, Tablet 768, Mobile 375), 0 failed
+- F14 Deploy: npx vercel --prod → dpl_7tPHkvCC1UCgp7BqoWqggAzeNJvT READY (build 57s), alias sutra.purama.dev
+  - Smoke prod: homepage 200, /api/status 200, /api/karma/seeds 401, /api/karma/missions 401, /karma 200 (SSR client-auth redirect)
+  - Build: tsc 0 erreur, next build 0 erreur, 14 routes KARMA compilées prod
+- Commits Session 2: 2 (test F13 + docs handoff Session 1→2)
+- Total KARMA LIGHT: 15 commits pushés main, 0 placeholder, 0 TODO, 0 console.log, 0 any
+
 
 
 ### Features ajoutees (2026-04-09):

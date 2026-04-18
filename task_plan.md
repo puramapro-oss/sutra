@@ -48,8 +48,8 @@ Scope exclu (confirmé) : TERRA NOVA IRL, NAMA-VIDA santé, KYC Onfido, Ordonnan
 - [x] F10: /api/karma/games/quete + page /karma/quete-rare (streak 21j, 21000 seeds completion)
 - [x] F11: /api/karma/games/lightning + claim + CRON + page /karma/lightning (10 min flash)
 - [x] F12: Page /karma hub (SeedsBalance + 8 cards + transactions) + Sidebar lien KARMA (icône Sprout)
-- [ ] F13: Tests E2E Playwright karma.spec.ts (9 routes) + tsc + build 0 (déjà vérifié local)
-- [ ] F14: Deploy Vercel prod + vérif sutra.purama.dev/karma + /api/karma/seeds → 200
+- [x] F13: Tests E2E Playwright karma.spec.ts (19 scénarios × 3 viewports = 57 passed) + tsc 0 + build 0
+- [x] F14: Deploy Vercel prod (dpl_7tPHkvCC1UCgp7BqoWqggAzeNJvT READY, alias sutra.purama.dev) + smoke OK (/api/karma/seeds → 401, /api/status → 200, homepage → 200)
 
 ## État actuel session fin 2026-04-18
 - Build local: tsc 0 erreur, npm run build OK (14 routes KARMA compilées)
