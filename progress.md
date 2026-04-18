@@ -1,6 +1,28 @@
 ## Progress Log
 - 2026-04-02: Session demarree — correction complete SUTRA
 - 2026-04-09: V3 ULTIMATE upgrade — ajout de toutes les features manquantes du CLAUDE.md V3
+- 2026-04-18: KARMA LIGHT APPROCHE B (F1→F12 livrées, F13+F14 handoff)
+
+### KARMA LIGHT (2026-04-18) — SESSION 1 : F1→F12 livrées
+- F1 NAMA-Muse: persona créative (Kubrick/Wong Kar-wai/Villeneuve/Tarkovski) branchée /api/ai/chat
+- F2 Migration SQL: 14 tables KARMA (seeds, transactions, missions, completions, dharma_spins, defi_weeks+submissions, tournoi_scores, creatif_submissions+votes, vagues, quete_streaks, lightning_deals+claims), RLS partout, triggers (level Sanskrit auto, votes_count, children_count)
+- F2 Seeds : 15 missions créatives + 1 défi seed ("Lumière intérieure")
+- F3 Seeds API : /api/karma/seeds GET/POST, niveaux Novice→Sadhaka→Yogin→Siddha→Mahatma, hook useSeeds, composant SeedsBalance (compact + full)
+- F4 Missions : 15 missions catégorisées (création/diffusion/communauté/maîtrise/régularité), validation auto/manual/peer, max_per_day + max_per_week
+- F5 Roue Dharma : SVG 12 segments weighted pick, rotation cubic 6 tours, 1/jour garanti par UNIQUE constraint, confettis
+- F6 Défi Collectif : thème hebdo, cagnotte 5000 graines, CRON dimanche clôt + crée suivant (rotation 8 thèmes), leaderboard live
+- F7 Tournoi Karma : 7 piliers créatifs (mental/corps/social/impact/vision/consistance/innovation), CRON mensuel payout pyramide 10K/5K/3K/1500/800/400/200, top 100
+- F8 Jeu Créatif : soumission + vote 48h, vote unique, ne peut pas voter pour soi, has_voted state
+- F9 La Vague : cascade ×2 niveau 1-10 (50→25600 seeds), trigger DB children_count auto
+- F10 Quête Rare : streak 21 jours, gap 1j=continue/gap>1=reset, 21000 seeds completion + reset pour relancer
+- F11 Lightning Deals : flash 10 min, CRON toutes les 4h génère 60% chance, 5 templates, countdown live
+- F12 Hub /karma : SeedsBalance + 8 cards jeux + transactions, lien Sidebar avec icône Sprout
+- Build local : tsc 0 erreur, npm run build OK, 14 routes KARMA compilées
+- DB VPS : migration exécutée production
+- Commits : 12 atomiques feat(karma-light), tous pushés sur main
+- Session 1 > 80% contexte → handoff F13 (tests) + F14 (deploy) pour session 2
+
+
 
 ### Features ajoutees (2026-04-09):
 - SQL migration v3_features.sql (40+ tables: points, daily gift, boutique, achievements, lottery, community, viralite, notifications, emails, feedback)

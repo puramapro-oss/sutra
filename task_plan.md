@@ -32,6 +32,50 @@ SUTRA V3 — CLAUDE.md V3 ULTIMATE full feature set
 - [x] Phase 28: Lighthouse (landing 84, /pricing 90, /financer 92, accessibility 90-100, SEO 92-100)
 - [x] Phase 29: P7 Mobile Expo update — 5 new screens (financer, invoices, classement-points, guide, auto), 39 tsx total, 12 Maestro tests, GitHub Actions workflow, tsc 0, export 961 modules
 
+## KARMA LIGHT (Session 2026-04-18) — APPROCHE B validée
+Scope activé (12 features) : NAMA-Muse, Roue du Dharma, Défi Collectif, Tournoi Karma, Jeu Créatif, La Vague, Quête Rare, Lightning Deals, Graines cross-apps, niveaux Sanskrit, parrainage N1/N2/N3 existant, ambassadeurs existant, pricing 9,99€ existant.
+Scope exclu (confirmé) : TERRA NOVA IRL, NAMA-VIDA santé, KYC Onfido, Ordonnance Verte, Jackpot Terre, Bloom, Mission Solidaire, Miroir binôme, Shadow Work.
+
+- [x] F1: NAMA-Muse coach créatif (src/lib/nama-muse.ts + /api/ai/chat branché buildMuseSystem)
+- [x] F2: Migration SQL v7_karma_light.sql (14 tables, RLS, 15 missions + 1 défi seed)
+- [x] F3: /api/karma/seeds + karma-level.ts (Novice→Mahatma) + useSeeds + SeedsBalance
+- [x] F4: /api/karma/missions + page /karma/missions (5 catégories, today/week limits)
+- [x] F5: /api/karma/games/dharma + page /karma/dharma (wheel SVG 12 segments, animation cubic)
+- [x] F6: /api/karma/games/defi + CRON karma-defi + page /karma/defi-collectif
+- [x] F7: /api/karma/games/tournoi + CRON karma-tournoi + page /karma/tournoi (7 piliers créatifs)
+- [x] F8: /api/karma/games/creatif + /vote + page /karma/jeu-creatif (48h voting)
+- [x] F9: /api/karma/games/vague + page /karma/vague (cascade ×2 niveau 1-10, 50→25600 seeds)
+- [x] F10: /api/karma/games/quete + page /karma/quete-rare (streak 21j, 21000 seeds completion)
+- [x] F11: /api/karma/games/lightning + claim + CRON + page /karma/lightning (10 min flash)
+- [x] F12: Page /karma hub (SeedsBalance + 8 cards + transactions) + Sidebar lien KARMA (icône Sprout)
+- [ ] F13: Tests E2E Playwright karma.spec.ts (9 routes) + tsc + build 0 (déjà vérifié local)
+- [ ] F14: Deploy Vercel prod + vérif sutra.purama.dev/karma + /api/karma/seeds → 200
+
+## État actuel session fin 2026-04-18
+- Build local: tsc 0 erreur, npm run build OK (14 routes KARMA compilées)
+- DB VPS: migration v7_karma_light.sql exécutée (14 tables, 15 missions seed, 1 défi courant seed "Lumière intérieure")
+- Commits: 12 feat(karma-light) atomiques, tous pushés sur main
+- Contexte session 1 > 80% → handoff propre
+
+## Pour la session F13 + F14
+1. Lire task_plan.md + progress.md
+2. Créer e2e/karma.spec.ts avec 9 scénarios :
+   - GET /api/karma/seeds sans auth → 401
+   - GET /api/karma/missions sans auth → 401
+   - /karma redirect /login si non authentifié
+   - /karma/missions redirect /login si non authentifié
+   - /karma/dharma redirect /login si non authentifié
+   - /karma/defi-collectif redirect /login si non authentifié
+   - /karma/tournoi redirect /login si non authentifié
+   - /karma/jeu-creatif, /karma/vague, /karma/quete-rare, /karma/lightning redirects
+   - Vérif HTML contient "KARMA" sur homepage dashboard après login
+3. npm run build → 0 erreur
+4. vercel --prod --token $VERCEL_TOKEN --scope puramapro-oss --yes
+5. curl sutra.purama.dev → 200
+6. curl sutra.purama.dev/karma → 307 redirect /login (OK car protected)
+7. Update progress.md + cocher F13 F14
+8. Commit final "deploy(karma-light): production live"
+
 ## Decisions
 - Contest weekly: 10 winners, score-based (parrainages×10 + abos×50 + entries×5)
 - Contest monthly: 10 winners, random tirage via lottery_tickets
