@@ -58,3 +58,9 @@ test-results/
 
 # logs
 *.log
+
+# graphify — local-only artifacts (interpreter path + cache). Keep the actual
+# graph outputs (graph.json, graph.html, GRAPH_REPORT.md, manifest.json) in VCS.
+graphify-out/.graphify_python
+graphify-out/cache/
+graphify-out/cost.json
