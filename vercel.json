@@ -39,6 +39,10 @@
     {
       "path": "/api/cron/upgrade-ots-proofs",
       "schedule": "30 * * * *"
+    },
+    {
+      "path": "/api/cron/karma-split-distribute",
+      "schedule": "5 0 * * *"
     }
   ],
   "functions": {
@@ -68,6 +72,9 @@
     },
     "src/app/api/cron/upgrade-ots-proofs/route.ts": {
       "maxDuration": 120
+    },
+    "src/app/api/cron/karma-split-distribute/route.ts": {
+      "maxDuration": 300
     }
   }
 }
