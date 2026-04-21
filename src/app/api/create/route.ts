@@ -9,6 +9,7 @@ import { generateVoiceWithFallback, generateVisualWithFallback, generateMusicWit
 import { searchVideos } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
 import { assembleFinalVideo } from '@/lib/shotstack'
+import { stampVideoWhenReady } from '@/lib/video-proofs'
 import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
 import {
   publishToPlatforms,
@@ -341,6 +342,34 @@ export async function POST(req: Request) {
         cost_estimate: estimateTotalCost(script),
       })
       .eq('id', videoId)
+
+    // V7.1 — Horodatage blockchain OpenTimestamps (non-blocking).
+    // Si le stamp échoue, la génération reste 'ready' : le CRON horaire
+    // upgrade-ots-proofs pourra retry ou on peut re-stamp manuellement.
+    try {
+      const stampOutcome = await stampVideoWhenReady({
+        videoId,
+        userId: user.id,
+        videoUrl: assembled.url,
+      })
+      await logApiCall(
+        user.id,
+        'opentimestamps',
+        'stampVideoWhenReady',
+        stampOutcome.status === 'stamped' ? 'success' : 'error',
+        0,
+        stampOutcome.status === 'stamped' ? undefined : JSON.stringify(stampOutcome),
+      )
+    } catch (stampErr) {
+      await logApiCall(
+        user.id,
+        'opentimestamps',
+        'stampVideoWhenReady',
+        'error',
+        0,
+        stampErr instanceof Error ? stampErr.message : String(stampErr),
+      )
+    }
 
     await sendNotification(user.id, {
       type: 'success',
