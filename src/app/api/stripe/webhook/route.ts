@@ -4,6 +4,8 @@ import { createServiceClient } from '@/lib/supabase'
 import { sendNotification, sendAdminNotification, logActivity } from '@/lib/logger'
 import { sendSubscriptionEmail } from '@/lib/emails'
 import { creditWallet } from '@/lib/smart-split'
+import { applyKarmaSplit } from '@/lib/karma-split'
+import { upsertAccountFromStripe } from '@/lib/connect'
 import type Stripe from 'stripe'
 
 export async function POST(req: Request) {
@@ -325,8 +327,121 @@ export async function POST(req: Request) {
             invoice_id: invoice.id,
             amount: invoice.amount_paid,
           })
+
+          // V7.1 — Karma Split 50/10/10/30 sur le HT de chaque invoice.
+          // Idempotent via UNIQUE(stripe_invoice_id) → retry webhook safe.
+          try {
+            const split = await applyKarmaSplit(invoice, profile.id)
+            if (!split.applied && split.reason === 'error') {
+              await sendAdminNotification({
+                type: 'karma_split_error',
+                title: 'Karma split failed',
+                message: `Invoice ${invoice.id} : ${split.detail ?? 'unknown'}`,
+                data: { invoice_id: invoice.id, user_id: profile.id },
+              })
+            }
+          } catch (err) {
+            const message = err instanceof Error ? err.message : String(err)
+            await sendAdminNotification({
+              type: 'karma_split_exception',
+              title: 'Karma split threw',
+              message: `Invoice ${invoice.id} : ${message}`,
+              data: { invoice_id: invoice.id, user_id: profile.id },
+            })
+          }
+        } else {
+          // Pas de profile matché (ex: invoice pour un client Stripe externe Purama)
+          // → split quand même appliqué, user_id null (cross-app Purama multi-app).
+          try {
+            await applyKarmaSplit(invoice, null)
+          } catch {
+            // non-blocking
+          }
         }
 
+        break
+      }
+
+      // V7.1 — account.updated : sync connect_accounts depuis état Stripe.
+      case 'account.updated': {
+        const account = event.data.object as Stripe.Account
+        try {
+          await upsertAccountFromStripe(account)
+          await logActivity(
+            (account.metadata?.user_id as string) ?? '',
+            'connect_account_updated',
+            `Connect ${account.id} synchronise`,
+            {
+              stripe_account_id: account.id,
+              payouts_enabled: account.payouts_enabled,
+              details_submitted: account.details_submitted,
+              currently_due: account.requirements?.currently_due ?? [],
+            },
+          )
+        } catch (err) {
+          // Pas de profile associé encore (webhook très tôt) → ignore.
+          const message = err instanceof Error ? err.message : String(err)
+          if (!message.includes('not found')) {
+            await sendAdminNotification({
+              type: 'connect_sync_error',
+              title: 'Connect account sync failed',
+              message: `${account.id} : ${message}`,
+              data: { stripe_account_id: account.id },
+            })
+          }
+        }
+        break
+      }
+
+      // V7.1 — transfer.created : wallet user → Connect (traçabilité SEPA).
+      case 'transfer.created': {
+        const transfer = event.data.object as Stripe.Transfer
+        const userId = (transfer.metadata?.user_id as string) ?? null
+        if (userId) {
+          await serviceClient.from('wallet_transactions').insert({
+            user_id: userId,
+            type: 'debit',
+            amount: (transfer.amount ?? 0) / 100,
+            source: 'stripe_transfer',
+            stripe_transfer_id: transfer.id,
+            description: `Retrait wallet ${((transfer.amount ?? 0) / 100).toFixed(2)}€ → Connect ${transfer.destination}`,
+          })
+          await logActivity(userId, 'transfer_created', 'Transfer Stripe Connect', {
+            transfer_id: transfer.id,
+            amount: transfer.amount,
+            destination: transfer.destination,
+          })
+        }
+        break
+      }
+
+      // V7.1 — payout.paid : SEPA arrivé sur l'IBAN user → notification.
+      case 'payout.paid': {
+        const payout = event.data.object as Stripe.Payout
+        // Le payout est émis côté compte Connect → on retrouve le user via metadata
+        // Stripe ne propage pas les metadata du transfer vers le payout, donc on
+        // retrouve par destination (stripe_account_id) si le webhook est envoyé
+        // dans le contexte du Connect account (Stripe-Account header).
+        const stripeAccountId = (event as unknown as { account?: string }).account
+        if (stripeAccountId) {
+          const { data: connectRow } = await serviceClient
+            .from('connect_accounts')
+            .select('user_id')
+            .eq('stripe_account_id', stripeAccountId)
+            .maybeSingle()
+          if (connectRow?.user_id) {
+            await sendNotification(connectRow.user_id as string, {
+              type: 'payment',
+              title: 'Retrait arrivé !',
+              message: `Tes ${((payout.amount ?? 0) / 100).toFixed(2)}€ sont sur ton compte bancaire 🎉`,
+            })
+            await logActivity(connectRow.user_id as string, 'payout_paid', 'Payout SEPA arrivé', {
+              payout_id: payout.id,
+              amount: payout.amount,
+              arrival_date: payout.arrival_date,
+            })
+          }
+        }
         break
       }
 
