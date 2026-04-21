@@ -43,6 +43,10 @@
     {
       "path": "/api/cron/karma-split-distribute",
       "schedule": "5 0 * * *"
+    },
+    {
+      "path": "/api/cron/asso-transfer",
+      "schedule": "0 9 1 * *"
     }
   ],
   "functions": {
@@ -75,6 +79,9 @@
     },
     "src/app/api/cron/karma-split-distribute/route.ts": {
       "maxDuration": 300
+    },
+    "src/app/api/cron/asso-transfer/route.ts": {
+      "maxDuration": 60
     }
   }
 }
