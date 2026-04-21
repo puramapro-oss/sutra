@@ -44,9 +44,9 @@ export function ImpactDashboard() {
         fetch('/api/fiscal/status')
           .then((r) => (r.ok ? r.json() : null))
           .then((d) => {
-            // Derive impact proxy from total — in absence of a dedicated
-            // nature-rewards aggregate endpoint, use total as an estimate.
-            // TODO refactor: add /api/nature-rewards/total quand endpoint dédié.
+            // Derive impact proxy from fiscal total (Nature Rewards cumulés
+            // apparaissent dans annual_summaries.total_nature — exposé par
+            // /api/fiscal/status). deriveImpact mappe total EUR → 4 métriques.
             const total = Number(d?.total ?? 0)
             setImpact(deriveImpact(total))
           })
