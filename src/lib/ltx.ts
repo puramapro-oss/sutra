@@ -1,6 +1,8 @@
 import { fetchWithRetry, sleep } from '@/lib/utils/api'
 import { isSuperAdmin } from '@/lib/utils'
 import { uploadToStorage } from '@/lib/storage'
+import { generateWanVideo, type WanQuality } from '@/lib/wan'
+import { createServiceClient } from '@/lib/supabase'
 import type { Plan } from '@/types'
 
 // ---------------------------------------------------------------------------
@@ -77,15 +79,20 @@ export function selectEngine(
   plan: Plan,
   userEmail?: string | null
 ): { engine: VideoEngine; model: LtxModel | 'wan-2.2' } {
-  // Super admin always gets pro
+  // V7.1 — Plan-based routing explicite :
+  //   super_admin + enterprise + admin → ltx-2-3-pro (qualité max)
+  //   starter + creator + empire       → ltx-2-3-fast
+  //   free                             → WAN 2.2 direct (pas de LTX payant)
   if (userEmail && isSuperAdmin(userEmail)) {
     return { engine: 'ltx-pro', model: 'ltx-2-3-pro' }
   }
-  // Paid plans get fast
-  if (plan !== 'free') {
+  if (plan === 'enterprise' || plan === 'admin') {
+    return { engine: 'ltx-pro', model: 'ltx-2-3-pro' }
+  }
+  if (plan === 'starter' || plan === 'creator' || plan === 'empire') {
     return { engine: 'ltx-fast', model: 'ltx-2-3-fast' }
   }
-  // Free falls back to WAN 2.2 via RunPod
+  // Plan 'free' (défaut) → WAN 2.2 direct (pas de fallback LTX).
   return { engine: 'wan-classic', model: 'wan-2.2' }
 }
 
@@ -249,6 +256,8 @@ export async function generateVideoSmart(
     cameraMotion?: CameraMotion
     imageUri?: string
     lastFrameUri?: string
+    userId?: string // V7.1 — pour tracking video_generations
+    videoId?: string
   } = {}
 ): Promise<LtxResult> {
   const { engine, model } = selectEngine(plan, userEmail)
@@ -256,15 +265,56 @@ export async function generateVideoSmart(
   const format = options.format ?? '16:9'
   const resolution = getResolution(format, quality)
   const duration = options.duration ?? 5
+  const start = Date.now()
 
-  // Free plan → direct to WAN 2.2
-  if (engine === 'wan-classic') {
-    return generateViaWan(prompt, quality, format, duration, userEmail)
+  // V7.1 tracking context (flushé à la fin ou dans catch)
+  const track = {
+    userId: options.userId ?? null,
+    videoId: options.videoId ?? null,
+    plan,
+    engineRequested: engine,
+    modelRequested: model,
   }
 
-  // LTX path with circuit breaker
+  // Free plan → WAN 2.2 direct (pas de fallback LTX).
+  if (engine === 'wan-classic') {
+    try {
+      const wan = await generateWanVideoWithTracking({
+        prompt,
+        quality,
+        duration,
+        userEmail,
+        track,
+        fallbackTriggered: false,
+        fallbackReason: null,
+      })
+      return wan
+    } catch (err) {
+      await logVideoGeneration({
+        ...track,
+        engineUsed: 'wan',
+        modelUsed: 'wan-2.2',
+        fallbackTriggered: false,
+        fallbackReason: null,
+        durationMs: Date.now() - start,
+        success: false,
+        errorMessage: err instanceof Error ? err.message : String(err),
+      })
+      throw err
+    }
+  }
+
+  // LTX path — circuit breaker bypass → WAN fallback si LTX unhealthy.
   if (!isLtxHealthy()) {
-    return generateViaWan(prompt, quality, format, duration, userEmail)
+    return generateWanVideoWithTracking({
+      prompt,
+      quality,
+      duration,
+      userEmail,
+      track,
+      fallbackTriggered: true,
+      fallbackReason: 'circuit_breaker_open',
+    })
   }
 
   try {
@@ -292,46 +342,141 @@ export async function generateVideoSmart(
     }
 
     recordLtxSuccess()
+    await logVideoGeneration({
+      ...track,
+      engineUsed: 'ltx',
+      modelUsed: ltxModel,
+      fallbackTriggered: false,
+      fallbackReason: null,
+      durationMs: Date.now() - start,
+      success: true,
+      errorMessage: null,
+    })
     return { videoBuffer, engine, model: ltxModel, duration, resolution }
   } catch (err) {
     recordLtxFailure()
-    // Automatic fallback to WAN 2.2
-    return generateViaWan(prompt, quality, format, duration, userEmail)
+    // V7.1 — Fallback automatique WAN 2.2 avec traçage raison
+    return generateWanVideoWithTracking({
+      prompt,
+      quality,
+      duration,
+      userEmail,
+      track,
+      fallbackTriggered: true,
+      fallbackReason: err instanceof Error ? err.message : 'ltx_exception',
+    })
   }
 }
 
 // ---------------------------------------------------------------------------
-// WAN 2.2 fallback via RunPod (existing infrastructure)
+// Wrapper interne WAN + tracking V7.1
 // ---------------------------------------------------------------------------
 
-async function generateViaWan(
-  prompt: string,
-  quality: string,
-  _format: string,
-  duration: number,
+async function generateWanVideoWithTracking(params: {
+  prompt: string
+  quality: string
+  duration: number
   userEmail: string | null
-): Promise<LtxResult> {
-  // Dynamic import to avoid circular deps
-  const { submitVideoJob, pollVideoJob } = await import('@/lib/runpod')
-
-  const dims: Record<string, { width: number; height: number }> = {
-    '720p': { width: 768, height: 512 },
-    '1080p': { width: 1024, height: 576 },
-    '4k': { width: 1280, height: 720 },
+  track: {
+    userId: string | null
+    videoId: string | null
+    plan: Plan
+    engineRequested: VideoEngine
+    modelRequested: LtxModel | 'wan-2.2'
   }
-  const { width, height } = dims[quality] ?? dims['720p']
+  fallbackTriggered: boolean
+  fallbackReason: string | null
+}): Promise<LtxResult> {
+  const start = Date.now()
+  const wanQuality: WanQuality = ['720p', '1080p', '4k'].includes(params.quality)
+    ? (params.quality as WanQuality)
+    : '720p'
 
-  const { jobId, baseUrl } = await submitVideoJob(
-    { prompt, width, height, num_frames: Math.round(duration * 16) },
-    userEmail
-  )
-  const videoUrl = await pollVideoJob(jobId, baseUrl, 300_000)
+  try {
+    const result = await generateWanVideo({
+      prompt: params.prompt,
+      userEmail: params.userEmail,
+      quality: wanQuality,
+      duration: params.duration,
+    })
 
-  // Fetch the video as buffer
-  const res = await fetch(videoUrl)
-  const videoBuffer = await res.arrayBuffer()
+    await logVideoGeneration({
+      ...params.track,
+      engineUsed: 'wan',
+      modelUsed: 'wan-2.2',
+      fallbackTriggered: params.fallbackTriggered,
+      fallbackReason: params.fallbackReason,
+      durationMs: Date.now() - start,
+      success: true,
+      errorMessage: null,
+    })
 
-  return { videoBuffer, engine: 'wan-classic', model: 'wan-2.2', duration, resolution: `${width}x${height}` }
+    return {
+      videoBuffer: result.videoBuffer,
+      engine: 'wan-classic',
+      model: 'wan-2.2',
+      duration: result.duration,
+      resolution: result.resolution,
+    }
+  } catch (err) {
+    await logVideoGeneration({
+      ...params.track,
+      engineUsed: 'wan',
+      modelUsed: 'wan-2.2',
+      fallbackTriggered: params.fallbackTriggered,
+      fallbackReason: params.fallbackReason,
+      durationMs: Date.now() - start,
+      success: false,
+      errorMessage: err instanceof Error ? err.message : String(err),
+    })
+    throw err
+  }
+}
+
+// ---------------------------------------------------------------------------
+// V7.1 — Tracking video_generations (non-blocking, errors swallowed)
+// ---------------------------------------------------------------------------
+
+async function logVideoGeneration(params: {
+  userId: string | null
+  videoId: string | null
+  plan: Plan
+  engineRequested: VideoEngine
+  modelRequested: LtxModel | 'wan-2.2'
+  engineUsed: 'ltx' | 'wan' | 'pexels' | 'shotstack'
+  modelUsed: string
+  fallbackTriggered: boolean
+  fallbackReason: string | null
+  durationMs: number
+  success: boolean
+  errorMessage: string | null
+}): Promise<void> {
+  if (!params.userId) return // pas de user → pas de ligne DB (NOT NULL)
+  try {
+    const supabase = createServiceClient()
+    // Traduit VideoEngine Purama → engine_requested CHECK schema (ltx/wan/...)
+    const engineReqDb: 'ltx' | 'wan' =
+      params.engineRequested === 'ltx-pro' || params.engineRequested === 'ltx-fast'
+        ? 'ltx'
+        : 'wan'
+    await supabase.from('video_generations').insert({
+      user_id: params.userId,
+      video_id: params.videoId,
+      user_plan: params.plan,
+      engine_requested: engineReqDb,
+      model_requested: String(params.modelRequested),
+      engine_used: params.engineUsed,
+      model_used: params.modelUsed,
+      fallback_triggered: params.fallbackTriggered,
+      fallback_reason: params.fallbackReason,
+      duration_ms: params.durationMs,
+      success: params.success,
+      error_message: params.errorMessage,
+      request_metadata: {},
+    })
+  } catch {
+    // Non-blocking : on ne veut jamais fail une génération pour un log raté.
+  }
 }
 
 // ---------------------------------------------------------------------------
