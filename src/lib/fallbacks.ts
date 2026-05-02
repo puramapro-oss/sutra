@@ -1,5 +1,7 @@
 import { generateVideoSmart, type VideoEngine } from '@/lib/ltx'
 import { generateMusic } from '@/lib/suno'
+import { generateRiffusionMusic, isRiffusionConfigured } from '@/lib/riffusion'
+import { generateStableAudio, isStableAudioConfigured } from '@/lib/stable-audio'
 import { generateVoice } from '@/lib/elevenlabs'
 import { searchVideos } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
@@ -30,11 +32,24 @@ export async function generateVisualWithFallback(
   throw new Error('Aucun service de generation video disponible')
 }
 
+/**
+ * Music generation chain — Suno → Riffusion → Stable Audio → '' (no music).
+ *
+ * Each provider is attempted only if its API key is configured. Failures fall
+ * through silently to the next provider. If all fail, returns '' and the
+ * pipeline continues without music (Shotstack omits the soundtrack track —
+ * see shotstack.ts).
+ *
+ * Logs which provider succeeded for observability.
+ */
 export async function generateMusicWithFallback(
   prompt: string,
   style: string,
   duration: number
 ): Promise<string> {
+  const enrichedPrompt = style ? `${prompt} — style: ${style}` : prompt
+
+  // 1. Suno (primary)
   try {
     const song = await generateMusic({
       prompt,
@@ -42,10 +57,33 @@ export async function generateMusicWithFallback(
       duration,
       instrumental: true,
     })
-    return song.audio_url
+    if (song?.audio_url) return song.audio_url
   } catch {
-    return ''
+    // fall through
   }
+
+  // 2. Riffusion (secondary)
+  if (isRiffusionConfigured()) {
+    try {
+      const song = await generateRiffusionMusic({ prompt: enrichedPrompt })
+      if (song?.audio_url) return song.audio_url
+    } catch {
+      // fall through
+    }
+  }
+
+  // 3. Stable Audio via Replicate (tertiary)
+  if (isStableAudioConfigured()) {
+    try {
+      const song = await generateStableAudio({ prompt: enrichedPrompt, duration })
+      if (song?.audio_url) return song.audio_url
+    } catch {
+      // fall through
+    }
+  }
+
+  // All providers exhausted — render video without music
+  return ''
 }
 
 export async function generateVoiceWithFallback(
