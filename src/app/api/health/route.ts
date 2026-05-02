@@ -72,17 +72,21 @@ export async function GET() {
 
   const services = { supabase, ltx, stripe, elevenlabs, suno }
 
-  const allOk = Object.values(services).every((s) => s.status === 'ok')
+  // Critical services — if any is down, the pipeline cannot run.
+  // Suno (music) is decoration only — gracefully omitted when down (see shotstack.ts).
+  const critical = { supabase, ltx, stripe, elevenlabs }
+  const criticalDown = Object.values(critical).some((s) => s.status === 'down')
   const anyDown = Object.values(services).some((s) => s.status === 'down')
+  const allOk = Object.values(services).every((s) => s.status === 'ok')
 
   return NextResponse.json(
     {
-      status: anyDown ? 'degraded' : allOk ? 'ok' : 'degraded',
+      status: criticalDown ? 'down' : anyDown ? 'degraded' : allOk ? 'ok' : 'degraded',
       app: 'SUTRA',
       version: '2.0.0',
       timestamp: new Date().toISOString(),
       services,
     },
-    { status: anyDown ? 503 : 200 }
+    { status: criticalDown ? 503 : 200 }
   )
 }

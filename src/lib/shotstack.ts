@@ -28,14 +28,17 @@ export async function assembleFinalVideo(
   params: AssembleParams
 ): Promise<{ url: string; timeline: Record<string, unknown>; duration: number }> {
   const tracks = buildTracks(params)
-  const timeline = {
-    soundtrack: {
+  const timeline: Record<string, unknown> = {
+    background: '#000000',
+    tracks,
+  }
+  // Only include soundtrack when music URL is present — Shotstack rejects empty src.
+  if (params.musicUrl && params.musicUrl.trim().length > 0) {
+    timeline.soundtrack = {
       src: params.musicUrl,
       effect: 'fadeOut',
       volume: params.musicVolume,
-    },
-    background: '#000000',
-    tracks,
+    }
   }
 
   const output = {
