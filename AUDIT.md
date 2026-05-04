@@ -166,3 +166,48 @@ curl -X POST https://sutra.purama.dev/api/create -H "Cookie: ..." \
 ---
 
 **Auteur** : Claude Code (Opus 4.7) · Session 2026-05-02 · Workflow GSD Phase 1→5
+
+---
+
+## 🩺 Post-deploy checks (2026-05-04)
+
+### Health prod
+- `/` → **200** (295 ms)
+- `/api/health` → **200 degraded** — Suno toujours `503` (provider down depuis ~3 jours, services critiques OK)
+- `/api/status` → 200
+- 4/4 services critiques (Supabase 107ms · LTX 0 fail · Stripe 147ms · ElevenLabs 48ms)
+
+### Pages publiques
+| Route | Status | Latency |
+|---|---|---|
+| `/` | 200 | 295 ms |
+| `/pricing` | 200 | 496 ms |
+| `/how-it-works` | 200 | 639 ms |
+| `/aide` | 200 | 590 ms |
+| `/login` | 200 | 391 ms |
+| ~~`/privacy`~~ → `/legal/privacy` | 308 → 200 | — |
+| ~~`/terms`~~ → `/legal/terms` | 308 → 200 | — |
+
+**Bug fix** : `/privacy` et `/terms` étaient déclarés publics dans `middleware.ts` mais sans page (les vraies pages vivent à `/legal/privacy` et `/legal/terms`). Ajout de 2 redirects permanents 308 dans `next.config.ts` (commit `072bac9`).
+
+### Lighthouse desktop (homepage)
+| Catégorie | Score |
+|---|---|
+| Performance | **73** |
+| Accessibility | **96** |
+| Best Practices | **100** |
+| SEO | **100** |
+
+**Métriques** : FCP 1.15s · LCP 3.10s · CLS 0.000 · TBT 0ms · Speed Index 2.90s.
+
+**LCP > cible (2.5s)** : à creuser. Pistes (ordonnées par effort) :
+- Lazy-load `HeroOrbs` (animation décorative pure, pourrait être chargée après LCP)
+- Simplifier `.conic-spin` (24s linear infinite gradient — bloque le compositor)
+- Preload font hero (`Space Grotesk` weight 700)
+- 0.45s d'opportunités quick-win identifiées par Lighthouse (unused JS + legacy bundle pour navigateurs modernes)
+
+**Décision** : Performance 73 = base saine. A11y/BP/SEO maxés. LCP à optimiser dans une prochaine session ciblée perf, pas bloquant pour la prod actuelle.
+
+### Commits prod 2026-05-04
+- `072bac9` — fix(routing): redirect /privacy → /legal/privacy & /terms → /legal/terms
+- Deploy : `sutra-5veah4bb8-puramapro-oss-projects.vercel.app` → alias `sutra.purama.dev`
