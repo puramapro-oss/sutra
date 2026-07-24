@@ -550,7 +550,7 @@ export default function TemplatesPage() {
   }, [searchQuery, activeCategory])
 
   // ── Actions ─────────────────────────────────────────────
-  const usePresetTemplate = useCallback(
+  const applyPresetTemplate = useCallback(
     (template: PresetTemplate) => {
       const params = new URLSearchParams({
         template: template.id,
@@ -564,7 +564,7 @@ export default function TemplatesPage() {
     [router]
   )
 
-  const useUserTemplate = useCallback(
+  const applyUserTemplate = useCallback(
     (template: UserTemplate) => {
       router.push(`/create?userTemplate=${template.id}`)
     },
@@ -760,7 +760,7 @@ export default function TemplatesPage() {
                           {/* Use button */}
                           <Button
                             size="sm"
-                            onClick={() => usePresetTemplate(template)}
+                            onClick={() => applyPresetTemplate(template)}
                             data-testid={`use-template-${template.id}`}
                             className="w-full justify-center"
                           >
@@ -829,7 +829,7 @@ export default function TemplatesPage() {
                           <Button
                             size="sm"
                             variant="secondary"
-                            onClick={() => useUserTemplate(template)}
+                            onClick={() => applyUserTemplate(template)}
                             data-testid={`use-user-template-${template.id}`}
                             className="flex-1 justify-center"
                           >
@@ -904,7 +904,7 @@ export default function TemplatesPage() {
                         <Button
                           size="sm"
                           variant="secondary"
-                          onClick={() => useUserTemplate(template)}
+                          onClick={() => applyUserTemplate(template)}
                           data-testid={`use-community-template-${template.id}`}
                           className="w-full justify-center"
                         >
