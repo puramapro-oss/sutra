@@ -328,7 +328,7 @@ export async function POST(req: Request) {
             amount: invoice.amount_paid,
           })
 
-          // V7.1 — Karma Split 50/10/10/30 sur le HT de chaque invoice.
+          // V7.1 — Karma Split 50/10/40 sur le HT de chaque invoice.
           // Idempotent via UNIQUE(stripe_invoice_id) → retry webhook safe.
           try {
             const split = await applyKarmaSplit(invoice, profile.id)

@@ -2,13 +2,15 @@ import { createServiceClient } from '@/lib/supabase'
 import type Stripe from 'stripe'
 
 // ---------------------------------------------------------------------------
-// Karma Split 50/10/10/30 — appliqué à chaque invoice.paid Stripe.
-// Source of truth : STRIPE_CONNECT_KARMA_V4.md (§ flux économique global) + CLAUDE.md §35.
+// Karma Split 50/10/40 — appliqué à chaque invoice.paid Stripe.
+// Source of truth : CLAUDE.md §9.1 (registre d'autorité) — 50/10/10/30 et
+// 50/20/30 sont OBSOLÈTES. `adya` est conservé à 0 pour compat schéma
+// (colonnes split_adya / split_adya_pct existantes) mais ne reçoit plus rien.
 //
 //   50% → user_pool  (pool gains users, redistribué via CRON quotidien)
 //   10% → asso       (Association PURAMA — mécénat, réduction IS 60%)
-//   10% → adya       (marketing ADYA)
-//   30% → sasu       (SASU PURAMA — marge, 0% IS ZFRR 5 ans)
+//   0%  → adya       (déprécié — voir CLAUDE.md §9.1)
+//   40% → sasu       (SASU PURAMA — marge, 0% IS ZFRR 5 ans)
 //
 // Split appliqué sur le HT (hors TVA). La TVA collectée ne rentre pas dans le
 // split (reversée à l'État). En franchise 293B (0% TVA) → HT = TTC.
@@ -28,8 +30,8 @@ export type SplitRatios = {
 const DEFAULT_SPLIT: SplitRatios = {
   user_pool: 0.5,
   asso: 0.1,
-  adya: 0.1,
-  sasu: 0.3,
+  adya: 0,
+  sasu: 0.4,
 }
 
 function loadSplit(): SplitRatios {
@@ -43,7 +45,7 @@ function loadSplit(): SplitRatios {
   if (Math.abs(sum - 1) > 0.001) {
     // Fallback aux valeurs par défaut si config env incohérente (garde-fou prod).
     console.warn(
-      `[karma-split] env ratios sum=${sum} != 1.0, using defaults 50/10/10/30`,
+      `[karma-split] env ratios sum=${sum} != 1.0, using defaults 50/10/40`,
     )
     return { ...DEFAULT_SPLIT }
   }
