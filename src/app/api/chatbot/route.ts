@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { askClaude } from '@/lib/claude'
 import { logApiCall } from '@/lib/logger'
+import { enforceRateLimit } from '@/lib/rate-limit'
 
 const chatbotSchema = z.object({
   message: z.string().min(1, 'Message requis').max(2000),
@@ -32,6 +33,9 @@ export async function POST(req: Request) {
     if (authError || !user) {
       return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
     }
+
+    const limite = enforceRateLimit(`chatbot:${user.id}`, 30, 60_000)
+    if (limite) return limite
 
     const body = await req.json()
     const parsed = chatbotSchema.safeParse(body)

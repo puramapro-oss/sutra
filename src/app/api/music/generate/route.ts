@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { generateMusic } from '@/lib/suno'
 import { logApiCall } from '@/lib/logger'
+import { enforceRateLimit } from '@/lib/rate-limit'
 import type { MusicStyle } from '@/types'
 
 const musicSchema = z.object({
@@ -19,6 +20,9 @@ export async function POST(req: Request) {
     if (authError || !user) {
       return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
     }
+
+    const limite = enforceRateLimit(`music:generate:${user.id}`, 10, 3600_000)
+    if (limite) return limite
 
     const body = await req.json()
     const parsed = musicSchema.safeParse(body)

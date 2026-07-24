@@ -4,6 +4,7 @@ import { createServerClient } from '@/lib/supabase-server'
 import { generateVoice } from '@/lib/elevenlabs'
 import { uploadToStorage } from '@/lib/storage'
 import { logApiCall } from '@/lib/logger'
+import { enforceRateLimit } from '@/lib/rate-limit'
 
 const voiceGenerateSchema = z.object({
   text: z.string().min(1, 'Texte requis').max(5000),
@@ -19,6 +20,9 @@ export async function POST(req: Request) {
     if (authError || !user) {
       return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
     }
+
+    const limite = enforceRateLimit(`voice:generate:${user.id}`, 20, 3600_000)
+    if (limite) return limite
 
     const body = await req.json()
     const parsed = voiceGenerateSchema.safeParse(body)
