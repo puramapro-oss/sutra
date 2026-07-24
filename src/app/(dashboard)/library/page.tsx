@@ -874,7 +874,7 @@ export default function LibraryPage() {
             description={
               search || filter !== 'all' || activeFolder
                 ? 'Aucune video ne correspond a tes filtres. Essaie de modifier ta recherche.'
-                : "Tu n'as pas encore de video. Cree ta premiere !"
+                : "Tu n&apos;as pas encore de video. Cree ta premiere !"
             }
             action={
               search || filter !== 'all' || activeFolder

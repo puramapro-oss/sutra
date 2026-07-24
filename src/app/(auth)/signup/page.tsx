@@ -99,7 +99,7 @@ function SignupContent() {
       toast.success('Compte cree avec succes !')
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "Erreur lors de l'inscription"
+        err instanceof Error ? err.message : "Erreur lors de l&apos;inscription"
       if (message.includes('already registered')) {
         toast.error('Cet email est deja utilise')
       } else {

@@ -86,7 +86,7 @@ export function AbonnementClient({
           <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
           <h1 className="text-2xl font-bold mb-2">Résiliation enregistrée</h1>
           <p className="text-white/70">
-            On espère te revoir. Ton compte reste actif jusqu'au{' '}
+            On espère te revoir. Ton compte reste actif jusqu&apos;au{' '}
             <strong>{endsAt?.toLocaleDateString('fr-FR') ?? 'la fin de la période en cours'}</strong>.
           </p>
           <Link href="/dashboard" className="inline-block mt-6 px-5 py-2.5 rounded-xl bg-[var(--color-accent)] font-semibold">
@@ -126,7 +126,7 @@ export function AbonnementClient({
         </div>
 
         <div className="mt-5 pt-5 border-t border-white/10 text-xs text-white/55">
-          Accès immédiat activé conformément à l'art. L221-28 3° du Code de la consommation.
+          Accès immédiat activé conformément à l&apos;art. L221-28 3° du Code de la consommation.
           La résiliation prend effet en fin de période de facturation. Les données sont conservées 3 ans (RGPD).
         </div>
       </section>
@@ -171,7 +171,7 @@ export function AbonnementClient({
             <AlertTriangle className="w-5 h-5 text-red-400" />
             <div className="flex-1">
               <div className="font-medium text-red-200">Résilier mon abonnement</div>
-              <div className="text-xs text-white/55">Fin d'accès à la date de fin de période</div>
+              <div className="text-xs text-white/55">Fin d&apos;accès à la date de fin de période</div>
             </div>
           </button>
         </section>
@@ -231,7 +231,7 @@ export function AbonnementClient({
 
       {isActive && step === 3 && (
         <section className="glass-card p-6 space-y-4">
-          <h2 className="text-xl font-bold">Qu'est-ce qui t'a fait partir ?</h2>
+          <h2 className="text-xl font-bold">Qu&apos;est-ce qui t&apos;a fait partir ?</h2>
           <p className="text-sm text-white/70">
             Ton retour nous aide à améliorer SUTRA pour tous. Une seule réponse suffit.
           </p>

@@ -164,7 +164,7 @@ export default function CookiesPage() {
         </div>
 
         <div className="space-y-10">
-          <Section id="definition" title="1. Qu'est-ce qu'un cookie ?">
+          <Section id="definition" title="1. Qu&apos;est-ce qu&apos;un cookie ?">
             <p>
               Un cookie est un petit fichier texte depose sur ton appareil
               (ordinateur, telephone, tablette) lorsque tu visites un site web.

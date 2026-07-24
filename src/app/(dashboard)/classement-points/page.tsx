@@ -98,7 +98,7 @@ export default function ClassementPointsPage() {
         </p>
       </div>
 
-      {/* User's rank card */}
+      {/* User&apos;s rank card */}
       {profile && userRank && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}

@@ -18,7 +18,7 @@ const TRIGGERS = {
   third_login: {
     title: "Tu reviens souvent — bonne nouvelle",
     description:
-      "Avec un abonnement, chaque visite te rapporte des points et des euros. Tes gains potentiels t'attendent.",
+      "Avec un abonnement, chaque visite te rapporte des points et des euros. Tes gains potentiels t&apos;attendent.",
     icon: TrendingUp,
     cta: "Debloquer mes gains",
     href: "/pricing",
@@ -26,7 +26,7 @@ const TRIGGERS = {
   pending_earnings: {
     title: "Tu as des euros en attente",
     description:
-      "Tes points et parrainages valent de l'argent reel. Passe a Starter pour les debloquer.",
+      "Tes points et parrainages valent de l&apos;argent reel. Passe a Starter pour les debloquer.",
     icon: Sparkles,
     cta: "Recuperer mes gains",
     href: "/pricing",

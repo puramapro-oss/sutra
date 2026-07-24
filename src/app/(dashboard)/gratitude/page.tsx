@@ -77,7 +77,7 @@ export default function GratitudePage() {
 
       const remaining = MAX_DAILY - todayCount - 1
       if (remaining > 0) {
-        toast.success(`Merci pour cette gratitude ! +${POINTS_REWARD} pts. Encore ${remaining} aujourd'hui.`)
+        toast.success(`Merci pour cette gratitude ! +${POINTS_REWARD} pts. Encore ${remaining} aujourd&apos;hui.`)
       } else {
         toast.success(`3 gratitudes du jour completees ! +${POINTS_REWARD} pts`)
       }
@@ -218,7 +218,7 @@ export default function GratitudePage() {
           <EmptyState
             icon={BookHeart}
             title="Ton journal est vide"
-            description="Commence par noter ce pour quoi tu es reconnaissant(e) aujourd'hui."
+            description="Commence par noter ce pour quoi tu es reconnaissant(e) aujourd&apos;hui."
           />
         ) : (
           entries.map((entry, idx) => (

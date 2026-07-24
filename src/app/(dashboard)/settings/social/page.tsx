@@ -184,7 +184,7 @@ export default function SocialAccountsPage() {
       if (!res.ok) throw new Error('save_failed')
       toast.success('Autopilot mis a jour')
     } catch {
-      toast.error("Impossible d'enregistrer l'autopilot")
+      toast.error("Impossible d&apos;enregistrer l&apos;autopilot")
     } finally {
       setSavingAutopilot(false)
     }
@@ -411,7 +411,7 @@ export default function SocialAccountsPage() {
                 'relative inline-flex h-7 w-12 items-center rounded-full transition-colors flex-shrink-0',
                 autopilotConfig?.enabled ? 'bg-violet-500' : 'bg-white/10'
               )}
-              aria-label="Activer l'autopilot"
+              aria-label="Activer l&apos;autopilot"
             >
               <motion.span
                 animate={{ x: autopilotConfig?.enabled ? 22 : 4 }}

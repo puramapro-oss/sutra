@@ -60,8 +60,8 @@ export function FiscalClient({ totals, lastYearSummary }: { totals: Totals; last
           <div>
             <div className="font-semibold text-amber-200">Tu dois déclarer tes gains cette année</div>
             <p className="text-sm text-white/80 mt-1">
-              Tu as dépassé le seuil de 3 000 € de gains via Purama. L'abattement forfaitaire de 34 % s'applique automatiquement.
-              On t'enverra un récapitulatif PDF en janvier pour t'aider à déclarer.
+              Tu as dépassé le seuil de 3 000 € de gains via Purama. L'abattement forfaitaire de 34 % s&apos;applique automatiquement.
+              On t&apos;enverra un récapitulatif PDF en janvier pour t&apos;aider à déclarer.
             </p>
           </div>
         </div>
@@ -93,7 +93,7 @@ export function FiscalClient({ totals, lastYearSummary }: { totals: Totals; last
           </div>
           {!isOverThreshold && (
             <p className="text-xs text-white/50 mt-2">
-              Il te reste {remainingToThreshold.toFixed(2)} € avant d'atteindre le seuil.
+              Il te reste {remainingToThreshold.toFixed(2)} € avant d&apos;atteindre le seuil.
             </p>
           )}
         </div>
@@ -110,7 +110,7 @@ export function FiscalClient({ totals, lastYearSummary }: { totals: Totals; last
             </a>
           </li>
           <li>Dans ta déclaration, remplis la <strong className="text-white">case 5NG</strong> (revenus des plateformes numériques).</li>
-          <li>Indique le montant total que Purama t'a versé dans l'année (récapitulatif ci-dessous).</li>
+          <li>Indique le montant total que Purama t&apos;a versé dans l&apos;année (récapitulatif ci-dessous).</li>
         </ol>
         <div className="mt-4 p-4 rounded-xl bg-white/[0.03] border border-white/10 text-sm">
           <div className="font-semibold text-white">Abattement forfaitaire de 34 %</div>
@@ -147,9 +147,9 @@ export function FiscalClient({ totals, lastYearSummary }: { totals: Totals; last
       <section className="glass-card p-6 text-sm text-white/65">
         <h3 className="font-semibold text-white mb-2">Mention légale</h3>
         <p>
-          Les gains perçus via Purama peuvent être soumis à l'impôt sur le revenu selon ta situation fiscale et le montant perçu.
-          En France, un seuil de déclaration s'applique à partir de 3 000 € de revenus annuels via des plateformes numériques.
-          Purama t'informe automatiquement lorsque tu approches de ce seuil mais ne peut être tenu responsable de tes obligations fiscales individuelles.
+          Les gains perçus via Purama peuvent être soumis à l&apos;impôt sur le revenu selon ta situation fiscale et le montant perçu.
+          En France, un seuil de déclaration s&apos;applique à partir de 3 000 € de revenus annuels via des plateformes numériques.
+          Purama t&apos;informe automatiquement lorsque tu approches de ce seuil mais ne peut être tenu responsable de tes obligations fiscales individuelles.
           Consulte un conseiller fiscal pour ta situation personnelle.
         </p>
         <p className="mt-3">

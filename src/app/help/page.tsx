@@ -32,7 +32,7 @@ interface FAQItem {
 const faqs: FAQItem[] = [
   {
     category: 'general',
-    question: "Qu'est-ce que SUTRA ?",
+    question: "Qu&apos;est-ce que SUTRA ?",
     answer:
       "SUTRA est une plateforme de generation de videos par intelligence artificielle. Tu donnes un sujet, et notre pipeline IA genere automatiquement le script, la voix off, les visuels, la musique et le montage final. Le resultat : une video prete a publier en quelques minutes.",
   },
@@ -52,7 +52,7 @@ const faqs: FAQItem[] = [
     category: 'creation',
     question: 'Combien de temps prend la generation ?',
     answer:
-      "La generation complete d'une video prend generalement entre 3 et 8 minutes selon la duree et la complexite. Tu recois une notification des que ta video est prete. Tu peux suivre la progression en temps reel depuis ton dashboard.",
+      "La generation complete d&apos;une video prend generalement entre 3 et 8 minutes selon la duree et la complexite. Tu recois une notification des que ta video est prete. Tu peux suivre la progression en temps reel depuis ton dashboard.",
   },
   {
     category: 'creation',
@@ -70,7 +70,7 @@ const faqs: FAQItem[] = [
     category: 'voix',
     question: 'Comment fonctionne le clonage de voix ?',
     answer:
-      "Le clonage de voix te permet de creer une replique numerique de ta propre voix. Il suffit de fournir un echantillon audio de quelques minutes. Notre IA analyse ta voix et cree un modele qui peut ensuite lire n'importe quel texte avec ton timbre, ton rythme et tes intonations. Disponible a partir du plan Createur.",
+      "Le clonage de voix te permet de creer une replique numerique de ta propre voix. Il suffit de fournir un echantillon audio de quelques minutes. Notre IA analyse ta voix et cree un modele qui peut ensuite lire n&apos;importe quel texte avec ton timbre, ton rythme et tes intonations. Disponible a partir du plan Createur.",
   },
   {
     category: 'abonnement',
@@ -82,13 +82,13 @@ const faqs: FAQItem[] = [
     category: 'abonnement',
     question: 'Puis-je annuler mon abonnement a tout moment ?',
     answer:
-      "Absolument. Tu peux annuler ton abonnement a tout moment depuis tes parametres. Aucun engagement, aucun frais cache. Tu conserves l'acces a ton plan jusqu'a la fin de la periode en cours.",
+      "Absolument. Tu peux annuler ton abonnement a tout moment depuis tes parametres. Aucun engagement, aucun frais cache. Tu conserves l&apos;acces a ton plan jusqu&apos;a la fin de la periode en cours.",
   },
   {
     category: 'abonnement',
     question: 'Comment fonctionne le parrainage ?',
     answer:
-      "Le parrainage SUTRA est tres genereux : ton filleul obtient -50% sur son premier mois, tu recois 50% de son premier paiement + 10% recurrent chaque mois tant qu'il est abonne. Tous les 10 filleuls, tu debloques un bonus de 30%. Les gains sont verses sur ton wallet SUTRA et retirables a partir de 50 EUR.",
+      "Le parrainage SUTRA est tres genereux : ton filleul obtient -50% sur son premier mois, tu recois 50% de son premier paiement + 10% recurrent chaque mois tant qu&apos;il est abonne. Tous les 10 filleuls, tu debloques un bonus de 30%. Les gains sont verses sur ton wallet SUTRA et retirables a partir de 50 EUR.",
   },
   {
     category: 'technique',
@@ -98,7 +98,7 @@ const faqs: FAQItem[] = [
   },
   {
     category: 'technique',
-    question: "Qu'est-ce que l'Autopilot ?",
+    question: "Qu&apos;est-ce que l'Autopilot ?",
     answer:
       "L'Autopilot te permet de creer des series de videos automatiques. Tu definis un theme, une frequence de publication, et SUTRA genere et publie automatiquement tes videos selon ton calendrier. Ideal pour maintenir une presence constante sans effort. Disponible a partir du plan Createur (1 serie) et Empire (5 series).",
   },
@@ -106,7 +106,7 @@ const faqs: FAQItem[] = [
     category: 'abonnement',
     question: 'Comment fonctionne le wallet et les retraits ?',
     answer:
-      "Tes gains de parrainage et de concours sont credites automatiquement sur ton wallet SUTRA. Tu peux retirer tes gains a partir de 5 EUR par virement bancaire (IBAN). Les retraits sont traites sous 48 heures ouvrees. Tu consultes ton solde et l'historique complet depuis la page Wallet.",
+      "Tes gains de parrainage et de concours sont credites automatiquement sur ton wallet SUTRA. Tu peux retirer tes gains a partir de 5 EUR par virement bancaire (IBAN). Les retraits sont traites sous 48 heures ouvrees. Tu consultes ton solde et l&apos;historique complet depuis la page Wallet.",
   },
   {
     category: 'general',
@@ -118,13 +118,13 @@ const faqs: FAQItem[] = [
     category: 'creation',
     question: 'Puis-je utiliser mes propres images ou videos ?',
     answer:
-      "Pour le moment, SUTRA genere tous les visuels par IA ou utilise des stocks HD (Pexels). L'import d'images personnalisees sera disponible prochainement. Tu peux cependant influencer le style visuel via le prompt, le choix de niche et les preferences de ton profil.",
+      "Pour le moment, SUTRA genere tous les visuels par IA ou utilise des stocks HD (Pexels). L'import d&apos;images personnalisees sera disponible prochainement. Tu peux cependant influencer le style visuel via le prompt, le choix de niche et les preferences de ton profil.",
   },
   {
     category: 'technique',
     question: 'Comment participer aux concours et au classement ?',
     answer:
-      "Chaque utilisateur inscrit recoit automatiquement des places pour le tirage au sort hebdomadaire et mensuel. Plus tu parraines, plus tu as de places. Pour le classement mensuel Purama Impact, tu soumets ta meilleure video creee sur SUTRA. Notre IA l'evalue sur 5 criteres (Amour, Impact, Creativite, Qualite, Inspiration) et le top 10 se partage 3% du CA du mois.",
+      "Chaque utilisateur inscrit recoit automatiquement des places pour le tirage au sort hebdomadaire et mensuel. Plus tu parraines, plus tu as de places. Pour le classement mensuel Purama Impact, tu soumets ta meilleure video creee sur SUTRA. Notre IA l&apos;evalue sur 5 criteres (Amour, Impact, Creativite, Qualite, Inspiration) et le top 10 se partage 3% du CA du mois.",
   },
 ]
 
@@ -148,7 +148,7 @@ const gettingStartedSteps = [
     icon: Palette,
     title: 'Configure ton profil',
     description:
-      "Choisis ta niche, ton style prefere et ta voix. SUTRA s'adapte a tes preferences pour des resultats optimaux.",
+      "Choisis ta niche, ton style prefere et ta voix. SUTRA s&apos;adapte a tes preferences pour des resultats optimaux.",
   },
   {
     icon: Video,

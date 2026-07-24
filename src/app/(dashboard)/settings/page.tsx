@@ -162,7 +162,7 @@ export default function SettingsPage() {
       await refetch()
       toast.success('Avatar mis a jour !')
     } catch {
-      toast.error("Erreur lors de l'upload")
+      toast.error("Erreur lors de l&apos;upload")
     } finally {
       setUploadingAvatar(false)
     }
@@ -265,7 +265,7 @@ export default function SettingsPage() {
       URL.revokeObjectURL(url)
       toast.success('Donnees exportees !')
     } catch {
-      toast.error("Erreur lors de l'export")
+      toast.error("Erreur lors de l&apos;export")
     } finally {
       setExporting(false)
     }

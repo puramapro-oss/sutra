@@ -193,7 +193,7 @@ export function ReferralBlock() {
               <img src={qrDataUrl} alt="QR code de parrainage" className="w-28 h-28 rounded-lg" />
               <div className="text-xs text-white/70 leading-relaxed">
                 <strong className="text-white block mb-1">Partage en scannant.</strong>
-                Tes amis atterrissent directement sur l'inscription avec ton code appliqué.
+                Tes amis atterrissent directement sur l&apos;inscription avec ton code appliqué.
               </div>
             </motion.div>
           )}

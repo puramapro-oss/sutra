@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: "Conditions Generales d'Utilisation — SUTRA",
   description:
-    "Conditions generales d'utilisation de SUTRA, plateforme de generation video IA editee par Purama (micro-entreprise).",
+    "Conditions generales d&apos;utilisation de SUTRA, plateforme de generation video IA editee par Purama (micro-entreprise).",
   openGraph: {
     title: "Conditions Generales d'Utilisation — SUTRA",
     description: "CGU de la plateforme SUTRA by Purama.",

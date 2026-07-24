@@ -405,7 +405,7 @@ export default function ProductionPage() {
               buttonLabel="Generer les scenes"
               buttonIcon={Film}
               disabled={stepStatus.script !== 'done'}
-              disabledMessage="Genere le script d'abord"
+              disabledMessage="Genere le script d&apos;abord"
               data={generatedData.video}
             />
           )}
@@ -443,7 +443,7 @@ export default function ProductionPage() {
                 buttonLabel="Generer la narration"
                 buttonIcon={Mic}
                 disabled={stepStatus.script !== 'done'}
-                disabledMessage="Genere le script d'abord"
+                disabledMessage="Genere le script d&apos;abord"
                 data={generatedData.voice}
               />
             </div>
@@ -495,7 +495,7 @@ export default function ProductionPage() {
               buttonLabel="Assembler la video"
               buttonIcon={Layers}
               disabled={stepStatus.video !== 'done' || stepStatus.voice !== 'done'}
-              disabledMessage="Genere les scenes et la narration d'abord"
+              disabledMessage="Genere les scenes et la narration d&apos;abord"
               data={generatedData.assembly}
             />
           )}
@@ -505,14 +505,14 @@ export default function ProductionPage() {
             <div className="space-y-6">
               <StepGenerateCard
                 title="Miniature — Pollinations"
-                description="Generation d'une miniature attractive pour ta video."
+                description="Generation d&apos;une miniature attractive pour ta video."
                 status={stepStatus.thumbnail}
                 isGenerating={isGenerating}
                 onGenerate={() => generateStep('thumbnail')}
                 buttonLabel="Generer la miniature"
                 buttonIcon={ImageIcon}
                 disabled={stepStatus.assembly !== 'done'}
-                disabledMessage="Assemble la video d'abord"
+                disabledMessage="Assemble la video d&apos;abord"
                 data={generatedData.thumbnail}
               />
 

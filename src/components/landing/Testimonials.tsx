@@ -150,7 +150,7 @@ export default function Testimonials() {
           {useCases.map((_, i) => (
             <button
               key={i}
-              aria-label={`Aller au cas d'usage ${i + 1}`}
+              aria-label={`Aller au cas d&apos;usage ${i + 1}`}
               onClick={() => emblaApi?.scrollTo(i)}
               className="w-2 h-2 rounded-full bg-white/20 hover:bg-violet-400/60 transition-colors duration-200"
             />

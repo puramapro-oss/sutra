@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "404 — Page introuvable",
-  description: "Cette page n'existe pas ou a ete deplacee.",
+  description: "Cette page n&apos;existe pas ou a ete deplacee.",
 };
 
 export default function NotFound() {

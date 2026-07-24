@@ -55,7 +55,7 @@ export function SmartSplit() {
       </div>
 
       <p className="text-xs text-white/55 mb-5">
-        Chaque gain est automatiquement réparti sur 6 sous-wallets pour t'aider à épargner, investir et donner sans y penser.
+        Chaque gain est automatiquement réparti sur 6 sous-wallets pour t&apos;aider à épargner, investir et donner sans y penser.
       </p>
 
       <div className="grid gap-2.5">
@@ -89,7 +89,7 @@ export function SmartSplit() {
 
       <div className="mt-5 pt-5 border-t border-white/10 text-xs text-white/50">
         <strong className="text-white/75">Retrait :</strong> uniquement depuis Principal.
-        Les autres sous-wallets ont un rôle d'épargne auto, de solidarité ou d'objectif.
+        Les autres sous-wallets ont un rôle d&apos;épargne auto, de solidarité ou d&apos;objectif.
       </div>
     </div>
   )

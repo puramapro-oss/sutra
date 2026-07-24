@@ -33,7 +33,7 @@ const EVENT_CONFIG: Record<string, { icon: typeof Trophy; label: (name: string, 
 function relativeTime(iso: string): string {
   const diff = Date.now() - new Date(iso).getTime()
   const m = Math.floor(diff / 60000)
-  if (m < 1) return "à l'instant"
+  if (m < 1) return "à l&apos;instant"
   if (m < 60) return `il y a ${m} min`
   const h = Math.floor(m / 60)
   if (h < 24) return `il y a ${h} h`

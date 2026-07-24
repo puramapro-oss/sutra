@@ -70,7 +70,7 @@ interface ChatMessage {
 export default function AidePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    { id: '0', role: 'assistant', content: "Salut ! Je suis l'assistant SUTRA. Pose-moi ta question, je suis la pour t'aider." },
+    { id: '0', role: 'assistant', content: "Salut ! Je suis l&apos;assistant SUTRA. Pose-moi ta question, je suis la pour t&apos;aider." },
   ])
   const [chatInput, setChatInput] = useState('')
   const [chatLoading, setChatLoading] = useState(false)
@@ -106,7 +106,7 @@ export default function AidePage() {
       const data = await res.json()
       setChatMessages((prev) => [
         ...prev,
-        { id: (Date.now() + 1).toString(), role: 'assistant', content: data.response ?? "Desole, je n'ai pas pu repondre." },
+        { id: (Date.now() + 1).toString(), role: 'assistant', content: data.response ?? "Desole, je n&apos;ai pas pu repondre." },
       ])
     } catch {
       setChatMessages((prev) => [
@@ -139,7 +139,7 @@ export default function AidePage() {
         setEscaladeSent(true)
         toast.success('Message envoye ! On te repond sous 24h.')
       } else {
-        toast.error("Erreur lors de l'envoi. Reessaie.")
+        toast.error("Erreur lors de l&apos;envoi. Reessaie.")
       }
     } catch {
       toast.error('Erreur reseau')

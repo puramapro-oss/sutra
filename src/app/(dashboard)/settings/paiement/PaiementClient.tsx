@@ -222,7 +222,7 @@ export function PaiementClient({
               </p>
               <ConnectAccountOnboarding
                 onExit={() => {
-                  // Refresh le statut quand le user sort de l'iframe
+                  // Refresh le statut quand le user sort de l&apos;iframe
                   void fetch('/api/connect/onboard').then(async (r) => {
                     if (!r.ok) return
                     const j = (await r.json()) as {

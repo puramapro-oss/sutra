@@ -94,7 +94,7 @@ export default function ContactPage() {
                 label="Sujet"
                 value={subject}
                 onChange={e => setSubject(e.target.value)}
-                placeholder="De quoi s'agit-il ?"
+                placeholder="De quoi s&apos;agit-il ?"
               />
               <div>
                 <label className="block text-sm font-medium text-white/70 mb-1.5">Message *</label>

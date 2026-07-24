@@ -73,8 +73,8 @@ export default function DharmaPage() {
   const segmentAngle = 360 / 12
 
   const spinToSegment = useCallback(async (segmentIndex: number) => {
-    // On veut que la flèche (en haut) pointe vers le segment d'index segmentIndex.
-    // Les segments sont dessinés de l'index 0 (haut) dans le sens horaire.
+    // On veut que la flèche (en haut) pointe vers le segment d&apos;index segmentIndex.
+    // Les segments sont dessinés de l&apos;index 0 (haut) dans le sens horaire.
     const target = -segmentIndex * segmentAngle
     const fullRotations = 6
     const finalRotation = rotationRef.current + fullRotations * 360 + (target - (rotationRef.current % 360))

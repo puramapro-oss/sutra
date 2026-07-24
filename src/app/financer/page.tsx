@@ -56,7 +56,7 @@ const PROFILS = [
 
 const SITUATIONS = [
   { id: "salarie" as Situation, label: "Salarie" },
-  { id: "demandeur_emploi" as Situation, label: "Demandeur d'emploi" },
+  { id: "demandeur_emploi" as Situation, label: "Demandeur d&apos;emploi" },
   { id: "independant" as Situation, label: "Independant" },
   { id: "auto_entrepreneur" as Situation, label: "Auto-entrepreneur" },
   { id: "retraite" as Situation, label: "Retraite" },

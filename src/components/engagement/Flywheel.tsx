@@ -30,7 +30,7 @@ export function Flywheel() {
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-4xl font-bold">Plus on est nombreux, plus chacun gagne</h2>
             <p className="text-white/60 mt-2 text-sm md:text-base">
-              Les gains viennent de la communauté active. Voici où on en est aujourd'hui.
+              Les gains viennent de la communauté active. Voici où on en est aujourd&apos;hui.
             </p>
           </div>
 

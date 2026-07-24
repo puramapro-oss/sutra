@@ -41,7 +41,7 @@ export default function ForgotPasswordPage() {
       const message =
         err instanceof Error
           ? err.message
-          : "Erreur lors de l'envoi"
+          : "Erreur lors de l&apos;envoi"
       toast.error(message)
     } finally {
       setLoading(false)

@@ -383,7 +383,7 @@ export default function EditorPage() {
       if (!res.ok) throw new Error('Export failed')
       toast.success('Export lance avec succes ! Tu seras notifie quand la video sera prete.')
     } catch {
-      toast.error("Erreur lors de l'export. Reessaie.")
+      toast.error("Erreur lors de l&apos;export. Reessaie.")
     } finally {
       setExporting(false)
     }
@@ -452,7 +452,7 @@ export default function EditorPage() {
         <EmptyState
           icon={AlertCircle}
           title="Video introuvable"
-          description="Cette video n'existe pas ou a ete supprimee."
+          description="Cette video n&apos;existe pas ou a ete supprimee."
           action={{
             label: 'Retour au dashboard',
             onClick: () => router.push('/dashboard'),

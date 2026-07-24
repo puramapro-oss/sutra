@@ -15,7 +15,7 @@ export default async function FiscalPage() {
 
   const service = createServiceClient()
 
-  // Calcul total gains de l'année en cours
+  // Calcul total gains de l&apos;année en cours
   const yearStart = new Date(new Date().getFullYear(), 0, 1).toISOString()
   const { data: txs } = await service
     .from('wallet_transactions')
