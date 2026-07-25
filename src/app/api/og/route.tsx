@@ -56,7 +56,7 @@ export async function GET() {
             fontWeight: 500,
           }}
         >
-          Genere des videos IA en quelques minutes
+          Génère des vidéos IA en quelques minutes
         </div>
 
         {/* Badge */}
