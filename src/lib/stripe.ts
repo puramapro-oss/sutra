@@ -44,9 +44,12 @@ export async function createCheckoutSession(params: {
       : { allow_promotion_codes: true }),
     customer_email: params.email,
     line_items: [{ price: params.priceId, quantity: 1 }],
+    subscription_data: {
+      metadata: { app_slug: 'sutra' },
+    },
     metadata: {
       user_id: params.userId,
-      app: 'sutra',
+      app_slug: 'sutra',
       plan: params.plan,
       referral_code: params.referralCode ?? '',
       cross_promo_source: params.crossPromoSource ?? '',
