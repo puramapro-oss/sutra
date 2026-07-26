@@ -50,13 +50,13 @@ export default function MobileNav() {
               <Icon
                 className={cn(
                   'w-5 h-5 transition-colors',
-                  active ? 'text-violet-400' : 'text-white/35'
+                  active ? 'text-violet-400' : 'text-white/60'
                 )}
               />
               <span
                 className={cn(
                   'text-[10px] font-medium transition-colors',
-                  active ? 'text-violet-400' : 'text-white/35'
+                  active ? 'text-violet-400' : 'text-white/60'
                 )}
               >
                 {item.label}
