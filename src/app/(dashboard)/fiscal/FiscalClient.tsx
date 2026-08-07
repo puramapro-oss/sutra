@@ -60,7 +60,7 @@ export function FiscalClient({ totals, lastYearSummary }: { totals: Totals; last
           <div>
             <div className="font-semibold text-amber-200">Tu dois déclarer tes gains cette année</div>
             <p className="text-sm text-white/80 mt-1">
-              Tu as dépassé le seuil de 3 000 € de gains via Purama. L'abattement forfaitaire de 34 % s&apos;applique automatiquement.
+              Tu as dépassé le seuil de 3 000 € de gains via Purama. L&apos;abattement forfaitaire de 34 % s&apos;applique automatiquement.
               On t&apos;enverra un récapitulatif PDF en janvier pour t&apos;aider à déclarer.
             </p>
           </div>
