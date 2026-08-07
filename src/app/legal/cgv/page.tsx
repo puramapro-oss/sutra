@@ -89,7 +89,6 @@ export default function CGVPage() {
 
           <Section title="Article 9 — Mediation">
             <p>En cas de litige lie a une commande, tu peux recourir gratuitement a un mediateur de la consommation. Conformement aux articles L.611-1 et suivants du Code de la consommation, tu peux saisir le mediateur designe par PURAMA SASU ou tout mediateur inscrit sur la liste prevue a l&apos;article L.615-1 du Code de la consommation, accessible sur : <span className="text-white/70">economie.gouv.fr/mediation-conso</span>.</p>
-            <p>Plateforme europeenne de resolution des litiges en ligne : <span className="text-white/70">ec.europa.eu/consumers/odr</span></p>
           </Section>
 
           <Section title="Article 10 — Droit applicable">
