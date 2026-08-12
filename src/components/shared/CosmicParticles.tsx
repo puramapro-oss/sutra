@@ -146,7 +146,7 @@ export function CosmicParticles({ className = '', variant = 'landing' }: CosmicP
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReducedMotion(mq.matches)
+    queueMicrotask(() => setReducedMotion(mq.matches))
     const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
@@ -154,7 +154,7 @@ export function CosmicParticles({ className = '', variant = 'landing' }: CosmicP
 
   useEffect(() => {
     if (reducedMotion || engineReady) {
-      if (engineReady) setReady(true)
+      if (engineReady) queueMicrotask(() => setReady(true))
       return
     }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useMemo } from 'react'
+import { useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { MeshDistortMaterial, Stars, Float } from '@react-three/drei'
 import * as THREE from 'three'
@@ -53,21 +53,24 @@ function InnerGlow() {
   )
 }
 
+function generateRingPositions() {
+  const count = 200
+  const arr = new Float32Array(count * 3)
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2
+    const radius = 3.2 + (Math.random() - 0.5) * 0.4
+    arr[i * 3] = Math.cos(angle) * radius
+    arr[i * 3 + 1] = (Math.random() - 0.5) * 0.3
+    arr[i * 3 + 2] = Math.sin(angle) * radius
+  }
+  return arr
+}
+
+const RING_POSITIONS = generateRingPositions()
+
 function ParticleRing() {
   const pointsRef = useRef<THREE.Points>(null)
-
-  const positions = useMemo(() => {
-    const count = 200
-    const arr = new Float32Array(count * 3)
-    for (let i = 0; i < count; i++) {
-      const angle = (i / count) * Math.PI * 2
-      const radius = 3.2 + (Math.random() - 0.5) * 0.4
-      arr[i * 3] = Math.cos(angle) * radius
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 0.3
-      arr[i * 3 + 2] = Math.sin(angle) * radius
-    }
-    return arr
-  }, [])
+  const positions = RING_POSITIONS
 
   useFrame(({ clock }) => {
     if (pointsRef.current) {

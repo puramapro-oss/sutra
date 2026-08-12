@@ -29,11 +29,11 @@ export function LoadingTimeout({
 
   useEffect(() => {
     if (!loading) {
-      setTimedOut(false)
+      queueMicrotask(() => setTimedOut(false))
       return
     }
 
-    setTimedOut(false)
+    queueMicrotask(() => setTimedOut(false))
     const timer = setTimeout(() => setTimedOut(true), timeout)
     return () => clearTimeout(timer)
   }, [loading, timeout])

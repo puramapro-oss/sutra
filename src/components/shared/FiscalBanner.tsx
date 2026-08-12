@@ -13,7 +13,7 @@ export function FiscalBanner() {
   useEffect(() => {
     const d = localStorage.getItem(STORAGE_KEY)
     if (d && Date.now() - Number(d) < 90 * 24 * 60 * 60 * 1000) {
-      setDismissed(true)
+      queueMicrotask(() => setDismissed(true))
       return
     }
     fetch('/api/fiscal/status')

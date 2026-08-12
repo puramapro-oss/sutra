@@ -77,8 +77,10 @@ export default function SearchModal() {
   // Focus input when opened
   useEffect(() => {
     if (open) {
-      setQuery('')
-      setSelectedIndex(0)
+      queueMicrotask(() => {
+        setQuery('')
+        setSelectedIndex(0)
+      })
       setTimeout(() => inputRef.current?.focus(), 50)
     }
   }, [open])

@@ -51,7 +51,7 @@ export function ReferralBlock() {
     } catch {
       // Clipboard denied
     }
-  }, [stats?.share_url])
+  }, [stats])
 
   const share = useCallback(async () => {
     if (!stats?.share_url) return
@@ -69,7 +69,7 @@ export function ReferralBlock() {
       }
     }
     await copyLink()
-  }, [stats?.share_url, copyLink])
+  }, [stats, copyLink])
 
   if (!stats || !stats.referral_code) {
     return null

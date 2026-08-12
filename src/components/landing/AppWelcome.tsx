@@ -488,7 +488,7 @@ function Footer() {
 
 export default function AppWelcome() {
   const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
+  useEffect(() => { queueMicrotask(() => setMounted(true)) }, [])
 
   return (
     <main className="relative min-h-dvh bg-[#06050e] text-white overflow-x-hidden">

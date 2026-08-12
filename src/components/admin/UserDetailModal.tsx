@@ -59,13 +59,17 @@ export function UserDetailModal({
 
   useEffect(() => {
     if (!open || !userId) {
-      setData(null)
-      setError(null)
+      queueMicrotask(() => {
+        setData(null)
+        setError(null)
+      })
       return
     }
     let cancelled = false
-    setLoading(true)
-    setError(null)
+    queueMicrotask(() => {
+      setLoading(true)
+      setError(null)
+    })
     fetch(`/api/admin/users/${userId}`)
       .then(async (res) => {
         if (!res.ok) {

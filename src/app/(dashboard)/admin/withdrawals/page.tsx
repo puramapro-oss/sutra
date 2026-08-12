@@ -39,7 +39,7 @@ export default function AdminWithdrawalsPage() {
     setLoading(false)
   }, [])
 
-  useEffect(() => { fetchData() }, [fetchData])
+  useEffect(() => { queueMicrotask(() => fetchData()) }, [fetchData])
 
   const updateStatus = async (id: string, status: 'processed' | 'rejected') => {
     setProcessing(id)

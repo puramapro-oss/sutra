@@ -14,7 +14,7 @@ export default function CinematicIntro() {
     if (typeof window === 'undefined') return
     const seen = localStorage.getItem(STORAGE_KEY)
     if (seen) return
-    setVisible(true)
+    queueMicrotask(() => setVisible(true))
 
     // Phase timeline
     const t1 = setTimeout(() => setPhase('text'), 800)

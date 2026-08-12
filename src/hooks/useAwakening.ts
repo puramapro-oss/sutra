@@ -23,7 +23,7 @@ export function useAwakening(userId?: string) {
 
   useEffect(() => {
     if (!userId) {
-      setState((s) => ({ ...s, loading: false }));
+      queueMicrotask(() => setState((s) => ({ ...s, loading: false })));
       return;
     }
 

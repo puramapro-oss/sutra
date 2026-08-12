@@ -24,11 +24,13 @@ export default function StylesPage() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) {
-      setSelectedStyle(stored)
-    }
+    queueMicrotask(() => {
+      setMounted(true)
+      if (stored) {
+        setSelectedStyle(stored)
+      }
+    })
   }, [])
 
   const handleSelectStyle = (style: VisualStyle) => {

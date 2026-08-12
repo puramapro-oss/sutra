@@ -59,6 +59,8 @@ export default function BreathePage() {
     return 'inhale'
   }, [])
 
+  const startPhaseRef = useRef<((p: Exclude<Phase, 'idle'>) => void) | null>(null)
+
   const startPhase = useCallback((p: Exclude<Phase, 'idle'>) => {
     setPhase(p)
     setSecondsLeft(PHASE_DURATIONS[p])
@@ -72,13 +74,17 @@ export default function BreathePage() {
           if (next === 'inhale') {
             setCycleCount((c) => c + 1)
           }
-          startPhase(next)
+          startPhaseRef.current?.(next)
           return 0
         }
         return prev - 1
       })
     }, 1000)
   }, [nextPhase])
+
+  useEffect(() => {
+    startPhaseRef.current = startPhase
+  })
 
   const handleStart = useCallback(() => {
     setIsRunning(true)
@@ -116,10 +122,12 @@ export default function BreathePage() {
   // Complete session when 3 min reached
   useEffect(() => {
     if (totalElapsed >= SESSION_DURATION && isRunning && !completed) {
-      setCompleted(true)
-      setIsRunning(false)
+      queueMicrotask(() => {
+        setCompleted(true)
+        setIsRunning(false)
+        setPhase('idle')
+      })
       cleanup()
-      setPhase('idle')
 
       if (profile?.id) {
         addXp('breathe_session', XP_REWARD)

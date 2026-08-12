@@ -24,21 +24,24 @@ export default function Confetti({ active, duration = 3000 }: ConfettiProps) {
     delay: number
     size: number
     rotation: number
+    borderRadius: string
   }>>([])
 
   useEffect(() => {
     if (active) {
-      setShow(true)
-      setParticles(
-        Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
-          id: i,
-          x: randomBetween(0, 100),
-          color: COLORS[Math.floor(Math.random() * COLORS.length)],
-          delay: randomBetween(0, 0.5),
-          size: randomBetween(6, 12),
-          rotation: randomBetween(0, 360),
-        }))
-      )
+      const generated = Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
+        id: i,
+        x: randomBetween(0, 100),
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        delay: randomBetween(0, 0.5),
+        size: randomBetween(6, 12),
+        rotation: randomBetween(0, 360),
+        borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+      }))
+      queueMicrotask(() => {
+        setShow(true)
+        setParticles(generated)
+      })
       const timer = setTimeout(() => setShow(false), duration)
       return () => clearTimeout(timer)
     }
@@ -73,7 +76,7 @@ export default function Confetti({ active, duration = 3000 }: ConfettiProps) {
                 width: p.size,
                 height: p.size,
                 backgroundColor: p.color,
-                borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+                borderRadius: p.borderRadius,
               }}
             />
           ))}

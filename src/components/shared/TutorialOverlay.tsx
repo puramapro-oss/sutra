@@ -124,7 +124,7 @@ export default function TutorialOverlay() {
   }, [currentStep, visible])
 
   useEffect(() => {
-    updateSpotlight()
+    queueMicrotask(() => updateSpotlight())
     window.addEventListener('resize', updateSpotlight)
     window.addEventListener('scroll', updateSpotlight)
     return () => {
@@ -142,7 +142,7 @@ export default function TutorialOverlay() {
         .update({ tutorial_completed: true })
         .eq('id', profile.id)
     }
-  }, [profile?.id])
+  }, [profile])
 
   const next = useCallback(() => {
     if (currentStep < STEPS.length - 1) {
