@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Wallet, Zap, Shield, Target, Clock, Heart } from 'lucide-react'
 import { SUB_WALLET_LABELS, type SubWallet, type SubWalletBalances } from '@/lib/smart-split'
+import { formatMoneyOrPilotPoints } from '@/lib/utils'
 
 const CONFIG: Array<{
   key: SubWallet
@@ -51,7 +52,7 @@ export function SmartSplit() {
     <div className="glass-card p-6">
       <div className="flex items-baseline justify-between mb-5">
         <h3 className="font-semibold text-lg">Mon wallet — Smart Split</h3>
-        <div className="font-mono font-bold text-xl">{total.toFixed(2)} €</div>
+        <div className="font-mono font-bold text-xl">{formatMoneyOrPilotPoints(total)}</div>
       </div>
 
       <p className="text-xs text-white/55 mb-5">
@@ -72,12 +73,12 @@ export function SmartSplit() {
                       <span className="font-medium">{SUB_WALLET_LABELS[c.key]}</span>
                       <span className="text-[10px] font-mono text-white/50">{c.pct}%</span>
                     </div>
-                    <span className="font-mono font-semibold">{value.toFixed(2)} €</span>
+                    <span className="font-mono font-semibold">{formatMoneyOrPilotPoints(value)}</span>
                   </div>
                   <p className="text-xs text-white/60 mt-0.5">{c.description}</p>
                   {c.key === 'boost' && totalBoost != null && totalBoost > 0 && (
                     <p className="text-xs text-amber-300/80 mt-1">
-                      {totalBoost.toFixed(2)} € en tranches actives (intérêts +2%/mois)
+                      {formatMoneyOrPilotPoints(totalBoost)} en tranches actives (intérêts +2%/mois)
                     </p>
                   )}
                 </div>
