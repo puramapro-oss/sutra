@@ -155,7 +155,9 @@ export async function debitPrincipal(params: {
 
   const updated = addBalances(current, { principal: -amount })
 
-  await service
+  // Verrou optimiste anti-course (2 débits quasi-simultanés, cf task_plan.md P3) :
+  // n'écrit QUE si balance n'a pas bougé depuis la lecture ci-dessus.
+  const { data: debited } = await service
     .from('wallets')
     .update({
       balance: Math.max(0, Number(wallet.balance ?? 0) - amount),
@@ -163,6 +165,11 @@ export async function debitPrincipal(params: {
       updated_at: new Date().toISOString(),
     })
     .eq('user_id', userId)
+    .eq('balance', wallet.balance)
+    .select('user_id')
+    .maybeSingle()
+
+  if (!debited) return { ok: false, principal_after: current.principal }
 
   await writeTransaction(userId, amount, source, description, { ...emptyBalances(), principal: -amount }, 'debit')
 
