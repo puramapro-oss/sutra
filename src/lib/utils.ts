@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { format, formatDistanceToNow } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import { PILOT_MODE } from './constants'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -13,6 +14,19 @@ export function formatPrice(amount: number, currency = 'EUR'): string {
     currency,
     minimumFractionDigits: 2,
   }).format(amount)
+}
+
+/**
+ * Formate un montant en € — ou, en PILOT_MODE, le même montant en points (1 point = 1 centime,
+ * valeur réelle inchangée) sans jamais afficher de symbole monétaire. Ne touche à rien côté
+ * paiement : uniquement l'affichage.
+ */
+export function formatMoneyOrPilotPoints(amountEur: number): string {
+  if (PILOT_MODE) {
+    const points = Math.round(amountEur * 100)
+    return `${new Intl.NumberFormat('fr-FR').format(points)} pts`
+  }
+  return formatPrice(amountEur)
 }
 
 export function formatNumber(n: number): string {

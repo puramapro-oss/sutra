@@ -18,7 +18,8 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { cn, formatPrice } from '@/lib/utils'
+import { cn, formatMoneyOrPilotPoints } from '@/lib/utils'
+import { PILOT_MODE, PILOT_PAYMENTS_NOTE } from '@/lib/constants'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
@@ -135,13 +136,13 @@ export default function PartenaireDashboard() {
     },
     {
       label: 'Commissions totales',
-      display: formatPrice(stats?.total_commissions ?? 0),
+      display: formatMoneyOrPilotPoints(stats?.total_commissions ?? 0),
       icon: DollarSign,
       color: 'text-emerald-400',
     },
     {
       label: 'Solde disponible',
-      display: formatPrice(stats?.balance ?? 0),
+      display: formatMoneyOrPilotPoints(stats?.balance ?? 0),
       icon: Wallet,
       color: 'text-blue-400',
     },
@@ -262,7 +263,7 @@ export default function PartenaireDashboard() {
                 Demander un retrait
               </span>
             </div>
-            <p className="text-xs text-white/40">Dès 5 € par virement IBAN</p>
+            <p className="text-xs text-white/40">{PILOT_MODE ? PILOT_PAYMENTS_NOTE : 'Dès 5 € par virement IBAN'}</p>
           </button>
         </div>
 

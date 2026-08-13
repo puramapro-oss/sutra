@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Users, Copy, Check, Share2, QrCode, Gift } from 'lucide-react'
 import QRCode from 'qrcode'
+import { PILOT_MODE } from '@/lib/constants'
+import { formatMoneyOrPilotPoints } from '@/lib/utils'
 
 interface ReferralStats {
   referral_code: string | null
@@ -57,7 +59,9 @@ export function ReferralBlock() {
     if (!stats?.share_url) return
     const shareData = {
       title: 'Rejoins SUTRA',
-      text: 'Crée des vidéos IA époustouflantes avec SUTRA. Tu gagnes aussi 100€ de prime de bienvenue.',
+      text: PILOT_MODE
+        ? 'Crée des vidéos IA époustouflantes avec SUTRA. Tu gagnes aussi des points de bienvenue.'
+        : 'Crée des vidéos IA époustouflantes avec SUTRA. Tu gagnes aussi 100€ de prime de bienvenue.',
       url: stats.share_url,
     }
     if (typeof navigator.share === 'function') {
@@ -76,7 +80,7 @@ export function ReferralBlock() {
   }
 
   const hasFilleuls = stats.filleuls_count > 0
-  const totalGain = (stats.total_earned + stats.pending_amount).toFixed(2)
+  const totalGain = stats.total_earned + stats.pending_amount
 
   return (
     <motion.section
@@ -115,7 +119,7 @@ export function ReferralBlock() {
               {hasFilleuls ? 'Gains cumulés' : 'Potentiel'}
             </div>
             <div className="text-2xl font-bold font-mono text-violet-200 tabular-nums">
-              {hasFilleuls ? `${totalGain} €` : '100+ €'}
+              {hasFilleuls ? formatMoneyOrPilotPoints(totalGain) : PILOT_MODE ? 'Bienvenue' : '100+ €'}
             </div>
           </div>
         </div>
@@ -212,7 +216,7 @@ export function ReferralBlock() {
             <>
               <Gift className="h-3.5 w-3.5 text-violet-300" />
               <span>
-                Ton premier filleul te rapporte <strong className="text-violet-200">au moins 5 €</strong>{' '}
+                Ton premier filleul te rapporte <strong className="text-violet-200">{PILOT_MODE ? 'des points' : 'au moins 5 €'}</strong>{' '}
                 dès son premier paiement.
               </span>
             </>

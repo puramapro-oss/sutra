@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Crown, Sparkles, ArrowRight } from 'lucide-react'
 import { AMBASSADOR_TIERS, getCurrentTier, getNextTier } from '@/lib/ambassador'
+import { PILOT_MODE } from '@/lib/constants'
+import { formatMoneyOrPilotPoints } from '@/lib/utils'
 
 export function AmbassadorBlock() {
   const router = useRouter()
@@ -68,7 +70,7 @@ export function AmbassadorBlock() {
                 Deviens Ambassadeur Purama
               </h3>
               <p className="text-xs text-white/60 mt-0.5">
-                9 paliers — de 200 € à 200 000 €
+                {PILOT_MODE ? '9 paliers de progression' : '9 paliers — de 200 € à 200 000 €'}
               </p>
             </div>
           </div>
@@ -112,7 +114,7 @@ export function AmbassadorBlock() {
               {Math.max(0, nextTier.filleuls_required - filleulsCount)} filleul
               {nextTier.filleuls_required - filleulsCount > 1 ? 's' : ''} pour débloquer{' '}
               <strong className="text-amber-200">
-                {nextTier.prime_eur.toLocaleString('fr-FR')} €
+                {formatMoneyOrPilotPoints(nextTier.prime_eur)}
               </strong>{' '}
               de prime.
             </p>
@@ -128,7 +130,7 @@ export function AmbassadorBlock() {
                   ? 'bg-amber-400/20 border-amber-400/50 text-amber-200'
                   : 'bg-white/[0.02] border-white/10 text-white/40'
               }`}
-              title={`${t.display} — ${t.filleuls_required} filleuls → ${t.prime_eur.toLocaleString('fr-FR')} €`}
+              title={`${t.display} — ${t.filleuls_required} filleuls → ${formatMoneyOrPilotPoints(t.prime_eur)}`}
             >
               <div className="text-[10px] font-semibold truncate">{t.display}</div>
               <div className="text-[9px] font-mono">{t.filleuls_required}+</div>

@@ -1,6 +1,14 @@
 import type { Plan } from '@/types'
 
 export const SUPER_ADMIN_EMAIL = 'matiss.frasne@gmail.com'
+
+// PILOT_MODE — pattern réutilisable dans toutes les apps PURAMA.
+// Tant que true : aucun montant réel (€) n'est affiché à l'utilisateur, tout est exprimé en points.
+// La logique de paiement (Stripe, wallet, parrainage) reste intacte côté backend — seul l'affichage change.
+// Désactiver au lancement officiel des paiements via NEXT_PUBLIC_PILOT_MODE=false.
+export const PILOT_MODE = process.env.NEXT_PUBLIC_PILOT_MODE !== 'false'
+export const PILOT_PAYMENTS_NOTE = 'Les gains en € s\'activeront à l\'ouverture officielle des paiements.'
+
 export const DOMAIN = 'purama.dev'
 export const APP_NAME = 'SUTRA'
 export const APP_SLUG = 'sutra'

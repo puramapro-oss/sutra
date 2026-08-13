@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Crown, Users, TrendingUp, Wallet, ExternalLink, Info } from 'lucide-react'
 import { AmbassadorTierBadge } from '@/components/engagement/AmbassadorTierBadge'
 import { AMBASSADOR_TIERS } from '@/lib/ambassador'
+import { formatMoneyOrPilotPoints } from '@/lib/utils'
 
 interface Stats {
   filleuls_count: number
@@ -63,13 +64,13 @@ export default function AmbassadorDashboardPage() {
         <StatCard
           icon={Wallet}
           label="Gains cumulés"
-          value={`${(stats?.total_earned ?? 0).toFixed(2)} €`}
+          value={formatMoneyOrPilotPoints(stats?.total_earned ?? 0)}
           testid="stat-total-earned"
         />
         <StatCard
           icon={TrendingUp}
           label="En attente"
-          value={`${(stats?.pending_amount ?? 0).toFixed(2)} €`}
+          value={formatMoneyOrPilotPoints(stats?.pending_amount ?? 0)}
           testid="stat-pending"
         />
       </div>
@@ -149,7 +150,7 @@ export default function AmbassadorDashboardPage() {
                   )}
                 </div>
                 <div className="text-lg font-bold text-white tabular-nums">
-                  {tier.prime_eur.toLocaleString('fr-FR')} €
+                  {formatMoneyOrPilotPoints(tier.prime_eur)}
                 </div>
                 <div className="text-xs text-white/50 mt-0.5">
                   {tier.filleuls_required.toLocaleString('fr-FR')} filleul

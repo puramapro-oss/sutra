@@ -13,7 +13,7 @@ import {
   Loader2,
 } from 'lucide-react'
 import Link from 'next/link'
-import { cn } from '@/lib/utils'
+import { cn, formatMoneyOrPilotPoints } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/Button'
 
@@ -125,7 +125,7 @@ export default function PartnerCoachPage() {
         <div className="flex gap-4 mt-4">
           {[
             { icon: Users, label: 'Filleuls', value: 0 },
-            { icon: DollarSign, label: 'Commissions', value: `${profile?.wallet_balance ?? 0} €` },
+            { icon: DollarSign, label: 'Commissions', value: formatMoneyOrPilotPoints(profile?.wallet_balance ?? 0) },
             { icon: TrendingUp, label: 'Palier', value: 'Bronze' },
           ].map((stat) => (
             <div
