@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import { debitPrincipal, normalizeSubWallets } from '@/lib/smart-split'
+import { isValidIban } from '@/lib/iban'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,7 +42,7 @@ export async function POST(req: Request) {
     }
 
     if (method === 'bank') {
-      if (!details.iban || details.iban.trim().length < 15) {
+      if (!details.iban || !isValidIban(details.iban.trim())) {
         return NextResponse.json({ error: 'IBAN invalide' }, { status: 400 })
       }
       if (!details.bic || details.bic.trim().length < 6) {
