@@ -57,6 +57,12 @@ export async function createCheckoutSession(params: {
     },
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/confirmation?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
+  }, {
+    // Cle stable sur la journee : un retry (timeout, double-clic) du meme
+    // user pour le meme plan le meme jour renvoie la session deja creee au
+    // lieu d'en creer une 2e. Expire avec la fenetre 24h de Stripe, donc ne
+    // bloque jamais un reabonnement legitime ulterieur.
+    idempotencyKey: `checkout:${params.userId}:${params.plan}:${params.billingPeriod}:${new Date().toISOString().slice(0, 10)}`,
   })
 
   return session.url!

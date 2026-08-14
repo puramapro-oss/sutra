@@ -252,6 +252,13 @@ export async function createPayoutToConnect(params: {
       app: 'sutra',
       source: sourceReason ?? 'wallet_withdrawal',
     },
+  }, {
+    // Cle stable : un retry (timeout reseau) du meme debit-puis-transfer pour
+    // le meme user/montant le meme jour renvoie le transfer deja cree au lieu
+    // d'en creer un 2e (double virement). Pas d'ID de demande de retrait
+    // pre-existant a ce niveau (debitPrincipal ne retourne pas d'ID) — le
+    // triplet user+montant+jour est la cle stable la plus proche disponible.
+    idempotencyKey: `transfer:${userId}:${amountCents}:${new Date().toISOString().slice(0, 10)}`,
   })
 
   return {
