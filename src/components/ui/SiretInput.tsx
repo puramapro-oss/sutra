@@ -3,6 +3,14 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { Building2, Check, Loader2, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import {
+  type SiretInfo,
+  type VerifyState,
+  DEBOUNCE_MS,
+  normalizeSiret,
+  formatSiretDisplay,
+} from './siret-utils'
+import { VerifiedSiretCard } from './VerifiedSiretCard'
 
 // ---------------------------------------------------------------------------
 // <SiretInput /> — champ SIRET 14 chiffres avec vérification INSEE auto.
@@ -26,68 +34,7 @@ import { cn } from '@/lib/utils'
 //   />
 // ---------------------------------------------------------------------------
 
-export type SiretInfo = {
-  siret: string
-  siren: string
-  denomination: string
-  sigle: string | null
-  adresse: {
-    numero: string | null
-    voie: string | null
-    complement: string | null
-    code_postal: string | null
-    commune: string | null
-    pays: string
-  }
-  activite_principale: {
-    code: string | null
-    libelle: string | null
-  }
-  date_creation: string | null
-  etat_administratif: 'A' | 'F' | null
-  tranche_effectif: string | null
-  est_siege: boolean
-}
-
-type VerifyState =
-  | { kind: 'idle' }
-  | { kind: 'incomplete'; length: number }
-  | { kind: 'checking'; siret: string }
-  | { kind: 'valid'; info: SiretInfo; fromCache: boolean }
-  | {
-      kind: 'error'
-      code:
-        | 'format_invalid'
-        | 'not_found'
-        | 'rate_limited'
-        | 'server_error'
-        | 'missing_api_key'
-      message: string
-    }
-
-const DEBOUNCE_MS = 450
-
-function normalizeSiret(raw: string): string {
-  return raw.replace(/\D/g, '').slice(0, 14)
-}
-
-function formatSiretDisplay(digits: string): string {
-  // Format: 3 3 3 5 digits (FR convention).
-  const s = digits.replace(/\s/g, '')
-  return [s.slice(0, 3), s.slice(3, 6), s.slice(6, 9), s.slice(9, 14)]
-    .filter(Boolean)
-    .join(' ')
-}
-
-function formatAddress(addr: SiretInfo['adresse']): string {
-  const parts = [
-    [addr.numero, addr.voie].filter(Boolean).join(' '),
-    addr.complement,
-    [addr.code_postal, addr.commune].filter(Boolean).join(' '),
-    addr.pays,
-  ].filter((p): p is string => Boolean(p && p.length > 0))
-  return parts.join(' · ')
-}
+export type { SiretInfo }
 
 export interface SiretInputProps {
   label?: string
@@ -301,72 +248,7 @@ export function SiretInput({
         </p>
       )}
 
-      {isValid && <VerifiedCard info={state.info} fromCache={state.fromCache} />}
-    </div>
-  )
-}
-
-function VerifiedCard({ info, fromCache }: { info: SiretInfo; fromCache: boolean }) {
-  const closed = info.etat_administratif === 'F'
-  return (
-    <div
-      data-testid="siret-input-verified"
-      className="mt-3 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.04] p-4"
-    >
-      <div className="mb-2 flex items-start justify-between gap-3">
-        <div>
-          <p className="text-sm font-semibold text-white/90">{info.denomination}</p>
-          {info.sigle && (
-            <p className="text-xs text-white/50">« {info.sigle} »</p>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          {closed ? (
-            <span className="rounded-full border border-red-400/30 bg-red-500/10 px-2 py-0.5 text-[10px] font-medium text-red-300">
-              Fermée
-            </span>
-          ) : (
-            <span className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-300">
-              Active
-            </span>
-          )}
-          {info.est_siege && (
-            <span className="rounded-full border border-violet-400/30 bg-violet-500/10 px-2 py-0.5 text-[10px] font-medium text-violet-300">
-              Siège
-            </span>
-          )}
-        </div>
-      </div>
-
-      <dl className="space-y-1 text-xs text-white/60">
-        {formatAddress(info.adresse) && (
-          <div className="flex gap-2">
-            <dt className="shrink-0 text-white/40">Adresse :</dt>
-            <dd>{formatAddress(info.adresse)}</dd>
-          </div>
-        )}
-        {info.activite_principale.libelle && (
-          <div className="flex gap-2">
-            <dt className="shrink-0 text-white/40">Activité :</dt>
-            <dd>
-              {info.activite_principale.libelle}
-              {info.activite_principale.code && (
-                <span className="ml-1 font-mono text-[10px] text-white/40">
-                  ({info.activite_principale.code})
-                </span>
-              )}
-            </dd>
-          </div>
-        )}
-        <div className="flex gap-2">
-          <dt className="shrink-0 text-white/40">SIREN :</dt>
-          <dd className="font-mono text-[11px]">{info.siren}</dd>
-        </div>
-      </dl>
-
-      <p className="mt-3 text-[10px] text-white/30">
-        Source INSEE Sirene · {fromCache ? 'données en cache' : 'données temps réel'}
-      </p>
+      {isValid && <VerifiedSiretCard info={state.info} fromCache={state.fromCache} />}
     </div>
   )
 }
