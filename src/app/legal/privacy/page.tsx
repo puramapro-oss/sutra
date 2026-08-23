@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import LegalNav from '@/components/legal/LegalNav'
+import LegalFooter from '@/components/legal/LegalFooter'
+import LegalSection from '@/components/legal/LegalSection'
+import ContactSection from '@/components/legal/ContactSection'
 
 export const metadata: Metadata = {
   title: 'Politique de confidentialite — SUTRA',
@@ -15,43 +19,10 @@ export const metadata: Metadata = {
   },
 }
 
-function Section({
-  id,
-  title,
-  children,
-}: {
-  id: string
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <section id={id} className="scroll-mt-24">
-      <h2 className="text-xl font-bold text-white mb-4">{title}</h2>
-      <div className="text-sm text-white/60 leading-relaxed space-y-3">
-        {children}
-      </div>
-    </section>
-  )
-}
-
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-[#06050e] text-white overflow-x-hidden">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#06050e]/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-          <Link
-            href="/"
-            className="text-xl font-bold tracking-tight"
-            style={{ fontFamily: 'var(--font-display)' }}
-            data-testid="header-logo"
-          >
-            <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-              SUTRA
-            </span>
-          </Link>
-        </div>
-      </nav>
+      <LegalNav />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <div className="mb-12">
@@ -70,7 +41,7 @@ export default function PrivacyPage() {
         </div>
 
         <div className="space-y-10">
-          <Section id="donnees-collectees" title="1. Donnees collectees">
+          <LegalSection id="donnees-collectees" title="1. Donnees collectees">
             <p>Dans le cadre de l&apos;utilisation de SUTRA, nous collectons :</p>
             <ul className="list-disc list-inside space-y-1.5 text-white/50">
               <li>
@@ -96,9 +67,9 @@ export default function PrivacyPage() {
                 consultees
               </li>
             </ul>
-          </Section>
+          </LegalSection>
 
-          <Section id="finalites" title="2. Finalites du traitement">
+          <LegalSection id="finalites" title="2. Finalites du traitement">
             <p>Les donnees sont collectees pour :</p>
             <ul className="list-disc list-inside space-y-1.5 text-white/50">
               <li>Fournir et ameliorer le Service de generation video</li>
@@ -115,9 +86,9 @@ export default function PrivacyPage() {
                 Respecter les obligations legales et reglementaires
               </li>
             </ul>
-          </Section>
+          </LegalSection>
 
-          <Section id="base-legale" title="3. Base legale">
+          <LegalSection id="base-legale" title="3. Base legale">
             <ul className="list-disc list-inside space-y-1.5 text-white/50">
               <li>
                 <strong className="text-white/70">Execution du contrat :</strong>{' '}
@@ -136,9 +107,9 @@ export default function PrivacyPage() {
                 conservation des factures, lutte contre la fraude
               </li>
             </ul>
-          </Section>
+          </LegalSection>
 
-          <Section id="duree" title="4. Duree de conservation">
+          <LegalSection id="duree" title="4. Duree de conservation">
             <ul className="list-disc list-inside space-y-1.5 text-white/50">
               <li>
                 <strong className="text-white/70">Donnees de compte :</strong>{' '}
@@ -163,9 +134,9 @@ export default function PrivacyPage() {
                 13 mois maximum
               </li>
             </ul>
-          </Section>
+          </LegalSection>
 
-          <Section id="droits" title="5. Tes droits (RGPD)">
+          <LegalSection id="droits" title="5. Tes droits (RGPD)">
             <p>
               Conformement au Reglement General sur la Protection des Donnees
               (RGPD), tu disposes des droits suivants :
@@ -218,9 +189,9 @@ export default function PrivacyPage() {
               CNIL (Commission Nationale de l&apos;Informatique et des Libertes) :
               www.cnil.fr
             </p>
-          </Section>
+          </LegalSection>
 
-          <Section id="cookies" title="6. Cookies">
+          <LegalSection id="cookies" title="6. Cookies">
             <p>
               SUTRA utilise des cookies pour assurer le bon fonctionnement du
               Service. Pour plus de details, consulte notre{' '}
@@ -246,9 +217,9 @@ export default function PrivacyPage() {
                 suivi de parrainage et ambassadeurs (avec consentement)
               </li>
             </ul>
-          </Section>
+          </LegalSection>
 
-          <Section id="tiers" title="7. Sous-traitants et tiers">
+          <LegalSection id="tiers" title="7. Sous-traitants et tiers">
             <p>
               Nous partageons certaines donnees avec des sous-traitants de
               confiance, dans le strict cadre du fonctionnement du Service :
@@ -291,9 +262,9 @@ export default function PrivacyPage() {
               Aucune donnee personnelle n&apos;est vendue a des tiers. Les transferts
               hors UE sont encadres par des clauses contractuelles types (CCT).
             </p>
-          </Section>
+          </LegalSection>
 
-          <Section id="securite" title="8. Securite">
+          <LegalSection id="securite" title="8. Securite">
             <p>
               Nous mettons en oeuvre des mesures techniques et organisationnelles
               appropriees pour proteger tes donnees :
@@ -305,60 +276,22 @@ export default function PrivacyPage() {
               <li>Sauvegardes quotidiennes automatisees</li>
               <li>Tests de securite reguliers</li>
             </ul>
-          </Section>
+          </LegalSection>
 
-          <Section id="modifications" title="9. Modifications">
+          <LegalSection id="modifications" title="9. Modifications">
             <p>
               Nous nous reservons le droit de modifier la presente politique a
               tout moment. En cas de modification substantielle, tu seras
               informe par email ou par notification dans l&apos;application. La date
               de derniere mise a jour est indiquee en haut de cette page.
             </p>
-          </Section>
+          </LegalSection>
 
-          <div className="pt-8 border-t border-white/[0.06]">
-            <h3 className="text-sm font-semibold text-white mb-3">
-              Contact
-            </h3>
-            <div className="text-sm text-white/50 space-y-1">
-              <p>PURAMA SASU — Capital 1 euro</p>
-              <p>8 Rue de la Chapelle, 25560 Frasne, France</p>
-              <p>Responsable du traitement : Matiss Dornier, President</p>
-              <p>
-                Email :{' '}
-                <a
-                  href="mailto:matiss.frasne@gmail.com"
-                  className="text-violet-400 hover:text-violet-300"
-                >
-                  matiss.frasne@gmail.com
-                </a>
-              </p>
-            </div>
-          </div>
+          <ContactSection />
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="border-t border-white/[0.06] py-8 text-center flex items-center justify-center gap-6">
-        <Link
-          href="/legal/terms"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
-        >
-          CGU
-        </Link>
-        <Link
-          href="/legal/cookies"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
-        >
-          Cookies
-        </Link>
-        <Link
-          href="/"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
-        >
-          Accueil
-        </Link>
-      </div>
+      <LegalFooter />
     </main>
   )
 }
