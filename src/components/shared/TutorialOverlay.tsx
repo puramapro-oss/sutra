@@ -5,60 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, X, Sparkles } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { createClient } from '@/lib/supabase'
+import { TUTORIAL_STEPS } from './TutorialSteps'
 
 const supabase = createClient()
-
-interface TutorialStep {
-  selector: string
-  title: string
-  description: string
-  position: 'top' | 'bottom' | 'left' | 'right'
-}
-
-const STEPS: TutorialStep[] = [
-  {
-    selector: '[data-testid="sidebar-dashboard"], [data-testid="mobile-dashboard"]',
-    title: 'Bienvenue sur SUTRA',
-    description: 'Ton dashboard te donne un apercu complet : videos creees, credits restants et activite recente.',
-    position: 'right',
-  },
-  {
-    selector: '[data-testid="sidebar-create"], [data-testid="mobile-create"]',
-    title: 'Creer une video',
-    description: 'Decris ton idee, choisis un style et SUTRA genere une video complete avec voix, musique et visuels.',
-    position: 'right',
-  },
-  {
-    selector: '[data-testid="sidebar-library"], [data-testid="mobile-library"]',
-    title: 'Tes videos',
-    description: 'Retrouve toutes tes creations ici. Tu peux les modifier, telecharger ou publier en un clic.',
-    position: 'right',
-  },
-  {
-    selector: '[data-testid="sidebar-publish"], [data-testid="mobile-publish"]',
-    title: 'Publier',
-    description: 'Partage tes videos sur YouTube, TikTok et Instagram directement depuis SUTRA.',
-    position: 'right',
-  },
-  {
-    selector: '[data-testid="sidebar-contest"]',
-    title: 'Concours',
-    description: 'Participe aux concours hebdomadaires et mensuels pour gagner des reductions et des prix.',
-    position: 'right',
-  },
-  {
-    selector: '[data-testid="sidebar-referral"]',
-    title: 'Parrainage',
-    description: 'Invite tes amis et gagne des commissions sur leurs abonnements. -50% pour eux, des gains pour toi.',
-    position: 'right',
-  },
-  {
-    selector: '[data-testid="sidebar-settings"], [data-testid="mobile-profile"]',
-    title: 'Profil et Reglages',
-    description: 'Personnalise ton experience : theme, preferences de voix, qualite video et notifications.',
-    position: 'right',
-  },
-]
 
 interface SpotlightRect {
   top: number
@@ -100,7 +49,7 @@ export default function TutorialOverlay() {
   // Position spotlight on current step element
   const updateSpotlight = useCallback(() => {
     if (!visible) return
-    const step = STEPS[currentStep]
+    const step = TUTORIAL_STEPS[currentStep]
     if (!step) return
 
     const selectors = step.selector.split(', ')
@@ -145,7 +94,7 @@ export default function TutorialOverlay() {
   }, [profile])
 
   const next = useCallback(() => {
-    if (currentStep < STEPS.length - 1) {
+    if (currentStep < TUTORIAL_STEPS.length - 1) {
       setCurrentStep((prev) => prev + 1)
     } else {
       dismiss()
@@ -154,7 +103,7 @@ export default function TutorialOverlay() {
 
   if (!visible) return null
 
-  const step = STEPS[currentStep]
+  const step = TUTORIAL_STEPS[currentStep]
 
   // Tooltip position
   const getTooltipStyle = (): React.CSSProperties => {
@@ -269,7 +218,7 @@ export default function TutorialOverlay() {
             <div className="bg-[#12111a]/95 backdrop-blur-xl border border-violet-500/20 rounded-2xl p-5 shadow-2xl shadow-violet-900/20">
               {/* Step indicator */}
               <div className="flex items-center gap-1.5 mb-3">
-                {STEPS.map((_, i) => (
+                {TUTORIAL_STEPS.map((_, i) => (
                   <div
                     key={i}
                     className={`h-1 rounded-full transition-all duration-300 ${
@@ -310,7 +259,7 @@ export default function TutorialOverlay() {
                   className="flex items-center gap-1.5 px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium rounded-xl transition-colors"
                   data-testid="tutorial-next"
                 >
-                  {currentStep < STEPS.length - 1 ? (
+                  {currentStep < TUTORIAL_STEPS.length - 1 ? (
                     <>
                       Suivant
                       <ChevronRight className="w-4 h-4" />
