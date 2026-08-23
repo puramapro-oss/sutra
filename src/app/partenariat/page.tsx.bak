@@ -17,16 +17,19 @@ import {
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/Button'
+
 const CHANNELS = [
   { id: 'influencer', label: 'Ambassadeur', icon: Star, description: 'Tu as une audience sur les réseaux ? Monétise-la en recommandant SUTRA à ta communauté. Commissions récurrentes à vie.', color: 'from-violet-500 to-purple-600' },
   { id: 'website', label: 'Website', icon: Globe, description: 'Intègre SUTRA sur ton site ou blog. Liens trackés, bannières et widgets personnalisés pour maximiser tes conversions.', color: 'from-blue-500 to-cyan-600' },
   { id: 'media', label: 'Média', icon: Newspaper, description: 'Journaliste, podcasteur ou créateur de contenu éditorial ? Parle de SUTRA et touche des commissions sur chaque inscription.', color: 'from-amber-500 to-orange-600' },
   { id: 'physical', label: 'Physique', icon: MapPin, description: 'Organise des ateliers, formations ou événements en présentiel. Bonus exclusifs pour les partenaires terrain.', color: 'from-emerald-500 to-teal-600' },
 ]
+
 const TIERS = [
   { filleuls: 10, gains: 50 }, { filleuls: 25, gains: 150 }, { filleuls: 50, gains: 400 },
   { filleuls: 100, gains: 1000 }, { filleuls: 250, gains: 3000 }, { filleuls: 500, gains: 6500 },
 ]
+
 const FAQ_ITEMS = [
   { q: 'Comment fonctionne le programme de partenariat SUTRA ?', a: 'Tu reçois un lien unique et un QR code. Chaque personne qui s\'inscrit via ton lien devient ton filleul. Tu touches 50 % de son premier paiement + 10 % de tous ses paiements récurrents à vie.' },
   { q: 'Quand et comment suis-je payé ?', a: 'Les commissions sont créditées automatiquement dans ton wallet SUTRA. Tu peux demander un retrait dès 5 € par virement IBAN. Les paiements sont traités sous 14 jours.' },
@@ -72,6 +75,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 export default function PartenariatPage() {
   const [sliderValue, setSliderValue] = useState(25)
+
   const estimatedGains = (() => {
     for (let i = TIERS.length - 1; i >= 0; i--) {
       if (sliderValue >= TIERS[i].filleuls) return TIERS[i].gains
@@ -81,6 +85,7 @@ export default function PartenariatPage() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white">
+      {/* Hero */}
       <section className="relative overflow-hidden pt-24 pb-20 px-4">
         <div className="absolute inset-0 bg-gradient-to-b from-violet-500/8 via-transparent to-transparent" />
         <div className="relative max-w-5xl mx-auto text-center">
@@ -119,6 +124,7 @@ export default function PartenariatPage() {
         </div>
       </section>
 
+      {/* Stats */}
       <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6">
           {[
@@ -140,6 +146,7 @@ export default function PartenariatPage() {
         </div>
       </section>
 
+      {/* Channels */}
       <section className="py-16 px-4">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">
@@ -181,6 +188,7 @@ export default function PartenariatPage() {
         </div>
       </section>
 
+      {/* Simulator */}
       <section id="simulateur" className="py-16 px-4">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-4">
@@ -225,6 +233,7 @@ export default function PartenariatPage() {
         </div>
       </section>
 
+      {/* Tiers */}
       <section className="py-16 px-4">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-10">
@@ -252,6 +261,7 @@ export default function PartenariatPage() {
         </div>
       </section>
 
+      {/* FAQ */}
       <section className="py-16 px-4">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-10">
@@ -265,6 +275,7 @@ export default function PartenariatPage() {
         </div>
       </section>
 
+      {/* CTA */}
       <section className="py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -282,6 +293,7 @@ export default function PartenariatPage() {
         </div>
       </section>
 
+      {/* Footer links */}
       <footer className="py-8 px-4 border-t border-white/[0.06]">
         <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-6 text-sm text-white/40">
           <Link href="/mentions-legales" className="hover:text-white/70 transition-colors">
