@@ -80,11 +80,11 @@ let failed = 0
 const fails = []
 
 function ok(msg) {
-  console.log(`✔ ${msg}`)
+  console.warn(`✔ ${msg}`)
   passed++
 }
 function fail(msg, err) {
-  console.log(`✖ ${msg}`)
+  console.error(`✖ ${msg}`)
   failed++
   fails.push(`${msg}: ${err?.message ?? err}`)
 }
@@ -174,9 +174,9 @@ if (accountId) {
   }
 }
 
-console.log(`\nResult: ${passed} passed, ${failed} failed`)
+console.warn(`\nResult: ${passed} passed, ${failed} failed`)
 if (failed > 0) {
-  console.log('\nFailures:')
-  fails.forEach((f) => console.log(`  - ${f}`))
+  console.error('\nFailures:')
+  fails.forEach((f) => console.error(`  - ${f}`))
 }
 process.exit(failed > 0 ? 1 : 0)

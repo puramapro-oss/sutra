@@ -5,10 +5,9 @@
 // Routage : ssh → docker exec supabase-db psql (Supavisor pooler refuse psql direct multi-tenant).
 // Idempotent : migrations Purama utilisent CREATE ... IF NOT EXISTS + DROP POLICY IF EXISTS.
 
-import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { resolve, dirname, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { tmpdir } from 'node:os'
 import { spawnSync } from 'node:child_process'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -27,13 +26,13 @@ const DB_CONTAINER = 'supabase-db'
 
 const sqlPath = resolve(rootDir, 'migrations', fileName)
 const sql = readFileSync(sqlPath, 'utf8')
-console.log(`[migration] Loaded ${fileName} (${sql.length} bytes)`)
+console.warn(`[migration] Loaded ${fileName} (${sql.length} bytes)`)
 
 // Copie via scp puis exécution via docker exec psql -f
 const remotePath = `/tmp/purama-migration-${Date.now()}-${basename(fileName)}`
 
 // 1. scp du fichier sur le VPS
-console.log(`[migration] scp → ${VPS_HOST}:${remotePath}`)
+console.warn(`[migration] scp → ${VPS_HOST}:${remotePath}`)
 const scp = spawnSync(
   'sshpass',
   ['-p', VPS_PASS, 'scp', '-o', 'StrictHostKeyChecking=no', sqlPath, `${VPS_USER}@${VPS_HOST}:${remotePath}`],
@@ -45,7 +44,7 @@ if (scp.status !== 0) {
 }
 
 // 2. docker cp dans le container supabase-db
-console.log(`[migration] docker cp → ${DB_CONTAINER}${remotePath}`)
+console.warn(`[migration] docker cp → ${DB_CONTAINER}${remotePath}`)
 const dockerCp = spawnSync(
   'sshpass',
   [
@@ -61,7 +60,7 @@ if (dockerCp.status !== 0) {
 
 // 3. psql -f dans le container
 const start = Date.now()
-console.log(`[migration] psql -f ${remotePath}`)
+console.warn(`[migration] psql -f ${remotePath}`)
 const psql = spawnSync(
   'sshpass',
   [
@@ -77,4 +76,4 @@ if (psql.status !== 0) {
   process.exit(1)
 }
 
-console.log(`[migration] ✅ ${fileName} applied in ${ms}ms`)
+console.warn(`[migration] ✅ ${fileName} applied in ${ms}ms`)

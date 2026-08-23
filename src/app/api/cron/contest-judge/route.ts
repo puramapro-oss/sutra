@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
-import Anthropic from '@anthropic-ai/sdk'
+import { smarana } from '@purama/smarana'
 import Stripe from 'stripe'
 import { CONTEST_DISTRIBUTION } from '@/lib/constants'
 
@@ -21,7 +21,6 @@ export async function GET(request: Request) {
   }
 
   const supabase = createServiceClient()
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-03-25.dahlia' })
 
   try {
@@ -79,14 +78,16 @@ Reponds UNIQUEMENT avec un JSON valide sans markdown:
 Sois juste, rigoureux et exigeant. Note sur le potentiel creatif et emotionnel, pas sur la perfection technique.`
 
       try {
-        const response = await anthropic.messages.create({
-          model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6',
-          max_tokens: 200,
-          messages: [{ role: 'user', content: prompt }],
+        const result = await smarana.ask({
+          appSlug: 'sutra',
+          userId: sub.user_id,
+          system: 'Tu es juge d\'un concours de creation video IA.',
+          message: prompt,
+          tier: 'main',
+          maxTokens: 200,
         })
 
-        const text = response.content[0].type === 'text' ? response.content[0].text : ''
-        const cleanJson = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+        const cleanJson = result.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
         const evaluation = JSON.parse(cleanJson) as Record<string, number>
 
         const totalScore = Object.values(evaluation).reduce((a, b) => a + (typeof b === 'number' ? b : 0), 0)

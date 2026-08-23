@@ -46,11 +46,11 @@ let passed = 0
 let failed = 0
 
 function logOk(msg) {
-  console.log(`✔ ${msg}`)
+  console.warn(`✔ ${msg}`)
   passed++
 }
 function logFail(msg, detail) {
-  console.log(`✖ ${msg}${detail ? `: ${detail}` : ''}`)
+  console.error(`✖ ${msg}${detail ? `: ${detail}` : ''}`)
   failed++
 }
 
@@ -131,5 +131,5 @@ try {
   logFail('uncaught exception', err.message)
 }
 
-console.log(`\nResult: ${passed} passed, ${failed} failed`)
+console.warn(`\nResult: ${passed} passed, ${failed} failed`)
 process.exit(failed > 0 ? 1 : 0)

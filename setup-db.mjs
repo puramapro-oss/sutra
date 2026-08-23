@@ -370,38 +370,38 @@ ON CONFLICT (email) DO UPDATE SET plan = 'admin', is_admin = true, credits = 999
 async function run() {
   try {
     await client.connect()
-    console.log('Connected to PostgreSQL')
+    console.warn('Connected to PostgreSQL')
 
-    console.log('Creating schema + tables...')
+    console.warn('Creating schema + tables...')
     await client.query(SQL)
-    console.log('Tables created')
+    console.warn('Tables created')
 
-    console.log('Creating indexes...')
+    console.warn('Creating indexes...')
     await client.query(SQL_INDEXES)
-    console.log('Indexes created')
+    console.warn('Indexes created')
 
-    console.log('Enabling RLS...')
+    console.warn('Enabling RLS...')
     await client.query(SQL_RLS)
-    console.log('RLS enabled')
+    console.warn('RLS enabled')
 
-    console.log('Creating policies...')
+    console.warn('Creating policies...')
     await client.query(SQL_POLICIES)
-    console.log('Policies created')
+    console.warn('Policies created')
 
-    console.log('Creating triggers...')
+    console.warn('Creating triggers...')
     await client.query(SQL_TRIGGERS)
-    console.log('Triggers created')
+    console.warn('Triggers created')
 
-    console.log('Seeding super admin...')
+    console.warn('Seeding super admin...')
     await client.query(SQL_SEED)
-    console.log('Super admin seeded')
+    console.warn('Super admin seeded')
 
     // Verify
     const res = await client.query(`SELECT table_name FROM information_schema.tables WHERE table_schema = 'sutra' ORDER BY table_name`)
-    console.log(`\nTables created (${res.rows.length}):`)
-    res.rows.forEach(r => console.log(`  - ${r.table_name}`))
+    console.warn(`\nTables created (${res.rows.length}):`)
+    res.rows.forEach(r => console.warn(`  - ${r.table_name}`))
 
-    console.log('\nDONE — All tables, indexes, RLS, policies, triggers created successfully!')
+    console.warn('\nDONE — All tables, indexes, RLS, policies, triggers created successfully!')
   } catch (err) {
     console.error('ERROR:', err.message)
   } finally {

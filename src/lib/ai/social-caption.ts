@@ -102,7 +102,8 @@ function fallbackCaption(req: CaptionGenerationRequest): GeneratedCaption {
 }
 
 export async function generateSocialCaption(
-  req: CaptionGenerationRequest
+  req: CaptionGenerationRequest,
+  userId?: string
 ): Promise<GeneratedCaption> {
   const platform = req.platform
   const charLimit = PLATFORM_CHAR_LIMITS[platform]
@@ -151,7 +152,7 @@ Rappels:
 Reponds UNIQUEMENT avec le JSON.`
 
   try {
-    const raw = await askClaude(userPrompt, systemPrompt)
+    const raw = await askClaude(userPrompt, { system: systemPrompt, userId })
     const jsonText = extractJsonBlock(raw)
     const parsed = JSON.parse(jsonText) as { caption?: unknown; hashtags?: unknown }
 
@@ -189,6 +190,7 @@ export async function generateMultiPlatformCaptions(
     language?: string
     maxHashtags?: number
     includeCta?: boolean
+    userId?: string
   } = {}
 ): Promise<Record<SocialPlatform, GeneratedCaption>> {
   const results = await Promise.all(
@@ -201,7 +203,7 @@ export async function generateMultiPlatformCaptions(
         language: options.language,
         maxHashtags: options.maxHashtags,
         includeCta: options.includeCta,
-      })
+      }, options.userId)
     )
   )
 

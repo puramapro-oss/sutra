@@ -77,7 +77,7 @@ test('LIVE : SIRET INSEE Paris Club (47832593900021) → 200 avec denomination',
       json.etablissement.uniteLegale?.denominationUniteLegale ??
       json.etablissement.uniteLegale?.nomUniteLegale
     assert.ok(denomination, 'denomination present')
-    console.log(`    ↳ ${siret} = ${denomination}`)
+    console.warn(`    ↳ ${siret} = ${denomination}`)
   },
 )
 

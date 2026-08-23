@@ -145,7 +145,7 @@ ${partnerContext}`
     })
 
     // Call Claude
-    const aiResponse = await askClaude(message, systemPrompt)
+    const aiResponse = await askClaude(message, { system: systemPrompt, userId: user.id })
 
     // Save AI response
     await service.from('partner_coach_messages').insert({

@@ -8,15 +8,13 @@
  *   plan → generate (video + audio) → composite → publish → learn
  */
 
-import Anthropic from '@anthropic-ai/sdk'
+import { smarana } from '@purama/smarana'
 import { createServiceClient } from '@/lib/supabase'
 import { generateVideoSmart } from '@/lib/ltx'
 import { generateMusic } from '@/lib/suno'
 import { generateVoice } from '@/lib/elevenlabs'
 import { uploadToStorage } from '@/lib/storage'
 import { publishToPlatforms, type SocialPlatform } from '@/lib/zernio'
-
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
 // ---------------------------------------------------------------
 // Types
@@ -185,8 +183,9 @@ export async function planNextVideo(params: {
   memories: AutoMemory[]
   recentVideos: AutoVideoRecord[]
   topVideos: AutoVideoRecord[]
+  userId?: string
 }): Promise<VideoPlan> {
-  const { config, themes, memories, recentVideos, topVideos } = params
+  const { config, themes, memories, recentVideos, topVideos, userId } = params
 
   const memoryBlock = memories
     .slice(0, 30)
@@ -281,20 +280,16 @@ FORMAT (JSON strict, aucun texte autour)
   "trend_leveraged": null
 }`
 
-  const response = await anthropic.messages.create({
-    model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6',
-    max_tokens: 2000,
+  const result = await smarana.ask({
+    appSlug: 'sutra',
+    userId,
     system,
-    messages: [
-      {
-        role: 'user',
-        content: `Cree le plan de la prochaine video pour ce createur. Aujourd'hui: ${new Date().toISOString()}.`,
-      },
-    ],
+    message: `Cree le plan de la prochaine video pour ce createur. Aujourd'hui: ${new Date().toISOString()}.`,
+    tier: 'main',
+    maxTokens: 2000,
   })
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : ''
-  const cleaned = text.replace(/```json\n?|\n?```/g, '').trim()
+  const cleaned = result.text.replace(/```json\n?|\n?```/g, '').trim()
   return JSON.parse(cleaned) as VideoPlan
 }
 
@@ -442,21 +437,17 @@ export async function analyzePerformance(params: {
     )
     .join('\n')
 
-  const response = await anthropic.messages.create({
-    model: process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6',
-    max_tokens: 1500,
+  const result = await smarana.ask({
+    appSlug: 'sutra',
+    userId: params.userId,
     system: `Tu es un analyste de performance video. Analyse les stats et identifie 3 a 5 insights actionnables. Reponds en JSON: { "insights": ["insight 1", "insight 2"] }`,
-    messages: [
-      {
-        role: 'user',
-        content: `Stats des dernieres videos:\n${stats}\n\nDonne 3-5 insights pour les prochaines videos.`,
-      },
-    ],
+    message: `Stats des dernieres videos:\n${stats}\n\nDonne 3-5 insights pour les prochaines videos.`,
+    tier: 'main',
+    maxTokens: 1500,
   })
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : ''
   try {
-    const parsed = JSON.parse(text.replace(/```json\n?|\n?```/g, '').trim())
+    const parsed = JSON.parse(result.text.replace(/```json\n?|\n?```/g, '').trim())
     return Array.isArray(parsed.insights) ? parsed.insights : []
   } catch {
     return []

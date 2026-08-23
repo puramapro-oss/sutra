@@ -37,7 +37,7 @@ RULES:
 
     const userMsg = `Scenes:\n${parsed.data.scenes.map((s, i) => `${i + 1}. ${s}`).join('\n')}`
 
-    const raw = await askClaude(userMsg, system)
+    const raw = await askClaude(userMsg, { system })
     const cleaned = raw.replace(/```json\n?|\n?```/g, '').trim()
     let result: { keywords: string[][] } = { keywords: [] }
     try {

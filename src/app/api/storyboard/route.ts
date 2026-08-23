@@ -70,7 +70,7 @@ Reponds UNIQUEMENT en JSON strict, aucun texte autour :
 
     const response = await askClaude(
       `Cree un storyboard detaille pour cette idee de video : "${idea.trim()}"`,
-      system
+      { system, userId: user.id }
     )
 
     const cleaned = response.replace(/```json\n?|\n?```/g, '').trim()

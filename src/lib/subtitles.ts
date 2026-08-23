@@ -140,7 +140,8 @@ export function parseSRT(srt: string): SubtitleEntry[] {
 
 export async function translateSubtitles(
   subtitles: SubtitleEntry[],
-  targetLang: string
+  targetLang: string,
+  userId?: string
 ): Promise<SubtitleEntry[]> {
   if (subtitles.length === 0) return []
 
@@ -150,7 +151,7 @@ export async function translateSubtitles(
 
 ${textsToTranslate.map((t, i) => `${i + 1}. ${t}`).join('\n')}`
 
-  const result = await askClaude(prompt, `Tu es un traducteur professionnel. Traduis fidèlement chaque ligne en ${targetLang}. Reponds uniquement avec les traductions, une par ligne.`)
+  const result = await askClaude(prompt, { system: `Tu es un traducteur professionnel. Traduis fidèlement chaque ligne en ${targetLang}. Reponds uniquement avec les traductions, une par ligne.`, userId })
 
   const translatedLines = result
     .trim()

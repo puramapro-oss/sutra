@@ -1,22 +1,23 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { smarana } from '@purama/smarana'
 import type { ScriptData, MusicStyle } from '@/types'
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-})
+export type ClaudeTier = 'fast' | 'main' | 'pro'
 
 const MODEL_MAIN = process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6'
 const MODEL_FAST = process.env.ANTHROPIC_MODEL_FAST ?? 'claude-haiku-4-5-20251001'
 const MODEL_PRO = process.env.ANTHROPIC_MODEL_PRO ?? 'claude-opus-4-6'
 export { MODEL_MAIN, MODEL_FAST, MODEL_PRO }
 
-export async function generateScript(params: {
-  topic: string
-  niche: string
-  style: string
-  format: string
-  duration: string
-}): Promise<ScriptData> {
+export async function generateScript(
+  params: {
+    topic: string
+    niche: string
+    style: string
+    format: string
+    duration: string
+  },
+  userId?: string
+): Promise<ScriptData> {
   const systemPrompt = `Tu es le createur de contenu video IA le plus talentueux au monde. Tu crees des scripts captivants, optimises pour l'engagement.
 
 REGLES ABSOLUES :
@@ -54,33 +55,42 @@ IMPORTANT :
 - Niche : ${params.niche}
 - Style : ${params.style}`
 
-  const response = await anthropic.messages.create({
-    model: MODEL_MAIN,
-    max_tokens: 4000,
+  const result = await smarana.ask({
+    appSlug: 'sutra',
+    userId,
     system: systemPrompt,
-    messages: [{ role: 'user', content: `Cree une video sur : "${params.topic}"` }],
+    message: `Cree une video sur : "${params.topic}"`,
+    tier: 'main',
+    maxTokens: 4000,
   })
 
-  const text = response.content[0].type === 'text' ? response.content[0].text : ''
-  const cleaned = text.replace(/```json\n?|\n?```/g, '').trim()
+  const cleaned = result.text.replace(/```json\n?|\n?```/g, '').trim()
   return JSON.parse(cleaned) as ScriptData
 }
 
-export async function askClaude(prompt: string, system?: string): Promise<string> {
-  const response = await anthropic.messages.create({
-    model: MODEL_MAIN,
-    max_tokens: 2048,
-    system: system ?? 'Tu es un assistant IA pour SUTRA, une plateforme de generation video IA. Reponds en francais.',
-    messages: [{ role: 'user', content: prompt }],
+export const SUTRA_SYSTEM_PROMPT = 'Tu es un assistant IA pour SUTRA, une plateforme de generation video IA. Reponds en francais.'
+
+export async function askClaude(
+  prompt: string,
+  { system = SUTRA_SYSTEM_PROMPT, tier = 'main', maxTokens = 2048, userId }: { system?: string; tier?: ClaudeTier; maxTokens?: number; userId?: string } = {}
+): Promise<string> {
+  const result = await smarana.ask({
+    appSlug: 'sutra',
+    userId,
+    system,
+    message: prompt,
+    tier,
+    maxTokens,
   })
 
-  return response.content[0].type === 'text' ? response.content[0].text : ''
+  return result.text
 }
 
 export async function judgeContestEntry(
   title: string,
   description: string,
-  videoUrl: string
+  videoUrl: string,
+  userId?: string
 ): Promise<{ score: number; feedback: string; scores_detail: Record<string, number> }> {
   const response = await askClaude(
     `Evalue cette soumission de concours video :
@@ -96,7 +106,8 @@ Note sur 100 selon 5 criteres (20pts chacun) :
 5. Execution globale
 
 Reponds en JSON strict :
-{"score": 85, "feedback": "...", "scores_detail": {"creativite": 18, "technique": 17, "impact": 16, "pertinence": 17, "execution": 17}}`
+{"score": 85, "feedback": "...", "scores_detail": {"creativite": 18, "technique": 17, "impact": 16, "pertinence": 17, "execution": 17}}`,
+    { userId }
   )
 
   return JSON.parse(response.replace(/```json\n?|\n?```/g, '').trim())

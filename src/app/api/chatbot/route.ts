@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     }
 
     const start = Date.now()
-    const response = await askClaude(parsed.data.message, SUPPORT_SYSTEM_PROMPT)
+    const response = await askClaude(parsed.data.message, { system: SUPPORT_SYSTEM_PROMPT, userId: user.id })
     await logApiCall(user.id, 'claude', 'chatbot', 'success', Date.now() - start)
 
     return NextResponse.json({ response })

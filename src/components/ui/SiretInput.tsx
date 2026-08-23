@@ -72,7 +72,7 @@ function normalizeSiret(raw: string): string {
 }
 
 function formatSiretDisplay(digits: string): string {
-  // XXX XXX XXX XXXXX (FR convention).
+  // Format: 3 3 3 5 digits (FR convention).
   const s = digits.replace(/\s/g, '')
   return [s.slice(0, 3), s.slice(3, 6), s.slice(6, 9), s.slice(9, 14)]
     .filter(Boolean)

@@ -16,7 +16,9 @@ const browser = await chromium.launch()
 for (const vp of viewports) {
   const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } })
   await ctx.addInitScript(() => {
-    try { localStorage.setItem('cookie-consent', 'all') } catch {}
+    try { localStorage.setItem('cookie-consent', 'all') } catch (e) {
+      // Ignore localStorage errors in test contexts
+    }
   })
   const page = await ctx.newPage()
   await page.goto(BASE + '/', { waitUntil: 'networkidle', timeout: 30000 })
@@ -41,12 +43,12 @@ for (const vp of viewports) {
 
   const file = path.join(OUT, `landing-${vp.name}.png`)
   await page.screenshot({ path: file, fullPage: true })
-  console.log(`✓ ${vp.name} → ${file}`)
+  console.warn(`✓ ${vp.name} → ${file}`)
 
   // Hero only (above the fold)
   const heroFile = path.join(OUT, `hero-${vp.name}.png`)
   await page.screenshot({ path: heroFile, fullPage: false })
-  console.log(`✓ hero-${vp.name} → ${heroFile}`)
+  console.warn(`✓ hero-${vp.name} → ${heroFile}`)
 
   await ctx.close()
 }

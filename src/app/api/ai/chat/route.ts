@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
-import Anthropic from '@anthropic-ai/sdk'
+import { smarana, type SmaranaMessage } from '@purama/smarana'
 import { buildMuseSystem, NAMA_MUSE_SYSTEM_PROMPT } from '@/lib/nama-muse'
 
 const PLAN_LIMITS: Record<string, { maxTokens: number; model: string }> = {
@@ -61,22 +61,27 @@ export async function POST(request: NextRequest) {
       streak: typeof profile?.streak === 'number' ? profile.streak : undefined,
     })
 
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    // Extraire le dernier message utilisateur et les messages précédents
+    const lastMessage = messages[messages.length - 1]
+    const recentMessages: SmaranaMessage[] = messages.slice(0, -1).map((m: { role: string; content: string }) => ({
+      role: m.role as 'user' | 'assistant',
+      content: m.content,
+    }))
 
-    const response = await client.messages.create({
-      model: limits.model,
-      max_tokens: limits.maxTokens,
+    const result = await smarana.ask({
+      appSlug: 'sutra',
+      userId: user.id,
       system: systemPrompt,
-      messages,
+      recentMessages: recentMessages.length > 0 ? recentMessages : undefined,
+      message: lastMessage.content,
+      tier: plan === 'free' ? 'fast' : 'main',
+      maxTokens: limits.maxTokens,
     })
 
-    const content = response.content[0]
-    const text = content.type === 'text' ? content.text : ''
-
     return NextResponse.json({
-      message: text,
-      tokens: response.usage.output_tokens,
-      model: limits.model,
+      message: result.text,
+      tokens: result.tokensOut,
+      model: result.model,
       persona: system ? 'custom' : 'nama-muse',
     })
   } catch (err) {
