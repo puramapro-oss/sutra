@@ -6,36 +6,11 @@ import { logApiCall } from '@/lib/logger'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
 
-// ---------------------------------------------------------------------------
-// CRON quotidien (00h05 UTC) — redistribution du pool_balances.user_pool
-// vers les wallets des utilisateurs actifs.
-//
-// Règle CLAUDE.md §20 (Wealth Engine) :
-//   « GAINS DIRECTS — Revenu quotidien (20% pool ÷ users actifs CRON minuit) »
-//
-// Flow :
-//   1. Auth Bearer CRON_SECRET (pattern aligné auto-plan / upgrade-ots-proofs).
-//   2. Idempotence : vérifie qu'aucune pool_transactions
-//      (reason='karma_daily_distribution', metadata.date=YYYY-MM-DD)
-//      n'existe déjà pour aujourd'hui.
-//   3. Fetch pool_balances.user_pool.
-//   4. Amount à distribuer = balance × RATE (default 0.20, override env).
-//   5. Fetch utilisateurs actifs : profiles.last_active_at ≥ now - 7j.
-//   6. per_user = floor(amount × 100 / N) / 100 (cents precision).
-//      effective_total = per_user × N (≤ amount, reste arrondi stocké).
-//   7. Décrémente user_pool (balance, total_out) + insert pool_transactions 'out'.
-//   8. Boucle users : creditWallet(mode='split', source='karma_daily_distribution').
-//   9. Retourne JSON récap + logApiCall.
-//
-// Propriétés :
-//   - Idempotent (lock par date dans pool_transactions).
-//   - Atomicité best-effort : pool_balances debit AVANT crédits users. Si une
-//     itération creditWallet échoue → la fraction correspondante reste due à
-//     l'user, l'audit trail dans pool_transactions.metadata.failed[] permet
-//     réexécution manuelle.
-//   - Scale : BATCH_LIMIT 2000 users/run. maxDuration 300s. Si N > BATCH_LIMIT
-//     on prend les 2000 derniers actifs (ceux avec last_active_at le plus récent).
-// ---------------------------------------------------------------------------
+/**
+ * CRON quotidien (00h05 UTC) — redistribution pool_balances.user_pool vers wallets utilisateurs actifs.
+ * Flow: auth Bearer → idempotence date → pool fetch → actifs (7j) → split (cents floor) → debit pool → creditWallet × N.
+ * Idempotent (lock pool_transactions.metadata.date), atomicité best-effort, BATCH_LIMIT 2000, maxDuration 300s.
+ */
 
 const CRON_SECRET = process.env.CRON_SECRET
 const DISTRIBUTION_RATE = Number(process.env.KARMA_DISTRIBUTION_RATE ?? 0.2)
