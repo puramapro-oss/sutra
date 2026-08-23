@@ -24,43 +24,12 @@ import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 
+import type { PartnerStats, Referral } from '@/types/partner'
+
 const PartnerCommissionsChart = dynamic(
   () => import('@/components/partner/PartnerCommissionsChart').then((m) => m.PartnerCommissionsChart),
   { ssr: false, loading: () => <div className="h-64 rounded-lg bg-white/[0.02] animate-pulse" /> }
 )
-
-interface MonthlyPoint {
-  month: string
-  count: number
-  commissions: number
-}
-
-interface RecentReferral {
-  id: string
-  referred_email: string | null
-  status: string
-  created_at: string
-  first_payment_at: string | null
-}
-
-interface PartnerStats {
-  partner_code: string
-  total_referrals: number
-  total_commissions: number
-  balance: number
-  tier: string
-  pending_commissions: number
-  share_url: string
-  monthly_graph?: MonthlyPoint[]
-  recent_referrals?: RecentReferral[]
-}
-
-interface Referral {
-  id: string
-  email: string
-  created_at: string
-  status: 'active' | 'pending'
-}
 
 export default function PartenaireDashboard() {
   const { user, profile } = useAuth()
