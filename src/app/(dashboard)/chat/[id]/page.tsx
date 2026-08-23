@@ -18,6 +18,7 @@ import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/Skeleton'
+import AIDisclosure from '@/lib/legal/components/AIDisclosure'
 
 const supabase = createClient()
 
@@ -187,6 +188,8 @@ export default function ChatPage() {
         </Link>
         <h1 className="text-lg font-semibold text-white truncate">{title || 'Nouvelle conversation'}</h1>
       </div>
+
+      <AIDisclosure appName="SUTRA" className="text-xs text-white/40 mb-3" />
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 pb-4 no-scrollbar">

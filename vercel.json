@@ -47,6 +47,10 @@
     {
       "path": "/api/cron/asso-transfer",
       "schedule": "0 9 1 * *"
+    },
+    {
+      "path": "/api/cron/account-deletion",
+      "schedule": "0 3 * * *"
     }
   ],
   "functions": {
@@ -81,6 +85,9 @@
       "maxDuration": 300
     },
     "src/app/api/cron/asso-transfer/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/cron/account-deletion/route.ts": {
       "maxDuration": 60
     }
   }

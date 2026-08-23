@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X, Send, Loader2, Bot } from 'lucide-react'
+import AIDisclosure from '@/lib/legal/components/AIDisclosure'
 
 interface Message {
   id: string
@@ -73,6 +74,8 @@ export default function ChatBot() {
               </button>
             </div>
 
+            <AIDisclosure appName="SUTRA" className="px-4 pt-2 text-[10px] text-white/40" />
+
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[300px]">
               {messages.map((msg) => (
                 <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -113,7 +116,6 @@ export default function ChatBot() {
                   <Send className="h-4 w-4" />
                 </button>
               </div>
-              <p className="text-[10px] text-white/20 mt-2 text-center">Propulse par Claude</p>
             </div>
           </motion.div>
         )}

@@ -10,6 +10,7 @@ import { signupSchema } from '@/lib/validators'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import LegalAcceptanceNotice from '@/lib/legal/components/LegalAcceptanceNotice'
 
 function getPasswordStrength(password: string): {
   score: number
@@ -56,12 +57,10 @@ function SignupContent() {
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [acceptCGU, setAcceptCGU] = useState(false)
   const [errors, setErrors] = useState<{
     name?: string
     email?: string
     password?: string
-    cgu?: string
   }>({})
 
   const strength = useMemo(() => getPasswordStrength(password), [password])
@@ -72,21 +71,14 @@ function SignupContent() {
 
     const result = signupSchema.safeParse({ name, email, password })
     if (!result.success) {
-      const fieldErrors: { name?: string; email?: string; password?: string; cgu?: string } =
-        {}
+      const fieldErrors: { name?: string; email?: string; password?: string } = {}
       result.error.issues.forEach((issue) => {
         const field = issue.path[0] as string
         if (field === 'name' || field === 'email' || field === 'password') {
           fieldErrors[field] = issue.message
         }
       })
-      if (!acceptCGU) fieldErrors.cgu = 'Tu dois accepter les CGU'
       setErrors(fieldErrors)
-      return
-    }
-
-    if (!acceptCGU) {
-      setErrors({ cgu: 'Tu dois accepter les CGU et la politique de confidentialite' })
       return
     }
 
@@ -94,6 +86,17 @@ function SignupContent() {
     try {
       const storedRef = localStorage.getItem('sutra-referral-code') ?? refCode
       await signUp(email, password, name, storedRef || undefined)
+      // Preuve d'acceptation CGU/CGV/confidentialite — best-effort, no-op si pas encore de
+      // session (confirmation email requise) ; couvert aussi cote OAuth par auth/callback.
+      Promise.all(
+        (['cgu', 'cgv', 'confidentialite'] as const).map((docType) =>
+          fetch('/api/legal/accept', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ docType }),
+          }).catch(() => null)
+        )
+      )
       setSuccess(true)
       localStorage.removeItem('sutra-referral-code')
       toast.success('Compte cree avec succes !')
@@ -318,39 +321,7 @@ function SignupContent() {
               </motion.div>
             )}
 
-            {/* CGU checkbox */}
-            <div className="space-y-1">
-              <label className="flex items-start gap-3 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  checked={acceptCGU}
-                  onChange={(e) => {
-                    setAcceptCGU(e.target.checked)
-                    if (e.target.checked) setErrors((prev) => ({ ...prev, cgu: undefined }))
-                  }}
-                  data-testid="cgu-checkbox"
-                  className="mt-1 h-4 w-4 shrink-0 rounded border-white/20 bg-white/5 text-violet-500 focus:ring-violet-500/50 accent-violet-500"
-                />
-                <span className="text-xs text-white/50 leading-relaxed">
-                  J&apos;accepte les{' '}
-                  <Link href="/legal/terms" target="_blank" className="text-violet-400 hover:text-violet-300 underline">
-                    conditions generales d&apos;utilisation
-                  </Link>
-                  , les{' '}
-                  <Link href="/legal/cgv" target="_blank" className="text-violet-400 hover:text-violet-300 underline">
-                    conditions generales de vente
-                  </Link>
-                  {' '}et la{' '}
-                  <Link href="/legal/privacy" target="_blank" className="text-violet-400 hover:text-violet-300 underline">
-                    politique de confidentialite
-                  </Link>
-                  .
-                </span>
-              </label>
-              {errors.cgu && (
-                <p className="text-xs text-red-400 ml-7">{errors.cgu}</p>
-              )}
-            </div>
+            <LegalAcceptanceNotice actionLabel="Creer mon compte" />
 
             <Button
               data-testid="signup-button"

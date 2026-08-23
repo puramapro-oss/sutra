@@ -35,10 +35,22 @@ export async function GET(request: Request) {
   )
 
   try {
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
     if (error) {
       return NextResponse.redirect(
         `${origin}/login?error=${encodeURIComponent(error.message)}`
+      )
+    }
+
+    if (data.user) {
+      const { CURRENT_LEGAL_VERSIONS } = await import('@/lib/legal/versions')
+      await Promise.all(
+        (['cgu', 'cgv', 'confidentialite'] as const).map((docType) =>
+          supabase.from('legal_acceptances').upsert(
+            { user_id: data.user!.id, doc_type: docType, version: CURRENT_LEGAL_VERSIONS[docType] },
+            { onConflict: 'user_id,doc_type', ignoreDuplicates: true }
+          )
+        )
       )
     }
 

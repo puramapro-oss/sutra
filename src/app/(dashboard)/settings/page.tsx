@@ -11,14 +11,11 @@ import {
   Database,
   Camera,
   ExternalLink,
-  Trash2,
-  Download,
   Sun,
   Moon,
   Shield,
   Lock,
   Loader2,
-  AlertTriangle,
   Upload,
   Share2,
 } from 'lucide-react'
@@ -35,7 +32,6 @@ import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { Input } from '@/components/ui/Input'
 import { Tabs } from '@/components/ui/Tabs'
-import { Modal } from '@/components/ui/Modal'
 import { ProgressBar } from '@/components/ui/ProgressBar'
 import type { Plan, VideoQuality, EmailPreferences } from '@/types'
 
@@ -93,10 +89,6 @@ export default function SettingsPage() {
 
   // UI state
   const [saving, setSaving] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [deleteConfirm, setDeleteConfirm] = useState('')
-  const [deleting, setDeleting] = useState(false)
-  const [exporting, setExporting] = useState(false)
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
 
   // Init form
@@ -249,45 +241,6 @@ export default function SettingsPage() {
       toast.error('Erreur')
     }
   }, [])
-
-  // Export data
-  const handleExport = useCallback(async () => {
-    setExporting(true)
-    try {
-      const res = await fetch('/api/user/export')
-      if (!res.ok) throw new Error('Export failed')
-      const blob = await res.blob()
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = 'sutra-data-export.json'
-      a.click()
-      URL.revokeObjectURL(url)
-      toast.success('Donnees exportees !')
-    } catch {
-      toast.error("Erreur lors de l&apos;export")
-    } finally {
-      setExporting(false)
-    }
-  }, [])
-
-  // Delete account
-  const handleDeleteAccount = useCallback(async () => {
-    if (deleteConfirm !== 'SUPPRIMER') {
-      toast.error('Tape SUPPRIMER pour confirmer')
-      return
-    }
-    setDeleting(true)
-    try {
-      const res = await fetch('/api/user/delete', { method: 'DELETE' })
-      if (!res.ok) throw new Error('Delete failed')
-      await supabase.auth.signOut()
-      window.location.assign('/')
-    } catch {
-      toast.error('Erreur lors de la suppression')
-      setDeleting(false)
-    }
-  }, [deleteConfirm])
 
   const toggleEmailPref = useCallback((key: keyof EmailPreferences) => {
     setEmailPrefs((prev) => ({ ...prev, [key]: !prev[key] }))
@@ -802,39 +755,16 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <Card data-testid="settings-donnees">
                   <CardContent className="space-y-4">
-                    <h3 className="text-sm font-semibold text-white">Exporter mes donnees</h3>
+                    <h3 className="text-sm font-semibold text-white">Ma memoire</h3>
                     <p className="text-xs text-white/30">
-                      Telecharge toutes tes donnees au format JSON (videos, profil, commissions).
+                      Exporte tes donnees, consulte tes acceptations legales ou supprime ton compte (RGPD).
                     </p>
-                    <Button
-                      variant="secondary"
-                      onClick={handleExport}
-                      loading={exporting}
-                      data-testid="settings-export-data"
-                    >
-                      <Download className="h-4 w-4" />
-                      Exporter mes donnees
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-red-500/10">
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <AlertTriangle className="h-5 w-5 text-red-400" />
-                      <h3 className="text-sm font-semibold text-red-400">Zone de danger</h3>
-                    </div>
-                    <p className="text-xs text-white/30">
-                      La suppression de ton compte est irreversible. Toutes tes videos, donnees et commissions seront perdues.
-                    </p>
-                    <Button
-                      variant="danger"
-                      onClick={() => setShowDeleteModal(true)}
-                      data-testid="settings-delete-account"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      Supprimer mon compte
-                    </Button>
+                    <Link href="/ma-memoire" data-testid="settings-ma-memoire-link">
+                      <Button variant="secondary">
+                        <Database className="h-4 w-4" />
+                        Acceder a Ma memoire
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               </div>
@@ -842,46 +772,6 @@ export default function SettingsPage() {
           </>
         )}
       </Tabs>
-
-      {/* Delete confirmation modal */}
-      <Modal
-        open={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        title="Supprimer mon compte"
-        data-testid="modal-delete-account"
-      >
-        <div className="space-y-4">
-          <div className="p-3 rounded-xl bg-red-500/5 border border-red-500/10">
-            <p className="text-sm text-red-400">
-              Cette action est irreversible. Toutes tes donnees seront supprimees definitivement.
-            </p>
-          </div>
-          <Input
-            label='Tape "SUPPRIMER" pour confirmer'
-            value={deleteConfirm}
-            onChange={(e) => setDeleteConfirm(e.target.value)}
-            data-testid="delete-confirm-input"
-          />
-          <div className="flex items-center gap-3">
-            <Button
-              variant="secondary"
-              onClick={() => setShowDeleteModal(false)}
-            >
-              Annuler
-            </Button>
-            <Button
-              variant="danger"
-              onClick={handleDeleteAccount}
-              loading={deleting}
-              disabled={deleteConfirm !== 'SUPPRIMER'}
-              data-testid="delete-confirm-btn"
-            >
-              <Trash2 className="h-4 w-4" />
-              Supprimer definitivement
-            </Button>
-          </div>
-        </div>
-      </Modal>
     </motion.div>
   )
 }
