@@ -2,48 +2,21 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import {
-  Activity,
-  Clock,
-  AlertTriangle,
-  Cpu,
-  Zap,
-  Server,
-  RefreshCw,
-  ChevronDown,
-} from 'lucide-react'
+import { Activity, AlertTriangle, Cpu, Zap, Server, RefreshCw } from 'lucide-react'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { Badge } from '@/components/ui/Badge'
 import { cn, formatPrice, formatRelativeDate } from '@/lib/utils'
+import GoldCard from '@/components/admin/GoldCard'
 
 interface ServiceUsage {
-  service: string
-  requests_today: number
-  requests_week: number
-  requests_month: number
-  avg_response_ms: number
-  error_rate: number
-  cost_today: number
-  cost_month: number
+  service: string; requests_today: number; requests_week: number; requests_month: number
+  avg_response_ms: number; error_rate: number; cost_today: number; cost_month: number
   status: 'operational' | 'degraded' | 'down'
 }
+interface ErrorLog { id: string; service: string; message: string; status_code: number | null; created_at: string }
+interface RunPodMetrics { gpu_time_hours: number; cost_per_video_avg: number; total_videos_processed: number; queue_depth: number }
 
-interface ErrorLog {
-  id: string
-  service: string
-  message: string
-  status_code: number | null
-  created_at: string
-}
-
-interface RunPodMetrics {
-  gpu_time_hours: number
-  cost_per_video_avg: number
-  total_videos_processed: number
-  queue_depth: number
-}
-
-const SERVICE_CONFIG: Record<string, { label: string; color: string; icon: typeof Cpu }> = {
+const SVC: Record<string, { label: string; color: string; icon: typeof Cpu }> = {
   claude: { label: 'Claude AI', color: '#8B5CF6', icon: Zap },
   elevenlabs: { label: 'ElevenLabs', color: '#3B82F6', icon: Activity },
   runpod: { label: 'RunPod', color: '#10B981', icon: Cpu },
@@ -51,41 +24,16 @@ const SERVICE_CONFIG: Record<string, { label: string; color: string; icon: typeo
   shotstack: { label: 'Shotstack', color: '#F59E0B', icon: Server },
   pexels: { label: 'Pexels', color: '#06B6D4', icon: Server },
 }
-
-const STATUS_CONFIG: Record<string, { bg: string; text: string; label: string }> = {
+const ST: Record<string, { bg: string; text: string; label: string }> = {
   operational: { bg: 'bg-emerald-500', text: 'text-emerald-400', label: 'Operationnel' },
   degraded: { bg: 'bg-amber-500', text: 'text-amber-400', label: 'Degrade' },
   down: { bg: 'bg-red-500', text: 'text-red-400', label: 'Hors service' },
 }
-
 const PERIODS = [
-  { id: 'today', label: 'Aujourd\'hui' },
-  { id: 'week', label: 'Semaine' },
-  { id: 'month', label: 'Mois' },
+  { id: 'today', label: 'Aujourd\'hui' }, { id: 'week', label: 'Semaine' }, { id: 'month', label: 'Mois' },
 ] as const
 
 type Period = typeof PERIODS[number]['id']
-
-function GoldCard({
-  children,
-  className,
-  ...props
-}: {
-  children: React.ReactNode
-  className?: string
-} & React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={cn(
-        'relative overflow-hidden rounded-2xl backdrop-blur-xl border bg-white/[0.03] border-white/[0.06]',
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  )
-}
 
 export default function AdminApiUsagePage() {
   const [services, setServices] = useState<ServiceUsage[]>([])
@@ -145,14 +93,6 @@ export default function AdminApiUsagePage() {
     fetchData()
   }
 
-  const getRequestCount = (s: ServiceUsage) => {
-    switch (period) {
-      case 'today': return s.requests_today
-      case 'week': return s.requests_week
-      case 'month': return s.requests_month
-    }
-  }
-
   if (error && services.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
@@ -172,11 +112,9 @@ export default function AdminApiUsagePage() {
 
   return (
     <div className="space-y-6" data-testid="admin-api-usage-page">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-white">API Monitoring</h2>
         <div className="flex items-center gap-3">
-          {/* Period selector */}
           <div className="flex items-center rounded-xl bg-white/[0.03] border border-white/[0.06] p-0.5">
             {PERIODS.map((p) => (
               <button
@@ -205,7 +143,6 @@ export default function AdminApiUsagePage() {
         </div>
       </div>
 
-      {/* Service Status Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
           Array.from({ length: 6 }).map((_, i) => (
@@ -213,8 +150,8 @@ export default function AdminApiUsagePage() {
           ))
         ) : (
           services.map((s, idx) => {
-            const config = SERVICE_CONFIG[s.service] ?? { label: s.service, color: '#8B5CF6', icon: Server }
-            const status = STATUS_CONFIG[s.status] ?? STATUS_CONFIG.operational
+            const config = SVC[s.service] ?? { label: s.service, color: '#8B5CF6', icon: Server }
+            const status = ST[s.status] ?? ST.operational
             const Icon = config.icon
 
             return (
@@ -244,7 +181,9 @@ export default function AdminApiUsagePage() {
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <p className="text-xs text-white/30">Requetes</p>
-                      <p className="text-lg font-bold text-white/80">{getRequestCount(s)}</p>
+                      <p className="text-lg font-bold text-white/80">
+                        {period === 'today' ? s.requests_today : period === 'week' ? s.requests_week : s.requests_month}
+                      </p>
                     </div>
                     <div>
                       <p className="text-xs text-white/30">Latence moy.</p>
@@ -275,7 +214,6 @@ export default function AdminApiUsagePage() {
         )}
       </div>
 
-      {/* RunPod Specific */}
       <GoldCard className="p-5" data-testid="admin-api-runpod">
         <div className="flex items-center gap-2 mb-4">
           <Cpu className="h-4 w-4 text-amber-400" />
@@ -289,34 +227,21 @@ export default function AdminApiUsagePage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
-              <p className="text-xs text-white/40 mb-1">Temps GPU</p>
-              <p className="text-xl font-bold text-white">{runpod?.gpu_time_hours ?? 0}h</p>
-            </div>
-            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
-              <p className="text-xs text-white/40 mb-1">Cout / video</p>
-              <p className="text-xl font-bold text-amber-400">
-                {formatPrice(runpod?.cost_per_video_avg ?? 0)}
-              </p>
-            </div>
-            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
-              <p className="text-xs text-white/40 mb-1">Videos traitees</p>
-              <p className="text-xl font-bold text-white">{runpod?.total_videos_processed ?? 0}</p>
-            </div>
-            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
-              <p className="text-xs text-white/40 mb-1">File d&apos;attente</p>
-              <p className={cn(
-                'text-xl font-bold',
-                (runpod?.queue_depth ?? 0) > 10 ? 'text-amber-400' : 'text-emerald-400'
-              )}>
-                {runpod?.queue_depth ?? 0}
-              </p>
-            </div>
+            {[
+              { label: 'Temps GPU', value: `${runpod?.gpu_time_hours ?? 0}h`, color: 'text-white' },
+              { label: 'Cout / video', value: formatPrice(runpod?.cost_per_video_avg ?? 0), color: 'text-amber-400' },
+              { label: 'Videos traitees', value: runpod?.total_videos_processed ?? 0, color: 'text-white' },
+              { label: 'File d\'attente', value: runpod?.queue_depth ?? 0, color: (runpod?.queue_depth ?? 0) > 10 ? 'text-amber-400' : 'text-emerald-400' },
+            ].map((m, i) => (
+              <div key={i} className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
+                <p className="text-xs text-white/40 mb-1">{m.label}</p>
+                <p className={cn('text-xl font-bold', m.color)}>{m.value}</p>
+              </div>
+            ))}
           </div>
         )}
       </GoldCard>
 
-      {/* Error Logs */}
       <GoldCard className="p-5" data-testid="admin-api-errors">
         <div className="flex items-center gap-2 mb-4">
           <AlertTriangle className="h-4 w-4 text-amber-400" />
@@ -329,10 +254,9 @@ export default function AdminApiUsagePage() {
             ))}
           </div>
         ) : errors.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <Zap className="h-10 w-10 text-emerald-400/20 mb-3" />
+          <div className="flex flex-col items-center py-12">
+            <Zap className="h-10 w-10 text-emerald-400/20 mb-2" />
             <p className="text-sm text-white/30">Aucune erreur recente</p>
-            <p className="text-xs text-white/15 mt-1">Tous les services fonctionnent correctement</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
