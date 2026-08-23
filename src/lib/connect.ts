@@ -1,45 +1,16 @@
 import { stripe } from '@/lib/stripe'
 import { createServiceClient } from '@/lib/supabase'
 import type Stripe from 'stripe'
+import type {
+  ConnectAccountRow,
+  EnsuredAccount,
+  PayoutResult,
+} from '@/types/connect'
 
-// ---------------------------------------------------------------------------
+// Réexport types pour rétrocompatibilité
+export type { ConnectAccountRow, EnsuredAccount, PayoutResult }
+
 // Stripe Connect (Express + Embedded Components) — payout wallet → IBAN user.
-// Source of truth : STRIPE_CONNECT_KARMA_V4.md §V4.1 (Embedded Components,
-// pas de STRIPE_CONNECT_CLIENT_ID ca_... nécessaire).
-//
-// Flow :
-//   1. User clique "Activer les retraits" sur /settings/paiement
-//   2. createConnectAccount(userId, email) → Stripe Express FR + insert DB
-//   3. createAccountSession(stripeAccountId) → client_secret → <ConnectComponentsProvider>
-//   4. User fait KYC dans l'iframe Embedded (reste sur purama.dev)
-//   5. Webhook account.updated → syncAccountStatus() met à jour payouts_enabled etc.
-//   6. User demande retrait ≥20€ → createPayoutToConnect() → SEPA instant
-// ---------------------------------------------------------------------------
-
-export type ConnectAccountRow = {
-  user_id: string
-  stripe_account_id: string
-  onboarding_completed: boolean
-  payouts_enabled: boolean
-  charges_enabled: boolean
-  details_submitted: boolean
-  requirements_currently_due: string[]
-  requirements_past_due: string[]
-  capabilities: Record<string, unknown>
-  country: string
-  default_currency: string
-  kyc_verified_at: string | null
-  last_webhook_at: string | null
-  created_at: string
-  updated_at: string
-}
-
-export type EnsuredAccount = {
-  stripeAccountId: string
-  payoutsEnabled: boolean
-  onboardingCompleted: boolean
-  alreadyExisted: boolean
-}
 
 // ---------------------------------------------------------------------------
 // 1. Création ou récupération (idempotent) d'un compte Connect Express
@@ -212,13 +183,6 @@ export async function upsertAccountFromStripe(account: Stripe.Account): Promise<
 // ---------------------------------------------------------------------------
 // 4. Payout vers Connect (retrait wallet → IBAN user)
 // ---------------------------------------------------------------------------
-
-export type PayoutResult = {
-  transferId: string
-  amountCents: number
-  currency: string
-  destination: string
-}
 
 /**
  * Transfère X€ depuis le solde Purama vers le compte Connect Express du user.
