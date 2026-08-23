@@ -4,27 +4,31 @@
  * Sort: 4K first (badge or), 1080p second (badge argent).
  */
 
+import type {
+  StockSource,
+  StockType,
+  StockOrientation,
+  StockQuality,
+  StockResult,
+  StockSearchOptions,
+  PexelsVideo,
+  PexelsVideoFile,
+  PexelsPhoto,
+  UnsplashPhoto,
+  CoverrVideo,
+} from '@/types/stock'
+
+export type {
+  StockSource,
+  StockType,
+  StockOrientation,
+  StockQuality,
+  StockResult,
+  StockSearchOptions,
+}
+
 const PEXELS_API_KEY = process.env.PEXELS_API_KEY ?? ''
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY ?? ''
-
-export type StockSource = 'pexels' | 'unsplash' | 'coverr'
-export type StockType = 'video' | 'photo'
-export type StockOrientation = 'landscape' | 'portrait' | 'square'
-export type StockQuality = '1080p' | '4k'
-
-export interface StockResult {
-  id: string
-  source: StockSource
-  type: StockType
-  url: string
-  thumbnail: string
-  width: number
-  height: number
-  quality: StockQuality
-  duration?: number
-  author?: string
-  pageUrl?: string
-}
 
 const MIN_WIDTH = 1920
 const MIN_HEIGHT = 1080
@@ -50,32 +54,6 @@ function matchesOrientation(
 }
 
 /* ------------------------------ PEXELS ------------------------------ */
-
-interface PexelsVideoFile {
-  id: number
-  quality: string
-  link: string
-  width: number
-  height: number
-}
-interface PexelsVideo {
-  id: number
-  url: string
-  width: number
-  height: number
-  duration: number
-  user: { name: string }
-  image: string
-  video_files: PexelsVideoFile[]
-}
-interface PexelsPhoto {
-  id: number
-  url: string
-  width: number
-  height: number
-  photographer: string
-  src: { original: string; large2x: string; large: string }
-}
 
 async function pexelsVideos(
   query: string,
@@ -160,15 +138,6 @@ async function pexelsPhotos(
 
 /* ----------------------------- UNSPLASH ----------------------------- */
 
-interface UnsplashPhoto {
-  id: string
-  width: number
-  height: number
-  urls: { full: string; regular: string; raw: string }
-  user: { name: string }
-  links: { html: string }
-}
-
 async function unsplashPhotos(
   query: string,
   orientation: StockOrientation
@@ -210,15 +179,6 @@ async function unsplashPhotos(
 
 /* ------------------------------ COVERR ------------------------------ */
 
-interface CoverrVideo {
-  id: string
-  title: string
-  poster: string
-  max_width: number
-  max_height: number
-  urls: { mp4: string; mp4_download: string; mp4_preview: string }
-}
-
 async function coverrVideos(
   query: string,
   orientation: StockOrientation
@@ -257,12 +217,6 @@ async function coverrVideos(
 }
 
 /* ------------------------------ MAIN ------------------------------ */
-
-export interface StockSearchOptions {
-  query: string
-  orientation?: StockOrientation
-  type?: StockType | 'any'
-}
 
 export async function searchStock({
   query,
