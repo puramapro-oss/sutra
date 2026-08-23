@@ -20,6 +20,7 @@ import { Badge } from '@/components/ui/Badge'
 import { cn, formatPrice, formatDate } from '@/lib/utils'
 import { toast } from 'sonner'
 import { UserDetailModal } from '@/components/admin/UserDetailModal'
+import GoldCard from '@/components/admin/GoldCard'
 
 interface UserRow {
   id: string
@@ -56,27 +57,6 @@ const STATUS_COLORS: Record<string, string> = {
   cancelled: 'text-red-400',
   past_due: 'text-amber-400',
   trialing: 'text-blue-400',
-}
-
-function GoldCard({
-  children,
-  className,
-  ...props
-}: {
-  children: React.ReactNode
-  className?: string
-} & React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={cn(
-        'relative overflow-hidden rounded-2xl backdrop-blur-xl border bg-white/[0.03] border-white/[0.06]',
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  )
 }
 
 export default function AdminUsersPage() {
