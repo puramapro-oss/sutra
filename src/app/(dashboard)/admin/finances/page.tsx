@@ -16,6 +16,7 @@ import {
 import { Skeleton } from '@/components/ui/Skeleton'
 import { Badge } from '@/components/ui/Badge'
 import { cn, formatPrice, formatDate } from '@/lib/utils'
+import GoldCard from '@/components/admin/GoldCard'
 
 interface FinanceData {
   revenue_by_plan: Record<string, number>
@@ -53,32 +54,6 @@ const STATUS_BADGE: Record<string, { variant: 'default' | 'success' | 'warning' 
   approved: { variant: 'success', label: 'Approuve' },
   rejected: { variant: 'error', label: 'Rejete' },
   paid: { variant: 'success', label: 'Paye' },
-}
-
-function GoldCard({
-  children,
-  className,
-  glow = false,
-  ...props
-}: {
-  children: React.ReactNode
-  className?: string
-  glow?: boolean
-} & React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={cn(
-        'relative overflow-hidden rounded-2xl backdrop-blur-xl border',
-        glow
-          ? 'bg-amber-500/[0.04] border-amber-500/20'
-          : 'bg-white/[0.03] border-white/[0.06]',
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </div>
-  )
 }
 
 export default function AdminFinancesPage() {
@@ -176,7 +151,6 @@ export default function AdminFinancesPage() {
     <div className="space-y-6" data-testid="admin-finances-page">
       <h2 className="text-xl font-bold text-white">Vue financiere</h2>
 
-      {/* Revenue by Plan */}
       <GoldCard className="p-5" data-testid="admin-finance-revenue">
         <div className="flex items-center gap-2 mb-4">
           <DollarSign className="h-4 w-4 text-amber-400" />
@@ -215,7 +189,6 @@ export default function AdminFinancesPage() {
         )}
       </GoldCard>
 
-      {/* Costs Breakdown */}
       <GoldCard className="p-5" data-testid="admin-finance-costs">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="h-4 w-4 text-amber-400" />
@@ -267,7 +240,6 @@ export default function AdminFinancesPage() {
         )}
       </GoldCard>
 
-      {/* Margin & Forecast */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <GoldCard glow className="p-5" data-testid="admin-finance-margin">
           <div className="flex items-center gap-2 mb-4">
@@ -373,7 +345,6 @@ export default function AdminFinancesPage() {
         </GoldCard>
       </div>
 
-      {/* Withdrawals */}
       <GoldCard className="p-5" data-testid="admin-finance-withdrawals">
         <div className="flex items-center gap-2 mb-4">
           <Clock className="h-4 w-4 text-amber-400" />
