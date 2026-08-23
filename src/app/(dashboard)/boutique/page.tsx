@@ -1,17 +1,14 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { motion } from 'framer-motion'
-import { ShoppingBag, Coins, Tag, Ticket, Zap, Wallet, Loader2, Star, Gift } from 'lucide-react'
+import { ShoppingBag, Coins, Tag, Ticket, Zap, Wallet, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
-import { cn, formatPrice } from '@/lib/utils'
-import { Card, CardContent } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
-import Button from '@/components/ui/Button'
+import DailyGiftChest from '@/components/boutique/DailyGiftChest'
+import ShopItemCard from '@/components/boutique/ShopItemCard'
 
 interface ShopItem {
   id: string
@@ -171,82 +168,12 @@ export default function BoutiquePage() {
 
       {/* Daily Gift — Animated Chest */}
       {dailyGift && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative glass rounded-2xl p-6 border border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-violet-500/5 overflow-hidden"
-        >
-          {/* Glow effect behind chest */}
-          {dailyGift.canOpen && (
-            <div className="absolute top-1/2 left-8 -translate-y-1/2 w-24 h-24 rounded-full bg-amber-500/20 blur-2xl animate-pulse pointer-events-none" />
-          )}
-          <div className="relative flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <motion.div
-                animate={dailyGift.canOpen ? {
-                  rotate: [-2, 2, -2],
-                  scale: [1, 1.05, 1],
-                } : {}}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1.5,
-                  ease: "easeInOut",
-                }}
-                className={cn(
-                  "w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg",
-                  dailyGift.canOpen
-                    ? "bg-gradient-to-br from-amber-400 via-amber-500 to-orange-600 shadow-amber-500/30"
-                    : "bg-gradient-to-br from-white/10 to-white/5"
-                )}
-              >
-                <Gift className={cn("w-8 h-8", dailyGift.canOpen ? "text-white" : "text-white/40")} />
-              </motion.div>
-              <div>
-                <h3 className="text-lg font-bold text-white">Coffre Quotidien</h3>
-                <p className="text-white/50 text-sm">
-                  {dailyGift.canOpen
-                    ? 'Ton cadeau du jour t\'attend !'
-                    : `Reviens demain ! Serie : ${dailyGift.streakCount} jours`}
-                </p>
-                {dailyGift.streakCount >= 7 && (
-                  <div className="flex items-center gap-1.5 text-amber-400/80 text-xs mt-1">
-                    <Zap className="w-3 h-3" />
-                    Serie {dailyGift.streakCount}j — bonus garanti
-                  </div>
-                )}
-              </div>
-            </div>
-            <motion.div whileTap={{ scale: 0.95 }}>
-              <Button
-                onClick={handleOpenGift}
-                disabled={!dailyGift.canOpen || openingGift}
-                className={cn(
-                  'px-6 min-w-[100px]',
-                  dailyGift.canOpen
-                    ? 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 shadow-lg shadow-amber-500/20'
-                    : 'opacity-50 cursor-not-allowed'
-                )}
-              >
-                {openingGift ? <Loader2 className="w-4 h-4 animate-spin" /> : dailyGift.canOpen ? 'Ouvrir ✨' : 'Ouvert'}
-              </Button>
-            </motion.div>
-          </div>
-          {/* Streak progress dots */}
-          {dailyGift.streakCount > 0 && dailyGift.streakCount < 7 && (
-            <div className="mt-4 flex items-center gap-1.5">
-              {Array.from({ length: 7 }).map((_, i) => (
-                <div
-                  key={i}
-                  className={cn(
-                    "h-1.5 flex-1 rounded-full transition-colors",
-                    i < dailyGift.streakCount ? "bg-amber-400" : "bg-white/10"
-                  )}
-                />
-              ))}
-              <span className="text-[10px] text-white/30 ml-1">{dailyGift.streakCount}/7</span>
-            </div>
-          )}
-        </motion.div>
+        <DailyGiftChest
+          canOpen={dailyGift.canOpen}
+          streakCount={dailyGift.streakCount}
+          onOpen={handleOpenGift}
+          opening={openingGift}
+        />
       )}
 
       {/* Shop Items by Category */}
@@ -264,46 +191,16 @@ export default function BoutiquePage() {
                 {categoryLabels[cat] || cat}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {catItems.map((item, idx) => {
-                  const canAfford = points.balance >= item.cost_points
-                  return (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.05 }}
-                    >
-                      <Card className="glass hover:border-violet-500/30 transition-all h-full">
-                        <CardContent className="p-5 flex flex-col h-full">
-                          <h3 className="font-semibold text-white">{item.name}</h3>
-                          <p className="text-sm text-white/50 mt-1 flex-1">{item.description}</p>
-                          <div className="flex items-center justify-between mt-4">
-                            <Badge variant={canAfford ? 'default' : 'warning'} className="flex items-center gap-1">
-                              <Coins className="w-3 h-3" />
-                              {item.cost_points.toLocaleString('fr-FR')} pts
-                            </Badge>
-                            <Button
-                              size="sm"
-                              onClick={() => handlePurchase(item.id)}
-                              disabled={!canAfford || purchasing === item.id}
-                              className={cn(
-                                !canAfford && 'opacity-40 cursor-not-allowed'
-                              )}
-                            >
-                              {purchasing === item.id ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                              ) : canAfford ? (
-                                'Acheter'
-                              ) : (
-                                'Insuffisant'
-                              )}
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  )
-                })}
+                {catItems.map((item, idx) => (
+                  <ShopItemCard
+                    key={item.id}
+                    item={item}
+                    balance={points.balance}
+                    purchasing={purchasing === item.id}
+                    onPurchase={handlePurchase}
+                    delay={idx * 0.05}
+                  />
+                ))}
               </div>
             </div>
           )
