@@ -70,7 +70,6 @@ export default function LotteryScreen() {
       parrainage: "Parrainage",
       mission: "Mission",
       partage: "Partage",
-      note: "Avis store",
       challenge: "Challenge",
       streak: "Serie",
       abo: "Abonnement",

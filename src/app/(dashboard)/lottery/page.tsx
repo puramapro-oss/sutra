@@ -29,7 +29,6 @@ const ticketSources = [
   { source: 'Parrainage', tickets: '+2' },
   { source: 'Mission completee', tickets: '+1' },
   { source: 'Partage social', tickets: '+1' },
-  { source: 'Avis store', tickets: '+3' },
   { source: 'Challenge reussi', tickets: '+2' },
   { source: 'Streak 7 jours', tickets: '+1' },
   { source: 'Streak 30 jours', tickets: '+5' },

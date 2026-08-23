@@ -1,101 +1,47 @@
-'use client'
+// src/app/(dashboard)/layout.tsx — SUTRA
+// Server Component : le middleware garantit déjà une session valide avant d'atteindre ce layout
+// (défense en profondeur, jamais un seul point de contrôle sur l'auth). Le chrome (sidebar
+// desktop + header + bottom nav mobile + overlays) est délégué à `DashboardChrome` (Client
+// Component), ce layout ne fait que le calcul serveur des documents légaux en attente.
+//
+// CONFORMITE.md 2026-08-23 gap #9 : `LegalReacceptanceGate` était copié depuis le socle mais
+// jamais monté nulle part — un bump de version CGU/CGV/confidentialité ne re-sollicitait aucun
+// utilisateur existant. Calcul serveur (jamais côté client) des documents en attente à partir
+// des dernières acceptations réelles ; résilient si `legal_acceptances` est temporairement
+// indisponible (dégrade vers 0 doc en attente plutôt que de bloquer l'accès à l'app).
+import { createServerClient } from '@/lib/supabase-server'
+import DashboardChrome from '@/components/layout/DashboardChrome'
+import LegalReacceptanceGateMount from '@/components/legal/LegalReacceptanceGateMount'
+import { computeDocsEnAttente } from '@/lib/legal/versions'
+import type { LegalDocType } from '@/lib/legal/types'
 
-import dynamic from 'next/dynamic'
-import { motion } from 'framer-motion'
-import Sidebar from '@/components/layout/Sidebar'
-import Header from '@/components/layout/Header'
-import MobileNav from '@/components/layout/MobileNav'
-
-const CosmicParticlesWrapper = dynamic(
-  () => import('@/components/shared/CosmicParticlesWrapper'),
-  { ssr: false }
-)
-
-const TutorialOverlay = dynamic(
-  () => import('@/components/shared/TutorialOverlay'),
-  { ssr: false }
-)
-
-const SpiritualLayer = dynamic(
-  () => import('@/components/shared/SpiritualLayer'),
-  { ssr: false }
-)
-
-const SubconsciousEngine = dynamic(
-  () => import('@/components/shared/SubconsciousEngine'),
-  { ssr: false }
-)
-
-const ConversionPopup = dynamic(
-  () => import('@/components/shared/ConversionPopup'),
-  { ssr: false }
-)
-
-const CinematicIntro = dynamic(
-  () => import('@/components/shared/CinematicIntro'),
-  { ssr: false }
-)
-
-const FiscalBanner = dynamic(
-  () => import('@/components/shared/FiscalBanner').then(m => m.FiscalBanner),
-  { ssr: false }
-)
-
-const MagicMoment = dynamic(
-  () => import('@/components/engagement/MagicMoment').then(m => m.MagicMoment),
-  { ssr: false }
-)
-
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const supabase = await createServerClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  let docsEnAttente: LegalDocType[] = []
+  if (user) {
+    const { data: legalAcceptances } = await supabase
+      .from('legal_acceptances')
+      .select('doc_type, version')
+      .eq('user_id', user.id)
+
+    const dernieresAcceptations = Object.fromEntries(
+      (legalAcceptances ?? []).map((a) => [a.doc_type, a.version])
+    ) as Partial<Record<LegalDocType, string>>
+    docsEnAttente = computeDocsEnAttente(dernieresAcceptations)
+  }
+
   return (
-    <div className="relative flex min-h-dvh bg-[#06050e]">
-      {/* Cosmic particles background */}
-      <CosmicParticlesWrapper variant="dashboard" />
-
-      {/* Desktop sidebar */}
-      <Sidebar />
-
-      {/* Main content */}
-      <div className="relative z-10 flex-1 flex flex-col min-w-0">
-        <Header />
-
-        {/* V6 — Banner fiscal si user >3000€ (avril-juin) */}
-        <FiscalBanner />
-
-        <motion.main
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden"
-        >
-          {children}
-        </motion.main>
-      </div>
-
-      {/* Mobile bottom nav */}
-      <MobileNav />
-
-      {/* Tutorial overlay - first login only */}
-      <TutorialOverlay />
-
-      {/* Spiritual layer — affirmation + quotes */}
-      <SpiritualLayer />
-
-      {/* Subconscious engine — micro-pauses + subliminals */}
-      <SubconsciousEngine />
-
-      {/* Conversion popup — triggers: credits low, 3rd login, pending earnings */}
-      <ConversionPopup />
-
-      {/* Cinematic intro — first visit only */}
-      <CinematicIntro />
-
-      {/* V6 — Magic Moment (premier retrait) */}
-      <MagicMoment />
-    </div>
+    <DashboardChrome>
+      {docsEnAttente.length > 0 && <LegalReacceptanceGateMount docsEnAttente={docsEnAttente} />}
+      {children}
+    </DashboardChrome>
   )
 }
