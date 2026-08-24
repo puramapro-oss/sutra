@@ -118,6 +118,20 @@ export function useVideoGeneration({
     pollingRef.current = setInterval(poll, 3000)
   }, [])
 
+  // Reset generation state
+  const resetGeneration = useCallback(() => {
+    setIsGenerating(false)
+    setPipelineSteps(getPipelineSteps('wan-classic').map((s) => ({ ...s, status: 'pending' as const })))
+    setVideoId(null)
+    setError(null)
+    setSceneKeywords([])
+    setSceneSelections([])
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current)
+      pollingRef.current = null
+    }
+  }, [])
+
   // Start generation
   const startGeneration = useCallback(async () => {
     if (!topic.trim() || isOverLimit) return
@@ -177,13 +191,17 @@ export function useVideoGeneration({
   return {
     isGenerating,
     pipelineSteps,
+    setPipelineSteps,
     videoId,
+    setVideoId,
     error,
+    setError,
     sceneKeywords,
     sceneSelections,
     setSceneSelections,
     keywordsLoading,
     fetchKeywords,
     startGeneration,
+    resetGeneration,
   }
 }

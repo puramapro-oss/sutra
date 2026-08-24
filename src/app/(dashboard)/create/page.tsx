@@ -61,6 +61,12 @@ export default function CreatePage() {
   // Media mode (ai/stock/mixed) — new in wizard step 0 (manual) + auto form
   const [mediaMode, setMediaMode] = useState<MediaMode>('ai')
 
+  // Plan limits — MUST be defined BEFORE hook call
+  const plan = (profile?.plan ?? 'free') as Plan
+  const planLimits = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
+  const videosUsed = profile?.monthly_video_count ?? 0
+  const isOverLimit = plan !== 'admin' && videosUsed >= planLimits.videos
+
   // Video generation logic (extracted to hook)
   const {
     isGenerating,
@@ -73,6 +79,7 @@ export default function CreatePage() {
     keywordsLoading,
     fetchKeywords,
     startGeneration,
+    resetGeneration,
   } = useVideoGeneration({
     topic,
     format,
@@ -86,11 +93,6 @@ export default function CreatePage() {
     mediaMode,
     isOverLimit,
   })
-
-  const plan = (profile?.plan ?? 'free') as Plan
-  const planLimits = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
-  const videosUsed = profile?.monthly_video_count ?? 0
-  const isOverLimit = plan !== 'admin' && videosUsed >= planLimits.videos
 
   // Check which quality options are available
   const planRank: Record<Plan, number> = { free: 0, starter: 1, creator: 2, empire: 3, enterprise: 3, admin: 4 }
@@ -192,10 +194,8 @@ export default function CreatePage() {
                 variant="secondary"
                 size="lg"
                 onClick={() => {
-                  setPipelineSteps(getPipelineSteps(engine).map((s) => ({ ...s, status: 'pending' as const })))
-                  setVideoId(null)
+                  resetGeneration()
                   setTopic('')
-                  setError(null)
                 }}
               >
                 Creer une autre video

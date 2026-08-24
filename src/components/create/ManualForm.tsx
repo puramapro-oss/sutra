@@ -34,6 +34,8 @@ export interface ManualFormProps extends AutoFormProps {
 }
 
 export default function ManualForm({
+  topic,
+  setTopic,
   script,
   setScript,
   format,
@@ -142,6 +144,7 @@ export default function ManualForm({
           )}
 
           {step === 1 && <ManualFormStep1 topic={topic} setTopic={setTopic} niche={niche} setNiche={setNiche} style={style} setStyle={setStyle} />}
+          {step === 2 && (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
                 Etape 3 — Script

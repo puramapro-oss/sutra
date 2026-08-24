@@ -1,4 +1,5 @@
-import type { PipelineStep, VideoEngine } from '@/types'
+import type { PipelineStep } from '@/types'
+import type { VideoEngine } from '@/lib/ltx'
 
 export function getPipelineSteps(engine: VideoEngine): PipelineStep[] {
   const engineLabel = engine === 'ltx-pro' ? 'LTX 2.3 Pro' : engine === 'ltx-fast' ? 'LTX 2.3 Fast' : 'WAN 2.2'
