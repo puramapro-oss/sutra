@@ -1,61 +1,64 @@
-# ERRORS — ESLint max-lines
+# ERRORS — ESLint max-lines Sutra
 
-## État : 23 fichiers restants (27→23, 4 résolus session 2026-08-24)
+## État : 21 fichiers restants (24→21, 3 résolus session 2026-08-24-2)
 
-### Résolus session 2026-08-24 (4)
-- ✅ admin/users (458→105L) — commit 8e02ba9 (hook+components+utils)
-- ✅ community (461→70L) — commit 89c3d21 (hook+tab components)
-- ✅ admin/contest (499→90L) — commit 6d4f582 (hook+section components)
-- ✅ landing/AppWelcome (505→25L) — commit 125d33d (6 section components)
+### Résolus session 2026-08-24-2 (3)
+- ✅ influencer/page.tsx (no-empty catch block→console.error) — commit d374691
+- ✅ lib/ltx.ts (408→refactoré 4 modules) — commit 6dbdca9
+- ✅ lib/sutra-auto.ts (423→285L refactoré 4 modules) — commit 152a31c
 
-### Résolus précédemment (2)
-- ✅ setup-db.mjs (412→241L) — commit 558d937
-- ✅ admin/finances (413→284L) — commit 5f8696a
+### Restants triés par taille approximative (21)
 
-### Restants triés par taille (23)
+NE PAS TOUCHER (selon consignes):
+- api/stripe/webhook/route.ts - 512 lignes
+- api/internal/stripe-fulfillment/route.ts - 516 lignes
 
-| Lignes | Fichier | Notes |
-|--------|---------|-------|
-| 432 | src/app/api/create/route.ts | |
-| 442 | src/app/(dashboard)/influencer/page.tsx | |
-| 451 | src/lib/zernio.ts | |
-| 511 | src/app/(dashboard)/voices/page.tsx | |
-| 523 | src/lib/ltx.ts | |
-| 527 | src/lib/sutra-auto.ts | |
-| 539 | src/app/(dashboard)/autopilot/page.tsx | |
-| 541 | src/app/(dashboard)/admin/page.tsx | |
-| 541 | src/app/(dashboard)/contest/page.tsx | |
-| 550 | src/app/(dashboard)/analytics/page.tsx | |
-| 571 | src/app/(dashboard)/storyboard/page.tsx | |
-| 581 | src/app/(dashboard)/publish/page.tsx | |
-| 613 | src/app/api/stripe/webhook/route.ts | ⚠️ NE PAS toucher comportement |
-| 618 | src/app/api/internal/stripe-fulfillment/route.ts | ⚠️ NE PAS toucher comportement |
-| 623 | src/app/(dashboard)/referral/page.tsx | |
-| 643 | src/components/social/PublishEverywhereButton.tsx | |
-| 673 | src/app/(dashboard)/production/page.tsx | |
-| 676 | src/app/(dashboard)/settings/social/page.tsx | |
-| 724 | src/app/financer/page.tsx | |
-| 727 | src/app/help/page.tsx | |
-| 755 | src/app/(dashboard)/batch/page.tsx | |
-| 777 | src/app/(dashboard)/settings/page.tsx | |
-| 925 | src/app/(dashboard)/templates/page.tsx | |
-| 1017 | src/app/(dashboard)/library/page.tsx | |
-| 1120 | src/app/(dashboard)/editor/[id]/page.tsx | |
-| 1280 | src/app/(dashboard)/create/page.tsx | |
+À traiter par ordre croissant:
+1. voices/page.tsx - 472 lignes
+2. autopilot/page.tsx - 499 lignes
+3. contest/page.tsx - 499 lignes
+4. storyboard/page.tsx - 502 lignes
+5. admin/page.tsx - 507 lignes
+6. analytics/page.tsx - 511 lignes
+7. publish/page.tsx - 532 lignes
+8. referral/page.tsx - 582 lignes
+9. PublishEverywhereButton.tsx - 600 lignes
+10. production/page.tsx - 617 lignes
+11. settings/social/page.tsx - 639 lignes
+12. batch/page.tsx - 681 lignes
+13. financer/page.tsx - 683 lignes
+14. help/page.tsx - 690 lignes
+15. settings/page.tsx - 715 lignes
+16. templates/page.tsx - 861 lignes
+17. library/page.tsx - 922 lignes
+18. editor/[id]/page.tsx - 1023 lignes
+19. create/page.tsx - 1181 lignes
 
-## Technique appliquée
+## Stratégie de refactoring
 
-- Imports condensés sur 1 ligne
-- Arrays/configs répétitifs sur 1 ligne
-- Headers JSX condensés
-- Suppression commentaires SQL inutiles
-- Merge colonnes simples tables SQL
-- Ternaires condensés
-- Skeleton arrays en 1 ligne
-- Fetch/handlers compactés
+Pour chaque fichier page.tsx trop long :
+1. Extraire hooks custom dans fichiers séparés (useX.ts)
+2. Extraire sections/composants dans fichiers séparés
+3. Extraire utilitaires/helpers dans fichiers séparés
+4. Garder seulement structure principale dans page.tsx
 
-## Sécurité
+Pour lib/*.ts :
+1. Créer *-types.ts pour interfaces
+2. Créer *-utils.ts pour helpers
+3. Créer *-helpers.ts pour fonctions secondaires
+4. Garder seulement fonctions principales + re-exports
 
-- ✅ `npx tsc --noEmit` après CHAQUE fichier
-- ✅ Commit après CHAQUE fichier
-- ✅ Comportement 100% inchangé
+## Commits précédents
+
+Session 2026-08-24-1 (4 fichiers):
+- admin/users (458→105L) — commit 8e02ba9
+- community (461→70L) — commit 89c3d21
+- admin/contest (499→90L) — commit 6d4f582
+- landing/AppWelcome (505→25L) — commit 125d33d
+
+Sessions précédentes (2 fichiers):
+- setup-db.mjs (412→241L) — commit 558d937
+- admin/finances (413→284L) — commit 5f8696a
+
+## Total traité : 9 fichiers
+## Total restant : 21 fichiers (hors 2 interdits)
