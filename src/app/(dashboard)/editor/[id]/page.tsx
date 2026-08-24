@@ -1,42 +1,27 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Film, AlertCircle } from 'lucide-react'
-import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
 import { useEditorHistory } from '@/hooks/useEditorHistory'
 import { useVideoPlayer } from '@/hooks/useVideoPlayer'
-import { cn, formatDate } from '@/lib/utils'
+import { useEditorHandlers } from '@/hooks/useEditorHandlers'
 import { PLAN_LIMITS } from '@/lib/constants'
-import { Card, CardContent } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import { Badge } from '@/components/ui/Badge'
-import { Skeleton } from '@/components/ui/Skeleton'
-import { EmptyState } from '@/components/ui/EmptyState'
+import { EditorLoadingState, EditorNotFoundState } from '@/components/editor/EditorStates'
 import { EditorHeader } from '@/components/editor/EditorHeader'
 import { VideoPlayerPanel } from '@/components/editor/VideoPlayerPanel'
 import { EditorTimeline } from '@/components/editor/EditorTimeline'
 import { EditorTabs } from '@/components/editor/EditorTabs'
 import { EditorSidebar } from '@/components/editor/EditorSidebar'
 import type { Video, VideoVersion, Scene } from '@/types'
-import {
-  type SubtitleEntry,
-  type SideTab,
-  type HistoryState,
-  QUALITY_OPTIONS,
-  SPEED_OPTIONS,
-  SIDE_TABS,
-} from '@/types/editor'
-import { formatTime, canUseQuality } from '@/lib/editor-utils'
+import { type SubtitleEntry, type SideTab, type HistoryState } from '@/types/editor'
 
 const supabase = createClient()
 
 export default function EditorPage() {
   const params = useParams()
-  const router = useRouter()
   const { profile, plan, loading: authLoading } = useAuth()
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const videoId = params?.id as string
@@ -63,6 +48,27 @@ export default function EditorPage() {
 
   // History (undo/redo) (hook)
   const { pushHistory, undo, redo, canUndo, canRedo } = useEditorHistory()
+
+  // Editor handlers (hook)
+  const handlers = useEditorHandlers({
+    videoId,
+    script,
+    scenes,
+    subtitles,
+    voiceVolume,
+    musicVolume,
+    exportQuality,
+    dragIndex,
+    player,
+    setScript,
+    setScenes,
+    setSubtitles,
+    setVoiceVolume,
+    setMusicVolume,
+    setDragIndex,
+    setExporting,
+    pushHistory,
+  })
 
   // Apply undo/redo state
   const applyHistoryState = useCallback(
@@ -179,161 +185,15 @@ export default function EditorPage() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handleUndo, handleRedo, player])
 
-  // Script changes
-  const handleScriptChange = useCallback(
-    (value: string) => {
-      setScript(value)
-      pushHistory({ script: value, scenes, subtitles, voiceVolume, musicVolume })
-    },
-    [scenes, subtitles, voiceVolume, musicVolume, pushHistory]
-  )
-
-  // Scene reorder (basic drag)
-  const handleDragStart = useCallback((index: number) => {
-    setDragIndex(index)
-  }, [])
-
-  const handleDragOver = useCallback(
-    (e: React.DragEvent, index: number) => {
-      e.preventDefault()
-      if (dragIndex === null || dragIndex === index) return
-      const newScenes = [...scenes]
-      const [moved] = newScenes.splice(dragIndex, 1)
-      newScenes.splice(index, 0, moved)
-      setScenes(newScenes)
-      setDragIndex(index)
-    },
-    [dragIndex, scenes]
-  )
-
-  const handleDragEnd = useCallback(() => {
-    setDragIndex(null)
-    pushHistory({ script, scenes, subtitles, voiceVolume, musicVolume })
-  }, [script, scenes, subtitles, voiceVolume, musicVolume, pushHistory])
-
-  // Subtitle editing
-  const updateSubtitle = useCallback(
-    (id: string, field: 'text' | 'start' | 'end', value: string | number) => {
-      setSubtitles((prev) =>
-        prev.map((s) => (s.id === id ? { ...s, [field]: value } : s))
-      )
-    },
-    []
-  )
-
-  const addSubtitle = useCallback(() => {
-    const lastEnd = subtitles.length > 0 ? subtitles[subtitles.length - 1].end : 0
-    setSubtitles((prev) => [
-      ...prev,
-      {
-        id: `sub-${Date.now()}`,
-        text: '',
-        start: lastEnd,
-        end: lastEnd + 3,
-      },
-    ])
-  }, [subtitles])
-
-  const removeSubtitle = useCallback((id: string) => {
-    setSubtitles((prev) => prev.filter((s) => s.id !== id))
-  }, [])
-
-  // Export
-  const handleExport = useCallback(async () => {
-    setExporting(true)
-    try {
-      const res = await fetch('/api/video/export', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          videoId,
-          quality: exportQuality,
-          script,
-          scenes,
-          subtitles,
-          voiceVolume,
-          musicVolume,
-        }),
-      })
-
-      if (!res.ok) throw new Error('Export failed')
-      toast.success('Export lance avec succes ! Tu seras notifie quand la video sera prete.')
-    } catch {
-      toast.error("Erreur lors de l&apos;export. Reessaie.")
-    } finally {
-      setExporting(false)
-    }
-  }, [videoId, exportQuality, script, scenes, subtitles, voiceVolume, musicVolume])
-
-  // Load version
-  const loadVersion = useCallback(
-    (version: VideoVersion) => {
-      toast.success(`Version ${version.version_number} chargee`)
-    },
-    []
-  )
-
-  // Volume handlers
-  const handleVoiceVolumeChange = useCallback(
-    (v: number) => {
-      setVoiceVolume(v)
-      pushHistory({ script, scenes, subtitles, voiceVolume: v, musicVolume })
-    },
-    [script, scenes, subtitles, musicVolume, pushHistory]
-  )
-
-  const handleMusicVolumeChange = useCallback(
-    (v: number) => {
-      setMusicVolume(v)
-      pushHistory({ script, scenes, subtitles, voiceVolume, musicVolume: v })
-    },
-    [script, scenes, subtitles, voiceVolume, pushHistory]
-  )
-
-  // Scene click handler
-  const handleSceneClick = useCallback(
-    (index: number) => {
-      const offset = scenes.slice(0, index).reduce((a, s) => a + s.duration_seconds, 0)
-      player.seekTo(offset)
-    },
-    [scenes, player]
-  )
 
   // Loading state
   if (loading || authLoading) {
-    return (
-      <div className="space-y-6" data-testid="editor-loading">
-        <div className="flex items-center gap-4">
-          <Skeleton width={40} height={40} rounded="lg" />
-          <Skeleton width={300} height={28} rounded="lg" />
-        </div>
-        <Skeleton width="100%" height={400} rounded="xl" />
-        <Skeleton width="100%" height={80} rounded="xl" />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <Skeleton width="100%" height={300} rounded="xl" />
-          </div>
-          <Skeleton width="100%" height={300} rounded="xl" />
-        </div>
-      </div>
-    )
+    return <EditorLoadingState />
   }
 
   // Not found
   if (notFound || !video) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <EmptyState
-          icon={AlertCircle}
-          title="Video introuvable"
-          description="Cette video n&apos;existe pas ou a ete supprimee."
-          action={{
-            label: 'Retour au dashboard',
-            onClick: () => router.push('/dashboard'),
-          }}
-        />
-      </div>
-    )
+    return <EditorNotFoundState />
   }
 
   return (
@@ -350,11 +210,11 @@ export default function EditorPage() {
         onUndo={handleUndo}
         onRedo={handleRedo}
         versions={versions}
-        onLoadVersion={loadVersion}
+        onLoadVersion={handlers.loadVersion}
         exportQuality={exportQuality}
         onExportQualityChange={setExportQuality}
         exporting={exporting}
-        onExport={handleExport}
+        onExport={handlers.handleExport}
         plan={plan}
       />
 
@@ -382,7 +242,7 @@ export default function EditorPage() {
         currentTime={player.currentTime}
         duration={player.duration}
         dragIndex={dragIndex}
-        onSceneClick={handleSceneClick}
+        onSceneClick={handlers.handleSceneClick}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -390,20 +250,20 @@ export default function EditorPage() {
           activeTab={activeTab}
           onTabChange={setActiveTab}
           script={script}
-          onScriptChange={handleScriptChange}
+          onScriptChange={handlers.handleScriptChange}
           scenes={scenes}
           dragIndex={dragIndex}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
+          onDragStart={handlers.handleDragStart}
+          onDragOver={handlers.handleDragOver}
+          onDragEnd={handlers.handleDragEnd}
           subtitles={subtitles}
-          onUpdateSubtitle={updateSubtitle}
-          onAddSubtitle={addSubtitle}
-          onRemoveSubtitle={removeSubtitle}
+          onUpdateSubtitle={handlers.updateSubtitle}
+          onAddSubtitle={handlers.addSubtitle}
+          onRemoveSubtitle={handlers.removeSubtitle}
           voiceVolume={voiceVolume}
           musicVolume={musicVolume}
-          onVoiceVolumeChange={handleVoiceVolumeChange}
-          onMusicVolumeChange={handleMusicVolumeChange}
+          onVoiceVolumeChange={handlers.handleVoiceVolumeChange}
+          onMusicVolumeChange={handlers.handleMusicVolumeChange}
           profile={profile}
         />
 
@@ -413,7 +273,7 @@ export default function EditorPage() {
           duration={player.duration}
           exportQuality={exportQuality}
           exporting={exporting}
-          onExport={handleExport}
+          onExport={handlers.handleExport}
         />
       </div>
     </motion.div>
