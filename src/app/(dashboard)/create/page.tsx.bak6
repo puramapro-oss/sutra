@@ -111,10 +111,10 @@ export default function CreatePage() {
     else setEngine('wan-classic')
   }, [plan, currentPlanRank])
 
-
-  if (authLoading) {
+  // Extract keywords for stock search when entering medias step in stock/mixed mode
     return <CreateSkeleton />
   }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}

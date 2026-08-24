@@ -111,10 +111,142 @@ export default function CreatePage() {
     else setEngine('wan-classic')
   }, [plan, currentPlanRank])
 
+  // Extract keywords for stock search when entering medias step in stock/mixed mode
+  const fetchKeywords = useCallback(
+    async (rawScript: string) => {
+      const scenes = rawScript
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean)
+      if (scenes.length === 0) return
+      setKeywordsLoading(true)
+      try {
+        const res = await fetch('/api/stock/keywords', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenes }),
+        })
+        const data = await res.json()
+        const kws: string[][] = Array.isArray(data.keywords) ? data.keywords : scenes.map(() => [])
+        setSceneKeywords(kws)
+        setSceneSelections(scenes.map(() => ({ selected: null, fallbackToAI: false })))
+      } catch {
+        setSceneKeywords(scenes.map((s) => s.split(/\s+/).slice(0, 3)))
+        setSceneSelections(scenes.map(() => ({ selected: null, fallbackToAI: false })))
+      } finally {
+        setKeywordsLoading(false)
+      }
+    },
+    []
+  )
+
+  // Cleanup polling on unmount
+  useEffect(() => {
+    return () => {
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current)
+      }
+    }
+  }, [])
+
+  const startGeneration = useCallback(async () => {
+    if (!topic.trim() || isOverLimit) return
+
+    setIsGenerating(true)
+    setError(null)
+    setPipelineSteps(getPipelineSteps(engine).map((s) => ({ ...s, status: 'pending' as const })))
+
+    try {
+      const response = await fetch('/api/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topic: topic.trim(),
+          format,
+          quality,
+          engine,
+          niche: niche || undefined,
+          style: style || undefined,
+          voice,
+          mode,
+          script: mode === 'manual' ? script : undefined,
+          mediaMode,
+          stockSelections:
+            mediaMode === 'ai'
+              ? []
+              : sceneSelections.map((s, i) => ({
+                  sceneIndex: i,
+                  source: s.selected?.source ?? null,
+                  type: s.selected?.type ?? null,
+                  url: s.selected?.url ?? null,
+                  thumbnail: s.selected?.thumbnail ?? null,
+                  quality: s.selected?.quality ?? null,
+                  fallbackToAI: s.fallbackToAI,
+                })),
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Erreur inconnue' }))
+        throw new Error(errorData.error ?? `Erreur ${response.status}`)
+      }
+
+      const result = await response.json()
+      setVideoId(result.videoId ?? null)
+
+      // Start polling for pipeline status
+      if (result.videoId) {
+        pollPipeline(result.videoId)
+      }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erreur lors de la generation'
+      setError(message)
+      setIsGenerating(false)
+    }
+  }, [topic, format, quality, engine, niche, style, voice, mode, script, mediaMode, sceneSelections, isOverLimit])
+
+  const pollPipeline = useCallback((vid: string) => {
+    const poll = async () => {
+      try {
+        const res = await fetch(`/api/create/status?videoId=${vid}`)
+        if (!res.ok) return
+
+        const data = await res.json()
+
+        if (data.steps) {
+          setPipelineSteps(data.steps)
+        }
+
+        const allDone = data.steps?.every(
+          (s: PipelineStep) => s.status === 'completed' || s.status === 'error'
+        )
+
+        if (allDone) {
+          if (pollingRef.current) {
+            clearInterval(pollingRef.current)
+            pollingRef.current = null
+          }
+
+          const hasError = data.steps?.some((s: PipelineStep) => s.status === 'error')
+          if (hasError) {
+            setError('Certaines etapes ont echoue. Verifie les details ci-dessous.')
+          }
+          setIsGenerating(false)
+        }
+      } catch {
+        // Silently retry on next poll
+      }
+    }
+
+    // Initial poll
+    poll()
+    pollingRef.current = setInterval(poll, 3000)
+  }, [])
 
   if (authLoading) {
     return <CreateSkeleton />
   }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}

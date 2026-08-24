@@ -111,10 +111,6 @@ export default function CreatePage() {
     else setEngine('wan-classic')
   }, [plan, currentPlanRank])
 
-
-  if (authLoading) {
-    return <CreateSkeleton />
-  }
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
