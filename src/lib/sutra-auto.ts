@@ -16,162 +16,22 @@ import { generateVoice } from '@/lib/elevenlabs'
 import { uploadToStorage } from '@/lib/storage'
 import { publishToPlatforms, type SocialPlatform } from '@/lib/zernio'
 
-// ---------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------
+// Re-export types from dedicated modules
+export type {
+  AutoConfig,
+  AutoSchedule,
+  AutoTheme,
+  AutoMemory,
+  AutoVideoRecord,
+  VideoPlan,
+} from './sutra-auto-types'
 
-export interface AutoConfig {
-  id: string
-  user_id: string
-  is_active: boolean
-  schedules: AutoSchedule[]
-  default_style: string
-  default_duration: number
-  default_aspect_ratio: string
-  default_music_genre: string
-  default_voice_enabled: boolean
-  default_voice_id: string | null
-  default_language: string
-  publish_platforms: string[]
-  auto_publish: boolean
-  require_approval_before_publish: boolean
-  zernio_connected_platforms: Array<{ platform: SocialPlatform; account_id: string; username: string }>
-  watermark_url: string | null
-  intro_clip_url: string | null
-  outro_clip_url: string | null
-  brand_colors: Record<string, string> | null
-  preferred_model: string
-  quality_level: string
-}
+// Re-export utils
+export { computeNextRun, pickTheme } from './sutra-auto-utils'
+export { analyzePerformance, loadAutoContext, recordMemory } from './sutra-auto-helpers'
 
-export interface AutoSchedule {
-  id: string
-  name: string
-  is_active: boolean
-  frequency: 'daily' | 'weekly' | 'biweekly' | 'monthly'
-  days: string[] // ["MO","TU"...]
-  time: string // "10:00"
-  timezone: string
-  theme_ids?: string[]
-}
-
-export interface AutoTheme {
-  id: string
-  user_id: string
-  schedule_id: string | null
-  theme: string
-  description: string | null
-  example_prompts: string[]
-  must_include: string[]
-  never_include: string[]
-  target_audience: string | null
-  tone: string | null
-  weight: number
-  last_used_at: string | null
-  times_used: number
-  is_active: boolean
-}
-
-export interface AutoMemory {
-  id: string
-  user_id: string
-  memory_type: 'preference' | 'performance' | 'feedback' | 'trend' | 'learning'
-  content: string
-  importance: number
-  related_video_id: string | null
-  related_theme: string | null
-  related_platform: string | null
-  expires_at: string | null
-}
-
-export interface AutoVideoRecord {
-  id: string
-  user_id: string
-  schedule_id: string | null
-  theme_id: string | null
-  status: string
-  title: string | null
-  description: string | null
-  hashtags: string[]
-  script: string | null
-  prompt_used: string | null
-  music_prompt: string | null
-  video_raw_url: string | null
-  video_final_url: string | null
-  thumbnail_url: string | null
-  scheduled_for: string | null
-  ai_reasoning: string | null
-}
-
-export interface VideoPlan {
-  title: string
-  description: string
-  hashtags: string[]
-  video_prompt: string
-  music_prompt: string
-  script: string | null
-  style_override: string | null
-  theme_id: string | null
-  reasoning: string
-  expected_engagement: 'high' | 'medium' | 'low'
-  trend_leveraged: string | null
-}
-
-// ---------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------
-
-const DAY_MAP: Record<string, number> = {
-  SU: 0, MO: 1, TU: 2, WE: 3, TH: 4, FR: 5, SA: 6,
-}
-
-/**
- * Calcule la prochaine occurrence d'un schedule.
- */
-export function computeNextRun(schedule: AutoSchedule, from: Date = new Date()): Date | null {
-  if (!schedule.is_active) return null
-  const [h, m] = schedule.time.split(':').map(Number)
-  const candidate = new Date(from)
-  candidate.setHours(h, m, 0, 0)
-
-  if (schedule.frequency === 'daily') {
-    if (candidate <= from) candidate.setDate(candidate.getDate() + 1)
-    return candidate
-  }
-
-  const days = schedule.days.length ? schedule.days : ['MO']
-  const targetDays = days.map((d) => DAY_MAP[d]).filter((d) => Number.isFinite(d))
-  if (!targetDays.length) return null
-
-  for (let offset = 0; offset < 31; offset++) {
-    const d = new Date(candidate)
-    d.setDate(d.getDate() + offset)
-    if (!targetDays.includes(d.getDay())) continue
-    if (d <= from) continue
-    if (schedule.frequency === 'weekly') return d
-    if (schedule.frequency === 'biweekly' && offset % 14 === 0) return d
-    if (schedule.frequency === 'monthly') return d
-  }
-  return null
-}
-
-/**
- * Selectionne un theme selon la rotation par poids.
- */
-export function pickTheme(themes: AutoTheme[]): AutoTheme | null {
-  const active = themes.filter((t) => t.is_active)
-  if (!active.length) return null
-
-  // Pondere par weight ET inversement par times_used recents
-  const scored = active.map((t) => {
-    const recencyBoost = t.last_used_at
-      ? Math.max(0, 1 - (Date.now() - new Date(t.last_used_at).getTime()) / (7 * 86400000))
-      : 1
-    return { theme: t, score: t.weight * (2 - recencyBoost) + Math.random() * 0.5 }
-  })
-  scored.sort((a, b) => b.score - a.score)
-  return scored[0].theme
-}
+// Import for local use
+import type { AutoConfig, AutoTheme, AutoMemory, AutoVideoRecord, VideoPlan } from './sutra-auto-types'
 
 // ---------------------------------------------------------------
 // 1. PLANNING - Claude joue le role de directeur creatif
@@ -421,107 +281,5 @@ export async function publishAutoVideo(params: {
   return results
 }
 
-// ---------------------------------------------------------------
-// 4. APPRENTISSAGE - analyse des performances
-// ---------------------------------------------------------------
-
-export async function analyzePerformance(params: {
-  userId: string
-  recentVideos: AutoVideoRecord[]
-}): Promise<string[]> {
-  if (!params.recentVideos.length) return []
-
-  const stats = params.recentVideos
-    .map((v: AutoVideoRecord & { views?: number; likes?: number; engagement_rate?: number }) =>
-      `- "${v.title}": views=${v.views ?? 0}, likes=${v.likes ?? 0}, engagement=${v.engagement_rate ?? 0}%`
-    )
-    .join('\n')
-
-  const result = await smarana.ask({
-    appSlug: 'sutra',
-    userId: params.userId,
-    system: `Tu es un analyste de performance video. Analyse les stats et identifie 3 a 5 insights actionnables. Reponds en JSON: { "insights": ["insight 1", "insight 2"] }`,
-    message: `Stats des dernieres videos:\n${stats}\n\nDonne 3-5 insights pour les prochaines videos.`,
-    tier: 'main',
-    maxTokens: 1500,
-  })
-
-  try {
-    const parsed = JSON.parse(result.text.replace(/```json\n?|\n?```/g, '').trim())
-    return Array.isArray(parsed.insights) ? parsed.insights : []
-  } catch {
-    return []
-  }
-}
-
-// ---------------------------------------------------------------
-// 5. DB helpers
-// ---------------------------------------------------------------
-
-export async function loadAutoContext(userId: string): Promise<{
-  config: AutoConfig | null
-  themes: AutoTheme[]
-  memories: AutoMemory[]
-  recentVideos: AutoVideoRecord[]
-  topVideos: AutoVideoRecord[]
-}> {
-  const supabase = createServiceClient()
-
-  const [configRes, themesRes, memoriesRes, recentRes, topRes] = await Promise.all([
-    supabase.from('sutra_auto_config').select('*').eq('user_id', userId).maybeSingle(),
-    supabase.from('sutra_auto_themes').select('*').eq('user_id', userId).eq('is_active', true),
-    supabase
-      .from('sutra_auto_memory')
-      .select('*')
-      .eq('user_id', userId)
-      .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
-      .order('importance', { ascending: false })
-      .limit(50),
-    supabase
-      .from('sutra_auto_videos')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(10),
-    supabase
-      .from('sutra_auto_videos')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('status', 'published')
-      .order('engagement_rate', { ascending: false, nullsFirst: false })
-      .limit(5),
-  ])
-
-  return {
-    config: (configRes.data as AutoConfig | null) ?? null,
-    themes: (themesRes.data as AutoTheme[] | null) ?? [],
-    memories: (memoriesRes.data as AutoMemory[] | null) ?? [],
-    recentVideos: (recentRes.data as AutoVideoRecord[] | null) ?? [],
-    topVideos: (topRes.data as AutoVideoRecord[] | null) ?? [],
-  }
-}
-
-export async function recordMemory(params: {
-  userId: string
-  type: AutoMemory['memory_type']
-  content: string
-  importance?: number
-  expiresInDays?: number
-  related_video_id?: string
-  related_theme?: string
-}): Promise<void> {
-  const supabase = createServiceClient()
-  const expires_at = params.expiresInDays
-    ? new Date(Date.now() + params.expiresInDays * 86400000).toISOString()
-    : null
-
-  await supabase.from('sutra_auto_memory').insert({
-    user_id: params.userId,
-    memory_type: params.type,
-    content: params.content,
-    importance: params.importance ?? 0.5,
-    expires_at,
-    related_video_id: params.related_video_id ?? null,
-    related_theme: params.related_theme ?? null,
-  })
-}
+// Functions analyzePerformance, loadAutoContext, recordMemory
+// are re-exported from sutra-auto-helpers.ts
