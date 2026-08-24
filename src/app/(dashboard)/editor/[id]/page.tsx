@@ -23,7 +23,6 @@ import {
   ChevronDown,
   Keyboard,
   ArrowLeft,
-  Loader2,
   AlertCircle,
   Check,
   X,
@@ -31,6 +30,8 @@ import {
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
+import { useEditorHistory } from '@/hooks/useEditorHistory'
+import { useVideoPlayer } from '@/hooks/useVideoPlayer'
 import { cn, formatDate } from '@/lib/utils'
 import { PLAN_LIMITS } from '@/lib/constants'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -39,49 +40,23 @@ import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
 import type { Video, VideoVersion, Scene } from '@/types'
+import {
+  type SubtitleEntry,
+  type SideTab,
+  type HistoryState,
+  QUALITY_OPTIONS,
+  SPEED_OPTIONS,
+  SIDE_TABS,
+} from '@/types/editor'
+import { formatTime, canUseQuality } from '@/lib/editor-utils'
 
 const supabase = createClient()
-
-interface SubtitleEntry {
-  id: string
-  text: string
-  start: number
-  end: number
-}
-
-interface HistoryState {
-  script: string
-  scenes: Scene[]
-  subtitles: SubtitleEntry[]
-  voiceVolume: number
-  musicVolume: number
-}
-
-const QUALITY_OPTIONS = [
-  { value: '720p', label: '720p HD', minPlan: 'free' as const },
-  { value: '1080p', label: '1080p Full HD', minPlan: 'creator' as const },
-  { value: '4k', label: '4K Ultra HD', minPlan: 'empire' as const },
-]
-
-const SPEED_OPTIONS = [0.5, 1, 1.5, 2]
-
-const SIDE_TABS = [
-  { id: 'script', label: 'Script', icon: FileText },
-  { id: 'scenes', label: 'Scenes', icon: Film },
-  { id: 'audio', label: 'Audio', icon: Music },
-  { id: 'subtitles', label: 'Sous-titres', icon: Subtitles },
-  { id: 'brandkit', label: 'Brand Kit', icon: Palette },
-] as const
-
-type SideTab = (typeof SIDE_TABS)[number]['id']
-
-const MAX_HISTORY = 50
 
 export default function EditorPage() {
   const params = useParams()
   const router = useRouter()
   const { profile, plan, loading: authLoading } = useAuth()
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
   const videoId = params?.id as string
 
   // Core state
@@ -89,13 +64,8 @@ export default function EditorPage() {
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
 
-  // Player state
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
-  const [volume, setVolume] = useState(1)
-  const [speed, setSpeed] = useState(1)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
+  // Player controls (hook)
+  const player = useVideoPlayer(videoRef)
 
   // Editor state
   const [activeTab, setActiveTab] = useState<SideTab>('script')
@@ -111,54 +81,31 @@ export default function EditorPage() {
   const [versions, setVersions] = useState<VideoVersion[]>([])
   const [dragIndex, setDragIndex] = useState<number | null>(null)
 
-  // History (undo/redo)
-  const [history, setHistory] = useState<HistoryState[]>([])
-  const [historyIndex, setHistoryIndex] = useState(-1)
-  const isUndoRedoRef = useRef(false)
+  // History (undo/redo) (hook)
+  const { pushHistory, undo, redo, canUndo, canRedo } = useEditorHistory()
 
-  const canUndo = historyIndex > 0
-  const canRedo = historyIndex < history.length - 1
-
-  const pushHistory = useCallback(
-    (state: HistoryState) => {
-      if (isUndoRedoRef.current) {
-        isUndoRedoRef.current = false
-        return
-      }
-      setHistory((prev) => {
-        const newHistory = prev.slice(0, historyIndex + 1)
-        newHistory.push(state)
-        if (newHistory.length > MAX_HISTORY) newHistory.shift()
-        return newHistory
-      })
-      setHistoryIndex((prev) => Math.min(prev + 1, MAX_HISTORY - 1))
+  // Apply undo/redo state
+  const applyHistoryState = useCallback(
+    (state: HistoryState | null) => {
+      if (!state) return
+      setScript(state.script)
+      setScenes(state.scenes)
+      setSubtitles(state.subtitles)
+      setVoiceVolume(state.voiceVolume)
+      setMusicVolume(state.musicVolume)
     },
-    [historyIndex]
+    []
   )
 
-  const undo = useCallback(() => {
-    if (!canUndo) return
-    isUndoRedoRef.current = true
-    const prevState = history[historyIndex - 1]
-    setScript(prevState.script)
-    setScenes(prevState.scenes)
-    setSubtitles(prevState.subtitles)
-    setVoiceVolume(prevState.voiceVolume)
-    setMusicVolume(prevState.musicVolume)
-    setHistoryIndex((prev) => prev - 1)
-  }, [canUndo, history, historyIndex])
+  const handleUndo = useCallback(() => {
+    const prevState = undo()
+    applyHistoryState(prevState)
+  }, [undo, applyHistoryState])
 
-  const redo = useCallback(() => {
-    if (!canRedo) return
-    isUndoRedoRef.current = true
-    const nextState = history[historyIndex + 1]
-    setScript(nextState.script)
-    setScenes(nextState.scenes)
-    setSubtitles(nextState.subtitles)
-    setVoiceVolume(nextState.voiceVolume)
-    setMusicVolume(nextState.musicVolume)
-    setHistoryIndex((prev) => prev + 1)
-  }, [canRedo, history, historyIndex])
+  const handleRedo = useCallback(() => {
+    const nextState = redo()
+    applyHistoryState(nextState)
+  }, [redo, applyHistoryState])
 
   // Fetch video
   useEffect(() => {
@@ -182,7 +129,7 @@ export default function EditorPage() {
       setVideo(v)
       setScript(v.script_data?.narration ?? '')
       setScenes(v.script_data?.scenes ?? [])
-      setDuration(v.duration ?? 0)
+      player.setDuration(v.duration ?? 0)
 
       // Generate subtitle entries from narration
       const narration = v.script_data?.narration ?? ''
@@ -227,7 +174,7 @@ export default function EditorPage() {
     }
 
     fetchVideo()
-  }, [videoId, authLoading, plan, pushHistory])
+  }, [videoId, authLoading, plan, pushHistory, player])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -236,15 +183,15 @@ export default function EditorPage() {
 
       if (isMeta && e.key === 'z' && !e.shiftKey) {
         e.preventDefault()
-        undo()
+        handleUndo()
       }
       if (isMeta && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
         e.preventDefault()
-        redo()
+        handleRedo()
       }
       if (e.key === ' ' && e.target === document.body) {
         e.preventDefault()
-        togglePlay()
+        player.togglePlay()
       }
       if (e.key === '?' && isMeta) {
         e.preventDefault()
@@ -254,54 +201,7 @@ export default function EditorPage() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [undo, redo])
-
-  // Player controls
-  const togglePlay = useCallback(() => {
-    if (!videoRef.current) return
-    if (videoRef.current.paused) {
-      videoRef.current.play()
-      setIsPlaying(true)
-    } else {
-      videoRef.current.pause()
-      setIsPlaying(false)
-    }
-  }, [])
-
-  const toggleMute = useCallback(() => {
-    if (!videoRef.current) return
-    videoRef.current.muted = !videoRef.current.muted
-    setIsMuted(!isMuted)
-  }, [isMuted])
-
-  const handleVolumeChange = useCallback((val: number) => {
-    if (!videoRef.current) return
-    videoRef.current.volume = val
-    setVolume(val)
-    setIsMuted(val === 0)
-  }, [])
-
-  const handleSpeedChange = useCallback((val: number) => {
-    if (!videoRef.current) return
-    videoRef.current.playbackRate = val
-    setSpeed(val)
-  }, [])
-
-  const handleTimeUpdate = useCallback(() => {
-    if (!videoRef.current) return
-    setCurrentTime(videoRef.current.currentTime)
-  }, [])
-
-  const handleLoadedMetadata = useCallback(() => {
-    if (!videoRef.current) return
-    setDuration(videoRef.current.duration)
-  }, [])
-
-  const seekTo = useCallback((time: number) => {
-    if (!videoRef.current) return
-    videoRef.current.currentTime = time
-    setCurrentTime(time)
-  }, [])
+  }, [handleUndo, handleRedo, player])
 
   // Script changes
   const handleScriptChange = useCallback(
@@ -398,21 +298,7 @@ export default function EditorPage() {
     []
   )
 
-  // Format time mm:ss
-  const formatTime = useCallback((seconds: number) => {
-    const m = Math.floor(seconds / 60)
-    const s = Math.floor(seconds % 60)
-    return `${m}:${s.toString().padStart(2, '0')}`
-  }, [])
 
-  // Quality check for plan
-  const canUseQuality = useCallback(
-    (minPlan: string) => {
-      const order = ['free', 'starter', 'creator', 'empire', 'admin']
-      return order.indexOf(plan) >= order.indexOf(minPlan)
-    },
-    [plan]
-  )
 
   // Timeline blocks
   const timelineBlocks = useMemo(() => {
@@ -586,10 +472,10 @@ export default function EditorPage() {
                 <option
                   key={q.value}
                   value={q.value}
-                  disabled={!canUseQuality(q.minPlan)}
+                  disabled={!canUseQuality(plan, q.minPlan)}
                   className="bg-[#0c0b14] text-white"
                 >
-                  {q.label} {!canUseQuality(q.minPlan) ? `(${q.minPlan}+)` : ''}
+                  {q.label} {!canUseQuality(plan, q.minPlan) ? `(${q.minPlan}+)` : ''}
                 </option>
               ))}
             </select>
@@ -655,9 +541,9 @@ export default function EditorPage() {
               <video
                 ref={videoRef}
                 src={video.video_url}
-                onTimeUpdate={handleTimeUpdate}
-                onLoadedMetadata={handleLoadedMetadata}
-                onEnded={() => setIsPlaying(false)}
+                onTimeUpdate={player.handleTimeUpdate}
+                onLoadedMetadata={player.handleLoadedMetadata}
+                onEnded={() => {}}
                 data-testid="editor-video"
                 className="w-full h-full object-contain"
               />
@@ -672,9 +558,9 @@ export default function EditorPage() {
             )}
 
             {/* Play overlay */}
-            {video.video_url && !isPlaying && (
+            {video.video_url && !player.isPlaying && (
               <button
-                onClick={togglePlay}
+                onClick={player.togglePlay}
                 data-testid="editor-play-overlay"
                 className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors group"
               >
@@ -689,25 +575,25 @@ export default function EditorPage() {
           <div className="px-4 py-3 border-t border-white/[0.06] flex items-center gap-4 flex-wrap">
             {/* Play/Pause */}
             <button
-              onClick={togglePlay}
+              onClick={player.togglePlay}
               data-testid="editor-play-pause"
               className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
             >
-              {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+              {player.isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
             </button>
 
             {/* Time */}
             <span className="text-xs text-white/50 font-mono tabular-nums min-w-[80px]">
-              {formatTime(currentTime)} / {formatTime(duration)}
+              {formatTime(player.currentTime)} / {formatTime(player.duration)}
             </span>
 
             {/* Seek bar */}
             <input
               type="range"
               min={0}
-              max={duration || 100}
-              value={currentTime}
-              onChange={(e) => seekTo(Number(e.target.value))}
+              max={player.duration || 100}
+              value={player.currentTime}
+              onChange={(e) => player.seekTo(Number(e.target.value))}
               data-testid="editor-seek"
               className="flex-1 h-1.5 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
             />
@@ -715,19 +601,19 @@ export default function EditorPage() {
             {/* Volume */}
             <div className="flex items-center gap-2">
               <button
-                onClick={toggleMute}
+                onClick={player.toggleMute}
                 data-testid="editor-mute"
                 className="p-1.5 rounded-lg text-white/50 hover:text-white transition-colors"
               >
-                {isMuted || volume === 0 ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                {player.isMuted || player.volume === 0 ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
               </button>
               <input
                 type="range"
                 min={0}
                 max={1}
                 step={0.05}
-                value={isMuted ? 0 : volume}
-                onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                value={player.isMuted ? 0 : player.volume}
+                onChange={(e) => player.handleVolumeChange(Number(e.target.value))}
                 data-testid="editor-volume"
                 className="w-20 h-1 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
               />
@@ -738,11 +624,11 @@ export default function EditorPage() {
               {SPEED_OPTIONS.map((s) => (
                 <button
                   key={s}
-                  onClick={() => handleSpeedChange(s)}
+                  onClick={() => player.handleSpeedChange(s)}
                   data-testid={`editor-speed-${s}`}
                   className={cn(
                     'px-2 py-1 rounded-md text-xs font-medium transition-colors',
-                    speed === s
+                    player.speed === s
                       ? 'bg-violet-500/20 text-violet-400'
                       : 'text-white/40 hover:text-white/70 hover:bg-white/5'
                   )}
@@ -783,7 +669,7 @@ export default function EditorPage() {
                     key={index}
                     onClick={() => {
                       const offset = scenes.slice(0, index).reduce((a, s) => a + s.duration_seconds, 0)
-                      seekTo(offset)
+                      player.seekTo(offset)
                     }}
                     data-testid={`timeline-block-${index}`}
                     className={cn(
@@ -800,10 +686,10 @@ export default function EditorPage() {
                 )
               })}
               {/* Playhead */}
-              {duration > 0 && (
+              {player.duration > 0 && (
                 <div
                   className="absolute h-12 w-0.5 bg-violet-400 pointer-events-none z-10"
-                  style={{ left: `${(currentTime / duration) * 100}%` }}
+                  style={{ left: `${(player.currentTime / player.duration) * 100}%` }}
                 />
               )}
             </div>
@@ -1082,7 +968,7 @@ export default function EditorPage() {
                 {[
                   ['Format', video.format ?? '16:9'],
                   ['Qualite', video.quality ?? '1080p'],
-                  ['Duree', duration > 0 ? `${Math.round(duration)}s` : '-'],
+                  ['Duree', player.duration > 0 ? `${Math.round(player.duration)}s` : '-'],
                   ['Scenes', `${scenes.length}`],
                   ['Statut', video.status],
                   ['Cree le', formatDate(video.created_at)],
