@@ -20,90 +20,9 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { BackgroundAndNav } from "@/components/financer/BackgroundAndNav";
-
-interface Aide {
-  id: string;
-  nom: string;
-  type_aide: string;
-  profil_eligible: string[];
-  situation_eligible: string[];
-  montant_max: number;
-  taux_remboursement: number;
-  url_officielle: string;
-  description: string;
-  region: string;
-  handicap_only: boolean;
-  cumulable: boolean;
-}
-
-type Profil = "particulier" | "entreprise" | "association" | "etudiant" | "";
-type Situation =
-  | "salarie"
-  | "demandeur_emploi"
-  | "independant"
-  | "auto_entrepreneur"
-  | "retraite"
-  | "rsa"
-  | "cej"
-  | "etudiant"
-  | "";
-
-const PROFILS = [
-  { id: "particulier" as Profil, label: "Particulier", icon: "👤" },
-  { id: "entreprise" as Profil, label: "Entreprise", icon: "🏢" },
-  { id: "association" as Profil, label: "Association", icon: "🤝" },
-  { id: "etudiant" as Profil, label: "Etudiant", icon: "🎓" },
-];
-
-const SITUATIONS = [
-  { id: "salarie" as Situation, label: "Salarie" },
-  { id: "demandeur_emploi" as Situation, label: "Demandeur d&apos;emploi" },
-  { id: "independant" as Situation, label: "Independant" },
-  { id: "auto_entrepreneur" as Situation, label: "Auto-entrepreneur" },
-  { id: "retraite" as Situation, label: "Retraite" },
-  { id: "rsa" as Situation, label: "Beneficiaire RSA" },
-  { id: "cej" as Situation, label: "Contrat d'Engagement Jeune" },
-  { id: "etudiant" as Situation, label: "Etudiant" },
-];
-
-const REGIONS = [
-  "Auvergne-Rhone-Alpes",
-  "Bourgogne-Franche-Comte",
-  "Bretagne",
-  "Centre-Val de Loire",
-  "Corse",
-  "Grand Est",
-  "Hauts-de-France",
-  "Ile-de-France",
-  "Normandie",
-  "Nouvelle-Aquitaine",
-  "Occitanie",
-  "Pays de la Loire",
-  "Provence-Alpes-Cote d'Azur",
-];
-
-function formatMontant(n: number): string {
-  return n.toLocaleString("fr-FR", {
-    maximumFractionDigits: 0,
-  });
-}
-
-function getBadge(
-  aide: Aide,
-  profil: Profil,
-  situation: Situation
-): { label: string; color: string } {
-  const profilMatch = aide.profil_eligible.includes(profil);
-  const situationMatch =
-    !situation || aide.situation_eligible.includes(situation);
-  if (profilMatch && situationMatch) {
-    return { label: "Probable", color: "text-green-400 bg-green-500/10 border-green-500/20" };
-  }
-  if (profilMatch || situationMatch) {
-    return { label: "Possible", color: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20" };
-  }
-  return { label: "A verifier", color: "text-blue-400 bg-blue-500/10 border-blue-500/20" };
-}
+import type { Aide, Profil, Situation } from "@/types/financer";
+import { PROFILS, SITUATIONS, REGIONS } from "@/data/financer-data";
+import { formatMontant, getBadge } from "@/lib/financer-utils";
 
 export default function FinancerPage() {
   const [step, setStep] = useState(1);
