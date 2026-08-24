@@ -1,22 +1,24 @@
 # ERRORS — ESLint max-lines
 
-## État : 30 fichiers restants (32→30, 2 résolus)
+## État : 23 fichiers restants (27→23, 4 résolus session 2026-08-24)
 
-### Résolus (2)
+### Résolus session 2026-08-24 (4)
+- ✅ admin/users (458→105L) — commit 8e02ba9 (hook+components+utils)
+- ✅ community (461→70L) — commit 89c3d21 (hook+tab components)
+- ✅ admin/contest (499→90L) — commit 6d4f582 (hook+section components)
+- ✅ landing/AppWelcome (505→25L) — commit 125d33d (6 section components)
+
+### Résolus précédemment (2)
 - ✅ setup-db.mjs (412→241L) — commit 558d937
 - ✅ admin/finances (413→284L) — commit 5f8696a
 
-### Restants triés par taille (30)
+### Restants triés par taille (23)
 
 | Lignes | Fichier | Notes |
 |--------|---------|-------|
 | 432 | src/app/api/create/route.ts | |
 | 442 | src/app/(dashboard)/influencer/page.tsx | |
 | 451 | src/lib/zernio.ts | |
-| 458 | src/app/(dashboard)/admin/users/page.tsx | |
-| 461 | src/app/(dashboard)/community/page.tsx | |
-| 499 | src/app/(dashboard)/admin/contest/page.tsx | |
-| 505 | src/components/landing/AppWelcome.tsx | |
 | 511 | src/app/(dashboard)/voices/page.tsx | |
 | 523 | src/lib/ltx.ts | |
 | 527 | src/lib/sutra-auto.ts | |
