@@ -58,7 +58,9 @@ export default function InfluencerDashboard() {
         ])
         if (statsRes.ok) setStats(await statsRes.json())
         if (referralsRes.ok) setReferrals((await referralsRes.json()).referrals ?? [])
-      } catch {} finally { setLoading(false) }
+      } catch (err) {
+        console.error('Failed to load partner data:', err)
+      } finally { setLoading(false) }
     }
     load()
   }, [user])
