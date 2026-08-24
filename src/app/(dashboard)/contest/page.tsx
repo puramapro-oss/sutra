@@ -1,33 +1,20 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import {
-  Trophy,
-  Timer,
-  Star,
-  Crown,
-  Medal,
-  ChevronDown,
-  ChevronUp,
-  Video,
-  Send,
-  Award,
-} from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Timer, Trophy } from 'lucide-react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
-import { cn, formatPrice, formatDate } from '@/lib/utils'
-import { CONTEST_DISTRIBUTION } from '@/lib/constants'
 import { Card, CardContent } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
-import { EmptyState } from '@/components/ui/EmptyState'
-import { Input } from '@/components/ui/Input'
-import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
-import type { Video as VideoType, ContestSubmission } from '@/types'
+import ContestBanner from '@/components/contest/ContestBanner'
+import ContestSubmissionForm from '@/components/contest/ContestSubmissionForm'
+import ContestLeaderboard from '@/components/contest/ContestLeaderboard'
+import PastContestsSection from '@/components/contest/PastContestsSection'
+import HallOfFame from '@/components/contest/HallOfFame'
+import type { Video as VideoType } from '@/types'
 
 const supabase = createClient()
 
@@ -44,33 +31,6 @@ interface Contest {
   created_at: string
 }
 
-function useCountdown(targetDate: string) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-
-  useEffect(() => {
-    const target = new Date(targetDate).getTime()
-
-    function update() {
-      const diff = Math.max(0, target - Date.now())
-      setTimeLeft({
-        days: Math.floor(diff / 86400000),
-        hours: Math.floor((diff % 86400000) / 3600000),
-        minutes: Math.floor((diff % 3600000) / 60000),
-        seconds: Math.floor((diff % 60000) / 1000),
-      })
-    }
-
-    update()
-    const interval = setInterval(update, 1000)
-    return () => clearInterval(interval)
-  }, [targetDate])
-
-  return timeLeft
-}
-
-const RANK_ICONS = [Crown, Medal, Award]
-const RANK_COLORS = ['text-amber-400', 'text-gray-300', 'text-amber-600']
-
 export default function ContestPage() {
   const { profile, loading: authLoading } = useAuth()
 
@@ -78,8 +38,6 @@ export default function ContestPage() {
   const [activeContest, setActiveContest] = useState<Contest | null>(null)
   const [pastContests, setPastContests] = useState<Contest[]>([])
   const [videos, setVideos] = useState<VideoType[]>([])
-  const [expandedContest, setExpandedContest] = useState<string | null>(null)
-
   const [userEntries, setUserEntries] = useState(0)
 
   // Submission form
@@ -88,8 +46,6 @@ export default function ContestPage() {
   const [submissionDesc, setSubmissionDesc] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
-
-  const countdown = useCountdown(activeContest?.period_end ?? new Date().toISOString())
 
   const fetchData = useCallback(async () => {
     if (!profile?.id) return
@@ -127,7 +83,6 @@ export default function ContestPage() {
       if (videosRes.data) setVideos(videosRes.data as VideoType[])
       if (submissionRes.data && submissionRes.data.length > 0) setHasSubmitted(true)
 
-      // Fetch user entries count separately (5th promise result)
       const entriesRes = await supabase
         .from('contest_entries')
         .select('id', { count: 'exact', head: true })
@@ -139,7 +94,6 @@ export default function ContestPage() {
     } finally {
       setLoading(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile?.id])
 
   useEffect(() => {
@@ -182,7 +136,6 @@ export default function ContestPage() {
     }
   }, [selectedVideoId, submissionTitle, submissionDesc, activeContest, profile])
 
-  // Hall of fame: top performers across all completed contests
   const hallOfFame = useMemo(() => {
     const scores: Record<string, { name: string; totalPrize: number; wins: number }> = {}
     for (const c of pastContests) {
@@ -231,83 +184,7 @@ export default function ContestPage() {
 
       {/* Active contest banner */}
       {activeContest ? (
-        <Card data-testid="contest-banner">
-          <CardContent className="py-6">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-violet-500/20 border border-amber-500/30 flex items-center justify-center">
-                <Trophy className="h-6 w-6 text-amber-400" />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold text-white">
-                  Concours {activeContest.type === 'weekly' ? 'Hebdomadaire' : 'Mensuel'}
-                </h2>
-                <p className="text-sm text-white/40">{activeContest.period_label}</p>
-              </div>
-              <Badge variant="premium" className="ml-auto">
-                {formatPrice(activeContest.prize_pool_amount)} a gagner
-              </Badge>
-            </div>
-
-            {/* Countdown */}
-            <div className="flex items-center justify-center gap-4 py-4" data-testid="contest-countdown">
-              {[
-                { value: countdown.days, label: 'Jours' },
-                { value: countdown.hours, label: 'Heures' },
-                { value: countdown.minutes, label: 'Min' },
-                { value: countdown.seconds, label: 'Sec' },
-              ].map((unit) => (
-                <div key={unit.label} className="text-center">
-                  <div className="w-16 h-16 rounded-xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center">
-                    <span className="text-2xl font-bold text-white font-mono tabular-nums">
-                      {String(unit.value).padStart(2, '0')}
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-white/30 mt-1.5">{unit.label}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Prize distribution */}
-            <div className="mt-4 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-              <p className="text-xs text-white/30 mb-2">Distribution des prix (Top 10)</p>
-              <div className="flex gap-1">
-                {CONTEST_DISTRIBUTION.map((pct, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      'flex-1 text-center py-1.5 rounded-md text-[10px] font-medium',
-                      i === 0
-                        ? 'bg-amber-500/20 text-amber-400'
-                        : i < 3
-                          ? 'bg-violet-500/10 text-violet-400'
-                          : 'bg-white/[0.03] text-white/30'
-                    )}
-                  >
-                    #{i + 1} {pct}%
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* User entries count */}
-            <div className="mt-4 flex items-center justify-center gap-6">
-              <div className="text-center">
-                <p className="text-lg font-bold text-violet-400 font-mono">
-                  <AnimatedCounter value={userEntries} className="" />
-                </p>
-                <p className="text-[10px] text-white/30">Tes places</p>
-              </div>
-              <div className="w-px h-8 bg-white/[0.06]" />
-              <div className="text-center">
-                <p className="text-lg font-bold text-white/60 font-mono">{activeContest.total_submissions}</p>
-                <p className="text-[10px] text-white/30">Participants</p>
-              </div>
-            </div>
-            <p className="text-[10px] text-white/20 text-center mt-2">
-              +1 place par inscription, +1 par parrainage
-            </p>
-          </CardContent>
-        </Card>
+        <ContestBanner contest={activeContest} userEntries={userEntries} />
       ) : (
         <Card>
           <CardContent className="py-8 text-center">
@@ -320,221 +197,28 @@ export default function ContestPage() {
 
       {/* Submit entry */}
       {activeContest && (
-        <Card data-testid="contest-submit">
-          <CardContent>
-            <h2 className="text-sm font-semibold text-white/60 mb-4">Participer</h2>
-            {hasSubmitted ? (
-              <div className="py-6 text-center">
-                <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-3">
-                  <Star className="h-6 w-6 text-emerald-400" />
-                </div>
-                <p className="text-sm text-white/70">Tu as deja participe a ce concours !</p>
-                <p className="text-xs text-white/30 mt-1">Les resultats seront annonces a la fin du concours.</p>
-              </div>
-            ) : videos.length === 0 ? (
-              <EmptyState
-                icon={Video}
-                title="Aucune video disponible"
-                description="Cree et genere une video pour pouvoir participer."
-                action={{ label: 'Creer une video', onClick: () => window.location.assign('/create') }}
-              />
-            ) : (
-              <div className="space-y-4">
-                {/* Video selector */}
-                <div>
-                  <label className="text-xs font-medium text-white/40 mb-2 block">Selectionne une video</label>
-                  <select
-                    value={selectedVideoId}
-                    onChange={(e) => setSelectedVideoId(e.target.value)}
-                    data-testid="contest-video-select"
-                    className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-white/80 outline-none appearance-none cursor-pointer focus:border-violet-500/60 transition-colors"
-                  >
-                    <option value="" className="bg-[#0c0b14]">Choisis une video...</option>
-                    {videos.map((v) => (
-                      <option key={v.id} value={v.id} className="bg-[#0c0b14]">
-                        {v.title ?? 'Sans titre'} ({v.quality})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <Input
-                  label="Titre de la participation"
-                  value={submissionTitle}
-                  onChange={(e) => setSubmissionTitle(e.target.value)}
-                  placeholder="Un titre accrocheur..."
-                  data-testid="contest-title-input"
-                />
-
-                <div>
-                  <label className="text-xs font-medium text-white/40 mb-2 block">Description (optionnel)</label>
-                  <textarea
-                    value={submissionDesc}
-                    onChange={(e) => setSubmissionDesc(e.target.value)}
-                    data-testid="contest-desc-input"
-                    rows={3}
-                    className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-white/80 placeholder-white/30 outline-none resize-none focus:border-violet-500/60 transition-colors"
-                    placeholder="Decris ta video et pourquoi elle devrait gagner..."
-                  />
-                </div>
-
-                <Button
-                  onClick={handleSubmit}
-                  loading={submitting}
-                  data-testid="contest-submit-btn"
-                >
-                  <Send className="h-4 w-4" />
-                  Soumettre ma participation
-                </Button>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <ContestSubmissionForm
+          hasSubmitted={hasSubmitted}
+          videos={videos}
+          selectedVideoId={selectedVideoId}
+          setSelectedVideoId={setSelectedVideoId}
+          submissionTitle={submissionTitle}
+          setSubmissionTitle={setSubmissionTitle}
+          submissionDesc={submissionDesc}
+          setSubmissionDesc={setSubmissionDesc}
+          submitting={submitting}
+          onSubmit={handleSubmit}
+        />
       )}
 
       {/* Leaderboard */}
-      {activeContest?.rankings && activeContest.rankings.length > 0 && (
-        <Card data-testid="contest-leaderboard">
-          <CardContent>
-            <h2 className="text-sm font-semibold text-white/60 mb-4">Classement</h2>
-            <div className="space-y-2">
-              {activeContest.rankings.slice(0, 10).map((entry, i) => {
-                const RankIcon = RANK_ICONS[i] ?? Star
-                const rankColor = RANK_COLORS[i] ?? 'text-white/40'
-                return (
-                  <div
-                    key={entry.user_id}
-                    data-testid={`leaderboard-rank-${i + 1}`}
-                    className={cn(
-                      'flex items-center gap-3 px-4 py-3 rounded-xl transition-colors',
-                      i < 3 ? 'bg-white/[0.03] border border-white/[0.06]' : ''
-                    )}
-                  >
-                    <div className="flex items-center justify-center w-8">
-                      {i < 3 ? (
-                        <RankIcon className={cn('h-5 w-5', rankColor)} />
-                      ) : (
-                        <span className="text-sm font-mono text-white/30">#{i + 1}</span>
-                      )}
-                    </div>
-                    <span className="flex-1 text-sm text-white/70">{entry.name}</span>
-                    <span className="text-sm font-mono text-white/50">{entry.score} pts</span>
-                    <Badge variant={i === 0 ? 'premium' : 'default'} size="sm">
-                      {formatPrice(entry.prize)}
-                    </Badge>
-                  </div>
-                )
-              })}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {activeContest?.rankings && <ContestLeaderboard rankings={activeContest.rankings} />}
 
       {/* Past contests */}
-      <div>
-        <h2 className="text-sm font-semibold text-white/60 mb-3">Concours passes</h2>
-        {pastContests.length === 0 ? (
-          <Card>
-            <CardContent className="py-8 text-center">
-              <Trophy className="h-8 w-8 text-white/15 mx-auto mb-2" />
-              <p className="text-sm text-white/30">Aucun concours passe</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-2">
-            {pastContests.map((c) => (
-              <Card key={c.id} data-testid={`past-contest-${c.id}`}>
-                <button
-                  onClick={() => setExpandedContest(expandedContest === c.id ? null : c.id)}
-                  className="w-full"
-                >
-                  <CardContent className="py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Trophy className="h-4 w-4 text-amber-400" />
-                      <span className="text-sm text-white/70">{c.period_label}</span>
-                      <Badge variant={c.type === 'weekly' ? 'info' : 'premium'} size="sm">
-                        {c.type === 'weekly' ? 'Hebdo' : 'Mensuel'}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-white/40">{formatPrice(c.prize_pool_amount)}</span>
-                      {expandedContest === c.id ? (
-                        <ChevronUp className="h-4 w-4 text-white/30" />
-                      ) : (
-                        <ChevronDown className="h-4 w-4 text-white/30" />
-                      )}
-                    </div>
-                  </CardContent>
-                </button>
-                <AnimatePresence>
-                  {expandedContest === c.id && c.rankings && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-4 space-y-1.5">
-                        {c.rankings.slice(0, 10).map((r, i) => (
-                          <div
-                            key={r.user_id}
-                            className="flex items-center justify-between text-sm py-1.5"
-                          >
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs font-mono text-white/30 w-6">#{i + 1}</span>
-                              <span className="text-white/60">{r.name}</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                              <span className="text-xs text-white/30">{r.score} pts</span>
-                              <span className="text-xs font-medium text-emerald-400">
-                                {formatPrice(r.prize)}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
+      <PastContestsSection contests={pastContests} />
 
       {/* Hall of Fame */}
-      {hallOfFame.length > 0 && (
-        <Card data-testid="hall-of-fame">
-          <CardContent>
-            <div className="flex items-center gap-2 mb-4">
-              <Crown className="h-5 w-5 text-amber-400" />
-              <h2 className="text-sm font-semibold text-white">Hall of Fame</h2>
-            </div>
-            <div className="space-y-3">
-              {hallOfFame.map((entry, i) => (
-                <div
-                  key={entry.id}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/[0.02]"
-                >
-                  <span className={cn(
-                    'text-lg font-bold',
-                    i === 0 ? 'text-amber-400' : i === 1 ? 'text-gray-300' : i === 2 ? 'text-amber-600' : 'text-white/20'
-                  )}>
-                    #{i + 1}
-                  </span>
-                  <span className="flex-1 text-sm text-white/70">{entry.name}</span>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-emerald-400">{formatPrice(entry.totalPrize)}</p>
-                    <p className="text-[10px] text-white/30">
-                      {entry.wins} victoire{entry.wins > 1 ? 's' : ''}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      <HallOfFame entries={hallOfFame} />
     </motion.div>
     </LoadingTimeout>
   )
