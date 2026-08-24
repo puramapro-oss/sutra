@@ -2,13 +2,15 @@
 
 | DATE | BUG | CAUSE | FIX |
 |------|-----|-------|-----|
-| 2026-08-24 | 17 fichiers >300L | Code non modulaire, gros composants monolithiques | Extraction hooks + composants : template-data 433→18L, templates/page 486→235L, voices/page 511→181L, storyboard/page 571→241L, analytics/page 550→72L. 10 fichiers restants à traiter (2 exclus). |
+| 2026-08-24 | 17 fichiers >300L | Code non modulaire, gros composants monolithiques | Extraction hooks + composants : template-data 433→18L, templates/page 486→235L, voices/page 511→181L, storyboard/page 571→241L, analytics/page 550→72L, publish/page 532→116L, referral/page 623→133L. 8 fichiers restants à traiter (2 exclus). |
 
 ## Fichiers >300L restants (12 total, 10 à traiter)
 
 **FAIT** ✅:
 - ~~storyboard/page.tsx~~ 571→241L (commit 3a6e647)
 - ~~analytics/page.tsx~~ 550→72L (commit 1e4f006)
+- ~~publish/page.tsx~~ 532→116L (commit fd19e4a)
+- ~~referral/page.tsx~~ 623→133L (commit 94ea58c)
 
 **EXCLUS** (webhook Stripe intacts):
 - src/app/api/stripe/webhook/route.ts — 512L (NE PAS TOUCHER)
