@@ -39,7 +39,6 @@ import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
-import { EditorHeader } from '@/components/editor/EditorHeader'
 import type { Video, VideoVersion, Scene } from '@/types'
 import {
   type SubtitleEntry,
@@ -344,6 +343,7 @@ export default function EditorPage() {
             label: 'Retour au dashboard',
             onClick: () => router.push('/dashboard'),
           }}
+          data-testid="editor-not-found"
         />
       </div>
     )
@@ -361,6 +361,7 @@ export default function EditorPage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.back()}
+            data-testid="editor-back"
             className="p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/60 hover:text-white hover:bg-white/10 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -381,6 +382,7 @@ export default function EditorPage() {
           <button
             onClick={undo}
             disabled={!canUndo}
+            data-testid="editor-undo"
             className={cn(
               'p-2 rounded-xl border border-white/[0.06] transition-colors',
               canUndo ? 'text-white/60 hover:text-white hover:bg-white/10' : 'text-white/20 cursor-not-allowed'
@@ -392,6 +394,7 @@ export default function EditorPage() {
           <button
             onClick={redo}
             disabled={!canRedo}
+            data-testid="editor-redo"
             className={cn(
               'p-2 rounded-xl border border-white/[0.06] transition-colors',
               canRedo ? 'text-white/60 hover:text-white hover:bg-white/10' : 'text-white/20 cursor-not-allowed'
@@ -405,6 +408,7 @@ export default function EditorPage() {
           <div className="relative">
             <button
               onClick={() => setShowVersions((prev) => !prev)}
+              data-testid="editor-versions"
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/60 hover:text-white hover:bg-white/10 transition-colors"
             >
               <Clock className="h-4 w-4" />
@@ -432,6 +436,7 @@ export default function EditorPage() {
                         <button
                           key={v.id}
                           onClick={() => loadVersion(v)}
+                          data-testid={`version-${v.version_number}`}
                           className="w-full flex items-center justify-between px-4 py-3 text-sm text-white/70 hover:bg-white/5 transition-colors"
                         >
                           <span>Version {v.version_number}</span>
@@ -448,6 +453,7 @@ export default function EditorPage() {
           {/* Shortcuts hint */}
           <button
             onClick={() => setShowShortcuts((prev) => !prev)}
+            data-testid="editor-shortcuts"
             className="p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/40 hover:text-white hover:bg-white/10 transition-colors"
             title="Raccourcis clavier"
           >
@@ -459,6 +465,7 @@ export default function EditorPage() {
             <select
               value={exportQuality}
               onChange={(e) => setExportQuality(e.target.value)}
+              data-testid="editor-quality-select"
               className="px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/80 outline-none appearance-none cursor-pointer"
             >
               {QUALITY_OPTIONS.map((q) => (
@@ -475,6 +482,7 @@ export default function EditorPage() {
             <Button
               onClick={handleExport}
               loading={exporting}
+              data-testid="editor-export"
               size="md"
             >
               <Download className="h-4 w-4" />
@@ -536,6 +544,7 @@ export default function EditorPage() {
                 onTimeUpdate={player.handleTimeUpdate}
                 onLoadedMetadata={player.handleLoadedMetadata}
                 onEnded={() => {}}
+                data-testid="editor-video"
                 className="w-full h-full object-contain"
               />
             ) : (
@@ -552,6 +561,7 @@ export default function EditorPage() {
             {video.video_url && !player.isPlaying && (
               <button
                 onClick={player.togglePlay}
+                data-testid="editor-play-overlay"
                 className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors group"
               >
                 <div className="h-16 w-16 rounded-full bg-violet-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -566,6 +576,7 @@ export default function EditorPage() {
             {/* Play/Pause */}
             <button
               onClick={player.togglePlay}
+              data-testid="editor-play-pause"
               className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
             >
               {player.isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
@@ -583,6 +594,7 @@ export default function EditorPage() {
               max={player.duration || 100}
               value={player.currentTime}
               onChange={(e) => player.seekTo(Number(e.target.value))}
+              data-testid="editor-seek"
               className="flex-1 h-1.5 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
             />
 
@@ -590,6 +602,7 @@ export default function EditorPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={player.toggleMute}
+                data-testid="editor-mute"
                 className="p-1.5 rounded-lg text-white/50 hover:text-white transition-colors"
               >
                 {player.isMuted || player.volume === 0 ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
@@ -601,6 +614,7 @@ export default function EditorPage() {
                 step={0.05}
                 value={player.isMuted ? 0 : player.volume}
                 onChange={(e) => player.handleVolumeChange(Number(e.target.value))}
+                data-testid="editor-volume"
                 className="w-20 h-1 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
               />
             </div>
@@ -611,6 +625,7 @@ export default function EditorPage() {
                 <button
                   key={s}
                   onClick={() => player.handleSpeedChange(s)}
+                  data-testid={`editor-speed-${s}`}
                   className={cn(
                     'px-2 py-1 rounded-md text-xs font-medium transition-colors',
                     player.speed === s
@@ -656,6 +671,7 @@ export default function EditorPage() {
                       const offset = scenes.slice(0, index).reduce((a, s) => a + s.duration_seconds, 0)
                       player.seekTo(offset)
                     }}
+                    data-testid={`timeline-block-${index}`}
                     className={cn(
                       'relative h-full rounded-md border border-white/[0.08] bg-gradient-to-r transition-all hover:brightness-125 group',
                       color,
@@ -693,6 +709,7 @@ export default function EditorPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
+                    data-testid={`editor-tab-${tab.id}`}
                     className={cn(
                       'flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px',
                       activeTab === tab.id
@@ -717,6 +734,7 @@ export default function EditorPage() {
                   <textarea
                     value={script}
                     onChange={(e) => handleScriptChange(e.target.value)}
+                    data-testid="editor-script-textarea"
                     rows={12}
                     className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-white/90 placeholder-white/30 outline-none resize-y focus:border-violet-500/60 focus:shadow-[0_0_15px_rgba(139,92,246,0.15)] transition-all"
                     placeholder="Ecris ou modifie le script de la narration..."
@@ -742,6 +760,7 @@ export default function EditorPage() {
                         onDragStart={() => handleDragStart(i)}
                         onDragOver={(e) => handleDragOver(e, i)}
                         onDragEnd={handleDragEnd}
+                        data-testid={`editor-scene-${i}`}
                         className={cn(
                           'flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] transition-colors cursor-grab active:cursor-grabbing group',
                           dragIndex === i && 'opacity-50'
@@ -790,6 +809,7 @@ export default function EditorPage() {
                         setVoiceVolume(v)
                         pushHistory({ script, scenes, subtitles, voiceVolume: v, musicVolume })
                       }}
+                      data-testid="editor-voice-volume"
                       className="w-full h-2 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
                     />
                   </div>
@@ -809,6 +829,7 @@ export default function EditorPage() {
                         setMusicVolume(v)
                         pushHistory({ script, scenes, subtitles, voiceVolume, musicVolume: v })
                       }}
+                      data-testid="editor-music-volume"
                       className="w-full h-2 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
                     />
                   </div>
@@ -826,6 +847,7 @@ export default function EditorPage() {
                     subtitles.map((sub) => (
                       <div
                         key={sub.id}
+                        data-testid={`editor-subtitle-${sub.id}`}
                         className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]"
                       >
                         <div className="flex flex-col gap-1.5 shrink-0">
@@ -866,6 +888,7 @@ export default function EditorPage() {
                   )}
                   <button
                     onClick={addSubtitle}
+                    data-testid="editor-add-subtitle"
                     className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-white/[0.08] text-sm text-white/40 hover:text-white/60 hover:border-white/[0.15] transition-colors"
                   >
                     <Plus className="h-4 w-4" />
@@ -924,6 +947,7 @@ export default function EditorPage() {
                         variant="secondary"
                         size="sm"
                         onClick={() => router.push('/settings')}
+                        data-testid="editor-setup-brandkit"
                       >
                         Configurer dans les reglages
                       </Button>
@@ -968,6 +992,7 @@ export default function EditorPage() {
                 onClick={handleExport}
                 loading={exporting}
                 className="w-full"
+                data-testid="editor-export-sidebar"
               >
                 <Download className="h-4 w-4" />
                 Exporter la video
