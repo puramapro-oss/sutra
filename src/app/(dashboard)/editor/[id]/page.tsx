@@ -1,32 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import {
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Undo2,
-  Redo2,
-  Download,
-  FileText,
-  Film,
-  Music,
-  Subtitles,
-  Palette,
-  GripVertical,
-  Trash2,
-  Plus,
-  Clock,
-  ChevronDown,
-  Keyboard,
-  ArrowLeft,
-  AlertCircle,
-  Check,
-  X,
-} from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Film, AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
@@ -41,6 +18,9 @@ import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { EditorHeader } from '@/components/editor/EditorHeader'
 import { VideoPlayerPanel } from '@/components/editor/VideoPlayerPanel'
+import { EditorTimeline } from '@/components/editor/EditorTimeline'
+import { EditorTabs } from '@/components/editor/EditorTabs'
+import { EditorSidebar } from '@/components/editor/EditorSidebar'
 import type { Video, VideoVersion, Scene } from '@/types'
 import {
   type SubtitleEntry,
@@ -293,18 +273,31 @@ export default function EditorPage() {
     []
   )
 
+  // Volume handlers
+  const handleVoiceVolumeChange = useCallback(
+    (v: number) => {
+      setVoiceVolume(v)
+      pushHistory({ script, scenes, subtitles, voiceVolume: v, musicVolume })
+    },
+    [script, scenes, subtitles, musicVolume, pushHistory]
+  )
 
+  const handleMusicVolumeChange = useCallback(
+    (v: number) => {
+      setMusicVolume(v)
+      pushHistory({ script, scenes, subtitles, voiceVolume, musicVolume: v })
+    },
+    [script, scenes, subtitles, voiceVolume, pushHistory]
+  )
 
-  // Timeline blocks
-  const timelineBlocks = useMemo(() => {
-    if (!scenes.length) return []
-    const totalDur = scenes.reduce((acc, s) => acc + s.duration_seconds, 0) || 1
-    return scenes.map((scene, i) => ({
-      scene,
-      index: i,
-      widthPercent: (scene.duration_seconds / totalDur) * 100,
-    }))
-  }, [scenes])
+  // Scene click handler
+  const handleSceneClick = useCallback(
+    (index: number) => {
+      const offset = scenes.slice(0, index).reduce((a, s) => a + s.duration_seconds, 0)
+      player.seekTo(offset)
+    },
+    [scenes, player]
+  )
 
   // Loading state
   if (loading || authLoading) {
@@ -384,355 +377,44 @@ export default function EditorPage() {
         setIsPlaying={player.setIsPlaying}
       />
 
-      {/* Timeline */}
-      <Card>
-        <CardContent className="py-3">
-          <div className="flex items-center gap-2 mb-2">
-            <Film className="h-4 w-4 text-violet-400" />
-            <span className="text-xs font-medium text-white/50">Timeline</span>
-          </div>
-          {scenes.length === 0 ? (
-            <div className="h-12 flex items-center justify-center text-xs text-white/30">
-              Aucune scene
-            </div>
-          ) : (
-            <div className="flex gap-1 h-12 rounded-lg overflow-hidden" data-testid="editor-timeline">
-              {timelineBlocks.map(({ scene, index, widthPercent }) => {
-                const colors = [
-                  'from-violet-600/40 to-violet-500/20',
-                  'from-purple-600/40 to-purple-500/20',
-                  'from-indigo-600/40 to-indigo-500/20',
-                  'from-blue-600/40 to-blue-500/20',
-                  'from-cyan-600/40 to-cyan-500/20',
-                  'from-fuchsia-600/40 to-fuchsia-500/20',
-                ]
-                const color = colors[index % colors.length]
-                return (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      const offset = scenes.slice(0, index).reduce((a, s) => a + s.duration_seconds, 0)
-                      player.seekTo(offset)
-                    }}
-                    className={cn(
-                      'relative h-full rounded-md border border-white/[0.08] bg-gradient-to-r transition-all hover:brightness-125 group',
-                      color,
-                      dragIndex === index && 'ring-2 ring-violet-500'
-                    )}
-                    style={{ width: `${widthPercent}%`, minWidth: '24px' }}
-                  >
-                    <span className="absolute inset-0 flex items-center justify-center text-[10px] text-white/60 font-mono truncate px-1">
-                      {scene.duration_seconds}s
-                    </span>
-                  </button>
-                )
-              })}
-              {/* Playhead */}
-              {player.duration > 0 && (
-                <div
-                  className="absolute h-12 w-0.5 bg-violet-400 pointer-events-none z-10"
-                  style={{ left: `${(player.currentTime / player.duration) * 100}%` }}
-                />
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <EditorTimeline
+        scenes={scenes}
+        currentTime={player.currentTime}
+        duration={player.duration}
+        dragIndex={dragIndex}
+        onSceneClick={handleSceneClick}
+      />
 
-      {/* Side panel */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Tabs */}
-        <div className="lg:col-span-8">
-          <Card>
-            <div className="flex border-b border-white/[0.06] overflow-x-auto">
-              {SIDE_TABS.map((tab) => {
-                const Icon = tab.icon
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={cn(
-                      'flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px',
-                      activeTab === tab.id
-                        ? 'text-violet-400 border-violet-500'
-                        : 'text-white/40 border-transparent hover:text-white/60'
-                    )}
-                  >
-                    <Icon className="h-4 w-4" />
-                    {tab.label}
-                  </button>
-                )
-              })}
-            </div>
+        <EditorTabs
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          script={script}
+          onScriptChange={handleScriptChange}
+          scenes={scenes}
+          dragIndex={dragIndex}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          subtitles={subtitles}
+          onUpdateSubtitle={updateSubtitle}
+          onAddSubtitle={addSubtitle}
+          onRemoveSubtitle={removeSubtitle}
+          voiceVolume={voiceVolume}
+          musicVolume={musicVolume}
+          onVoiceVolumeChange={handleVoiceVolumeChange}
+          onMusicVolumeChange={handleMusicVolumeChange}
+          profile={profile}
+        />
 
-            <CardContent>
-              {/* Script tab */}
-              {activeTab === 'script' && (
-                <div data-testid="editor-panel-script">
-                  <label className="text-sm font-medium text-white/60 mb-2 block">
-                    Narration
-                  </label>
-                  <textarea
-                    value={script}
-                    onChange={(e) => handleScriptChange(e.target.value)}
-                    rows={12}
-                    className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-white/90 placeholder-white/30 outline-none resize-y focus:border-violet-500/60 focus:shadow-[0_0_15px_rgba(139,92,246,0.15)] transition-all"
-                    placeholder="Ecris ou modifie le script de la narration..."
-                  />
-                  <p className="text-xs text-white/30 mt-2">
-                    {script.split(/\s+/).filter(Boolean).length} mots
-                  </p>
-                </div>
-              )}
-
-              {/* Scenes tab */}
-              {activeTab === 'scenes' && (
-                <div data-testid="editor-panel-scenes" className="space-y-3">
-                  {scenes.length === 0 ? (
-                    <div className="py-8 text-center text-sm text-white/30">
-                      Aucune scene dans ce projet
-                    </div>
-                  ) : (
-                    scenes.map((scene, i) => (
-                      <div
-                        key={i}
-                        draggable
-                        onDragStart={() => handleDragStart(i)}
-                        onDragOver={(e) => handleDragOver(e, i)}
-                        onDragEnd={handleDragEnd}
-                        className={cn(
-                          'flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] transition-colors cursor-grab active:cursor-grabbing group',
-                          dragIndex === i && 'opacity-50'
-                        )}
-                      >
-                        <div className="flex items-center gap-2 mt-1">
-                          <GripVertical className="h-4 w-4 text-white/20 group-hover:text-white/40" />
-                          <div className="h-12 w-16 rounded-lg bg-white/[0.04] border border-white/[0.06] flex items-center justify-center text-xs text-white/30 font-mono shrink-0">
-                            {i + 1}
-                          </div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm text-white/70 line-clamp-2">
-                            {scene.visual_prompt}
-                          </p>
-                          <div className="flex items-center gap-3 mt-1.5">
-                            <span className="text-xs text-white/30">
-                              {scene.duration_seconds}s
-                            </span>
-                            <Badge variant={scene.use_stock ? 'info' : 'premium'} size="sm">
-                              {scene.use_stock ? 'Stock' : 'IA'}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
-
-              {/* Audio tab */}
-              {activeTab === 'audio' && (
-                <div data-testid="editor-panel-audio" className="space-y-6">
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="text-sm font-medium text-white/60">Volume voix</label>
-                      <span className="text-xs text-white/40 font-mono">{voiceVolume}%</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={voiceVolume}
-                      onChange={(e) => {
-                        const v = Number(e.target.value)
-                        setVoiceVolume(v)
-                        pushHistory({ script, scenes, subtitles, voiceVolume: v, musicVolume })
-                      }}
-                      className="w-full h-2 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
-                    />
-                  </div>
-
-                  <div className="border-t border-white/[0.06] pt-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="text-sm font-medium text-white/60">Volume musique</label>
-                      <span className="text-xs text-white/40 font-mono">{musicVolume}%</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={musicVolume}
-                      onChange={(e) => {
-                        const v = Number(e.target.value)
-                        setMusicVolume(v)
-                        pushHistory({ script, scenes, subtitles, voiceVolume, musicVolume: v })
-                      }}
-                      className="w-full h-2 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Subtitles tab */}
-              {activeTab === 'subtitles' && (
-                <div data-testid="editor-panel-subtitles" className="space-y-3">
-                  {subtitles.length === 0 ? (
-                    <div className="py-8 text-center text-sm text-white/30">
-                      Aucun sous-titre
-                    </div>
-                  ) : (
-                    subtitles.map((sub) => (
-                      <div
-                        key={sub.id}
-                        className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]"
-                      >
-                        <div className="flex flex-col gap-1.5 shrink-0">
-                          <input
-                            type="number"
-                            value={sub.start}
-                            onChange={(e) => updateSubtitle(sub.id, 'start', Number(e.target.value))}
-                            step={0.1}
-                            min={0}
-                            className="w-16 px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-xs text-white/60 font-mono outline-none text-center"
-                            title="Debut (s)"
-                          />
-                          <input
-                            type="number"
-                            value={sub.end}
-                            onChange={(e) => updateSubtitle(sub.id, 'end', Number(e.target.value))}
-                            step={0.1}
-                            min={0}
-                            className="w-16 px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-xs text-white/60 font-mono outline-none text-center"
-                            title="Fin (s)"
-                          />
-                        </div>
-                        <textarea
-                          value={sub.text}
-                          onChange={(e) => updateSubtitle(sub.id, 'text', e.target.value)}
-                          rows={2}
-                          className="flex-1 px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06] text-sm text-white/80 placeholder-white/20 outline-none resize-none focus:border-violet-500/60 transition-colors"
-                          placeholder="Texte du sous-titre..."
-                        />
-                        <button
-                          onClick={() => removeSubtitle(sub.id)}
-                          className="p-1.5 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-colors shrink-0"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    ))
-                  )}
-                  <button
-                    onClick={addSubtitle}
-                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-dashed border-white/[0.08] text-sm text-white/40 hover:text-white/60 hover:border-white/[0.15] transition-colors"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Ajouter un sous-titre
-                  </button>
-                </div>
-              )}
-
-              {/* Brand Kit tab */}
-              {activeTab === 'brandkit' && (
-                <div data-testid="editor-panel-brandkit" className="space-y-4">
-                  {profile?.brand_kit ? (
-                    <>
-                      <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]">
-                        {profile.brand_kit.logo_url ? (
-                          <img
-                            src={profile.brand_kit.logo_url}
-                            alt="Logo"
-                            className="h-10 w-10 rounded-lg object-contain"
-                          />
-                        ) : (
-                          <div className="h-10 w-10 rounded-lg bg-violet-500/10 flex items-center justify-center">
-                            <Palette className="h-5 w-5 text-violet-400" />
-                          </div>
-                        )}
-                        <div>
-                          <p className="text-sm text-white/70">Brand Kit actif</p>
-                          <p className="text-xs text-white/30">
-                            {profile.brand_kit.font ?? 'Police par defaut'}
-                          </p>
-                        </div>
-                        <Badge variant="success" size="sm" className="ml-auto">
-                          <Check className="h-3 w-3 mr-1" />
-                          Applique
-                        </Badge>
-                      </div>
-                      {profile.brand_kit.colors && (
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="h-8 w-8 rounded-lg border border-white/[0.08]"
-                            style={{ backgroundColor: profile.brand_kit.colors.primary }}
-                          />
-                          <div
-                            className="h-8 w-8 rounded-lg border border-white/[0.08]"
-                            style={{ backgroundColor: profile.brand_kit.colors.secondary }}
-                          />
-                          <span className="text-xs text-white/40">Couleurs de marque</span>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="py-8 text-center">
-                      <Palette className="h-8 w-8 text-white/20 mx-auto mb-3" />
-                      <p className="text-sm text-white/40 mb-3">Aucun Brand Kit configure</p>
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => router.push('/settings')}
-                      >
-                        Configurer dans les reglages
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Info sidebar */}
-        <div className="lg:col-span-4 space-y-4">
-          <Card>
-            <CardContent>
-              <h3 className="text-sm font-semibold text-white mb-3">Informations</h3>
-              <div className="space-y-3">
-                {[
-                  ['Format', video.format ?? '16:9'],
-                  ['Qualite', video.quality ?? '1080p'],
-                  ['Duree', player.duration > 0 ? `${Math.round(player.duration)}s` : '-'],
-                  ['Scenes', `${scenes.length}`],
-                  ['Statut', video.status],
-                  ['Cree le', formatDate(video.created_at)],
-                ].map(([label, value]) => (
-                  <div key={label} className="flex items-center justify-between text-sm">
-                    <span className="text-white/40">{label}</span>
-                    <span className="text-white/70">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent>
-              <h3 className="text-sm font-semibold text-white mb-3">Export rapide</h3>
-              <p className="text-xs text-white/40 mb-4">
-                Qualite selectionnee : {exportQuality}
-              </p>
-              <Button
-                onClick={handleExport}
-                loading={exporting}
-                className="w-full"
-              >
-                <Download className="h-4 w-4" />
-                Exporter la video
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+        <EditorSidebar
+          video={video}
+          scenes={scenes}
+          duration={player.duration}
+          exportQuality={exportQuality}
+          exporting={exporting}
+          onExport={handleExport}
+        />
       </div>
     </motion.div>
   )
