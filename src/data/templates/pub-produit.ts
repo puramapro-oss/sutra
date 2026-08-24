@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const pubProduitTemplates: PresetTemplate[] = [
+  {
+    id: 'pub-demo-produit',
+    name: 'Demo produit',
+    category: 'pub-produit',
+    description: 'Presentation dynamique d\'un produit avec ses fonctionnalites cles, gros plans et CTA percutant.',
+    format: '1:1',
+    duration: '30-60s',
+    suggestedVoice: 'energetic_female',
+    prompt: 'Demo produit montrant les fonctionnalites principales avec transitions fluides et texte anime',
+    style: 'corporate-energique',
+    icon: '📦',
+    color: 'from-blue-500/20 to-cyan-500/20',
+  },
+  {
+    id: 'pub-unboxing',
+    name: 'Unboxing',
+    category: 'pub-produit',
+    description: 'Experience d\'ouverture de produit captivante avec suspense, gros plans et premiere impression authentique.',
+    format: '9:16',
+    duration: '45-90s',
+    suggestedVoice: 'dynamic_female',
+    prompt: 'Video unboxing avec suspense, gros plans sur le packaging et decouverte enthousiaste du produit',
+    style: 'lifestyle-authentique',
+    icon: '🎁',
+    color: 'from-pink-500/20 to-rose-500/20',
+  },
+  {
+    id: 'pub-comparatif',
+    name: 'Comparatif',
+    category: 'pub-produit',
+    description: 'Comparaison visuelle entre deux produits avec split-screen, avantages/inconvenients et verdict final.',
+    format: '16:9',
+    duration: '60-120s',
+    suggestedVoice: 'narrator_deep',
+    prompt: 'Comparatif detaille entre deux produits avec split screen, tableau de scores et verdict argumente',
+    style: 'analytique-visuel',
+    icon: '⚖️',
+    color: 'from-amber-500/20 to-orange-500/20',
+  },
+]

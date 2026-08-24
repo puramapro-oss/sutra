@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const storiesReelsTemplates: PresetTemplate[] = [
+  {
+    id: 'stories-trend-tiktok',
+    name: 'Trend TikTok',
+    category: 'stories-reels',
+    description: 'Contenu viral suivant les tendances du moment avec hook percutant et format vertical optimise.',
+    format: '9:16',
+    duration: '15-30s',
+    suggestedVoice: 'dynamic_female',
+    prompt: 'Video TikTok virale avec hook dans les 3 premieres secondes, musique tendance et texte dynamique',
+    style: 'viral-energique',
+    icon: '🔥',
+    color: 'from-red-500/20 to-pink-500/20',
+  },
+  {
+    id: 'stories-behind-scenes',
+    name: 'Behind the scenes',
+    category: 'stories-reels',
+    description: 'Coulisses authentiques de la creation : bureau, equipe, processus de fabrication ou tournage.',
+    format: '9:16',
+    duration: '30-60s',
+    suggestedVoice: 'calm_male',
+    prompt: 'Coulisses de la creation montrant les etapes de fabrication avec un ton humain et transparent',
+    style: 'backstage-intime',
+    icon: '🎬',
+    color: 'from-slate-500/20 to-gray-500/20',
+  },
+  {
+    id: 'stories-quick-tip',
+    name: 'Quick tip',
+    category: 'stories-reels',
+    description: 'Astuce rapide et actionnable en moins de 30 secondes avec texte overlay et musique catchy.',
+    format: '9:16',
+    duration: '15-30s',
+    suggestedVoice: 'energetic_female',
+    prompt: 'Astuce rapide et utile avec texte en gros, illustration visuelle et musique entrainante',
+    style: 'tips-percutant',
+    icon: '💡',
+    color: 'from-cyan-500/20 to-teal-500/20',
+  },
+]

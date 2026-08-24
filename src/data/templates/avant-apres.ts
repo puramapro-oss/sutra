@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const avantApresTemplates: PresetTemplate[] = [
+  {
+    id: 'aa-transformation',
+    name: 'Transformation',
+    category: 'avant-apres',
+    description: 'Transformation spectaculaire avec split-screen, transition wipe et resultat final impressionnant.',
+    format: '9:16',
+    duration: '15-30s',
+    suggestedVoice: 'energetic_female',
+    prompt: 'Video transformation avec avant clairement montre, transition wipe spectaculaire et apres impressionnant',
+    style: 'reveal-dramatique',
+    icon: '🦋',
+    color: 'from-purple-500/20 to-violet-500/20',
+  },
+  {
+    id: 'aa-renovation',
+    name: 'Renovation',
+    category: 'avant-apres',
+    description: 'Projet renovation avec etat initial, time-lapse des travaux et reveal final en musique.',
+    format: '9:16',
+    duration: '30-60s',
+    suggestedVoice: 'calm_male',
+    prompt: 'Renovation avec etat initial delabrant, time-lapse des travaux, musique montante et reveal final eblouissant',
+    style: 'reno-timelapse',
+    icon: '🏠',
+    color: 'from-orange-500/20 to-amber-500/20',
+  },
+  {
+    id: 'aa-fitness',
+    name: 'Resultat fitness',
+    category: 'avant-apres',
+    description: 'Progression fitness avec photos avant/apres, timeline, stats et message motivationnel.',
+    format: '9:16',
+    duration: '15-30s',
+    suggestedVoice: 'default_french_male',
+    prompt: 'Transformation fitness avec photos avant/apres, timeline de progression, stats et message inspirant',
+    style: 'fitness-motivation',
+    icon: '💪',
+    color: 'from-green-500/20 to-lime-500/20',
+  },
+]

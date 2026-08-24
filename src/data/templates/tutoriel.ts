@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const tutorielTemplates: PresetTemplate[] = [
+  {
+    id: 'tuto-pas-a-pas',
+    name: 'Pas-a-pas',
+    category: 'tutoriel',
+    description: 'Tutoriel etape par etape avec numerotation claire, zoom sur les details et recapitulatif final.',
+    format: '16:9',
+    duration: '3-8min',
+    suggestedVoice: 'default_french_male',
+    prompt: 'Tutoriel pas-a-pas avec numerotation visuelle, gros plans sur chaque etape et recapitulatif final',
+    style: 'pedagogique-clair',
+    icon: '📝',
+    color: 'from-blue-500/20 to-indigo-500/20',
+  },
+  {
+    id: 'tuto-recette',
+    name: 'Recette',
+    category: 'tutoriel',
+    description: 'Video recette appetissante avec ingredients, etapes chronologiques et resultat final en gros plan.',
+    format: '9:16',
+    duration: '60-90s',
+    suggestedVoice: 'energetic_female',
+    prompt: 'Video recette avec liste d\'ingredients, etapes de preparation filmees en overhead et resultat final gourmand',
+    style: 'food-appetissant',
+    icon: '🍳',
+    color: 'from-orange-500/20 to-red-500/20',
+  },
+  {
+    id: 'tuto-diy',
+    name: 'DIY',
+    category: 'tutoriel',
+    description: 'Projet creatif do-it-yourself avec liste de materiaux, etapes illustrees et resultat avant/apres.',
+    format: '9:16',
+    duration: '60-120s',
+    suggestedVoice: 'dynamic_female',
+    prompt: 'Tutoriel DIY avec materiel necessaire, etapes de fabrication en time-lapse et resultat final impressionnant',
+    style: 'craft-creatif',
+    icon: '🛠️',
+    color: 'from-teal-500/20 to-emerald-500/20',
+  },
+]

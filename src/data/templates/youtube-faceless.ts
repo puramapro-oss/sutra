@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const youtubeFacelessTemplates: PresetTemplate[] = [
+  {
+    id: 'faceless-top10',
+    name: 'Top 10',
+    category: 'youtube-faceless',
+    description: 'Classement top 10 avec visuels stock, voix off engageante, compteur numerote et transitions dynamiques.',
+    format: '16:9',
+    duration: '5-10min',
+    suggestedVoice: 'narrator_deep',
+    prompt: 'Top 10 des elements les plus incroyables avec voix off captivante, visuels percutants et countdown',
+    style: 'listicle-cinematique',
+    icon: '🏆',
+    color: 'from-amber-500/20 to-yellow-500/20',
+  },
+  {
+    id: 'faceless-mystere',
+    name: 'Mystere',
+    category: 'youtube-faceless',
+    description: 'Narration mysterieuse avec ambiance sombre, musique suspense et revelations progressives.',
+    format: '16:9',
+    duration: '8-15min',
+    suggestedVoice: 'narrator_deep',
+    prompt: 'Video mystere avec narration suspenseful, visuels sombres et revelations progressives captivantes',
+    style: 'dark-mystere',
+    icon: '🔮',
+    color: 'from-indigo-500/20 to-violet-500/20',
+  },
+  {
+    id: 'faceless-faits-insolites',
+    name: 'Faits insolites',
+    category: 'youtube-faceless',
+    description: 'Compilation de faits surprenants avec infographies animees, chiffres percutants et ton energique.',
+    format: '16:9',
+    duration: '5-10min',
+    suggestedVoice: 'default_french_male',
+    prompt: 'Faits insolites et surprenants avec infographies animees, chiffres chocs et transitions rapides',
+    style: 'edutainment-fun',
+    icon: '🧠',
+    color: 'from-fuchsia-500/20 to-pink-500/20',
+  },
+]

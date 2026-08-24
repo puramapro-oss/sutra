@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const documentaireTemplates: PresetTemplate[] = [
+  {
+    id: 'doc-mini-doc',
+    name: 'Mini-doc',
+    category: 'documentaire',
+    description: 'Mini documentaire cinematographique avec narration soignee, b-roll immersif et structure narrative forte.',
+    format: '16:9',
+    duration: '3-5min',
+    suggestedVoice: 'narrator_deep',
+    prompt: 'Mini documentaire avec introduction cinematographique, temoignages, b-roll immersif et conclusion forte',
+    style: 'cinema-doc',
+    icon: '🎞️',
+    color: 'from-emerald-500/20 to-green-500/20',
+  },
+  {
+    id: 'doc-portrait',
+    name: 'Portrait',
+    category: 'documentaire',
+    description: 'Portrait intime d\'une personne ou marque avec interviews, moments de vie et narration emotionnelle.',
+    format: '16:9',
+    duration: '3-8min',
+    suggestedVoice: 'calm_male',
+    prompt: 'Portrait documentaire avec interview intime, images de la vie quotidienne et narration emotionnelle',
+    style: 'portrait-intime',
+    icon: '👤',
+    color: 'from-sky-500/20 to-blue-500/20',
+  },
+  {
+    id: 'doc-investigation',
+    name: 'Investigation',
+    category: 'documentaire',
+    description: 'Enquete journalistique avec preuves visuelles, timeline chronologique et revelations progressives.',
+    format: '16:9',
+    duration: '5-15min',
+    suggestedVoice: 'narrator_deep',
+    prompt: 'Enquete documentaire avec preuves, timeline chronologique, temoignages et revelations choquantes',
+    style: 'investigation-serieux',
+    icon: '🔍',
+    color: 'from-red-500/20 to-orange-500/20',
+  },
+]

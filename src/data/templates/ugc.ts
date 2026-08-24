@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const ugcTemplates: PresetTemplate[] = [
+  {
+    id: 'ugc-temoignage',
+    name: 'Temoignage',
+    category: 'ugc',
+    description: 'Temoignage client realiste filme en selfie avec sous-titres animes et ton authentique.',
+    format: '9:16',
+    duration: '30-60s',
+    suggestedVoice: 'default_french_female',
+    prompt: 'Temoignage client enthousiaste filmant en selfie, partageant son experience positive avec le produit',
+    style: 'ugc-selfie',
+    icon: '💬',
+    color: 'from-green-500/20 to-emerald-500/20',
+  },
+  {
+    id: 'ugc-routine',
+    name: 'Routine',
+    category: 'ugc',
+    description: 'Video "ma routine quotidienne" integrant naturellement un produit dans un contexte de vie reelle.',
+    format: '9:16',
+    duration: '45-90s',
+    suggestedVoice: 'energetic_female',
+    prompt: 'Routine matinale montrant l\'utilisation naturelle du produit dans le quotidien avec transitions douces',
+    style: 'lifestyle-naturel',
+    icon: '☀️',
+    color: 'from-yellow-500/20 to-amber-500/20',
+  },
+  {
+    id: 'ugc-avis-client',
+    name: 'Avis client',
+    category: 'ugc',
+    description: 'Review honnete et structure d\'un produit avec note, pour/contre et recommandation finale.',
+    format: '9:16',
+    duration: '30-45s',
+    suggestedVoice: 'calm_male',
+    prompt: 'Avis client structure avec note sur 5, points forts et points faibles, recommandation finale sincere',
+    style: 'review-authentique',
+    icon: '⭐',
+    color: 'from-violet-500/20 to-purple-500/20',
+  },
+]

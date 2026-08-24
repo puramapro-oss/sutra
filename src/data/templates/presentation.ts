@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const presentationTemplates: PresetTemplate[] = [
+  {
+    id: 'pres-pitch-startup',
+    name: 'Pitch startup',
+    category: 'presentation',
+    description: 'Pitch deck anime avec probleme, solution, marche, business model et call-to-action investisseur.',
+    format: '16:9',
+    duration: '60-120s',
+    suggestedVoice: 'default_french_male',
+    prompt: 'Pitch startup avec presentation du probleme, solution innovante, taille du marche et appel aux investisseurs',
+    style: 'startup-bold',
+    icon: '🚀',
+    color: 'from-violet-500/20 to-purple-500/20',
+  },
+  {
+    id: 'pres-produit',
+    name: 'Presentation produit',
+    category: 'presentation',
+    description: 'Presentation premium d\'un produit ou service avec features, benefices et temoignages clients.',
+    format: '16:9',
+    duration: '60-180s',
+    suggestedVoice: 'calm_male',
+    prompt: 'Presentation produit elegante avec fonctionnalites cles, benefices utilisateurs et preuves sociales',
+    style: 'premium-elegant',
+    icon: '💎',
+    color: 'from-sky-500/20 to-cyan-500/20',
+  },
+  {
+    id: 'pres-rapport',
+    name: 'Rapport',
+    category: 'presentation',
+    description: 'Rapport anime avec graphiques, KPIs, analyses et recommandations. Ideal pour boards et investisseurs.',
+    format: '16:9',
+    duration: '120-300s',
+    suggestedVoice: 'narrator_deep',
+    prompt: 'Rapport annuel anime avec graphiques dynamiques, KPIs cles, analyse des resultats et perspectives',
+    style: 'data-corporate',
+    icon: '📊',
+    color: 'from-slate-500/20 to-zinc-500/20',
+  },
+]

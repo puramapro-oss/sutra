@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const teaserTemplates: PresetTemplate[] = [
+  {
+    id: 'teaser-trailer-film',
+    name: 'Trailer film',
+    category: 'teaser',
+    description: 'Bande-annonce cinematographique avec montage rythmique, sound design puissant et reveal final.',
+    format: '16:9',
+    duration: '30-90s',
+    suggestedVoice: 'narrator_deep',
+    prompt: 'Trailer cinematographique avec montage nerveux, voix off epique, sound design percutant et reveal final',
+    style: 'cinema-epique',
+    icon: '🎬',
+    color: 'from-red-500/20 to-amber-500/20',
+  },
+  {
+    id: 'teaser-lancement-produit',
+    name: 'Lancement produit',
+    category: 'teaser',
+    description: 'Teaser de lancement avec compte a rebours, build-up progressif et grande revelation produit.',
+    format: '1:1',
+    duration: '15-30s',
+    suggestedVoice: 'energetic_female',
+    prompt: 'Teaser de lancement produit avec suspense, countdown, build-up sonore et revelation spectaculaire',
+    style: 'launch-hype',
+    icon: '🎯',
+    color: 'from-violet-500/20 to-fuchsia-500/20',
+  },
+  {
+    id: 'teaser-evenement',
+    name: 'Evenement',
+    category: 'teaser',
+    description: 'Teaser evenementiel avec date, lieu, speakers/artistes, ambiance et call-to-action inscription.',
+    format: '9:16',
+    duration: '15-30s',
+    suggestedVoice: 'dynamic_female',
+    prompt: 'Teaser evenement avec date, lieu, intervenants, ambiance immersive et bouton d\'inscription',
+    style: 'event-premium',
+    icon: '🎉',
+    color: 'from-amber-500/20 to-yellow-500/20',
+  },
+]

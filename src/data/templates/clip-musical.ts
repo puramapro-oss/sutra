@@ -1,0 +1,43 @@
+import type { PresetTemplate } from './types'
+
+export const clipMusicalTemplates: PresetTemplate[] = [
+  {
+    id: 'clip-lyric-video',
+    name: 'Lyric video',
+    category: 'clip-musical',
+    description: 'Video lyrics animee avec typographie cinematique, effets visuels synchronises sur la musique.',
+    format: '16:9',
+    duration: '2-4min',
+    suggestedVoice: 'default_french_male',
+    prompt: 'Lyric video avec typographie animee, effets visuels synchronises sur le rythme et ambiance immersive',
+    style: 'typo-cinematique',
+    icon: '🎤',
+    color: 'from-pink-500/20 to-purple-500/20',
+  },
+  {
+    id: 'clip-visualizer',
+    name: 'Visualizer',
+    category: 'clip-musical',
+    description: 'Visualiseur audio reactif avec ondes sonores, particules et effets lies au spectre audio.',
+    format: '16:9',
+    duration: '2-5min',
+    suggestedVoice: 'default_french_male',
+    prompt: 'Visualiseur audio avec ondes sonores animees, particules reactives et couleurs pulsant au rythme',
+    style: 'audio-reactive',
+    icon: '🎧',
+    color: 'from-cyan-500/20 to-blue-500/20',
+  },
+  {
+    id: 'clip-narratif',
+    name: 'Clip narratif',
+    category: 'clip-musical',
+    description: 'Clip musical avec histoire narrative, personnages IA generes et montage cinematographique.',
+    format: '16:9',
+    duration: '3-5min',
+    suggestedVoice: 'dynamic_female',
+    prompt: 'Clip musical narratif avec histoire emotionnelle, personnages, decors cinematographiques et montage rythme',
+    style: 'cinema-narratif',
+    icon: '🎬',
+    color: 'from-rose-500/20 to-red-500/20',
+  },
+]
