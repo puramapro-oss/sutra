@@ -65,6 +65,7 @@ export function useVideoPlayer(videoRef: RefObject<HTMLVideoElement | null>) {
 
   return {
     isPlaying,
+    setIsPlaying,
     isMuted,
     volume,
     speed,

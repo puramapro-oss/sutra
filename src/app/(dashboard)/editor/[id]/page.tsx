@@ -40,6 +40,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { EditorHeader } from '@/components/editor/EditorHeader'
+import { VideoPlayerPanel } from '@/components/editor/VideoPlayerPanel'
 import type { Video, VideoVersion, Scene } from '@/types'
 import {
   type SubtitleEntry,
@@ -77,8 +78,6 @@ export default function EditorPage() {
   const [musicVolume, setMusicVolume] = useState(50)
   const [exportQuality, setExportQuality] = useState<string>('1080p')
   const [exporting, setExporting] = useState(false)
-  const [showShortcuts, setShowShortcuts] = useState(false)
-  const [showVersions, setShowVersions] = useState(false)
   const [versions, setVersions] = useState<VideoVersion[]>([])
   const [dragIndex, setDragIndex] = useState<number | null>(null)
 
@@ -194,10 +193,6 @@ export default function EditorPage() {
         e.preventDefault()
         player.togglePlay()
       }
-      if (e.key === '?' && isMeta) {
-        e.preventDefault()
-        setShowShortcuts((prev) => !prev)
-      }
     }
 
     window.addEventListener('keydown', handleKeyDown)
@@ -294,7 +289,6 @@ export default function EditorPage() {
   const loadVersion = useCallback(
     (version: VideoVersion) => {
       toast.success(`Version ${version.version_number} chargee`)
-      setShowVersions(false)
     },
     []
   )
@@ -356,275 +350,39 @@ export default function EditorPage() {
       transition={{ duration: 0.4 }}
       className="space-y-6 max-w-[1600px] mx-auto"
     >
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => router.back()}
-            className="p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/60 hover:text-white hover:bg-white/10 transition-colors"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-          <div>
-            <h1 className="text-xl font-bold text-white" data-testid="editor-title">
-              {video.title ?? 'Sans titre'}
-            </h1>
-            <p className="text-sm text-white/40">Sutra Studio</p>
-          </div>
-          <Badge variant={video.status === 'ready' ? 'success' : 'default'}>
-            {video.status}
-          </Badge>
-        </div>
+      <EditorHeader
+        video={video}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        onUndo={handleUndo}
+        onRedo={handleRedo}
+        versions={versions}
+        onLoadVersion={loadVersion}
+        exportQuality={exportQuality}
+        onExportQualityChange={setExportQuality}
+        exporting={exporting}
+        onExport={handleExport}
+        plan={plan}
+      />
 
-        <div className="flex items-center gap-2">
-          {/* Undo/Redo */}
-          <button
-            onClick={undo}
-            disabled={!canUndo}
-            className={cn(
-              'p-2 rounded-xl border border-white/[0.06] transition-colors',
-              canUndo ? 'text-white/60 hover:text-white hover:bg-white/10' : 'text-white/20 cursor-not-allowed'
-            )}
-            title="Annuler (Ctrl+Z)"
-          >
-            <Undo2 className="h-4 w-4" />
-          </button>
-          <button
-            onClick={redo}
-            disabled={!canRedo}
-            className={cn(
-              'p-2 rounded-xl border border-white/[0.06] transition-colors',
-              canRedo ? 'text-white/60 hover:text-white hover:bg-white/10' : 'text-white/20 cursor-not-allowed'
-            )}
-            title="Retablir (Ctrl+Y)"
-          >
-            <Redo2 className="h-4 w-4" />
-          </button>
-
-          {/* Version history */}
-          <div className="relative">
-            <button
-              onClick={() => setShowVersions((prev) => !prev)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/60 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <Clock className="h-4 w-4" />
-              <span className="hidden sm:inline">Versions</span>
-              <ChevronDown className="h-3 w-3" />
-            </button>
-            <AnimatePresence>
-              {showVersions && (
-                <motion.div
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  className="absolute right-0 top-full mt-2 z-50 w-64 rounded-xl bg-[#0c0b14]/95 backdrop-blur-xl border border-white/[0.08] shadow-2xl overflow-hidden"
-                >
-                  <div className="p-3 border-b border-white/[0.06]">
-                    <p className="text-xs font-medium text-white/50">Historique des versions</p>
-                  </div>
-                  {versions.length === 0 ? (
-                    <div className="p-4 text-center text-sm text-white/30">
-                      Aucune version sauvegardee
-                    </div>
-                  ) : (
-                    <div className="max-h-60 overflow-y-auto">
-                      {versions.map((v) => (
-                        <button
-                          key={v.id}
-                          onClick={() => loadVersion(v)}
-                          className="w-full flex items-center justify-between px-4 py-3 text-sm text-white/70 hover:bg-white/5 transition-colors"
-                        >
-                          <span>Version {v.version_number}</span>
-                          <span className="text-xs text-white/30">{formatDate(v.created_at)}</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Shortcuts hint */}
-          <button
-            onClick={() => setShowShortcuts((prev) => !prev)}
-            className="p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/40 hover:text-white hover:bg-white/10 transition-colors"
-            title="Raccourcis clavier"
-          >
-            <Keyboard className="h-4 w-4" />
-          </button>
-
-          {/* Export */}
-          <div className="flex items-center gap-2">
-            <select
-              value={exportQuality}
-              onChange={(e) => setExportQuality(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/80 outline-none appearance-none cursor-pointer"
-            >
-              {QUALITY_OPTIONS.map((q) => (
-                <option
-                  key={q.value}
-                  value={q.value}
-                  disabled={!canUseQuality(plan, q.minPlan)}
-                  className="bg-[#0c0b14] text-white"
-                >
-                  {q.label} {!canUseQuality(plan, q.minPlan) ? `(${q.minPlan}+)` : ''}
-                </option>
-              ))}
-            </select>
-            <Button
-              onClick={handleExport}
-              loading={exporting}
-              size="md"
-            >
-              <Download className="h-4 w-4" />
-              Exporter la video
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Keyboard shortcuts modal */}
-      <AnimatePresence>
-        {showShortcuts && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden"
-          >
-            <Card>
-              <CardContent className="py-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-white">Raccourcis clavier</h3>
-                  <button
-                    onClick={() => setShowShortcuts(false)}
-                    className="text-white/40 hover:text-white"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                  {[
-                    ['Espace', 'Lecture/Pause'],
-                    ['Ctrl+Z', 'Annuler'],
-                    ['Ctrl+Y', 'Retablir'],
-                    ['Ctrl+?', 'Raccourcis'],
-                  ].map(([key, desc]) => (
-                    <div key={key} className="flex items-center gap-2">
-                      <kbd className="px-2 py-1 rounded bg-white/5 border border-white/[0.08] text-white/60 font-mono text-[10px]">
-                        {key}
-                      </kbd>
-                      <span className="text-white/40">{desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Video Preview */}
-      <Card>
-        <CardContent className="p-0 overflow-hidden">
-          <div className="relative aspect-video bg-black/50 rounded-t-2xl overflow-hidden">
-            {video.video_url ? (
-              <video
-                ref={videoRef}
-                src={video.video_url}
-                onTimeUpdate={player.handleTimeUpdate}
-                onLoadedMetadata={player.handleLoadedMetadata}
-                onEnded={() => {}}
-                className="w-full h-full object-contain"
-              />
-            ) : (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <Film className="h-12 w-12 text-white/20 mx-auto mb-3" />
-                  <p className="text-sm text-white/40">Apercu non disponible</p>
-                  <p className="text-xs text-white/25 mt-1">La video est en cours de generation</p>
-                </div>
-              </div>
-            )}
-
-            {/* Play overlay */}
-            {video.video_url && !player.isPlaying && (
-              <button
-                onClick={player.togglePlay}
-                className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors group"
-              >
-                <div className="h-16 w-16 rounded-full bg-violet-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Play className="h-7 w-7 text-white ml-1" />
-                </div>
-              </button>
-            )}
-          </div>
-
-          {/* Controls bar */}
-          <div className="px-4 py-3 border-t border-white/[0.06] flex items-center gap-4 flex-wrap">
-            {/* Play/Pause */}
-            <button
-              onClick={player.togglePlay}
-              className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
-            >
-              {player.isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-            </button>
-
-            {/* Time */}
-            <span className="text-xs text-white/50 font-mono tabular-nums min-w-[80px]">
-              {formatTime(player.currentTime)} / {formatTime(player.duration)}
-            </span>
-
-            {/* Seek bar */}
-            <input
-              type="range"
-              min={0}
-              max={player.duration || 100}
-              value={player.currentTime}
-              onChange={(e) => player.seekTo(Number(e.target.value))}
-              className="flex-1 h-1.5 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
-            />
-
-            {/* Volume */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={player.toggleMute}
-                className="p-1.5 rounded-lg text-white/50 hover:text-white transition-colors"
-              >
-                {player.isMuted || player.volume === 0 ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-              </button>
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.05}
-                value={player.isMuted ? 0 : player.volume}
-                onChange={(e) => player.handleVolumeChange(Number(e.target.value))}
-                className="w-20 h-1 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
-              />
-            </div>
-
-            {/* Speed */}
-            <div className="flex items-center gap-1">
-              {SPEED_OPTIONS.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => player.handleSpeedChange(s)}
-                  className={cn(
-                    'px-2 py-1 rounded-md text-xs font-medium transition-colors',
-                    player.speed === s
-                      ? 'bg-violet-500/20 text-violet-400'
-                      : 'text-white/40 hover:text-white/70 hover:bg-white/5'
-                  )}
-                >
-                  {s}x
-                </button>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <VideoPlayerPanel
+        video={video}
+        videoRef={videoRef}
+        isPlaying={player.isPlaying}
+        isMuted={player.isMuted}
+        volume={player.volume}
+        speed={player.speed}
+        currentTime={player.currentTime}
+        duration={player.duration}
+        onTogglePlay={player.togglePlay}
+        onToggleMute={player.toggleMute}
+        onVolumeChange={player.handleVolumeChange}
+        onSpeedChange={player.handleSpeedChange}
+        onTimeUpdate={player.handleTimeUpdate}
+        onLoadedMetadata={player.handleLoadedMetadata}
+        onSeek={player.seekTo}
+        setIsPlaying={player.setIsPlaying}
+      />
 
       {/* Timeline */}
       <Card>

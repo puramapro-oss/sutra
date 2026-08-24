@@ -7,7 +7,7 @@ import { SPEED_OPTIONS } from '@/types/editor'
 
 interface VideoPlayerPanelProps {
   video: { video_url?: string | null }
-  videoRef: RefObject<HTMLVideoElement>
+  videoRef: RefObject<HTMLVideoElement | null>
   isPlaying: boolean
   isMuted: boolean
   volume: number
