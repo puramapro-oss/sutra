@@ -61,12 +61,12 @@ async function pexelsVideos(
 ): Promise<StockResult[]> {
   if (!PEXELS_API_KEY) return []
   try {
-    const url = `https://api.pexels.com/videos/search?query=${encodeURIComponent(
+    const url = `https://api.pexels.com/v1/videos/search?query=${encodeURIComponent(
       query
     )}&per_page=20&orientation=${orientation}&size=large`
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
-      next: { revalidate: 3600 },
+      next: { revalidate: 86_400 },
     })
     if (!res.ok) return []
     const data = (await res.json()) as { videos?: PexelsVideo[] }
@@ -109,7 +109,7 @@ async function pexelsPhotos(
     )}&per_page=20&orientation=${orientation}`
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
-      next: { revalidate: 3600 },
+      next: { revalidate: 86_400 },
     })
     if (!res.ok) return []
     const data = (await res.json()) as { photos?: PexelsPhoto[] }
@@ -150,7 +150,7 @@ async function unsplashPhotos(
     )}&per_page=20&orientation=${ori}&content_filter=high`
     const res = await fetch(url, {
       headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
-      next: { revalidate: 3600 },
+      next: { revalidate: 86_400 },
     })
     if (!res.ok) return []
     const data = (await res.json()) as { results?: UnsplashPhoto[] }
@@ -186,7 +186,7 @@ async function coverrVideos(
   try {
     // Coverr public API (no key needed)
     const url = `https://api.coverr.co/videos?query=${encodeURIComponent(query)}&page_size=20`
-    const res = await fetch(url, { next: { revalidate: 3600 } })
+    const res = await fetch(url, { next: { revalidate: 86_400 } })
     if (!res.ok) return []
     const data = (await res.json()) as { hits?: CoverrVideo[] }
     const results: StockResult[] = []
