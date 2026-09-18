@@ -68,12 +68,15 @@ export interface ProductionProviders {
   upload: (path: string, buffer: Buffer, contentType: string) => Promise<string>
 }
 
-// Voix checkpointée en base64 jusqu'à 20 Mo (borne PostgREST/Supabase pour
-// un payload RPC jsonb) : les narrations longues (>5 Mo) SONT aussi sauvegardées —
-// une interruption après synthèse ne régénère JAMAIS la voix. Au-delà de 20 Mo
-// (audio ~15 min, hors bornes produit) : checkpoint sauté, re-synthèse possible
-// bornée par max_attempts, tracée.
+// Voix checkpointée en base64 — PLUS AUCUNE TAILLE EXCLUE :
+//   * ≤ 20 Mo (b64) : bloc unique `voice_b64` (un seul RPC) ;
+//   * > 20 Mo : DÉCOUPE en morceaux `voice_b64:{i}` (~12 Mo chacun, sous la
+//     limite de payload RPC), reassemblés à la reprise — le RPC de checkpoint
+//     MERGE le jsonb (migration v10), donc chaque morceau persiste sans écraser
+//     l'acquis. Une interruption après synthèse ne régénère JAMAIS la voix,
+//     quelle que soit sa taille.
 const MAX_VOICE_B64 = 20 * 1024 * 1024
+const VOICE_CHUNK_B64 = 12 * 1024 * 1024
 
 function defaultProviders(input: ProductionJobInput): ProductionProviders {
   return {
@@ -147,7 +150,7 @@ export async function executeProductionStep(
   if (input.step === 'voice') {
     const scriptData = sanitizeScriptData(input.previousData.script)
     if (!scriptData?.narration) throw new Error('Script requis pour la narration')
-    const voiceUrl = await resolveVoiceUrl(input, step, providers, scriptData.narration)
+    const voiceUrl = await resolveVoiceUrl(input, done, hooks, step, providers, scriptData.narration)
     return { url: voiceUrl }
   }
 
@@ -180,29 +183,70 @@ export async function executeProductionStep(
       }
     }
     if (clips.length === 0) throw new Error('Aucune scene resolue (IA et stock indisponibles) — video annulee, aucun autre cout engage')
-    const voiceUrl = await resolveVoiceUrl(input, step, providers, script.narration)
+    const voiceUrl = await resolveVoiceUrl(input, done, hooks, step, providers, script.narration)
     return runAssembly(input, step, providers, { script, clips, voiceUrl, musicUrl: music ?? '' })
   }
 
   throw new Error(`Etape non durable : ${input.step}`)
 }
 
-/** Voix : le buffer est checkpointé en base64 — un crash entre synthèse et
- *  upload ne RE-SYNTHÉTISE pas (pas de second débit voix). */
+/** Voix : le buffer est checkpointé en base64 (bloc ≤20 Mo, sinon morceaux
+ *  ~12 Mo) — un crash entre synthèse et upload ne RE-SYNTHÉTISE pas, quelle
+ *  que soit la taille. */
 async function resolveVoiceUrl(
   input: ProductionJobInput,
+  done: Record<string, unknown>,
+  hooks: ProductionJobHooks,
   step: Stepper,
   providers: ProductionProviders,
   narration: string
 ): Promise<string> {
   return step('voice_url', async () => {
-    const b64 = await step('voice_b64', async () => {
-      const buf = await providers.voice(narration, resolveVoiceProviderId(input.voice))
-      const encoded = Buffer.from(buf).toString('base64')
-      return encoded.length > MAX_VOICE_B64 ? null : encoded
-    })
+    const b64 = await voiceB64Checkpointed(done, hooks, step, providers, narration, input.voice)
     return providers.upload(`production/${input.userId}/${input.requestKey}.mp3`, b64 ? Buffer.from(b64, 'base64') : Buffer.alloc(0), 'audio/mpeg')
   })
+}
+
+/** Retourne la voix en base64 : depuis le checkpoint (bloc ou morceaux
+ *  reassemblés) SANS rappeler le fournisseur, sinon synthétise UNE fois puis
+ *  persiste tout (bloc unique ou découpe). */
+async function voiceB64Checkpointed(
+  done: Record<string, unknown>,
+  hooks: ProductionJobHooks,
+  step: Stepper,
+  providers: ProductionProviders,
+  narration: string,
+  voice: string | null
+): Promise<string | null> {
+  // Cache bloc unique (voix ≤20 Mo).
+  if (typeof done.voice_b64 === 'string') return done.voice_b64
+  // Cache morceaux (voix >20 Mo) : réassemblage SANS synthèse.
+  const parts = typeof done.voice_b64_parts === 'number' ? done.voice_b64_parts : 0
+  if (parts > 0) {
+    let b64 = ''
+    for (let i = 0; i < parts; i++) {
+      const part = done[`voice_b64:${i}`]
+      if (typeof part !== 'string') throw new Error(`checkpoint voix corrompu (morceau ${i} manquant)`)
+      b64 += part
+    }
+    return b64
+  }
+
+  await hooks.heartbeat?.()
+  const buf = await providers.voice(narration, resolveVoiceProviderId(voice))
+  const encoded = Buffer.from(buf).toString('base64')
+  if (encoded.length <= MAX_VOICE_B64) {
+    await step('voice_b64', async () => encoded)
+    return encoded
+  }
+  // >20 Mo : découpe — CHAQUE morceau tient dans un RPC (merge jsonb côté SQL).
+  const chunks: string[] = []
+  for (let i = 0; i < encoded.length; i += VOICE_CHUNK_B64) chunks.push(encoded.slice(i, i + VOICE_CHUNK_B64))
+  for (let i = 0; i < chunks.length; i++) {
+    await step(`voice_b64:${i}`, async () => chunks[i])
+  }
+  await step('voice_b64_parts', async () => chunks.length)
+  return encoded
 }
 
 async function runAssembly(

@@ -22,6 +22,7 @@
 //  10. ANNULATION : queued → cancelled + place libérée ATOMIQUEMENT, plus
 //      jamais claimable, re-cancel no-op
 //  11. ANNULATION EN VOL : processing sain → libérée, jamais reprise worker
+//  12. CHECKPOINT MERGE jsonb : morceaux successifs cumulés (voix >20 Mo)
 //
 //   DATABASE_URL_LOCAL=postgres://… node scripts/test-migration-local.mjs
 // -----------------------------------------------------------------------------
@@ -293,6 +294,26 @@ console.log('✓ migration v10 appliquée (search_path sutra, backfill exécuté
   const reclaim = await q('select id from claim_video_jobs($1, 10, 600)', ['worker-late'])
   assert.equal(reclaim.rows.find((r) => r.id === job.rows[0].id), undefined, 'jamais reprise par le worker')
   console.log('✓ annulation en vol : place libérée, tâche jamais reprise')
+}
+
+// --- 12. Checkpoint MERGE jsonb : gros payloads par morceaux -------------------
+{
+  const user = randomUUID()
+  const key = `merge-${randomUUID()}`
+  const job = await q(
+    "insert into video_jobs (user_id, kind, idempotency_key) values ($1,'production',$2) returning id",
+    [user, key]
+  )
+  await q("update video_jobs set status='processing', locked_by='w1', lease_until=now()+interval '10 min' where id=$1", [job.rows[0].id])
+  // Deux checkpoints successifs à clés DIFFÉRENTES (morceaux voix >20 Mo) :
+  // le second ne doit PAS écraser le premier.
+  await q('select checkpoint_video_job($1,\'w1\',$2,null)', [job.rows[0].id, JSON.stringify({ 'voice_b64:0': 'AAAA' })])
+  await q('select checkpoint_video_job($1,\'w1\',$2,null)', [job.rows[0].id, JSON.stringify({ 'voice_b64:1': 'BBBB', 'voice_b64_parts': 2 })])
+  const cp = await q('select progress from video_jobs where id=$1', [job.rows[0].id])
+  assert.equal(cp.rows[0].progress['voice_b64:0'], 'AAAA', 'premier morceau PRESERVÉ (merge, pas remplacement)')
+  assert.equal(cp.rows[0].progress['voice_b64:1'], 'BBBB')
+  assert.equal(cp.rows[0].progress.voice_b64_parts, 2)
+  console.log('✓ checkpoint MERGE : morceaux successifs cumulés sans écrasement')
 }
 
 await pool.end()

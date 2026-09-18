@@ -184,3 +184,47 @@ test('VOIX >5 Mo : buffer checkpointé — interruption ne régénère PAS la vo
   assert.equal(uploadCalls, 2, 'upload retenté (gratuit)')
   console.log('✓ voix 7 Mo : checkpointée et jamais resynthétisée après interruption')
 })
+
+// --- VOIX >20 Mo : découpe en morceaux (merge jsonb côté RPC) ------------------
+test('VOIX 24 Mo : morceaux checkpointés — interruption ne régénère PAS', async () => {
+  let voiceCalls = 0, uploadCalls = 0
+  let failUploadOnce = true
+  // 24 Mo de voix → 32 Mo en base64 : au-dessus du bloc unique (20 Mo) → 3 morceaux de ~12 Mo.
+  const bigVoice = new Uint8Array(24 * 1024 * 1024).fill(66)
+  const providers: ProductionProviders = {
+    script: async () => { throw new Error('inutilise ici') },
+    visual: async () => null,
+    voice: async () => { voiceCalls++; return bigVoice.slice().buffer as ArrayBuffer },
+    music: async () => null,
+    assemble: async () => { throw new Error('inutilise ici') },
+    upload: async () => {
+      uploadCalls++
+      if (failUploadOnce) throw new Error('crash avant upload')
+      return 'https://storage.test/voice-geante.mp3'
+    },
+  }
+  const input: ProductionJobInput = {
+    step: 'voice', userId: 'u', userEmail: null, userPlan: 'empire', genPlan: 'empire',
+    qualityCap: '1080p', mediaFormat: '16:9', idea: 'i', template: null, format: null,
+    voice: null, musicStyle: null, tone: null,
+    previousData: { script: { narration: 'narration tres longue', scenes: [] } },
+    brandKit: null, requestKey: 'req-geant',
+  }
+  const steps: Steps = {}
+  const track = { onStepResolved: async (k: string, v: unknown) => { steps[k] = v } }
+  const run1 = await run(() => executeProductionStep(input, { steps }, track, providers))
+  assert.equal(run1.ok, false)
+  assert.match(run1.error, /crash avant upload/)
+  assert.equal(steps.voice_b64, undefined, 'pas de bloc unique >20 Mo')
+  assert.equal(steps.voice_b64_parts, 3, 'decoupe en 3 morceaux (b64 = 32 Mo)')
+  const part0 = steps['voice_b64:0'] as string
+  const part1 = steps['voice_b64:1'] as string
+  assert.ok(part0.length <= 12 * 1024 * 1024 + 4, 'chaque morceau <= ~12 Mo (payload RPC)')
+
+  failUploadOnce = false
+  const resumed = await executeProductionStep(input, { steps: { ...steps } }, {}, providers) as { url: string }
+  assert.equal(resumed.url, 'https://storage.test/voice-geante.mp3')
+  assert.equal(voiceCalls, 1, 'voix 24 Mo : UNE SEULE synthèse au total (morceaux réutilisés)')
+  assert.equal(uploadCalls, 2, 'upload retenté (gratuit)')
+  console.log('✓ voix 24 Mo : 3 morceaux checkpointés, jamais resynthétisée après interruption')
+})

@@ -271,13 +271,17 @@ as $$
 $$;
 
 -- Checkpoint de progression (reprise sans double génération).
+-- MERGE jsonb (||) et non remplacement : permet de checkpointer de GROSSES
+-- charges par morceaux (ex. voix >20 Mo découpée en clés voice_b64:N, chaque
+-- appel RPC restant sous la limite de payload) sans écraser l'acquis précédent.
+-- Les appelants qui envoient l'objet complet restent corrects (merge idempotent).
 create or replace function checkpoint_video_job(p_job_id uuid, p_worker text, p_progress jsonb, p_provider_job_ids jsonb)
 returns void
 language sql
 as $$
   update video_jobs
-     set progress = coalesce(p_progress, progress),
-         provider_job_ids = coalesce(p_provider_job_ids, provider_job_ids),
+     set progress = progress || coalesce(p_progress, '{}'::jsonb),
+         provider_job_ids = provider_job_ids || coalesce(p_provider_job_ids, '{}'::jsonb),
          updated_at = now()
    where id = p_job_id
      and locked_by = p_worker
