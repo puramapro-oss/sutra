@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     if (!videoRow) return NextResponse.json({ error: 'Erreur creation video' }, { status: 500 })
     const videoId = videoRow.id
     const scriptStart = Date.now()
-    const script: ScriptData = await generateScript({ topic, niche: niche ?? 'general', style: style ?? 'dynamique', format, duration: '60-90 secondes' })
+    const script: ScriptData = await generateScript({ topic, niche: niche ?? 'general', style: style ?? 'dynamique', format, duration: '60-90 secondes' }, user.id)
     await logApiCall(user.id, 'claude', 'generateScript', 'success', Date.now() - scriptStart)
     await serviceClient.from('videos').update({ title: script.title, description: script.description, tags: script.tags, script_data: script }).eq('id', videoId)
     const selectedVoiceId = voice_id ?? 'EXAVITQu4vr4xnSDxMaL'
