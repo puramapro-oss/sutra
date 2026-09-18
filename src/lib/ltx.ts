@@ -185,6 +185,7 @@ export async function generateVideoSmart(
       const wan = await generateWanVideoWithTracking({
         prompt,
         quality,
+        format,
         duration,
         userEmail,
         track,
@@ -207,11 +208,20 @@ export async function generateVideoSmart(
     }
   }
 
-  // LTX path — circuit breaker bypass → WAN fallback si LTX unhealthy.
+  const fallbackPreservesIntent =
+    !options.imageUri && !options.lastFrameUri && !options.cameraMotion
+
+  // Never hide the loss of a reference image, end frame or camera constraint.
   if (!isLtxHealthy()) {
+    if (!fallbackPreservesIntent) {
+      throw new Error(
+        'LTX indisponible : fallback WAN refuse car il perdrait une reference ou une contrainte camera',
+      )
+    }
     return generateWanVideoWithTracking({
       prompt,
       quality,
+      format,
       duration,
       userEmail,
       track,
@@ -258,10 +268,23 @@ export async function generateVideoSmart(
     return { videoBuffer, engine, model: ltxModel, duration, resolution }
   } catch (err) {
     recordLtxFailure()
-    // V7.1 — Fallback automatique WAN 2.2 avec traçage raison
+    if (!fallbackPreservesIntent) {
+      await logVideoGeneration({
+        ...track,
+        engineUsed: 'ltx',
+        modelUsed: model,
+        fallbackTriggered: false,
+        fallbackReason: 'fallback_would_lose_constraints',
+        durationMs: Date.now() - start,
+        success: false,
+        errorMessage: err instanceof Error ? err.message : String(err),
+      })
+      throw err
+    }
     return generateWanVideoWithTracking({
       prompt,
       quality,
+      format,
       duration,
       userEmail,
       track,
