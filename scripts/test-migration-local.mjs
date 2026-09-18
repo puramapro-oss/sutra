@@ -19,6 +19,9 @@
 //   5. reprise après bail expiré
 //   6. claim par clé : ciblé, exclusif, borné par tentatives
 //   7. checkpoint + heartbeat + idempotence UNIQUE
+//  10. ANNULATION : queued → cancelled + place libérée ATOMIQUEMENT, plus
+//      jamais claimable, re-cancel no-op
+//  11. ANNULATION EN VOL : processing sain → libérée, jamais reprise worker
 //
 //   DATABASE_URL_LOCAL=postgres://… node scripts/test-migration-local.mjs
 // -----------------------------------------------------------------------------
@@ -246,6 +249,50 @@ console.log('✓ migration v10 appliquée (search_path sutra, backfill exécuté
     'idempotency_key UNIQUE refuse le doublon'
   )
   console.log('✓ checkpoint (reprise sans régénérer) + heartbeat + idempotence UNIQUE')
+}
+
+// --- 10. Annulation (queued) : jamais re-claimable + place libérée -------------
+{
+  const user = randomUUID()
+  await q('select reserve_video_quota($1, 5)', [user])
+  const key = `cancel-${randomUUID()}`
+  const job = await q(
+    "insert into video_jobs (user_id, kind, idempotency_key) values ($1,'production',$2) returning id",
+    [user, key]
+  )
+  const c1 = await q('select cancel_video_job($1) as ok', [key])
+  assert.equal(c1.rows[0].ok, true, 'annulation d\'une tâche queued')
+  const st = await q('select status from video_jobs where id=$1', [job.rows[0].id])
+  assert.equal(st.rows[0].status, 'cancelled')
+  const counter = await q('select reserved, released from video_quota_counters where user_id=$1', [user])
+  assert.equal(counter.rows[0].reserved, 0, 'place réservée libérée dans la MÊME transaction')
+  assert.equal(counter.rows[0].released, 1)
+  const c2 = await q("select id from claim_video_job_by_key($1,'w',600)", [key])
+  assert.equal(c2.rows.length, 0, 'une tâche annulée n\'est JAMAIS claimable')
+  const reclaim = await q('select id from claim_video_jobs($1, 10, 600)', ['worker-late'])
+  assert.equal(reclaim.rows.find((r) => r.id === job.rows[0].id), undefined, 'le worker non plus')
+  const c3 = await q('select cancel_video_job($1) as ok', [key])
+  assert.equal(c3.rows[0].ok, false, 're-cancel = no-op')
+  console.log('✓ annulation (queued) : cancelled + place libérée atomiquement, jamais re-claimable')
+}
+
+// --- 11. Annulation en vol (processing sain) -----------------------------------
+{
+  const user = randomUUID()
+  await q('select reserve_video_quota($1, 5)', [user])
+  const key = `cancel-${randomUUID()}`
+  const job = await q(
+    "insert into video_jobs (user_id, kind, idempotency_key) values ($1,'production',$2) returning id",
+    [user, key]
+  )
+  await q("update video_jobs set status='processing', locked_by='inline', lease_until=now()+interval '5 min' where id=$1", [job.rows[0].id])
+  const c = await q('select cancel_video_job($1) as ok', [key])
+  assert.equal(c.rows[0].ok, true, 'une tâche processing saine peut être annulée')
+  const counter = await q('select reserved, released from video_quota_counters where user_id=$1', [user])
+  assert.equal(counter.rows[0].reserved, 0, 'place libérée')
+  const reclaim = await q('select id from claim_video_jobs($1, 10, 600)', ['worker-late'])
+  assert.equal(reclaim.rows.find((r) => r.id === job.rows[0].id), undefined, 'jamais reprise par le worker')
+  console.log('✓ annulation en vol : place libérée, tâche jamais reprise')
 }
 
 await pool.end()

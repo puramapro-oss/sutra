@@ -7,9 +7,11 @@ import type { ScriptData } from '@/types'
 // -----------------------------------------------------------------------------
 
 // Validation stricte des entrées — formats limités aux 3 ratios réellement
-// supportés par la chaîne, étapes connues uniquement.
+// supportés par la chaîne, étapes connues uniquement. `requestId` rend la
+// requête IDEMPOTENTE : un retry client reprend la MÊME tâche durable
+// (résultat checkpointé renvoyé tel quel) au lieu de payer deux fois.
 export const productionSchema = z.object({
-  step: z.enum(['script', 'video', 'voice', 'music', 'assembly', 'thumbnail', 'all']),
+  step: z.enum(['script', 'video', 'voice', 'music', 'assembly', 'thumbnail', 'all', 'cancel']),
   idea: z.string().min(1, 'idee requise').max(500),
   template: z.string().optional(),
   format: z.enum(['16:9', '9:16', '1:1']).optional(),
@@ -18,6 +20,9 @@ export const productionSchema = z.object({
   musicStyle: z.string().max(120).optional(),
   tone: z.string().max(120).optional(),
   previousData: z.unknown().optional(),
+  requestId: z.string().uuid('requestId doit etre un UUID').optional(),
+  /** Annulation : étape ciblée (le client sait laquelle est en vol). */
+  targetStep: z.enum(['script', 'video', 'voice', 'music', 'assembly', 'all']).optional(),
 })
 
 // Bornes anti-dépense sur les données renvoyées par le client (audit #8) :

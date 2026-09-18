@@ -225,6 +225,38 @@ begin
 end;
 $$;
 
+-- Annulation utilisateur : la tâche (queued ou processing) passe à
+-- 'cancelled' — plus JAMAIS claimable — et sa place de quota réservée est
+-- libérée dans la MÊME transaction (aucune place réservée orpheline).
+-- Retourne false si la tâche n'existe pas / est déjà terminée.
+create or replace function cancel_video_job(p_key text)
+returns boolean
+language plpgsql
+as $$
+declare
+  v_job video_jobs;
+begin
+  select * into v_job
+    from video_jobs
+   where idempotency_key = p_key
+     and status in ('queued', 'processing')
+   for update;
+
+  if v_job.id is null then
+    return false;
+  end if;
+
+  update video_jobs
+     set status = 'cancelled',
+         lease_until = null,
+         updated_at = now()
+   where id = v_job.id;
+
+  perform release_video_quota(v_job.user_id);
+  return true;
+end;
+$$;
+
 -- Renouvellement du bail (heartbeat d'un worker vivant sur une tâche longue).
 create or replace function heartbeat_video_job(p_job_id uuid, p_worker text, p_lease_seconds int)
 returns void

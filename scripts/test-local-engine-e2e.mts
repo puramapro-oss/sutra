@@ -75,6 +75,7 @@ interface FfprobeStream {
   width?: number
   height?: number
   duration?: string
+  r_frame_rate?: string
 }
 interface FfprobeResult {
   streams: FfprobeStream[]
@@ -88,12 +89,14 @@ test('parcours local COMPLET : génération → fichier réel → mesures ffprob
 
   // Propriétaire, plan empire : SANS le moteur local ce serait du LTX payant.
   // La garde anti-externe prouve que le routage est resté 100 % local.
+  const t0 = Date.now()
   const result = await generateVideoSmart(
     'un phare dans la tempete, cinematic',
     'empire',
     OWNER,
     { format: '16:9', quality: '720p', duration: 6 }
   )
+  const wallMs = Date.now() - t0
 
   assert.equal(result.model, 'local-m4max', 'la génération vient du moteur local')
   assert.ok(result.videoBuffer.byteLength > 10_000, 'fichier vidéo substantiel')
@@ -133,7 +136,13 @@ test('parcours local COMPLET : génération → fichier réel → mesures ffprob
       `désynchronisation A/V : vidéo ${vDur}s vs audio ${aDur}s`
     )
 
-    console.log(`✓ fichier local mesuré : ${video!.width}×${video!.height}, ${duration.toFixed(2)}s, h264+aac, A/V Δ=${Math.abs(vDur - aDur).toFixed(3)}s`)
+    // Rapport de provenance HONNÊTE : le « modèle » 'local-m4max' est le nom
+    // logique du ROUTEUR ; le PRODUCTEUR réel de ce fichier est le stub de
+    // test (ffmpeg testsrc2 + sine), PAS un modèle d'inférence IA.
+    const fps = video!.r_frame_rate ? Number(video!.r_frame_rate.split('/')[0]) / Number(video!.r_frame_rate.split('/')[1] || 1) : NaN
+    console.log(`✓ fichier local mesuré : natif ${video!.width}×${video!.height} @ ${fps.toFixed(0)} fps → final identique (aucun crop/montage dans ce parcours mono-clip), ${duration.toFixed(2)}s, h264+aac, A/V Δ=${Math.abs(vDur - aDur).toFixed(3)}s`)
+    console.log(`  temps de calcul (parcours complet POST+ffmpeg+téléchargement) : ${wallMs} ms`)
+    console.log('  génération IA réelle : NON — fichier de TEST produit par ffmpeg (stub), le moteur d\'inférence M4 Max reste à brancher/benchmarker')
     assertNoExternalCall()
   } finally {
     rmSync(outDir, { recursive: true, force: true })

@@ -1,352 +1,263 @@
 import { NextResponse } from 'next/server'
-import { z } from 'zod'
+import { randomUUID } from 'node:crypto'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
-import { reserveQuota, completeQuota, releaseQuota } from '@/lib/video-queue'
-import { generateScript } from '@/lib/claude'
-import { generateVisualWithFallback, generateMusicWithFallback, generateVoiceWithFallback, type VisualResult } from '@/lib/fallbacks'
-import { searchVideos, type MediaFormat } from '@/lib/pexels'
+import {
+  reserveQuota, completeQuota, releaseQuota,
+  enqueueJob, claimJobByKey, getJobByKey, cancelJobByKey, checkpoint, finishJob, heartbeat,
+} from '@/lib/video-queue'
+import { executeProductionStep, type ProductionJobInput, type ProductionStep } from '@/lib/production-pipeline'
 import { clampQualityToPlan } from '@/lib/ltx-utils'
-import { resolveVoiceProviderId } from '@/lib/constants'
-import { uploadToStorage } from '@/lib/storage'
-import { assembleFinalVideo, generateSubtitlesFromScript, actualQualityFor, type AssembleClip } from '@/lib/shotstack'
+import { type AssembleClip } from '@/lib/shotstack'
 import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
-import { productionSchema, TEMPLATE_CONFIGS, sanitizeScriptData, MAX_SCENES } from '@/lib/production-schema'
+import { productionSchema, sanitizeScriptData, MAX_SCENES } from '@/lib/production-schema'
 import type { Plan, Profile, ScriptData } from '@/types'
 
 // Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
 export const maxDuration = 300
-/**
- * Réservation ATOMIQUE (migration v10) pour toute étape à coût fournisseur.
- * Fail-closed : erreur RPC = refus. Settlement en fin d'étape / catch.
- */
-const quota = { reserved: false }
 
-async function guardQuota(profile: Record<string, unknown>): Promise<Response | null> {
-  const reserved = await reserveQuota(profile as unknown as Profile)
-  if (!reserved) return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
-  quota.reserved = true
+/** Étapes à coût fournisseur : exécutées comme TÂCHES DURABLES (reprise sans
+ *  double génération ni double débit — checkpoint par résultat, audit #10/#14). */
+const COST_STEPS = new Set<ProductionStep>(['script', 'video', 'voice', 'music', 'assembly', 'all'])
+
+const STEP_PROVIDER: Record<string, string> = {
+  script: 'claude', video: 'ltx', voice: 'elevenlabs', music: 'suno', assembly: 'shotstack', all: 'multi',
+}
+
+/** Validations AVANT réservation de quota : une erreur client ne doit jamais
+ *  consommer de place ni partir en worker-retry (400 immédiat). */
+function validateStepInputs(step: string, previousData: Record<string, unknown>): string | null {
+  if (step === 'video' || step === 'voice') {
+    const scriptData = sanitizeScriptData(previousData.script)
+    if (step === 'video' && !scriptData?.scenes?.length) return 'Script requis pour generer les scenes'
+    if (step === 'voice' && !scriptData?.narration) return 'Script requis pour la narration'
+  }
+  if (step === 'assembly') {
+    const videoData = previousData.video as Array<Partial<AssembleClip>> | undefined
+    const voiceData = previousData.voice as { url?: string } | undefined
+    if (!videoData?.length || !voiceData?.url) return 'Video et voix requises pour l\'assemblage'
+  }
   return null
 }
 
 export async function POST(req: Request) {
   let authUserId: string | null = null
+  let jobId: string | null = null
+  let quotaReserved = false
   try {
     const supabase = await createServerClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
-
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
-    }
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
     authUserId = user.id
 
-    const body = await req.json()
-    const parsed = productionSchema.safeParse(body)
+    const parsed = productionSchema.safeParse(await req.json())
     if (!parsed.success) {
       return NextResponse.json(
         { error: 'Donnees invalides', details: parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`) },
         { status: 400 }
       )
     }
-    const { step, idea, template, format, engine, voice, musicStyle, tone } = parsed.data
+    const { step, idea, template, format, engine, voice, musicStyle, tone, requestId } = parsed.data
     const previousData = (parsed.data.previousData ?? {}) as Record<string, unknown>
 
-    const serviceClient = createServiceClient()
-    const { data: profile } = await serviceClient
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-
-    if (!profile) {
-      return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
+    // Annulation : tâche plus jamais claimable + place réservée libérée (RPC).
+    if (step === 'cancel') {
+      const target = parsed.data.targetStep
+      if (!requestId || !target) {
+        return NextResponse.json({ error: 'requestId et targetStep requis pour annuler une etape' }, { status: 400 })
+      }
+      const cancelled = await cancelJobByKey(`production-${user.id}-${target}-${requestId}`)
+      return NextResponse.json({ data: { cancelled } })
     }
+
+    if (step === 'thumbnail') {
+      const scriptData = sanitizeScriptData(previousData.script)
+      const thumbnailPrompt = scriptData?.thumbnail_prompt ?? `cinematic thumbnail for ${idea}`
+      return NextResponse.json({
+        data: { url: `https://image.pollinations.ai/prompt/${encodeURIComponent(thumbnailPrompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true` },
+      })
+    }
+
+    if (!COST_STEPS.has(step as ProductionStep)) {
+      return NextResponse.json({ error: 'Etape inconnue' }, { status: 400 })
+    }
+    const invalid = validateStepInputs(step, previousData)
+    if (invalid) return NextResponse.json({ error: invalid }, { status: 400 })
+
+    const serviceClient = createServiceClient()
+    const { data: profile } = await serviceClient.from('profiles').select('*').eq('id', user.id).single()
+    if (!profile) return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
 
     const userPlan = (profile as Profile).plan ?? 'free'
     // Plafond qualité par plan appliqué AVANT tout appel payant (audit #16).
     const qualityCap = clampQualityToPlan(profile.preferred_quality ?? '1080p', userPlan, user.email)
-    const mediaFormat = (['9:16', '16:9', '1:1'].includes(format ?? '') ? format : '16:9') as MediaFormat
+    const mediaFormat = (['9:16', '16:9', '1:1'].includes(format ?? '') ? format : '16:9') as ProductionJobInput['mediaFormat']
     const genPlan: Plan = engine === 'wan-classic' ? 'free' : userPlan
 
-    // Step-by-step production
-    if (step === 'script') {
-      const denied = await guardQuota(profile)
-      if (denied) return denied
-      const config = TEMPLATE_CONFIGS[template ?? ''] ?? TEMPLATE_CONFIGS.youtube
-      const script = await generateScript({
-        topic: idea,
-        niche: 'general',
-        style: tone ?? 'professionnel',
-        format: format ?? '16:9',
-        duration: config.durationHint,
-      })
-      await logApiCall(user.id, 'claude', 'production-script', 'success')
-      await completeQuota(user.id)
-      quota.reserved = false
-      return NextResponse.json({ data: script })
+    const requestKey = requestId ?? randomUUID()
+    const jobKey = `production-${user.id}-${step}-${requestKey}`
+
+    // Idempotence de RETRY : tâche déjà faite → résultat checkpointé renvoyé
+    // tel quel (AUCUN nouvel appel fournisseur, AUCUNE nouvelle réservation).
+    const existing = await getJobByKey(jobKey)
+    if (existing?.status === 'done') {
+      const cached = (existing.progress as { result?: unknown } | null)?.result
+      if (cached !== undefined) return NextResponse.json({ data: cached })
+    }
+    if (existing?.status === 'processing') {
+      return NextResponse.json({ error: 'Etape deja en cours — reessaie dans un instant' }, { status: 409 })
+    }
+    if (existing?.status === 'cancelled') {
+      return NextResponse.json({ error: 'Etape annulee — relance avec un nouveau requestId' }, { status: 409 })
     }
 
-    if (step === 'video') {
-      const denied = await guardQuota(profile)
-      if (denied) return denied
+    // Réservation ATOMIQUE (migration v10) — fail-closed.
+    if (!(await reserveQuota(profile as unknown as Profile))) {
+      return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
+    }
+    quotaReserved = true
 
-      const scriptData = sanitizeScriptData(previousData?.script)
-      if (!scriptData?.scenes?.length) {
-        await releaseQuota(user.id)
-        quota.reserved = false
-        return NextResponse.json({ error: 'Script requis pour generer les scenes' }, { status: 400 })
-      }
-
-      // TOUTES les scènes sont résolues dans l'ordre (audit #5) : une scène
-      // use_stock part en recherche stock, pas en filtre qui la supprime.
-      const sceneUrls = await Promise.all(
-        scriptData.scenes.slice(0, MAX_SCENES).map(async (scene): Promise<VisualResult | null> => {
-          const duration = Math.max(1, scene.duration_seconds || 5)
-          if (scene.use_stock) {
-            const stock = await searchVideos(scene.visual_prompt, 1, { format: mediaFormat })
-            const best = stock[0]
-            if (!best) return null
-            return {
-              url: best.url,
-              engine: 'wan-classic',
-              source: 'pexels-stock',
-              stockMeta: { id: best.id, author: best.author, authorUrl: best.authorUrl, sourcePage: best.sourcePage, width: best.width, height: best.height },
-            }
-          }
-          return generateVisualWithFallback(scene.visual_prompt, qualityCap, user.email, genPlan, mediaFormat, false, { userId: user.id, duration })
-        })
-      )
-      const resolved = sceneUrls.filter(Boolean) as VisualResult[]
-      await logApiCall(user.id, 'ltx', 'production-video', 'success')
-      await completeQuota(user.id)
-      quota.reserved = false
-      return NextResponse.json({ data: resolved })
+    const input: ProductionJobInput = {
+      step: step as ProductionStep,
+      userId: user.id,
+      userEmail: user.email ?? null,
+      userPlan,
+      genPlan,
+      qualityCap,
+      mediaFormat,
+      idea,
+      template: template ?? null,
+      format: format ?? null,
+      voice: voice ?? null,
+      musicStyle: musicStyle ?? null,
+      tone: tone ?? null,
+      previousData,
+      brandKit: (profile as Profile).brand_kit ?? null,
+      requestKey,
     }
 
-    if (step === 'voice') {
-      const denied = await guardQuota(profile)
-      if (denied) return denied
-
-      const scriptData = sanitizeScriptData(previousData?.script)
-      if (!scriptData?.narration) {
-        await releaseQuota(user.id)
-        quota.reserved = false
-        return NextResponse.json({ error: 'Script requis pour la narration' }, { status: 400 })
-      }
-
-      // Alias voix résolu vers un ID ElevenLabs réel (audit #18).
-      const voiceId = resolveVoiceProviderId(voice)
-      const voiceBuffer = await generateVoiceWithFallback(scriptData.narration, voiceId)
-      const voicePath = `production/${user.id}/${Date.now()}.mp3`
-      const voiceUrl = await uploadToStorage(voicePath, voiceBuffer, 'audio/mpeg')
-      await logApiCall(user.id, 'elevenlabs', 'production-voice', 'success')
-      await completeQuota(user.id)
-      quota.reserved = false
-      return NextResponse.json({ data: { url: voiceUrl } })
+    // Tâche durable AVANT tout appel fournisseur, claim ciblé inline.
+    await enqueueJob({ videoId: null, userId: user.id, kind: 'production', payload: { input }, idempotencyKey: jobKey })
+    const job = await claimJobByKey(jobKey, `inline-${requestKey}`, 600)
+    if (!job) {
+      await releaseQuota(user.id).catch(() => {})
+      quotaReserved = false
+      return NextResponse.json({ error: 'Etape deja en cours — reessaie dans un instant' }, { status: 409 })
     }
+    jobId = job.id
+    const worker = `inline-${requestKey}`
+    const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
 
-    if (step === 'music') {
-      const denied = await guardQuota(profile)
-      if (denied) return denied
+    const result = await executeProductionStep(input, { steps: stepsDone }, {
+      heartbeat: () => heartbeat(job.id, worker, 600),
+      onStepResolved: async (key, value) => {
+        stepsDone[key] = value
+        await checkpoint(job.id, worker, { steps: stepsDone })
+      },
+    })
 
-      const url = await generateMusicWithFallback(
-        `${musicStyle ?? 'cinematic'} background music for ${idea}`,
-        musicStyle ?? 'cinematic',
-        120
-      )
-      await logApiCall(user.id, 'suno', 'production-music', url ? 'success' : 'skipped')
-      await completeQuota(user.id)
-      quota.reserved = false
-      return NextResponse.json({ data: { url: url || null } })
-    }
-
-    if (step === 'assembly') {
-      const denied = await guardQuota(profile)
-      if (denied) return denied
-
-      const scriptData = sanitizeScriptData(previousData?.script)
-      const videoData = previousData?.video as Array<Partial<AssembleClip>> | undefined
-      const voiceData = previousData?.voice as { url: string } | undefined
-      const musicData = previousData?.music as { url: string } | undefined
-
-      if (!videoData?.length || !voiceData?.url) {
-        await releaseQuota(user.id)
-        quota.reserved = false
-        return NextResponse.json({ error: 'Video et voix requises pour l\'assemblage' }, { status: 400 })
-      }
-
-      const clips: AssembleClip[] = videoData.slice(0, MAX_SCENES).map((v) => ({
-        url: v.url!,
-        type: v.type === 'stock' ? 'stock' : 'ia',
-        kind: v.kind,
-        duration: v.duration,
-      }))
-      const subtitles = scriptData?.narration
-        ? generateSubtitlesFromScript(scriptData.narration, scriptData.scenes ?? [])
-        : []
-
-      const assembled = await assembleFinalVideo({
-        clips,
-        voiceUrl: voiceData.url,
-        musicUrl: musicData?.url ?? '',
-        musicVolume: 0.3,
-        subtitles,
-        transitions: 'fade',
-        format: format ?? '16:9',
-        quality: qualityCap,
-        brandKit: (profile as Profile).brand_kit ?? null,
-      })
-
-      // Save to videos table — qualité RÉELLE : le stage Shotstack plafonne à
-      // HD, une demande 4k rendue en HD n'est jamais annoncée 4k.
-      const actualQuality = actualQualityFor(qualityCap, assembled.outputQuality)
-      const { data: videoRow } = await serviceClient
-        .from('videos')
-        .insert({
-          user_id: user.id,
-          title: scriptData?.title ?? 'Production',
-          description: scriptData?.description ?? '',
-          video_url: assembled.url,
-          duration: assembled.duration,
-          format: format ?? '16:9',
-          quality: actualQuality,
-          status: 'ready',
-          tags: scriptData?.tags ?? [],
-          script_data: scriptData ?? null,
-        })
-        .select('id')
-        .single()
-
-      await logApiCall(user.id, 'shotstack', 'production-assembly', 'success')
-      await sendNotification(user.id, {
-        type: 'success',
-        title: 'Production terminee',
-        message: `Ta video "${scriptData?.title ?? 'Production'}" est prete !`,
-      })
-
-      await completeQuota(user.id)
-      quota.reserved = false
-      return NextResponse.json({ data: { url: assembled.url, videoId: videoRow?.id } })
-    }
-
-    if (step === 'thumbnail') {
-      const scriptData = sanitizeScriptData(previousData?.script)
-      const thumbnailPrompt = scriptData?.thumbnail_prompt ?? `cinematic thumbnail for ${idea}`
-      const thumbnailUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(thumbnailPrompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true`
-      return NextResponse.json({ data: { url: thumbnailUrl } })
-    }
-
-    // Generate ALL at once
-    if (step === 'all') {
-      const denied = await guardQuota(profile)
-      if (denied) return denied
-
-      const config = TEMPLATE_CONFIGS[template ?? ''] ?? TEMPLATE_CONFIGS.youtube
-
-      // 1. Script
-      const script = await generateScript({
-        topic: idea,
-        niche: 'general',
-        style: tone ?? 'professionnel',
-        format: format ?? '16:9',
-        duration: config.durationHint,
-      })
-
-      const voiceId = resolveVoiceProviderId(voice)
-      const requestedQuality = qualityCap
-
-      // 2. Parallel: voice, music, scenes — TOUTES les scènes dans l'ordre,
-      // stock résolu en stock (audit #5), durée portée par clip (audit #4).
-      const [voiceBuffer, musicUrl, sceneResults] = await Promise.all([
-        generateVoiceWithFallback(script.narration, voiceId),
-        generateMusicWithFallback(
-          `${musicStyle ?? 'cinematic'} background music for ${idea}`,
-          musicStyle ?? 'cinematic',
-          script.estimated_duration
-        ),
-        Promise.all(
-          script.scenes.slice(0, MAX_SCENES).map(async (scene): Promise<AssembleClip | null> => {
-            const duration = Math.max(1, scene.duration_seconds || 5)
-            if (scene.use_stock) {
-              const stock = await searchVideos(scene.visual_prompt, 1, { format: mediaFormat })
-              const best = stock[0]
-              if (!best) return null
-              return { url: best.url, type: 'stock', kind: 'video', duration: Math.max(duration, Math.min(best.duration || duration, 60)) }
-            }
-            const visual = await generateVisualWithFallback(scene.visual_prompt, requestedQuality, user.email, genPlan, mediaFormat, false, { userId: user.id, duration })
-            return {
-              url: visual.url,
-              type: visual.source === 'pexels-stock' ? 'stock' : 'ia',
-              kind: 'video',
-              duration,
-            }
-          })
-        ),
-      ])
-
-      // Upload voice
-      const voicePath = `production/${user.id}/${Date.now()}.mp3`
-      const voiceUrl = await uploadToStorage(voicePath, voiceBuffer, 'audio/mpeg')
-
-      // 3. Assembly — un clip stock (fallback Pexels) garde son type 'stock'
-      const clips = sceneResults.filter(Boolean) as AssembleClip[]
-      if (clips.length === 0) {
-        throw new Error('Aucune scene resolue (IA et stock indisponibles) — video annulee, aucun autre cout engage')
-      }
-      const subtitles = generateSubtitlesFromScript(script.narration, script.scenes)
-
-      const assembled = await assembleFinalVideo({
-        clips,
-        voiceUrl,
-        musicUrl: musicUrl || '',
-        musicVolume: 0.3,
-        subtitles,
-        transitions: 'fade',
-        format: format ?? '16:9',
-        quality: requestedQuality,
-        brandKit: (profile as Profile).brand_kit ?? null,
-      })
-
-      // 4. Thumbnail (image, jamais un MP4 dans une balise <img> — audit #18)
-      const thumbnailUrl = clips.find((c) => c.kind === 'photo')?.url
-        ?? `https://image.pollinations.ai/prompt/${encodeURIComponent(script.thumbnail_prompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true`
-
-      // Save — qualité réelle après plafonnement HD Shotstack
-      const actualQuality = actualQualityFor(requestedQuality, assembled.outputQuality)
-      await serviceClient.from('videos').insert({
-        user_id: user.id,
-        title: script.title,
-        description: script.description,
-        video_url: assembled.url,
-        thumbnail_url: thumbnailUrl,
-        duration: assembled.duration,
-        format: format ?? '16:9',
-        quality: actualQuality,
-        status: 'ready',
-        tags: script.tags,
-        script_data: script,
-      })
-
-      await logActivity(user.id, 'production_completed', `Production "${script.title}" terminee`)
-
-      await completeQuota(user.id)
-      quota.reserved = false
-      return NextResponse.json({
-        data: {
-          script,
-          video: clips,
-          voice: { url: voiceUrl },
-          music: { url: musicUrl || null },
-          assembly: { url: assembled.url },
-          thumbnail: { url: thumbnailUrl },
-        },
-      })
-    }
-
-    return NextResponse.json({ error: 'Etape inconnue' }, { status: 400 })
+    const finalData = await persistAndShape(step, result, stepsDone, input, serviceClient)
+    // Résultat final checkpointé : un retry du même requestId ne paie plus rien.
+    await checkpoint(job.id, worker, { steps: stepsDone, result: finalData })
+    await finishJob(job.id, 'done')
+    await completeQuota(user.id)
+    quotaReserved = false
+    await logApiCall(user.id, STEP_PROVIDER[step] ?? 'multi', `production-${step}`, 'success')
+    return NextResponse.json({ data: finalData })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
-    if (quota.reserved && authUserId) await releaseQuota(authUserId).catch(() => {})
+    if (jobId) {
+      // Tâche requeueée : le worker reprendra AVEC les checkpoints (les scènes
+      // déjà payées ne sont pas régénérées) ; épuisée → place libérée.
+      const { data: fresh } = await createServiceClient()
+        .from('video_jobs').select('attempts, max_attempts').eq('id', jobId).single()
+      const exhausted = (fresh?.attempts ?? 0) >= (fresh?.max_attempts ?? 3)
+      await finishJob(jobId, exhausted ? 'failed' : 'queued', message).catch(() => {})
+      if (exhausted) { await releaseQuota(authUserId!).catch(() => {}); quotaReserved = false }
+    } else if (quotaReserved && authUserId) {
+      await releaseQuota(authUserId).catch(() => {})
+    }
     return NextResponse.json({ error: message }, { status: 500 })
   }
+}
+
+/** Persistance finale (assembly/all → table videos) + mise en forme réponse,
+ *  formes strictement IDENTIQUES aux réponses historiques (contrat client). */
+async function persistAndShape(
+  step: string,
+  result: unknown,
+  stepsDone: Record<string, unknown>,
+  input: ProductionJobInput,
+  serviceClient: ReturnType<typeof createServiceClient>
+): Promise<unknown> {
+  if (step === 'assembly') {
+    const scriptData = sanitizeScriptData(input.previousData.script)
+    const assembled = result as { url: string; videoId: string | null; quality: string; duration: number }
+    const { data: videoRow } = await serviceClient.from('videos').insert({
+      user_id: input.userId,
+      title: scriptData?.title ?? 'Production',
+      description: scriptData?.description ?? '',
+      video_url: assembled.url,
+      duration: assembled.duration,
+      format: input.format ?? '16:9',
+      quality: assembled.quality,
+      status: 'ready',
+      tags: scriptData?.tags ?? [],
+      script_data: scriptData ?? null,
+    }).select('id').single()
+    await sendNotification(input.userId, {
+      type: 'success',
+      title: 'Production terminee',
+      message: `Ta video "${scriptData?.title ?? 'Production'}" est prete !`,
+    })
+    return { url: assembled.url, videoId: videoRow?.id }
+  }
+
+  if (step === 'all') {
+    const script = stepsDone.script as ScriptData
+    const clips: AssembleClip[] = []
+    for (let i = 0; i < MAX_SCENES; i++) {
+      const visual = stepsDone[`scene:${i}`] as { url: string; source: string } | undefined
+      if (!visual) break
+      const scene = script.scenes[i]
+      clips.push({
+        url: visual.url,
+        type: visual.source === 'pexels-stock' ? 'stock' : 'ia',
+        kind: 'video',
+        duration: Math.max(1, scene?.duration_seconds || 5),
+      })
+    }
+    const assembled = result as { url: string; quality: string; duration: number }
+    const voiceUrl = stepsDone.voice_url as string
+    const musicUrl = stepsDone.music as string | null
+    // Miniature : IMAGE uniquement (jamais un MP4 dans une balise <img>).
+    const thumbnailUrl = clips.find((c) => c.kind === 'photo')?.url
+      ?? `https://image.pollinations.ai/prompt/${encodeURIComponent(script.thumbnail_prompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true`
+    // La qualité RÉELLE (plafonnée renderer) est déjà calculée par le pipeline.
+    const actualQuality = assembled.quality
+    await serviceClient.from('videos').insert({
+      user_id: input.userId,
+      title: script.title,
+      description: script.description,
+      video_url: assembled.url,
+      thumbnail_url: thumbnailUrl,
+      duration: assembled.duration,
+      format: input.format ?? '16:9',
+      quality: actualQuality,
+      status: 'ready',
+      tags: script.tags,
+      script_data: script,
+    })
+    await logActivity(input.userId, 'production_completed', `Production "${script.title}" terminee`)
+    return {
+      script,
+      video: clips,
+      voice: { url: voiceUrl },
+      music: { url: musicUrl ?? null },
+      assembly: { url: assembled.url },
+      thumbnail: { url: thumbnailUrl },
+    }
+  }
+
+  return result
 }

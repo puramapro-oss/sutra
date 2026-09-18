@@ -58,6 +58,7 @@ const server = http.createServer(async (req, res) => {
       const duration = num_frames / (fps || 16)
       const name = `${randomUUID()}.mp4`
       const out = join(dir, name)
+      const t0 = Date.now()
       // Vraie vidéo + vraie piste audio : testsrc2 (h264) + sine 440 Hz (aac),
       // dimensions et durée EXACTES de la demande.
       await run('ffmpeg', [
@@ -68,8 +69,14 @@ const server = http.createServer(async (req, res) => {
         '-c:a', 'aac', '-shortest',
         out,
       ])
+      const computeMs = Date.now() - t0
       res.writeHead(200, { 'Content-Type': 'application/json' })
-      res.end(JSON.stringify({ video_url: `http://127.0.0.1:${port}/files/${name}` }))
+      res.end(JSON.stringify({
+        video_url: `http://127.0.0.1:${port}/files/${name}`,
+        // Provenance honnête : ce fichier vient de ffmpeg, PAS d'un modèle IA.
+        generator: 'ffmpeg-testsrc2+sine',
+        compute_ms: computeMs,
+      }))
     } catch (err) {
       res.writeHead(500, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify({ error: String(err) }))

@@ -144,6 +144,33 @@ export async function heartbeat(jobId: string, worker: string, leaseSeconds = 60
 }
 
 /**
+ * Lecture d'une tâche par clé d'idempotence — SANS claim : sert au cache
+ * (tâche done → résultat checkpointé renvoyé tel quel, zéro nouvel appel
+ * fournisseur) et à la détection « déjà en cours ».
+ */
+export async function getJobByKey(idempotencyKey: string): Promise<VideoJob | null> {
+  const supabase = createServiceClient()
+  const { data } = await supabase
+    .from('video_jobs')
+    .select('*')
+    .eq('idempotency_key', idempotencyKey)
+    .maybeSingle()
+  return (data as VideoJob | null) ?? null
+}
+
+/**
+ * Annulation utilisateur : la tâche n'est plus claimable ET la place de
+ * quota réservée est LIBÉRÉE atomiquement (côté Postgres) — jamais de place
+ * réservée orpheline après annulation.
+ */
+export async function cancelJobByKey(idempotencyKey: string): Promise<boolean> {
+  const supabase = createServiceClient()
+  const { data, error } = await supabase.rpc('cancel_video_job', { p_key: idempotencyKey })
+  if (error) throw new Error(`Annulation impossible : ${error.message}`)
+  return data === true
+}
+
+/**
  * Checkpoint de reprise : stocke les résultats partiels (scènes résolues,
 // IDs fournisseur) — un worker qui reprend ne régénère JAMAIS l'acquis.
  */

@@ -15,6 +15,7 @@ import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { claimJobs, checkpoint, finishJob, heartbeat, completeQuota, releaseQuota } from '@/lib/video-queue'
 import { executeCreateJob, type CreateJobInput, type CreateJobResume } from '@/lib/video-pipeline'
+import { executeProductionStep, type ProductionJobInput } from '@/lib/production-pipeline'
 import type { AssembleClip } from '@/lib/shotstack'
 
 export const maxDuration = 300
@@ -49,6 +50,30 @@ export async function GET(request: Request) {
 
   for (const job of jobs) {
     try {
+      if (job.kind === 'production') {
+        const input = (job.payload as { input?: ProductionJobInput }).input
+        if (!input?.step) {
+          await finishJob(job.id, 'failed', 'payload input production manquant')
+          await releaseQuota(job.user_id)
+          results.push({ jobId: job.id, status: 'failed', error: 'payload invalide' })
+          continue
+        }
+        const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
+        // Reprise : chaque clé de stepsDone court-circuite l'appel fournisseur
+        // correspondant — pas de double génération, pas de second débit.
+        await executeProductionStep(input, { steps: stepsDone }, {
+          heartbeat: () => heartbeat(job.id, worker, 600),
+          onStepResolved: async (key, value) => {
+            stepsDone[key] = value
+            await checkpoint(job.id, worker, { steps: stepsDone })
+          },
+        })
+        await finishJob(job.id, 'done')
+        await completeQuota(job.user_id)
+        results.push({ jobId: job.id, status: 'done' })
+        continue
+      }
+
       if (job.kind !== 'create') {
         await finishJob(job.id, 'failed', `kind non supporte par le worker : ${job.kind}`)
         results.push({ jobId: job.id, status: 'skipped_kind' })
