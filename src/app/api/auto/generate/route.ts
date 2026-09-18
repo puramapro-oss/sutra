@@ -39,6 +39,7 @@ export async function POST(req: Request) {
       memories: ctx.memories,
       recentVideos: ctx.recentVideos,
       topVideos: ctx.topVideos,
+      userId: user.id,
     })
 
     // 2. Insert video record (planning)
