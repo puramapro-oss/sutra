@@ -4,8 +4,9 @@ import { cached } from '@/lib/redis'
 // INSEE Sirene API — Vérification SIRET/SIREN pour comptes pros SUTRA.
 // Source of truth : STRIPE_CONNECT_KARMA_V4.md §36.1 + CLAUDE.md §36.1.
 //
-// Clé universelle Purama (active depuis 21/04/2026, portail-api.insee.fr) :
-//   INSEE_API_KEY=023ed173-7904-4893-bed1-7379043893fc
+// Clé : INSEE_API_KEY via .env.local (JAMAIS en dur dans le code — la clé
+// historiquement commitée ici a été retirée et doit être considérée comme
+// compromise : à révoquer/régénérer sur portail-api.insee.fr).
 //
 // Endpoint : GET https://api.insee.fr/api-sirene/3.11/siret/{siret}
 // Header   : X-INSEE-Api-Key-Integration: $INSEE_API_KEY

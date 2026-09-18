@@ -1,4 +1,8 @@
-const PEXELS_API_KEY = process.env.PEXELS_API_KEY ?? ''
+// Clé lue à l'appel (jamais capturée à l'import) — sans clé : liste vide
+// propre, sans aucun appel réseau.
+function pexelsApiKey(): string {
+  return process.env.PEXELS_API_KEY ?? ''
+}
 
 export type MediaFormat = '9:16' | '16:9' | '1:1'
 
@@ -104,7 +108,8 @@ export async function searchVideos(
     minHeight?: number
   } = {},
 ): Promise<PexelsVideoResult[]> {
-  if (!PEXELS_API_KEY || !query.trim()) return []
+  const apiKey = pexelsApiKey()
+  if (!apiKey || !query.trim()) return []
 
   const format = options.format ?? '16:9'
   const params = new URLSearchParams({
@@ -114,11 +119,14 @@ export async function searchVideos(
   })
 
   const res = await fetch(`https://api.pexels.com/v1/videos/search?${params}`, {
-    headers: { Authorization: PEXELS_API_KEY },
+    headers: { Authorization: apiKey },
     next: { revalidate: 86_400 },
   })
 
-  if (!res.ok) return []
+  if (!res.ok) {
+    console.warn(`[pexels] recherche videos: HTTP ${res.status} — resultats vides`)
+    return []
+  }
   const data = await res.json()
 
   return (data.videos ?? [])
@@ -150,7 +158,8 @@ export async function searchImages(
   perPage = 3,
   options: { format?: MediaFormat } = {},
 ): Promise<PexelsImageResult[]> {
-  if (!PEXELS_API_KEY || !query.trim()) return []
+  const apiKey = pexelsApiKey()
+  if (!apiKey || !query.trim()) return []
 
   const format = options.format ?? '16:9'
   const params = new URLSearchParams({
@@ -160,11 +169,14 @@ export async function searchImages(
   })
 
   const res = await fetch(`https://api.pexels.com/v1/search?${params}`, {
-    headers: { Authorization: PEXELS_API_KEY },
+    headers: { Authorization: apiKey },
     next: { revalidate: 86_400 },
   })
 
-  if (!res.ok) return []
+  if (!res.ok) {
+    console.warn(`[pexels] recherche photos: HTTP ${res.status} — resultats vides`)
+    return []
+  }
   const data = await res.json()
 
   return (data.photos ?? []).map((photo: PexelsPhoto) => ({

@@ -1,7 +1,9 @@
-import { fetchWithRetry, sleep } from '@/lib/utils/api'
+import { fetchWithRetry, sleep, httpErrorMessage } from '@/lib/utils/api'
+import { requireEnv } from '@/lib/env'
 
-const SHOTSTACK_API_KEY = process.env.SHOTSTACK_API_KEY!
 const SHOTSTACK_BASE_URL = 'https://api.shotstack.io/edit/stage'
+
+export type ShotstackFormat = '9:16' | '16:9' | '1:1'
 
 interface AssembleParams {
   clips: Array<{ url: string; type: 'ia' | 'stock' }>
@@ -24,9 +26,44 @@ interface SubtitleEntry {
   end: number
 }
 
-export async function assembleFinalVideo(
-  params: AssembleParams
-): Promise<{ url: string; timeline: Record<string, unknown>; duration: number }> {
+export interface AssembleResult {
+  url: string
+  timeline: Record<string, unknown>
+  duration: number
+  /** Qualité RÉELLE du rendu ('sd'|'hd') — jamais '4k' : le stage Shotstack plafonne à HD. */
+  outputQuality: 'sd' | 'hd'
+  /** Dimensions réelles du rendu, dérivées du format demandé. */
+  outputSize: { width: number; height: number }
+}
+
+/**
+ * Dimensions de sortie par format — le rendu final respecte le ratio demandé
+ * (16:9 paysage, 9:16 portrait, 1:1 carré). Shotstack "stage" plafonne à 1080p
+ * ("hd") : une demande 4k est rendue en HD et le résultat l'annonce
+ * honnêtement via outputQuality — jamais de "4K" affiché pour du HD.
+ */
+function outputSizeFor(format: ShotstackFormat): { width: number; height: number } {
+  if (format === '9:16') return { width: 720, height: 1280 }
+  if (format === '1:1') return { width: 720, height: 720 }
+  return { width: 1280, height: 720 }
+}
+
+function normalizeFormat(format: string): ShotstackFormat {
+  return format === '9:16' || format === '1:1' ? format : '16:9'
+}
+
+/**
+ * Qualité à annoncer après montage : le stage Shotstack plafonne à HD — une
+ * demande 4k rendue en HD est honnêtement ramenée à 1080p. Source unique du
+ * clamp pour /api/create et /api/production.
+ */
+export function actualQualityFor(requested: string, outputQuality: 'sd' | 'hd'): string {
+  return requested === '4k' && outputQuality === 'hd' ? '1080p' : requested
+}
+
+export async function assembleFinalVideo(params: AssembleParams): Promise<AssembleResult> {
+  const apiKey = requireEnv('SHOTSTACK_API_KEY', 'montage final Shotstack')
+
   const tracks = buildTracks(params)
   const timeline: Record<string, unknown> = {
     background: '#000000',
@@ -41,9 +78,13 @@ export async function assembleFinalVideo(
     }
   }
 
+  const outputSize = outputSizeFor(normalizeFormat(params.format))
+  // Shotstack stage rend en HD maximum. Toute demande (y compris 4k) sort en
+  // HD ; on le documente dans la réponse plutôt que de prétendre du 4K.
   const output = {
     format: 'mp4',
-    resolution: params.quality === '4k' ? 'hd' : params.quality === '1080p' ? 'hd' : 'sd',
+    resolution: 'hd' as const,
+    size: outputSize,
     fps: 30,
   }
 
@@ -53,41 +94,60 @@ export async function assembleFinalVideo(
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': SHOTSTACK_API_KEY,
+      'x-api-key': apiKey,
     },
     body: JSON.stringify(body),
   })
 
-  const data = await res.json()
-  if (!data.response?.id) throw new Error(`Shotstack: ${data.response?.message ?? 'erreur'}`)
+  if (!res.ok) {
+    throw new Error(`Shotstack: ${await httpErrorMessage(res)}`)
+  }
+  const data = (await res.json()) as {
+    response?: { id?: string; message?: string }
+  }
+  if (!data.response?.id) throw new Error(`Shotstack: ${data.response?.message ?? 'reponse invalide (id absent)'}`)
 
-  const result = await pollShotstackRender(data.response.id)
+  const result = await pollShotstackRender(data.response.id, apiKey)
   return {
     url: result.url,
     timeline: body as unknown as Record<string, unknown>,
     duration: result.duration,
+    outputQuality: 'hd',
+    outputSize,
   }
 }
 
 async function pollShotstackRender(
   renderId: string,
+  apiKey: string,
   timeoutMs = 300_000
 ): Promise<{ url: string; duration: number }> {
   const start = Date.now()
   while (Date.now() - start < timeoutMs) {
     const res = await fetch(`${SHOTSTACK_BASE_URL}/render/${renderId}`, {
-      headers: { 'x-api-key': SHOTSTACK_API_KEY },
+      headers: { 'x-api-key': apiKey },
+      signal: AbortSignal.timeout(15_000),
     })
-    const data = await res.json()
+    if (!res.ok) {
+      if (res.status === 401 || res.status === 403 || res.status === 404) {
+        throw new Error(`Shotstack status: HTTP ${res.status} pour le rendu ${renderId}`)
+      }
+      await sleep(5000)
+      continue
+    }
+    const data = (await res.json()) as {
+      response?: { status?: string; url?: string; duration?: number; error?: string }
+    }
     const status = data.response?.status
 
     if (status === 'done') {
+      if (!data.response?.url) throw new Error('Shotstack: rendu termine sans URL')
       return {
         url: data.response.url,
         duration: data.response.duration ?? 0,
       }
     }
-    if (status === 'failed') throw new Error('Shotstack: rendu echoue')
+    if (status === 'failed') throw new Error(`Shotstack: rendu echoue - ${data.response?.error ?? 'raison inconnue'}`)
     await sleep(5000)
   }
   throw new Error('Shotstack: timeout')

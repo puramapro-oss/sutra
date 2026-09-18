@@ -1,4 +1,5 @@
 import { fetchWithRetry } from '@/lib/utils/api'
+import { requireEnv } from '@/lib/env'
 import { uploadToStorage } from '@/lib/storage'
 import type { Plan } from '@/types'
 
@@ -34,7 +35,6 @@ import { generateWanVideoWithTracking, logVideoGeneration } from './ltx-helpers'
 // Tier routing: super admin → ltx-2-3-pro | paid → ltx-2-3-fast | free → WAN 2.2 fallback
 // ---------------------------------------------------------------------------
 
-const LTX_API_KEY = process.env.LTX_API_KEY ?? ''
 const LTX_BASE = 'https://api.ltx.video/v1'
 const LTX_TIMEOUT = 180_000 // 3 min — synchronous response
 
@@ -46,7 +46,9 @@ async function callLtxApi(
   endpoint: string,
   body: Record<string, unknown>
 ): Promise<ArrayBuffer> {
-  if (!LTX_API_KEY) throw new Error('LTX_API_KEY non configuree')
+  // Clé lue à l'appel via le validateur centralisé : erreur explicite et
+  // testable, jamais de valeur capturée à l'import (build sans env OK).
+  const apiKey = requireEnv('LTX_API_KEY', 'generation video LTX (plans payants)')
 
   const res = await fetchWithRetry(
     `${LTX_BASE}${endpoint}`,
@@ -54,7 +56,7 @@ async function callLtxApi(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${LTX_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify(body),
       signal: AbortSignal.timeout(LTX_TIMEOUT),

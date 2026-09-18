@@ -9,7 +9,7 @@ import { generateVoiceWithFallback, generateVisualWithFallback, generateMusicWit
 import { searchVideos, type MediaFormat } from '@/lib/pexels'
 import { estimateCost, selectEngine, type VideoQuality } from '@/lib/ltx-utils'
 import { uploadToStorage } from '@/lib/storage'
-import { assembleFinalVideo } from '@/lib/shotstack'
+import { assembleFinalVideo, actualQualityFor } from '@/lib/shotstack'
 import { stampVideoWhenReady } from '@/lib/video-proofs'
 import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
 import { publishToPlatforms, getOptimalFormat, type SocialPlatform, type PublishRequest } from '@/lib/zernio'
@@ -87,6 +87,17 @@ export async function POST(req: Request) {
     const stockByIndex = new Map<number, (typeof stockSelections)[number]>()
     for (const sel of stockSelections ?? []) stockByIndex.set(sel.sceneIndex, sel)
 
+    // Un clip de banque d'images issu du fallback reste typé « stock » avec sa
+    // provenance Pexels logguée — jamais présenté comme généré par WAN.
+    const clipFromVisual = async (visual: Awaited<ReturnType<typeof generateVisualWithFallback>>): Promise<{ url: string; type: 'ia' | 'stock' }> => {
+      if (visual.source === 'pexels-stock') {
+        await logApiCall(user.id, 'pexels', 'generateVisual:stock-fallback', 'fallback')
+        return { url: visual.url, type: 'stock' }
+      }
+      await logApiCall(user.id, visual.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
+      return { url: visual.url, type: 'ia' }
+    }
+
     const resolveSceneClip = async (scene: ScriptData['scenes'][number], idx: number): Promise<{ url: string; type: 'ia' | 'stock' } | null> => {
       const sel = stockByIndex.get(idx)
       const userChoseStock = sel && !sel.fallbackToAI && sel.url
@@ -96,15 +107,13 @@ export async function POST(req: Request) {
         await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'fallback')
         if (results[0]) return { url: results[0].url, type: 'stock' }
         const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-        await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'fallback')
-        return { url: ai.url, type: 'ia' }
+        return clipFromVisual(ai)
       }
       if (mediaMode === 'mixed') {
         if (userChoseStock) return { url: sel!.url!, type: 'stock' }
         if (sel?.fallbackToAI || !sel) {
           const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-          await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
-          return { url: ai.url, type: 'ia' }
+          return clipFromVisual(ai)
         }
       }
       if (scene.use_stock) {
@@ -113,8 +122,7 @@ export async function POST(req: Request) {
         return results[0] ? { url: results[0].url, type: 'stock' } : null
       }
       const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-      await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
-      return { url: ai.url, type: 'ia' }
+      return clipFromVisual(ai)
     }
 
     const [voiceBuffer, musicUrl, resolvedClips] = await Promise.all([
@@ -133,7 +141,9 @@ export async function POST(req: Request) {
     const assembled = await assembleFinalVideo({ clips: allClips, voiceUrl, musicUrl: musicUrl || '', musicVolume: 0.3, subtitles, transitions: 'fade', format, quality, brandKit: (profile as Profile).brand_kit ?? null })
     await logApiCall(user.id, 'shotstack', 'assembleFinalVideo', 'success', Date.now() - assembleStart)
     const thumbnailUrl = sceneUrls[0]?.url ?? stockVideos[0]?.url ?? null
-    await serviceClient.from('videos').update({ video_url: assembled.url, thumbnail_url: thumbnailUrl, shotstack_json: assembled.timeline, duration: assembled.duration, status: 'ready', cost_estimate: estimateTotalCost(script, userPlan, user.email, quality) }).eq('id', videoId)
+    // Qualité RÉELLE stockée (clamp 4k→1080p si rendu HD : voir actualQualityFor)
+    const actualQuality = actualQualityFor(quality, assembled.outputQuality)
+    await serviceClient.from('videos').update({ video_url: assembled.url, thumbnail_url: thumbnailUrl, shotstack_json: assembled.timeline, duration: assembled.duration, status: 'ready', quality: actualQuality, cost_estimate: estimateTotalCost(script, userPlan, user.email, quality) }).eq('id', videoId)
 
     try {
       const stampOutcome = await stampVideoWhenReady({ videoId, userId: user.id, videoUrl: assembled.url })

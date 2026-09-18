@@ -88,6 +88,20 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Sur Vercel, la plateforme intercepte /_vercel/* AVANT le middleware.
+  // En local / self-host, on sert un stub JS vide : sans lui, les balises
+  // script d'Analytics/SpeedInsights recevraient la page /login en HTML
+  // (pageerror « Unexpected token '<' ») — ou un 404 console.
+  if (pathname.startsWith("/_vercel/")) {
+    return new NextResponse(
+      "/* stub local — servi par la plateforme Vercel en production */",
+      {
+        status: 200,
+        headers: { "Content-Type": "application/javascript; charset=utf-8" },
+      }
+    );
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });

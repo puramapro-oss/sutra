@@ -12,7 +12,6 @@ import type {
   StockResult,
   StockSearchOptions,
   PexelsVideo,
-  PexelsVideoFile,
   PexelsPhoto,
   UnsplashPhoto,
   CoverrVideo,
@@ -54,6 +53,14 @@ function matchesOrientation(
   return ratio >= 0.85 && ratio <= 1.2
 }
 
+
+/** true si la réponse est en erreur (logguée, sans secret) → résultat vide propre. */
+function rejectBadStatus(tag: string, res: Response): boolean {
+  if (res.ok) return false
+  console.warn(`[stock:${tag}] HTTP ${res.status}`)
+  return true
+}
+
 /* ------------------------------ PEXELS ------------------------------ */
 
 async function pexelsVideos(
@@ -69,7 +76,7 @@ async function pexelsVideos(
       headers: { Authorization: PEXELS_API_KEY },
       next: { revalidate: 86_400 },
     })
-    if (!res.ok) return []
+    if (rejectBadStatus('pexels:videos', res)) return []
     const data = (await res.json()) as { videos?: PexelsVideo[] }
     const results: StockResult[] = []
     for (const v of data.videos ?? []) {
@@ -112,7 +119,7 @@ async function pexelsPhotos(
       headers: { Authorization: PEXELS_API_KEY },
       next: { revalidate: 86_400 },
     })
-    if (!res.ok) return []
+    if (rejectBadStatus('pexels:photos', res)) return []
     const data = (await res.json()) as { photos?: PexelsPhoto[] }
     const results: StockResult[] = []
     for (const p of data.photos ?? []) {
@@ -169,7 +176,7 @@ async function pixabayVideos(
     const res = await fetch(`https://pixabay.com/api/videos/?${params}`, {
       next: { revalidate: 86_400 },
     })
-    if (!res.ok) return []
+    if (rejectBadStatus('pixabay:videos', res)) return []
     const data = (await res.json()) as { hits?: PixabayVideoHit[] }
     const results: StockResult[] = []
 
@@ -220,7 +227,7 @@ async function unsplashPhotos(
       headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
       next: { revalidate: 86_400 },
     })
-    if (!res.ok) return []
+    if (rejectBadStatus('unsplash:photos', res)) return []
     const data = (await res.json()) as { results?: UnsplashPhoto[] }
     const results: StockResult[] = []
     for (const p of data.results ?? []) {
@@ -255,7 +262,7 @@ async function coverrVideos(
     // Coverr public API (no key needed)
     const url = `https://api.coverr.co/videos?query=${encodeURIComponent(query)}&page_size=20`
     const res = await fetch(url, { next: { revalidate: 86_400 } })
-    if (!res.ok) return []
+    if (rejectBadStatus('coverr:videos', res)) return []
     const data = (await res.json()) as { hits?: CoverrVideo[] }
     const results: StockResult[] = []
     for (const v of data.hits ?? []) {

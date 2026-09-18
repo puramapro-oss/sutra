@@ -75,7 +75,7 @@ export async function generateWanVideo(params: {
   )
 
   const videoUrl = await pollVideoJob(jobId, baseUrl, POLL_TIMEOUT_MS)
-  const res = await fetch(videoUrl)
+  const res = await fetch(videoUrl, { signal: AbortSignal.timeout(60_000) })
   if (!res.ok) {
     throw new Error(`WAN fetch failed: HTTP ${res.status}`)
   }
