@@ -28,6 +28,7 @@ export type {
 }
 
 const PEXELS_API_KEY = process.env.PEXELS_API_KEY ?? ''
+const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY ?? ''
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY ?? ''
 
 const MIN_WIDTH = 1920
@@ -136,6 +137,73 @@ async function pexelsPhotos(
   }
 }
 
+/* ----------------------------- PIXABAY ----------------------------- */
+
+interface PixabayVideoVariant {
+  url?: string
+  width?: number
+  height?: number
+  thumbnail?: string
+}
+
+interface PixabayVideoHit {
+  id: number
+  pageURL?: string
+  duration?: number
+  user?: string
+  videos?: Record<string, PixabayVideoVariant>
+}
+
+async function pixabayVideos(
+  query: string,
+  orientation: StockOrientation
+): Promise<StockResult[]> {
+  if (!PIXABAY_API_KEY) return []
+  try {
+    const params = new URLSearchParams({
+      key: PIXABAY_API_KEY,
+      q: query,
+      per_page: '20',
+      safesearch: 'true',
+    })
+    const res = await fetch(`https://pixabay.com/api/videos/?${params}`, {
+      next: { revalidate: 86_400 },
+    })
+    if (!res.ok) return []
+    const data = (await res.json()) as { hits?: PixabayVideoHit[] }
+    const results: StockResult[] = []
+
+    for (const hit of data.hits ?? []) {
+      const variants = Object.values(hit.videos ?? {})
+        .filter((v): v is Required<Pick<PixabayVideoVariant, 'url' | 'width' | 'height'>> & PixabayVideoVariant =>
+          Boolean(v.url && v.width && v.height)
+        )
+        .filter((v) => matchesOrientation(v.width, v.height, orientation))
+        .sort((a, b) => b.width * b.height - a.width * a.height)
+      const best = variants.find((v) => classifyQuality(v.width, v.height) !== null)
+      if (!best) continue
+      const quality = classifyQuality(best.width, best.height)
+      if (!quality) continue
+      results.push({
+        id: `pixabay-v-${hit.id}`,
+        source: 'pixabay',
+        type: 'video',
+        url: best.url,
+        thumbnail: best.thumbnail ?? '',
+        width: best.width,
+        height: best.height,
+        quality,
+        duration: hit.duration,
+        author: hit.user,
+        pageUrl: hit.pageURL,
+      })
+    }
+    return results
+  } catch {
+    return []
+  }
+}
+
 /* ----------------------------- UNSPLASH ----------------------------- */
 
 async function unsplashPhotos(
@@ -228,6 +296,7 @@ export async function searchStock({
   const tasks: Array<Promise<StockResult[]>> = []
   if (type === 'any' || type === 'video') {
     tasks.push(pexelsVideos(query, orientation))
+    tasks.push(pixabayVideos(query, orientation))
     tasks.push(coverrVideos(query, orientation))
   }
   if (type === 'any' || type === 'photo') {
