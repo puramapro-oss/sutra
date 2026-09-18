@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const stockSelectionSchema = z.object({
   sceneIndex: z.number().int().min(0),
-  source: z.enum(['pexels', 'unsplash', 'coverr']).nullable(),
+  source: z.enum(['pexels', 'pixabay', 'unsplash', 'coverr']).nullable(),
   type: z.enum(['video', 'photo']).nullable(),
   url: z.string().url().nullable(),
   thumbnail: z.string().url().nullable(),
