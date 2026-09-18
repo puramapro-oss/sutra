@@ -1,19 +1,5 @@
 import { submitVideoJob, pollVideoJob } from '@/lib/runpod'
 
-// ---------------------------------------------------------------------------
-// WAN 2.2 — Moteur vidéo fallback pour SUTRA (V7.1).
-// Tourne via RunPod (serverless pour payants, pod dédié pour super admin).
-//
-// Rôle dans la chaîne :
-//   - Moteur PRIMAIRE pour le plan free (pas de LTX payant)
-//   - FALLBACK automatique si LTX échoue (circuit breaker côté ltx.ts)
-//
-// Cette lib isole toute la logique WAN/RunPod pour :
-//   - rendre ltx.ts plus léger (pas de dynamic import)
-//   - faciliter les tests (mock RunPod sans toucher LTX)
-//   - exposer une API unifiée { success, videoBuffer, model, duration, resolution }
-// ---------------------------------------------------------------------------
-
 export type WanQuality = '720p' | '1080p' | '4k'
 export type WanFormat = '9:16' | '16:9' | '1:1'
 
@@ -24,27 +10,44 @@ export type WanResult = {
   resolution: string
   width: number
   height: number
+  requestedQuality: WanQuality
+  format: WanFormat
+  native4k: boolean
 }
 
-const DIMS: Record<WanQuality, { width: number; height: number }> = {
-  '720p': { width: 768, height: 512 },
-  '1080p': { width: 1024, height: 576 },
-  '4k': { width: 1280, height: 720 },
-}
-
-const POLL_TIMEOUT_MS = 300_000 // 5 min
+type Dimensions = { width: number; height: number }
 
 /**
- * Génère une vidéo WAN 2.2 via RunPod (polling async → videoBuffer).
- *
- * @param prompt      Description de la scène
- * @param userEmail   Pour router vers pod dédié si super admin
- * @param opts.quality    '720p' (défaut) | '1080p' | '4k'
- * @param opts.duration   Secondes (défaut 5) → num_frames = duration × 16 fps
- * @param opts.format     Ratio (future : adjust dims selon format) — unused for now
- *
- * @throws Error si RunPod timeout (>5 min) ou réponse invalide.
+ * Native WAN generation sizes. The `4k` tier is the highest WAN render size,
+ * not native UHD; callers must never label it as native 4K.
  */
+const DIMS: Record<WanQuality, Record<WanFormat, Dimensions>> = {
+  '720p': {
+    '16:9': { width: 896, height: 512 },
+    '9:16': { width: 512, height: 896 },
+    '1:1': { width: 768, height: 768 },
+  },
+  '1080p': {
+    '16:9': { width: 1024, height: 576 },
+    '9:16': { width: 576, height: 1024 },
+    '1:1': { width: 896, height: 896 },
+  },
+  '4k': {
+    '16:9': { width: 1280, height: 720 },
+    '9:16': { width: 720, height: 1280 },
+    '1:1': { width: 1024, height: 1024 },
+  },
+}
+
+const POLL_TIMEOUT_MS = 300_000
+
+export function getWanDimensions(
+  quality: WanQuality,
+  format: WanFormat,
+): Dimensions {
+  return DIMS[quality]?.[format] ?? DIMS['720p']['16:9']
+}
+
 export async function generateWanVideo(params: {
   prompt: string
   userEmail: string | null
@@ -52,8 +55,14 @@ export async function generateWanVideo(params: {
   duration?: number
   format?: WanFormat
 }): Promise<WanResult> {
-  const { prompt, userEmail, quality = '720p', duration = 5 } = params
-  const { width, height } = DIMS[quality] ?? DIMS['720p']
+  const {
+    prompt,
+    userEmail,
+    quality = '720p',
+    duration = 5,
+    format = '16:9',
+  } = params
+  const { width, height } = getWanDimensions(quality, format)
 
   const { jobId, baseUrl } = await submitVideoJob(
     {
@@ -66,8 +75,6 @@ export async function generateWanVideo(params: {
   )
 
   const videoUrl = await pollVideoJob(jobId, baseUrl, POLL_TIMEOUT_MS)
-
-  // pollVideoJob renvoie soit une URL HTTP (S3), soit un data URL base64.
   const res = await fetch(videoUrl)
   if (!res.ok) {
     throw new Error(`WAN fetch failed: HTTP ${res.status}`)
@@ -81,5 +88,8 @@ export async function generateWanVideo(params: {
     resolution: `${width}x${height}`,
     width,
     height,
+    requestedQuality: quality,
+    format,
+    native4k: width >= 3840 && height >= 2160,
   }
 }
