@@ -6,6 +6,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
+import type { Plan } from '@/types'
 import {
   loadAutoContext,
   planNextVideo,
@@ -78,7 +79,7 @@ export async function POST(req: Request) {
         plan,
         config: ctx.config as AutoConfig,
         userEmail: profile?.email ?? null,
-        plan_tier: (profile?.plan ?? 'free') as 'free' | 'starter' | 'creator' | 'pro' | 'enterprise',
+        plan_tier: (profile?.plan ?? 'free') as Plan,
       })
 
       const finalStatus = ctx.config.require_approval_before_publish ? 'pending_approval' : 'ready'
