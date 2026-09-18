@@ -26,7 +26,8 @@ export async function generateVisualWithFallback(
   }
 
   // Attempt 2: Pexels stock (last resort)
-  const stock = await searchVideos(prompt)
+  const stockFormat = (['9:16', '16:9', '1:1'].includes(format) ? format : '16:9') as '9:16' | '16:9' | '1:1'
+  const stock = await searchVideos(prompt, 3, { format: stockFormat })
   if (stock[0]) return { url: stock[0].url, engine: 'wan-classic' }
 
   throw new Error('Aucun service de generation video disponible')
