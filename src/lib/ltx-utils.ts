@@ -84,11 +84,23 @@ export function getLtxHealth(): { healthy: boolean; failures: number; lastFailur
 // Cost estimation
 // ---------------------------------------------------------------------------
 
-export function estimateCost(engine: VideoEngine, durationSeconds: number): number {
-  const rates: Record<VideoEngine, number> = {
-    'ltx-pro': 0.05,      // per second
-    'ltx-fast': 0.02,     // per second
-    'wan-classic': 0.015, // per scene (flat)
+export type VideoQuality = '720p' | '1080p' | '4k'
+
+/**
+ * Pre-flight estimate in USD. Rates are centralized so the UI and the budget
+ * guard use the same calculation. Unknown qualities fall back to 1080p.
+ */
+export function estimateCost(
+  engine: VideoEngine,
+  durationSeconds: number,
+  quality: VideoQuality = '1080p',
+): number {
+  const safeDuration = Math.max(0, durationSeconds)
+  const ratesPerSecond: Record<VideoEngine, Record<VideoQuality, number>> = {
+    'ltx-pro': { '720p': 0.05, '1080p': 0.05, '4k': 0.32 },
+    'ltx-fast': { '720p': 0.02, '1080p': 0.02, '4k': 0.24 },
+    'wan-classic': { '720p': 0.015, '1080p': 0.0225, '4k': 0.03 },
   }
-  return rates[engine] * durationSeconds
+  const rate = ratesPerSecond[engine][quality] ?? ratesPerSecond[engine]['1080p']
+  return Number((rate * safeDuration).toFixed(4))
 }
