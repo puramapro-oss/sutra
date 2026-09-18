@@ -68,7 +68,12 @@ export interface ProductionProviders {
   upload: (path: string, buffer: Buffer, contentType: string) => Promise<string>
 }
 
-const MAX_VOICE_B64 = 5 * 1024 * 1024 // au-delà : voix non checkpointée (re-synthèse possible, tracée)
+// Voix checkpointée en base64 jusqu'à 20 Mo (borne PostgREST/Supabase pour
+// un payload RPC jsonb) : les narrations longues (>5 Mo) SONT aussi sauvegardées —
+// une interruption après synthèse ne régénère JAMAIS la voix. Au-delà de 20 Mo
+// (audio ~15 min, hors bornes produit) : checkpoint sauté, re-synthèse possible
+// bornée par max_attempts, tracée.
+const MAX_VOICE_B64 = 20 * 1024 * 1024
 
 function defaultProviders(input: ProductionJobInput): ProductionProviders {
   return {

@@ -16,6 +16,10 @@ import { createServiceClient } from '@/lib/supabase'
 import { claimJobs, checkpoint, finishJob, heartbeat, completeQuota, releaseQuota } from '@/lib/video-queue'
 import { executeCreateJob, type CreateJobInput, type CreateJobResume } from '@/lib/video-pipeline'
 import { executeProductionStep, type ProductionJobInput } from '@/lib/production-pipeline'
+import { executeExportJob, type ExportJobInput } from '@/lib/export-pipeline'
+import { executeAutoJob, buildAutoProviders, type AutoJobInput } from '@/lib/auto-pipeline'
+import { assembleFinalVideo } from '@/lib/shotstack'
+import { sendNotification, logActivity } from '@/lib/logger'
 import type { AssembleClip } from '@/lib/shotstack'
 
 export const maxDuration = 300
@@ -68,6 +72,67 @@ export async function GET(request: Request) {
             await checkpoint(job.id, worker, { steps: stepsDone })
           },
         })
+        await finishJob(job.id, 'done')
+        await completeQuota(job.user_id)
+        results.push({ jobId: job.id, status: 'done' })
+        continue
+      }
+
+      if (job.kind === 'export') {
+        const input = (job.payload as { input?: ExportJobInput }).input
+        if (!input?.videoId) {
+          await finishJob(job.id, 'failed', 'payload input export manquant')
+          await releaseQuota(job.user_id)
+          results.push({ jobId: job.id, status: 'failed', error: 'payload invalide' })
+          continue
+        }
+        const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
+        await executeExportJob(input, { steps: stepsDone }, {
+          heartbeat: () => heartbeat(job.id, worker, 600),
+          onStepResolved: async (key, value) => {
+            stepsDone[key] = value
+            await checkpoint(job.id, worker, { steps: stepsDone })
+          },
+        }, {
+          assemble: (args) => assembleFinalVideo(args),
+          persist: async (jobInput, update) => {
+            const service = createServiceClient()
+            await service.from('videos').update({
+              video_url: update.video_url,
+              quality: update.quality,
+              duration: update.duration,
+              status: 'ready',
+            }).eq('id', jobInput.videoId)
+            await sendNotification(jobInput.userId, {
+              type: 'success',
+              title: 'Export termine !',
+              message: 'Ton export est pret dans ta bibliotheque.',
+            })
+            await logActivity(jobInput.userId, 'video_exported', 'Video re-exportee (worker, apres crash)', { video_id: jobInput.videoId, quality: update.quality })
+          },
+        })
+        await finishJob(job.id, 'done')
+        await completeQuota(job.user_id)
+        results.push({ jobId: job.id, status: 'done' })
+        continue
+      }
+
+      if (job.kind === 'auto') {
+        const input = (job.payload as { input?: AutoJobInput }).input
+        if (!input?.videoRowId) {
+          await finishJob(job.id, 'failed', 'payload input auto manquant')
+          await releaseQuota(job.user_id)
+          results.push({ jobId: job.id, status: 'failed', error: 'payload invalide' })
+          continue
+        }
+        const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
+        await executeAutoJob(input, { steps: stepsDone }, {
+          heartbeat: () => heartbeat(job.id, worker, 600),
+          onStepResolved: async (key, value) => {
+            stepsDone[key] = value
+            await checkpoint(job.id, worker, { steps: stepsDone })
+          },
+        }, buildAutoProviders(input.userId, input.videoRowId, input.config, input.userEmail, input.planTier, createServiceClient()))
         await finishJob(job.id, 'done')
         await completeQuota(job.user_id)
         results.push({ jobId: job.id, status: 'done' })
