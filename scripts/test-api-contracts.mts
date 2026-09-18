@@ -46,7 +46,7 @@ const okJson = (body: unknown) => jsonResponse(200, body)
 const { generateVoice, listVoices } = await import('../src/lib/elevenlabs.ts')
 const { generateMusic } = await import('../src/lib/suno.ts')
 const { submitVideoJob } = await import('../src/lib/runpod.ts')
-const { assembleFinalVideo } = await import('../src/lib/shotstack.ts')
+const { assembleFinalVideo, actualQualityFor, generateSubtitlesFromScript } = await import('../src/lib/shotstack.ts')
 const { textToVideo } = await import('../src/lib/ltx.ts')
 const { searchVideos } = await import('../src/lib/pexels.ts')
 const { fetchWithRetry } = await import('../src/lib/utils/api.ts')
@@ -128,15 +128,15 @@ test('Suno: succes apres polling', async () => {
   assert.equal(song.audio_url, 'https://cdn/song-1.mp3')
 })
 
-test('Suno: 500 puis succes (retry borne)', async () => {
+test('Suno: POST 500 = UNE SEULE tentative (pas de rejeu génératif payant)', async () => {
   setKey('SUNO_API_KEY', true)
-  queueResponses(
-    () => jsonResponse(500, { error: 'boom' }),
-    () => okJson({ id: 'song-2' }),
-    () => okJson({ id: 'song-2', status: 'completed', audio_url: 'https://cdn/s2.mp3' })
-  )
-  const song = await generateMusic({ prompt: 'x', style: 'lo-fi', duration: 20 })
-  assert.equal(song.id, 'song-2')
+  let attempts = 0
+  mockFetch(() => {
+    attempts += 1
+    return jsonResponse(500, { error: 'boom' })
+  })
+  await assertThrowsWith(() => generateMusic({ prompt: 'x', style: 'lo-fi', duration: 20 }), 'Echec apres 1')
+  assert.equal(attempts, 1, 'un POST de génération ne doit jamais être rejoué sans idempotence')
 })
 
 test('Suno: 401 au poll -> abandon immediat (pas de boucle 2 min)', async () => {
@@ -204,7 +204,7 @@ const shotstackOk = () =>
     () => okJson({ response: { status: 'done', url: 'https://cdn/out.mp4', duration: 42 } })
   )
 
-test('Shotstack: succes — sortie annonce HD, jamais 4K', async () => {
+test('Shotstack: succes — tailles réelles par qualité (4k = 2160×3840, pas 720)', async () => {
   setKey('SHOTSTACK_API_KEY', true)
   shotstackOk()
   const res = await assembleFinalVideo({
@@ -220,9 +220,102 @@ test('Shotstack: succes — sortie annonce HD, jamais 4K', async () => {
   })
   assert.equal(res.outputQuality, 'hd')
   assert.equal(res.url, 'https://cdn/out.mp4')
-  // format 9:16 respecté dans le payload envoyé
+  // format + qualité réellement demandés au montage (audit #1)
   const body = JSON.parse(String(calls[0].init?.body))
-  assert.deepEqual(body.output.size, { width: 720, height: 1280 })
+  assert.deepEqual(body.output.size, { width: 2160, height: 3840 })
+  // le clamp 4k→1080p quand le stage rend en HD
+  assert.equal(actualQualityFor('4k', res.outputQuality), '1080p')
+  assert.equal(actualQualityFor('1080p', 'hd'), '1080p')
+})
+
+test('Shotstack: 1080p 16:9 exporte en 1920×1080', async () => {
+  setKey('SHOTSTACK_API_KEY', true)
+  shotstackOk()
+  await assembleFinalVideo({
+    clips: [{ url: 'https://cdn/a.mp4', type: 'ia' }],
+    voiceUrl: 'https://cdn/v.mp3',
+    musicUrl: '',
+    musicVolume: 0.3,
+    subtitles: [],
+    transitions: 'fade',
+    format: '16:9',
+    quality: '1080p',
+    brandKit: null,
+  })
+  const body = JSON.parse(String(calls[0].init?.body))
+  assert.deepEqual(body.output.size, { width: 1920, height: 1080 })
+})
+
+test('Shotstack: horloge de montage — intro décale voix et sous-titres, durées par clip', async () => {
+  setKey('SHOTSTACK_API_KEY', true)
+  shotstackOk()
+  const subtitles = generateSubtitlesFromScript('a b c d e f g h i j k l', [
+    { duration_seconds: 10 },
+    { duration_seconds: 10 },
+  ])
+  await assembleFinalVideo({
+    clips: [
+      { url: 'https://cdn/1.mp4', type: 'ia', duration: 10 },
+      { url: 'https://cdn/2.mp4', type: 'ia', duration: 10 },
+    ],
+    voiceUrl: 'https://cdn/v.mp3',
+    musicUrl: '',
+    musicVolume: 0.3,
+    subtitles,
+    transitions: 'fade',
+    format: '16:9',
+    quality: '1080p',
+    brandKit: { intro_template: 'intro.mp4', outro_template: 'outro.mp4' },
+  })
+  const body = JSON.parse(String(calls[0].init?.body))
+  const [videoTrack, voiceTrack, subTrack] = body.timeline.tracks
+  const end = (t: { clips: Array<{ start: number; length: number }> }) =>
+    Math.max(...t.clips.map((c) => c.start + c.length))
+  // images : 3 + 10 + 10 + 3 = 26s
+  assert.equal(end(videoTrack), 26)
+  // voix : démarre APRÈS l'intro (3s) et couvre le corps
+  assert.equal(voiceTrack.clips[0].start, 3)
+  // sous-titres : décalés de l'intro et bornés à la fin du montage
+  assert.equal(subTrack.clips[0].start, 3)
+  assert.ok(end(subTrack) <= 26, `sous-titres débordent : ${end(subTrack)}`)
+})
+
+test('Shotstack: une PHOTO devient un asset image, pas vidéo', async () => {
+  setKey('SHOTSTACK_API_KEY', true)
+  shotstackOk()
+  await assembleFinalVideo({
+    clips: [{ url: 'https://cdn/photo.jpg', type: 'stock', kind: 'photo', duration: 5 }],
+    voiceUrl: 'https://cdn/v.mp3',
+    musicUrl: '',
+    musicVolume: 0.3,
+    subtitles: [],
+    transitions: 'fade',
+    format: '16:9',
+    quality: '1080p',
+    brandKit: null,
+  })
+  const body = JSON.parse(String(calls[0].init?.body))
+  const asset = body.timeline.tracks[0].clips[0].asset
+  assert.equal(asset.type, 'image')
+  assert.equal(asset.src, 'https://cdn/photo.jpg')
+})
+
+test('Shotstack: transition fade demandée = fade appliquée (pas none)', async () => {
+  setKey('SHOTSTACK_API_KEY', true)
+  shotstackOk()
+  await assembleFinalVideo({
+    clips: [{ url: 'https://cdn/a.mp4', type: 'ia' }],
+    voiceUrl: 'https://cdn/v.mp3',
+    musicUrl: '',
+    musicVolume: 0.3,
+    subtitles: [],
+    transitions: 'fade',
+    format: '16:9',
+    quality: '1080p',
+    brandKit: null,
+  })
+  const body = JSON.parse(String(calls[0].init?.body))
+  assert.equal(body.timeline.tracks[0].clips[0].transition.in, 'fade')
 })
 
 test('Shotstack: 429 au submit -> erreur explicite', async () => {
@@ -345,12 +438,11 @@ test('Pexels searchVideos: clé absente -> liste vide sans appel réseau', async
 
 test('generateVoiceWithFallback: echec puis succes (1 retry)', async () => {
   setKey('ELEVENLABS_API_KEY', true)
+  // POST = tentative unique par appel : 1er appel → 500, retry externe → 200
   queueResponses(
     () => textResponse(500, 'boom'),
-    () => textResponse(500, 'boom2'),
     () => new Response(new ArrayBuffer(4), { status: 200 })
   )
-  // premier appel: 500 non-ok retombe direct (fetchWithRetry 4xx/5xx: 500 -> retry interne)
   const buf = await generateVoiceWithFallback('texte', 'v1')
   assert.equal(buf.byteLength, 4)
 })

@@ -5,11 +5,12 @@ import { createServiceClient } from '@/lib/supabase'
 import { createVideoSchema } from '@/lib/validators'
 import { checkLimits } from '@/lib/limits'
 import { generateScript } from '@/lib/claude'
-import { generateVoiceWithFallback, generateVisualWithFallback, generateMusicWithFallback } from '@/lib/fallbacks'
+import { generateVoiceWithFallback, generateVisualWithFallback, generateMusicWithFallback, type VisualResult } from '@/lib/fallbacks'
 import { searchVideos, type MediaFormat } from '@/lib/pexels'
-import { estimateCost, selectEngine, type VideoQuality } from '@/lib/ltx-utils'
+import { estimateCost, selectEngine, clampQualityToPlan, type VideoQuality } from '@/lib/ltx-utils'
+import { resolveVoiceProviderId } from '@/lib/constants'
 import { uploadToStorage } from '@/lib/storage'
-import { assembleFinalVideo, actualQualityFor } from '@/lib/shotstack'
+import { assembleFinalVideo, actualQualityFor, type AssembleClip } from '@/lib/shotstack'
 import { stampVideoWhenReady } from '@/lib/video-proofs'
 import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
 import { publishToPlatforms, getOptimalFormat, type SocialPlatform, type PublishRequest } from '@/lib/zernio'
@@ -57,9 +58,14 @@ async function triggerAutopilot(args: { userId: string; videoId: string; videoUr
   } catch (err) { console.error('[autopilot] unexpected error:', err instanceof Error ? err.message : err) }
 }
 
-export const maxDuration = 120
+// Aligned on the slowest providers (Shotstack/WAN 300s) — audit #14 : la
+// limite serveur ne doit pas tuer la requête pendant que le fournisseur tourne.
+export const maxDuration = 300
 
 export async function POST(req: Request) {
+  // Ligne vidéo créée AVANT tout appel payant pour pouvoir la marquer « failed »
+  // si le pipeline meurt (audit #14 : jamais de ligne orpheline « generating »).
+  let createdVideoId: string | null = null
   try {
     const supabase = await createServerClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -73,65 +79,110 @@ export async function POST(req: Request) {
     const withinLimits = await checkLimits(profile as Profile)
     if (!withinLimits) return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan. Passez au plan superieur.' }, { status: 403 })
 
-    const { topic, format, quality, voice_id, niche, style, mediaMode, stockSelections } = parsed.data
+    const { topic, format, quality: requestedQuality, voice_id, voice, engine, script: manualScript, niche, style, mode, mediaMode, stockSelections } = parsed.data
+    const userPlan = (profile as Profile).plan ?? 'free'
+    // Plafond qualité PAR PLAN appliqué AVANT tout appel payant (audit #16) :
+    // un starter qui demande 4k est servi en 720p, sans surcoût implicite.
+    const quality = clampQualityToPlan(requestedQuality, userPlan, user.email)
     const mediaFormat = (['9:16', '16:9', '1:1'].includes(format) ? format : '16:9') as MediaFormat
     const { data: videoRow } = await serviceClient.from('videos').insert({ user_id: user.id, status: 'generating', format, quality, tags: [], media_mode: mediaMode, stock_sources: stockSelections ?? [] }).select('id').single()
     if (!videoRow) return NextResponse.json({ error: 'Erreur creation video' }, { status: 500 })
     const videoId = videoRow.id
-    const scriptStart = Date.now()
-    const script: ScriptData = await generateScript({ topic, niche: niche ?? 'general', style: style ?? 'dynamique', format, duration: '60-90 secondes' }, user.id)
-    await logApiCall(user.id, 'claude', 'generateScript', 'success', Date.now() - scriptStart)
+    createdVideoId = videoId
+
+    // Script : le script MANUEL fourni est respecté (audit #3) — jamais
+    // régénéré quand l'utilisateur a écrit le sien en mode manual.
+    let script: ScriptData
+    if (mode === 'manual' && manualScript && manualScript.trim().length >= 20) {
+      const scenes = manualScript
+        .split('\n').map((l) => l.trim()).filter(Boolean)
+        .map((line) => ({
+          visual_prompt: line.slice(0, 2000),
+          duration_seconds: 5,
+          use_stock: false,
+        }))
+      script = {
+        title: topic.slice(0, 160),
+        description: `Video generee a partir du script manuel : ${topic}`,
+        tags: [topic.split(/\s+/).slice(0, 3).join('-').toLowerCase(), 'manuel', 'sutra'],
+        narration: manualScript,
+        scenes,
+        music_prompt: `instrumental background for a video about ${topic}`,
+        music_style: 'cinematic',
+        thumbnail_prompt: `cinematic thumbnail about ${topic}`,
+        estimated_duration: Math.min(1200, scenes.reduce((s, sc) => s + sc.duration_seconds, 0)),
+      } as ScriptData
+    } else {
+      const scriptStart = Date.now()
+      script = await generateScript({ topic, niche: niche ?? 'general', style: style ?? 'dynamique', format, duration: '60-90 secondes' }, user.id)
+      await logApiCall(user.id, 'claude', 'generateScript', 'success', Date.now() - scriptStart)
+    }
     await serviceClient.from('videos').update({ title: script.title, description: script.description, tags: script.tags, script_data: script }).eq('id', videoId)
-    const selectedVoiceId = voice_id ?? 'EXAVITQu4vr4xnSDxMaL'
-    const userPlan = (profile as Profile).plan ?? 'free'
+
+    // Voix : résolution alias → ID ElevenLabs réel (audit #18) — voice (hook)
+    // et voice_id (ancien champ) sont tous deux acceptés.
+    const selectedVoiceId = resolveVoiceProviderId(voice_id ?? voice)
+    // Moteur choisi honoré pour le WAN (choix MOINS CHER, audit #3) ; une
+    // demande ltx-pro hors plan reste ignorée (le plan gouverne, audit #16).
+    const genPlan: Plan = engine === 'wan-classic' ? 'free' : userPlan
     const stockByIndex = new Map<number, (typeof stockSelections)[number]>()
     for (const sel of stockSelections ?? []) stockByIndex.set(sel.sceneIndex, sel)
 
     // Un clip de banque d'images issu du fallback reste typé « stock » avec sa
     // provenance Pexels logguée — jamais présenté comme généré par WAN.
-    const clipFromVisual = async (visual: Awaited<ReturnType<typeof generateVisualWithFallback>>): Promise<{ url: string; type: 'ia' | 'stock' }> => {
+    // Chaque clip porte SA durée pour l'horloge de montage (audit #4).
+    const clipFromVisual = async (visual: VisualResult, duration: number): Promise<AssembleClip> => {
       if (visual.source === 'pexels-stock') {
         await logApiCall(user.id, 'pexels', 'generateVisual:stock-fallback', 'fallback')
-        return { url: visual.url, type: 'stock' }
+        return { url: visual.url, type: 'stock', kind: 'video', duration }
       }
       await logApiCall(user.id, visual.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
-      return { url: visual.url, type: 'ia' }
+      return { url: visual.url, type: 'ia', kind: 'video', duration }
     }
 
-    const resolveSceneClip = async (scene: ScriptData['scenes'][number], idx: number): Promise<{ url: string; type: 'ia' | 'stock' } | null> => {
+    const resolveSceneClip = async (scene: ScriptData['scenes'][number], idx: number): Promise<AssembleClip | null> => {
       const sel = stockByIndex.get(idx)
       const userChoseStock = sel && !sel.fallbackToAI && sel.url
+      const sceneDuration = Math.max(1, scene.duration_seconds || 5)
+      const track = { userId: user.id, videoId, duration: sceneDuration }
+
+      const stockClipFromSelection = (s: NonNullable<typeof sel>): AssembleClip => ({
+        url: s.url!,
+        type: 'stock',
+        kind: s.type === 'photo' ? 'photo' : 'video',
+        duration: sceneDuration,
+      })
+
       if (mediaMode === 'stock') {
-        if (userChoseStock) return { url: sel!.url!, type: 'stock' }
+        if (userChoseStock) return stockClipFromSelection(sel!)
         const results = await searchVideos(scene.visual_prompt, 1, { format: mediaFormat })
         await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'fallback')
-        if (results[0]) return { url: results[0].url, type: 'stock' }
-        const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-        return clipFromVisual(ai)
+        if (results[0]) return { url: results[0].url, type: 'stock', kind: 'video', duration: Math.max(sceneDuration, Math.min(results[0].duration || sceneDuration, 60)) }
+        const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, genPlan, format, false, track)
+        return clipFromVisual(ai, sceneDuration)
       }
       if (mediaMode === 'mixed') {
-        if (userChoseStock) return { url: sel!.url!, type: 'stock' }
+        if (userChoseStock) return stockClipFromSelection(sel!)
         if (sel?.fallbackToAI || !sel) {
-          const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-          return clipFromVisual(ai)
+          const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, genPlan, format, false, track)
+          return clipFromVisual(ai, sceneDuration)
         }
       }
       if (scene.use_stock) {
         const results = await searchVideos(scene.visual_prompt, 1, { format: mediaFormat })
         await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'skipped')
-        return results[0] ? { url: results[0].url, type: 'stock' } : null
+        return results[0] ? { url: results[0].url, type: 'stock', kind: 'video', duration: Math.max(sceneDuration, Math.min(results[0].duration || sceneDuration, 60)) } : null
       }
-      const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-      return clipFromVisual(ai)
+      // mediaMode 'ai' = 100 % IA strict : pas de repli stock silencieux (audit #18).
+      const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, genPlan, format, mediaMode === 'ai', track)
+      return clipFromVisual(ai, sceneDuration)
     }
 
     const [voiceBuffer, musicUrl, resolvedClips] = await Promise.all([
       generateVoiceWithFallback(script.narration, selectedVoiceId).then(async (buf) => { await logApiCall(user.id, 'elevenlabs', 'generateVoice', 'success'); return buf }),
       generateMusicWithFallback(script.music_prompt, script.music_style, script.estimated_duration).then(async (url) => { await logApiCall(user.id, 'suno', 'generateMusic', url ? 'success' : 'skipped'); return url }),
-      Promise.all(script.scenes.map((s, i) => resolveSceneClip(s, i))).then((clips) => clips.filter(Boolean) as Array<{ url: string; type: 'ia' | 'stock' }>)
+      Promise.all(script.scenes.map((s, i) => resolveSceneClip(s, i))).then((clips) => clips.filter(Boolean) as AssembleClip[])
     ])
-    const sceneUrls = resolvedClips.filter((c) => c.type === 'ia') as Array<{ url: string; type: 'ia' }>
-    const stockVideos = resolvedClips.filter((c) => c.type === 'stock') as Array<{ url: string; type: 'stock' }>
     const voicePath = `voices/${user.id}/${videoId}.mp3`
     const voiceUrl = await uploadToStorage(voicePath, voiceBuffer, 'audio/mpeg')
     await serviceClient.from('videos').update({ voice_url: voiceUrl, music_url: musicUrl || null }).eq('id', videoId)
@@ -140,7 +191,9 @@ export async function POST(req: Request) {
     const assembleStart = Date.now()
     const assembled = await assembleFinalVideo({ clips: allClips, voiceUrl, musicUrl: musicUrl || '', musicVolume: 0.3, subtitles, transitions: 'fade', format, quality, brandKit: (profile as Profile).brand_kit ?? null })
     await logApiCall(user.id, 'shotstack', 'assembleFinalVideo', 'success', Date.now() - assembleStart)
-    const thumbnailUrl = sceneUrls[0]?.url ?? stockVideos[0]?.url ?? null
+    // Miniature : une IMAGE uniquement (jamais un MP4 dans une balise <img>,
+    // audit #18) — la photo stock si présente, sinon pas de thumbnail.
+    const thumbnailUrl = allClips.find((c) => c.kind === 'photo')?.url ?? null
     // Qualité RÉELLE stockée (clamp 4k→1080p si rendu HD : voir actualQualityFor)
     const actualQuality = actualQualityFor(quality, assembled.outputQuality)
     await serviceClient.from('videos').update({ video_url: assembled.url, thumbnail_url: thumbnailUrl, shotstack_json: assembled.timeline, duration: assembled.duration, status: 'ready', quality: actualQuality, cost_estimate: estimateTotalCost(script, userPlan, user.email, quality) }).eq('id', videoId)
@@ -160,6 +213,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, video })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
+    // La ligne vidéo est marquée « failed » — jamais laissée en « generating »
+    // quand le pipeline meurt (audit #14).
+    if (createdVideoId) {
+      await createServiceClient()
+        .from('videos')
+        .update({ status: 'failed' })
+        .eq('id', createdVideoId)
+        .then(() => undefined, () => undefined)
+    }
     await logApiCall(null, 'create', 'POST /api/create', 'error', undefined, message).catch(() => {})
     return NextResponse.json({ error: 'Erreur lors de la generation de la video', details: message }, { status: 500 })
   }

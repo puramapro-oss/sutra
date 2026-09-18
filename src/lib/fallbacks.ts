@@ -32,15 +32,26 @@ export async function generateVisualWithFallback(
   quality: string,
   userEmail: string | null = null,
   plan: Plan = 'free',
-  format = '16:9'
+  format = '16:9',
+  strictAi = false,
+  track: { userId?: string; videoId?: string; duration?: number } = {}
 ): Promise<VisualResult> {
   // Attempt 1: LTX (auto-falls back to WAN 2.2 internally via circuit breaker)
   try {
-    const result = await generateVideoSmart(prompt, plan, userEmail, { quality, format })
+    const result = await generateVideoSmart(prompt, plan, userEmail, {
+      quality,
+      format,
+      duration: track.duration,
+      userId: track.userId,
+      videoId: track.videoId,
+    })
     const filename = `scenes/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.mp4`
     const url = await uploadToStorage(filename, result.videoBuffer, 'video/mp4')
     return { url, engine: result.engine, source: 'ai' }
   } catch (err) {
+    // Mode « 100 % IA » strict (audit #18) : pas de repli stock silencieux —
+    // l'utilisateur a choisi de l'IA, on remonte l'échec IA tel quel.
+    if (strictAi) throw err
     // Dégradation explicite : on logge la raison (sans secret) avant de
     // tenter la banque d'images — jamais d'échec silencieux.
     console.error(

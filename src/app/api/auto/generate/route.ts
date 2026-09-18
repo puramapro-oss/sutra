@@ -6,6 +6,8 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
+import { checkLimits } from '@/lib/limits'
+import { assembleFinalVideo, generateSubtitlesFromScript } from '@/lib/shotstack'
 import type { Plan } from '@/types'
 import {
   loadAutoContext,
@@ -32,6 +34,20 @@ export async function POST(req: Request) {
     }
 
     const service = createServiceClient()
+
+    // Garde de quota AVANT tout appel payant (audit #8) : la génération
+    // autonome consomme le même budget que /api/create — plus de contournement.
+    const { data: quotaProfile } = await service
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
+    if (quotaProfile) {
+      const within = await checkLimits(quotaProfile as never)
+      if (!within) {
+        return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
+      }
+    }
 
     // 1. Plan
     const plan = await planNextVideo({
@@ -82,15 +98,48 @@ export async function POST(req: Request) {
         plan_tier: (profile?.plan ?? 'free') as Plan,
       })
 
-      const finalStatus = ctx.config.require_approval_before_publish ? 'pending_approval' : 'ready'
+      // Montage FINAL (audit #12) : voix + musique assemblées au visuel —
+      // video_final_url n'est PLUS l'URL brute quand l'assemblage réussit.
+      let videoFinalUrl = assets.video_raw_url
+      let assemblyError: string | null = null
+      if (assets.audio_voice_url) {
+        try {
+          const duration = Math.max(1, (ctx.config as AutoConfig).default_duration ?? 6)
+          const subtitles = plan.script
+            ? generateSubtitlesFromScript(plan.script, [{ duration_seconds: duration }])
+            : []
+          const assembled = await assembleFinalVideo({
+            clips: [{ url: assets.video_raw_url, type: 'ia', kind: 'video', duration }],
+            voiceUrl: assets.audio_voice_url,
+            musicUrl: assets.audio_music_url ?? '',
+            musicVolume: 0.3,
+            subtitles,
+            transitions: 'fade',
+            format: (ctx.config as AutoConfig).default_aspect_ratio ?? '9:16',
+            quality: (ctx.config as AutoConfig).quality_level ?? '720p',
+            brandKit: null,
+          })
+          videoFinalUrl = assembled.url
+        } catch (asmErr) {
+          assemblyError = asmErr instanceof Error ? asmErr.message : String(asmErr)
+          console.error('[auto/generate] assemblage echoue :', assemblyError)
+        }
+      }
+
+      const finalStatus = assemblyError
+        ? 'compositing_failed'
+        : ctx.config.require_approval_before_publish
+          ? 'pending_approval'
+          : 'ready'
       await service
         .from('sutra_auto_videos')
         .update({
           status: finalStatus,
           video_raw_url: assets.video_raw_url,
-          video_final_url: assets.video_raw_url, // sans compositing avance, on prend le brut
+          video_final_url: videoFinalUrl,
           audio_music_url: assets.audio_music_url,
           audio_voice_url: assets.audio_voice_url,
+          error_message: assemblyError,
           generation_completed_at: new Date().toISOString(),
           generation_duration_seconds: Math.floor(
             (Date.now() - new Date(videoRow.generation_started_at).getTime()) / 1000

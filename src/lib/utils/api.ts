@@ -1,9 +1,13 @@
 // -----------------------------------------------------------------------------
 // HTTP utilitaire partagé par tous les providers :
-//   - timeout par requête (respecte le signal fourni par l'appelant)
+//   - timeout global couvrant l'ensemble des tentatives (signal appelant respecté)
 //   - retries bornés + backoff exponentiel avec jitter
 //   - circuit breaker par origine (échecs consécutifs → refus immédiat
 //     pendant le cooldown, sans spammer un fournisseur à terre)
+//   - PAS de rejeu automatique des requêtes non idempotentes (POST…) :
+//     une réponse perdue après acceptation ne doit JAMAIS déclencher une
+//     seconde génération payante. Un POST n'est rejoué que si l'appelant
+//     fournit une `idempotencyKey` durable (header Idempotency-Key).
 //   - journalisation sans secret (origine + statut uniquement)
 // -----------------------------------------------------------------------------
 
@@ -62,6 +66,8 @@ export function getBreakerStatus(): Array<{ origin: string; failures: number; op
   }))
 }
 
+// ------------------------------ fetch + retries ------------------------------
+
 /**
  * Message d'erreur HTTP normalisé pour les providers : statut + début du
  * corps (jamais de header/secrets). Format unique → logs et tests cohérents.
@@ -71,22 +77,28 @@ export async function httpErrorMessage(res: Response): Promise<string> {
   return `HTTP ${res.status} ${res.statusText}${detail ? ` — ${detail.slice(0, 200)}` : ''}`
 }
 
-// ------------------------------ fetch + retries ------------------------------
+/** Options étendues : clé d'idempotence durable pour autoriser le rejeu d'un POST. */
+export interface FetchOptions extends RequestInit {
+  idempotencyKey?: string
+}
 
 /**
- * fetch avec retries bornés (5xx et erreurs réseau uniquement — les 4xx ne
- * sont jamais rejoués), backoff exponentiel + jitter, timeout global
- * couvrant l'ensemble des tentatives (30s par défaut).
+ * fetch avec retries bornés.
  *
- * Le `signal` fourni dans options EST respecté (le timeout par défaut de 30s
- * ne s'applique qu'en son absence) — un appelant peut exiger un timeout plus
- * long (ex. génération LTX synchrone 180s).
+ * - GET/HEAD : retries automatiques (5xx/erreurs réseau), backoff exponentiel
+ *   + jitter, timeout global (30s par défaut, signal appelant respecté).
+ * - POST/PATCH et autres méthodes non idempotentes : UNE SEULE tentative,
+ *   sauf si `idempotencyKey` est fournie (header `Idempotency-Key`) — dans ce
+ *   cas les retries sont autorisés et le fournisseur peut dédupliquer.
+ *
+ * Raison d'être : éviter qu'une réponse perdue après acceptation d'un job
+ * génératif ne provoque une seconde soumission (double facturation).
  *
  * @throws Error explicite après épuisement, ou immédiatement si circuit ouvert.
  */
 export async function fetchWithRetry(
   url: string,
-  options: RequestInit,
+  options: FetchOptions,
   maxRetries = 3
 ): Promise<Response> {
   if (!isHostHealthy(url)) {
@@ -95,12 +107,24 @@ export async function fetchWithRetry(
     )
   }
 
-  const defaultTimeout = AbortSignal.timeout(30_000)
-  const signal = options.signal ?? defaultTimeout
+  const method = (options.method ?? 'GET').toUpperCase()
+  const { idempotencyKey, ...init } = options
+  const retryAllowed = method === 'GET' || method === 'HEAD' || Boolean(idempotencyKey)
+  const attempts = retryAllowed ? Math.max(1, maxRetries) : 1
 
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
+  if (idempotencyKey) {
+    init.headers = {
+      ...(init.headers as Record<string, string> | undefined),
+      'Idempotency-Key': idempotencyKey,
+    }
+  }
+
+  const defaultTimeout = AbortSignal.timeout(30_000)
+  const signal = init.signal ?? defaultTimeout
+
+  for (let attempt = 0; attempt < attempts; attempt++) {
     try {
-      const res = await fetch(url, { ...options, signal })
+      const res = await fetch(url, { ...init, signal })
       if (res.ok) {
         recordHostSuccess(url)
         return res
@@ -109,10 +133,10 @@ export async function fetchWithRetry(
         // 4xx : erreur client (clé invalide, requête mal formée…) — inutile de rejouer.
         return res
       }
-      console.warn(`[api] ${res.status} sur ${breakerKey(url)} (tentative ${attempt + 1}/${maxRetries})`)
-      if (attempt < maxRetries - 1) await sleep(Math.pow(2, attempt) * 1000 + Math.random() * 400)
+      console.warn(`[api] ${res.status} sur ${breakerKey(url)} (tentative ${attempt + 1}/${attempts})`)
+      if (attempt < attempts - 1) await sleep(Math.pow(2, attempt) * 1000 + Math.random() * 400)
     } catch (e) {
-      if (attempt === maxRetries - 1) {
+      if (attempt === attempts - 1) {
         recordHostFailure(url)
         throw e
       }
@@ -121,5 +145,5 @@ export async function fetchWithRetry(
   }
 
   recordHostFailure(url)
-  throw new Error(`Echec apres ${maxRetries} tentatives : ${breakerKey(url)}`)
+  throw new Error(`Echec apres ${attempts} tentative(s) : ${breakerKey(url)}`)
 }

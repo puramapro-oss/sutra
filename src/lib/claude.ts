@@ -13,19 +13,21 @@ const scriptDataSchema = z.object({
   title: z.string().trim().min(3).max(160),
   description: z.string().trim().min(20).max(3000),
   tags: z.array(z.string().trim().min(1).max(60)).min(3).max(20),
-  narration: z.string().trim().min(20).max(12000),
+  narration: z.string().trim().min(20).max(60000),
   scenes: z.array(z.object({
     visual_prompt: z.string().trim().min(20).max(2000),
-    duration_seconds: z.number().min(2).max(15),
+    duration_seconds: z.number().min(2).max(20),
     use_stock: z.boolean(),
-  })).min(1).max(30),
+  })).min(1).max(60),
   music_prompt: z.string().trim().min(10).max(1000),
   music_style: z.enum([
     'cinematic', 'lo-fi', 'epic', 'chill',
     'motivational', 'dramatic', 'upbeat', 'ambient',
   ]),
   thumbnail_prompt: z.string().trim().min(20).max(2000),
-  estimated_duration: z.number().min(2).max(300),
+  // Long-form borné (audit #6) : jusqu'à 20 minutes (1200s) pour les formats
+  // documentaire — la borne protège le budget, elle ne disparaît pas.
+  estimated_duration: z.number().min(2).max(1200),
 })
 
 function parseScriptData(raw: string): ScriptData {
@@ -53,11 +55,14 @@ export async function generateScript(
   },
   userId?: string
 ): Promise<ScriptData> {
+  const isLongForm = /min|minute/i.test(params.duration) && parseInt(params.duration, 10) >= 8
   const systemPrompt = `Tu es le createur de contenu video IA le plus talentueux au monde. Tu crees des scripts captivants, optimises pour l'engagement.
+
+${isLongForm ? `FORMAT LONG : structure la video en chapitres logiques (4 a 8 scenes par chapitre), chaque scene reste courte et precisement cadree.` : ''}
 
 REGLES ABSOLUES :
 1. Le hook des 3 premieres secondes est clair, credible et immediat.
-2. Chaque scene remplit une fonction precise et dure 2 a 10 secondes.
+2. Chaque scene remplit une fonction precise et dure 2 a 10 secondes${isLongForm ? ' (jusqu\'a 20 secondes pour les plans d\'ambiance longs)' : ''}.
 3. Le rythme reste soutenu sans surcharger le spectateur.
 4. Termine par un CTA adapte au sujet, jamais trompeur.
 5. Ecris en francais naturel, conversationnel et factuel.
@@ -90,8 +95,8 @@ IMPORTANT :
 - "visual_prompt" est TOUJOURS en anglais
 - "narration" est TOUJOURS en francais
 - "use_stock" = true seulement pour les plans generiques
-- Vise ${params.duration}
-- Format video : ${params.format}
+- Vise ${params.duration} (maximum absolu : 1200 secondes)
+${isLongForm ? '- Jusqu\'a 60 scenes pour les formats longs, jamais plus\n' : ''}- Format video : ${params.format}
 - Niche : ${params.niche}
 - Style : ${params.style}`
 
@@ -101,7 +106,8 @@ IMPORTANT :
     system: systemPrompt,
     message: `Cree une video sur : "${params.topic}"`,
     tier: 'main',
-    maxTokens: 4000,
+    // Long-form : 60 scènes × prompts détaillés ne tiennent pas en 4k tokens.
+    maxTokens: isLongForm ? 16000 : 4000,
   })
 
   return parseScriptData(result.text)

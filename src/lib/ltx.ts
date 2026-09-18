@@ -27,7 +27,7 @@ export {
 
 // Import types and utils
 import type { LtxModel, CameraMotion, VideoEngine, LtxTextToVideoRequest, LtxImageToVideoRequest, LtxResult } from './ltx-types'
-import { getResolution, selectEngine, getMaxQuality, isLtxHealthy, recordLtxFailure, recordLtxSuccess } from './ltx-utils'
+import { getResolution, selectEngine, getMaxQuality, isLtxHealthy, recordLtxFailure, recordLtxSuccess, snapLtxDuration, ltxCompatibleFormat } from './ltx-utils'
 import { generateWanVideoWithTracking, logVideoGeneration } from './ltx-helpers'
 
 // ---------------------------------------------------------------------------
@@ -60,8 +60,11 @@ async function callLtxApi(
       },
       body: JSON.stringify(body),
       signal: AbortSignal.timeout(LTX_TIMEOUT),
+      // Clé d'idempotence par défaut : la génération est le poste de coût n°1,
+      // une réponse perdue ne doit jamais déclencher une seconde génération.
+      idempotencyKey: `ltx-${body.seed ?? 'auto'}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
     },
-    2 // max 2 retries
+    2
   )
 
   if (!res.ok) {
@@ -167,9 +170,17 @@ export async function generateVideoSmart(
 ): Promise<LtxResult> {
   const { engine, model } = selectEngine(plan, userEmail)
   const quality = options.quality ?? getMaxQuality(plan)
-  const format = options.format ?? '16:9'
+  const requestedFormat = options.format ?? '16:9'
+  // LTX ne supporte que 16:9/9:16 : le carré est généré en 16:9 puis recadré
+  // au montage (output.size 1:1 côté Shotstack).
+  const format = engine === 'wan-classic' ? requestedFormat : ltxCompatibleFormat(requestedFormat)
   const resolution = getResolution(format, quality)
-  const duration = options.duration ?? 5
+  // Durée ramenée à une valeur admise par le modèle/résolution (6-20s selon
+  // tier, cf snapLtxDuration) — sinon LTX rejette et le repli WAN dégrade.
+  const duration =
+    engine === 'wan-classic'
+      ? (options.duration ?? 5)
+      : snapLtxDuration(model as LtxModel, quality, options.duration ?? 6)
   const start = Date.now()
 
   // V7.1 tracking context (flushé à la fin ou dans catch)

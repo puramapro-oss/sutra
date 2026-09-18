@@ -15,11 +15,17 @@ export const createVideoSchema = z.object({
   format: z.enum(['16:9', '9:16', '1:1']).default('16:9'),
   quality: z.enum(['720p', '1080p', '4k']).default('1080p'),
   voice_id: z.string().optional(),
+  // Chois réellement envoyés par le hook useVideoGeneration (audit #3) :
+  // ils doivent être VALIDÉS, pas silencieusement jetés par le schéma.
+  voice: z.string().max(120).optional(),
+  engine: z.enum(['ltx-pro', 'ltx-fast', 'wan-classic']).optional(),
+  script: z.string().max(20_000, 'Script manuel trop long').optional(),
   niche: z.string().optional(),
   style: z.string().optional(),
   mode: z.enum(['auto', 'manual']).default('auto'),
   mediaMode: z.enum(['ai', 'stock', 'mixed']).default('ai'),
-  stockSelections: z.array(stockSelectionSchema).optional().default([]),
+  // Bornes anti-dépense : 60 scènes max, une par entrée (audit #8).
+  stockSelections: z.array(stockSelectionSchema).max(60, 'Trop de selections stock').optional().default([]),
 })
 
 export const signupSchema = z.object({
