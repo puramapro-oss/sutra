@@ -14,11 +14,16 @@ export default function FolderModal({ isOpen, onClose, onCreate }: FolderModalPr
   const [folderName, setFolderName] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
+  // Reset du champ à la fermeture via le handler d'événement (pas dans un
+  // effect) — chaque chemin de fermeture passe par handleClose.
+  const handleClose = () => {
+    setFolderName('')
+    onClose()
+  }
+
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 50)
-    } else {
-      setFolderName('')
     }
   }, [isOpen])
 
@@ -38,7 +43,7 @@ export default function FolderModal({ isOpen, onClose, onCreate }: FolderModalPr
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-sm"
-          onClick={onClose}
+          onClick={handleClose}
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -52,7 +57,7 @@ export default function FolderModal({ isOpen, onClose, onCreate }: FolderModalPr
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-lg font-bold text-white">Nouveau dossier</h2>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="p-1 rounded-lg text-white/40 hover:text-white transition-colors"
                 aria-label="Fermer"
               >
@@ -83,7 +88,7 @@ export default function FolderModal({ isOpen, onClose, onCreate }: FolderModalPr
                 data-testid="folder-cancel"
                 variant="secondary"
                 size="md"
-                onClick={onClose}
+                onClick={handleClose}
               >
                 Annuler
               </Button>
