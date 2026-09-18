@@ -6,7 +6,8 @@ import { createVideoSchema } from '@/lib/validators'
 import { checkLimits } from '@/lib/limits'
 import { generateScript } from '@/lib/claude'
 import { generateVoiceWithFallback, generateVisualWithFallback, generateMusicWithFallback } from '@/lib/fallbacks'
-import { searchVideos } from '@/lib/pexels'
+import { searchVideos, type MediaFormat } from '@/lib/pexels'
+import { estimateCost, selectEngine, type VideoQuality } from '@/lib/ltx-utils'
 import { uploadToStorage } from '@/lib/storage'
 import { assembleFinalVideo } from '@/lib/shotstack'
 import { stampVideoWhenReady } from '@/lib/video-proofs'
@@ -73,6 +74,7 @@ export async function POST(req: Request) {
     if (!withinLimits) return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan. Passez au plan superieur.' }, { status: 403 })
 
     const { topic, format, quality, voice_id, niche, style, mediaMode, stockSelections } = parsed.data
+    const mediaFormat = (['9:16', '16:9', '1:1'].includes(format) ? format : '16:9') as MediaFormat
     const { data: videoRow } = await serviceClient.from('videos').insert({ user_id: user.id, status: 'generating', format, quality, tags: [], media_mode: mediaMode, stock_sources: stockSelections ?? [] }).select('id').single()
     if (!videoRow) return NextResponse.json({ error: 'Erreur creation video' }, { status: 500 })
     const videoId = videoRow.id
@@ -90,7 +92,7 @@ export async function POST(req: Request) {
       const userChoseStock = sel && !sel.fallbackToAI && sel.url
       if (mediaMode === 'stock') {
         if (userChoseStock) return { url: sel!.url!, type: 'stock' }
-        const results = await searchVideos(scene.visual_prompt, 1)
+        const results = await searchVideos(scene.visual_prompt, 1, { format: mediaFormat })
         await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'fallback')
         if (results[0]) return { url: results[0].url, type: 'stock' }
         const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
@@ -106,7 +108,7 @@ export async function POST(req: Request) {
         }
       }
       if (scene.use_stock) {
-        const results = await searchVideos(scene.visual_prompt, 1)
+        const results = await searchVideos(scene.visual_prompt, 1, { format: mediaFormat })
         await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'skipped')
         return results[0] ? { url: results[0].url, type: 'stock' } : null
       }
@@ -131,7 +133,7 @@ export async function POST(req: Request) {
     const assembled = await assembleFinalVideo({ clips: allClips, voiceUrl, musicUrl: musicUrl || '', musicVolume: 0.3, subtitles, transitions: 'fade', format, quality, brandKit: (profile as Profile).brand_kit ?? null })
     await logApiCall(user.id, 'shotstack', 'assembleFinalVideo', 'success', Date.now() - assembleStart)
     const thumbnailUrl = sceneUrls[0]?.url ?? stockVideos[0]?.url ?? null
-    await serviceClient.from('videos').update({ video_url: assembled.url, thumbnail_url: thumbnailUrl, shotstack_json: assembled.timeline, duration: assembled.duration, status: 'ready', cost_estimate: estimateTotalCost(script) }).eq('id', videoId)
+    await serviceClient.from('videos').update({ video_url: assembled.url, thumbnail_url: thumbnailUrl, shotstack_json: assembled.timeline, duration: assembled.duration, status: 'ready', cost_estimate: estimateTotalCost(script, userPlan, user.email, quality) }).eq('id', videoId)
 
     try {
       const stampOutcome = await stampVideoWhenReady({ videoId, userId: user.id, videoUrl: assembled.url })
@@ -159,6 +161,23 @@ function generateSubtitles(narration: string, totalDuration: number): Array<{ te
   return sentences.map((text, i) => ({ text: text.trim(), start: i * segmentDuration, end: (i + 1) * segmentDuration }))
 }
 
-function estimateTotalCost(script: ScriptData): number {
-  return 0.05 + 0.1 + 0.08 + script.scenes.filter((s) => !s.use_stock).length * 0.015 + 0.07
+function estimateTotalCost(
+  script: ScriptData,
+  plan: Plan,
+  userEmail: string | null | undefined,
+  quality: string,
+): number {
+  const { engine } = selectEngine(plan, userEmail)
+  const videoQuality = (['720p', '1080p', '4k'].includes(quality)
+    ? quality
+    : '1080p') as VideoQuality
+  const generatedSeconds = script.scenes
+    .filter((scene) => !scene.use_stock)
+    .reduce((total, scene) => total + Math.max(0, scene.duration_seconds), 0)
+
+  // Existing voice/script/music/assembly estimates plus quality-aware video cost.
+  return Number(
+    (0.05 + 0.1 + 0.08 + estimateCost(engine, generatedSeconds, videoQuality) + 0.07)
+      .toFixed(4),
+  )
 }
