@@ -77,6 +77,7 @@ export type ProviderId =
   | 'zernio'
   | 'tavily'
   | 'insee'
+  | 'local-engine'
 
 export interface ProviderSpec {
   /** Nom lisible (UI diagnostic). */
@@ -112,6 +113,7 @@ export const PROVIDERS: Record<ProviderId, ProviderSpec> = {
   zernio: { label: 'Zernio', env: ['ZERNIO_API_KEY'], cost: 'par-usage', probe: false, role: 'publication sociale' },
   tavily: { label: 'Tavily', env: ['TAVILY_API_KEY'], cost: 'quota-gratuit', probe: false, role: 'recherche web scripts' },
   insee: { label: 'INSEE SIRENE', env: ['INSEE_API_KEY'], cost: 'gratuit', probe: false, role: 'vérification SIRET' },
+  'local-engine': { label: 'Moteur local (perso)', env: ['LOCAL_ENGINE_ENABLED', 'LOCAL_VIDEO_API_URL'], cost: 'gratuit', probe: false, role: 'vidéos du propriétaire sur Mac local — clients sur API externes' },
 }
 
 /** État de configuration d'un fournisseur — noms de variables uniquement. */

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
-import { checkLimits } from '@/lib/limits'
+import { reserveQuota, completeQuota, releaseQuota } from '@/lib/video-queue'
 import { generateScript } from '@/lib/claude'
 import { generateVisualWithFallback, generateMusicWithFallback, generateVoiceWithFallback, type VisualResult } from '@/lib/fallbacks'
 import { searchVideos, type MediaFormat } from '@/lib/pexels'
@@ -11,58 +11,26 @@ import { resolveVoiceProviderId } from '@/lib/constants'
 import { uploadToStorage } from '@/lib/storage'
 import { assembleFinalVideo, generateSubtitlesFromScript, actualQualityFor, type AssembleClip } from '@/lib/shotstack'
 import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
+import { productionSchema, TEMPLATE_CONFIGS, sanitizeScriptData, MAX_SCENES } from '@/lib/production-schema'
 import type { Plan, Profile, ScriptData } from '@/types'
 
 // Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
 export const maxDuration = 300
+/**
+ * Réservation ATOMIQUE (migration v10) pour toute étape à coût fournisseur.
+ * Fail-closed : erreur RPC = refus. Settlement en fin d'étape / catch.
+ */
+const quota = { reserved: false }
 
-// Validation stricte des entrées — formats limités aux 3 ratios réellement
-// supportés par la chaîne, étapes connues uniquement.
-const productionSchema = z.object({
-  step: z.enum(['script', 'video', 'voice', 'music', 'assembly', 'thumbnail', 'all']),
-  idea: z.string().min(1, 'idee requise').max(500),
-  template: z.string().optional(),
-  format: z.enum(['16:9', '9:16', '1:1']).optional(),
-  engine: z.enum(['ltx-pro', 'ltx-fast', 'wan-classic']).optional(),
-  voice: z.string().max(120).optional(),
-  musicStyle: z.string().max(120).optional(),
-  tone: z.string().max(120).optional(),
-  previousData: z.unknown().optional(),
-})
-
-// Bornes anti-dépense sur les données renvoyées par le client (audit #8) :
-// un previousData non borné ne doit jamais déclencher un Promise.all massif.
-const MAX_SCENES = 60
-const MAX_NARRATION_CHARS = 60_000
-
-const TEMPLATE_CONFIGS: Record<string, { durationHint: string; sceneCount: number }> = {
-  youtube: { durationHint: '8-12 minutes', sceneCount: 12 },
-  tiktok: { durationHint: '30-60 secondes', sceneCount: 4 },
-  reel: { durationHint: '15-30 secondes', sceneCount: 3 },
-  docu: { durationHint: '10-20 minutes', sceneCount: 15 },
-  tuto: { durationHint: '3-8 minutes', sceneCount: 8 },
-}
-
-function sanitizeScriptData(raw: unknown): ScriptData | undefined {
-  const s = raw as ScriptData | undefined
-  if (!s || !Array.isArray(s.scenes)) return undefined
-  return {
-    ...s,
-    narration: (s.narration ?? '').slice(0, MAX_NARRATION_CHARS),
-    scenes: s.scenes.slice(0, MAX_SCENES),
-  }
-}
-
-/** Toute étape qui déclenche un coût fournisseur passe la garde de quota. */
 async function guardQuota(profile: Record<string, unknown>): Promise<Response | null> {
-  const within = await checkLimits(profile as unknown as Profile)
-  if (!within) {
-    return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
-  }
+  const reserved = await reserveQuota(profile as unknown as Profile)
+  if (!reserved) return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
+  quota.reserved = true
   return null
 }
 
 export async function POST(req: Request) {
+  let authUserId: string | null = null
   try {
     const supabase = await createServerClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -70,6 +38,7 @@ export async function POST(req: Request) {
     if (authError || !user) {
       return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
     }
+    authUserId = user.id
 
     const body = await req.json()
     const parsed = productionSchema.safeParse(body)
@@ -101,6 +70,8 @@ export async function POST(req: Request) {
 
     // Step-by-step production
     if (step === 'script') {
+      const denied = await guardQuota(profile)
+      if (denied) return denied
       const config = TEMPLATE_CONFIGS[template ?? ''] ?? TEMPLATE_CONFIGS.youtube
       const script = await generateScript({
         topic: idea,
@@ -110,6 +81,8 @@ export async function POST(req: Request) {
         duration: config.durationHint,
       })
       await logApiCall(user.id, 'claude', 'production-script', 'success')
+      await completeQuota(user.id)
+      quota.reserved = false
       return NextResponse.json({ data: script })
     }
 
@@ -119,6 +92,8 @@ export async function POST(req: Request) {
 
       const scriptData = sanitizeScriptData(previousData?.script)
       if (!scriptData?.scenes?.length) {
+        await releaseQuota(user.id)
+        quota.reserved = false
         return NextResponse.json({ error: 'Script requis pour generer les scenes' }, { status: 400 })
       }
 
@@ -143,6 +118,8 @@ export async function POST(req: Request) {
       )
       const resolved = sceneUrls.filter(Boolean) as VisualResult[]
       await logApiCall(user.id, 'ltx', 'production-video', 'success')
+      await completeQuota(user.id)
+      quota.reserved = false
       return NextResponse.json({ data: resolved })
     }
 
@@ -152,6 +129,8 @@ export async function POST(req: Request) {
 
       const scriptData = sanitizeScriptData(previousData?.script)
       if (!scriptData?.narration) {
+        await releaseQuota(user.id)
+        quota.reserved = false
         return NextResponse.json({ error: 'Script requis pour la narration' }, { status: 400 })
       }
 
@@ -161,6 +140,8 @@ export async function POST(req: Request) {
       const voicePath = `production/${user.id}/${Date.now()}.mp3`
       const voiceUrl = await uploadToStorage(voicePath, voiceBuffer, 'audio/mpeg')
       await logApiCall(user.id, 'elevenlabs', 'production-voice', 'success')
+      await completeQuota(user.id)
+      quota.reserved = false
       return NextResponse.json({ data: { url: voiceUrl } })
     }
 
@@ -174,6 +155,8 @@ export async function POST(req: Request) {
         120
       )
       await logApiCall(user.id, 'suno', 'production-music', url ? 'success' : 'skipped')
+      await completeQuota(user.id)
+      quota.reserved = false
       return NextResponse.json({ data: { url: url || null } })
     }
 
@@ -187,6 +170,8 @@ export async function POST(req: Request) {
       const musicData = previousData?.music as { url: string } | undefined
 
       if (!videoData?.length || !voiceData?.url) {
+        await releaseQuota(user.id)
+        quota.reserved = false
         return NextResponse.json({ error: 'Video et voix requises pour l\'assemblage' }, { status: 400 })
       }
 
@@ -239,6 +224,8 @@ export async function POST(req: Request) {
         message: `Ta video "${scriptData?.title ?? 'Production'}" est prete !`,
       })
 
+      await completeQuota(user.id)
+      quota.reserved = false
       return NextResponse.json({ data: { url: assembled.url, videoId: videoRow?.id } })
     }
 
@@ -342,6 +329,8 @@ export async function POST(req: Request) {
 
       await logActivity(user.id, 'production_completed', `Production "${script.title}" terminee`)
 
+      await completeQuota(user.id)
+      quota.reserved = false
       return NextResponse.json({
         data: {
           script,
@@ -357,6 +346,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Etape inconnue' }, { status: 400 })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
+    if (quota.reserved && authUserId) await releaseQuota(authUserId).catch(() => {})
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }

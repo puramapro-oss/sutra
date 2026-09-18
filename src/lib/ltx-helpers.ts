@@ -85,7 +85,7 @@ export async function logVideoGeneration(params: {
   plan: Plan
   engineRequested: VideoEngine
   modelRequested: LtxModel | 'wan-2.2'
-  engineUsed: 'ltx' | 'wan' | 'pexels' | 'shotstack'
+  engineUsed: 'ltx' | 'wan' | 'pexels' | 'shotstack' | 'local'
   modelUsed: string
   fallbackTriggered: boolean
   fallbackReason: string | null

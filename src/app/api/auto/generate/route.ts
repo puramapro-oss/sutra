@@ -6,7 +6,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
-import { checkLimits } from '@/lib/limits'
+import { reserveQuota, completeQuota, releaseQuota } from '@/lib/video-queue'
 import { assembleFinalVideo, generateSubtitlesFromScript } from '@/lib/shotstack'
 import type { Plan } from '@/types'
 import {
@@ -20,10 +20,13 @@ import {
 export const maxDuration = 300
 
 export async function POST(req: Request) {
+  let quotaReserved = false
+  let authUserId: string | null = null
   try {
     const supabase = await createServerClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
+    authUserId = user.id
 
     const body = await req.json().catch(() => ({}))
     const scheduleId: string | null = body.schedule_id ?? null
@@ -42,11 +45,13 @@ export async function POST(req: Request) {
       .select('*')
       .eq('id', user.id)
       .single()
+    quotaReserved = false
     if (quotaProfile) {
-      const within = await checkLimits(quotaProfile as never)
-      if (!within) {
+      const reserved = await reserveQuota(quotaProfile as never)
+      if (!reserved) {
         return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
       }
+      quotaReserved = true
     }
 
     // 1. Plan
@@ -177,6 +182,7 @@ export async function POST(req: Request) {
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
+    if (quotaReserved && authUserId) await releaseQuota(authUserId).catch(() => {})
     return NextResponse.json({ error: 'Erreur generation', details: message }, { status: 500 })
   }
 }

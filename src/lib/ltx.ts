@@ -29,6 +29,7 @@ export {
 import type { LtxModel, CameraMotion, VideoEngine, LtxTextToVideoRequest, LtxImageToVideoRequest, LtxResult } from './ltx-types'
 import { getResolution, selectEngine, getMaxQuality, isLtxHealthy, recordLtxFailure, recordLtxSuccess, snapLtxDuration, ltxCompatibleFormat } from './ltx-utils'
 import { generateWanVideoWithTracking, logVideoGeneration } from './ltx-helpers'
+import { tryLocalRoute } from './local-engine'
 
 // ---------------------------------------------------------------------------
 // LTX Video 2.3 — Primary video engine for SUTRA
@@ -170,6 +171,17 @@ export async function generateVideoSmart(
 ): Promise<LtxResult> {
   const { engine, model } = selectEngine(plan, userEmail)
   const quality = options.quality ?? getMaxQuality(plan)
+
+  // Mode personnel LOCAL (audit #17) : propriétaire uniquement — le bloc
+  // complet vit dans local-engine.ts (tryLocalRoute) pour garder ce fichier
+  // focalisé sur le routage externe.
+  {
+    const local = await tryLocalRoute({ prompt, plan, quality, userEmail, format: options.format, duration: options.duration, userId: options.userId, videoId: options.videoId })
+    if (local) return local
+    // tryLocalRoute lève déjà en mode strict ; en mode auto il retourne null
+    // après avoir documenté le repli externe dans les logs.
+  }
+
   const requestedFormat = options.format ?? '16:9'
   // LTX ne supporte que 16:9/9:16 : le carré est généré en 16:9 puis recadré
   // au montage (output.size 1:1 côté Shotstack).

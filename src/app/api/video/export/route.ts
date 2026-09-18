@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
-import { checkLimits } from '@/lib/limits'
+import { reserveQuota, completeQuota, releaseQuota } from '@/lib/video-queue'
 import { assembleFinalVideo, actualQualityFor, type AssembleClip } from '@/lib/shotstack'
 import { sendNotification, logActivity } from '@/lib/logger'
 import type { Profile } from '@/types'
@@ -45,10 +45,13 @@ const exportSchema = z.object({
 })
 
 export async function POST(req: Request) {
+  let quotaReserved = false
+  let authUserId: string | null = null
   try {
     const supabase = await createServerClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
+    authUserId = user.id
 
     const parsed = exportSchema.safeParse(await req.json())
     if (!parsed.success) {
@@ -76,11 +79,13 @@ export async function POST(req: Request) {
 
     // Un export re-rend chez Shotstack = un coût : il passe la garde de quota.
     const { data: profile } = await service.from('profiles').select('*').eq('id', user.id).single()
+    quotaReserved = false
     if (profile) {
-      const within = await checkLimits(profile as Profile)
-      if (!within) {
+      const reserved = await reserveQuota(profile as Profile)
+      if (!reserved) {
         return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
       }
+      quotaReserved = true
     }
 
     const clips: AssembleClip[] = (scenes && scenes.length > 0 ? scenes : []).map((s) => ({
@@ -122,10 +127,13 @@ export async function POST(req: Request) {
       message: 'Ton export est pret dans ta bibliotheque.',
     })
     await logActivity(user.id, 'video_exported', 'Video re-exportee depuis l\'editeur', { video_id: videoId, quality: actualQuality })
+    await completeQuota(user.id)
+    quotaReserved = false
 
     return NextResponse.json({ success: true, url: assembled.url, quality: actualQuality })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
+    if (quotaReserved && authUserId) await releaseQuota(authUserId).catch(() => {})
     return NextResponse.json({ error: 'Erreur lors de l\'export', details: message }, { status: 500 })
   }
 }
