@@ -1,5 +1,6 @@
 import { smarana } from '@purama/smarana'
-import type { ScriptData, MusicStyle } from '@/types'
+import { z } from 'zod'
+import type { ScriptData } from '@/types'
 
 export type ClaudeTier = 'fast' | 'main' | 'pro'
 
@@ -7,6 +8,40 @@ const MODEL_MAIN = process.env.ANTHROPIC_MODEL_MAIN ?? 'claude-sonnet-4-6'
 const MODEL_FAST = process.env.ANTHROPIC_MODEL_FAST ?? 'claude-haiku-4-5-20251001'
 const MODEL_PRO = process.env.ANTHROPIC_MODEL_PRO ?? 'claude-opus-4-6'
 export { MODEL_MAIN, MODEL_FAST, MODEL_PRO }
+
+const scriptDataSchema = z.object({
+  title: z.string().trim().min(3).max(160),
+  description: z.string().trim().min(20).max(3000),
+  tags: z.array(z.string().trim().min(1).max(60)).min(3).max(20),
+  narration: z.string().trim().min(20).max(12000),
+  scenes: z.array(z.object({
+    visual_prompt: z.string().trim().min(20).max(2000),
+    duration_seconds: z.number().min(2).max(15),
+    use_stock: z.boolean(),
+  })).min(1).max(30),
+  music_prompt: z.string().trim().min(10).max(1000),
+  music_style: z.enum([
+    'cinematic', 'lo-fi', 'epic', 'chill',
+    'motivational', 'dramatic', 'upbeat', 'ambient',
+  ]),
+  thumbnail_prompt: z.string().trim().min(20).max(2000),
+  estimated_duration: z.number().min(2).max(300),
+})
+
+function parseScriptData(raw: string): ScriptData {
+  const cleaned = raw.replace(/```json\n?|\n?```/g, '').trim()
+  let value: unknown
+  try {
+    value = JSON.parse(cleaned)
+  } catch {
+    throw new Error('SUTRA_SCRIPT_INVALID_JSON')
+  }
+  const parsed = scriptDataSchema.safeParse(value)
+  if (!parsed.success) {
+    throw new Error(`SUTRA_SCRIPT_INVALID_SCHEMA: ${parsed.error.issues[0]?.message ?? 'unknown'}`)
+  }
+  return parsed.data
+}
 
 export async function generateScript(
   params: {
@@ -21,11 +56,16 @@ export async function generateScript(
   const systemPrompt = `Tu es le createur de contenu video IA le plus talentueux au monde. Tu crees des scripts captivants, optimises pour l'engagement.
 
 REGLES ABSOLUES :
-1. Le HOOK (3 premieres secondes) doit etre IRRESISTIBLE - question choc, fait surprenant, ou provocation
-2. Chaque scene dure 5-10 secondes maximum
-3. Le rythme ne doit JAMAIS baisser - relance toutes les 15 secondes
-4. Termine toujours par un CTA (call-to-action) puissant
-5. Ecris en francais naturel, conversationnel, jamais robotique
+1. Le hook des 3 premieres secondes est clair, credible et immediat.
+2. Chaque scene remplit une fonction precise et dure 2 a 10 secondes.
+3. Le rythme reste soutenu sans surcharger le spectateur.
+4. Termine par un CTA adapte au sujet, jamais trompeur.
+5. Ecris en francais naturel, conversationnel et factuel.
+6. N'invente jamais de fonctionnalite, chiffre, temoignage, marque ou preuve.
+7. Adapte le cadrage au format \${params.format}; garde le sujet et les zones de texte dans la zone sure.
+8. Decris chaque plan en anglais : sujet, action, decor, cadrage, lumiere, camera et progression temporelle.
+9. N'integre aucun texte, logo ou interface genere dans l'image : ils seront ajoutes exactement en postproduction.
+10. Utilise use_stock=true seulement lorsqu'un plan generique reel est preferable et recherchable.
 
 FORMAT DE REPONSE (JSON strict, aucun texte autour) :
 {
@@ -64,8 +104,7 @@ IMPORTANT :
     maxTokens: 4000,
   })
 
-  const cleaned = result.text.replace(/```json\n?|\n?```/g, '').trim()
-  return JSON.parse(cleaned) as ScriptData
+  return parseScriptData(result.text)
 }
 
 export const SUTRA_SYSTEM_PROMPT = 'Tu es un assistant IA pour SUTRA, une plateforme de generation video IA. Reponds en francais.'
