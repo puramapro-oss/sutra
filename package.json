@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test:video-contracts": "node --test scripts/test-video-contracts.mjs",
     "test:api-contracts": "node --import tsx --test scripts/test-api-contracts.mts scripts/test-env-contracts.mts scripts/test-local-engine.mts scripts/test-shotstack-contracts.mts",
-    "test:migration-local": "node scripts/test-migration-local.mjs"
+    "test:migration-local": "node scripts/test-migration-local.mjs",
+    "test:local-engine-e2e": "node --import tsx --test scripts/test-local-engine-e2e.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.3",

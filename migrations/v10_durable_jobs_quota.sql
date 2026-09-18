@@ -7,11 +7,20 @@
 --   * video_quota_counters + reserve_video_quota() : réservation atomique en
 --     UNE instruction SQL (plus de lecture-puis-action concurrence).
 --   * release_video_quota() / complete_video_quota() : libération contrôlée.
+--   * Backfill du mois courant : les consommations DÉJÀ enregistrées dans
+--     `videos` sont importées comme `completed` — la mise en production ne
+--     remet PAS les compteurs à zéro, et rejouer la migration ne double
+--     JAMAIS le comptage (ON CONFLICT DO NOTHING).
 --
 -- NB : user_id est un uuid nu (pas de FK vers auth.users) pour rester
 -- applicable/testable sur une base isolée ; l'application garantit la
 -- provenance (auth.getUser() côté routes).
 -- =============================================================================
+
+-- Schéma applicatif (convention migrations sutra) — créé s'il n'existe pas
+-- (base de test locale isolée).
+create schema if not exists sutra;
+SET search_path TO sutra, public;
 
 -- -----------------------------------------------------------------------------
 -- 1. Compteurs de quota mensuels (réservation + settlement)
@@ -88,6 +97,35 @@ as $$
    where user_id = p_user_id
      and period_start = date_trunc('month', now())::date
      and reserved > 0;
+$$;
+
+-- -----------------------------------------------------------------------------
+-- REPRISE DU MOIS COURANT sans double comptage :
+--   * les vidéos de ce mois déjà enregistrées (statut <> failed) deviennent
+--     `completed` — le quota du mois en cours est donc déjà partiellement
+--     consommé au moment du déploiement, comme avant la migration ;
+--   * ON CONFLICT DO NOTHING : rejouer la migration n'ajoute rien (idempotent)
+--     et ne touche NI aux réservations en cours NI aux compteurs vivants ;
+--   * les mois passés ne sont PAS importés : la limite est mensuelle.
+-- -----------------------------------------------------------------------------
+do $$
+begin
+  if to_regclass('sutra.videos') is not null then
+    insert into video_quota_counters (user_id, period_start, completed, updated_at)
+    select v.user_id,
+           date_trunc('month', v.created_at)::date,
+           count(*)::int,
+           now()
+      from sutra.videos v
+     where v.created_at >= date_trunc('month', now())
+       and coalesce(v.status, 'ready') <> 'failed'
+     group by v.user_id, date_trunc('month', v.created_at)::date
+    on conflict (user_id, period_start) do nothing;
+    raise notice 'backfill mois courant : consommations videos importees (sans double comptage)';
+  else
+    raise notice 'table sutra.videos absente (base de test) — backfill mensuel omis';
+  end if;
+end;
 $$;
 
 -- -----------------------------------------------------------------------------
