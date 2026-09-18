@@ -9,12 +9,14 @@
  */
 
 import { smarana } from '@purama/smarana'
+import { z } from 'zod'
 import { createServiceClient } from '@/lib/supabase'
 import { generateVideoSmart } from '@/lib/ltx'
 import { generateMusic } from '@/lib/suno'
 import { generateVoice } from '@/lib/elevenlabs'
 import { uploadToStorage } from '@/lib/storage'
 import { publishToPlatforms, type SocialPlatform } from '@/lib/zernio'
+import type { Plan } from '@/types'
 
 // Re-export types from dedicated modules
 export type {
@@ -32,6 +34,35 @@ export { analyzePerformance, loadAutoContext, recordMemory } from './sutra-auto-
 
 // Import for local use
 import type { AutoConfig, AutoTheme, AutoMemory, AutoVideoRecord, VideoPlan } from './sutra-auto-types'
+
+const videoPlanSchema = z.object({
+  title: z.string().trim().min(3).max(60),
+  description: z.string().trim().min(10).max(3000),
+  hashtags: z.array(z.string().trim().regex(/^#/)).min(3).max(15),
+  video_prompt: z.string().trim().min(30).max(3000),
+  music_prompt: z.string().trim().min(10).max(1000),
+  script: z.string().trim().min(10).max(10000).nullable(),
+  style_override: z.string().trim().max(100).nullable(),
+  theme_id: z.string().uuid().nullable(),
+  reasoning: z.string().trim().min(10).max(2000),
+  expected_engagement: z.enum(['high', 'medium', 'low']),
+  trend_leveraged: z.string().trim().max(300).nullable(),
+})
+
+function parseVideoPlan(raw: string): VideoPlan {
+  const cleaned = raw.replace(/```json\n?|\n?```/g, '').trim()
+  let value: unknown
+  try {
+    value = JSON.parse(cleaned)
+  } catch {
+    throw new Error('SUTRA_AUTO_PLAN_INVALID_JSON')
+  }
+  const parsed = videoPlanSchema.safeParse(value)
+  if (!parsed.success) {
+    throw new Error(`SUTRA_AUTO_PLAN_INVALID_SCHEMA: ${parsed.error.issues[0]?.message ?? 'unknown'}`)
+  }
+  return parsed.data
+}
 
 // ---------------------------------------------------------------
 // 1. PLANNING - Claude joue le role de directeur creatif
@@ -124,6 +155,10 @@ REGLES
 6. 10-15 hashtags pour decouvrabilite
 7. Respecte must_include / never_include du theme
 8. Privilegie les themes avec poids eleves et peu utilises recemment
+9. N'invente aucun fait, chiffre, temoignage, marque, tendance ou fonctionnalite
+10. N'ecris aucun texte ni logo dans video_prompt : ces elements sont ajoutes en postproduction
+11. Decris sujet, action, decor, cadrage, lumiere, camera et progression temporelle
+12. expected_engagement est une hypothese, jamais une garantie
 
 FORMAT (JSON strict, aucun texte autour)
 {
@@ -149,8 +184,7 @@ FORMAT (JSON strict, aucun texte autour)
     maxTokens: 2000,
   })
 
-  const cleaned = result.text.replace(/```json\n?|\n?```/g, '').trim()
-  return JSON.parse(cleaned) as VideoPlan
+  return parseVideoPlan(result.text)
 }
 
 // ---------------------------------------------------------------
@@ -162,7 +196,7 @@ export async function generateAutoVideoAssets(params: {
   plan: VideoPlan
   config: AutoConfig
   userEmail: string | null
-  plan_tier: 'free' | 'starter' | 'creator' | 'pro' | 'enterprise'
+  plan_tier: Plan
 }): Promise<{
   video_raw_url: string
   audio_music_url: string | null
@@ -171,7 +205,7 @@ export async function generateAutoVideoAssets(params: {
   const { videoId, plan, config, userEmail, plan_tier } = params
 
   // 1. Video brute (LTX/WAN)
-  const ltxResult = await generateVideoSmart(plan.video_prompt, plan_tier as never, userEmail, {
+  const ltxResult = await generateVideoSmart(plan.video_prompt, plan_tier, userEmail, {
     format: config.default_aspect_ratio,
     quality: config.quality_level,
     duration: config.default_duration,
