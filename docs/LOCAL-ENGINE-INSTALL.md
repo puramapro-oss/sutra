@@ -191,6 +191,55 @@ Run final 2026-09-19 16:05, adaptateur corrigé (sortie ciblée sur le nœud
 Frame 45 inspectée : même scène cohérente, aucun artefact (seed aléatoire →
 disposition des vagues différente du run précédent, normal).
 
+## 4quater. Essai comparatif qualité (2026-09-19 18:05) — rendu précédent REFUSÉ
+
+Le rendu UHD 17:24 a été refusé visuellement. Analyse + leviers (modèles
+installés UNIQUEMENT — aucun upscaler pixel sur disque, `upscale_models/` vide).
+
+### Défauts constatés sur le rendu refusé
+1. **Upscale lisse** : netteté normalisée @1024×576 natif 340,8 vs 314,2 après
+   2 passes IA (−8 %) — chaque passe LTXVLatentUpsampler (decode→scale→encode)
+   dégrade ; le lanczos pur fait pire (304,0).
+2. **Fidélité prompt faible** : prompt FR court → « phare » rendu en rocher
+   organique, pas de tempête (distilled 8 steps).
+3. 16 fps + pas d'audio : structurels (§5).
+
+### Essais courts (25 frames ≈ 1,6 s, seed FIXE 424242, prompt EN cinéaste)
+Prompt EN : « tall white lighthouse with red stripes on a rocky cliff, stormy
+sea at golden sunset, huge crashing waves, dark dramatic storm clouds,
+lighthouse beam sweeping, cinematic wide shot, golden hour light ».
+
+| Variante | Temps | Observation (frame 13 + zoom ×2) |
+|---|---|---|
+| A: steps 8, cfg 1.0 | 194 800 ms | ciel d'orage ✓, vagues ✓, structure amorphe |
+| **B: steps 10, cfg 1.0** | 208 687 ms | **meilleure tour verticale sur le rocher** ← retenu |
+| C: steps 10, cfg 1.5 | 264 335 ms | +28 % temps, soleil écrasant, structure molle (distilled ≠ cfg>1) |
+| D: steps 12, cfg 1.0 | 202 264 ms | pas mieux que B |
+
+Le prompt EN change visiblement la scène : cumulus noirs + vagues
+déferlantes apparaissent (absents du rendu FR refusé).
+
+### Chaînes d'upscale comparées sur B (cible 3840×2160)
+
+| Chaîne | Temps | Netteté normalisée (@1024) | Visuel zoom ×2 |
+|---|---|---|---|
+| 2 passes IA + lanczos 0,9375 | 44 751 ms | **538,3** (natif B : 247,7) | vagues texturées, bords nets ← **retenu** |
+| 1 passe IA + lanczos ×1,875 | 11 492 ms | 248,6 | cireux, mou |
+
+Fichiers essai : `~/purama/sutra-local-renders/uhd_2passes.mp4` (recommandé)
+et `uhd_1pass.mp4`. NB : la netteté 538 > natif = renforcement de contours
+du à l'upscaler latent (edge-aware) ; sur contenu très lisse (plage du rendu
+refusé) le même upscaler avait lissé (−8 %). Efficacité dépend du contenu.
+
+### Limites réelles de qualité (inchangées par ces leviers)
+- L'upscaler latent **grossit sans inventer de détail** : zoom 8× = pixels
+  mous. Pas de 4K « natif » local possible (§4).
+- Fidélité sujet : « tour sur rocher », PAS un phare architectural —
+  distilled 13B @ 10 steps est le plafond installé.
+- 16 fps, pas d'audio, variance par seed : structurels.
+
+
+
 ## 5. Limites restantes (honnête)
 
 1. **Pas d'audio** : LTXV 0.9.8 ne génère aucune piste son. SUTRA doit garder
