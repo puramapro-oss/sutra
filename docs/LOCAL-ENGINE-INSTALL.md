@@ -1,133 +1,205 @@
-# Moteur vidéo local — M4 Max 48 Go : plan d'installation vérifié
+# Moteur vidéo local — M4 Max 48 Go : installé et mesuré
 
-> État : **PRÉPARÉ, rien d'installé** (aucun achat, aucun appel payant, aucun
-> téléchargement lancé). Document de décision + procédure. Date des vérifications :
-> septembre 2026. Contrat d'intégration SUTRA déjà implémenté et testé
-> (`src/lib/local-engine.ts`, stub + e2e 3/3).
+> État : **INSTALLÉ ET TESTÉ EN VRAI** (mission 9, 2026-09-19). Génération réelle
+> inspectée, temps et mémoire mesurés. Aucun achat, aucune API payante, aucune
+> installation existante supprimée. Fichiers de preuve : `~/purama/sutra-local-renders/`.
 
-## 0. Décision recommandée (résumé)
+## 0. Ce qui est installé (vérifié sur disque)
 
-| Besoin | Choix | Pourquoi |
+| Composant | Version/taille exacte | Source (100 % officielle) |
 |---|---|---|
-| Génération **native** (≤720p, 5–10 s) | **ComfyUI + LTX-Video 13B distilled** | Apache-2.0 pur (usage commercial OK), fonctionne sur Apple Silicon via PyTorch MPS, cohérent avec l'API LTX externe déjà intégrée (mêmes sémantiques qualité/durée) |
-| **Agrandissement 4K** | **Real-ESRGAN 4x** (BSD-3) | Licence commerciale OK, léger sur Mac ; SUPIR EXCLU (licence non-commerciale) |
-| Alternative légère (zéro Python) | Draw Things (App Store, gratuit) | Natif Swift/Metal+CoreML, serveur gRPC headless disponible ; vidéo confirmée (Hunyuan), **Wan non confirmé** → second choix |
+| ComfyUI | master 2026 (io.ComfyNode), venv `python3.11` (brew), PyTorch 2.14.0 MPS | github.com/comfyanonymous/ComfyUI |
+| Checkpoint LTXV | `ltxv-13b-0.9.8-distilled-fp8.safetensors` — 15 694 280 140 o | huggingface.co/Lightricks/LTX-Video |
+| Encodeur texte | `t5xxl_ltxv_official.safetensors` — 19,05 Go (219 tenseurs, encoder-only, fp32) | 4 shards officiels Lightricks fusionnés localement (`/tmp/merge_t5.py`) |
+| Upscaler latent | `ltxv-spatial-upscaler-0.9.8.safetensors` | Lightricks/LTX-Video (`models/latent_upscale_models/`) |
+| Adaptateur SUTRA | `scripts/comfyui-engine-server.mjs` (port 7861) | ce repo |
 
-**Pourquoi pas Wan 2.2 en primaire** : le workflow ComfyUI « Wan 2.2 14B Text to
-Video » est documenté cassé sur Apple Silicon (issue comfyanonymous/ComfyUI
-#9255, août 2025) ; contournements = quants GGUF instables. LTX-Video est le
-chemin le plus court et le plus sûr sur M4 Max.
+Emplacement : `~/purama/ComfyUI/` (hors repo, aucune install existante touchée).
+Disque avant : 209 Go libres ; après ~35 Go téléchargés : 123 Go libres.
 
-**Pourquoi pas LTX-2/LTX-2.5 local en primaire** : natif 4K@50fps séduisant,
-MAIS (1) erreurs récurrentes du workflow LTX-2 dans ComfyUI Desktop sur Apple
-Silicon (issue #386, janv. 2026) et (2) licence duale des poids LTX-2.3 :
-entités ≥ 10 M$ de CA annuel → licence commerciale payante (Hugging Face, mars
-2026). LTX-Video (2B/13B) reste Apache-2.0 sans clause de CA.
-
-## 1. Compatibilité vérifiée
-
-- **ComfyUI** : support macOS Apple Silicon **natif via PyTorch MPS** (docs
-  officielles système ; PyTorch ≥ 2.7, builds stables incluent MPS — nightly
-  inutile). Limites béta connues vs CUDA (forum ComfyUI 2026) : perf réduite,
-  certains nodes CUDA-only indisponibles. Workaround MPS récent documenté
-  (avril 2026, patch 2 composants) si besoin.
-- **LTX-Video** (Lightricks) : dépôt officiel Apache-2.0, variantes **2B et
-  13B** ; workflows ComfyUI tournent sur MacBook Pro M4 (retours HF nov. 2024 →
-  2026, qualité première passée de bruitée à correcte avec les versions
-  distilled).
-- **Real-ESRGAN** : BSD-3-Clause (usage commercial explicite OK), modèle 4x
-  ~65 Mo, GAN léger — le seul upscaler qualité raisonnable sur mémoire unifiée
-  Mac (SUPIR = SDXL-diffusion, non-commercial + très lourd → exclu pour un
-  produit commercial).
-- **M4 Max 48 Go** : 13B fp8 + encodeur T5 offlogeable en mémoire unifiée
-  (budget ~30–40 Go). Ordre de grandeur attendu : quelques minutes par clip de
-  5 s en 768×512 (à BENCHMARKER, aucune promesse de perf).
-
-## 2. Licences (produit commercial PURAMA — synthèse)
+## 1. Licences — CORRECTION importante vs version précédente du doc
 
 | Composant | Licence | Commercial |
 |---|---|---|
-| ComfyUI | GPL-3.0 | OK (processus local séparé, non lié au code SUTRA) |
-| LTX-Video 13B distilled (poids) | Apache-2.0 | OK sans condition de CA |
-| LTX-2.3 (poids récents) | Duale : Apache-like SI CA < 10 M$, sinon payant | ⚠️ à éviter tant que non clarifié |
-| Real-ESRGAN | BSD-3-Clause | OK (attribution à la redistribution) |
-| SUPIR | Non-commercial uniquement | ❌ EXCLU |
-| Draw Things (app) | Gratuite, code non entièrement ouvert (binaires gRPC publiés) | OK usage ; vérifier avant redistribution |
+| ComfyUI (code) | GPL-3.0 | OK (processus local séparé, non lié au code SUTRA) |
+| **LTX-Video poids ≥ 0.9.6** | **LTXV Open Weights License 0.X** (avril 2025) — PAS Apache-2.0 | OK si CA annuel **< 10 M$** ; sinon licence payante. PURAMA < 10 M$ → OK aujourd'hui, à revoir si dépassement |
+| LTX-Video (code repo) | Apache-2.0 | OK |
+| Sorties générées | appartiennent à l'utilisateur | OK |
+| LTX-2.3 (non installé) | duale, payant ≥ 10 M$ | évité |
+| ~~SUPIR~~ | non-commercial | EXCLU (remplacé par l'upscaler latent officiel LTXV) |
 
-## 3. Espace disque et téléchargements (à lancer toi-même — rien n'est lancé)
+> La version mission 8 de ce document annonçait « Apache-2.0 pur » pour les
+> poids : c'était la licence du CODE. Les poids 0.9.8 sont sous LTXV Open
+> Weights 0.X. Corrigé ici.
 
-**Prérequis disque : ~35 Go libres** (recommandé 45 Go de marge).
+## 2. Chaîne de génération (implémentée, pas simulée)
 
-| Élément | Taille approx. | Source |
-|---|---|---|
-| ComfyUI + venv Python 3.11 + PyTorch 2.7+ (MPS) | ~6 Go | `git clone` + `pip install torch torchvision` (downloads.pytorch.org) |
-| LTX-Video 13B **distilled** (diffusion fp8) | ~9–14 Go | HF `Lightricks/LTX-Video` → fichier `ltx-video-13b-distilled-…safetensors` dans `ComfyUI/models/checkpoints/` |
-| Encodeur texte T5-XXL (fp8) | ~5–7 Go | HF `Comfy-Org/LTX-Video` pack (text encoder + workflow officiel) |
-| VAE LTX | ~0,4 Go | inclus dans le pack Comfy-Org |
-| Real-ESRGAN 4x | ~65 Mo | HF `ai-forever/Real-ESRGAN` → `models/upscale_models/` |
-| Workflow JSON LTX t2v | < 1 Mo | templates ComfyUI intégrés |
+```
+SUTRA (src/lib/local-engine.ts, strict, owner-only)
+  → POST http://127.0.0.1:7861 {prompt,width,height,num_frames,fps,upscale_4x?}
+    → adaptateur node (buildWorkflow, noms vérifiés via /object_info)
+      → ComfyUI :7860 : CLIPLoader(ltxv) + CheckpointLoaderSimple(distilled fp8)
+        + EmptyLTXVLatentVideo (w/h multiples de 32, frames 8k+1)
+        + LTXVScheduler (max_shift 2.05, base_shift 0.95) + SamplerCustom
+        (euler, cfg 1.0, steps 8) + LTXVConditioning(frame_rate) + VAEDecode
+      → [si upscale_4x] LTXVLatentUpsampler ×2 passes (modèle officiel
+        ltxv-spatial-upscaler-0.9.8) AVANT le décodage
+    ← {video_url, compute_ms, ...} → mp4 servi via /files
+```
 
-## 4. Procédure (résumé exécutable)
+Preuve d'isolation : le runner de test instrumente `fetch` et n'autorise QUE
+`127.0.0.1` — aucun hôte externe contacté pendant la génération mesurée.
+
+## 3. Mesures réelles (M4 Max 48 Go, macOS, secteur)
+
+### Génération native — 2026-09-19, fichier inspecté
+
+Prompt FR « un phare solitaire balayé par la tempête au coucher du soleil… »,
+`quality:'720p' format:'16:9'` → grille WAN 896×512, duration 6 s.
+
+| Mesure | Valeur |
+|---|---|
+| Fichier | `~/purama/sutra-local-renders/real-local.mp4` — 751 586 o |
+| Conteneur (ffprobe) | h264, **896×512**, 16 fps, **89 frames, 5,56 s**, **PAS de piste audio** |
+| Temps de calcul (adaptateur) | 283 078 ms ≈ **4 min 43 s** (inclus chargement T5+ckpt à froid) |
+| Temps sampling seul | ~190 s (8 steps × ~24 s, 89 frames) |
+| Mémoire pic ComfyUI (RSS) | 18 423 872 Ko ≈ **18,4 Go** / 48 Go (pic au chargement T5 fp32 ; sampling ~6,2 Go) |
+| Hôtes réseau contactés | `127.0.0.1:7861` uniquement (garde fetch) |
+
+Smoke test antérieur : 768×448, 25 frames, 6 steps → 295,63 s (dominé par le
+premier chargement des poids).
+
+### Vérification visuelle (frames 1/45/89 extraites)
+
+- Scène **cohérente début→fin** : plage au coucher du soleil, soleil sur
+  l'horizon, vagues déferlantes, reflets dorés. Aucune zone noire, aucun objet
+  qui apparaît/disparaît, pas de dérive de lumière.
+- **MAIS fidélité prompt imparfaite** : le « phare » est rendu comme une forme
+  organique effilée (type rocher/tronc), et la « tempête » n'est pas visible
+  (mer agitée mais ciel dégagé). Comportement connu du distilled à 8 steps /
+  cfg 1.0 sur prompts courts. Le rendu est réel (IA générée, pas un fichier de
+  test) mais le prompt engineering reste à travailler (prompts EN, plus
+  descriptifs, ou steps 10-14).
+
+## 4. Agrandissement 4K — testé, distinction honnête
+
+- Chemin : **génération native 896×512** (étape 1) → prompt séparé
+  `LTXVLatentUpsampler` (modèle officiel spatial-upscaler 0.9.8) **×2 passes
+  en espace latent** + `VAEDecodeTiled` (étape 2). Paramètre adaptateur :
+  `upscale_4x: true` (enchaîne les 2 étapes) ou `POST /upscale` (étape 2
+  seule). Monoprompt interdit : OOM (cf §4bis).
+- **Native : 896×512 → Finale : 3584×2048** (2× par passe, multiples de 32).
+- C'est un **AGRANDISSEMENT**, PAS une génération 4K native : les détails fins
+  ne dépassent pas la résolution source. Le vrai 4K natif local n'est pas
+  atteignable avec LTXV 13B en 48 Go (et LTX-2 local écarté, cf licences).
+
+Résultats mesurés : voir §4bis (à compléter après le run — fichier
+`/tmp/upscale4k.json`).
+
+## 4bis. Mesures 4K (run du 2026-09-19)
+
+### Premier essai — monoprompt : ÉCHEC (OOM)
+
+Chaîne `gén + 2×LTXVLatentUpsampler + VAEDecode` dans UN seul prompt :
+sampling 8/8 OK (3 min 07 s) puis **kill silencieux du process pendant le
+1er passage upscaler** (pas de traceback = SIGKILL jetsam macOS). Cause :
+résidents cumulés T5 18 Go + ckpt 24,9 Go + VideoVAE 2,4 Go + tenseurs
+vidéo ≈ 46+ Go / 48 Go utiles.
+
+### Correctif : pipeline en 2 étapes (implémenté dans l'adaptateur)
+
+1. Étape 1 = génération native (T5 + ckpt chargés, puis libérés).
+2. Étape 2 = prompt séparé : `LoadVideo → GetVideoComponents → VAEEncode →
+   LTXVLatentUpsampler ×2 → VAEDecodeTiled(512/64/64/8) → SaveVideo`.
+   Résidents étape 2 : VAE 2,4 Go + upscaler 0,24 Go seulement.
+   `POST /upscale {input_file, passes}` expose l'étape 2 seule ; `upscale_4x:true`
+   du POST / enchaîne automatiquement les 2 étapes.
+
+VAE standalone requis (le ckpt ne peut pas servir) : Lightricks ne publie que
+le format diffusers (`vae/diffusion_pytorch_model.safetensors` → KeyError
+`post_quant_conv.weight` dans ComfyUI). **Extrait localement depuis le ckpt
+fp8** : 229 tenseurs `vae.*` → `models/vae/ltxv_vae-0.9.8.safetensors`
+(2 493 857 212 o, script jetable venv).
+
+### Résultat mesuré — upscale seul (2026-09-19, fichier inspecté)
+
+Entrée : `sutra-native.mp4` = le rendu natif 896×512 du §3 (89 frames).
+
+| Mesure | Valeur |
+|---|---|
+| Fichier | `~/purama/sutra-local-renders/upscale4k.mp4` — 4 289 617 o |
+| Conteneur (ffprobe) | h264, **3584×2048**, 16 fps, **89 frames, 5,5625 s**, pas de piste audio |
+| Temps compute (adaptateur) | **120 169 ms = 2 min 00 s** (cold : VAE+upscaler chargés pendant le run) |
+| Mémoire | Étape 2 : ~5 Go de modèles résidents ; **aucun OOM** (vs kill monoprompt) |
+
+### Vérification visuelle (frames 1/45/89 + crop zoom ×2 vs natif)
+
+- Scène **cohérente début→fin**, identique au natif : plage au coucher du
+  soleil, soleil sur l'horizon, vagues, reflets dorés. Aucune dérive.
+- **Aucun artefact de tuiles** (VAEDecodeTiled 512/64 : aucune seam visible,
+  ni pleine image ni zoom ×2), aucun scintillement, aucune zone noire.
+- Crop comparé au même plan du natif (×2 chacun) : le 4K est **visiblement
+  plus lisse** (vagues continues, bords propres) vs natif pixellisé —
+  agrandissement réel, mais **aucun détail inventé** (cf §4 : pas du 4K natif).
+- Défauts hérités du natif inchangés : « phare » = forme organique, pas de
+  tempête visible (prompt engineering, cf §3).
+
+### E2E complet `POST / {upscale_4x:true}` (chemin production local-engine)
+
+Run final 2026-09-19 16:05, adaptateur corrigé (sortie ciblée sur le nœud
+`save` — cf ERRORS.md) :
+
+| Mesure | Valeur |
+|---|---|
+| Fichier | `~/purama/sutra-local-renders/e2e4k.mp4` — 4 001 972 o |
+| Conteneur (ffprobe) | h264, **3584×2048**, 16 fps, **89 frames, 5,5625 s**, pas d'audio |
+| Temps compute total (étape 1+2, adaptateur) | **429 486 ms = 7 min 09 s** (rechargement T5+ckpt inclus) |
+| Mémoire pic ComfyUI (échantillonnée 5 s) | **17,5 Go / 48 Go** — aucun OOM |
+| Sortie JSON | `video_url` → fichier étape 2 (`type=output`) ✓, `generator` = ckpt + upscaler 2 passes 2-stage |
+
+Frame 45 inspectée : même scène cohérente, aucun artefact (seed aléatoire →
+disposition des vagues différente du run précédent, normal).
+
+## 5. Limites restantes (honnête)
+
+1. **Pas d'audio** : LTXV 0.9.8 ne génère aucune piste son. SUTRA doit garder
+   sa chaîne voix/musique existante et muxer après coup (ffmpeg déjà prévu).
+2. **Résolution native max ~896×512** (grille WAN). Le « 720p » local est donc
+   en dessous du 720p externe ; l'upscalé 4K agrandit sans inventer de détail.
+3. **T5 fp32 19 Go** : pic mémoire dominant. Optimisation possible = conversion
+   fp16 (~9,5 Go) non faite (risque de régression qualité non mesuré).
+4. **Cold start ~4-5 min** (chargement 35 Go de poids) ; ComfyUI doit rester
+   up pour un usage fluide. Pas de 4K « natif », pas de batch parallèle testé.
+5. **Fidélité prompt** : cf §3 — prompts courts FR → scène plausible mais pas
+   toujours le sujet demandé.
+6. **Vercel DEPLOYMENT_DISABLED** (flotte) : blocage déploiement inchangé,
+   indépendant du moteur local. Migration v10 NON appliquée en production.
+
+## 6. Reproduire
 
 ```bash
-# 1. Base
-xcode-select --install 2>/dev/null || true
-brew install python@3.11
+# 1. ComfyUI (déjà installé ~/purama/ComfyUI)
+cd ~/purama/ComfyUI && source venv/bin/activate
+python main.py --port 7860 --listen 127.0.0.1   # pid -> /tmp/comfyui.pid
 
-# 2. ComfyUI (natif MPS)
-git clone https://github.com/comfyanonymous/ComfyUI.git ~/ComfyUI
-cd ~/ComfyUI && python3.11 -m venv venv && source venv/bin/activate
-pip install torch torchvision torchaudio   # wheels MPS inclus
+# 2. Adaptateur (repo sutra, worktree qualité)
+node scripts/comfyui-engine-server.mjs 7861 127.0.0.1:7860   # /tmp/adapter.pid
 
-# 3. Poids (à télécharger manuellement / hf CLI — ~25 Go au total)
-#    - LTX-Video 13B distilled  -> models/checkpoints/
-#    - T5-XXL fp8 + VAE + workflow -> pack Comfy-Org/LTX-Video
-#    - Real-ESRGAN 4x           -> models/upscale_models/
-
-# 4. Serveur HTTP local sur le contrat SUTRA
-python3.11 main.py --port 7860 --listen 127.0.0.1
-```
-
-**Pont SUTRA** : le contrat local (`src/lib/local-engine.ts`) attend un serveur
-`POST {prompt,width,height,num_frames,fps}` → `{video_url|video_base64}`.
-ComfyUI expose son API workflows (`/prompt` + `/history`) : il faut un **adaptateur
-HTTP fin (~100 lignes, à écrire)** qui soumet le workflow LTX paramétré puis sert
-le mp4. Alternatif : Draw Things et son serveur gRPC (binaire public) si l'app
-est installée — adaptateur gRPC→HTTP à écrire aussi.
-
-**Variables SUTRA** (déjà testées en strict/auto) :
-```
-LOCAL_ENGINE_ENABLED=true
-LOCAL_VIDEO_API_URL=http://127.0.0.1:7860
+# 3. Côté SUTRA (owner uniquement)
+LOCAL_ENGINE_ENABLED=true LOCAL_VIDEO_API_URL=http://127.0.0.1:7861 \
 LOCAL_ENGINE_MODE=strict
+
+# 4. Test direct de l'adaptateur
+curl -s localhost:7861/health
+curl -s -X POST localhost:7861 -d '{"prompt":"...","width":896,"height":512,
+  "num_frames":25,"fps":16,"steps":8,"upscale_4x":false}'
+
+# 5. Upscale seul d'une vidéo existante (input dir ComfyUI)
+cp ma_video.mp4 ~/purama/ComfyUI/input/
+curl -s -X POST localhost:7861/upscale -d '{"input_file":"ma_video.mp4","passes":2}'
 ```
-+ `SUPER_ADMIN_EMAIL` routé propriétaire uniquement (clients jamais locaux).
 
-## 5. Génération NATIVE vs agrandissement 4K — distinction honnête
-
-- **Natif LTX-Video 13B distilled** : sorties ~768×512 à 1216×704, 24 fps,
-  5–10 s par clip. C'est la qualité native locale MAXIMALE réaliste sur 48 Go.
-- **4K « local »** = **2 passes** : génération native (ex. 1216×704) →
-  **upscale Real-ESRGAN 4x** (4864×2816) → crop/pad vers 3840×2160 via ffmpeg
-  (déjà installé). Ce n'est PAS de la génération 4K native : les détails fins
-  ne dépassent pas la résolution source.
-- **Statut actuel du code SUTRA** : la grille locale calque wan-classic
-  (896×512 en « 720p ») ; un futur `quality: '4k'` local devra router vers la
-  passe upscale (pipeline à ajouter APRÈS benchmark). Aucune promesse 4K locale
-  tant que le rendu réel n'est pas inspecté (règle maison : jamais de 4K
-  déclaré sans fichier mesuré).
-
-## 6. Benchmarks à produire à l'installation (checklist)
-
-1. `npm run test:local-engine-e2e` contre le VRAI moteur (remplace le stub) :
-   résolution/durée/A-V mesurés ffprobe + temps de calcul réel.
-2. Clip 5 s 768×512, 3 prompts : temps moyen + mémoire (`memory_pressure`).
-3. Passe upscale Real-ESRGAN 4x sur ce clip : temps + inspection.
-4. Comparaison coût : LTX API fast 720p = 0,03 $/s vs local (électricité).
-
-## 7. Blocages connus (avant installation)
-
-- Aucun moteur présent sur la machine (audit mission 7) → chaque étape §4 reste
-  à exécuter manuellement ; ~25 Go de téléchargements gratuits.
-- Adaptateur HTTP ComfyUI→contrat SUTRA : à écrire (aucun code n'existe).
-- Vercel `DEPLOYMENT_DISABLED` (flotte) — indépendant, à régler côté facturation.
+Checklist benchmark mission 8 : items 1-2 réalisés (e2e + clip mesuré) ;
+item 3 (upscale) = **RÉALISÉ** (§4bis : upscale seul 2 min 00 s, e2e 7 min 09 s,
+3584×2048 inspecté) ; item 4 (comparaison coût) : local ≈ 0 €/clip
+(électricité seule) vs LTX API fast 720p 0,03 $/s → 5,56 s ≈ 0,17 $/clip.
