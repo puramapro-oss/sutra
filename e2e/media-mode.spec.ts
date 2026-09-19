@@ -5,7 +5,7 @@ const BASE = process.env.E2E_BASE_URL ?? 'https://sutra.purama.dev'
 async function dismissCookieBanner(page: Page) {
   await page.evaluate(() =>
     localStorage.setItem(
-      'sutra-cookie-consent',
+      'purama_cookie_consent_v1',
       JSON.stringify({ essential: true, analytics: false, marketing: false })
     )
   )

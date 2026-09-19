@@ -36,7 +36,7 @@ export interface LtxImageToVideoRequest {
 export interface LtxResult {
   videoBuffer: ArrayBuffer
   engine: VideoEngine
-  model: LtxModel | 'wan-2.2'
+  model: LtxModel | 'wan-2.2' | 'local-m4max'
   duration: number
   resolution: string
 }

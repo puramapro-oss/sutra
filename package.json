@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:video-contracts": "node --test scripts/test-video-contracts.mjs",
+    "test:api-contracts": "node --import tsx --test scripts/test-api-contracts.mts scripts/test-env-contracts.mts scripts/test-local-engine.mts scripts/test-shotstack-contracts.mts",
+    "test:migration-local": "node scripts/test-migration-local.mjs",
+    "test:local-engine-e2e": "node --import tsx --test scripts/test-local-engine-e2e.mts",
+    "test:production-queue": "node --import tsx --test scripts/test-production-queue.mts",
+    "test:auto-export-queue": "node --import tsx --test scripts/test-auto-export-queue.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.3",
@@ -69,6 +75,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.13",
     "typescript": "^5"
   },
   "overrides": {

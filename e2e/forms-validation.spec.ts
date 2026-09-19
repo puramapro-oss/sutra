@@ -17,7 +17,9 @@ test.describe('Forms — Login validation', () => {
   test('forgot password link exists on login page', async ({ page }) => {
     await page.goto('/login')
     const forgotLink = page.locator('a[href*="forgot"], a[href*="reset"], a:has-text("oubli"), a:has-text("Mot de passe")')
-    expect(await forgotLink.count()).toBeGreaterThanOrEqual(0)
+    // Un lien DOIT exister (avant : >= 0 réussissait même sans aucun lien)
+    expect(await forgotLink.count()).toBeGreaterThanOrEqual(1)
+    await expect(forgotLink.first()).toBeVisible()
   })
 })
 
@@ -71,11 +73,12 @@ test.describe('API — Rate limiting & auth', () => {
     expect([401, 403]).toContain(res.status())
   })
 
-  test('POST /api/stripe/webhook accepts POST', async ({ request }) => {
+  test('POST /api/stripe/webhook sans signature → 400 (jamais 500)', async ({ request }) => {
     const res = await request.post('/api/stripe/webhook', {
       data: {},
     })
-    // Should not be 404 or 405 - webhook exists but fails validation
-    expect([400, 401, 403, 500]).toContain(res.status())
+    // Sans signature le webhook doit refuser proprement en 400 — un 500 ici
+    // serait un crash, pas une validation.
+    expect(res.status()).toBe(400)
   })
 })

@@ -37,9 +37,12 @@ test.describe('Security — No secrets in client', () => {
 })
 
 test.describe('Security — CORS & headers', () => {
-  test('API returns proper headers', async ({ request }) => {
+  test('API status: JSON + pas de CORS wildcard', async ({ request }) => {
     const res = await request.get('/api/status')
     expect(res.status()).toBe(200)
+    // Avant : ce test ne vérifiait QUE le statut 200 (faux sentiment de sécurité)
+    expect(res.headers()['content-type'] ?? '').toContain('application/json')
+    expect(res.headers()['access-control-allow-origin'] ?? '').not.toContain('*')
   })
 })
 

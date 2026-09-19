@@ -1,4 +1,5 @@
 import { fetchWithRetry } from '@/lib/utils/api'
+import { requireEnv } from '@/lib/env'
 import { uploadToStorage } from '@/lib/storage'
 import type { Plan } from '@/types'
 
@@ -26,15 +27,15 @@ export {
 
 // Import types and utils
 import type { LtxModel, CameraMotion, VideoEngine, LtxTextToVideoRequest, LtxImageToVideoRequest, LtxResult } from './ltx-types'
-import { getResolution, selectEngine, getMaxQuality, isLtxHealthy, recordLtxFailure, recordLtxSuccess } from './ltx-utils'
+import { getResolution, selectEngine, getMaxQuality, isLtxHealthy, recordLtxFailure, recordLtxSuccess, snapLtxDuration, ltxCompatibleFormat } from './ltx-utils'
 import { generateWanVideoWithTracking, logVideoGeneration } from './ltx-helpers'
+import { tryLocalRoute } from './local-engine'
 
 // ---------------------------------------------------------------------------
 // LTX Video 2.3 — Primary video engine for SUTRA
 // Tier routing: super admin → ltx-2-3-pro | paid → ltx-2-3-fast | free → WAN 2.2 fallback
 // ---------------------------------------------------------------------------
 
-const LTX_API_KEY = process.env.LTX_API_KEY ?? ''
 const LTX_BASE = 'https://api.ltx.video/v1'
 const LTX_TIMEOUT = 180_000 // 3 min — synchronous response
 
@@ -46,7 +47,9 @@ async function callLtxApi(
   endpoint: string,
   body: Record<string, unknown>
 ): Promise<ArrayBuffer> {
-  if (!LTX_API_KEY) throw new Error('LTX_API_KEY non configuree')
+  // Clé lue à l'appel via le validateur centralisé : erreur explicite et
+  // testable, jamais de valeur capturée à l'import (build sans env OK).
+  const apiKey = requireEnv('LTX_API_KEY', 'generation video LTX (plans payants)')
 
   const res = await fetchWithRetry(
     `${LTX_BASE}${endpoint}`,
@@ -54,12 +57,15 @@ async function callLtxApi(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${LTX_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify(body),
       signal: AbortSignal.timeout(LTX_TIMEOUT),
+      // Clé d'idempotence par défaut : la génération est le poste de coût n°1,
+      // une réponse perdue ne doit jamais déclencher une seconde génération.
+      idempotencyKey: `ltx-${body.seed ?? 'auto'}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
     },
-    2 // max 2 retries
+    2
   )
 
   if (!res.ok) {
@@ -165,9 +171,28 @@ export async function generateVideoSmart(
 ): Promise<LtxResult> {
   const { engine, model } = selectEngine(plan, userEmail)
   const quality = options.quality ?? getMaxQuality(plan)
-  const format = options.format ?? '16:9'
+
+  // Mode personnel LOCAL (audit #17) : propriétaire uniquement — le bloc
+  // complet vit dans local-engine.ts (tryLocalRoute) pour garder ce fichier
+  // focalisé sur le routage externe.
+  {
+    const local = await tryLocalRoute({ prompt, plan, quality, userEmail, format: options.format, duration: options.duration, userId: options.userId, videoId: options.videoId })
+    if (local) return local
+    // tryLocalRoute lève déjà en mode strict ; en mode auto il retourne null
+    // après avoir documenté le repli externe dans les logs.
+  }
+
+  const requestedFormat = options.format ?? '16:9'
+  // LTX ne supporte que 16:9/9:16 : le carré est généré en 16:9 puis recadré
+  // au montage (output.size 1:1 côté Shotstack).
+  const format = engine === 'wan-classic' ? requestedFormat : ltxCompatibleFormat(requestedFormat)
   const resolution = getResolution(format, quality)
-  const duration = options.duration ?? 5
+  // Durée ramenée à une valeur admise par le modèle/résolution (6-20s selon
+  // tier, cf snapLtxDuration) — sinon LTX rejette et le repli WAN dégrade.
+  const duration =
+    engine === 'wan-classic'
+      ? (options.duration ?? 5)
+      : snapLtxDuration(model as LtxModel, quality, options.duration ?? 6)
   const start = Date.now()
 
   // V7.1 tracking context (flushé à la fin ou dans catch)
@@ -185,6 +210,7 @@ export async function generateVideoSmart(
       const wan = await generateWanVideoWithTracking({
         prompt,
         quality,
+        format,
         duration,
         userEmail,
         track,
@@ -207,11 +233,20 @@ export async function generateVideoSmart(
     }
   }
 
-  // LTX path — circuit breaker bypass → WAN fallback si LTX unhealthy.
+  const fallbackPreservesIntent =
+    !options.imageUri && !options.lastFrameUri && !options.cameraMotion
+
+  // Never hide the loss of a reference image, end frame or camera constraint.
   if (!isLtxHealthy()) {
+    if (!fallbackPreservesIntent) {
+      throw new Error(
+        'LTX indisponible : fallback WAN refuse car il perdrait une reference ou une contrainte camera',
+      )
+    }
     return generateWanVideoWithTracking({
       prompt,
       quality,
+      format,
       duration,
       userEmail,
       track,
@@ -258,10 +293,23 @@ export async function generateVideoSmart(
     return { videoBuffer, engine, model: ltxModel, duration, resolution }
   } catch (err) {
     recordLtxFailure()
-    // V7.1 — Fallback automatique WAN 2.2 avec traçage raison
+    if (!fallbackPreservesIntent) {
+      await logVideoGeneration({
+        ...track,
+        engineUsed: 'ltx',
+        modelUsed: model,
+        fallbackTriggered: false,
+        fallbackReason: 'fallback_would_lose_constraints',
+        durationMs: Date.now() - start,
+        success: false,
+        errorMessage: err instanceof Error ? err.message : String(err),
+      })
+      throw err
+    }
     return generateWanVideoWithTracking({
       prompt,
       quality,
+      format,
       duration,
       userEmail,
       track,

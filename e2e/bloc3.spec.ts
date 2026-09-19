@@ -1,11 +1,14 @@
 import { test, expect } from '@playwright/test'
 
-const BASE = 'https://sutra.purama.dev'
+const BASE = process.env.E2E_BASE_URL ?? 'https://sutra.purama.dev'
 
 test.describe('Centre d\'aide', () => {
-  test('aide redirects to help', async ({ page }) => {
+  // /aide est une vraie page (FAQ + chatbot IA) distincte de /help (guides) —
+  // plus de redirection, la page sert directement son contenu.
+  test('aide page loads with help center header', async ({ page }) => {
     const res = await page.goto('/aide')
-    expect(page.url()).toContain('/help')
+    expect(res?.status()).toBe(200)
+    await expect(page.getByText("Centre d'aide")).toBeVisible()
   })
 
   test('help page has 4 guides with real content', async ({ page }) => {

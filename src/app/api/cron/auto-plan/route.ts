@@ -2,9 +2,19 @@
  * CRON: chaque heure
  * Pour chaque user avec config active, regarde si une video doit etre planifiee
  * dans les 3 prochaines heures et la genere en avance.
+ *
+ * Garanties (audit #11/#12) :
+ *   - CRON_SECRET OBLIGATOIRE : sans secret configuré, le cron refuse (500)
+ *     au lieu de s'exécuter sans authentification.
+ *   - Unicité par occurrence : une vidéo existe pour (schedule_id, slot) →
+ *     jamais de double génération pour le même créneau.
+ *   - Publication à l'heure prévue : la vidéo n'est publiée qu'à/après
+ *     scheduled_for, avec scheduledFor transmis au fournisseur.
+ *   - Vidéo FINALE assemblée (voix + musique) publiée — jamais l'URL brute.
  */
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
+import { assembleFinalVideo, generateSubtitlesFromScript } from '@/lib/shotstack'
 import {
   loadAutoContext,
   planNextVideo,
@@ -17,7 +27,6 @@ import {
 } from '@/lib/sutra-auto'
 
 export const maxDuration = 300
-const CRON_SECRET = process.env.CRON_SECRET
 
 interface ProfileLite {
   id: string
@@ -26,7 +35,17 @@ interface ProfileLite {
 }
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
+  const cronSecret = process.env.CRON_SECRET
+  // Fail-closed : un cron sans secret configuré ne doit JAMAIS s'exécuter
+  // (audit #11 — la reproduction fonctionnait sans en-tête d'autorisation).
+  if (!cronSecret) {
+    console.error('[auto-plan] CRON_SECRET non configure — execution refusee')
+    return NextResponse.json(
+      { error: 'CRON_SECRET non configure : definis-le avant d\'activer le cron (aucune execution non authentifiee)' },
+      { status: 500 }
+    )
+  }
+  if (request.headers.get('authorization') !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -51,7 +70,60 @@ export async function GET(request: Request) {
       })
       if (!due.length) continue
 
-      // Avoid double-generation: skip if a video is already pending for this user in next 3h
+      const slot = computeNextRun(due[0], now)
+      const slotIso = slot?.toISOString() ?? null
+      if (!slotIso) continue
+
+      // ---------------------------------------------------------------
+      // Unicité d'occurrence : (schedule_id, scheduled_for) déjà traité →
+      // on PUBLIE si c'est l'heure, sinon on ne régénère JAMAIS (audit #11).
+      // ---------------------------------------------------------------
+      const { data: existing } = await supabase
+        .from('sutra_auto_videos')
+        .select('*')
+        .eq('user_id', config.user_id)
+        .eq('schedule_id', due[0].id)
+        .eq('scheduled_for', slotIso)
+        .limit(1)
+
+      const already = existing?.[0]
+      if (already) {
+        if (
+          already.status === 'ready' &&
+          !already.published_at &&
+          config.auto_publish &&
+          !config.require_approval_before_publish &&
+          already.video_final_url &&
+          slot &&
+          now >= slot
+        ) {
+          // Heure venue : publication de la vidéo ASSEMBLÉE, planifiée au créneau.
+          const results = await publishAutoVideo({
+            config,
+            videoUrl: already.video_final_url,
+            title: already.title,
+            description: already.description ?? '',
+            hashtags: (already.hashtags ?? []) as string[],
+            scheduledFor: slotIso,
+          })
+          const ok = results.some((r) => r.success)
+          await supabase
+            .from('sutra_auto_videos')
+            .update({
+              status: ok ? 'published' : 'publish_failed',
+              published_at: ok ? new Date().toISOString() : null,
+              published_platforms: results,
+            })
+            .eq('id', already.id)
+          processed.push({ user_id: config.user_id, status: ok ? 'published_on_time' : 'publish_failed' })
+          continue
+        }
+        // Occurrence déjà générée (ou en cours, ou publiée) → rien à faire.
+        processed.push({ user_id: config.user_id, status: 'skipped_existing_occurrence' })
+        continue
+      }
+
+      // Anti-chevauchement : génération déjà en cours pour cet user.
       const { data: pending } = await supabase
         .from('sutra_auto_videos')
         .select('id')
@@ -96,7 +168,7 @@ export async function GET(request: Request) {
           music_prompt: plan.music_prompt,
           ai_reasoning: plan.reasoning,
           generation_started_at: new Date().toISOString(),
-          scheduled_for: computeNextRun(due[0], now)?.toISOString() ?? null,
+          scheduled_for: slotIso,
         })
         .select()
         .single()
@@ -112,33 +184,78 @@ export async function GET(request: Request) {
           plan_tier: (p?.plan ?? 'free') as never,
         })
 
-        const finalStatus = ctx.config.require_approval_before_publish ? 'pending_approval' : 'ready'
+        // -------------------------------------------------------------
+        // Montage FINAL avant toute publication (audit #12) : voix et
+        // musique sont ASSEMBLÉES au visuel — on ne publie jamais l'URL
+        // brute sans piste audio. Échec de montage = pas de publication.
+        // -------------------------------------------------------------
+        let videoFinalUrl = assets.video_raw_url
+        let assemblyError: string | null = null
+        if (assets.audio_voice_url) {
+          try {
+            const duration = Math.max(1, ctx.config.default_duration ?? 6)
+            const subtitles = plan.script
+              ? generateSubtitlesFromScript(plan.script, [{ duration_seconds: duration }])
+              : []
+            const assembled = await assembleFinalVideo({
+              clips: [{ url: assets.video_raw_url, type: 'ia', kind: 'video', duration }],
+              voiceUrl: assets.audio_voice_url,
+              musicUrl: assets.audio_music_url ?? '',
+              musicVolume: 0.3,
+              subtitles,
+              transitions: 'fade',
+              format: ctx.config.default_aspect_ratio ?? '9:16',
+              quality: ctx.config.quality_level ?? '720p',
+              brandKit: null,
+            })
+            videoFinalUrl = assembled.url
+          } catch (asmErr) {
+            assemblyError = asmErr instanceof Error ? asmErr.message : String(asmErr)
+            console.error('[auto-plan] assemblage echoue — publication REFUSEE :', assemblyError)
+          }
+        }
+
+        const finalStatus = assemblyError
+          ? 'compositing_failed'
+          : ctx.config.require_approval_before_publish
+            ? 'pending_approval'
+            : 'ready'
         await supabase
           .from('sutra_auto_videos')
           .update({
             status: finalStatus,
             video_raw_url: assets.video_raw_url,
-            video_final_url: assets.video_raw_url,
+            video_final_url: videoFinalUrl,
             audio_music_url: assets.audio_music_url,
             audio_voice_url: assets.audio_voice_url,
+            error_message: assemblyError,
             generation_completed_at: new Date().toISOString(),
           })
           .eq('id', videoRow.id)
 
-        // Auto publish si configure
-        if (ctx.config.auto_publish && !ctx.config.require_approval_before_publish) {
+        // Publication SEULEMENT à/après l'heure prévue (audit #11) : la vidéo
+        // est générée en avance mais publiée au créneau, jamais avant.
+        const shouldPublishNow =
+          !assemblyError &&
+          ctx.config.auto_publish &&
+          !ctx.config.require_approval_before_publish &&
+          slot instanceof Date &&
+          now >= slot
+
+        if (shouldPublishNow) {
           const results = await publishAutoVideo({
             config: ctx.config,
-            videoUrl: assets.video_raw_url,
+            videoUrl: videoFinalUrl,
             title: plan.title,
             description: plan.description,
             hashtags: plan.hashtags,
+            scheduledFor: slotIso,
           })
           const ok = results.some((r) => r.success)
           await supabase
             .from('sutra_auto_videos')
             .update({
-              status: ok ? 'published' : 'failed',
+              status: ok ? 'published' : 'publish_failed',
               published_at: ok ? new Date().toISOString() : null,
               published_platforms: results,
             })

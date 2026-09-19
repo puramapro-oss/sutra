@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -107,12 +107,14 @@ export default function CreatePage() {
   }
 
   // Auto-select best available engine on plan change
-  useEffect(() => {
-    if (plan === 'admin') setEngine('ltx-pro')
-    else if (currentPlanRank >= 1) setEngine('ltx-fast')
-    else setEngine('wan-classic')
-  }, [plan, currentPlanRank])
-
+  // Ajustement pendant le rendu (pattern React officiel pour l'état dérivé
+  // d'un prop) plutôt qu'un setState synchrone dans un effect. engine reste
+  // modifiable par l'utilisateur ensuite, donc ce n'est pas un pur dérivé.
+  const [lastPlan, setLastPlan] = useState(plan)
+  if (plan !== lastPlan) {
+    setLastPlan(plan)
+    setEngine(plan === 'admin' ? 'ltx-pro' : currentPlanRank >= 1 ? 'ltx-fast' : 'wan-classic')
+  }
 
   if (authLoading) {
     return <CreateSkeleton />

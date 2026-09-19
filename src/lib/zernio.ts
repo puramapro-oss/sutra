@@ -2,7 +2,6 @@ import { fetchWithRetry } from '@/lib/utils/api'
 
 const ZERNIO_API_KEY = process.env.ZERNIO_API_KEY ?? ''
 const ZERNIO_BASE = process.env.ZERNIO_BASE_URL ?? 'https://zernio.com/api/v1'
-const IS_DEV = process.env.NODE_ENV !== 'production'
 
 export type SocialPlatform = 'tiktok' | 'youtube' | 'instagram' | 'facebook' | 'x' | 'linkedin' | 'pinterest' | 'reddit' | 'threads' | 'snapchat' | 'tumblr' | 'mastodon' | 'bluesky' | 'vimeo'
 
@@ -13,7 +12,9 @@ export interface PublishResult { platform: SocialPlatform; success: boolean; pos
 export interface AnalyticsData { views: number; likes: number; shares: number; comments: number; engagementRate?: number }
 
 function headers(): HeadersInit { return { Authorization: `Bearer ${ZERNIO_API_KEY}`, 'Content-Type': 'application/json' } }
-function logError(context: string, err: unknown): void { if (IS_DEV) console.error(`[zernio:${context}]`, err instanceof Error ? err.message : err) }
+// Toujours logger (prod inclus) : une erreur Zernio avalée silencieusement en
+// prod = publication sociale qui échoue sans aucune trace. Jamais de secret.
+function logError(context: string, err: unknown): void { console.error(`[zernio:${context}]`, err instanceof Error ? err.message : err) }
 
 export async function getOAuthUrl(platform: SocialPlatform, userId: string, redirectUri: string): Promise<OAuthUrlResponse> {
   try {
