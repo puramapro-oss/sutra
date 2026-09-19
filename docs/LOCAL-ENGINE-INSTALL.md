@@ -83,6 +83,37 @@ premier chargement des poids).
 
 ## 4. Agrandissement 4K — testé, distinction honnête
 
+## 4ter. Export UHD EXACT 3840×2160 (run du 2026-09-19 17:24)
+
+Le 3584×2048 (grille WAN 896×512, ratio 1,75) ne fait PAS du UHD 16:9.
+Chaîne à 3 étapes distinctes, ratio 16:9 préservé de bout en bout
+(1024/576 = 4096/2304 = 3840/2160 = 1,7778 — scale pur, **zéro étirement**,
+zéro crop, zéro letterbox) :
+
+| Étape | Résolution | Temps mesuré | Moyen |
+|---|---|---|---|
+| 1. Native (grille LTXV 16:9, multiple de 32) | **1024×576** | 291 695 ms | ltxv-13b distilled fp8, 8 steps |
+| 2. Agrandissement IA ×2 passes | **4096×2304** | 150 247 ms | ltxv-spatial-upscaler (latent) + VAEDecodeTiled |
+| 3. Adaptation finale (downscale 0,9375) | **3840×2160** | 2 853 ms | ffmpeg lanczos, h264 crf17, +faststart |
+| **Total e2e** (`upscale_4x` + `target_width/height`) | | **444 803 ms = 7 min 25 s** | |
+
+Fichier : **`~/purama/sutra-local-renders/sutra-final-3840x2160.mp4`**
+(10 378 229 o, ~14,9 Mbps, yuv420p). Intermdédiaires dans
+`~/purama/ComfyUI/output/sutra/`.
+
+ffprobe + lecture visuelle (frames 1/16/32/45/61/76/89 + crop centre) :
+- **3840×2160 exact**, 89 frames, 5,5625 s, 16 fps constant (cadence LTXV
+  native — fluidité limitée par le générateur, pas par l'export).
+- Soleil circulaire sur toute la timeline → aucune déformation.
+- Scène cohérente, vagues progressives, aucune seam de tuiles, aucun
+  scintillement, aucune zone noire, aucun blocage au crop centre.
+- **Pas de piste audio — ATTENDU** : LTXV 0.9.8 ne génère pas de son
+  (§5.1) ; SUTRA mux voix/musique en aval via ffmpeg.
+
+API adaptateur : `POST /` accepte `target_width`/`target_height` (étape 3
+auto, garde anti-étirement : refuse un ratio cible ≠ ratio source > 1 %) ;
+`POST /upscale` accepte `target_width`/`target_height` pareillement.
+
 - Chemin : **génération native 896×512** (étape 1) → prompt séparé
   `LTXVLatentUpsampler` (modèle officiel spatial-upscaler 0.9.8) **×2 passes
   en espace latent** + `VAEDecodeTiled` (étape 2). Paramètre adaptateur :
@@ -197,6 +228,11 @@ curl -s -X POST localhost:7861 -d '{"prompt":"...","width":896,"height":512,
 # 5. Upscale seul d'une vidéo existante (input dir ComfyUI)
 cp ma_video.mp4 ~/purama/ComfyUI/input/
 curl -s -X POST localhost:7861/upscale -d '{"input_file":"ma_video.mp4","passes":2}'
+
+# 6. Export UHD exact en un appel (3 étapes auto, cf §4ter)
+curl -s -X POST localhost:7861 -d '{"prompt":"...","width":1024,"height":576,
+  "num_frames":89,"fps":16,"steps":8,"upscale_4x":true,
+  "target_width":3840,"target_height":2160}'
 ```
 
 Checklist benchmark mission 8 : items 1-2 réalisés (e2e + clip mesuré) ;
