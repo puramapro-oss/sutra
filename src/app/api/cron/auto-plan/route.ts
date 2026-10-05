@@ -26,12 +26,12 @@ interface ProfileLite {
 }
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
+  if (!CRON_SECRET || request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const supabase = createServiceClient()
-  const horizonMs = 3 * 60 * 60 * 1000 // 3h
+  const horizonMs = 3 * 60 * 60 * 1000
   const now = new Date()
   const horizon = new Date(now.getTime() + horizonMs)
 
@@ -45,19 +45,39 @@ export async function GET(request: Request) {
   for (const config of (configs ?? []) as AutoConfig[]) {
     try {
       const schedules = (config.schedules ?? []) as AutoSchedule[]
-      const due = schedules.filter((s) => {
-        const next = computeNextRun(s, now)
-        return next && next <= horizon
-      })
+      const due = schedules
+        .map((schedule) => ({ schedule, nextRun: computeNextRun(schedule, now) }))
+        .filter((entry): entry is { schedule: AutoSchedule; nextRun: Date } =>
+          Boolean(entry.nextRun && entry.nextRun <= horizon),
+        )
+        .sort((a, b) => a.nextRun.getTime() - b.nextRun.getTime())
+
       if (!due.length) continue
 
-      // Avoid double-generation: skip if a video is already pending for this user in next 3h
+      const selected = due[0]
+      const scheduledFor = selected.nextRun.toISOString()
+
+      // Idempotency guard for this exact schedule occurrence.
+      const { data: existingOccurrence } = await supabase
+        .from('sutra_auto_videos')
+        .select('id,status')
+        .eq('user_id', config.user_id)
+        .eq('schedule_id', selected.schedule.id)
+        .eq('scheduled_for', scheduledFor)
+        .limit(1)
+
+      if (existingOccurrence && existingOccurrence.length) {
+        processed.push({ user_id: config.user_id, status: 'skipped_existing_occurrence' })
+        continue
+      }
+
       const { data: pending } = await supabase
         .from('sutra_auto_videos')
         .select('id')
         .eq('user_id', config.user_id)
         .in('status', ['planning', 'generating_video', 'generating_audio', 'compositing'])
         .limit(1)
+
       if (pending && pending.length) {
         processed.push({ user_id: config.user_id, status: 'skipped_pending' })
         continue
@@ -85,7 +105,7 @@ export async function GET(request: Request) {
         .from('sutra_auto_videos')
         .insert({
           user_id: config.user_id,
-          schedule_id: due[0].id,
+          schedule_id: selected.schedule.id,
           theme_id: plan.theme_id,
           status: 'generating_video',
           title: plan.title,
@@ -96,7 +116,7 @@ export async function GET(request: Request) {
           music_prompt: plan.music_prompt,
           ai_reasoning: plan.reasoning,
           generation_started_at: new Date().toISOString(),
-          scheduled_for: computeNextRun(due[0], now)?.toISOString() ?? null,
+          scheduled_for: scheduledFor,
         })
         .select()
         .single()
@@ -125,7 +145,6 @@ export async function GET(request: Request) {
           })
           .eq('id', videoRow.id)
 
-        // Auto publish si configure
         if (ctx.config.auto_publish && !ctx.config.require_approval_before_publish) {
           const results = await publishAutoVideo({
             config: ctx.config,
@@ -133,25 +152,37 @@ export async function GET(request: Request) {
             title: plan.title,
             description: plan.description,
             hashtags: plan.hashtags,
+            scheduledFor,
           })
-          const ok = results.some((r) => r.success)
+          const successes = results.filter((r) => r.success).length
+          const publishStatus =
+            successes === results.length && results.length > 0
+              ? 'published'
+              : successes > 0
+                ? 'partially_published'
+                : 'failed'
+
           await supabase
             .from('sutra_auto_videos')
             .update({
-              status: ok ? 'published' : 'failed',
-              published_at: ok ? new Date().toISOString() : null,
+              status: publishStatus,
+              published_at: successes > 0 ? new Date().toISOString() : null,
               published_platforms: results,
             })
             .eq('id', videoRow.id)
         }
 
-        await recordMemory({
-          userId: config.user_id,
-          type: 'preference',
-          content: `Auto-generation: "${plan.title}"`,
-          importance: 0.4,
-          related_video_id: videoRow.id,
-        })
+        try {
+          await recordMemory({
+            userId: config.user_id,
+            type: 'preference',
+            content: `Auto-generation: "${plan.title}"`,
+            importance: 0.4,
+            related_video_id: videoRow.id,
+          })
+        } catch (memoryErr) {
+          console.error('[sutra-auto] memory recording failed after successful generation:', memoryErr)
+        }
 
         processed.push({ user_id: config.user_id, status: 'generated' })
       } catch (genErr) {
