@@ -27,7 +27,7 @@ export type {
 } from './sutra-auto-types'
 
 // Re-export utils
-export { computeNextRun, pickTheme } from './sutra-auto-utils'
+export { computeNextRun, needsFinalComposition, pickTheme } from './sutra-auto-utils'
 export { analyzePerformance, loadAutoContext, recordMemory } from './sutra-auto-helpers'
 
 // Import for local use
@@ -246,9 +246,9 @@ export async function publishAutoVideo(params: {
   hashtags: string[]
   scheduledFor?: string
 }): Promise<Array<{ platform: string; success: boolean; postId?: string; postUrl?: string; error?: string }>> {
-  const platforms = (params.config.publish_platforms ?? [])
+  const platforms = [...new Set((params.config.publish_platforms ?? [])
     .map((p) => PLATFORM_ALIASES[p] ?? (p as SocialPlatform))
-    .filter(Boolean) as SocialPlatform[]
+    .filter(Boolean))] as SocialPlatform[]
 
   if (!platforms.length) {
     return [{ platform: 'none', success: false, error: 'no platforms configured' }]
@@ -278,7 +278,15 @@ export async function publishAutoVideo(params: {
     scheduledAt: params.scheduledFor,
   })
 
-  return results
+  // Include disconnected requested platforms so callers cannot report full success.
+  return [
+    ...results,
+    ...missing.map((platform) => ({
+      platform,
+      success: false,
+      error: 'compte non connecte',
+    })),
+  ]
 }
 
 // Functions analyzePerformance, loadAutoContext, recordMemory
