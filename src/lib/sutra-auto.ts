@@ -27,7 +27,7 @@ export type {
 } from './sutra-auto-types'
 
 // Re-export utils
-export { computeNextRun, pickTheme } from './sutra-auto-utils'
+export { computeNextRun, needsFinalComposition, pickTheme } from './sutra-auto-utils'
 export { analyzePerformance, loadAutoContext, recordMemory } from './sutra-auto-helpers'
 
 // Import for local use
