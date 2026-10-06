@@ -101,7 +101,7 @@ export async function GET(request: Request) {
         .single()
       const p = profile as ProfileLite | null
 
-      const { data: videoRow } = await supabase
+      const { data: videoRow, error: insertError } = await supabase
         .from('sutra_auto_videos')
         .insert({
           user_id: config.user_id,
@@ -121,7 +121,12 @@ export async function GET(request: Request) {
         .select()
         .single()
 
-      if (!videoRow) continue
+      if (insertError?.code === '23505') {
+        processed.push({ user_id: config.user_id, status: 'skipped_existing_occurrence' })
+        continue
+      }
+      if (insertError) throw insertError
+      if (!videoRow) throw new Error('Video occurrence insert returned no row')
 
       try {
         const assets = await generateAutoVideoAssets({
@@ -133,7 +138,7 @@ export async function GET(request: Request) {
         })
 
         const finalStatus = ctx.config.require_approval_before_publish ? 'pending_approval' : 'ready'
-        await supabase
+        const { error: assetUpdateError } = await supabase
           .from('sutra_auto_videos')
           .update({
             status: finalStatus,
@@ -144,6 +149,7 @@ export async function GET(request: Request) {
             generation_completed_at: new Date().toISOString(),
           })
           .eq('id', videoRow.id)
+        if (assetUpdateError) throw assetUpdateError
 
         if (ctx.config.auto_publish && !ctx.config.require_approval_before_publish) {
           const results = await publishAutoVideo({
@@ -162,7 +168,7 @@ export async function GET(request: Request) {
                 ? 'partially_published'
                 : 'failed'
 
-          await supabase
+          const { error: publishUpdateError } = await supabase
             .from('sutra_auto_videos')
             .update({
               status: publishStatus,
@@ -170,6 +176,7 @@ export async function GET(request: Request) {
               published_platforms: results,
             })
             .eq('id', videoRow.id)
+          if (publishUpdateError) throw publishUpdateError
         }
 
         try {
