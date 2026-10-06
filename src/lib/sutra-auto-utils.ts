@@ -102,6 +102,18 @@ export function computeNextRun(schedule: AutoSchedule, from: Date = new Date()):
   return null
 }
 
+export function needsFinalComposition(params: {
+  musicUrl?: string | null
+  voiceUrl?: string | null
+  watermarkUrl?: string | null
+  introUrl?: string | null
+  outroUrl?: string | null
+}): boolean {
+  return Boolean(
+    params.musicUrl || params.voiceUrl || params.watermarkUrl || params.introUrl || params.outroUrl,
+  )
+}
+
 export function pickTheme(themes: AutoTheme[]): AutoTheme | null {
   const active = themes.filter((theme) => theme.is_active)
   if (!active.length) return null
