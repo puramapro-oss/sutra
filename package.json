@@ -12,7 +12,9 @@
     "test:migration-local": "node scripts/test-migration-local.mjs",
     "test:local-engine-e2e": "node --import tsx --test scripts/test-local-engine-e2e.mts",
     "test:production-queue": "node --import tsx --test scripts/test-production-queue.mts",
-    "test:auto-export-queue": "node --import tsx --test scripts/test-auto-export-queue.mts"
+    "test:auto-export-queue": "node --import tsx --test scripts/test-auto-export-queue.mts",
+    "test:release-regressions": "node --import tsx --test scripts/test-release-regressions.mts",
+    "test:auto-schedule": "node scripts/test-auto-schedule.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.3",
@@ -37,10 +39,10 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.38.0",
     "gsap": "^3.14.2",
-    "javascript-opentimestamps": "^0.4.5",
+    "javascript-opentimestamps": "npm:opentimestamps@0.4.9",
     "lottie-react": "^2.4.1",
     "lucide-react": "^1.7.0",
-    "next": "^16.2.4",
+    "next": "16.3.8",
     "next-intl": "^4.9.1",
     "next-themes": "^0.4.6",
     "pg": "^8.20.0",
@@ -73,7 +75,7 @@
     "@types/react-dom": "^19",
     "@types/three": "^0.183.1",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1",
+    "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
     "typescript": "^5"
@@ -83,7 +85,8 @@
     "form-data": "^4.0.4",
     "tough-cookie": "^4.1.3",
     "qs": "^6.14.1",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.5",
+    "source-map-js": "^1.2.2",
     "postcss": "^8.5.18"
   }
 }

@@ -4,7 +4,7 @@ import { createServiceClient } from '@/lib/supabase'
 import { createVideoSchema } from '@/lib/validators'
 import { clampQualityToPlan } from '@/lib/ltx-utils'
 import { resolveVoiceProviderId } from '@/lib/constants'
-import { enqueueJob, reserveQuota, completeQuota, releaseQuota, claimJobByKey, checkpoint, finishJob, heartbeat } from '@/lib/video-queue'
+import { enqueueJob, reserveQuota, completeQuotaForFinishedJob, releaseQuota, claimJobByKey, checkpoint, finishJob, heartbeat } from '@/lib/video-queue'
 import { executeCreateJob, type CreateJobInput, type CreateJobResume } from '@/lib/video-pipeline'
 import type { AssembleClip } from '@/lib/shotstack'
 import type { Plan, Profile } from '@/types'
@@ -49,12 +49,12 @@ export async function POST(req: Request) {
     const genPlan: Plan = engine === 'wan-classic' ? 'free' : userPlan
     const voiceId = resolveVoiceProviderId(voice_id ?? voice)
 
-    const { data: videoRow } = await serviceClient
+    const { data: videoRow, error: insertError } = await serviceClient
       .from('videos')
       .insert({ user_id: user.id, status: 'generating', format, quality, tags: [], media_mode: mediaMode, stock_sources: stockSelections ?? [] })
       .select('id')
       .single()
-    if (!videoRow) return NextResponse.json({ error: 'Erreur creation video' }, { status: 500 })
+    if (insertError || !videoRow) throw new Error('Erreur creation video')
     const videoId = videoRow.id
     createdVideoId = videoId
 
@@ -100,9 +100,10 @@ export async function POST(req: Request) {
         .select('id, status')
         .eq('idempotency_key', `create-${videoId}`)
         .single()
-      jobId = existing?.id ?? null
+      quotaReserved = false // The worker that owns this job also owns settlement.
+      return NextResponse.json({ success: false, videoId, jobId: existing?.id ?? null, status: existing?.status ?? 'unknown' }, { status: 202 })
     }
-    const resumeScenes = (((claimedJob?.progress as CreateJobResume | undefined)?.scenes) ?? {}) as Record<string, AssembleClip>
+    const resumeScenes = (claimedJob.progress.scenes ?? {}) as Record<string, AssembleClip>
     const scenesDone = { ...resumeScenes }
 
     await executeCreateJob(input, { scenes: resumeScenes }, {
@@ -114,10 +115,14 @@ export async function POST(req: Request) {
     })
 
     if (jobId) await finishJob(jobId, 'done')
-    await completeQuota(user.id)
+    quotaReserved = false
+    const quotaConfirmed = await completeQuotaForFinishedJob(user.id, claimedJob.id)
+    jobId = null
+    createdVideoId = null
 
-    const { data: video } = await serviceClient.from('videos').select('*').eq('id', videoId).single()
-    return NextResponse.json({ success: true, video, jobId })
+    const { data: video, error: readError } = await serviceClient.from('videos').select('*').eq('id', videoId).eq('user_id', user.id).single()
+    if (readError || !video) return NextResponse.json({ error: 'Lecture du resultat indisponible', videoId, jobId: claimedJob.id, status: 'done' }, { status: 503 })
+    return NextResponse.json({ success: true, video, jobId: claimedJob.id, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
     if (createdVideoId) {

@@ -3,15 +3,15 @@ import { randomUUID } from 'node:crypto'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import {
-  reserveQuota, completeQuota, releaseQuota,
+  reserveQuota, completeQuotaForFinishedJob, releaseQuota,
   enqueueJob, claimJobByKey, getJobByKey, cancelJobByKey, checkpoint, finishJob, heartbeat,
 } from '@/lib/video-queue'
-import { executeProductionStep, type ProductionJobInput, type ProductionStep } from '@/lib/production-pipeline'
+import { executeProductionStep, persistProductionResult, type ProductionJobInput, type ProductionStep } from '@/lib/production-pipeline'
 import { clampQualityToPlan } from '@/lib/ltx-utils'
 import { type AssembleClip } from '@/lib/shotstack'
-import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
-import { productionSchema, sanitizeScriptData, MAX_SCENES } from '@/lib/production-schema'
-import type { Plan, Profile, ScriptData } from '@/types'
+import { logApiCall } from '@/lib/logger'
+import { productionSchema, sanitizeScriptData } from '@/lib/production-schema'
+import type { Plan, Profile } from '@/types'
 
 // Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
 export const maxDuration = 300
@@ -34,8 +34,7 @@ function validateStepInputs(step: string, previousData: Record<string, unknown>)
   }
   if (step === 'assembly') {
     const videoData = previousData.video as Array<Partial<AssembleClip>> | undefined
-    const voiceData = previousData.voice as { url?: string } | undefined
-    if (!videoData?.length || !voiceData?.url) return 'Video et voix requises pour l\'assemblage'
+    if (!videoData?.length) return 'Video requise pour l\'assemblage'
   }
   return null
 }
@@ -110,6 +109,8 @@ export async function POST(req: Request) {
     if (existing?.status === 'cancelled') {
       return NextResponse.json({ error: 'Etape annulee — relance avec un nouveau requestId' }, { status: 409 })
     }
+    if (existing?.status === 'queued') return NextResponse.json({ data: { status: 'queued', jobKey } }, { status: 202 })
+    if (existing) return NextResponse.json({ error: 'Cette tache necessite une reconciliation' }, { status: 409 })
 
     // Réservation ATOMIQUE (migration v10) — fail-closed.
     if (!(await reserveQuota(profile as unknown as Profile))) {
@@ -140,9 +141,8 @@ export async function POST(req: Request) {
     await enqueueJob({ videoId: null, userId: user.id, kind: 'production', payload: { input }, idempotencyKey: jobKey })
     const job = await claimJobByKey(jobKey, `inline-${requestKey}`, 600)
     if (!job) {
-      await releaseQuota(user.id).catch(() => {})
-      quotaReserved = false
-      return NextResponse.json({ error: 'Etape deja en cours — reessaie dans un instant' }, { status: 409 })
+      quotaReserved = false // The worker owns the queued reservation.
+      return NextResponse.json({ data: { status: 'queued', jobKey } }, { status: 202 })
     }
     jobId = job.id
     const worker = `inline-${requestKey}`
@@ -156,14 +156,15 @@ export async function POST(req: Request) {
       },
     })
 
-    const finalData = await persistAndShape(step, result, stepsDone, input, serviceClient)
+    const finalData = await persistProductionResult(job.id, step, result, stepsDone, input, serviceClient)
     // Résultat final checkpointé : un retry du même requestId ne paie plus rien.
     await checkpoint(job.id, worker, { steps: stepsDone, result: finalData })
     await finishJob(job.id, 'done')
-    await completeQuota(user.id)
     quotaReserved = false
+    const quotaConfirmed = await completeQuotaForFinishedJob(user.id, jobId!)
+    jobId = null
     await logApiCall(user.id, STEP_PROVIDER[step] ?? 'multi', `production-${step}`, 'success')
-    return NextResponse.json({ data: finalData })
+    return NextResponse.json({ data: finalData, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
     if (jobId) {
@@ -179,85 +180,4 @@ export async function POST(req: Request) {
     }
     return NextResponse.json({ error: message }, { status: 500 })
   }
-}
-
-/** Persistance finale (assembly/all → table videos) + mise en forme réponse,
- *  formes strictement IDENTIQUES aux réponses historiques (contrat client). */
-async function persistAndShape(
-  step: string,
-  result: unknown,
-  stepsDone: Record<string, unknown>,
-  input: ProductionJobInput,
-  serviceClient: ReturnType<typeof createServiceClient>
-): Promise<unknown> {
-  if (step === 'assembly') {
-    const scriptData = sanitizeScriptData(input.previousData.script)
-    const assembled = result as { url: string; videoId: string | null; quality: string; duration: number }
-    const { data: videoRow } = await serviceClient.from('videos').insert({
-      user_id: input.userId,
-      title: scriptData?.title ?? 'Production',
-      description: scriptData?.description ?? '',
-      video_url: assembled.url,
-      duration: assembled.duration,
-      format: input.format ?? '16:9',
-      quality: assembled.quality,
-      status: 'ready',
-      tags: scriptData?.tags ?? [],
-      script_data: scriptData ?? null,
-    }).select('id').single()
-    await sendNotification(input.userId, {
-      type: 'success',
-      title: 'Production terminee',
-      message: `Ta video "${scriptData?.title ?? 'Production'}" est prete !`,
-    })
-    return { url: assembled.url, videoId: videoRow?.id }
-  }
-
-  if (step === 'all') {
-    const script = stepsDone.script as ScriptData
-    const clips: AssembleClip[] = []
-    for (let i = 0; i < MAX_SCENES; i++) {
-      const visual = stepsDone[`scene:${i}`] as { url: string; source: string } | undefined
-      if (!visual) break
-      const scene = script.scenes[i]
-      clips.push({
-        url: visual.url,
-        type: visual.source === 'pexels-stock' ? 'stock' : 'ia',
-        kind: 'video',
-        duration: Math.max(1, scene?.duration_seconds || 5),
-      })
-    }
-    const assembled = result as { url: string; quality: string; duration: number }
-    const voiceUrl = stepsDone.voice_url as string
-    const musicUrl = stepsDone.music as string | null
-    // Miniature : IMAGE uniquement (jamais un MP4 dans une balise <img>).
-    const thumbnailUrl = clips.find((c) => c.kind === 'photo')?.url
-      ?? `https://image.pollinations.ai/prompt/${encodeURIComponent(script.thumbnail_prompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true`
-    // La qualité RÉELLE (plafonnée renderer) est déjà calculée par le pipeline.
-    const actualQuality = assembled.quality
-    await serviceClient.from('videos').insert({
-      user_id: input.userId,
-      title: script.title,
-      description: script.description,
-      video_url: assembled.url,
-      thumbnail_url: thumbnailUrl,
-      duration: assembled.duration,
-      format: input.format ?? '16:9',
-      quality: actualQuality,
-      status: 'ready',
-      tags: script.tags,
-      script_data: script,
-    })
-    await logActivity(input.userId, 'production_completed', `Production "${script.title}" terminee`)
-    return {
-      script,
-      video: clips,
-      voice: { url: voiceUrl },
-      music: { url: musicUrl ?? null },
-      assembly: { url: assembled.url },
-      thumbnail: { url: thumbnailUrl },
-    }
-  }
-
-  return result
 }

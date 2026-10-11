@@ -1,4 +1,4 @@
-// Declaration minimale pour javascript-opentimestamps ^0.4.5 (0 types officiels).
+// Declaration minimale pour l'alias javascript-opentimestamps -> opentimestamps 0.4.9.
 // Surface typée : seulement ce que src/lib/opentimestamps.ts consomme.
 
 declare module 'javascript-opentimestamps' {

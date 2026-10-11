@@ -9,7 +9,7 @@ import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import {
-  reserveQuota, completeQuota, releaseQuota,
+  reserveQuota, completeQuotaForFinishedJob, releaseQuota,
   enqueueJob, claimJobByKey, checkpoint, finishJob, heartbeat,
 } from '@/lib/video-queue'
 import { executeAutoJob, buildAutoProviders, type AutoJobInput } from '@/lib/auto-pipeline'
@@ -40,11 +40,12 @@ export async function POST(req: Request) {
     const service = createServiceClient()
 
     // Garde de quota AVANT tout appel payant (audit #8).
-    const { data: quotaProfile } = await service
+    const { data: quotaProfile, error: quotaProfileError } = await service
       .from('profiles')
       .select('*')
       .eq('id', user.id)
       .single()
+    if (quotaProfileError || !quotaProfile) throw new Error('Profil et quota non verifiables')
     if (quotaProfile) {
       const reserved = await reserveQuota(quotaProfile as never)
       if (!reserved) {
@@ -89,9 +90,8 @@ export async function POST(req: Request) {
     await enqueueJob({ videoId: null, userId: user.id, kind: 'auto', payload: { input }, idempotencyKey: jobKey })
     const job = await claimJobByKey(jobKey, `inline-auto-${videoRow.id}`, 600)
     if (!job) {
-      await releaseQuota(user.id).catch(() => {})
       quotaReserved = false
-      return NextResponse.json({ error: 'Generation deja en cours pour cette video' }, { status: 409 })
+      return NextResponse.json({ video: { id: videoRow.id, status: 'planning' }, queued: true }, { status: 202 })
     }
     jobId = job.id
     const worker = `inline-auto-${videoRow.id}`
@@ -106,9 +106,10 @@ export async function POST(req: Request) {
     }, buildAutoProviders(user.id, videoRow.id, config, input.userEmail, input.planTier, service))
 
     await finishJob(job.id, 'done')
-    await completeQuota(user.id)
     quotaReserved = false
-    return NextResponse.json({ video: { id: videoRow.id, schedule_id: scheduleId, status: final.status, video_final_url: final.videoFinalUrl, video_raw_url: final.assets.video_raw_url, audio_voice_url: final.assets.audio_voice_url, audio_music_url: final.assets.audio_music_url, error_message: final.assemblyError } })
+    const quotaConfirmed = await completeQuotaForFinishedJob(user.id, job.id)
+    jobId = null
+    return NextResponse.json({ quotaReconciliationRequired: !quotaConfirmed, video: { id: videoRow.id, schedule_id: scheduleId, status: final.status, video_final_url: final.videoFinalUrl, video_raw_url: final.assets.video_raw_url, audio_voice_url: final.assets.audio_voice_url, audio_music_url: final.assets.audio_music_url, error_message: final.assemblyError } })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
     if (jobId) {

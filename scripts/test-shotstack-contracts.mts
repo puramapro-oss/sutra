@@ -60,9 +60,10 @@ const shotstackOk = () =>
 // Shotstack — assembleFinalVideo (honnêteté 4K + polling)
 // =============================================================================
 
-test('Shotstack: succes — tailles réelles par qualité (4k = 2160×3840, pas 720)', async () => {
+test('Shotstack: 4K autorisee — preset demande, fichier encore non verifie', async () => {
   setKey('SHOTSTACK_API_KEY', true)
   shotstackOk()
+  process.env.SHOTSTACK_4K_ENABLED = 'true'
   const res = await assembleFinalVideo({
     clips: [{ url: 'https://cdn/a.mp4', type: 'ia' }],
     voiceUrl: 'https://cdn/v.mp3',
@@ -74,14 +75,19 @@ test('Shotstack: succes — tailles réelles par qualité (4k = 2160×3840, pas 
     quality: '4k',
     brandKit: null,
   })
-  assert.equal(res.outputQuality, 'hd')
+  assert.equal(res.outputQuality, '4k')
+  assert.equal(res.outputVerified, false)
   assert.equal(res.url, 'https://cdn/out.mp4')
   // format + qualité réellement demandés au montage (audit #1)
   const body = JSON.parse(String(calls[0].init?.body))
-  assert.deepEqual(body.output.size, { width: 2160, height: 3840 })
+  assert.deepEqual(res.outputSize, { width: 2160, height: 3840 })
+  assert.equal(body.output.resolution, '4k')
+  assert.equal(body.output.aspectRatio, '9:16')
+  assert.equal(body.output.size, undefined)
   // le clamp 4k→1080p quand le stage rend en HD
-  assert.equal(actualQualityFor('4k', res.outputQuality), '1080p')
-  assert.equal(actualQualityFor('1080p', 'hd'), '1080p')
+  assert.equal(actualQualityFor('4k', res.outputQuality), '4k')
+  assert.equal(actualQualityFor('1080p', 'hd'), '720p')
+  delete process.env.SHOTSTACK_4K_ENABLED
 })
 
 test('Shotstack: 1080p 16:9 exporte en 1920×1080', async () => {
@@ -121,10 +127,10 @@ test('Shotstack: horloge de montage — intro décale voix et sous-titres, duré
     transitions: 'fade',
     format: '16:9',
     quality: '1080p',
-    brandKit: { intro_template: 'intro.mp4', outro_template: 'outro.mp4' },
+    brandKit: { intro_template: 'https://cdn/intro.mp4', outro_template: 'https://cdn/outro.mp4' },
   })
   const body = JSON.parse(String(calls[0].init?.body))
-  const [videoTrack, voiceTrack, subTrack] = body.timeline.tracks
+  const [subTrack, videoTrack, voiceTrack] = body.timeline.tracks
   const end = (t: { clips: Array<{ start: number; length: number }> }) =>
     Math.max(...t.clips.map((c) => c.start + c.length))
   // images : 3 + 10 + 10 + 3 = 26s
@@ -180,7 +186,7 @@ test('Shotstack: 429 au submit -> erreur explicite', async () => {
   await assertThrowsWith(
     () =>
       assembleFinalVideo({
-        clips: [], voiceUrl: 'u', musicUrl: '', musicVolume: 0.3,
+        clips: [{ url: 'https://cdn/clip.mp4', type: 'ia' }], voiceUrl: 'https://cdn/voice.mp3', musicUrl: '', musicVolume: 0.3,
         subtitles: [], transitions: 'fade', format: '16:9', quality: '1080p', brandKit: null,
       }),
     '429'
@@ -196,7 +202,7 @@ test('Shotstack: rendu failed -> erreur explicite', async () => {
   await assertThrowsWith(
     () =>
       assembleFinalVideo({
-        clips: [], voiceUrl: 'u', musicUrl: '', musicVolume: 0.3,
+        clips: [{ url: 'https://cdn/clip.mp4', type: 'ia' }], voiceUrl: 'https://cdn/voice.mp3', musicUrl: '', musicVolume: 0.3,
         subtitles: [], transitions: 'fade', format: '16:9', quality: '1080p', brandKit: null,
       }),
     'echoue'
@@ -208,7 +214,7 @@ test('Shotstack: cle absente -> erreur explicite', async () => {
   await assert.rejects(
     () =>
       assembleFinalVideo({
-        clips: [], voiceUrl: 'u', musicUrl: '', musicVolume: 0.3,
+        clips: [{ url: 'https://cdn/clip.mp4', type: 'ia' }], voiceUrl: 'https://cdn/voice.mp3', musicUrl: '', musicVolume: 0.3,
         subtitles: [], transitions: 'fade', format: '16:9', quality: '1080p', brandKit: null,
       }),
     MissingEnvError

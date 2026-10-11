@@ -1,3 +1,4 @@
+import { isDeepStrictEqual } from 'node:util'
 import { createServiceClient } from '@/lib/supabase'
 import { PLAN_LIMITS } from '@/lib/constants'
 import { isAdmin } from '@/lib/utils'
@@ -55,12 +56,32 @@ export async function reserveQuota(user: Profile): Promise<boolean> {
 
 export async function completeQuota(userId: string): Promise<void> {
   const supabase = createServiceClient()
-  await supabase.rpc('complete_video_quota', { p_user_id: userId })
+  const { error } = await supabase.rpc('complete_video_quota', { p_user_id: userId })
+  if (error) throw new Error(`Validation quota impossible: ${error.message}`)
+}
+
+/** Do not requeue already finished media because quota accounting is uncertain. */
+export async function completeQuotaForFinishedJob(userId: string, jobId: string): Promise<boolean> {
+  try {
+    await completeQuota(userId)
+    return true
+  } catch {
+    // No automatic RPC replay: a lost response may follow a committed debit.
+    // The operator must reconcile the existing job against its reservation.
+    try {
+      const { error } = await createServiceClient().from('video_jobs')
+        .update({ last_error: 'SUTRA_QUOTA_RECONCILIATION_REQUIRED' }).eq('id', jobId).eq('status', 'done')
+      if (error) console.error('[sutra:quota] reconciliation marker unavailable', jobId)
+    } catch { console.error('[sutra:quota] reconciliation marker unavailable', jobId) }
+    console.error('[sutra:quota] completed media requires accounting reconciliation', jobId)
+    return false
+  }
 }
 
 export async function releaseQuota(userId: string): Promise<void> {
   const supabase = createServiceClient()
-  await supabase.rpc('release_video_quota', { p_user_id: userId })
+  const { error } = await supabase.rpc('release_video_quota', { p_user_id: userId })
+  if (error) throw new Error(`Liberation quota impossible: ${error.message}`)
 }
 
 /**
@@ -88,15 +109,20 @@ export async function enqueueJob(params: {
         max_attempts: params.maxAttempts ?? 3,
         idempotency_key: params.idempotencyKey,
       },
-      { onConflict: 'idempotency_key', ignoreDuplicates: false }
+      { onConflict: 'idempotency_key', ignoreDuplicates: true }
     )
     .select()
-    .single()
+    .maybeSingle()
 
-  if (error || !data) {
+  if (error) {
     throw new Error(`Enregistrement de tache impossible : ${error?.message ?? 'reponse invalide'}`)
   }
-  return data as VideoJob
+  const job = (data as VideoJob | null) ?? await getJobByKey(params.idempotencyKey)
+  if (!job) throw new Error('Enregistrement de tache introuvable')
+  if (job.user_id !== params.userId || job.video_id !== params.videoId || job.kind !== params.kind || !isDeepStrictEqual(job.payload, params.payload)) {
+    throw new Error('SUTRA_IDEMPOTENCY_CONFLICT: cle deja utilisee pour une autre demande')
+  }
+  return job
 }
 
 /** Claim exclusif d'un lot (SKIP LOCKED côté Postgres) — worker de fond. */
@@ -136,11 +162,12 @@ export async function claimJobByKey(
 /** Prolonge le bail pendant une phase longue (worker vivant). */
 export async function heartbeat(jobId: string, worker: string, leaseSeconds = 600): Promise<void> {
   const supabase = createServiceClient()
-  await supabase.rpc('heartbeat_video_job', {
+  const { error } = await supabase.rpc('heartbeat_video_job', {
     p_job_id: jobId,
     p_worker: worker,
     p_lease_seconds: leaseSeconds,
   })
+  if (error) throw new Error(`Renouvellement du bail impossible: ${error.message}`)
 }
 
 /**
@@ -150,11 +177,12 @@ export async function heartbeat(jobId: string, worker: string, leaseSeconds = 60
  */
 export async function getJobByKey(idempotencyKey: string): Promise<VideoJob | null> {
   const supabase = createServiceClient()
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('video_jobs')
     .select('*')
     .eq('idempotency_key', idempotencyKey)
     .maybeSingle()
+  if (error) throw new Error(`Lecture de tache impossible: ${error.message}`)
   return (data as VideoJob | null) ?? null
 }
 
@@ -181,12 +209,13 @@ export async function checkpoint(
   providerJobIds?: Record<string, unknown>
 ): Promise<void> {
   const supabase = createServiceClient()
-  await supabase.rpc('checkpoint_video_job', {
+  const { error } = await supabase.rpc('checkpoint_video_job', {
     p_job_id: jobId,
     p_worker: worker,
     p_progress: progress,
     p_provider_job_ids: providerJobIds ?? null,
   })
+  if (error) throw new Error(`Checkpoint impossible: ${error.message}`)
 }
 
 export async function finishJob(
@@ -195,8 +224,11 @@ export async function finishJob(
   lastError?: string | null
 ): Promise<void> {
   const supabase = createServiceClient()
-  await supabase
+  const { data, error } = await supabase
     .from('video_jobs')
     .update({ status, last_error: lastError ?? null, lease_until: null, updated_at: new Date().toISOString() })
     .eq('id', jobId)
+    .select('id')
+    .single()
+  if (error || !data) throw new Error(`Finalisation de tache impossible: ${error?.message ?? 'ligne absente'}`)
 }

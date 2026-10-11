@@ -45,7 +45,7 @@ test('EXPORT : crash pendant le rendu → reprise SANS re-rendu de l\'acquis', a
     assemble: async () => {
       assembleCalls++
       if (failOnce) throw new Error('RENDU INTERROMPU (worker tue chez Shotstack)')
-      return { url: 'https://storage.test/export.mp4', duration: 30, outputQuality: 'hd' as const, outputSize: { width: 1920, height: 1080 }, timeline: {} }
+      return { url: 'https://storage.test/export.mp4', duration: 30, outputQuality: '1080' as const, outputVerified: false as const, outputSize: { width: 1920, height: 1080 }, timeline: {} }
     },
     persist: async (_input, update) => {
       persistCalls++
@@ -98,7 +98,7 @@ test('AUTO : crash pendant les assets → plan conservé, assets/assemblage une 
       if (failAssetsOnce) throw new Error('GENERATION INTERROMPUE (worker tue pendant RunPod)')
       return { video_raw_url: 'https://storage.test/raw.mp4', audio_music_url: 'm', audio_voice_url: 'v' } satisfies AutoAssets
     },
-    assemble: async () => { assembleCalls++; return { url: 'https://storage.test/final.mp4', duration: 6, outputQuality: 'hd' as const, outputSize: { width: 1080, height: 1920 }, timeline: {} } },
+    assemble: async () => { assembleCalls++; return { url: 'https://storage.test/final.mp4', duration: 6, outputQuality: '1080' as const, outputVerified: false as const, outputSize: { width: 1080, height: 1920 }, timeline: {} } },
     persist: async (_input, final) => { persistCalls++; assert.equal(final.status, 'ready') },
   }
   const input: AutoJobInput = {
@@ -125,23 +125,22 @@ test('AUTO : crash pendant les assets → plan conservé, assets/assemblage une 
 })
 
 // --- AUTO compositing_failed ---------------------------------------------------
-test('AUTO : échec de montage → vidéo brute conservée, statut compositing_failed', async () => {
+test('AUTO : échec de montage → aucun résultat final, erreur transmise au worker', async () => {
   let assembleCalls = 0
   const providers: AutoProviders = {
     plan: async () => ({ title: 't', theme_id: null, script: 's', reasoning: 'r', expected_engagement: 'medium' }) as never,
     assets: async () => ({ video_raw_url: 'raw', audio_music_url: null, audio_voice_url: 'v' }) as never,
     assemble: async () => { assembleCalls++; throw new Error('Shotstack down') },
-    persist: async (_i, final) => { assert.equal(final.status, 'compositing_failed'); assert.equal(final.videoFinalUrl, 'raw') },
+    persist: async (_i, final) => { assert.equal(final.status, 'compositing'); assert.equal(final.videoFinalUrl, null) },
   }
   const input: AutoJobInput = {
     userId: 'u', videoRowId: 'r', scheduleId: null, userEmail: null, planTier: 'free',
     config: { require_approval_before_publish: true } as never,
     generationStartedAt: new Date().toISOString(),
   }
-  const res = await executeAutoJob(input, { steps: {} }, {}, providers)
-  assert.equal(res.status, 'compositing_failed')
+  await assert.rejects(() => executeAutoJob(input, { steps: {} }, {}, providers), /Shotstack down/)
   assert.equal(assembleCalls, 1)
-  console.log('✓ auto : échec montage tracé (compositing_failed), pas de statut mensonger')
+  console.log('✓ auto : échec montage tracé, aucune URL finale publiable')
 })
 
 // --- VOIX >5 Mo checkpointée (production) --------------------------------------

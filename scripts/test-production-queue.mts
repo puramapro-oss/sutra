@@ -55,7 +55,7 @@ const providers: ProductionProviders = {
   },
   voice: async () => { calls.voice++; return new TextEncoder().encode('voice-audio').buffer as ArrayBuffer },
   music: async () => { calls.music++; return 'https://storage.test/music.mp3' },
-  assemble: async () => { calls.assemble++; return { url: 'https://storage.test/final.mp4', duration: 15, outputQuality: 'hd' as const, outputSize: { width: 1920, height: 1080 }, timeline: {} } },
+  assemble: async () => { calls.assemble++; return { url: 'https://storage.test/final.mp4', duration: 15, outputQuality: '1080' as const, outputVerified: false as const, outputSize: { width: 1920, height: 1080 }, timeline: {} } },
   upload: async () => { calls.upload++; return 'https://storage.test/voice.mp3' },
 }
 

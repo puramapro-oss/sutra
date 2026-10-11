@@ -1,3 +1,6 @@
+import { createServiceClient } from '@/lib/supabase'
+import { sendNotification, logActivity } from '@/lib/logger'
+import { createHash } from 'node:crypto'
 import { generateScript } from '@/lib/claude'
 import {
   generateVoiceWithFallback,
@@ -7,7 +10,7 @@ import {
 } from '@/lib/fallbacks'
 import { searchVideos, type MediaFormat } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
-import { assembleFinalVideo, generateSubtitlesFromScript, actualQualityFor, type AssembleClip } from '@/lib/shotstack'
+import { assembleFinalVideo, generateSubtitlesFromScript, actualQualityFor, durableRenderJob, type AssembleClip } from '@/lib/shotstack'
 import { resolveVoiceProviderId } from '@/lib/constants'
 import { TEMPLATE_CONFIGS, sanitizeScriptData, MAX_SCENES } from '@/lib/production-schema'
 import type { Plan, Profile, ScriptData } from '@/types'
@@ -142,7 +145,8 @@ export async function executeProductionStep(
     for (let i = 0; i < Math.min(scriptData.scenes.length, MAX_SCENES); i++) {
       const scene = scriptData.scenes[i]
       const visual = await step(`scene:${i}`, () => providers.visual(scene, Math.max(1, scene.duration_seconds || 5)))
-      if (visual) resolved.push(visual)
+      if (!visual?.url) throw new Error(`Scene ${i + 1} manquante — production incomplete`)
+      resolved.push(visual)
     }
     return resolved
   }
@@ -160,19 +164,21 @@ export async function executeProductionStep(
   }
 
   if (input.step === 'assembly') {
-    return runAssembly(input, step, providers)
+    return runAssembly(input, step, providers, done, hooks)
   }
 
   if (input.step === 'all') {
     const config = TEMPLATE_CONFIGS[input.template ?? ''] ?? TEMPLATE_CONFIGS.youtube
     const script = await step('script', () =>
       providers.script({ topic: input.idea, style: input.tone ?? 'professionnel', format: input.format ?? '16:9', durationHint: config.durationHint }))
+    if (!script.scenes.length || script.scenes.length > MAX_SCENES) throw new Error('Nombre de scenes hors limites — aucune scene ne sera supprimee silencieusement')
     const music = await step('music', () =>
       providers.music(`${input.musicStyle ?? 'cinematic'} background music for ${input.idea}`, input.musicStyle ?? 'cinematic', script.estimated_duration))
     const clips: AssembleClip[] = []
     for (let i = 0; i < Math.min(script.scenes.length, MAX_SCENES); i++) {
       const scene = script.scenes[i]
       const visual = await step(`scene:${i}`, () => providers.visual(scene, Math.max(1, scene.duration_seconds || 5)))
+      if (!visual?.url) throw new Error(`Scene ${i + 1} manquante — montage refuse`)
       if (visual) {
         clips.push({
           url: visual.url,
@@ -184,7 +190,7 @@ export async function executeProductionStep(
     }
     if (clips.length === 0) throw new Error('Aucune scene resolue (IA et stock indisponibles) — video annulee, aucun autre cout engage')
     const voiceUrl = await resolveVoiceUrl(input, done, hooks, step, providers, script.narration)
-    return runAssembly(input, step, providers, { script, clips, voiceUrl, musicUrl: music ?? '' })
+    return runAssembly(input, step, providers, done, hooks, { script, clips, voiceUrl, musicUrl: music ?? '' })
   }
 
   throw new Error(`Etape non durable : ${input.step}`)
@@ -229,11 +235,21 @@ async function voiceB64Checkpointed(
       if (typeof part !== 'string') throw new Error(`checkpoint voix corrompu (morceau ${i} manquant)`)
       b64 += part
     }
+    const checksum = done.voice_b64_sha256
+    if (typeof checksum === 'string' && createHash('sha256').update(b64).digest('hex') !== checksum) {
+      throw new Error('SUTRA_VOICE_CHECKPOINT_CORRUPT')
+    }
     return b64
   }
 
+  if (done.voice_submission_started || Object.keys(done).some(key => /^voice_b64:\d+$/.test(key))) {
+    throw new Error('SUTRA_RECONCILIATION_REQUIRED: resultat vocal incomplet, aucune nouvelle synthese')
+  }
+
   await hooks.heartbeat?.()
+  await step('voice_submission_started', async () => true)
   const buf = await providers.voice(narration, resolveVoiceProviderId(voice))
+  if (!buf.byteLength) throw new Error('SUTRA_VOICE_EMPTY_RESULT')
   const encoded = Buffer.from(buf).toString('base64')
   if (encoded.length <= MAX_VOICE_B64) {
     await step('voice_b64', async () => encoded)
@@ -242,10 +258,13 @@ async function voiceB64Checkpointed(
   // >20 Mo : découpe — CHAQUE morceau tient dans un RPC (merge jsonb côté SQL).
   const chunks: string[] = []
   for (let i = 0; i < encoded.length; i += VOICE_CHUNK_B64) chunks.push(encoded.slice(i, i + VOICE_CHUNK_B64))
+  // The manifest precedes chunks: a partial write must never trigger a new voice
+  // generation and combine the old beginning with a different recording.
+  await step('voice_b64_sha256', async () => createHash('sha256').update(encoded).digest('hex'))
+  await step('voice_b64_parts', async () => chunks.length)
   for (let i = 0; i < chunks.length; i++) {
     await step(`voice_b64:${i}`, async () => chunks[i])
   }
-  await step('voice_b64_parts', async () => chunks.length)
   return encoded
 }
 
@@ -253,12 +272,14 @@ async function runAssembly(
   input: ProductionJobInput,
   step: Stepper,
   providers: ProductionProviders,
+  done: Record<string, unknown>,
+  hooks: ProductionJobHooks,
   prefetched?: { script: ScriptData; clips: AssembleClip[]; voiceUrl: string; musicUrl: string }
 ): Promise<{ url: string; videoId: string | null; quality: string; duration: number }> {
   const scriptData = prefetched?.script ?? sanitizeScriptData(input.previousData.script)
   const clips = prefetched?.clips ?? assemblyClipsFromClient(input.previousData.video)
   const voiceUrl = prefetched?.voiceUrl ?? (input.previousData.voice as { url?: string } | undefined)?.url
-  if (!clips.length || !voiceUrl) throw new Error('Video et voix requises pour l\'assemblage')
+  if (!clips.length) throw new Error('Video requise pour l\'assemblage')
 
   const subtitles = scriptData?.narration
     ? generateSubtitlesFromScript(scriptData.narration, scriptData.scenes ?? [])
@@ -266,7 +287,7 @@ async function runAssembly(
   const assembled = await step('assembly', () =>
     providers.assemble({
       clips,
-      voiceUrl,
+      voiceUrl: voiceUrl ?? '',
       musicUrl: prefetched?.musicUrl ?? ((input.previousData.music as { url?: string } | undefined)?.url ?? ''),
       musicVolume: 0.3,
       subtitles,
@@ -274,8 +295,9 @@ async function runAssembly(
       format: input.format ?? '16:9',
       quality: input.qualityCap,
       brandKit: input.brandKit,
+      renderJob: durableRenderJob(done, hooks.onStepResolved),
     }))
-  // Qualité annoncée = qualité RÉELLE après plafonnement du renderer.
+  // Renderer preset label; final-file verification remains a separate gate.
   return step('assembly_saved', async () => ({
     url: assembled.url,
     videoId: null,
@@ -289,4 +311,101 @@ function assemblyClipsFromClient(raw: unknown): AssembleClip[] {
   return arr.slice(0, MAX_SCENES)
     .filter((v) => v.url)
     .map((v) => ({ url: v.url!, type: v.type === 'stock' ? 'stock' : 'ia', kind: v.kind, duration: v.duration }))
+}
+
+/** Persistance finale (assembly/all → table videos) + mise en forme réponse,
+ *  formes strictement IDENTIQUES aux réponses historiques (contrat client). */
+export async function persistProductionResult(
+  jobId: string,
+  step: string,
+  result: unknown,
+  stepsDone: Record<string, unknown>,
+  input: ProductionJobInput,
+  serviceClient: ReturnType<typeof createServiceClient>
+): Promise<unknown> {
+  // The durable job ID is also the video ID. Replaying persistence cannot
+  // duplicate a video or reset one that has since been published.
+  const persistVideo = async (values: Record<string, unknown>) => {
+    const { data, error } = await serviceClient.from('videos').upsert(
+      { ...values, id: jobId }, { onConflict: 'id', ignoreDuplicates: true },
+    ).select('id, user_id, video_url').maybeSingle()
+    if (error) throw new Error(`Persistance production impossible: ${error.message}`)
+    const existing = data ? { data, error: null } : await serviceClient.from('videos')
+      .select('id, user_id, video_url').eq('id', jobId).eq('user_id', input.userId).single()
+    if (existing.error || !existing.data || existing.data.user_id !== input.userId
+        || existing.data.video_url !== values.video_url) {
+      throw new Error('SUTRA_RECONCILIATION_REQUIRED: resultat production non confirme')
+    }
+    return existing.data
+  }
+  if (step === 'assembly') {
+    const scriptData = sanitizeScriptData(input.previousData.script)
+    const assembled = result as { url: string; videoId: string | null; quality: string; duration: number }
+    const videoRow = await persistVideo({
+      user_id: input.userId,
+      title: scriptData?.title ?? 'Production',
+      description: scriptData?.description ?? '',
+      video_url: assembled.url,
+      duration: assembled.duration,
+      format: input.format ?? '16:9',
+      quality: assembled.quality,
+      status: 'ready',
+      tags: scriptData?.tags ?? [],
+      script_data: scriptData ?? null,
+    })
+    await sendNotification(input.userId, {
+      type: 'success',
+      title: 'Production terminee',
+      message: `Ta video "${scriptData?.title ?? 'Production'}" est prete !`,
+    }).catch(() => {})
+    return { url: assembled.url, videoId: videoRow.id }
+  }
+
+  if (step === 'all') {
+    const script = stepsDone.script as ScriptData
+    const clips: AssembleClip[] = []
+    for (let i = 0; i < MAX_SCENES; i++) {
+      const visual = stepsDone[`scene:${i}`] as { url: string; source: string } | undefined
+      if (!visual) break
+      const scene = script.scenes[i]
+      clips.push({
+        url: visual.url,
+        type: visual.source === 'pexels-stock' ? 'stock' : 'ia',
+        kind: 'video',
+        duration: Math.max(1, scene?.duration_seconds || 5),
+      })
+    }
+    const assembled = result as { url: string; quality: string; duration: number }
+    const voiceUrl = stepsDone.voice_url as string
+    const musicUrl = stepsDone.music as string | null
+    // Miniature : IMAGE uniquement (jamais un MP4 dans une balise <img>).
+    const thumbnailUrl = clips.find((c) => c.kind === 'photo')?.url
+      ?? `https://image.pollinations.ai/prompt/${encodeURIComponent(script.thumbnail_prompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true`
+    // This label describes the requested renderer preset, not native AI detail.
+    const actualQuality = assembled.quality
+    await persistVideo({
+      user_id: input.userId,
+      title: script.title,
+      description: script.description,
+      video_url: assembled.url,
+      thumbnail_url: thumbnailUrl,
+      duration: assembled.duration,
+      format: input.format ?? '16:9',
+      quality: actualQuality,
+      status: 'ready',
+      tags: script.tags,
+      script_data: script,
+    })
+    await logActivity(input.userId, 'production_completed', `Production "${script.title}" terminee`).catch(() => {})
+    return {
+      script,
+      video: clips,
+      voice: { url: voiceUrl },
+      music: { url: musicUrl ?? null },
+      assembly: { url: assembled.url },
+      thumbnail: { url: thumbnailUrl },
+    }
+  }
+
+  return result
 }

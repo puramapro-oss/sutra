@@ -1,10 +1,10 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { smarana } from '@purama/smarana'
 import Stripe from 'stripe'
 import { CONTEST_DISTRIBUTION } from '@/lib/constants'
 
-const CRON_SECRET = process.env.CRON_SECRET
 const JUDGE_POOL_PCT = 0.03
 
 const CRITERIA = [
@@ -16,9 +16,8 @@ const CRITERIA = [
 ]
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-03-25.dahlia' })

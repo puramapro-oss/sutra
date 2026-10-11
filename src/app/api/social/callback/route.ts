@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { exchangeOAuthCode, type SocialPlatform } from '@/lib/zernio'
+import { cookies } from 'next/headers'
+import { createServerClient } from '@/lib/supabase-server'
+import { consumeSocialOAuthState, socialOAuthCookieName } from '@/lib/social-oauth-state'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -42,7 +45,7 @@ function redirectToSettings(baseUrl: string, params: Record<string, string>) {
 }
 
 export async function GET(req: Request) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sutra.purama.dev'
   try {
     const url = new URL(req.url)
     const code = url.searchParams.get('code')
@@ -64,17 +67,16 @@ export async function GET(req: Request) {
 
     const platform = platformParam as SocialPlatform
 
-    // State format: "userId:platform:random"
-    const stateParts = state.split(':')
-    if (stateParts.length < 3) {
-      return redirectToSettings(siteUrl, { error: 'invalid_state' })
-    }
-    const userId = stateParts[0]
-    const statePlatform = stateParts[1]
-
-    if (statePlatform !== platform) {
-      return redirectToSettings(siteUrl, { error: 'state_mismatch' })
-    }
+    const session = await createServerClient()
+    const { data: { user }, error: authError } = await session.auth.getUser()
+    if (authError || !user) return redirectToSettings(siteUrl, { error: 'session_required' })
+    const cookieStore = await cookies()
+    const cookieName = socialOAuthCookieName(state)
+    const consumed = await consumeSocialOAuthState(user.id, platform, state, cookieStore.get(cookieName)?.value)
+    if (!consumed) return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
+    cookieStore.set(cookieName, '', { path: '/api/social', maxAge: 0, httpOnly: true,
+      secure: new URL(siteUrl).protocol === 'https:', sameSite: 'lax' })
+    const userId = user.id
 
     // Exchange OAuth code for account profile + tokens
     const profile = await exchangeOAuthCode(platform, code, state)
@@ -109,13 +111,11 @@ export async function GET(req: Request) {
     if (upsertError) {
       return redirectToSettings(siteUrl, {
         error: 'db_error',
-        message: upsertError.message,
       })
     }
 
     return redirectToSettings(siteUrl, { connected: platform })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'oauth_exchange_failed'
-    return redirectToSettings(siteUrl, { error: 'oauth_failed', message })
+  } catch {
+    return redirectToSettings(siteUrl, { error: 'oauth_failed' })
   }
 }

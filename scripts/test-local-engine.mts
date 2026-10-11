@@ -21,11 +21,11 @@ function mockFetch(handler: (url: string, init?: RequestInit) => Response | Prom
 const { shouldUseLocalEngine, generateLocalVideo, probeLocalEngine, isLocalEngineConfigured } =
   await import('../src/lib/local-engine.ts')
 
-test('local: inactif sans configuration — clients ET propriétaire sur API externes', () => {
+test('local: sans configuration, route proprietaire reservee sans repli payant', () => {
   delete process.env.LOCAL_ENGINE_ENABLED
   delete process.env.LOCAL_VIDEO_API_URL
   assert.equal(isLocalEngineConfigured(), false)
-  assert.equal(shouldUseLocalEngine(OWNER), false)
+  assert.equal(shouldUseLocalEngine(OWNER), true)
   assert.equal(shouldUseLocalEngine(CLIENT), false)
 })
 
@@ -37,7 +37,7 @@ test('local: configuré → propriétaire OUI, client JAMAIS', () => {
   assert.equal(shouldUseLocalEngine(null), false)
 })
 
-test('local: génération OK (base64), timeout borné, contrat prompt/frames', async () => {
+test('local: faux MP4 base64 refuse apres inspection des octets', async () => {
   process.env.LOCAL_ENGINE_ENABLED = 'true'
   process.env.LOCAL_VIDEO_API_URL = 'http://127.0.0.1:7860'
   let seen: { url: string; body?: Record<string, unknown> } | null = null
@@ -48,11 +48,9 @@ test('local: génération OK (base64), timeout borné, contrat prompt/frames', a
       headers: { 'Content-Type': 'application/json' },
     })
   })
-  const result = await generateLocalVideo({ prompt: 'un phare dans la tempete', width: 1280, height: 720, duration: 6 })
-  assert.equal(seen!.url, 'http://127.0.0.1:7860')
+  await assert.rejects(() => generateLocalVideo({ prompt: 'un phare dans la tempete', width: 1280, height: 720, duration: 6 }), /SUTRA_MEDIA_INVALID_OR_UNDECODABLE/)
+  assert.equal(seen!.url, 'http://127.0.0.1:7860/')
   assert.equal(seen!.body!.num_frames, 96, '6s × 16fps')
-  assert.equal(result.model, 'local-m4max')
-  assert.ok(result.videoBuffer.byteLength > 0)
 })
 
 test('local: erreur HTTP → message explicite (serveur local à vérifier)', async () => {
@@ -62,7 +60,7 @@ test('local: erreur HTTP → message explicite (serveur local à vérifier)', as
   mockFetch(() => new Response('busy', { status: 503 }))
   await assert.rejects(
     () => generateLocalVideo({ prompt: 'x', width: 720, height: 1280, duration: 6 }),
-    /Moteur local: HTTP 503/
+    /SUTRA_LOCAL_HTTP_503/
   )
 })
 
@@ -75,5 +73,5 @@ test('local: sonde santé — 200 ok, erreur réseau détaillée', async () => {
   mockFetch(() => { throw new Error('ECONNREFUSED simule') })
   const down = await probeLocalEngine()
   assert.equal(down.ok, false)
-  assert.ok(String(down.detail).includes('ECONNREFUSED'))
+  assert.equal(down.detail, 'connexion impossible')
 })

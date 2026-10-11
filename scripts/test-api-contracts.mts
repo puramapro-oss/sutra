@@ -265,19 +265,19 @@ test('Pexels searchVideos: clé absente -> liste vide sans appel réseau', async
 // (fetchWithRetry + validation env : scripts/test-env-contracts.mts)
 // =============================================================================
 
-test('generateVoiceWithFallback: echec puis succes (1 retry)', async () => {
+test('generateVoiceWithFallback: 500 ne soumet jamais une seconde synthese', async () => {
   setKey('ELEVENLABS_API_KEY', true)
-  // POST = tentative unique par appel : 1er appel → 500, retry externe → 200
   queueResponses(
     () => textResponse(500, 'boom'),
     () => new Response(new ArrayBuffer(4), { status: 200 })
   )
-  const buf = await generateVoiceWithFallback('texte', 'v1')
-  assert.equal(buf.byteLength, 4)
+  await assert.rejects(() => generateVoiceWithFallback('texte', 'v1'))
+  assert.equal(calls.length, 1)
 })
 
-test('generateVoiceWithFallback: tout echoue -> erreur explicite "2 tentatives"', async () => {
+test('generateVoiceWithFallback: erreur permanente preservee sans attente ni retry', async () => {
   setKey('ELEVENLABS_API_KEY', true)
-  mockFetch(() => textResponse(500, 'down'))
-  await assertThrowsWith(() => generateVoiceWithFallback('texte', 'v1'), '2 tentatives')
+  mockFetch(() => textResponse(401, 'invalid credentials'))
+  await assertThrowsWith(() => generateVoiceWithFallback('texte', 'v1'), '401')
+  assert.equal(calls.length, 1)
 })

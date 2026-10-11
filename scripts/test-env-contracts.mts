@@ -75,7 +75,7 @@ test('fetchWithRetry: 429 non rejoue (retour immediat, consommateur decide)', as
 
 test('fetchWithRetry: erreur reseau apres retries -> echec enregistre', async () => {
   mockFetch(() => { throw new Error('network down') })
-  await assertThrowsWith(() => fetchWithRetry('https://retry-d.test/down', {}, 2), 'network down')
+  await assertThrowsWith(() => fetchWithRetry('https://retry-d.test/down', {}, 2), 'Echec reseau')
 })
 
 test('fetchWithRetry: POST JAMAIS rejoue sans clé idempotence (anti double facturation)', async () => {
@@ -88,17 +88,16 @@ test('fetchWithRetry: POST JAMAIS rejoue sans clé idempotence (anti double fact
   assert.equal(submits, 1, 'un POST sans idempotencyKey doit faire exactement 1 tentative')
 })
 
-test('fetchWithRetry: POST AVEC clé idempotence → retries autorisés + header envoyé', async () => {
+test('fetchWithRetry: POST avec contrat fournisseur ET cle idempotence → reprise autorisee', async () => {
   let submits = 0
   let seenKey = ''
   mockFetch((call) => {
     submits += 1
-    const headers = call.init?.headers as Record<string, string>
-    seenKey = headers?.['Idempotency-Key'] ?? ''
+    seenKey = new Headers(call.init?.headers).get('Idempotency-Key') ?? ''
     if (submits === 1) throw new Error('response lost')
     return jsonResponse(200, { id: 'job-ok' })
   })
-  const res = await fetchWithRetry('https://retry-f.test/run', { method: 'POST', body: '{}', idempotencyKey: 'stable-key-1' }, 3)
+  const res = await fetchWithRetry('https://retry-f.test/run', { method: 'POST', body: '{}', idempotencyKey: 'stable-key-1', providerSupportsIdempotency: true }, 3)
   assert.equal(res.status, 200)
   assert.equal(submits, 2)
   assert.equal(seenKey, 'stable-key-1')

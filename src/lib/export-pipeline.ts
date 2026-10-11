@@ -1,4 +1,6 @@
-import { assembleFinalVideo, actualQualityFor, type AssembleClip } from '@/lib/shotstack'
+import { assembleFinalVideo, actualQualityFor, durableRenderJob, type AssembleClip } from '@/lib/shotstack'
+import { createServiceClient } from '@/lib/supabase'
+import { sendNotification, logActivity } from '@/lib/logger'
 
 // -----------------------------------------------------------------------------
 // Pipeline EXPORT — exécutable inline (/api/video/export) OU par le worker
@@ -40,6 +42,24 @@ export interface ExportJobResult {
   quality: string
 }
 
+/** Shared persistence for the request and recovery worker; a failed write is fatal. */
+export async function persistExportResult(
+  input: ExportJobInput,
+  update: { video_url: string; quality: string; duration: number },
+  service = createServiceClient(),
+): Promise<void> {
+  const { data, error } = await service.from('videos')
+    .update({ ...update, status: 'ready' })
+    .eq('id', input.videoId).eq('user_id', input.userId).select('id').single()
+  if (error || !data) throw new Error(`Persistance export impossible: ${error?.message ?? 'video introuvable'}`)
+  await sendNotification(input.userId, {
+    type: 'success', title: 'Export termine !', message: 'Ton export est pret dans ta bibliotheque.',
+  }).catch(() => {})
+  await logActivity(input.userId, 'video_exported', 'Video re-exportee', {
+    video_id: input.videoId, quality: update.quality,
+  }).catch(() => {})
+}
+
 /**
  * Exécute l'export. `resume.steps.assembly` (rendu déjà payé) court-circuite
  * l'appel Shotstack — c'est la garantie « reprise sans double débit ».
@@ -72,6 +92,7 @@ export async function executeExportJob(
       format: input.format,
       quality: input.quality,
       brandKit: null,
+      renderJob: durableRenderJob(done, hooks.onStepResolved),
     }))
 
   const result = await step('saved', async () => {

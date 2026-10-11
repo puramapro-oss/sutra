@@ -19,7 +19,13 @@ interface AssembleParams {
   transitions: string
   format: string
   quality: string
-  brandKit?: { intro_template?: string; outro_template?: string } | null
+  brandKit?: { intro_template?: string; outro_template?: string; logo_url?: string } | null
+  /** Persist the submission intent and remote ID before starting the long poll. */
+  renderJob?: {
+    id?: string
+    onSubmitting?: () => Promise<void>
+    onSubmitted?: (id: string) => Promise<void>
+  }
 }
 export interface AssembleResult {
   url: string
@@ -30,6 +36,26 @@ export interface AssembleResult {
   /** Expected dimensions. Verify the file before certifying a final export. */
   outputSize: { width: number; height: number }
   outputVerified: false
+}
+
+/** Reuse the remote render after an interruption; never resubmit an unknown one. */
+export function durableRenderJob(
+  steps: Record<string, unknown>,
+  checkpoint?: (key: string, value: unknown) => Promise<void>,
+): NonNullable<AssembleParams['renderJob']> {
+  const id = steps.assembly_render_id
+  if (steps.assembly_submission_started && (typeof id !== 'string' || !id.trim())) {
+    throw new Error('SUTRA_RECONCILIATION_REQUIRED: rendu soumis sans identifiant confirme')
+  }
+  const save = async (key: string, value: unknown) => {
+    await checkpoint?.(key, value)
+    steps[key] = value
+  }
+  return {
+    id: typeof id === 'string' ? id : undefined,
+    onSubmitting: () => save('assembly_submission_started', true),
+    onSubmitted: (renderId) => save('assembly_render_id', renderId),
+  }
 }
 
 function baseUrl(): string {
@@ -110,7 +136,10 @@ function buildTracks(params: AssembleParams) {
   }
   const voice = params.voiceUrl.trim() ? [{asset:{type:'audio',src:validUrl(params.voiceUrl)},start:intro,length:bodyEnd-intro}] : []
   // Shotstack track zero is the top layer: subtitles must precede video.
-  return [ ...(subtitles.length ? [{clips:subtitles}] : []), {clips:visual}, ...(voice.length ? [{clips:voice}] : []) ]
+  const logo = params.brandKit?.logo_url
+    ? [{clips:[{asset:{type:'image',src:validUrl(params.brandKit.logo_url)},start:0,length:cursor + (params.brandKit.outro_template ? 3 : 0),position:'topRight',scale:0.15}]}]
+    : []
+  return [ ...(subtitles.length ? [{clips:subtitles}] : []), ...logo, {clips:visual}, ...(voice.length ? [{clips:voice}] : []) ]
 }
 
 export async function assembleFinalVideo(params: AssembleParams): Promise<AssembleResult> {
@@ -122,10 +151,16 @@ export async function assembleFinalVideo(params: AssembleParams): Promise<Assemb
   const apiKey = requireEnv('SHOTSTACK_API_KEY', 'montage final Shotstack')
   const base = baseUrl()
   const body = {timeline,output}
-  const res = await fetchWithRetry(`${base}/render`, {method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey},body:JSON.stringify(body)})
-  if (!res.ok) throw new Error(`Shotstack: ${await httpErrorMessage(res)}`)
-  const data = await res.json() as { response?: { id?: unknown } }
-  const id = data?.response?.id
+  let id: unknown = params.renderJob?.id
+  if (id === undefined) {
+    await params.renderJob?.onSubmitting?.()
+    const res = await fetchWithRetry(`${base}/render`, {method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey},body:JSON.stringify(body)})
+    if (!res.ok) throw new Error(`Shotstack: ${await httpErrorMessage(res)}`)
+    const data = await res.json() as { response?: { id?: unknown } }
+    id = data?.response?.id
+    if (typeof id !== 'string' || !id.trim() || id.length > 256) throw new Error('Shotstack: reponse invalide (id absent)')
+    await params.renderJob?.onSubmitted?.(id)
+  }
   if (typeof id !== 'string' || !id.trim() || id.length > 256) throw new Error('Shotstack: reponse invalide (id absent)')
   const result = await pollShotstackRender(id, apiKey, base)
   return {url:result.url,timeline:body,duration:result.duration,outputQuality,outputSize:size,outputVerified:false}

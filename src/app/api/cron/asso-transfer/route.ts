@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createServiceClient } from '@/lib/supabase'
@@ -32,7 +33,6 @@ export const maxDuration = 60
 //   - RNA Association PURAMA (Solenne DORNIER) — à remplir ASSO_RNA env.
 // ---------------------------------------------------------------------------
 
-const CRON_SECRET = process.env.CRON_SECRET
 const RESEND_API_KEY = process.env.RESEND_API_KEY
 const ASSO_NOTIFY_EMAIL = process.env.ASSO_NOTIFY_EMAIL ?? 'matiss.frasne@gmail.com'
 const ASSO_RNA = process.env.ASSO_RNA ?? '(RNA non configuré)'
@@ -107,9 +107,8 @@ async function notifyTissma(opts: {
 export async function GET(request: Request): Promise<Response> {
   const startedAt = Date.now()
 
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
   const month = monthKey()

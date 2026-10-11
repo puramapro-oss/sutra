@@ -15,7 +15,6 @@ const ALLOWED_FIELDS = [
   'publish_platforms',
   'auto_publish',
   'require_approval_before_publish',
-  'zernio_connected_platforms',
   'watermark_url',
   'intro_clip_url',
   'outro_clip_url',

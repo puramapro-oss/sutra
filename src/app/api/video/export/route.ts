@@ -4,13 +4,13 @@ import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import {
-  reserveQuota, completeQuota, releaseQuota,
+  reserveQuota, completeQuotaForFinishedJob, releaseQuota,
   enqueueJob, claimJobByKey, getJobByKey, checkpoint, finishJob, heartbeat,
 } from '@/lib/video-queue'
-import { executeExportJob, type ExportJobInput } from '@/lib/export-pipeline'
+import { executeExportJob, persistExportResult, type ExportJobInput } from '@/lib/export-pipeline'
 import { assembleFinalVideo, type AssembleClip } from '@/lib/shotstack'
-import { sendNotification, logActivity } from '@/lib/logger'
 import type { Profile } from '@/types'
+import { clampQualityToPlan } from '@/lib/ltx-utils'
 
 export const maxDuration = 300
 
@@ -85,9 +85,6 @@ export async function POST(req: Request) {
     if (!video || video.user_id !== user.id) {
       return NextResponse.json({ error: 'Video introuvable ou non autorisee' }, { status: 404 })
     }
-    if (!video.voice_url) {
-      return NextResponse.json({ error: 'Cette video n\'a pas de piste voix a exporter' }, { status: 400 })
-    }
 
     const clips: AssembleClip[] = (scenes && scenes.length > 0 ? scenes : []).map((s) => ({
       url: s.url,
@@ -104,7 +101,7 @@ export async function POST(req: Request) {
     const existing = await getJobByKey(jobKey)
     if (existing?.status === 'done') {
       const cached = (existing.progress as { result?: unknown } | null)?.result
-      if (cached !== undefined) return NextResponse.json(cached)
+      if (cached !== undefined) return NextResponse.json({ success: true, ...(cached as object) })
     }
     if (existing?.status === 'processing') {
       return NextResponse.json({ error: 'Export deja en cours — reessaie dans un instant' }, { status: 409 })
@@ -112,10 +109,16 @@ export async function POST(req: Request) {
     if (existing?.status === 'cancelled') {
       return NextResponse.json({ error: 'Export annule — relance avec un nouveau requestId' }, { status: 409 })
     }
+    if (existing?.status === 'queued') return NextResponse.json({ status: 'queued', jobKey }, { status: 202 })
+    if (existing) return NextResponse.json({ error: 'Cette tache necessite une reconciliation' }, { status: 409 })
 
     // Un export re-rend chez Shotstack = un coût : garde de quota.
     const { data: profile } = await service.from('profiles').select('*').eq('id', user.id).single()
-    if (profile) {
+    if (!profile) return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
+    if (clampQualityToPlan(quality, profile.plan ?? 'free', user.email) !== quality) {
+      return NextResponse.json({ error: 'Qualite non autorisee par votre plan' }, { status: 403 })
+    }
+    {
       const reserved = await reserveQuota(profile as Profile)
       if (!reserved) {
         return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
@@ -128,7 +131,7 @@ export async function POST(req: Request) {
       userId: user.id,
       quality,
       format: video.format ?? '16:9',
-      voiceUrl: video.voice_url,
+      voiceUrl: video.voice_url ?? '',
       musicUrl: video.music_url ?? null,
       musicVolume: musicVolume ?? 0.3,
       clips,
@@ -138,9 +141,8 @@ export async function POST(req: Request) {
     await enqueueJob({ videoId, userId: user.id, kind: 'export', payload: { input }, idempotencyKey: jobKey })
     const job = await claimJobByKey(jobKey, `inline-export-${videoId}`, 600)
     if (!job) {
-      await releaseQuota(user.id).catch(() => {})
-      quotaReserved = false
-      return NextResponse.json({ error: 'Export deja en cours — reessaie dans un instant' }, { status: 409 })
+      quotaReserved = false // The durable worker owns this reservation.
+      return NextResponse.json({ status: 'queued', jobKey }, { status: 202 })
     }
     jobId = job.id
     const worker = `inline-export-${videoId}`
@@ -154,30 +156,15 @@ export async function POST(req: Request) {
       },
     }, {
       assemble: (args) => assembleFinalVideo(args),
-      persist: async (jobInput, update) => {
-        await service
-          .from('videos')
-          .update({
-            video_url: update.video_url,
-            quality: update.quality,
-            duration: update.duration,
-            status: 'ready',
-          })
-          .eq('id', jobInput.videoId)
-        await sendNotification(jobInput.userId, {
-          type: 'success',
-          title: 'Export termine !',
-          message: 'Ton export est pret dans ta bibliotheque.',
-        })
-        await logActivity(jobInput.userId, 'video_exported', 'Video re-exportee depuis l\'editeur', { video_id: jobInput.videoId, quality: update.quality })
-      },
+      persist: (jobInput, update) => persistExportResult(jobInput, update, service),
     })
 
     await checkpoint(job.id, worker, { steps: stepsDone, result })
     await finishJob(job.id, 'done')
-    await completeQuota(user.id)
     quotaReserved = false
-    return NextResponse.json({ success: true, url: result.url, quality: result.quality })
+    const quotaConfirmed = await completeQuotaForFinishedJob(user.id, jobId!)
+    jobId = null
+    return NextResponse.json({ success: true, url: result.url, quality: result.quality, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
     if (jobId) {

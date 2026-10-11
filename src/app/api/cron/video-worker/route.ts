@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 /**
  * CRON WORKER — reprise des tâches vidéo durables (migration v10).
  *
@@ -13,29 +14,19 @@
  */
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
-import { claimJobs, checkpoint, finishJob, heartbeat, completeQuota, releaseQuota } from '@/lib/video-queue'
+import { claimJobs, checkpoint, finishJob, heartbeat, completeQuotaForFinishedJob, releaseQuota } from '@/lib/video-queue'
 import { executeCreateJob, type CreateJobInput, type CreateJobResume } from '@/lib/video-pipeline'
-import { executeProductionStep, type ProductionJobInput } from '@/lib/production-pipeline'
-import { executeExportJob, type ExportJobInput } from '@/lib/export-pipeline'
+import { executeProductionStep, persistProductionResult, type ProductionJobInput } from '@/lib/production-pipeline'
+import { executeExportJob, persistExportResult, type ExportJobInput } from '@/lib/export-pipeline'
 import { executeAutoJob, buildAutoProviders, type AutoJobInput } from '@/lib/auto-pipeline'
 import { assembleFinalVideo } from '@/lib/shotstack'
-import { sendNotification, logActivity } from '@/lib/logger'
 import type { AssembleClip } from '@/lib/shotstack'
 
 export const maxDuration = 300
 
 export async function GET(request: Request) {
-  const cronSecret = process.env.CRON_SECRET
-  if (!cronSecret) {
-    console.error('[video-worker] CRON_SECRET non configure — execution refusee')
-    return NextResponse.json(
-      { error: 'CRON_SECRET non configure : definis-le avant d\'activer le worker (aucune execution non authentifiee)' },
-      { status: 500 }
-    )
-  }
-  if (request.headers.get('authorization') !== `Bearer ${cronSecret}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const worker = `worker-${Math.random().toString(36).slice(2, 8)}`
   const limit = 1 // un rendu par passage : les phases fournisseur sont longues
@@ -56,7 +47,7 @@ export async function GET(request: Request) {
     try {
       if (job.kind === 'production') {
         const input = (job.payload as { input?: ProductionJobInput }).input
-        if (!input?.step) {
+        if (!input?.step || input.userId !== job.user_id) {
           await finishJob(job.id, 'failed', 'payload input production manquant')
           await releaseQuota(job.user_id)
           results.push({ jobId: job.id, status: 'failed', error: 'payload invalide' })
@@ -65,29 +56,31 @@ export async function GET(request: Request) {
         const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
         // Reprise : chaque clé de stepsDone court-circuite l'appel fournisseur
         // correspondant — pas de double génération, pas de second débit.
-        await executeProductionStep(input, { steps: stepsDone }, {
+        const result = await executeProductionStep(input, { steps: stepsDone }, {
           heartbeat: () => heartbeat(job.id, worker, 600),
           onStepResolved: async (key, value) => {
             stepsDone[key] = value
             await checkpoint(job.id, worker, { steps: stepsDone })
           },
         })
+        const finalData = await persistProductionResult(job.id, input.step, result, stepsDone, input, createServiceClient())
+        await checkpoint(job.id, worker, { steps: stepsDone, result: finalData })
         await finishJob(job.id, 'done')
-        await completeQuota(job.user_id)
-        results.push({ jobId: job.id, status: 'done' })
+        const quotaConfirmed = await completeQuotaForFinishedJob(job.user_id, job.id)
+        results.push({ jobId: job.id, status: quotaConfirmed ? 'done' : 'done_quota_unconfirmed' })
         continue
       }
 
       if (job.kind === 'export') {
         const input = (job.payload as { input?: ExportJobInput }).input
-        if (!input?.videoId) {
+        if (!input?.videoId || input.userId !== job.user_id) {
           await finishJob(job.id, 'failed', 'payload input export manquant')
           await releaseQuota(job.user_id)
           results.push({ jobId: job.id, status: 'failed', error: 'payload invalide' })
           continue
         }
         const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
-        await executeExportJob(input, { steps: stepsDone }, {
+        const result = await executeExportJob(input, { steps: stepsDone }, {
           heartbeat: () => heartbeat(job.id, worker, 600),
           onStepResolved: async (key, value) => {
             stepsDone[key] = value
@@ -95,31 +88,18 @@ export async function GET(request: Request) {
           },
         }, {
           assemble: (args) => assembleFinalVideo(args),
-          persist: async (jobInput, update) => {
-            const service = createServiceClient()
-            await service.from('videos').update({
-              video_url: update.video_url,
-              quality: update.quality,
-              duration: update.duration,
-              status: 'ready',
-            }).eq('id', jobInput.videoId)
-            await sendNotification(jobInput.userId, {
-              type: 'success',
-              title: 'Export termine !',
-              message: 'Ton export est pret dans ta bibliotheque.',
-            })
-            await logActivity(jobInput.userId, 'video_exported', 'Video re-exportee (worker, apres crash)', { video_id: jobInput.videoId, quality: update.quality })
-          },
+          persist: (jobInput, update) => persistExportResult(jobInput, update),
         })
+        await checkpoint(job.id, worker, { steps: stepsDone, result })
         await finishJob(job.id, 'done')
-        await completeQuota(job.user_id)
-        results.push({ jobId: job.id, status: 'done' })
+        const quotaConfirmed = await completeQuotaForFinishedJob(job.user_id, job.id)
+        results.push({ jobId: job.id, status: quotaConfirmed ? 'done' : 'done_quota_unconfirmed' })
         continue
       }
 
       if (job.kind === 'auto') {
         const input = (job.payload as { input?: AutoJobInput }).input
-        if (!input?.videoRowId) {
+        if (!input?.videoRowId || input.userId !== job.user_id) {
           await finishJob(job.id, 'failed', 'payload input auto manquant')
           await releaseQuota(job.user_id)
           results.push({ jobId: job.id, status: 'failed', error: 'payload invalide' })
@@ -134,8 +114,8 @@ export async function GET(request: Request) {
           },
         }, buildAutoProviders(input.userId, input.videoRowId, input.config, input.userEmail, input.planTier, createServiceClient()))
         await finishJob(job.id, 'done')
-        await completeQuota(job.user_id)
-        results.push({ jobId: job.id, status: 'done' })
+        const quotaConfirmed = await completeQuotaForFinishedJob(job.user_id, job.id)
+        results.push({ jobId: job.id, status: quotaConfirmed ? 'done' : 'done_quota_unconfirmed' })
         continue
       }
 
@@ -146,7 +126,7 @@ export async function GET(request: Request) {
       }
 
       const input = (job.payload as { input?: CreateJobInput }).input
-      if (!input?.videoId) {
+      if (!input?.videoId || input.userId !== job.user_id) {
         await finishJob(job.id, 'failed', 'payload input manquant')
         await releaseQuota(job.user_id)
         results.push({ jobId: job.id, status: 'failed', error: 'payload invalide' })
@@ -167,8 +147,8 @@ export async function GET(request: Request) {
       })
 
       await finishJob(job.id, 'done')
-      await completeQuota(job.user_id)
-      results.push({ jobId: job.id, status: 'done' })
+      const quotaConfirmed = await completeQuotaForFinishedJob(job.user_id, job.id)
+      results.push({ jobId: job.id, status: quotaConfirmed ? 'done' : 'done_quota_unconfirmed' })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erreur'
       const { data: fresh } = await createServiceClient()

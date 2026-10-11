@@ -1,7 +1,7 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 
-const CRON_SECRET = process.env.CRON_SECRET
 
 // Streak multiplier: J1-6=x1, J7-13=x2, J14-29=x3, J30-59=x5, J60-99=x7, J100+=x10
 function getStreakMultiplier(streak: number): number {
@@ -14,9 +14,8 @@ function getStreakMultiplier(streak: number): number {
 }
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
 

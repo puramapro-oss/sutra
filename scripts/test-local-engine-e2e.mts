@@ -156,7 +156,7 @@ test('mode STRICT : moteur local éteint → erreur explicite, ZÉRO appel exter
 
   await assert.rejects(
     () => generateVideoSmart('test', 'empire', OWNER, { format: '16:9', quality: '720p', duration: 6 }),
-    /Moteur local indisponible \(mode strict/
+    /SUTRA_LOCAL_FAILED/
   )
   // La preuve anti-frais : échouer n'a déclenché AUCUN hôte externe.
   assertNoExternalCall()

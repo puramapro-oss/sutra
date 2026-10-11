@@ -1,4 +1,5 @@
-import { assembleFinalVideo, generateSubtitlesFromScript } from '@/lib/shotstack'
+import { assembleFinalVideo, generateSubtitlesFromScript, durableRenderJob } from '@/lib/shotstack'
+import { needsFinalComposition } from '@/lib/sutra-auto-utils'
 import {
   loadAutoContext, planNextVideo, generateAutoVideoAssets, recordMemory,
   type AutoConfig, type VideoPlan,
@@ -9,7 +10,8 @@ import type { Plan } from '@/types'
 // Pipeline AUTO — exécutable inline (/api/auto/generate) OU par le worker
 // (/api/cron/video-worker), avec REPRISE sans double génération :
 //   plan (LLM)     → progress.steps.plan
-//   assets (payant : vidéo IA + voix + musique) → progress.steps.assets
+//   vidéo, musique, voix → progress.steps['asset:video|music|voice']
+//   agrégat assets      → progress.steps.assets
 //   assembly       → progress.steps.assembly
 //   persistance    → progress.steps.saved
 // Un crash ne régénère JAMAIS une étape déjà checkpointée (audit #10/#14).
@@ -45,7 +47,7 @@ export interface AutoProviders {
   /** Planification LLM (recharge le contexte auto elle-même). */
   plan: () => Promise<VideoPlan>
   /** Génération payante : vidéo IA + voix + musique. */
-  assets: (plan: VideoPlan) => Promise<AutoAssets>
+  assets: (plan: VideoPlan, progress?: AutoJobResume & AutoJobHooks) => Promise<AutoAssets>
   /** Montage final (rendu payant). */
   assemble: typeof assembleFinalVideo
   /** Persistance finale (statut, URLs, mémoire, usage thème) — reçoit le plan. */
@@ -53,9 +55,9 @@ export interface AutoProviders {
 }
 
 export interface AutoFinalState {
-  status: 'ready' | 'pending_approval' | 'compositing_failed'
+  status: 'ready' | 'pending_approval' | 'compositing'
   assets: AutoAssets
-  videoFinalUrl: string
+  videoFinalUrl: string | null
   assemblyError: string | null
 }
 
@@ -81,41 +83,59 @@ export async function executeAutoJob(
   }
 
   const plan = await step('plan', () => providers.plan())
-  const assets = await step('assets', () => providers.assets(plan))
+  const assets = await step('assets', () => providers.assets(plan, { steps: done, ...hooks }))
 
-  // Montage FINAL (audit #12) : assemblage voix+musique — une erreur de
-  // montage n'invalide pas la vidéo brute (statut compositing_failed).
-  const assembly = await step('assembly', async () => {
-    if (!assets.audio_voice_url) return { url: null as string | null, error: null as string | null }
-    try {
+  // A failed required composition must never expose the raw URL as final.
+  let assembly: { url: string | null; error: string | null }
+  try {
+    if (!assets.video_raw_url) throw new Error('Video brute manquante')
+    if (input.config.default_voice_enabled && !assets.audio_voice_url) throw new Error('Voix demandee manquante')
+    if (input.config.default_music_genre && input.config.default_music_genre !== 'none' && !assets.audio_music_url) {
+      throw new Error('Musique demandee manquante')
+    }
+    const cached = done.assembly as { error?: string; url?: string } | undefined
+    if (cached?.error) throw new Error('SUTRA_RECONCILIATION_REQUIRED: ancien montage en echec')
+    assembly = await step('assembly', async () => {
       const duration = Math.max(1, input.config.default_duration ?? 6)
       const subtitles = plan.script
         ? generateSubtitlesFromScript(plan.script, [{ duration_seconds: duration }])
         : []
+      const compositionRequired = subtitles.length > 0 || needsFinalComposition({
+        musicUrl: assets.audio_music_url, voiceUrl: assets.audio_voice_url,
+        watermarkUrl: input.config.watermark_url, introUrl: input.config.intro_clip_url,
+        outroUrl: input.config.outro_clip_url,
+      })
+      if (!compositionRequired) return { url: assets.video_raw_url, error: null }
       const assembled = await providers.assemble({
         clips: [{ url: assets.video_raw_url, type: 'ia', kind: 'video', duration }],
-        voiceUrl: assets.audio_voice_url,
+        voiceUrl: assets.audio_voice_url ?? '',
         musicUrl: assets.audio_music_url ?? '',
         musicVolume: 0.3,
         subtitles,
         transitions: 'fade',
         format: input.config.default_aspect_ratio ?? '9:16',
         quality: input.config.quality_level ?? '720p',
-        brandKit: null,
+        brandKit: {
+          intro_template: input.config.intro_clip_url ?? undefined,
+          outro_template: input.config.outro_clip_url ?? undefined,
+          logo_url: input.config.watermark_url ?? undefined,
+        },
+        renderJob: durableRenderJob(done, hooks.onStepResolved),
       })
       return { url: assembled.url, error: null as string | null }
-    } catch (err) {
-      return { url: null as string | null, error: err instanceof Error ? err.message : String(err) }
-    }
-  })
+    })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    await providers.persist(input, { status: 'compositing', assets, videoFinalUrl: null, assemblyError: message }, plan)
+    throw err
+  }
+  if (!assembly.url) throw new Error('Montage final absent — validation refusee')
 
   const final: AutoFinalState = await step('saved', async () => {
     const state: AutoFinalState = {
-      status: assembly.error
-        ? 'compositing_failed'
-        : input.config.require_approval_before_publish ? 'pending_approval' : 'ready',
+      status: input.config.require_approval_before_publish ? 'pending_approval' : 'ready',
       assets,
-      videoFinalUrl: assembly.url ?? assets.video_raw_url,
+      videoFinalUrl: assembly.url,
       assemblyError: assembly.error,
     }
     await providers.persist(input, state, plan)
@@ -145,10 +165,10 @@ export function buildAutoProviders(
         userId,
       })
     },
-    assets: (plan) => generateAutoVideoAssets({ videoId: videoRowId, plan, config, userEmail, plan_tier: planTier }),
+    assets: (plan, progress) => generateAutoVideoAssets({ videoId: videoRowId, plan, config, userEmail, plan_tier: planTier, progress }),
     assemble: (args) => assembleFinalVideo(args),
     persist: async (input, final, plan) => {
-      await service
+      const { data: updated, error: updateError } = await service
         .from('sutra_auto_videos')
         .update({
           status: final.status,
@@ -173,6 +193,11 @@ export function buildAutoProviders(
           ),
         })
         .eq('id', input.videoRowId)
+        .eq('user_id', userId)
+        .select('id')
+        .single()
+      if (updateError || !updated) throw new Error(`Enregistrement video impossible: ${updateError?.message ?? 'ligne absente'}`)
+      if (final.status === 'compositing') return
       await recordMemory({
         userId,
         type: 'preference',

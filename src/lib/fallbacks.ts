@@ -5,7 +5,6 @@ import { generateStableAudio, isStableAudioConfigured } from '@/lib/stable-audio
 import { generateVoice } from '@/lib/elevenlabs'
 import { searchVideos } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
-import { sleep } from '@/lib/utils/api'
 import type { MusicStyle, Plan } from '@/types'
 
 /**
@@ -137,27 +136,13 @@ export async function generateMusicWithFallback(
 }
 
 /**
- * Voix : 2 tentatives max, backoff court. La seconde tentative échoue avec
- * l'erreur d'origine (pas de crash silencieux, pas de sleep de 60s qui
- * dépasse le budget d'exécution serverless).
+ * Une synthèse vocale est une opération payante non idempotente.
+ * Une réponse perdue ne prouve pas que le fournisseur n'a rien généré :
+ * conserver l'erreur pour réconciliation, sans seconde soumission aveugle.
  */
 export async function generateVoiceWithFallback(
   text: string,
   voiceId: string
 ): Promise<ArrayBuffer> {
-  try {
-    return await generateVoice({ text, voice_id: voiceId })
-  } catch (firstErr) {
-    console.error(
-      '[fallbacks] ElevenLabs tentative 1 echouee, retry dans 5s :',
-      firstErr instanceof Error ? firstErr.message : String(firstErr)
-    )
-    await sleep(5_000)
-    try {
-      return await generateVoice({ text, voice_id: voiceId })
-    } catch (secondErr) {
-      const reason = secondErr instanceof Error ? secondErr.message : String(secondErr)
-      throw new Error(`Voix indisponible apres 2 tentatives : ${reason}`)
-    }
-  }
+  return generateVoice({ text, voice_id: voiceId })
 }
