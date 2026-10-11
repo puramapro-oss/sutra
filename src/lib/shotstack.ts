@@ -1,5 +1,9 @@
 import { fetchWithRetry, sleep, httpErrorMessage } from '@/lib/utils/api'
 import { requireEnv } from '@/lib/env'
+import { createHash } from 'node:crypto'
+import { downloadVideoBytes } from '@/lib/media-download'
+import { verifyVideoBytes, type VerifiedVideo } from '@/lib/media-probe'
+import { uploadToStorage } from '@/lib/storage'
 
 export type ShotstackFormat = '9:16' | '16:9' | '1:1'
 export type ShotstackQuality = 'sd' | 'hd' | '1080' | '4k'
@@ -35,7 +39,30 @@ export interface AssembleResult {
   outputQuality: ShotstackQuality
   /** Expected dimensions. Verify the file before certifying a final export. */
   outputSize: { width: number; height: number }
-  outputVerified: false
+  outputVerified: boolean
+  verification?: VerifiedVideo & { sha256: string; url: string }
+}
+
+/** Verification and durable copy are distinct from the chargeable render.
+ * Retrying this operation never submits a new Shotstack job. */
+export async function verifyAndStoreRenderedVideo(
+  rendered: AssembleResult,
+  owner: { userId: string; mediaId: string; requireAudio: boolean },
+  providers = { download: downloadVideoBytes, verify: verifyVideoBytes, upload: uploadToStorage },
+): Promise<AssembleResult> {
+  if (rendered.outputVerified) return rendered
+  if (!owner.userId || !owner.mediaId) throw new Error('SUTRA_MEDIA_OWNER_REQUIRED')
+  const bytes = await providers.download(rendered.url)
+  const measured = await providers.verify(bytes, {
+    ...rendered.outputSize, duration: rendered.duration, fps: 30, requireAudio: owner.requireAudio,
+  })
+  const sha256 = createHash('sha256').update(bytes).digest('hex')
+  const objectId = createHash('sha256').update(owner.mediaId).digest('hex')
+  const url = await providers.upload(`final/${encodeURIComponent(owner.userId)}/${objectId}/${sha256}.mp4`, bytes, 'video/mp4')
+  if (!url) throw new Error('SUTRA_MEDIA_PERSISTENCE_FAILED')
+  const verification = { ...measured, sha256, url }
+  return { ...rendered, url, duration: measured.duration, outputSize: { width: measured.width, height: measured.height },
+    outputVerified: true, verification, timeline: { ...rendered.timeline, sutraVerification: verification } }
 }
 
 /** Reuse the remote render after an interruption; never resubmit an unknown one. */
@@ -163,7 +190,9 @@ export async function assembleFinalVideo(params: AssembleParams): Promise<Assemb
   }
   if (typeof id !== 'string' || !id.trim() || id.length > 256) throw new Error('Shotstack: reponse invalide (id absent)')
   const result = await pollShotstackRender(id, apiKey, base)
-  return {url:result.url,timeline:body,duration:result.duration,outputQuality,outputSize:size,outputVerified:false}
+  const expectedDuration = params.clips.reduce((sum, clip) => sum + (clip.duration ?? 5), 0)
+    + (params.brandKit?.intro_template ? 3 : 0) + (params.brandKit?.outro_template ? 3 : 0)
+  return {url:result.url,timeline:body,duration:expectedDuration,outputQuality,outputSize:size,outputVerified:false}
 }
 async function pollShotstackRender(renderId: string, apiKey: string, base: string): Promise<{url:string;duration:number}> {
   const deadline = AbortSignal.timeout(300_000)

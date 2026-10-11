@@ -1,4 +1,5 @@
 import { submitVideoJob, pollVideoJob } from '@/lib/runpod'
+import { downloadVideoBytes } from '@/lib/media-download'
 
 export type WanQuality = '720p' | '1080p' | '4k'
 export type WanFormat = '9:16' | '16:9' | '1:1'
@@ -75,11 +76,7 @@ export async function generateWanVideo(params: {
   )
 
   const videoUrl = await pollVideoJob(jobId, baseUrl, POLL_TIMEOUT_MS)
-  const res = await fetch(videoUrl, { signal: AbortSignal.timeout(60_000) })
-  if (!res.ok) {
-    throw new Error(`WAN fetch failed: HTTP ${res.status}`)
-  }
-  const videoBuffer = await res.arrayBuffer()
+  const videoBuffer = Uint8Array.from(await downloadVideoBytes(videoUrl)).buffer
 
   return {
     videoBuffer,

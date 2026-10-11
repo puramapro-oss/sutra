@@ -11,11 +11,11 @@
 import { smarana } from '@purama/smarana'
 import { z } from 'zod'
 import { createServiceClient } from '@/lib/supabase'
-import { generateVideoSmart } from '@/lib/ltx'
+import { generateVideoSmart, durableLtxJob, type LtxJobState } from '@/lib/ltx'
 import { generateMusic } from '@/lib/suno'
 import { generateVoice } from '@/lib/elevenlabs'
 import { uploadToStorage } from '@/lib/storage'
-import { publishToPlatforms, type SocialPlatform } from '@/lib/zernio'
+import { publishToPlatforms, type SocialPlatform, type PublicationStatus } from '@/lib/zernio'
 import type { Plan } from '@/types'
 
 // Re-export types from dedicated modules
@@ -218,7 +218,8 @@ export async function generateAutoVideoAssets(params: {
   }
   const asset = async (key: string, generate: () => Promise<string>): Promise<string> => {
     if (typeof done[key] === 'string' && done[key]) return done[key] as string
-    if (done[`${key}:started`]) throw new Error(`SUTRA_RECONCILIATION_REQUIRED: ${key}`)
+    const remote = done[`${key}:ltx`] as LtxJobState | undefined
+    if (done[`${key}:started`] && !(key === 'asset:video' && remote?.id)) throw new Error(`SUTRA_RECONCILIATION_REQUIRED: ${key}`)
     await save(`${key}:started`, true)
     const value = await generate()
     if (!value) throw new Error(`Resultat obligatoire manquant: ${key}`)
@@ -234,6 +235,7 @@ export async function generateAutoVideoAssets(params: {
       duration: config.default_duration,
       userId: config.user_id,
       videoId,
+      job: durableLtxJob(done, 'asset:video:ltx', params.progress?.onStepResolved),
     })
     return uploadToStorage(`auto/${videoId}/raw.mp4`, ltxResult.videoBuffer, 'video/mp4')
   })
@@ -298,7 +300,8 @@ export async function publishAutoVideo(params: {
   description: string
   hashtags: string[]
   scheduledFor?: string
-}): Promise<Array<{ platform: string; success: boolean; postId?: string; postUrl?: string; error?: string }>> {
+  idempotencyKey?: string
+}): Promise<Array<{ platform: string; success: boolean; status?: PublicationStatus; postId?: string; postUrl?: string; error?: string }>> {
   const platforms = [...new Set((params.config.publish_platforms ?? [])
     .map((p) => PLATFORM_ALIASES[p] ?? (p as SocialPlatform))
     .filter(Boolean))] as SocialPlatform[]
@@ -329,6 +332,7 @@ export async function publishAutoVideo(params: {
     platforms: platforms.filter((p) => accountIds[p]),
     accountIds: accountIds as Record<SocialPlatform, string>,
     scheduledAt: params.scheduledFor,
+    idempotencyKey: params.idempotencyKey,
   })
 
   // Include disconnected requested platforms so callers cannot report full success.
@@ -359,6 +363,13 @@ export async function publishAutoVideoRecord(
   if (videoError) throw new Error('Lecture video impossible')
   const allowed = explicitApproval ? ['ready', 'pending_approval'] : ['ready']
   if (!video?.video_final_url || !allowed.includes(video.status)) throw new Error('Video non publiable ou deja prise en charge')
+  const { data: completedJob, error: jobError } = await service.from('video_jobs').select('progress')
+    .eq('user_id', userId).eq('kind', 'auto').eq('status', 'done')
+    .contains('payload', { input: { videoRowId: videoId } }).order('created_at', { ascending: false }).limit(1).maybeSingle()
+  const verification = completedJob?.progress?.steps?.assembly?.verification
+  if (jobError || verification?.url !== video.video_final_url || !/^[a-f\d]{64}$/.test(verification?.sha256 ?? '')) {
+    throw new Error('SUTRA_PUBLICATION_MEDIA_VERIFICATION_REQUIRED')
+  }
 
   const { data: config, error: configError } = await service.from('sutra_auto_config')
     .select('*').eq('user_id', userId).single()
@@ -384,15 +395,17 @@ export async function publishAutoVideoRecord(
   if (!claimed) throw new Error('Publication deja prise en charge')
 
   const results = await publish({ config: verifiedConfig, videoUrl: video.video_final_url,
-    title: video.title ?? '', description: video.description ?? '', hashtags: video.hashtags ?? [] })
-  const successes = results.filter(result => result.success).length
+    title: video.title ?? '', description: video.description ?? '', hashtags: video.hashtags ?? [], idempotencyKey: `sutra-auto-${videoId}` })
+  const successes = results.filter(result => result.success && result.status === 'published').length
   const status = results.length > 0 && successes === results.length ? 'published'
+    : results.some(result => result.status === 'publishing' || result.status === 'unknown' || result.status === 'scheduled') ? 'publishing'
     : successes > 0 ? 'partially_published' : 'failed'
   const { data: saved, error: saveError } = await service.from('sutra_auto_videos').update({
     status, published_at: successes > 0 ? new Date().toISOString() : null,
     published_platforms: results,
     error_message: results.map(result => result.error).filter(Boolean).join(' | ') || null,
-  }).eq('id', videoId).eq('user_id', userId).eq('status', 'publishing').select('id').single()
+  }).eq('id', videoId).eq('user_id', userId).eq('status', 'publishing')
+    .eq('video_final_url', video.video_final_url).select('id').single()
   if (saveError || !saved) throw new Error('SUTRA_RECONCILIATION_REQUIRED: resultat publication non enregistre')
   return { success: status === 'published', status, results }
 }

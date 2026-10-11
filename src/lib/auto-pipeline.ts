@@ -1,5 +1,4 @@
-import { assembleFinalVideo, generateSubtitlesFromScript, durableRenderJob } from '@/lib/shotstack'
-import { needsFinalComposition } from '@/lib/sutra-auto-utils'
+import { assembleFinalVideo, generateSubtitlesFromScript, durableRenderJob, verifyAndStoreRenderedVideo } from '@/lib/shotstack'
 import {
   loadAutoContext, planNextVideo, generateAutoVideoAssets, recordMemory,
   type AutoConfig, type VideoPlan,
@@ -77,8 +76,8 @@ export async function executeAutoJob(
     if (cached !== undefined) return cached as T
     await hooks.heartbeat?.()
     const value = await fn()
-    done[key] = value
     await hooks.onStepResolved?.(key, value)
+    done[key] = value
     return value
   }
 
@@ -86,7 +85,7 @@ export async function executeAutoJob(
   const assets = await step('assets', () => providers.assets(plan, { steps: done, ...hooks }))
 
   // A failed required composition must never expose the raw URL as final.
-  let assembly: { url: string | null; error: string | null }
+  let assembly: { url: string | null; error: string | null; outputVerified?: boolean }
   try {
     if (!assets.video_raw_url) throw new Error('Video brute manquante')
     if (input.config.default_voice_enabled && !assets.audio_voice_url) throw new Error('Voix demandee manquante')
@@ -100,13 +99,9 @@ export async function executeAutoJob(
       const subtitles = plan.script
         ? generateSubtitlesFromScript(plan.script, [{ duration_seconds: duration }])
         : []
-      const compositionRequired = subtitles.length > 0 || needsFinalComposition({
-        musicUrl: assets.audio_music_url, voiceUrl: assets.audio_voice_url,
-        watermarkUrl: input.config.watermark_url, introUrl: input.config.intro_clip_url,
-        outroUrl: input.config.outro_clip_url,
-      })
-      if (!compositionRequired) return { url: assets.video_raw_url, error: null }
-      const assembled = await providers.assemble({
+      // Even a silent clip is exported to the requested format/size, then verified.
+      // A raw provider URL is never treated as a validated final export.
+      const rendered = await step('rendered', () => providers.assemble({
         clips: [{ url: assets.video_raw_url, type: 'ia', kind: 'video', duration }],
         voiceUrl: assets.audio_voice_url ?? '',
         musicUrl: assets.audio_music_url ?? '',
@@ -121,9 +116,14 @@ export async function executeAutoJob(
           logo_url: input.config.watermark_url ?? undefined,
         },
         renderJob: durableRenderJob(done, hooks.onStepResolved),
+      }))
+      const assembled = await verifyAndStoreRenderedVideo(rendered, {
+        userId: input.userId, mediaId: input.videoRowId,
+        requireAudio: Boolean(assets.audio_music_url || assets.audio_voice_url),
       })
-      return { url: assembled.url, error: null as string | null }
+      return { url: assembled.url, error: null as string | null, outputVerified: true, verification: assembled.verification }
     })
+    if (!assembly.outputVerified) throw new Error('SUTRA_RECONCILIATION_REQUIRED: ancien resultat final non verifie')
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     await providers.persist(input, { status: 'compositing', assets, videoFinalUrl: null, assemblyError: message }, plan)

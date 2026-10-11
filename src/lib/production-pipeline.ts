@@ -1,6 +1,7 @@
 import { createServiceClient } from '@/lib/supabase'
 import { sendNotification, logActivity } from '@/lib/logger'
 import { createHash } from 'node:crypto'
+import { durableLtxJob, type LtxJobPersistence, type LtxJobState } from '@/lib/ltx'
 import { generateScript } from '@/lib/claude'
 import {
   generateVoiceWithFallback,
@@ -10,7 +11,7 @@ import {
 } from '@/lib/fallbacks'
 import { searchVideos, type MediaFormat } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
-import { assembleFinalVideo, generateSubtitlesFromScript, actualQualityFor, durableRenderJob, type AssembleClip } from '@/lib/shotstack'
+import { assembleFinalVideo, generateSubtitlesFromScript, actualQualityFor, durableRenderJob, verifyAndStoreRenderedVideo, type AssembleClip } from '@/lib/shotstack'
 import { resolveVoiceProviderId } from '@/lib/constants'
 import { TEMPLATE_CONFIGS, sanitizeScriptData, MAX_SCENES } from '@/lib/production-schema'
 import type { Plan, Profile, ScriptData } from '@/types'
@@ -64,7 +65,7 @@ export interface ProductionJobHooks {
 export interface ProductionProviders {
   script: (args: { topic: string; style: string; format: string; durationHint: string }) => Promise<ScriptData>
   /** Résout UNE scène (stock ou IA) — le checkpoint la court-circuite. */
-  visual: (scene: ScriptData['scenes'][number], duration: number) => Promise<VisualResult | null>
+  visual: (scene: ScriptData['scenes'][number], duration: number, job?: LtxJobPersistence) => Promise<VisualResult | null>
   voice: (narration: string, voiceId: string) => Promise<ArrayBuffer>
   music: (prompt: string, style: string, duration: number) => Promise<string | null>
   assemble: typeof assembleFinalVideo
@@ -87,7 +88,7 @@ function defaultProviders(input: ProductionJobInput): ProductionProviders {
       { topic: args.topic, niche: 'general', style: args.style, format: args.format, duration: args.durationHint },
       input.userId
     ),
-    visual: async (scene, duration) => {
+    visual: async (scene, duration, job) => {
       if (scene.use_stock) {
         const stock = await searchVideos(scene.visual_prompt, 1, { format: input.mediaFormat })
         const best = stock[0]
@@ -99,7 +100,7 @@ function defaultProviders(input: ProductionJobInput): ProductionProviders {
           stockMeta: { id: best.id, author: best.author, authorUrl: best.authorUrl, sourcePage: best.sourcePage, width: best.width, height: best.height },
         } satisfies VisualResult
       }
-      return generateVisualWithFallback(scene.visual_prompt, input.qualityCap, input.userEmail, input.genPlan, input.mediaFormat, false, { userId: input.userId, duration })
+      return generateVisualWithFallback(scene.visual_prompt, input.qualityCap, input.userEmail, input.genPlan, input.mediaFormat, false, { userId: input.userId, duration, job })
     },
     voice: (text, voiceId) => generateVoiceWithFallback(text, voiceId),
     music: (prompt, style, duration) => generateMusicWithFallback(prompt, style, duration),
@@ -127,10 +128,21 @@ export async function executeProductionStep(
     if (cached !== undefined) return cached as T
     await hooks.heartbeat?.()
     const value = await fn()
-    done[key] = value
     await hooks.onStepResolved?.(key, value)
+    done[key] = value
     return value
   }
+  const visual = (scene: ScriptData['scenes'][number], index: number) => step(`scene:${index}`, async () => {
+    const key = `scene:${index}:started`
+    const remote = done[`scene:${index}:ltx`] as LtxJobState | undefined
+    if (!scene.use_stock) {
+      if (done[key] && !remote?.id) throw new Error(`SUTRA_RECONCILIATION_REQUIRED: scene ${index + 1}`)
+      await hooks.onStepResolved?.(key, true)
+      done[key] = true
+    }
+    return providers.visual(scene, Math.max(1, scene.duration_seconds || 5),
+      durableLtxJob(done, `scene:${index}:ltx`, hooks.onStepResolved))
+  })
 
   if (input.step === 'script') {
     const config = TEMPLATE_CONFIGS[input.template ?? ''] ?? TEMPLATE_CONFIGS.youtube
@@ -144,9 +156,9 @@ export async function executeProductionStep(
     const resolved: VisualResult[] = []
     for (let i = 0; i < Math.min(scriptData.scenes.length, MAX_SCENES); i++) {
       const scene = scriptData.scenes[i]
-      const visual = await step(`scene:${i}`, () => providers.visual(scene, Math.max(1, scene.duration_seconds || 5)))
-      if (!visual?.url) throw new Error(`Scene ${i + 1} manquante — production incomplete`)
-      resolved.push(visual)
+      const result = await visual(scene, i)
+      if (!result?.url) throw new Error(`Scene ${i + 1} manquante — production incomplete`)
+      resolved.push(result)
     }
     return resolved
   }
@@ -177,12 +189,12 @@ export async function executeProductionStep(
     const clips: AssembleClip[] = []
     for (let i = 0; i < Math.min(script.scenes.length, MAX_SCENES); i++) {
       const scene = script.scenes[i]
-      const visual = await step(`scene:${i}`, () => providers.visual(scene, Math.max(1, scene.duration_seconds || 5)))
-      if (!visual?.url) throw new Error(`Scene ${i + 1} manquante — montage refuse`)
-      if (visual) {
+      const result = await visual(scene, i)
+      if (!result?.url) throw new Error(`Scene ${i + 1} manquante — montage refuse`)
+      if (result) {
         clips.push({
-          url: visual.url,
-          type: visual.source === 'pexels-stock' ? 'stock' : 'ia',
+          url: result.url,
+          type: result.source === 'pexels-stock' ? 'stock' : 'ia',
           kind: 'video',
           duration: Math.max(1, scene.duration_seconds || 5),
         })
@@ -284,7 +296,7 @@ async function runAssembly(
   const subtitles = scriptData?.narration
     ? generateSubtitlesFromScript(scriptData.narration, scriptData.scenes ?? [])
     : []
-  const assembled = await step('assembly', () =>
+  const rendered = await step('assembly', () =>
     providers.assemble({
       clips,
       voiceUrl: voiceUrl ?? '',
@@ -297,6 +309,10 @@ async function runAssembly(
       brandKit: input.brandKit,
       renderJob: durableRenderJob(done, hooks.onStepResolved),
     }))
+  const assembled = await step('verified', () => verifyAndStoreRenderedVideo(rendered, {
+    userId: input.userId, mediaId: input.requestKey,
+    requireAudio: Boolean(voiceUrl || prefetched?.musicUrl || (input.previousData.music as { url?: string } | undefined)?.url),
+  }))
   // Renderer preset label; final-file verification remains a separate gate.
   return step('assembly_saved', async () => ({
     url: assembled.url,
@@ -346,6 +362,7 @@ export async function persistProductionResult(
       title: scriptData?.title ?? 'Production',
       description: scriptData?.description ?? '',
       video_url: assembled.url,
+      shotstack_json: (stepsDone.verified as { timeline?: unknown } | undefined)?.timeline ?? null,
       duration: assembled.duration,
       format: input.format ?? '16:9',
       quality: assembled.quality,
@@ -388,6 +405,7 @@ export async function persistProductionResult(
       title: script.title,
       description: script.description,
       video_url: assembled.url,
+      shotstack_json: (stepsDone.verified as { timeline?: unknown } | undefined)?.timeline ?? null,
       thumbnail_url: thumbnailUrl,
       duration: assembled.duration,
       format: input.format ?? '16:9',

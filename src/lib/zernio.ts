@@ -1,17 +1,24 @@
 import { fetchWithRetry } from '@/lib/utils/api'
 
-const ZERNIO_API_KEY = process.env.ZERNIO_API_KEY ?? ''
 const ZERNIO_BASE = process.env.ZERNIO_BASE_URL ?? 'https://zernio.com/api/v1'
 
 export type SocialPlatform = 'tiktok' | 'youtube' | 'instagram' | 'facebook' | 'x' | 'linkedin' | 'pinterest' | 'reddit' | 'threads' | 'snapchat' | 'tumblr' | 'mastodon' | 'bluesky' | 'vimeo'
 
 export interface OAuthUrlResponse { url: string; state: string }
 export interface AccountProfile { platform: SocialPlatform; externalId: string; username: string; displayName: string; avatarUrl?: string; accessToken?: string; refreshToken?: string; tokenExpiresAt?: string }
-export interface PublishRequest { videoUrl: string; caption: string; hashtags: string[]; platforms: SocialPlatform[]; accountIds: Record<SocialPlatform, string>; scheduledAt?: string; format?: string }
-export interface PublishResult { platform: SocialPlatform; success: boolean; postId?: string; postUrl?: string; error?: string }
+export interface PublishRequest { videoUrl: string; caption: string; hashtags: string[]; platforms: SocialPlatform[]; accountIds: Record<SocialPlatform, string>; scheduledAt?: string; format?: string; idempotencyKey?: string; captionsByPlatform?: Partial<Record<SocialPlatform, { caption: string; hashtags: string[] }>> }
+export type PublicationStatus = 'published' | 'scheduled' | 'publishing' | 'failed' | 'unknown'
+export const PUBLICATION_STATUS_LABELS: Record<PublicationStatus, string> = {
+  published: 'Publie', scheduled: 'Programme', publishing: 'En cours', failed: 'Echec', unknown: 'A verifier',
+}
+export interface PublishResult { platform: SocialPlatform; success: boolean; status?: PublicationStatus; postId?: string; postUrl?: string; externalPostId?: string; publishedAt?: string; error?: string }
 export interface AnalyticsData { views: number; likes: number; shares: number; comments: number; engagementRate?: number }
 
-function headers(): HeadersInit { return { Authorization: `Bearer ${ZERNIO_API_KEY}`, 'Content-Type': 'application/json' } }
+function headers(): HeadersInit {
+  const key = process.env.ZERNIO_API_KEY?.trim()
+  if (!key) throw new Error('SUTRA_ZERNIO_NOT_CONFIGURED')
+  return { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }
+}
 // Toujours logger (prod inclus) : une erreur Zernio avalée silencieusement en
 // prod = publication sociale qui échoue sans aucune trace. Jamais de secret.
 function logError(context: string, err: unknown): void { console.error(`[zernio:${context}]`, err instanceof Error ? err.message : err) }
@@ -36,30 +43,80 @@ export async function exchangeOAuthCode(platform: SocialPlatform, code: string, 
   } catch (err) { logError('exchangeOAuthCode', err); return empty }
 }
 
-function buildPublishPayload(req: PublishRequest): Record<string, unknown> {
-  return { video_url: req.videoUrl, caption: req.caption, hashtags: req.hashtags, platforms: req.platforms, account_ids: req.accountIds, scheduled_at: req.scheduledAt, format: req.format }
+const SUPPORTED_PUBLICATION_PLATFORMS = new Set(['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest', 'reddit', 'threads', 'bluesky'])
+const providerPlatform = (platform: SocialPlatform) => platform === 'x' ? 'twitter' : platform
+const contentWithTags = (caption: string, tags: string[]) => [caption, tags.map(tag => tag.startsWith('#') ? tag : `#${tag}`).join(' ')].filter(Boolean).join('\n\n')
+function publicPostUrl(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined
+  try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password ? url.href : undefined } catch { return undefined }
 }
 
-async function callPublishEndpoint(endpoint: 'publish' | 'schedule', req: PublishRequest): Promise<PublishResult[]> {
-  try {
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/${endpoint}`, { method: 'POST', headers: headers(), body: JSON.stringify(buildPublishPayload(req)) }, 3)
-    if (!res.ok) {
-      const errText = await res.text().catch(() => 'Unknown error')
-      logError(endpoint, `HTTP ${res.status}: ${errText}`)
-      return req.platforms.map((platform) => ({ platform, success: false, error: `Zernio ${endpoint} error ${res.status}` }))
-    }
-    const data = await res.json()
-    const results = (data.results ?? []) as Array<{ platform: SocialPlatform; success: boolean; post_id?: string; postId?: string; post_url?: string; postUrl?: string; error?: string }>
-    return results.map((r) => ({ platform: r.platform, success: Boolean(r.success), postId: r.post_id ?? r.postId, postUrl: r.post_url ?? r.postUrl, error: r.error }))
-  } catch (err) {
-    logError(endpoint, err)
-    const message = err instanceof Error ? err.message : `Erreur reseau Zernio ${endpoint}`
-    return req.platforms.map((platform) => ({ platform, success: false, error: message }))
+export function buildPublishPayload(req: PublishRequest): Record<string, unknown> {
+  const platforms = [...new Set(req.platforms)]
+  if (!platforms.length || platforms.some(p => !SUPPORTED_PUBLICATION_PLATFORMS.has(p))) throw new Error('SUTRA_ZERNIO_PLATFORM_UNAVAILABLE')
+  // Zernio account IDs are provider IDs, never the UUID of public.social_accounts.
+  if (platforms.some(p => !/^[a-f\d]{24}$/i.test(req.accountIds[p] ?? ''))) throw new Error('SUTRA_ZERNIO_ACCOUNT_RECONNECTION_REQUIRED')
+  const url = new URL(req.videoUrl)
+  if (url.protocol !== 'https:' || url.username || url.password) throw new Error('SUTRA_ZERNIO_INVALID_MEDIA_URL')
+  if (!req.idempotencyKey || req.idempotencyKey.length > 255) throw new Error('SUTRA_ZERNIO_IDEMPOTENCY_REQUIRED')
+  if (req.scheduledAt && (!/(Z|[+-]\d\d:\d\d)$/.test(req.scheduledAt) || !Number.isFinite(Date.parse(req.scheduledAt)) || Date.parse(req.scheduledAt) <= Date.now())) {
+    // Provider silently publishes a past schedule immediately. Refuse that change of intent.
+    throw new Error('SUTRA_ZERNIO_SCHEDULE_MUST_BE_FUTURE')
+  }
+  return { content: contentWithTags(req.caption, req.hashtags), mediaItems: [{ type: 'video', url: req.videoUrl }],
+    platforms: platforms.map(platform => ({ platform: providerPlatform(platform), accountId: req.accountIds[platform],
+      ...(req.captionsByPlatform?.[platform] ? { customContent: contentWithTags(req.captionsByPlatform[platform]!.caption, req.captionsByPlatform[platform]!.hashtags) } : {}),
+    })), ...(req.scheduledAt ? { scheduledFor: req.scheduledAt } : { publishNow: true }),
   }
 }
 
-export async function publishToPlatforms(req: PublishRequest): Promise<PublishResult[]> { return callPublishEndpoint('publish', req) }
-export async function schedulePublication(req: PublishRequest): Promise<PublishResult[]> { return callPublishEndpoint('schedule', req) }
+/** Accepted, scheduled and partially published are not a global publication success. */
+export function parsePublicationResults(data: unknown, req: PublishRequest): PublishResult[] {
+  const post = (data as { post?: { _id?: unknown; status?: string; platforms?: Array<{ platform?: string; accountId?: string | { _id?: string }; status?: string; platformPostUrl?: string; platformPostId?: string; publishedAt?: string }> } })?.post
+  if (typeof post?._id !== 'string' || !/^[a-f\d]{24}$/i.test(post._id)) throw new Error('SUTRA_RECONCILIATION_REQUIRED: reponse publication sans identifiant')
+  return [...new Set(req.platforms)].map(platform => {
+    const matches = post.platforms?.filter(target => target.platform === providerPlatform(platform)
+      && (typeof target.accountId === 'string' ? target.accountId : target.accountId?._id) === req.accountIds[platform]) ?? []
+    const target = matches.length === 1 ? matches[0] : undefined
+    const status: PublicationStatus = target?.status === 'published' ? 'published'
+      : target?.status === 'failed' ? 'failed'
+      : post.status === 'scheduled' && target?.status === 'pending' ? 'scheduled'
+      : target && ['pending', 'processing', 'uploading', 'publishing'].includes(target.status ?? '') ? 'publishing' : 'unknown'
+    return { platform, status, success: status === 'published', postId: post._id as string,
+      postUrl: publicPostUrl(target?.platformPostUrl), externalPostId: target?.platformPostId,
+      publishedAt: target?.publishedAt && Number.isFinite(Date.parse(target.publishedAt)) ? target.publishedAt : undefined,
+      ...(status === 'failed' ? { error: 'Publication refusee par la plateforme' } : status === 'unknown' ? { error: 'Resultat distant a reconcilier' } : {}),
+    }
+  })
+}
+
+export async function publishToPlatforms(req: PublishRequest): Promise<PublishResult[]> {
+  const body = buildPublishPayload(req)
+  const auth = headers()
+  try {
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/posts`, { method: 'POST', headers: auth,
+      body: JSON.stringify(body), idempotencyKey: req.idempotencyKey, providerSupportsIdempotency: true,
+      redirect: 'error', timeoutMs: 90_000 }, 1)
+    if (!res.ok) throw new Error(`SUTRA_ZERNIO_HTTP_${res.status}`)
+    return parsePublicationResults(await res.json(), req)
+  } catch {
+    // An ambiguous request remains unresolved; never translate a transport error into "failed, retry".
+    throw new Error('SUTRA_RECONCILIATION_REQUIRED: publication distante non confirmee')
+  }
+}
+export async function schedulePublication(req: PublishRequest): Promise<PublishResult[]> {
+  if (!req.scheduledAt) throw new Error('SUTRA_ZERNIO_SCHEDULE_REQUIRED')
+  return publishToPlatforms(req)
+}
+
+export async function getPublicationResults(postId: string, req: PublishRequest): Promise<PublishResult[]> {
+  if (!/^[a-f\d]{24}$/i.test(postId)) throw new Error('SUTRA_ZERNIO_INVALID_POST_ID')
+  const res = await fetchWithRetry(`${ZERNIO_BASE}/posts/${postId}`, { method: 'GET', headers: headers(), redirect: 'error' }, 2)
+  if (!res.ok) throw new Error(`SUTRA_ZERNIO_STATUS_HTTP_${res.status}`)
+  const data = await res.json()
+  if (data?.post?._id !== postId) throw new Error('SUTRA_RECONCILIATION_REQUIRED: identifiant publication incoherent')
+  return parsePublicationResults(data, req)
+}
 
 export async function getAccountAnalytics(platform: SocialPlatform, accountId: string, postId: string): Promise<AnalyticsData> {
   const empty: AnalyticsData = { views: 0, likes: 0, shares: 0, comments: 0 }

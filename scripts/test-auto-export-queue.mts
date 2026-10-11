@@ -45,7 +45,7 @@ test('EXPORT : crash pendant le rendu → reprise SANS re-rendu de l\'acquis', a
     assemble: async () => {
       assembleCalls++
       if (failOnce) throw new Error('RENDU INTERROMPU (worker tue chez Shotstack)')
-      return { url: 'https://storage.test/export.mp4', duration: 30, outputQuality: '1080' as const, outputVerified: false as const, outputSize: { width: 1920, height: 1080 }, timeline: {} }
+      return { url: 'https://storage.test/export.mp4', duration: 30, outputQuality: '1080' as const, outputVerified: true as const, outputSize: { width: 1920, height: 1080 }, timeline: {} }
     },
     persist: async (_input, update) => {
       persistCalls++
@@ -98,7 +98,7 @@ test('AUTO : crash pendant les assets → plan conservé, assets/assemblage une 
       if (failAssetsOnce) throw new Error('GENERATION INTERROMPUE (worker tue pendant RunPod)')
       return { video_raw_url: 'https://storage.test/raw.mp4', audio_music_url: 'm', audio_voice_url: 'v' } satisfies AutoAssets
     },
-    assemble: async () => { assembleCalls++; return { url: 'https://storage.test/final.mp4', duration: 6, outputQuality: '1080' as const, outputVerified: false as const, outputSize: { width: 1080, height: 1920 }, timeline: {} } },
+    assemble: async () => { assembleCalls++; return { url: 'https://storage.test/final.mp4', duration: 6, outputQuality: '1080' as const, outputVerified: true as const, outputSize: { width: 1080, height: 1920 }, timeline: {} } },
     persist: async (_input, final) => { persistCalls++; assert.equal(final.status, 'ready') },
   }
   const input: AutoJobInput = {

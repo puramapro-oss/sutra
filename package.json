@@ -14,7 +14,9 @@
     "test:production-queue": "node --import tsx --test scripts/test-production-queue.mts",
     "test:auto-export-queue": "node --import tsx --test scripts/test-auto-export-queue.mts",
     "test:release-regressions": "node --import tsx --test scripts/test-release-regressions.mts",
-    "test:auto-schedule": "node scripts/test-auto-schedule.mjs"
+    "test:auto-schedule": "node scripts/test-auto-schedule.mjs",
+    "test:ltx-v2-media": "node --import tsx --test scripts/test-ltx-v2-media.mts",
+    "test:social-publication": "node --import tsx --test scripts/test-social-publication.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.3",

@@ -1,4 +1,4 @@
-import { assembleFinalVideo, actualQualityFor, durableRenderJob, type AssembleClip } from '@/lib/shotstack'
+import { assembleFinalVideo, actualQualityFor, durableRenderJob, verifyAndStoreRenderedVideo, type AssembleClip } from '@/lib/shotstack'
 import { createServiceClient } from '@/lib/supabase'
 import { sendNotification, logActivity } from '@/lib/logger'
 
@@ -34,7 +34,7 @@ export interface ExportJobHooks {
 export interface ExportProviders {
   assemble: typeof assembleFinalVideo
   /** Persistance finale (update videos + notification + activité). */
-  persist: (input: ExportJobInput, update: { video_url: string; quality: string; duration: number }) => Promise<void>
+  persist: (input: ExportJobInput, update: { video_url: string; quality: string; duration: number; shotstack_json?: Record<string, unknown> }) => Promise<void>
 }
 
 export interface ExportJobResult {
@@ -45,7 +45,7 @@ export interface ExportJobResult {
 /** Shared persistence for the request and recovery worker; a failed write is fatal. */
 export async function persistExportResult(
   input: ExportJobInput,
-  update: { video_url: string; quality: string; duration: number },
+  update: { video_url: string; quality: string; duration: number; shotstack_json?: Record<string, unknown> },
   service = createServiceClient(),
 ): Promise<void> {
   const { data, error } = await service.from('videos')
@@ -76,12 +76,12 @@ export async function executeExportJob(
     if (cached !== undefined) return cached as T
     await hooks.heartbeat?.()
     const value = await fn()
-    done[key] = value
     await hooks.onStepResolved?.(key, value)
+    done[key] = value
     return value
   }
 
-  const assembled = await step('assembly', () =>
+  const rendered = await step('assembly', () =>
     providers.assemble({
       clips: input.clips,
       voiceUrl: input.voiceUrl,
@@ -94,10 +94,13 @@ export async function executeExportJob(
       brandKit: null,
       renderJob: durableRenderJob(done, hooks.onStepResolved),
     }))
+  const assembled = await step('verified', () => verifyAndStoreRenderedVideo(rendered, {
+    userId: input.userId, mediaId: input.videoId, requireAudio: Boolean(input.voiceUrl || (input.musicUrl && input.musicVolume > 0)),
+  }))
 
   const result = await step('saved', async () => {
     const quality = actualQualityFor(input.quality, assembled.outputQuality)
-    await providers.persist(input, { video_url: assembled.url, quality, duration: assembled.duration })
+    await providers.persist(input, { video_url: assembled.url, quality, duration: assembled.duration, shotstack_json: assembled.timeline })
     return { url: assembled.url, quality }
   })
   return result

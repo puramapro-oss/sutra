@@ -23,7 +23,7 @@ import type { AutoJobInput, AutoProviders } from '../src/lib/auto-pipeline.ts'
 import type { ProductionJobInput, ProductionProviders } from '../src/lib/production-pipeline.ts'
 
 const result = { url: 'https://media.invalid/final.mp4', duration: 6, outputQuality: 'hd' as const,
-  outputSize: { width: 720, height: 1280 }, outputVerified: false as const, timeline: {} }
+  outputSize: { width: 720, height: 1280 }, outputVerified: true as const, timeline: {} }
 const plan = { title: 't', script: null, theme_id: null, description: 'd', hashtags: [], video_prompt: 'p', music_prompt: 'm', reasoning: 'r', expected_engagement: 'medium' as const, style_override: null, trend_leveraged: null }
 const autoInput: AutoJobInput = { userId: 'u', videoRowId: 'v', scheduleId: null, userEmail: null,
   planTier: 'free', generationStartedAt: '2026-10-11T10:00:00Z',
@@ -90,6 +90,37 @@ test('AUTO: echec de montage transmis au worker, jamais checkpointé comme succe
   assert.equal(steps.saved, undefined)
   const final = await executeAutoJob(autoInput, { steps }, {}, { ...providers, assemble: async () => result, persist: async () => {} })
   assert.equal(final.videoFinalUrl, result.url)
+})
+
+test('EXPORT: resultat cloud non verifie ne peut pas atteindre la sauvegarde ready', async () => {
+  let saves = 0
+  const input = { videoId: 'v', userId: 'u', quality: '720p', format: '9:16', voiceUrl: '', musicUrl: null, musicVolume: 0.3, clips: [], subtitles: [] }
+  await assert.rejects(() => executeExportJob(input, { steps: {} }, {}, {
+    assemble: async () => ({ ...result, outputVerified: false, url: 'https://127.0.0.1/internal.mp4' }),
+    persist: async () => { saves++ },
+  }), /PRIVATE_ADDRESS/)
+  assert.equal(saves, 0)
+})
+
+test('AUTO: verification cloud echouee efface URL finale et conserve le rendu deja paye', async () => {
+  let assemblies = 0
+  const steps: Record<string, unknown> = {}
+  const providers: AutoProviders = { plan: async () => plan,
+    assets: async () => ({ video_raw_url: 'raw', audio_music_url: null, audio_voice_url: null }),
+    assemble: async () => { assemblies++; return { ...result, outputVerified: false, url: 'https://127.0.0.1/private.mp4' } },
+    persist: async (_input, final) => { assert.equal(final.status, 'compositing'); assert.equal(final.videoFinalUrl, null) },
+  }
+  await assert.rejects(() => executeAutoJob(autoInput, { steps }, {}, providers), /PRIVATE_ADDRESS/)
+  await assert.rejects(() => executeAutoJob(autoInput, { steps }, {}, providers), /PRIVATE_ADDRESS/)
+  assert.equal(assemblies, 1)
+  assert.equal(steps.saved, undefined)
+})
+
+test('AUTO: ancien checkpoint URL brute sans validation exige reconciliation', async () => {
+  const providers: AutoProviders = { plan: async () => plan,
+    assets: async () => ({ video_raw_url: 'raw', audio_music_url: null, audio_voice_url: null }),
+    assemble: async () => { throw new Error('no render') }, persist: async (_input, final) => { assert.equal(final.videoFinalUrl, null) } }
+  await assert.rejects(() => executeAutoJob(autoInput, { steps: { assembly: { url: 'raw', error: null } } }, {}, providers), /RECONCILIATION_REQUIRED/)
 })
 
 const productionInput: ProductionJobInput = { step: 'voice', userId: 'u', userEmail: null, userPlan: 'empire', genPlan: 'empire',
@@ -200,13 +231,14 @@ test('QUEUE: cle dupliquee conserve statut et acquis; changement de payload refu
   await assert.rejects(() => queue.enqueueJob({ ...params, payload: { input: 'different' } }), /IDEMPOTENCY_CONFLICT/)
 })
 
-function publicationDatabase(status = 'ready', failClaim = false, failSave = false) {
+function publicationDatabase(status = 'ready', failClaim = false, failSave = false, verified = true) {
   const video = { id: 'v', user_id: 'u', status, video_final_url: 'final', title: 't', scheduled_for: '2026-10-11T00:00:00Z' }
   const config = { user_id: 'u', auto_publish: true, require_approval_before_publish: false, publish_platforms: ['youtube', 'instagram'], zernio_connected_platforms: [{ account_id: 'untrusted' }] }
   const client = { schema: () => client, from: (table: string) => {
     let mutation: Record<string, unknown> | undefined
     const filters: Array<[string, unknown]> = []
     const execute = async () => {
+      if (table === 'video_jobs') return { data: verified ? { progress: { steps: { assembly: { verification: { url: video.video_final_url, sha256: 'a'.repeat(64) } } } } } : null, error: null }
       if (table === 'sutra_auto_config') return { data: config, error: null }
       if (table === 'social_accounts') return { data: [{ platform: 'youtube', external_id: 'verified-account', username: 'owner' }], error: null }
       const matches = filters.every(([key, value]) => (video as Record<string, unknown>)[key] === value)
@@ -215,7 +247,8 @@ function publicationDatabase(status = 'ready', failClaim = false, failSave = fal
       if (mutation) Object.assign(video, mutation)
       return { data: { ...video }, error: null }
     }
-    const builder = { select: () => builder, eq: (key: string, value: unknown) => { filters.push([key, value]); return builder },
+    const builder = { select: () => builder, contains: () => builder, order: () => builder, limit: () => builder,
+      eq: (key: string, value: unknown) => { filters.push([key, value]); return builder },
       update: (value: Record<string, unknown>) => { mutation = value; return builder },
       single: execute, maybeSingle: execute,
       then: (resolve: (value: unknown) => unknown, reject: (error: unknown) => unknown) => execute().then(resolve, reject) }
@@ -230,12 +263,17 @@ test('PUBLICATION: video annulee refusee avant appel externe', async () => {
   await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, async () => { calls++; return [] }))
   assert.equal(calls, 0)
 })
+test('PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publie rien', async () => {
+  let calls = 0; const db = publicationDatabase('ready', false, false, false)
+  await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, async () => { calls++; return [] }), /MEDIA_VERIFICATION_REQUIRED/)
+  assert.equal(calls, 0)
+})
 
 test('PUBLICATION: succes partiel reste partiel et comptes issus du serveur', async () => {
   const db = publicationDatabase()
   const actual = await publishAutoVideoRecord('u', 'v', true, db.client, async params => {
     assert.equal(params.config.zernio_connected_platforms[0].account_id, 'verified-account')
-    return [{ platform: 'youtube', success: true, postId: 'p' }, { platform: 'instagram', success: false, error: 'not connected' }]
+    return [{ platform: 'youtube', success: true, status: 'published' as const, postId: 'p' }, { platform: 'instagram', success: false, error: 'not connected' }]
   })
   assert.equal(actual.status, 'partially_published')
   assert.equal(actual.success, false)
@@ -244,7 +282,7 @@ test('PUBLICATION: succes partiel reste partiel et comptes issus du serveur', as
 test('PUBLICATION: deux requetes concurrentes ne soumettent qu une fois', async () => {
   const db = publicationDatabase()
   let calls = 0
-  const publish = async () => { calls++; return [{ platform: 'youtube', success: true, postId: 'p' }] }
+  const publish = async () => { calls++; return [{ platform: 'youtube', success: true, status: 'published' as const, postId: 'p' }] }
   const outcomes = await Promise.allSettled([publishAutoVideoRecord('u', 'v', true, db.client, publish), publishAutoVideoRecord('u', 'v', true, db.client, publish)])
   assert.equal(calls, 1)
   assert.equal(outcomes.filter(value => value.status === 'fulfilled').length, 1)
@@ -260,7 +298,7 @@ test('PUBLICATION: echec reservation ne contacte pas le fournisseur', async () =
 test('PUBLICATION: resultat non enregistre exige reconciliation et bloque le rejeu', async () => {
   const db = publicationDatabase('ready', false, true)
   let calls = 0
-  const publish = async () => { calls++; return [{ platform: 'youtube', success: true, postId: 'p' }] }
+  const publish = async () => { calls++; return [{ platform: 'youtube', success: true, status: 'published' as const, postId: 'p' }] }
   await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, publish), /RECONCILIATION_REQUIRED/)
   assert.equal(db.video.status, 'publishing')
   await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, publish))

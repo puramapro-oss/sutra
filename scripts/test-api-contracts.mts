@@ -192,11 +192,10 @@ test('RunPod: endpoint absent -> erreur explicite (pas de crash import)', async 
 // LTX — textToVideo
 // =============================================================================
 
-test('LTX: succes binaire', async () => {
+test('LTX: une reponse binaire V1 n\'est plus acceptee comme succes V2', async () => {
   setKey('LTX_API_KEY', true)
   mockFetch(() => new Response(new ArrayBuffer(4), { status: 200 }))
-  const buf = await textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 5, resolution: '1280x720' })
-  assert.equal(buf.byteLength, 4)
+  await assert.rejects(() => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 5, resolution: '1280x720' }), /SUBMISSION_HTTP_200/)
 })
 
 test('LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx)', async () => {
@@ -204,7 +203,7 @@ test('LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx)'
   mockFetch(() => jsonResponse(402, { error: { message: 'engine overloaded' } }))
   await assertThrowsWith(
     () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 5, resolution: '1280x720' }),
-    'engine overloaded'
+    'SUBMISSION_HTTP_402'
   )
   assert.equal(calls.length, 1)
 })

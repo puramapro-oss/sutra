@@ -106,8 +106,9 @@ export async function POST(req: Request) {
     const resumeScenes = (claimedJob.progress.scenes ?? {}) as Record<string, AssembleClip>
     const scenesDone = { ...resumeScenes }
 
-    await executeCreateJob(input, { scenes: resumeScenes }, {
+    await executeCreateJob(input, { scenes: resumeScenes, steps: (claimedJob.progress.steps ?? {}) as Record<string, unknown> }, {
       heartbeat: () => heartbeat(jobId!, `inline-${videoId}`, 600),
+      onStepResolved: (key, value) => checkpoint(jobId!, `inline-${videoId}`, { steps: { [key]: value } }),
       onSceneResolved: async (idx, clip) => {
         scenesDone[String(idx)] = clip
         await checkpoint(jobId!, `inline-${videoId}`, { scenes: scenesDone })

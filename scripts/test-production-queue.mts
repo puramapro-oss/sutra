@@ -45,9 +45,11 @@ const SCRIPT: ScriptData = {
 let failSceneOnce = -1
 const providers: ProductionProviders = {
   script: async () => { calls.script++; return structuredClone(SCRIPT) },
-  visual: async (scene, _duration) => {
+  visual: async (scene, _duration, job) => {
     const key = scene.visual_prompt
     calls.visual[key] = (calls.visual[key] ?? 0) + 1
+    // Simulate an accepted remote job, whose ID survives the interrupted poll.
+    if (!job?.current?.id) await job?.save({ endpoint: '/text-to-video', fingerprint: key, started: true, id: `remote-${key}` })
     if (key === SCRIPT.scenes[failSceneOnce]?.visual_prompt && calls.visual[key] === 1) {
       throw new Error('INTERRUPTION simulee (worker tue pendant la generation)')
     }
@@ -55,7 +57,7 @@ const providers: ProductionProviders = {
   },
   voice: async () => { calls.voice++; return new TextEncoder().encode('voice-audio').buffer as ArrayBuffer },
   music: async () => { calls.music++; return 'https://storage.test/music.mp3' },
-  assemble: async () => { calls.assemble++; return { url: 'https://storage.test/final.mp4', duration: 15, outputQuality: '1080' as const, outputVerified: false as const, outputSize: { width: 1920, height: 1080 }, timeline: {} } },
+  assemble: async () => { calls.assemble++; return { url: 'https://storage.test/final.mp4', duration: 15, outputQuality: '1080' as const, outputVerified: true as const, outputSize: { width: 1920, height: 1080 }, timeline: {} } },
   upload: async () => { calls.upload++; return 'https://storage.test/voice.mp3' },
 }
 

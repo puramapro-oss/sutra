@@ -15,6 +15,7 @@ import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import type { Video as VideoType } from '@/types'
 import type { PublishResult } from '@/lib/zernio'
+import { PUBLICATION_STATUS_LABELS } from '@/lib/zernio'
 import type { PublishVideoState } from '@/hooks/usePublish'
 import { PLATFORMS, type PlatformId } from './constants'
 
@@ -37,7 +38,6 @@ export default function VideoPublishCard({
   zernioResults,
   onTogglePlatform,
   onSetScheduleDate,
-  onToggleZernio,
   onSchedule,
   onPublishNow,
 }: VideoPublishCardProps) {
@@ -66,20 +66,10 @@ export default function VideoPublishCard({
                 {video.duration ? `${Math.round(video.duration)}s` : ''} {video.quality}
               </p>
             </div>
-            {/* Zernio toggle */}
-            <button
-              onClick={onToggleZernio}
-              data-testid={`toggle-zernio-${video.id}`}
-              className={cn(
-                'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border',
-                state.useZernio
-                  ? 'bg-violet-500/15 border-violet-500/30 text-violet-300'
-                  : 'bg-white/[0.02] border-white/[0.06] text-white/30 hover:text-white/50'
-              )}
-            >
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs text-white/60 border border-white/10">
               <Globe className="h-3.5 w-3.5" />
-              Zernio
-            </button>
+              Comptes connectes
+            </span>
           </div>
 
           {/* Platform toggles */}
@@ -148,15 +138,18 @@ export default function VideoPublishCard({
               {zernioResults.map((r, i) => (
                 <Badge
                   key={`${r.platform}-${i}`}
-                  variant={r.success ? 'success' : 'error'}
+                  variant={r.success ? 'success' : r.status === 'failed' ? 'error' : 'warning'}
                   size="sm"
                 >
                   {r.success ? (
                     <CheckCircle2 className="h-3 w-3 mr-1" />
-                  ) : (
+                  ) : r.status === 'failed' ? (
                     <XCircle className="h-3 w-3 mr-1" />
+                  ) : (
+                    <Clock className="h-3 w-3 mr-1" />
                   )}
                   {r.platform}
+                  {' : '}{PUBLICATION_STATUS_LABELS[r.status ?? (r.success ? 'published' : 'unknown')]}
                   {r.postUrl && (
                     <a
                       href={r.postUrl}

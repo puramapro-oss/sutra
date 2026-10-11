@@ -56,7 +56,7 @@ export async function verifyVideoBytes(bytes: Uint8Array, expected: ExpectedVide
     if (video.sample_aspect_ratio && !['1:1','N/A'].includes(video.sample_aspect_ratio)) throw new Error('SUTRA_MEDIA_NON_SQUARE_PIXELS')
     if (video.side_data_list?.some(s=>s.rotation !== undefined && s.rotation % 360 !== 0)) throw new Error('SUTRA_MEDIA_UNEXPECTED_ROTATION')
     // Fully decode to catch corrupt frames, not just a plausible MP4 header.
-    await exec('ffmpeg', ['-v','error','-nostdin','-xerror','-err_detect','explode','-protocol_whitelist','file,pipe','-format_whitelist','mov','-i',file,'-map','0:v:0','-map','0:a?','-threads','2','-f','null','-'], {timeout:60000,maxBuffer:1048576,encoding:'utf8'})
+    await exec('ffmpeg', ['-v','error','-nostdin','-xerror','-err_detect','explode','-protocol_whitelist','file,pipe','-format_whitelist','mov','-threads','2','-i',file,'-map','0:v:0','-map','0:a?','-threads','2','-f','null','-'], {timeout:60000,maxBuffer:1048576,encoding:'utf8'})
     return {width:video.width,height:video.height,duration,fps,hasAudio}
   } catch (error) {
     if (error instanceof Error && error.message.startsWith('SUTRA_MEDIA_')) throw error

@@ -134,12 +134,14 @@ export async function GET(request: Request) {
       }
 
       const resume: CreateJobResume = {
+        steps: (job.progress.steps ?? {}) as Record<string, unknown>,
         scenes: (((job.progress as unknown as CreateJobResume | undefined)?.scenes) ?? {}) as Record<string, AssembleClip>,
       }
       const scenesDone = { ...resume.scenes }
 
       await executeCreateJob(input, resume, {
         heartbeat: () => heartbeat(job.id, worker, 600),
+        onStepResolved: (key, value) => checkpoint(job.id, worker, { steps: { [key]: value } }),
         onSceneResolved: async (idx, clip) => {
           scenesDone[String(idx)] = clip
           await checkpoint(job.id, worker, { scenes: scenesDone })
