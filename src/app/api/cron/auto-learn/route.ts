@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 /**
  * CRON quotidien (22h)
  * Pour chaque user actif, recupere les stats de ses videos publiees
@@ -9,12 +10,10 @@ import { analyzePerformance, recordMemory, type AutoVideoRecord } from '@/lib/su
 import { getAccountAnalytics, type SocialPlatform } from '@/lib/zernio'
 
 export const maxDuration = 300
-const CRON_SECRET = process.env.CRON_SECRET
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
   const since = new Date(Date.now() - 48 * 3600 * 1000).toISOString()

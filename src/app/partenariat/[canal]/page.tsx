@@ -107,7 +107,7 @@ export default function CanalRegistrationPage() {
         throw new Error(data?.error || 'Erreur lors de l\'inscription.')
       }
 
-      router.push('/dashboard/partenaire')
+      router.push('/partenaire')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Une erreur est survenue.')
     } finally {

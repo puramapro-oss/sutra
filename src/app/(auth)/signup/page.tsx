@@ -30,7 +30,7 @@ function SignupContent() {
   // Store referral code in localStorage for post-signup processing
   useEffect(() => {
     if (refCode) {
-      localStorage.setItem('sutra-referral-code', refCode)
+      try { localStorage.setItem('sutra-referral-code', refCode) } catch { /* Optional referral persistence. */ }
     }
   }, [refCode])
 
@@ -68,10 +68,11 @@ function SignupContent() {
 
     setLoading(true)
     try {
-      const storedRef = localStorage.getItem('sutra-referral-code') ?? refCode
+      let storedRef = refCode
+      try { storedRef = localStorage.getItem('sutra-referral-code') ?? refCode } catch { /* Optional preference. */ }
       await signUp(email, password, name, storedRef || undefined)
       // Preuve d'acceptation CGU/CGV/confidentialite — best-effort, no-op si pas encore de
-      // session (confirmation email requise) ; couvert aussi cote OAuth par auth/callback.
+      // session (confirmation email requise) ; le contrôle du dashboard redemande les consentements manquants.
       Promise.all(
         (['cgu', 'cgv', 'confidentialite'] as const).map((docType) =>
           fetch('/api/legal/accept', {
@@ -82,7 +83,7 @@ function SignupContent() {
         )
       )
       setSuccess(true)
-      localStorage.removeItem('sutra-referral-code')
+      try { localStorage.removeItem('sutra-referral-code') } catch { /* Optional preference. */ }
       toast.success('Compte cree avec succes !')
     } catch (err: unknown) {
       const message =
@@ -143,7 +144,7 @@ function SignupContent() {
             data-testid="google-button"
             variant="secondary"
             size="lg"
-            className="w-full mb-6"
+            className="w-full mb-6 px-4 text-sm sm:text-base"
             onClick={handleGoogle}
             loading={googleLoading}
             disabled={loading}
@@ -175,7 +176,7 @@ function SignupContent() {
               <div className="w-full border-t border-white/[0.06]" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-[#06050e] px-3 text-white/30">ou</span>
+              <span className="bg-[#06050e] px-3 text-white/60">ou</span>
             </div>
           </div>
 
@@ -216,7 +217,7 @@ function SignupContent() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="text-white/30 hover:text-white/60 transition-colors pointer-events-auto"
+                  className="text-white/60 hover:text-white/60 transition-colors pointer-events-auto"
                   tabIndex={-1}
                   aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
                 >
@@ -242,7 +243,7 @@ function SignupContent() {
                     />
                   ))}
                 </div>
-                <p className="text-xs text-white/40">
+                <p className="text-xs text-white/65">
                   Force :{' '}
                   <span
                     className={`font-medium ${
@@ -276,7 +277,7 @@ function SignupContent() {
           </form>
 
           {/* Login link */}
-          <p className="text-center text-sm text-white/40 mt-6">
+          <p className="text-center text-sm text-white/65 mt-6">
             Deja un compte ?{' '}
             <Link
               href="/login"
@@ -289,7 +290,7 @@ function SignupContent() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-white/20 mt-6">
+        <p className="text-center text-xs text-white/60 mt-6">
           SUTRA by Purama — Generation video IA
         </p>
       </motion.div>

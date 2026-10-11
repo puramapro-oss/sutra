@@ -73,14 +73,38 @@ export const NICHES = [
   'business',
 ] as const
 
+/**
+ * Voix disponibles. `id` = alias interne (UI), `providerId` = identifiant
+ * RÉEL ElevenLabs transmis au TTS (audit #18 : un alias ne doit jamais partir
+ * brut vers l'API). Les providerId sont des voix publiques ElevenLabs
+ * multilingues (FR inclus).
+ */
 export const VOICE_STYLES = [
-  { id: 'default_french_male', name: 'Thomas', lang: 'fr', gender: 'male' },
-  { id: 'default_french_female', name: 'Marie', lang: 'fr', gender: 'female' },
-  { id: 'narrator_deep', name: 'Narrateur', lang: 'fr', gender: 'male' },
-  { id: 'energetic_female', name: 'Emma', lang: 'fr', gender: 'female' },
-  { id: 'calm_male', name: 'Lucas', lang: 'fr', gender: 'male' },
-  { id: 'dynamic_female', name: 'Lea', lang: 'fr', gender: 'female' },
+  { id: 'default_french_male', name: 'Thomas', lang: 'fr', gender: 'male', providerId: 'pNInz6obpgDQGcFmaJgB' },
+  { id: 'default_french_female', name: 'Marie', lang: 'fr', gender: 'female', providerId: 'EXAVITQu4vr4xnSDxMaL' },
+  { id: 'narrator_deep', name: 'Narrateur', lang: 'fr', gender: 'male', providerId: 'onwK4e9ZLuTAKqWW03F9' },
+  { id: 'energetic_female', name: 'Emma', lang: 'fr', gender: 'female', providerId: '21m00Tcm4TlvDq8ikWAM' },
+  { id: 'calm_male', name: 'Lucas', lang: 'fr', gender: 'male', providerId: 'ErXwobaYiN019PkySvjV' },
+  { id: 'dynamic_female', name: 'Lea', lang: 'fr', gender: 'female', providerId: 'AZnzlk1XvdvUeBnXmlld' },
 ] as const
+
+/** ID ElevenLabs par défaut (Marie) — utilisé si l'alias est inconnu. */
+export const DEFAULT_VOICE_PROVIDER_ID = 'EXAVITQu4vr4xnSDxMaL'
+
+/**
+ * Résout un choix de voix vers un ID ElevenLabs réel :
+ *  - alias connu → providerId mappé
+ *  - déjà un ID fournisseur (long) → transmis tel quel
+ *  - alias inconnu → voix par défaut (jamais d'alias brut vers l'API)
+ */
+export function resolveVoiceProviderId(voiceId: string | null | undefined): string {
+  if (!voiceId) return DEFAULT_VOICE_PROVIDER_ID
+  const known = VOICE_STYLES.find((v) => v.id === voiceId)
+  if (known) return known.providerId
+  // Heuristique : les IDs ElevenLabs sont longs (16+ chars) ; sinon alias.
+  if (voiceId.length >= 16) return voiceId
+  return DEFAULT_VOICE_PROVIDER_ID
+}
 
 export const TIMEOUTS = {
   claude: 30_000,

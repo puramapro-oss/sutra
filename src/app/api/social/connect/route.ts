@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { getOAuthUrl, type SocialPlatform } from '@/lib/zernio'
+import { issueSocialOAuthState, socialOAuthCookieName, SOCIAL_OAUTH_TTL_SECONDS } from '@/lib/social-oauth-state'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -74,7 +75,18 @@ export async function POST(req: Request) {
 
     const { url: oauthUrl, state } = await getOAuthUrl(platform, user.id, redirectUri)
 
-    return NextResponse.json({ oauthUrl, state, platform })
+    const destination = new URL(oauthUrl)
+    if (destination.protocol !== 'https:' || destination.username || destination.password) {
+      throw new Error('SUTRA_OAUTH_INVALID_URL')
+    }
+    const browserSecret = await issueSocialOAuthState(user.id, platform, state)
+    const response = NextResponse.json({ oauthUrl, state, platform })
+    response.headers.set('Cache-Control', 'no-store')
+    response.cookies.set(socialOAuthCookieName(state), browserSecret, {
+      httpOnly: true, secure: new URL(siteUrl).protocol === 'https:', sameSite: 'lax',
+      path: '/api/social', maxAge: SOCIAL_OAUTH_TTL_SECONDS,
+    })
+    return response
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur connexion OAuth'
     return NextResponse.json(

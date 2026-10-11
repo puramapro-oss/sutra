@@ -106,7 +106,7 @@ export default function PartnerCoachPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
-              href="/dashboard/partenaire"
+              href="/partenaire"
               className="text-white/50 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />

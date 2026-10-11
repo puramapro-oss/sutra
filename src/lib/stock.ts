@@ -12,7 +12,6 @@ import type {
   StockResult,
   StockSearchOptions,
   PexelsVideo,
-  PexelsVideoFile,
   PexelsPhoto,
   UnsplashPhoto,
   CoverrVideo,
@@ -28,6 +27,7 @@ export type {
 }
 
 const PEXELS_API_KEY = process.env.PEXELS_API_KEY ?? ''
+const PIXABAY_API_KEY = process.env.PIXABAY_API_KEY ?? ''
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY ?? ''
 
 const MIN_WIDTH = 1920
@@ -53,6 +53,14 @@ function matchesOrientation(
   return ratio >= 0.85 && ratio <= 1.2
 }
 
+
+/** true si la réponse est en erreur (logguée, sans secret) → résultat vide propre. */
+function rejectBadStatus(tag: string, res: Response): boolean {
+  if (res.ok) return false
+  console.warn(`[stock:${tag}] HTTP ${res.status}`)
+  return true
+}
+
 /* ------------------------------ PEXELS ------------------------------ */
 
 async function pexelsVideos(
@@ -61,14 +69,14 @@ async function pexelsVideos(
 ): Promise<StockResult[]> {
   if (!PEXELS_API_KEY) return []
   try {
-    const url = `https://api.pexels.com/videos/search?query=${encodeURIComponent(
+    const url = `https://api.pexels.com/v1/videos/search?query=${encodeURIComponent(
       query
     )}&per_page=20&orientation=${orientation}&size=large`
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
-      next: { revalidate: 3600 },
+      next: { revalidate: 86_400 },
     })
-    if (!res.ok) return []
+    if (rejectBadStatus('pexels:videos', res)) return []
     const data = (await res.json()) as { videos?: PexelsVideo[] }
     const results: StockResult[] = []
     for (const v of data.videos ?? []) {
@@ -109,9 +117,9 @@ async function pexelsPhotos(
     )}&per_page=20&orientation=${orientation}`
     const res = await fetch(url, {
       headers: { Authorization: PEXELS_API_KEY },
-      next: { revalidate: 3600 },
+      next: { revalidate: 86_400 },
     })
-    if (!res.ok) return []
+    if (rejectBadStatus('pexels:photos', res)) return []
     const data = (await res.json()) as { photos?: PexelsPhoto[] }
     const results: StockResult[] = []
     for (const p of data.photos ?? []) {
@@ -136,6 +144,73 @@ async function pexelsPhotos(
   }
 }
 
+/* ----------------------------- PIXABAY ----------------------------- */
+
+interface PixabayVideoVariant {
+  url?: string
+  width?: number
+  height?: number
+  thumbnail?: string
+}
+
+interface PixabayVideoHit {
+  id: number
+  pageURL?: string
+  duration?: number
+  user?: string
+  videos?: Record<string, PixabayVideoVariant>
+}
+
+async function pixabayVideos(
+  query: string,
+  orientation: StockOrientation
+): Promise<StockResult[]> {
+  if (!PIXABAY_API_KEY) return []
+  try {
+    const params = new URLSearchParams({
+      key: PIXABAY_API_KEY,
+      q: query,
+      per_page: '20',
+      safesearch: 'true',
+    })
+    const res = await fetch(`https://pixabay.com/api/videos/?${params}`, {
+      next: { revalidate: 86_400 },
+    })
+    if (rejectBadStatus('pixabay:videos', res)) return []
+    const data = (await res.json()) as { hits?: PixabayVideoHit[] }
+    const results: StockResult[] = []
+
+    for (const hit of data.hits ?? []) {
+      const variants = Object.values(hit.videos ?? {})
+        .filter((v): v is Required<Pick<PixabayVideoVariant, 'url' | 'width' | 'height'>> & PixabayVideoVariant =>
+          Boolean(v.url && v.width && v.height)
+        )
+        .filter((v) => matchesOrientation(v.width, v.height, orientation))
+        .sort((a, b) => b.width * b.height - a.width * a.height)
+      const best = variants.find((v) => classifyQuality(v.width, v.height) !== null)
+      if (!best) continue
+      const quality = classifyQuality(best.width, best.height)
+      if (!quality) continue
+      results.push({
+        id: `pixabay-v-${hit.id}`,
+        source: 'pixabay',
+        type: 'video',
+        url: best.url,
+        thumbnail: best.thumbnail ?? '',
+        width: best.width,
+        height: best.height,
+        quality,
+        duration: hit.duration,
+        author: hit.user,
+        pageUrl: hit.pageURL,
+      })
+    }
+    return results
+  } catch {
+    return []
+  }
+}
+
 /* ----------------------------- UNSPLASH ----------------------------- */
 
 async function unsplashPhotos(
@@ -150,9 +225,9 @@ async function unsplashPhotos(
     )}&per_page=20&orientation=${ori}&content_filter=high`
     const res = await fetch(url, {
       headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
-      next: { revalidate: 3600 },
+      next: { revalidate: 86_400 },
     })
-    if (!res.ok) return []
+    if (rejectBadStatus('unsplash:photos', res)) return []
     const data = (await res.json()) as { results?: UnsplashPhoto[] }
     const results: StockResult[] = []
     for (const p of data.results ?? []) {
@@ -186,8 +261,8 @@ async function coverrVideos(
   try {
     // Coverr public API (no key needed)
     const url = `https://api.coverr.co/videos?query=${encodeURIComponent(query)}&page_size=20`
-    const res = await fetch(url, { next: { revalidate: 3600 } })
-    if (!res.ok) return []
+    const res = await fetch(url, { next: { revalidate: 86_400 } })
+    if (rejectBadStatus('coverr:videos', res)) return []
     const data = (await res.json()) as { hits?: CoverrVideo[] }
     const results: StockResult[] = []
     for (const v of data.hits ?? []) {
@@ -228,6 +303,7 @@ export async function searchStock({
   const tasks: Array<Promise<StockResult[]>> = []
   if (type === 'any' || type === 'video') {
     tasks.push(pexelsVideos(query, orientation))
+    tasks.push(pixabayVideos(query, orientation))
     tasks.push(coverrVideos(query, orientation))
   }
   if (type === 'any' || type === 'photo') {

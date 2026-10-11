@@ -147,13 +147,13 @@ export function usePublish(userId: string | undefined) {
         setZernioResults((prev) => ({ ...prev, [videoId]: results }))
 
         const successes = results.filter((r: PublishResult) => r.success)
-        const failures = results.filter((r: PublishResult) => !r.success)
+        const failures = results.filter((r: PublishResult) => r.status === 'failed')
+        const pending = results.filter(r => ['scheduled', 'publishing', 'unknown'].includes(r.status ?? 'unknown'))
+        if (pending.length) toast.info(pending.every(r => r.status === 'scheduled') ? 'Publication programmee' : 'Publication en cours de confirmation')
 
         if (successes.length > 0) {
           toast.success(
-            scheduled
-              ? `Publication programmee sur ${successes.length} plateforme${successes.length > 1 ? 's' : ''}`
-              : `Publie sur ${successes.map((r: PublishResult) => r.platform).join(', ')}`
+            `Publie sur ${successes.map((r: PublishResult) => r.platform).join(', ')}`
           )
         }
         if (failures.length > 0) {
@@ -173,79 +173,8 @@ export function usePublish(userId: string | undefined) {
     [publishStates, getSelectedPlatforms, fetchData]
   )
 
-  const publishNow = useCallback(
-    async (videoId: string) => {
-      const state = publishStates[videoId]
-      if (state?.useZernio) {
-        return publishViaZernio(videoId, false)
-      }
-
-      const selected = getSelectedPlatforms(videoId)
-      if (selected.length === 0) {
-        toast.error('Selectionne au moins une plateforme')
-        return
-      }
-
-      setPublishing(videoId)
-      try {
-        const res = await fetch('/api/publish', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ video_id: videoId, platforms: selected, immediate: true }),
-        })
-
-        if (!res.ok) throw new Error('Publish failed')
-        toast.success('Publication lancee avec succes !')
-        await fetchData()
-      } catch {
-        toast.error('Erreur lors de la publication')
-      } finally {
-        setPublishing(null)
-      }
-    },
-    [publishStates, getSelectedPlatforms, publishViaZernio, fetchData]
-  )
-
-  const schedulePostAction = useCallback(
-    async (videoId: string) => {
-      const state = publishStates[videoId]
-      if (state?.useZernio) {
-        return publishViaZernio(videoId, true)
-      }
-
-      const selected = getSelectedPlatforms(videoId)
-      if (selected.length === 0) {
-        toast.error('Selectionne au moins une plateforme')
-        return
-      }
-      if (!state?.scheduledAt) {
-        toast.error('Choisis une date de programmation')
-        return
-      }
-
-      setPublishing(videoId)
-      try {
-        const res = await fetch('/api/publish', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            video_id: videoId,
-            platforms: selected,
-            scheduled_at: new Date(state.scheduledAt).toISOString(),
-          }),
-        })
-
-        if (!res.ok) throw new Error('Schedule failed')
-        toast.success('Publication programmee !')
-        await fetchData()
-      } catch {
-        toast.error('Erreur lors de la programmation')
-      } finally {
-        setPublishing(null)
-      }
-    },
-    [publishStates, getSelectedPlatforms, publishViaZernio, fetchData]
-  )
+  const publishNow = useCallback((videoId: string) => publishViaZernio(videoId, false), [publishViaZernio])
+  const schedulePostAction = useCallback((videoId: string) => publishViaZernio(videoId, true), [publishViaZernio])
 
   const toggleZernio = useCallback((videoId: string) => {
     setPublishStates((prev) => ({

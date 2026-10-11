@@ -167,14 +167,15 @@ export function PublishEverywhereButton({
       setResults(list)
 
       const successCount = list.filter((r) => r.success).length
-      const failCount = list.length - successCount
+      const failCount = list.filter((r) => r.status === 'failed').length
+      const pendingCount = list.length - successCount - failCount
 
-      if (successCount > 0 && failCount === 0) {
+      if (successCount > 0 && successCount === list.length) {
         toast.success(
-          schedule === 'later'
-            ? `Programme sur ${successCount} plateforme(s)`
-            : `Publie sur ${successCount} plateforme(s)`
+          `Publie sur ${successCount} plateforme(s)`
         )
+      } else if (pendingCount > 0) {
+        toast.info(list.every(r => r.status === 'scheduled') ? 'Publication programmee' : 'Publication en cours de confirmation')
       } else if (successCount > 0) {
         toast.warning(`${successCount} reussie(s), ${failCount} echouee(s)`)
       } else {
@@ -185,7 +186,7 @@ export function PublishEverywhereButton({
         list.map((r) => ({ platform: r.platform, success: r.success, postUrl: r.postUrl }))
       )
 
-      if (failCount === 0 && successCount > 0) {
+      if (successCount === list.length && successCount > 0) {
         setTimeout(() => setIsOpen(false), 3000)
       }
     } catch (err) {

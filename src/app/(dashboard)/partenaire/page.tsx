@@ -93,7 +93,7 @@ export default function PartenaireDashboard() {
   }
 
   const handleRequestWithdrawal = () => {
-    window.location.href = '/dashboard/wallet'
+    window.location.href = '/wallet'
   }
 
   const statCards = [
@@ -138,13 +138,13 @@ export default function PartenaireDashboard() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Link href="/dashboard/partenaire/outils">
+            <Link href="/partenaire/outils">
               <Button variant="secondary" size="sm" data-testid="link-outils">
                 <Wrench className="w-4 h-4" />
                 Outils
               </Button>
             </Link>
-            <Link href="/dashboard/partenaire/coach">
+            <Link href="/partenaire/coach">
               <Button variant="primary" size="sm" data-testid="link-coach">
                 <MessageCircle className="w-4 h-4" />
                 Coach IA
@@ -208,7 +208,7 @@ export default function PartenaireDashboard() {
           </button>
 
           <Link
-            href="/dashboard/partenaire/outils"
+            href="/partenaire/outils"
             data-testid="action-qr-code"
             className="bg-white/[0.02] border border-white/[0.06] backdrop-blur-xl rounded-xl p-5 text-left hover:border-white/[0.12] transition-all group"
           >

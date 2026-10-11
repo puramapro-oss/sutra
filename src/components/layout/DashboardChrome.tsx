@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import Sidebar from '@/components/layout/Sidebar'
 import Header from '@/components/layout/Header'
 import MobileNav from '@/components/layout/MobileNav'
+import { useAuth } from '@/hooks/useAuth'
 
 const CosmicParticlesWrapper = dynamic(
   () => import('@/components/shared/CosmicParticlesWrapper'),
@@ -54,6 +55,7 @@ export default function DashboardChrome({
 }: {
   children: React.ReactNode
 }) {
+  const { error, profile, refetch } = useAuth()
   return (
     <div className="relative flex min-h-dvh bg-[#06050e]">
       {/* Cosmic particles background */}
@@ -66,6 +68,11 @@ export default function DashboardChrome({
       <div className="relative z-10 flex-1 flex flex-col min-w-0">
         <Header />
 
+        {error && <div role="alert" className="mx-4 mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100">
+          {error}{' '}
+          <button type="button" className="min-h-11 px-2 underline" onClick={() => profile ? void refetch() : window.location.reload()}>Recharger le profil</button>
+        </div>}
+
         {/* V6 — Banner fiscal si user >3000€ (avril-juin) */}
         <FiscalBanner />
 
@@ -75,7 +82,7 @@ export default function DashboardChrome({
           transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden"
         >
-          {children}
+          {!error || profile ? children : null}
         </motion.main>
       </div>
 

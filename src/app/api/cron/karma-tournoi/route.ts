@@ -1,13 +1,8 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 
 // CRON mensuel 1er jour 00h30 — snapshot + rewards + reset
-function verifyCron(request: NextRequest): boolean {
-  const auth = request.headers.get('authorization')
-  const expected = process.env.CRON_SECRET
-  if (!expected) return true
-  return auth === `Bearer ${expected}`
-}
 
 function previousMonthFirstDay(): string {
   const d = new Date()
@@ -35,9 +30,8 @@ function prizeForRank(rank: number): number {
 }
 
 export async function POST(request: NextRequest) {
-  if (!verifyCron(request)) {
-    return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   try {
     const service = createServiceClient()

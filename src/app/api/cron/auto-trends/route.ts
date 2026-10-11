@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 /**
  * CRON quotidien (6h)
  * Detecte les tendances pour chaque user actif (via Tavily) et stocke
@@ -8,7 +9,6 @@ import { createServiceClient } from '@/lib/supabase'
 import { recordMemory, type AutoTheme } from '@/lib/sutra-auto'
 
 export const maxDuration = 180
-const CRON_SECRET = process.env.CRON_SECRET
 const TAVILY_API_KEY = process.env.TAVILY_API_KEY
 
 interface TavilyResult {
@@ -41,9 +41,8 @@ async function searchTrends(niche: string): Promise<string[]> {
 }
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
   const { data: configs } = await supabase

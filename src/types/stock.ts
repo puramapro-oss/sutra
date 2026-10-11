@@ -1,4 +1,4 @@
-export type StockSource = 'pexels' | 'unsplash' | 'coverr'
+export type StockSource = 'pexels' | 'pixabay' | 'unsplash' | 'coverr'
 export type StockType = 'video' | 'photo'
 export type StockOrientation = 'landscape' | 'portrait' | 'square'
 export type StockQuality = '1080p' | '4k'

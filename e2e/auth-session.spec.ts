@@ -1,10 +1,11 @@
 import { test, expect, Page } from '@playwright/test'
 
-const BASE = 'https://sutra.purama.dev'
+const BASE = process.env.E2E_BASE_URL ?? 'https://sutra.purama.dev'
 
 async function dismissCookieBanner(page: Page) {
-  // Set consent in localStorage to prevent banner from appearing
-  await page.evaluate(() => localStorage.setItem('sutra-cookie-consent', JSON.stringify({ essential: true, analytics: false, marketing: false })))
+  // Consentement pré-donné dans la vraie clé du bandeau (useCookieConsent)
+  // pour l'écarter avant les assertions.
+  await page.evaluate(() => localStorage.setItem('purama_cookie_consent_v1', JSON.stringify({ necessaire: true, mesure: false, marketing: false, updatedAt: new Date().toISOString() })))
   await page.reload()
 }
 
@@ -62,7 +63,7 @@ test.describe('Auth session security', () => {
 
   test('cookie banner appears on first visit', async ({ page }) => {
     await page.goto(`${BASE}/login`)
-    const banner = page.locator('button:has-text("Accepter tout")')
+    const banner = page.locator('button:has-text("Tout accepter")')
     await expect(banner).toBeVisible({ timeout: 5000 })
   })
 })

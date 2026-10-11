@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback } from 'react'
 import { getPipelineSteps } from '@/lib/create-utils'
 import type { PipelineStep, VideoFormat, VideoQuality } from '@/types'
 import type { VideoEngine } from '@/lib/ltx'
@@ -45,16 +45,6 @@ export function useVideoGeneration({
   const [sceneKeywords, setSceneKeywords] = useState<string[][]>([])
   const [sceneSelections, setSceneSelections] = useState<SceneStockState[]>([])
   const [keywordsLoading, setKeywordsLoading] = useState(false)
-  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  // Cleanup polling on unmount
-  useEffect(() => {
-    return () => {
-      if (pollingRef.current) {
-        clearInterval(pollingRef.current)
-      }
-    }
-  }, [])
 
   // Extract keywords for stock search
   const fetchKeywords = useCallback(
@@ -85,39 +75,6 @@ export function useVideoGeneration({
     []
   )
 
-  // Poll pipeline status
-  const pollPipeline = useCallback((vid: string) => {
-    const poll = async () => {
-      try {
-        const res = await fetch(`/api/create/status?videoId=${vid}`)
-        if (!res.ok) return
-
-        const data = await res.json()
-
-        if (data.steps) {
-          setPipelineSteps(data.steps)
-        }
-
-        const allDone = data.steps?.every(
-          (s: PipelineStep) => s.status === 'completed' || s.status === 'error'
-        )
-
-        if (allDone) {
-          if (pollingRef.current) {
-            clearInterval(pollingRef.current)
-            pollingRef.current = null
-          }
-          setIsGenerating(false)
-        }
-      } catch {
-        // Silent fail, keep polling
-      }
-    }
-
-    poll()
-    pollingRef.current = setInterval(poll, 3000)
-  }, [])
-
   // Reset generation state
   const resetGeneration = useCallback(() => {
     setIsGenerating(false)
@@ -126,10 +83,6 @@ export function useVideoGeneration({
     setError(null)
     setSceneKeywords([])
     setSceneSelections([])
-    if (pollingRef.current) {
-      clearInterval(pollingRef.current)
-      pollingRef.current = null
-    }
   }, [])
 
   // Start generation
@@ -175,18 +128,25 @@ export function useVideoGeneration({
         throw new Error(errorData.error ?? `Erreur ${response.status}`)
       }
 
+      // Contrat réel de /api/create (audit #2) : la route est SYNCHRONE et
+      // renvoie { success, video: { id, ... } } — succès = vidéo prête, le
+      // spinner s'arrête immédiatement et l'ID alimente la suite du parcours.
       const result = await response.json()
-      setVideoId(result.videoId ?? null)
+      const resolvedVideoId: string | null = result?.video?.id ?? result?.videoId ?? null
 
-      if (result.videoId) {
-        pollPipeline(result.videoId)
+      setVideoId(resolvedVideoId)
+      setIsGenerating(false)
+      setPipelineSteps((prev) => prev.map((s) => ({ ...s, status: 'completed' as const })))
+
+      if (!resolvedVideoId) {
+        setError('Video generee mais identifiant manquant dans la reponse — actualise ta bibliotheque.')
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Erreur lors de la generation'
       setError(message)
       setIsGenerating(false)
     }
-  }, [topic, format, quality, engine, niche, style, voice, mode, script, mediaMode, sceneSelections, isOverLimit, pollPipeline])
+  }, [topic, format, quality, engine, niche, style, voice, mode, script, mediaMode, sceneSelections, isOverLimit])
 
   return {
     isGenerating,

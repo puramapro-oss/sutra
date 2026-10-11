@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { creditWallet } from '@/lib/smart-split'
@@ -12,7 +13,6 @@ export const maxDuration = 300
  * Idempotent (lock pool_transactions.metadata.date), atomicité best-effort, BATCH_LIMIT 2000, maxDuration 300s.
  */
 
-const CRON_SECRET = process.env.CRON_SECRET
 const DISTRIBUTION_RATE = Number(process.env.KARMA_DISTRIBUTION_RATE ?? 0.2)
 const ACTIVE_WINDOW_DAYS = Number(process.env.KARMA_ACTIVE_WINDOW_DAYS ?? 7)
 const BATCH_LIMIT = 2000
@@ -32,9 +32,8 @@ function round2(n: number): number {
 export async function GET(request: Request): Promise<Response> {
   const startedAt = Date.now()
 
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   if (DISTRIBUTION_RATE <= 0 || DISTRIBUTION_RATE > 1) {
     return NextResponse.json(

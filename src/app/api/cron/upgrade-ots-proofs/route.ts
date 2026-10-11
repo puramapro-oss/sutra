@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { attemptUpgrade } from '@/lib/opentimestamps'
@@ -30,7 +31,6 @@ export const maxDuration = 120
 //     dans Vercel project settings (Environment Variables → CRON_SECRET).
 // ---------------------------------------------------------------------------
 
-const CRON_SECRET = process.env.CRON_SECRET
 const STORAGE_BUCKET = 'video-proofs'
 const BATCH_SIZE = 50 // max preuves traitées par exécution (stay < maxDuration)
 const MIN_AGE_MINUTES = 30 // ne touche pas les preuves <30min (calendar pas prêt)
@@ -49,9 +49,8 @@ type PendingProof = {
 export async function GET(request: Request): Promise<Response> {
   const startedAt = Date.now()
 
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
   const cutoffIso = new Date(Date.now() - MIN_AGE_MINUTES * 60_000).toISOString()

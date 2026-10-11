@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useId } from 'react'
+import { useEffect, useState, useId, useMemo } from 'react'
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { loadSlim } from '@tsparticles/slim'
 import type { ISourceOptions } from '@tsparticles/engine'
@@ -15,7 +15,7 @@ function getConfig(variant: 'landing' | 'dashboard'): ISourceOptions {
 
   return {
     fullScreen: { enable: false },
-    fpsLimit: 60,
+    fpsLimit: isLanding ? 30 : 24,
     smooth: true,
     particles: {
       number: {
@@ -143,6 +143,7 @@ export function CosmicParticles({ className = '', variant = 'landing' }: CosmicP
   const [ready, setReady] = useState(engineReady)
   const [reducedMotion, setReducedMotion] = useState(false)
   const instanceId = useId()
+  const options = useMemo(() => getConfig(variant), [variant])
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -164,10 +165,12 @@ export function CosmicParticles({ className = '', variant = 'landing' }: CosmicP
       })
     }
 
+    let active = true
     enginePromise.then(() => {
       engineReady = true
-      setReady(true)
-    })
+      if (active) setReady(true)
+    }).catch(() => { enginePromise = null })
+    return () => { active = false }
   }, [reducedMotion])
 
   if (reducedMotion || !ready) return null
@@ -176,7 +179,7 @@ export function CosmicParticles({ className = '', variant = 'landing' }: CosmicP
     <Particles
       id={`cosmic-${variant}-${instanceId.replace(/:/g, '')}`}
       className={`pointer-events-none ${className}`}
-      options={getConfig(variant)}
+      options={options}
       style={{
         position: 'absolute',
         inset: 0,

@@ -14,6 +14,14 @@ test.describe('Navigation — Public routes', () => {
 
   test('pricing link works from landing', async ({ page }) => {
     await page.goto('/')
+    const isMobile = (page.viewportSize()?.width ?? 1280) < 768
+    if (isMobile) {
+      // LandingNav mobile : liens cachés par design (CTA unique « Commencer ») —
+      // on vérifie que /pricing reste joignable directement.
+      const res = await page.goto('/pricing')
+      expect(res?.status()).toBeLessThan(400)
+      return
+    }
     const pricingLink = page.locator('a[href="/pricing"]').first()
     if (await pricingLink.count() > 0) {
       await pricingLink.click()
@@ -24,6 +32,16 @@ test.describe('Navigation — Public routes', () => {
 
   test('login link works from landing', async ({ page }) => {
     await page.goto('/')
+    const isMobile = (page.viewportSize()?.width ?? 1280) < 640
+    if (isMobile) {
+      // « Se connecter » caché < 640px par design — le CTA mobile pointe vers /signup.
+      const cta = page.getByTestId('welcome-cta-primary')
+      await expect(cta).toBeVisible()
+      await cta.click()
+      await page.waitForLoadState('networkidle')
+      expect(page.url()).toContain('signup')
+      return
+    }
     const loginLink = page.locator('a[href="/login"]').first()
     if (await loginLink.count() > 0) {
       await loginLink.click()

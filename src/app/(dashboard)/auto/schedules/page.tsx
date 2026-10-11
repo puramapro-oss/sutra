@@ -24,8 +24,8 @@ const DAYS = ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU']
 const FREQ: Array<{ id: Schedule['frequency']; label: string }> = [
   { id: 'daily', label: 'Quotidien' },
   { id: 'weekly', label: 'Hebdomadaire' },
-  { id: 'biweekly', label: 'Bi-mensuel' },
-  { id: 'monthly', label: 'Mensuel' },
+  { id: 'biweekly', label: 'Toutes les 2 semaines' },
+  { id: 'monthly', label: '1er jour choisi du mois' },
 ]
 
 export default function SchedulesPage() {

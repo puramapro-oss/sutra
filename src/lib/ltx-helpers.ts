@@ -1,15 +1,12 @@
 import type { Plan } from '@/types'
-import { generateWanVideo, type WanQuality } from '@/lib/wan'
+import { generateWanVideo, type WanFormat, type WanQuality } from '@/lib/wan'
 import { createServiceClient } from '@/lib/supabase'
 import type { VideoEngine, LtxModel, LtxResult } from './ltx-types'
-
-// ---------------------------------------------------------------------------
-// Wrapper interne WAN + tracking V7.1
-// ---------------------------------------------------------------------------
 
 export async function generateWanVideoWithTracking(params: {
   prompt: string
   quality: string
+  format: string
   duration: number
   userEmail: string | null
   track: {
@@ -26,12 +23,16 @@ export async function generateWanVideoWithTracking(params: {
   const wanQuality: WanQuality = ['720p', '1080p', '4k'].includes(params.quality)
     ? (params.quality as WanQuality)
     : '720p'
+  const wanFormat: WanFormat = ['9:16', '16:9', '1:1'].includes(params.format)
+    ? (params.format as WanFormat)
+    : '16:9'
 
   try {
     const result = await generateWanVideo({
       prompt: params.prompt,
       userEmail: params.userEmail,
       quality: wanQuality,
+      format: wanFormat,
       duration: params.duration,
     })
 
@@ -44,6 +45,12 @@ export async function generateWanVideoWithTracking(params: {
       durationMs: Date.now() - start,
       success: true,
       errorMessage: null,
+      requestMetadata: {
+        requested_quality: result.requestedQuality,
+        generated_resolution: result.resolution,
+        format: result.format,
+        native_4k: result.native4k,
+      },
     })
 
     return {
@@ -63,14 +70,14 @@ export async function generateWanVideoWithTracking(params: {
       durationMs: Date.now() - start,
       success: false,
       errorMessage: err instanceof Error ? err.message : String(err),
+      requestMetadata: {
+        requested_quality: wanQuality,
+        format: wanFormat,
+      },
     })
     throw err
   }
 }
-
-// ---------------------------------------------------------------------------
-// V7.1 — Tracking video_generations (non-blocking, errors swallowed)
-// ---------------------------------------------------------------------------
 
 export async function logVideoGeneration(params: {
   userId: string | null
@@ -78,18 +85,18 @@ export async function logVideoGeneration(params: {
   plan: Plan
   engineRequested: VideoEngine
   modelRequested: LtxModel | 'wan-2.2'
-  engineUsed: 'ltx' | 'wan' | 'pexels' | 'shotstack'
+  engineUsed: 'ltx' | 'wan' | 'pexels' | 'shotstack' | 'local'
   modelUsed: string
   fallbackTriggered: boolean
   fallbackReason: string | null
   durationMs: number
   success: boolean
   errorMessage: string | null
+  requestMetadata?: Record<string, unknown>
 }): Promise<void> {
-  if (!params.userId) return // pas de user → pas de ligne DB (NOT NULL)
+  if (!params.userId) return
   try {
     const supabase = createServiceClient()
-    // Traduit VideoEngine Purama → engine_requested CHECK schema (ltx/wan/...)
     const engineReqDb: 'ltx' | 'wan' =
       params.engineRequested === 'ltx-pro' || params.engineRequested === 'ltx-fast'
         ? 'ltx'
@@ -107,9 +114,9 @@ export async function logVideoGeneration(params: {
       duration_ms: params.durationMs,
       success: params.success,
       error_message: params.errorMessage,
-      request_metadata: {},
+      request_metadata: params.requestMetadata ?? {},
     })
   } catch {
-    // Non-blocking : on ne veut jamais fail une génération pour un log raté.
+    // Tracking must never break a customer render.
   }
 }
