@@ -16,7 +16,9 @@
     "test:release-regressions": "node --import tsx --test scripts/test-release-regressions.mts",
     "test:auto-schedule": "node scripts/test-auto-schedule.mjs",
     "test:ltx-v2-media": "node --import tsx --test scripts/test-ltx-v2-media.mts",
-    "test:social-publication": "node --import tsx --test scripts/test-social-publication.mts"
+    "test:social-publication": "node --import tsx --test scripts/test-social-publication.mts",
+    "test:auth-session": "node --import tsx --test scripts/test-auth-session.mts",
+    "test:ui-isolated": "node scripts/test-ui-isolated.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.3",
@@ -80,7 +82,8 @@
     "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
-    "typescript": "^5"
+    "typescript": "^5",
+    "axe-core": "4.11.1"
   },
   "overrides": {
     "crypto-js": "^4.2.0",

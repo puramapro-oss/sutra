@@ -31,6 +31,7 @@ import type { Video as VideoType, Plan } from '@/types'
 const supabase = createClient()
 
 interface DashboardData {
+  userId: string
   videosThisMonth: number
   videosTotal: number
   recentVideos: VideoType[]
@@ -38,12 +39,14 @@ interface DashboardData {
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { profile, loading: authLoading } = useAuth()
-  const [data, setData] = useState<DashboardData | null>(null)
+  const { profile, loading: authLoading, error: authError, refetch } = useAuth()
+  const [loadedData, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState(false)
 
   const fetchDashboard = useCallback(async (userId: string) => {
     setLoading(true)
+    setLoadError(false)
     try {
       const now = new Date()
       const firstOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
@@ -66,31 +69,31 @@ export default function DashboardPage() {
           .limit(5),
       ])
 
+      if (monthResult.error || totalResult.error || recentResult.error) throw new Error('DASHBOARD_READ_FAILED')
+
       setData({
+        userId,
         videosThisMonth: monthResult.count ?? 0,
         videosTotal: totalResult.count ?? 0,
         recentVideos: (recentResult.data as VideoType[]) ?? [],
       })
     } catch {
-      setData({
-        videosThisMonth: 0,
-        videosTotal: 0,
-        recentVideos: [],
-      })
+      setLoadError(true)
     } finally {
       setLoading(false)
     }
   }, [])
 
   useEffect(() => {
+    let active = true
     if (profile?.id) {
-      fetchDashboard(profile.id)
-    } else if (!authLoading) {
-      // Auth finished but no profile — stop loading, show empty state
-      setLoading(false)
-      setData({ videosThisMonth: 0, videosTotal: 0, recentVideos: [] })
+      const id = profile.id
+      queueMicrotask(() => { if (active) void fetchDashboard(id) })
     }
+    return () => { active = false }
   }, [profile?.id, authLoading, fetchDashboard])
+
+  const data = loadedData?.userId === profile?.id ? loadedData : null
 
   const plan = (profile?.plan ?? 'free') as Plan
   const planLimits = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
@@ -110,9 +113,17 @@ export default function DashboardPage() {
     return <DashboardSkeleton />
   }
 
+  if (authError || !profile || loadError) {
+    return <div role="alert" className="mx-auto max-w-xl rounded-2xl border border-amber-500/25 bg-amber-500/10 p-6 space-y-4">
+      <h1 className="text-xl font-semibold">Le tableau de bord n’a pas pu être chargé</h1>
+      <p className="text-sm text-white/70">Tes données n’ont pas pu être vérifiées. Réessaie lorsque la connexion est rétablie.</p>
+      <Button onClick={() => profile && !authError ? fetchDashboard(profile.id) : refetch()}>Réessayer</Button>
+    </div>
+  }
+
   return (
     <LoadingTimeout
-      loading={loading}
+      loading={loading || !data}
       onRetry={() => profile?.id && fetchDashboard(profile.id)}
       skeleton={<DashboardSkeleton />}
     >
@@ -133,13 +144,6 @@ export default function DashboardPage() {
         <p className="text-sm text-white/50 mt-1">
           Voici un apercu de ton activite video.
         </p>
-      </div>
-
-      {/* V7 — 3 blocs above-the-fold (parrainage, ambassadeur, cross-promo) */}
-      <div className="grid grid-cols-1 gap-4" data-testid="v7-home-blocks">
-        <ReferralBlock />
-        <AmbassadorBlock />
-        <CrossPromoBlock />
       </div>
 
       {/* KPI Cards */}
@@ -277,6 +281,11 @@ export default function DashboardPage() {
           />
         )}
       </div>
+      <section aria-label="Parrainage et écosystème" className="grid grid-cols-1 gap-4" data-testid="v7-home-blocks">
+        <ReferralBlock />
+        <AmbassadorBlock />
+        <CrossPromoBlock />
+      </section>
     </motion.div>
     </LoadingTimeout>
   )

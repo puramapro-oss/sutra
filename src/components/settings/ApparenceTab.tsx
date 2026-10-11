@@ -28,7 +28,7 @@ interface ApparenceTabProps {
   theme: 'dark' | 'oled' | 'light'
   setTheme: (theme: 'dark' | 'oled' | 'light') => void
   brandLogo: string
-  setBrandLogo: (logo: string) => void
+  selectBrandLogo: (file: File) => Promise<void>
   brandPrimary: string
   setBrandPrimary: (color: string) => void
   brandSecondary: string
@@ -44,7 +44,7 @@ export default function ApparenceTab({
   theme,
   setTheme,
   brandLogo,
-  setBrandLogo,
+  selectBrandLogo,
   brandPrimary,
   setBrandPrimary,
   brandSecondary,
@@ -68,13 +68,15 @@ export default function ApparenceTab({
             ].map((t) => (
               <button
                 key={t.id}
+                type="button"
+                aria-pressed={theme === t.id}
                 onClick={() => setTheme(t.id)}
                 data-testid={`theme-${t.id}`}
                 className={cn(
-                  'flex-1 flex items-center gap-2 px-4 py-3 rounded-xl border transition-all',
+                  'min-w-0 flex-1 flex flex-col sm:flex-row items-center justify-center gap-2 px-2 sm:px-4 py-3 rounded-xl border transition-all',
                   theme === t.id
                     ? 'bg-violet-500/20 border-violet-500/40 text-violet-400'
-                    : 'bg-white/[0.02] border-white/[0.06] text-white/40'
+                    : 'bg-white/[0.02] border-white/[0.06] text-white/65'
                 )}
               >
                 <t.icon className="h-4 w-4" />
@@ -89,15 +91,17 @@ export default function ApparenceTab({
         <CardContent className="space-y-4">
           <h3 className="text-sm font-semibold text-white">Langue</h3>
           <select
+            aria-label="Langue de l’interface"
             data-testid="language-select"
             defaultValue={typeof document !== 'undefined' ? (document.cookie.match(/sutra_locale=([^;]+)/)?.[1] || 'fr') : 'fr'}
             onChange={async (e) => {
               try {
-                await fetch('/api/locale', {
+                const response = await fetch('/api/locale', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ locale: e.target.value }),
                 })
+                if (!response.ok) throw new Error('LANGUAGE_SAVE_FAILED')
                 window.location.reload()
               } catch {
                 toast.error('Erreur lors du changement de langue')
@@ -117,64 +121,68 @@ export default function ApparenceTab({
       <Card data-testid="settings-brandkit">
         <CardContent className="space-y-4">
           <h3 className="text-sm font-semibold text-white">Brand Kit</h3>
-          <p className="text-xs text-white/30">
+          <p className="text-xs text-white/65">
             Configure ton branding pour l&apos;appliquer automatiquement a tes videos.
           </p>
 
           {/* Logo */}
           <div>
-            <label className="text-xs font-medium text-white/40 mb-2 block">Logo</label>
-            <div
+            <label className="text-xs font-medium text-white/65 mb-2 block">Logo</label>
+            <button
+              type="button"
+              aria-label="Choisir le logo de la marque"
               onClick={() => logoInputRef.current?.click()}
               className="h-20 w-20 rounded-xl bg-white/[0.03] border border-dashed border-white/[0.08] flex items-center justify-center cursor-pointer hover:border-white/[0.15] transition-colors overflow-hidden"
             >
               {brandLogo ? (
                 <img src={brandLogo} alt="Logo" className="w-full h-full object-contain" />
               ) : (
-                <Upload className="h-5 w-5 text-white/20" />
+                <Upload className="h-5 w-5 text-white/65" />
               )}
-            </div>
+            </button>
             <input
               ref={logoInputRef}
               type="file"
-              accept="image/*"
+              accept="image/png,image/jpeg,image/webp"
               onChange={(e) => {
                 const file = e.target.files?.[0]
                 if (file) {
-                  const url = URL.createObjectURL(file)
-                  setBrandLogo(url)
+                  void selectBrandLogo(file)
                 }
               }}
               className="hidden"
             />
+            <p className="mt-2 text-xs text-white/60">PNG, JPEG ou WebP · 5 Mo maximum</p>
           </div>
 
           {/* Colors */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-medium text-white/40 mb-1.5 block">Couleur primaire</label>
+              <label className="text-xs font-medium text-white/65 mb-1.5 block">Couleur primaire</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
                   value={brandPrimary}
                   onChange={(e) => setBrandPrimary(e.target.value)}
                   data-testid="brand-primary-color"
+                  aria-label="Couleur primaire de la marque"
                   className="h-8 w-8 rounded-lg cursor-pointer bg-transparent border-0"
                 />
-                <span className="text-xs text-white/40 font-mono">{brandPrimary}</span>
+                <span className="text-xs text-white/65 font-mono">{brandPrimary}</span>
               </div>
             </div>
             <div>
-              <label className="text-xs font-medium text-white/40 mb-1.5 block">Couleur secondaire</label>
+              <label className="text-xs font-medium text-white/65 mb-1.5 block">Couleur secondaire</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
                   value={brandSecondary}
                   onChange={(e) => setBrandSecondary(e.target.value)}
                   data-testid="brand-secondary-color"
+                  aria-label="Couleur secondaire de la marque"
                   className="h-8 w-8 rounded-lg cursor-pointer bg-transparent border-0"
                 />
-                <span className="text-xs text-white/40 font-mono">{brandSecondary}</span>
+                <span className="text-xs text-white/65 font-mono">{brandSecondary}</span>
               </div>
             </div>
           </div>

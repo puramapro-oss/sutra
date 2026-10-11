@@ -68,7 +68,7 @@ export default function PartnerToolsPage() {
       >
         <div className="flex items-center gap-3 mb-8">
           <Link
-            href="/dashboard/partenaire"
+            href="/partenaire"
             className="text-white/50 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />

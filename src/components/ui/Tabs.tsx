@@ -76,7 +76,7 @@ export function Tabs({
               'relative px-4 py-2.5 text-sm font-medium transition-colors duration-200 whitespace-nowrap flex items-center gap-2',
               activeTab === tab.id
                 ? 'text-violet-400'
-                : 'text-white/40 hover:text-white/70'
+                : 'text-white/65 hover:text-white/70'
             )}
           >
             {tab.icon}

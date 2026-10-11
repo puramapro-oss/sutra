@@ -20,14 +20,14 @@ export function LandingNav() {
         <div className="flex items-center gap-2">
           <Link
             href="/login"
-            className="hidden sm:inline-flex text-sm text-white/70 hover:text-white px-3 py-1.5 rounded-lg transition-colors"
+            className="inline-flex items-center min-h-11 text-xs sm:text-sm text-white/80 hover:text-white px-2 sm:px-3 py-1.5 rounded-lg transition-colors"
           >
             Se connecter
           </Link>
           <Link
             href="/signup"
             data-testid="welcome-cta-primary"
-            className="group inline-flex items-center gap-1.5 text-sm font-medium bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white px-4 py-2 rounded-lg shadow-[0_8px_24px_-8px_rgba(217,70,239,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(217,70,239,0.85)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+            className="group inline-flex items-center min-h-11 gap-1.5 text-xs sm:text-sm font-medium bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white px-3 sm:px-4 py-2 rounded-lg shadow-[0_8px_24px_-8px_rgba(217,70,239,0.6)] hover:shadow-[0_12px_32px_-8px_rgba(217,70,239,0.85)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
           >
             Commencer
             <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />

@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
+import { safeNextPath, sessionCookieOptions } from '@/lib/auth-navigation'
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/dashboard'
+  const next = safeNextPath(searchParams.get('next'))
 
   if (!code) {
     return NextResponse.redirect(`${origin}/login?error=missing_code`)
@@ -24,7 +25,7 @@ export async function GET(request: Request) {
         setAll(cookiesToSet) {
           try {
             cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options)
+              cookieStore.set(name, value, sessionCookieOptions(options, cookieStore.get('sutra_persist')?.value))
             })
           } catch {
             // Server Component context — middleware will refresh
@@ -35,36 +36,16 @@ export async function GET(request: Request) {
   )
 
   try {
-    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (error) {
       return NextResponse.redirect(
-        `${origin}/login?error=${encodeURIComponent(error.message)}`
+        `${origin}/login?error=callback_failed`
       )
     }
 
-    if (data.user) {
-      const { CURRENT_LEGAL_VERSIONS } = await import('@/lib/legal/versions')
-      await Promise.all(
-        (['cgu', 'cgv', 'confidentialite'] as const).map((docType) =>
-          supabase.from('legal_acceptances').upsert(
-            { user_id: data.user!.id, doc_type: docType, version: CURRENT_LEGAL_VERSIONS[docType] },
-            { onConflict: 'user_id,doc_type', ignoreDuplicates: true }
-          )
-        )
-      )
-    }
-
-    // Use x-forwarded-host for Vercel proxy
-    const forwardedHost = request.headers.get('x-forwarded-host')
-    const isLocal = process.env.NODE_ENV === 'development'
-
-    if (isLocal) {
-      return NextResponse.redirect(`${origin}${next}`)
-    } else if (forwardedHost) {
-      return NextResponse.redirect(`https://${forwardedHost}${next}`)
-    } else {
-      return NextResponse.redirect(`${origin}${next}`)
-    }
+    // A login is not proof of accepting legal documents. The existing dashboard
+    // gate requests any missing acceptance. Never trust an arbitrary forwarded host.
+    return NextResponse.redirect(new URL(next, origin))
   } catch {
     return NextResponse.redirect(`${origin}/login?error=callback_failed`)
   }

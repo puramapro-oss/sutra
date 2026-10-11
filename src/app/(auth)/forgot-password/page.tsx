@@ -31,7 +31,7 @@ export default function ForgotPasswordPage() {
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(
         email,
         {
-          redirectTo: `${window.location.origin}/auth/callback?next=/settings`,
+          redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
         }
       )
       if (resetError) throw resetError
@@ -82,11 +82,11 @@ export default function ForgotPasswordPage() {
                 <Mail className="w-8 h-8 text-emerald-400" />
               </div>
               <h2 className="text-lg font-semibold text-white mb-2">
-                Email envoye
+                Vérifie ta messagerie
               </h2>
               <p className="text-white/50 text-sm mb-6 leading-relaxed">
-                Un lien de reinitialisation a ete envoye a{' '}
-                <span className="text-violet-400 font-medium">{email}</span>.
+                Si un compte correspond à{' '}
+                <span className="text-violet-400 font-medium break-all">{email}</span>, un lien de réinitialisation a été envoyé.
                 <br />
                 Verifie tes spams si tu ne le vois pas.
               </p>
@@ -133,7 +133,7 @@ export default function ForgotPasswordPage() {
           )}
         </div>
 
-        <p className="text-center text-xs text-white/20 mt-6">
+        <p className="text-center text-xs text-white/60 mt-6">
           SUTRA by Purama — Generation video IA
         </p>
       </motion.div>

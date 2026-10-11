@@ -8,6 +8,7 @@ import { cn, formatRelativeDate } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
 import { createClient } from '@/lib/supabase'
 import type { UserNotification } from '@/types'
+import { toast } from 'sonner'
 
 const supabase = createClient()
 
@@ -16,34 +17,44 @@ export default function NotificationBell() {
   const [open, setOpen] = useState(false)
   const [notifications, setNotifications] = useState<UserNotification[]>([])
   const [loading, setLoading] = useState(false)
+  const [loadError, setLoadError] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const unreadCount = notifications.filter((n) => !n.read).length
 
   const userIdRef = useRef(user?.id)
-  userIdRef.current = user?.id
 
   const fetchNotifications = useCallback(async () => {
     const uid = userIdRef.current
     if (!uid) return
     setLoading(true)
+    setLoadError(false)
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('user_notifications')
         .select('*')
         .eq('user_id', uid)
         .order('created_at', { ascending: false })
         .limit(10)
+      if (error) throw error
+      if (userIdRef.current !== uid) return
       setNotifications((data as UserNotification[]) ?? [])
     } catch {
-      // Silent fail
+      if (userIdRef.current === uid) setLoadError(true)
     } finally {
-      setLoading(false)
+      if (userIdRef.current === uid) setLoading(false)
     }
   }, [])
 
   useEffect(() => {
-    if (user?.id) fetchNotifications()
+    userIdRef.current = user?.id
+    let active = true
+    queueMicrotask(() => {
+      if (!active) return
+      setNotifications([])
+      if (user?.id) void fetchNotifications()
+    })
+    return () => { active = false; userIdRef.current = undefined }
   }, [user?.id, fetchNotifications])
 
   useEffect(() => {
@@ -60,7 +71,10 @@ export default function NotificationBell() {
   }, [])
 
   const markAsRead = async (id: string) => {
-    await supabase.from('user_notifications').update({ read: true }).eq('id', id)
+    if (!user) return
+    const { data, error } = await supabase.from('user_notifications').update({ read: true }).eq('id', id).eq('user_id', user.id).select('id').maybeSingle()
+    if (error || !data) { toast.error('La notification n’a pas pu être mise à jour.'); return }
+    if (userIdRef.current !== user.id) return
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     )
@@ -68,11 +82,13 @@ export default function NotificationBell() {
 
   const markAllAsRead = async () => {
     if (!user) return
-    await supabase
+    const { error } = await supabase
       .from('user_notifications')
       .update({ read: true })
       .eq('user_id', user.id)
       .eq('read', false)
+    if (error) { toast.error('Les notifications n’ont pas pu être mises à jour.'); return }
+    if (userIdRef.current !== user.id) return
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
   }
 
@@ -92,8 +108,10 @@ export default function NotificationBell() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="relative p-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors"
+        className="relative flex h-11 w-11 items-center justify-center rounded-lg text-white/65 hover:text-white hover:bg-white/5 transition-colors"
         data-testid="notification-bell"
+        aria-label={`Notifications${unreadCount ? `, ${unreadCount} non lues` : ''}`}
+        aria-expanded={open}
       >
         <Bell className="w-[18px] h-[18px]" />
         {unreadCount > 0 && (
@@ -114,7 +132,7 @@ export default function NotificationBell() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -4 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-2 w-80 rounded-xl bg-[#0f0e1a]/95 backdrop-blur-xl border border-white/[0.08] shadow-2xl shadow-black/50 z-50 overflow-hidden"
+            className="fixed left-4 right-4 top-20 sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80 rounded-xl bg-[#0f0e1a]/95 backdrop-blur-xl border border-white/[0.08] shadow-2xl shadow-black/50 z-50 overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06]">
@@ -135,7 +153,7 @@ export default function NotificationBell() {
 
             {/* List */}
             <div className="max-h-80 overflow-y-auto scrollbar-thin">
-              {loading && notifications.length === 0 ? (
+              {loadError ? <p role="alert" className="p-4 text-sm text-amber-200">Notifications indisponibles. <button type="button" className="underline" onClick={fetchNotifications}>Réessayer</button></p> : loading && notifications.length === 0 ? (
                 <div className="py-8 text-center">
                   <div className="w-5 h-5 border-2 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mx-auto" />
                 </div>

@@ -10,8 +10,11 @@ import { loginSchema } from '@/lib/validators'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { safeNextPath, rememberSession } from '@/lib/auth-navigation'
+import { useHydrated } from '@/hooks/useHydrated'
 
 export default function LoginPage() {
+  const hydrated = useHydrated()
   const router = useRouter()
   const { signIn, signInWithGoogle } = useAuth()
   const [email, setEmail] = useState('')
@@ -20,12 +23,11 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
-  const [rememberMe, setRememberMe] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('sutra_remember_me') === 'true'
-    }
-    return false
-  })
+  const [rememberChoice, setRememberMe] = useState<boolean | undefined>()
+  let storedChoice = false
+  if (hydrated) { try { storedChoice = localStorage.getItem('sutra_remember_me') === 'true' } catch { /* Optional preference. */ } }
+  const rememberMe = rememberChoice ?? storedChoice
+  const callbackError = hydrated && new URLSearchParams(window.location.search).has('error')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,24 +48,11 @@ export default function LoginPage() {
 
     setLoading(true)
     try {
-      // Store remember me preference
-      localStorage.setItem('sutra_remember_me', String(rememberMe))
-      // Remove signed-out flag
-      sessionStorage.removeItem('sutra_signed_out')
-
+      rememberSession(rememberMe)
       await signIn(email, password)
-
-      // Set session persistence cookie
-      if (rememberMe) {
-        const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString()
-        document.cookie = `sutra_persist=true;expires=${expires};path=/;SameSite=Lax`
-      } else {
-        // Session cookie — expires when browser closes
-        document.cookie = 'sutra_persist=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
-      }
-
-      toast.success('Connexion reussie')
-      router.push('/dashboard')
+      toast.success('Connexion réussie')
+      router.replace(safeNextPath(new URLSearchParams(window.location.search).get('next')))
+      router.refresh()
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : 'Erreur de connexion'
@@ -82,18 +71,8 @@ export default function LoginPage() {
   const handleGoogle = async () => {
     setGoogleLoading(true)
     try {
-      // Store remember me preference before redirect
-      localStorage.setItem('sutra_remember_me', String(rememberMe))
-      sessionStorage.removeItem('sutra_signed_out')
-
-      if (rememberMe) {
-        const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString()
-        document.cookie = `sutra_persist=true;expires=${expires};path=/;SameSite=Lax`
-      } else {
-        document.cookie = 'sutra_persist=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/'
-      }
-
-      await signInWithGoogle()
+      rememberSession(rememberMe)
+      await signInWithGoogle(safeNextPath(new URLSearchParams(window.location.search).get('next')))
     } catch {
       toast.error('Erreur de connexion Google')
       setGoogleLoading(false)
@@ -123,19 +102,21 @@ export default function LoginPage() {
               </h1>
             </Link>
             <p className="text-white/50 text-sm mt-2">
-              Connecte-toi a ton compte
+              Connecte-toi à ton compte
             </p>
           </div>
+
+          {callbackError && <p role="alert" className="mb-5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-100">Le lien de connexion a expiré ou n’a pas pu être vérifié. Reconnecte-toi ou demande un nouveau lien.</p>}
 
           {/* Google button */}
           <Button
             data-testid="google-button"
             variant="secondary"
             size="lg"
-            className="w-full mb-6"
+            className="w-full mb-6 px-4 text-sm sm:text-base"
             onClick={handleGoogle}
             loading={googleLoading}
-            disabled={loading}
+            disabled={loading || !hydrated}
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
               <path
@@ -164,7 +145,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-white/[0.06]" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-[#06050e] px-3 text-white/30">ou</span>
+              <span className="bg-[#06050e] px-3 text-white/60">ou</span>
             </div>
           </div>
 
@@ -172,6 +153,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               data-testid="email-input"
+              disabled={!hydrated}
               type="email"
               label="Email"
               value={email}
@@ -183,6 +165,7 @@ export default function LoginPage() {
 
             <Input
               data-testid="password-input"
+              disabled={!hydrated}
               type={showPassword ? 'text' : 'password'}
               label="Mot de passe"
               value={password}
@@ -194,8 +177,8 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="text-white/30 hover:text-white/60 transition-colors pointer-events-auto"
-                  tabIndex={-1}
+                  className="text-white/60 hover:text-white/60 transition-colors pointer-events-auto"
+                  aria-pressed={showPassword}
                   aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -211,19 +194,20 @@ export default function LoginPage() {
               >
                 <input
                   id="remember-me"
+                  disabled={!hydrated}
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
                   data-testid="remember-me-checkbox"
                   className="w-4 h-4 rounded border-white/20 bg-white/5 text-violet-500 focus:ring-violet-500/30 focus:ring-offset-0 cursor-pointer accent-violet-500"
                 />
-                <span className="text-xs text-white/50">Rester connecte</span>
+                <span className="text-xs text-white/65">Rester connecté</span>
               </label>
               <Link
                 href="/forgot-password"
                 className="text-xs text-violet-400 hover:text-violet-300 transition-colors"
               >
-                Mot de passe oublie ?
+                Mot de passe oublié ?
               </Link>
             </div>
 
@@ -240,7 +224,7 @@ export default function LoginPage() {
           </form>
 
           {/* Signup link */}
-          <p className="text-center text-sm text-white/40 mt-6">
+          <p className="text-center text-sm text-white/65 mt-6">
             Pas de compte ?{' '}
             <Link
               href="/signup"
@@ -252,7 +236,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-white/20 mt-6">
+        <p className="text-center text-xs text-white/60 mt-6">
           SUTRA by Purama — Generation video IA
         </p>
       </motion.div>

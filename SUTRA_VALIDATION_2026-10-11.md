@@ -12,6 +12,21 @@
 - Les conflits des routes de génération et de planification sont résolus vers les composants durables existants. Aucun moteur de file supplémentaire.
 - Les travaux locaux du Mac ne sont pas inclus : Desktop Commander indique `mac.home` hors ligne et MacDevBridge renvoie une erreur interne. Les verrous, worktrees et handoffs locaux restent à rapprocher avant toute intégration sur la machine du propriétaire.
 
+## Troisième passe : interface, authentification et parcours du studio
+
+Audit du 11 octobre 2026, prolongé après minuit en Europe/Paris. Travail fondé sur le HEAD de consolidation `3336496f92fd55c92c1c8fb2ec98c766d3ef69f2`. Les écrans ont été ouverts dans Chromium, puis les mêmes parcours exécutés sur un build Next.js de production démarré localement. Supabase, les comptes et les réponses des API métier sont des fixtures locales ; aucune base réelle n’a été modifiée.
+
+- **Accueil et petits écrans.** Les aperçus ne recouvrent plus le bouton de création. Les cartes sont identifiées comme un exemple, sans fausses mesures de génération. La connexion reste accessible sur mobile ; titres, icônes et boutons s’adaptent à 320, 375 et 1 280 pixels. Les sept étapes de production restent dans la largeur disponible. Le tableau de bord place les créations, indicateurs et actions du studio avant les blocs de parrainage, conservés plus bas.
+- **Navigation et dialogues.** La recherche mobile reprend `mainNav`, évitant deux listes divergentes. Les liens Partenariat et portefeuille sont corrigés. Recherche, fenêtre modale, focus clavier, Échap, intitulés des boutons et états actifs sont unifiés dans le composant `Modal` existant, rendu hors des conteneurs transformés. Les contrôles de navigation détectent les chemins internes littéraux sans page ou redirection correspondante.
+- **Formulaires.** Libellé flottant lié à la valeur courante, gestion `onChange` interne conservée, erreur reliée au champ par ARIA et icônes centrées indépendamment du message d’erreur. Les formulaires client ne peuvent plus partir en soumission HTML native avant hydratation. Contrastes et noms accessibles corrigés sur les écrans de connexion et d’apparence testés.
+- **Session unique côté navigateur.** Le contrat public de `useAuth` est conservé. Ses consommateurs partagent une souscription et une lecture du profil ; renouvellement du token, démontage/remontage, changement de compte et réponses tardives sont contrôlés. Les requêtes de profil démarrent hors du callback verrouillé de Supabase. Erreur ou profil indisponible ne sont plus présentés comme un compte gratuit ou des statistiques nulles.
+- **Connexion et récupération.** Destination interne conservée après connexion, avec query string et filtrage des redirections externes. La préférence « Rester connecté » s’applique aux vrais cookies Supabase lors des écritures navigateur, du callback et des rafraîchissements serveur. Déconnexion sans effacer tout le localStorage ni les cookies d’autres fonctions. Page de nouveau mot de passe ajoutée à la suite du lien de récupération ; ancien mot de passe vérifié lors d’un changement classique de compte email. Les URLs autorisées et emails de récupération du véritable projet Supabase restent à confirmer.
+- **Callback.** Le callback de connexion n’enregistre plus automatiquement une acceptation de documents sans interaction et ne construit plus une destination à partir d’un `x-forwarded-host` arbitraire. Le contrôle d’acceptation du dashboard existant conserve cette responsabilité. Le layout privé ajoute sa vérification serveur. Ces changements concernent l’authentification de SUTRA ; ils ne remplacent pas le chantier OAuth Zernio encore ouvert.
+- **Logo et sauvegardes.** Le logo est validé, décodé dans le navigateur puis envoyé au stockage avant de sauvegarder son adresse durable. PNG/JPEG/WebP, limite 5 Mio et bornes de dimensions ; SVG et incohérence MIME/signature refusés. Avatars et Brand Kit vérifient la réponse d’écriture du profil. Les URLs de prévisualisation sont libérées. Échec d’écriture affiché ; le test de rechargement retrouve l’URL stockée. La sécurité serveur du bucket et les fichiers orphelins en cas d’échec DB restent à traiter.
+- **Préférences et coût de l’interface.** Thème synchronisé entre composants, refus de stockage navigateur géré pour connexion/consentement, bandeau de cookies opaque et défilable. Animations respectant la préférence de mouvement réduit ; moteur de particules absent sur petit écran, onglet masqué, mode économique ou mouvement réduit, fréquence plafonnée et configuration mémorisée sur ordinateur. Les métriques Vercel sont chargées uniquement sur Vercel après consentement de mesure. Aucune mesure de latence du VPS ni certification de performance globale n’est déduite de ces optimisations.
+
+Les captures du navigateur ont été inspectées pendant les tests. Le thème clair de tous les écrans, Safari/iOS réel, lecteur d’écran, éditeur complet, grandes bibliothèques, multimédia réel, charge et parcours mobile natif ne sont pas certifiés. Les exemples locaux ne prouvent ni les politiques RLS, ni l’accès OAuth réel, ni une génération ou une publication réussie en production.
+
 ## Seconde passe : LTX, fichiers finaux et publication
 
 Les corrections suivantes complètent le premier lot. Elles sont vérifiées en environnement isolé et ne constituent pas un déploiement.
@@ -50,31 +65,36 @@ Limites des fichiers : téléchargement de rendu limité à 64 MiB, durée véri
 
 Sur une copie cloud isolée, sans secrets de production :
 
-- Suite Node : **205 tests recensés, 204 réussis, 0 échec, 1 ignoré**. Le test ignoré est l’horodatage réseau réel OpenTimestamps.
+- Suite Node : **236 tests recensés, 235 réussis, 0 échec, 1 ignoré**. Le test ignoré est l’horodatage réseau réel OpenTimestamps.
 - Trois scripts supplémentaires de la PR #2 réussissent : calendrier, exigence du montage final, publication/comptes.
 - Les tests comprennent des fichiers vidéo synthétiques décodés par FFmpeg/ffprobe et un serveur de test sur loopback. Aucun modèle IA n’a été exécuté sur le Mac.
 - Cas vérifiés : refus des 20 routes cron, montage musique sans voix, pistes absentes, interruption des morceaux voix, reprise Shotstack par identifiant, réponse distante incertaine, occurrences proches, conservation de la file, concurrence de publication, erreur de sauvegarde, OAuth interutilisateur/interplateforme/internavigateur/expiré/rejoué, et quota incertain après succès. La seconde passe ajoute LTX V2, reprise par identifiant, blocage de double soumission, DNS/redirections/flux médias, vérification et copie du rendu, refus de publication des anciens fichiers non vérifiés, concurrence, changement de version pendant publication et sauvegardes de publication, états 201/207 et identifiants de comptes.
 - Compatibilité OpenTimestamps : une preuve d’attente fabriquée hors ligne avec l’ancienne version 0.4.5 est relue et sérialisée à l’identique par 0.4.9. Cela ne constitue pas une preuve d’ancrage Bitcoin.
-- TypeScript complet réussi ; build Next.js 16.3.8 `--webpack` réussi avec avertissements.
+- TypeScript complet réussi ; build Next.js 16.3.8 `--webpack` réussi avec avertissements. Le build de la troisième passe a également été démarré avec `next start` pour les contrôles navigateur.
+- Navigateur : **45 contrôles réussis** dans Chromium 145, comptes/API simulés, aucune exception JavaScript non gérée. Pages publiques aux largeurs 320/375/1 280, studio mobile et navigation desktop, erreurs de données/sauvegarde, récupération, persistance et déconnexion. Axe-core est déclaré explicitement et verrouillé sur la version 4.11.1 déjà présente dans le lockfile ; contrôles WCAG A/AA limités aux écrans Connexion mobile et Paramètres/Apparence mobile.
+- Lint ciblé des fichiers source modifiés avec les règles Next.js/TypeScript : aucune erreur. Les avertissements existants ne sont pas masqués. Ce contrôle **ne remplace pas** le lint PURAMA officiel, dont le paquet partagé est absent.
 - `git diff --check` réussi ; aucun conflit Git non résolu.
 - `npm audit --omit=dev` : avant corrections, **3 critiques, 3 élevées, 8 modérées, 2 faibles** ; après corrections, **0 critique, 0 élevée, 8 modérées, 2 faibles**. Ces nombres désignent des dépendances signalées, pas un décompte de failles exploitables distinctes.
 
 Commande de la suite exécutée :
 
 ```sh
-node --import tsx --test scripts/test-api-contracts.mts scripts/test-env-contracts.mts scripts/test-local-engine.mts scripts/test-shotstack-contracts.mts scripts/test-production-queue.mts scripts/test-auto-export-queue.mts scripts/test-release-regressions.mts scripts/test-local-engine-e2e.mts scripts/test-video-contracts.mjs scripts/test-opentimestamps.mjs scripts/test-ltx-v2-media.mts scripts/test-social-publication.mts
+node --import tsx --test scripts/test-api-contracts.mts scripts/test-env-contracts.mts scripts/test-local-engine.mts scripts/test-shotstack-contracts.mts scripts/test-production-queue.mts scripts/test-auto-export-queue.mts scripts/test-release-regressions.mts scripts/test-local-engine-e2e.mts scripts/test-video-contracts.mjs scripts/test-opentimestamps.mjs scripts/test-ltx-v2-media.mts scripts/test-social-publication.mts scripts/test-auth-session.mts
 node scripts/test-auto-schedule.mjs
 node scripts/test-auto-composition.mjs
 node scripts/test-auto-publication.mjs
+SUTRA_UI_PRODUCTION=1 npm run test:ui-isolated
 ```
+
+Le test navigateur démarre son propre service Supabase factice sur loopback et bloque les appels navigateur aux fournisseurs externes. Chromium Playwright doit être installé ; `SUTRA_CHROMIUM_PATH` permet de désigner un exécutable compatible. Les résultats et captures sont écrits sous `test-results/ui-isolated` (ignorés par Git). Aucun identifiant réel n’est nécessaire.
 
 **Installation et portée du build.** Le `npm ci` initial n’a pas abouti : dépendance privée Git SSH et configuration ESLint externe au dépôt. Les vérifications utilisent un environnement séparé de dépendances de registre, aux versions du lockfile, et le source SMARANA du commit verrouillé `bc3469eb595485714b2044790105acfc5e3b0f31`, récupéré par l’accès GitHub autorisé. Aucun source privé SMARANA n’est ajouté à cette branche. Les dépendances privées imbriquées ne constituent pas une reproduction certifiée d’un `npm ci` complet. Le lint officiel n’est pas validé : le paquet partagé `../packages/eslint-config-purama` n’est pas disponible dans cette copie. Il faut rendre cette installation reproductible en CI avant intégration.
 
-Les tests Stripe live, Supabase distant, stockage distant, fournisseurs IA et publication réelle n’ont pas été exécutés. Les migrations n’ont pas été répétées sur une base jetable. Les tests navigateur authentifiés, mobile, charge et isolation multiclient ne sont pas certifiés.
+Les tests Stripe live, Supabase distant, stockage distant, fournisseurs IA et publication réelle n’ont pas été exécutés. Les migrations n’ont pas été répétées sur une base jetable. Les parcours navigateur authentifiés décrits ci-dessus sont testés avec un service local simulé. Les comptes réels, navigateurs mobiles natifs, tests de charge et isolation multiclient effective ne sont pas certifiés.
 
 ## Accès et hébergement
 
-La cible reste le VPS OVH, sans activation de service ni réabonnement Vercel. Le contrôle HTTP de `https://sutra.purama.dev` retourne **402**, en-tête serveur **Vercel**. Ce constat concerne le domaine historique ; il ne détermine pas l’état d’un éventuel déploiement OVH à une autre adresse.
+La cible reste le VPS OVH, sans activation de service ni réabonnement Vercel. Le contrôle HTTP renouvelé durant cette troisième passe de `https://sutra.purama.dev` retourne **402**, en-tête serveur **Vercel**. Ce constat concerne le domaine historique ; il ne détermine pas l’état d’un éventuel déploiement OVH à une autre adresse.
 
 L’historique mentionne une migration OVH et un blocage Supabase à diagnostiquer, mais aucun accès SSH opérationnel n’est disponible dans cette session. Les accès Mac restent indisponibles. L’état réel des conteneurs, du reverse proxy, des sauvegardes, des tâches cron et de la base n’est donc pas vérifié. Aucun serveur n’a été redémarré et aucun volume n’a été touché.
 
@@ -91,7 +111,7 @@ L’historique mentionne une migration OVH et un blocage Supabase à diagnostiqu
 9. **Couverture SSRF restante.** LTX, WAN et horodatage partagent le nouveau téléchargement contrôlé. Il reste à inventorier et raccorder les autres importateurs/fournisseurs, vérifier le filtrage réseau du VPS et l’isolation CPU/RAM des workers, puis éprouver les fichiers malformés supplémentaires. Le stockage privé et l’isolation multiclient effective ne sont pas certifiés.
 10. **Isolation SQL et tokens.** Les politiques effectives de la base ne sont pas accessibles. Vérifier les schémas `public`/`sutra`, la propriété de chaque ligne, les organisations, les budgets, les comptes, les secrets fournisseurs et les statistiques. Le durcissement du state OAuth ne certifie pas le chiffrement, la rotation ou la révocation des tokens historiques.
 11. **États historiques et migrations.** Répéter les migrations v10, occurrences et OAuth sur une base jetable issue d’un schéma représentatif. Inventorier les statuts et doublons avant les contraintes ; ne supprimer aucune ligne historique pour faire passer un index. La migration des occurrences est transactionnelle dans ce lot pour éviter un schéma partiellement modifié en cas d’échec.
-12. **Parcours client.** Vérifier authentification web/mobile, endpoints et méthodes utilisés par l’app mobile, approbation, erreurs récupérables, édition et bibliothèque. Le build ne remplace pas ces tests.
+12. **Parcours client réels.** Le web a désormais des tests navigateur isolés de connexion, récupération, navigation, erreurs et sauvegarde du logo. Qualifier sur la cible réelle : email et OAuth, URLs de callback, endpoints/méthodes de l’app mobile, approbation, édition complète, grandes bibliothèques et publication. Les fixtures ne remplacent pas ces tests.
 13. **Dépendances restantes.** Avis sur `bn.js`, `moment`, `request`/ses wrappers, `uuid`, `dompurify`, `elliptic`, et leurs dépendants. Certains n’ont pas de correction directe compatible. Analyser l’atteignabilité et remplacer la chaîne concernée avec tests de preuves ; ne pas appliquer une mise à jour majeure forcée ni annoncer « zéro vulnérabilité ».
 14. **Capacités promises.** Les parcours vidéo, voix, musique, sous-titres, bibliothèque et auto ont du code existant. Un podcast complet, chansons avec paroles, doublage intégral, extraction de courts depuis un long, campagnes multimarques et autonomie exhaustive ne sont pas démontrés par cette suite. Leur absence ou achèvement doit être établi par scénario utilisateur avant création d’un nouveau module.
 
@@ -123,6 +143,8 @@ Une version utilisable doit démontrer les parcours requis sur la cible OVH, ave
 
 ## Sources officielles consultées
 
+- Supabase, événements de session : https://supabase.com/docs/reference/javascript/auth-onauthstatechange
+- Supabase, appels asynchrones dans le callback : https://supabase.com/docs/guides/troubleshooting/why-is-my-supabase-api-call-not-returning-PGzXw0
 - Next.js, hébergement autonome : https://nextjs.org/docs/app/guides/self-hosting
 - Next.js 16.3.8 et correctifs : https://github.com/vercel/next.js/releases/tag/v16.3.8
 - Avis Sharp : https://github.com/advisories/GHSA-wq5f-xc86-pv6w

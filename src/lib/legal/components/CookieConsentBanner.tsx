@@ -28,7 +28,7 @@ export default function CookieConsentBanner({ appName, politiqueHref = '/politiq
       role="dialog"
       aria-label="Consentement cookies"
       data-testid="cookie-banner"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background-soft/95 backdrop-blur-xl p-4 sm:p-6"
+      className="fixed inset-x-0 bottom-0 z-[1100] max-h-[80dvh] overflow-y-auto border-t border-border bg-background-soft backdrop-blur-xl p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl"
     >
       <div className="mx-auto max-w-4xl space-y-4">
         <p className="text-sm text-foreground">

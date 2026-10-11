@@ -15,7 +15,9 @@ function readStoredConsent(): CookieConsent | null {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw) as CookieConsent;
+    const parsed = JSON.parse(raw) as Partial<CookieConsent> | null;
+    return parsed?.necessaire === true && typeof parsed.mesure === 'boolean' && typeof parsed.marketing === 'boolean' && typeof parsed.updatedAt === 'string' && Number.isFinite(Date.parse(parsed.updatedAt))
+      ? parsed as CookieConsent : null;
   } catch {
     return null;
   }
@@ -37,7 +39,7 @@ function getServerSnapshot(): CookieConsent | null | undefined {
 function subscribe(onStoreChange: () => void): () => void {
   listeners.add(onStoreChange);
   const onStorage = (e: StorageEvent) => {
-    if (e.key === STORAGE_KEY) {
+    if (e.key === STORAGE_KEY || e.key === null) {
       cachedSnapshot = readStoredConsent();
       onStoreChange();
     }
@@ -50,7 +52,7 @@ function subscribe(onStoreChange: () => void): () => void {
 }
 
 function writeConsent(next: CookieConsent) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* Keep the choice for this page when browser storage is unavailable. */ }
   cachedSnapshot = next;
   listeners.forEach((l) => l());
 }
