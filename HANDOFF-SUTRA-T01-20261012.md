@@ -73,3 +73,7 @@ Index final propre T01 : 12701 nœuds, 24670 relations, 266 clusters, 369 flux. 
 - La CI distante nécessite `SMARANA_READ_TOKEN`, absent de la liste des secrets du dépôt au contrôle final (noms seuls consultés) ; aucune valeur de secret lue. Son résultat doit être suivi après push ; les preuves locales ne garantissent pas son passage.
 
 Recette exacte et rollback : [deploy/README.md](deploy/README.md). Utiliser le SHA40 final poussé ; `--schema-ready` confirme une revue et une vérification séparées du schéma distant. Snapshot Compose/runtime protégé contre l'écrasement, restauration suivie d'une attente healthy ; aucune annulation SQL automatique. **Ne pas déployer dans cette session.**
+
+## Contrôle après premier push
+
+Commit intégré initial `0e7575ed6aca39c930671d5e56fc0b0654c5b82b` poussé et SHA distant confirmé. [CI 38289108161](https://github.com/puramapro-oss/sutra/actions/runs/38289108161) : contrats/qualité arrêtés dans setup sur `SMARANA_READ_TOKEN` manquant ; aucun test distant exécuté. Le conteneur PostgreSQL échoue séparément avec `unknown shorthand flag: U` : les apostrophes du healthcheck sont traitées comme arguments littéraux par le runner. Correction de configuration : guillemets doubles autour de la commande `pg_isready`, puis `actionlint` PASS. Aucune source produit modifiée, preuves locales conservées ; SHA-256 du workflow actualisé. Le commit contenant ce complément est le commit final ; son nouveau run doit encore confirmer le démarrage du conteneur, puis restera bloqué par le credential privé absent.
