@@ -1,3 +1,10 @@
+## Reprise CI du 2026-10-13
+
+- [x] Secret GitHub disponible ; CI9b0c2c9 relancée (run38313595126 tentative2).
+- [x] Sauvegarde/restore OVH frais :136 tables,6 migrations deux fois, lot atomique validé en copie privée.
+- [x] Corriger les3 assertions de navigation prématurées : legacy local1022 PASS,25 SKIP,0 FAIL,0 flaky ; lint ciblé PASS.
+- [ ] Obtenir la CI complète verte sur le correctif ; production inchangée.
+
 ## Clôture du delta OVH autorisé
 
 - [x] Médias privés durables, contrôles propriétaire et permissions Storage ; gates gratuites fraîches dans HANDOFF-SUTRA-T01-20261012.md.

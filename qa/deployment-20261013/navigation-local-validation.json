@@ -1,0 +1,29 @@
+{
+  "command": "node scripts/run-ci.mjs legacy",
+  "node": "24.21.0",
+  "stats": {
+    "startTime": "2026-10-12T23:00:47.448Z",
+    "duration": 107976.294,
+    "expected": 1022,
+    "skipped": 25,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "result": [
+    {
+      "name": "legacy",
+      "command": [
+        "node",
+        "scripts/test-ui-isolated.mjs",
+        "--legacy"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 126165
+    }
+  ],
+  "lintCommand": "node node_modules/eslint/bin/eslint.js e2e/navigation.spec.ts",
+  "lintExitCode": 0,
+  "fileSha256": "71d8c434d6017114afdb9deb487d285dfd373b564f9de3bbc932ff03aa2c8667"
+}

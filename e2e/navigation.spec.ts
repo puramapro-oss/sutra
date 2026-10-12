@@ -4,12 +4,9 @@ test.describe('Navigation — Public routes', () => {
   test('logo links to home', async ({ page }) => {
     await page.goto('/pricing')
     const logo = page.locator('a[href="/"]').first()
-    if (await logo.count() > 0) {
-      await logo.click()
-      await page.waitForLoadState('networkidle')
-      const url = page.url()
-      expect(url.endsWith('/') || url.endsWith('.dev')).toBe(true)
-    }
+    await expect(logo).toBeVisible()
+    await logo.click()
+    await expect(page).toHaveURL(new URL('/', page.url()).href)
   })
 
   test('pricing link works from landing', async ({ page }) => {
@@ -23,11 +20,9 @@ test.describe('Navigation — Public routes', () => {
       return
     }
     const pricingLink = page.locator('a[href="/pricing"]').first()
-    if (await pricingLink.count() > 0) {
-      await pricingLink.click()
-      await page.waitForLoadState('networkidle')
-      expect(page.url()).toContain('pricing')
-    }
+    await expect(pricingLink).toBeVisible()
+    await pricingLink.click()
+    await expect(page).toHaveURL(new URL('/pricing', page.url()).href)
   })
 
   test('login link works from landing', async ({ page }) => {
@@ -38,16 +33,13 @@ test.describe('Navigation — Public routes', () => {
       const cta = page.getByTestId('welcome-cta-primary')
       await expect(cta).toBeVisible()
       await cta.click()
-      await page.waitForLoadState('networkidle')
-      expect(page.url()).toContain('signup')
+      await expect(page).toHaveURL(new URL('/signup', page.url()).href)
       return
     }
     const loginLink = page.locator('a[href="/login"]').first()
-    if (await loginLink.count() > 0) {
-      await loginLink.click()
-      await page.waitForLoadState('networkidle')
-      expect(page.url()).toContain('login')
-    }
+    await expect(loginLink).toBeVisible()
+    await loginLink.click()
+    await expect(page).toHaveURL(new URL('/login', page.url()).href)
   })
 })
 

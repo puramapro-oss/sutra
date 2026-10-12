@@ -1,6 +1,8 @@
 # BATON — SUTRA T01, autorisation production 2026-10-12
 
-**CODE_LOCAL_PASS / RELEASE_BLOCKED_CI.** Branche unique codex/sutra-t01-integration-20261012, base89250c7 ; T02–T08 intégrés,53 worktrees étrangers préservés.
+**RELEASE_BLOCKED_CI — reprise 2026-10-13.** Secret SMARANA_READ_TOKEN ajouté, setup CI résolu. Run38313595126 tentative2 : contrats/médias/PostgreSQL/typecheck/lint/build/redteam/navigateur PASS ; legacy1019 PASS,25 SKIP,3 échecs de synchronisation navigation. Correction e2e/navigation.spec.ts : legacy complet1022 PASS,25 SKIP,0 FAIL,0 flaky ; lint ciblé PASS. Aucun changement applicatif ni production. Prochaine étape : push du correctif et CI complète verte avant migration/déploiement.
+
+État précédent : **CODE_LOCAL_PASS / RELEASE_BLOCKED_CI.** Branche unique codex/sutra-t01-integration-20261012, base89250c7 ; T02–T08 intégrés,53 worktrees étrangers préservés.
 
 Médias privés durables et signatures renouvelables livrés ; permissions Storage restrictives testées164 assertions. Contrats473/7SKIP, médias34, PostgreSQL13+12, typecheck/lint111warnings/build197 PASS ; redteam14, navigateur217/axe165, legacy1022/25SKIP PASS.
 

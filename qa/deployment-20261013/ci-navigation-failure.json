@@ -1,0 +1,19 @@
+{
+  "sha": "9b0c2c9361460700bdbb9397a58ca615f46feeb1",
+  "run": "https://github.com/puramapro-oss/sutra/actions/runs/38313595126",
+  "attempt": 2,
+  "stats": {
+    "startTime": "2026-10-12T22:52:44.375Z",
+    "duration": 349141.33099999995,
+    "expected": 1019,
+    "skipped": 25,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "failedTests": [
+    "navigation.spec.ts: logo links to home (Desktop)",
+    "navigation.spec.ts: pricing link works from landing (Desktop)",
+    "navigation.spec.ts: login link works from landing (Desktop)"
+  ],
+  "diagnosis": "Immediate page.url() assertions run before the client-side navigation completes. Artifact snapshots already show the destination pages. Replaced with exact Playwright toHaveURL polling; removed conditional guards that could silently skip missing links. No application source change."
+}
