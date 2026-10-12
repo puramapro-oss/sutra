@@ -7,7 +7,9 @@ Après résolution des contrôles critiques, depuis le checkout du commit final 
 ```sh
 SUTRA_RELEASE_SHA="$(git rev-parse HEAD)"
 python3 deploy/ovh.py deploy --source-ref "$SUTRA_RELEASE_SHA" --schema-ready
-# Retour à la configuration et à l’image précédentes :
+# Après la bascule DNS, smoke HTTPS gratuit et rollback applicatif automatique en cas d’échec :
+python3 deploy/ovh.py smoke --source-ref "$SUTRA_RELEASE_SHA" --public
+# Retour explicite à la configuration et à l’image précédentes :
 python3 deploy/ovh.py rollback --source-ref "$SUTRA_RELEASE_SHA"
 ```
 
@@ -15,7 +17,7 @@ python3 deploy/ovh.py rollback --source-ref "$SUTRA_RELEASE_SHA"
 
 Le wrapper impose un SHA40 disponible et le hash du helper canonique `purama/.coord/handoffs/OVH-MIGRATION-20261005/deploy_next.py`. Les sources proviennent de `git archive`, ESLint du même commit et SMARANA du commit verrouillé. Une nouvelle image est construite avant remplacement de SUTRA. Le helper restaure automatiquement Compose si le remplacement échoue au contrôle de santé ; ce mécanisme n'est pas une preuve de rollback réel, ni une qualification des parcours métier. La route `/api/health` contacte des fournisseurs : ne pas l'utiliser pour une recette sans fournisseur.
 
-Avant remplacement, Compose et le runtime sont copiés de façon opaque dans `/opt/purama/apps/sutra/rollback-<SHA40>/` ; la création refuse tout écrasement. Le rollback explicite restaure les deux fichiers, ne redémarre que SUTRA et attend son état healthy. Les anciennes images doivent rester disponibles. Aucune annulation SQL automatique. Un smoke applicatif ou public en échec après remplacement impose d'exécuter ce rollback avant toute autre action ; ne pas se fier au seul healthcheck du conteneur.
+Avant remplacement, Compose et le runtime sont copiés de façon opaque dans `/opt/purama/apps/sutra/rollback-<SHA40>/` ; la création refuse tout écrasement. Le rollback explicite restaure les deux fichiers, ne redémarre que SUTRA et attend son état healthy. Les anciennes images doivent rester disponibles. Aucune annulation SQL automatique. Le wrapper exécute cinq GET applicatifs après le helper et restaure automatiquement Compose/runtime si le helper ou ce smoke échoue. La commande `smoke --public` vérifie HTTPS sans désactiver TLS et déclenche le même rollback en cas d’échec. Elle exige le snapshot de la release. Ce rollback est applicatif : il ne restaure pas DNS ni SQL ; les valeurs DNS précédentes doivent rester sauvegardées et leur retour est une étape distincte de la bascule. Tests de contrôle :17 PASS ; programme JavaScript :6 cas isolés PASS. Aucun rollback réel n’a été exécuté.
 
 Sauvegarde cohérente dans `/opt/purama/apps/sutra/backup-t01-coherent-l01juhcq/` : SUTRA et trois tables publiques sociales partagent le même snapshot PostgreSQL. Dépendance trigger, métadonnées Storage et archive des blobs incluses. Restore réel136 tables avec comptages identiques ; six migrations appliquées deux fois sur une base privée PostgreSQL15.8. Auth est une fixture ID-only ; ce n’est pas une restauration complète Supabase. Les blobs ne sont pas gelés transactionnellement. Preuve : `qa/production-20261012/backup-restore.json`.
 

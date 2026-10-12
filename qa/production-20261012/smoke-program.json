@@ -1,0 +1,36 @@
+{
+  "network": false,
+  "sourceSha256": "b475ae9a1a8a4ce47853d13f138e3e20c3ca0bc1da741a2e4c4e8ccc22674941",
+  "cases": [
+    {
+      "public": false,
+      "scenario": "expected",
+      "exitCode": 0
+    },
+    {
+      "public": false,
+      "scenario": "unauthorized-success",
+      "exitCode": 1
+    },
+    {
+      "public": false,
+      "scenario": "tls-error",
+      "exitCode": 1
+    },
+    {
+      "public": true,
+      "scenario": "expected",
+      "exitCode": 0
+    },
+    {
+      "public": true,
+      "scenario": "unauthorized-success",
+      "exitCode": 1
+    },
+    {
+      "public": true,
+      "scenario": "tls-error",
+      "exitCode": 1
+    }
+  ]
+}

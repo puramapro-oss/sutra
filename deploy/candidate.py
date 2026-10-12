@@ -67,7 +67,7 @@ def build_candidate(source_ref):
             f'--env-file {REMOTE_ROOT}/runtime/.env {image} >/dev/null')
         started = True
         probe = """(async()=>{const cases=[['/',200],['/login',200],['/api/points',401],
-          ['/api/video/jobs/00000000-0000-0000-0000-000000000000',401],
+          ['/api/video/status/00000000-0000-0000-0000-000000000000',401],
           ['/api/media/b3duZXJzL3UvdGVzdC5tcDQ',401]];const out=[];
           for(const [path,expected] of cases){const r=await fetch('http://127.0.0.1:3000'+path,{redirect:'manual'});
             out.push({path,status:r.status,expected});if(r.status!==expected)throw Error(JSON.stringify(out));}

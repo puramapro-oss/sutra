@@ -1,0 +1,24 @@
+npm notice
+npm notice New major version of npm available! 11.12.1 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+Traceback (most recent call last):
+  File "/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/deploy/candidate.py", line 99, in <module>
+    build_candidate(parser.parse_args().source_ref)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/deploy/candidate.py", line 77, in build_candidate
+    response = helper.ssh(f'docker exec {container} node -e {shlex.quote(probe)}', capture=True)
+  File "/Users/matissdornier/purama/.coord/handoffs/OVH-MIGRATION-20261005/deploy_next.py", line 67, in ssh
+    return run(
+        [
+    ...<10 lines>...
+        capture_output=capture,
+    )
+  File "/Users/matissdornier/purama/.coord/handoffs/OVH-MIGRATION-20261005/deploy_next.py", line 63, in run
+    return subprocess.run(args, check=True, text=True, **kwargs)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['ssh', '-i', '/Users/matissdornier/.ssh/purama_vps_ed25519', '-o', 'IdentitiesOnly=yes', '-o', 'BatchMode=yes', 'root@144.217.14.210', 'docker exec sutra-candidate-44cdcd53e52633a149cef98f73aa1980ff1a8c25-1791841529830979000 node -e \'(async()=>{const cases=[[\'"\'"\'/\'"\'"\',200],[\'"\'"\'/login\'"\'"\',200],[\'"\'"\'/api/points\'"\'"\',401],\n          [\'"\'"\'/api/video/jobs/00000000-0000-0000-0000-000000000000\'"\'"\',401],\n          [\'"\'"\'/api/media/b3duZXJzL3UvdGVzdC5tcDQ\'"\'"\',401]];const out=[];\n          for(const [path,expected] of cases){const r=await fetch(\'"\'"\'http://127.0.0.1:3000\'"\'"\'+path,{redirect:\'"\'"\'manual\'"\'"\'});\n            out.push({path,status:r.status,expected});if(r.status!==expected)throw Error(JSON.stringify(out));}\n          console.log(JSON.stringify(out));})().catch(e=>{console.error(e.message);process.exit(1)})\'']' returned non-zero exit status 1.

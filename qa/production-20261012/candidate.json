@@ -1,0 +1,40 @@
+{
+  "source": "44cdcd53e52633a149cef98f73aa1980ff1a8c25",
+  "imageId": "sha256:2cef328a5af4781d608853c0f814813cb997addda016b2f32129ac66283e417f",
+  "container": "sutra-candidate-44cdcd53e52633a149cef98f73aa1980ff1a8c25-1791841529830979000",
+  "remoteDirectory": "/opt/purama/apps/sutra/candidates/44cdcd53e52633a149cef98f73aa1980ff1a8c25-1791841529830979000",
+  "network": "none",
+  "paidProviderCalls": false,
+  "productionChanged": false,
+  "initialProbe": "FAILED: typo /api/video/jobs returned404; corrected to /api/video/status; same image reused",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "/api/points",
+      "status": 401,
+      "expected": 401
+    },
+    {
+      "path": "/api/video/status/00000000-0000-0000-0000-000000000000",
+      "status": 401,
+      "expected": 401
+    },
+    {
+      "path": "/api/media/b3duZXJzL3UvdGVzdC5tcDQ",
+      "status": 401,
+      "expected": 401
+    }
+  ],
+  "ffmpegSubtitlesDrawtextFfprobe": true,
+  "status": "PASS",
+  "candidateStopped": true
+}

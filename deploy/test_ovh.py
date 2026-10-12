@@ -4,6 +4,8 @@ import hashlib
 import importlib.util
 import io
 from pathlib import Path
+import re
+import shlex
 from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
@@ -68,7 +70,7 @@ class DeploymentContract(unittest.TestCase):
         self.helper.main.side_effect = deploy
         self.invoke('deploy', '--source-ref', SHA, '--schema-ready')
         self.show.assert_called_once_with(['git', 'show', SHA + ':deploy/ovh.Dockerfile'], cwd=ovh.ROOT)
-        command = self.helper.ssh.call_args.args[0]
+        command = self.helper.ssh.call_args_list[0].args[0]
         self.assertIn('umask 077 && mkdir ', command)
         self.assertIn('runtime/.env ', command)
         self.assertIn('/runtime.env && touch ', command)
@@ -112,6 +114,85 @@ class DeploymentContract(unittest.TestCase):
             with self.subTest(state=state), self.assertRaisesRegex(RuntimeError, 'rollback health'):
                 self.invoke('rollback', '--source-ref', SHA)
             self.assertEqual(self.helper.ssh.call_count, expected_calls)
+
+    def test_helper_failure_after_snapshot_restores_previous_release(self):
+        self.helper.main.side_effect = RuntimeError('late receipt failed')
+        with self.assertRaisesRegex(RuntimeError, 'late receipt failed'):
+            self.invoke('deploy', '--source-ref', SHA, '--schema-ready')
+        commands = [call.args[0] for call in self.helper.ssh.call_args_list]
+        self.assertIn('mkdir ', commands[0])
+        self.assertIn('up -d --no-deps sutra', commands[1])
+        self.assertIn('docker inspect', commands[2])
+
+    def test_application_smoke_failure_rolls_back_even_after_helper_success(self):
+        def remote(command, **kwargs):
+            if 'docker exec purama-sutra node' in command:
+                raise ovh.subprocess.CalledProcessError(1, 'smoke')
+            return SimpleNamespace(stdout='healthy')
+        self.helper.ssh.side_effect = remote
+        with self.assertRaises(ovh.subprocess.CalledProcessError):
+            self.invoke('deploy', '--source-ref', SHA, '--schema-ready')
+        self.helper.main.assert_called_once()
+        commands = [call.args[0] for call in self.helper.ssh.call_args_list]
+        self.assertIn('http://127.0.0.1:3000', commands[1])
+        self.assertNotIn('/api/health', commands[1])
+        self.assertIn('up -d --no-deps sutra', commands[2])
+        self.assertIn('docker inspect', commands[3])
+
+    def test_public_smoke_requires_snapshot_and_rolls_back_on_failure(self):
+        self.helper.ssh.side_effect = [None, RuntimeError('TLS failed'), None, SimpleNamespace(stdout='healthy')]
+        with self.assertRaisesRegex(RuntimeError, 'TLS failed'):
+            self.invoke('smoke', '--source-ref', SHA, '--public')
+        commands = [call.args[0] for call in self.helper.ssh.call_args_list]
+        self.assertIn(f'rollback-{SHA}/complete', commands[0])
+        self.assertIn('https://sutra.purama.dev', commands[1])
+        self.assertNotIn('NODE_TLS_REJECT_UNAUTHORIZED', commands[1])
+        self.assertIn('up -d --no-deps sutra', commands[2])
+        self.helper.main.assert_not_called()
+
+    def test_public_smoke_success_never_restarts_application(self):
+        self.invoke('smoke', '--source-ref', SHA, '--public')
+        commands = [call.args[0] for call in self.helper.ssh.call_args_list]
+        self.assertEqual(len(commands), 2)
+        self.assertIn('https://sutra.purama.dev', commands[1])
+        self.assertNotIn('up -d', ''.join(commands))
+        self.helper.main.assert_not_called()
+        self.show.assert_not_called()
+
+    def test_missing_snapshot_prevents_smoke_and_rollback(self):
+        self.helper.ssh.side_effect = RuntimeError('snapshot missing')
+        with self.assertRaisesRegex(RuntimeError, 'snapshot missing'):
+            self.invoke('smoke', '--source-ref', SHA, '--public')
+        self.assertEqual(self.helper.ssh.call_count, 1)
+
+    def test_failed_automatic_rollback_is_reported_as_failure(self):
+        self.helper.main.side_effect = RuntimeError('deployment failed')
+        self.helper.ssh.return_value = SimpleNamespace(stdout='unhealthy')
+        with self.assertRaisesRegex(RuntimeError, 'rollback health'):
+            self.invoke('deploy', '--source-ref', SHA, '--schema-ready')
+
+    def test_public_flag_cannot_change_deployment_sequence(self):
+        with self.assertRaises(SystemExit):
+            self.invoke('deploy', '--source-ref', SHA, '--schema-ready', '--public')
+        self.run.assert_not_called()
+        self.helper.ssh.assert_not_called()
+
+    def test_smoke_api_paths_resolve_to_real_app_routes(self):
+        self.invoke('smoke', '--source-ref', SHA)
+        probe = shlex.split(self.helper.ssh.call_args.args[0])[-1]
+        paths = re.findall(r"['\"](/api/[^'\"]+)['\"]", probe)
+        self.assertEqual(len(paths), 3)
+        for path in paths:
+            directory = ovh.ROOT / 'src/app'
+            for segment in path.strip('/').split('/'):
+                literal = directory / segment
+                if literal.is_dir():
+                    directory = literal
+                else:
+                    dynamic = [p for p in directory.iterdir() if p.is_dir() and p.name.startswith('[')]
+                    self.assertEqual(len(dynamic), 1, path)
+                    directory = dynamic[0]
+            self.assertTrue((directory / 'route.ts').is_file(), path)
 
 
 if __name__ == '__main__':

@@ -1,3 +1,12 @@
+## Clôture du delta OVH autorisé
+
+- [x] Médias privés durables, contrôles propriétaire et permissions Storage ; gates gratuites fraîches dans HANDOFF-SUTRA-T01-20261012.md.
+- [x] Backup cohérent OVH,136 tables restaurées et6 migrations deux fois en copie privée PostgreSQL15.8.
+- [x] Image Linux du commit44cdcd53e52633a149cef98f73aa1980ff1a8c25 : cinq GET et FFmpeg PASS, réseau désactivé ; première faute de chemin de sonde corrigée et conservée dans les preuves.
+- [x] Rollback applicatif automatique après échec de déploiement/smoke :17 tests Python et6 cas JavaScript isolés. Aucune modification applicative après la gate complète.
+- [ ] Blocage externe : SMARANA_READ_TOKEN readonly absent ; CI38312619963 échoue au setup. Unique action manuelle : ajouter le secret GitHub ciblé, sans le partager en conversation.
+- [ ] Après CI verte seulement : migrations/cutover de production, remplacement, DNS/TLS, smoke HTTPS. Aucun déploiement ni bascule réalisés ; public Vercel402, ancien OVH healthy.
+
 ## Jalon T01 courant — autorisation production, 2026-10-12
 
 - [x] Ownership/WIP/branches/processus/LOCKS réinspectés ;53 entrées étrangères préservées ; sept lots acceptés conservés.

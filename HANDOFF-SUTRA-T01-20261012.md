@@ -26,6 +26,7 @@ LC_ALL=C "$SUTRA_NODE" scripts/test-security-rls.mjs
 "$SUTRA_NODE" qa/t08/run.mjs redteam
 "$SUTRA_NODE" qa/t08/run.mjs browser-redteam
 "$SUTRA_NODE" qa/t08/run.mjs legacy-offline
+python3 -m unittest discover -s deploy -p 'test_*.py'
 ```
 
 | Contrôle | Résultat |
@@ -50,11 +51,13 @@ Sauvegarde finale : `/opt/purama/apps/sutra/backup-t01-coherent-l01juhcq/`. Base
 
 La restauration en base privée a révélé puis corrigé deux prérequis : restauration avec le rôle supabase_admin, et inclusion de la fonction de trigger public.update_social_updated_at. Les deux essais incomplets sont préservés. L’essai final restaure les 136 tables et compare les comptages avant migrations. Les six migrations v10, v11, journaux, médias privés, permissions compte, permissions finales sont réappliquées deux fois sur la copie PostgreSQL15.8. Aucune DDL de production, coupure bucket, suppression de donnée ou remplacement du conteneur actuel.
 
-Construction candidate Linux préparée via `python3 deploy/candidate.py --source-ref SHA40` : archive Git exacte, dépendances privées verrouillées, secret BuildKit opaque, conteneur sans réseau externe, GET gratuits uniquement, arrêt du seul candidat. Ne modifie ni Compose, ni DB, ni DNS. Résultat à ajouter après construction.
+Construction candidate Linux préparée via `python3 deploy/candidate.py --source-ref SHA40` : archive Git exacte, dépendances privées verrouillées, secret BuildKit opaque, conteneur sans réseau externe, GET gratuits uniquement, arrêt du seul candidat. Ne modifie ni Compose, ni DB, ni DNS. PASS sur l’image du commit `44cdcd53e52633a149cef98f73aa1980ff1a8c25`, image `sha256:2cef328a5af4781d608853c0f814813cb997addda016b2f32129ac66283e417f`. Cinq GET :200/200/401/401/401 ; FFmpeg subtitles/drawtext/ffprobe PASS. Candidat arrêté et conservé. Preuve `candidate.json`. Premier smoke en échec sur une faute de chemin (`/api/video/jobs` au lieu de `/api/video/status`), corrigée puis vérifiée sur la même image. Le log d’échec reste conservé. Le delta suivant ne change que les outils de déploiement, leurs tests et les preuves ; aucun code applicatif ni dépendance ne change après cette image.
+
+Le wrapper ferme aussi le défaut de rollback après healthcheck : cinq GET applicatifs contrôlés, rollback Compose/runtime automatique sur erreur, commande `smoke --public` après bascule DNS avec vérification TLS normale. DNS et SQL ne sont pas restaurés par ce wrapper. Aucun rollback réel exécuté. Le dernier test Python vérifie aussi que les chemins sondés correspondent aux routes réelles.
 
 ## Blocage externe et état Cloudflare
 
-CI `38303074323` : trois échecs de setup, PostgreSQL16 démarre. Recherche ciblée dans les configurations sécurisées existantes, environnement, trousseau, secrets dépôt/org/environnements : aucun SMARANA_READ_TOKEN utilisable. Le credential SMARANA existant est administrateur avec repo/workflow ; il n’est pas injecté dans le CI du dépôt public. Un autre PAT existant répond401. Aucun secret affiché ni copié dans Git.
+CI du commit44cdcd5, run `38312619963` (preuve `ci-44cdcd5.json`) : trois échecs de setup, PostgreSQL16 démarre. Recherche ciblée dans les configurations sécurisées existantes, environnement, trousseau, secrets dépôt/org/environnements : aucun SMARANA_READ_TOKEN utilisable. Le credential SMARANA existant est administrateur avec repo/workflow ; il n’est pas injecté dans le CI du dépôt public. Un autre PAT existant répond401. Aucun secret affiché ni copié dans Git.
 
 **Unique action manuelle demandée :** ajouter `SMARANA_READ_TOKEN`, limité à Contents:read sur `puramapro-oss/purama-smarana`, à https://github.com/puramapro-oss/sutra/settings/secrets/actions/new . Ne pas transmettre sa valeur dans la conversation. Après ajout : relancer les jobs, puis reprendre migration/cutover/déploiement/smoke.
 
@@ -64,6 +67,6 @@ Session Cloudflare authentifiée disponible. Aucun enregistrement SUTRA explicit
 
 POLICY_OK ; AGENTS/POLITIQUE/BATON/plan/brief/ERRORS/LOCKS/handoffs et processus inspectés. Claim `SUTRA-T01-20261012:AUTORISATION-PRODUCTION`. `qa/production-20261012/preservation.json` :53 entrées étrangères inchangées par rapport au contrôle précédent ; worktree prunable absent conservé. Aucun reset/stash/clean, aucun arrêt de processus étranger, aucune suppression de worktree.
 
-GitNexus impact avant modifications : dépendances médias/worker/publication HIGH/CRITICAL signalées ; nouveaux symboles UNKNOWN. Index en retard de3 commits, TRUNCATED929 entrées/519 callees/4 coupures. Les diffs directs et tests constituent la preuve bornée ; aucun certificat d’exhaustivité du graphe. Detect-changes staged :69 fichiers,33 symboles,27 flux, risque CRITICAL ; périmètre média attendu, sortie tronquée. Gitleaks :13 alertes, toutes des SHA-256 de sources vérifiées,0 non classée. Tests Python du déploiement9 PASS ; lint ciblé du dernier ajout SQL PASS.
+GitNexus impact avant modifications : dépendances médias/worker/publication HIGH/CRITICAL signalées ; nouveaux symboles UNKNOWN. Index en retard de3 commits, TRUNCATED929 entrées/519 callees/4 coupures. Les diffs directs et tests constituent la preuve bornée ; aucun certificat d’exhaustivité du graphe. Detect-changes staged :69 fichiers,33 symboles,27 flux, risque CRITICAL ; périmètre média attendu, sortie tronquée. Gitleaks :13 alertes, toutes des SHA-256 de sources vérifiées,0 non classée. Tests Python du déploiement17 PASS, incluant rollback automatique après échec du helper ou des smokes ;6 cas JavaScript isolés PASS ; lint ciblé du dernier ajout SQL PASS. Detect-changes du dernier delta ops :20 fichiers,11 symboles,0 flux, risque faible. Gitleaks final :1 alerte classée SHA-256 vérifié,0 non classée (`gitleaks-final-triage.json`).
 
 La branche S5 historique non validée n’est pas fusionnée : budget hybride, restauration de versions et journal cron-runs ne sont pas livrés ; éditer le script ne régénère pas la voix. Rectification du rapport précédent : `src/lib/logger.ts` existe déjà ; son absence était une erreur documentaire. Ces limites ne sont pas transformées en PASS de production.
