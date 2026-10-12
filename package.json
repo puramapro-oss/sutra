@@ -18,12 +18,17 @@
     "test:ltx-v2-media": "node --import tsx --test scripts/test-ltx-v2-media.mts",
     "test:social-publication": "node --import tsx --test scripts/test-social-publication.mts",
     "test:auth-session": "node --import tsx --test scripts/test-auth-session.mts",
-    "test:ui-isolated": "node scripts/test-ui-isolated.mjs"
+    "test:ui-isolated": "node scripts/test-ui-isolated.mjs",
+    "typecheck": "tsc --noEmit --incremental false",
+    "test": "npm run test:contracts",
+    "test:contracts": "node scripts/run-ci.mjs contracts",
+    "test:media": "node scripts/run-ci.mjs media",
+    "check": "node scripts/run-ci.mjs quality"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.3",
     "@lottiefiles/dotlottie-react": "^0.18.7",
-    "@purama/smarana": "github:puramapro-oss/purama-smarana#main",
+    "@purama/smarana": "git+https://github.com/puramapro-oss/purama-smarana.git#bc3469eb595485714b2044790105acfc5e3b0f31",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@sentry/nextjs": "^10.46.0",
@@ -70,7 +75,7 @@
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.58.2",
-    "@purama/eslint-config": "file:../packages/eslint-config-purama",
+    "@purama/eslint-config": "file:tooling/eslint-config-purama",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.11.0",
@@ -92,6 +97,13 @@
     "qs": "^6.14.1",
     "sharp": "^0.35.5",
     "source-map-js": "^1.2.2",
-    "postcss": "^8.5.18"
+    "postcss": "^8.5.18",
+    "bitcore-lib": {
+      "bn.js": "4.12.5"
+    }
+  },
+  "engines": {
+    "node": ">=24 <25 || >=26 <27",
+    "npm": ">=11 <12"
   }
 }

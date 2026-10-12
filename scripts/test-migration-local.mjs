@@ -1,5 +1,4 @@
 // Script de test : sortie console lisible voulue.
-/* eslint-disable no-console */
 // -----------------------------------------------------------------------------
 // Tests de la migration v10 sur une base locale JETABLE (aucune production).
 // Cycle complet : reset → création d'un stub `sutra.videos` SEEDÉ (mois
@@ -24,19 +23,17 @@
 //  11. ANNULATION EN VOL : processing sain → libérée, jamais reprise worker
 //  12. CHECKPOINT MERGE jsonb : morceaux successifs cumulés (voix >20 Mo)
 //
-//   DATABASE_URL_LOCAL=postgres://… node scripts/test-migration-local.mjs
+//   SUTRA_DISPOSABLE_DB=1 DATABASE_URL_LOCAL=postgres://fixture@127.0.0.1:5432/sutra_ci_example node scripts/test-migration-local.mjs
 // -----------------------------------------------------------------------------
 import pg from 'pg'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { randomUUID } from 'node:crypto'
+import { assertDisposableDatabase } from '../tooling/disposable-database.mjs'
 
 const url = process.env.DATABASE_URL_LOCAL
-if (!url) {
-  console.error('DATABASE_URL_LOCAL requis (base jetable uniquement)')
-  process.exit(1)
-}
+assertDisposableDatabase(url, process.env.SUTRA_DISPOSABLE_DB)
 
 const migrationSql = readFileSync(
   resolve(import.meta.dirname, '../migrations/v10_durable_jobs_quota.sql'),

@@ -1,0 +1,83 @@
+name: SUTRA web verification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sutra-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-sutra
+        with:
+          smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: npm run test:contracts
+      - run: npm run test:media
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sutra-contract-results
+          path: test-results/ci
+          if-no-files-found: warn
+
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-sutra
+        with:
+          smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
+      - run: npm run check
+      - name: Audit production dependencies
+        if: always()
+        run: npm audit --omit=dev --audit-level=high
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sutra-quality-results
+          path: test-results/ci
+          if-no-files-found: warn
+
+  disposable-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: fixture
+          POSTGRES_PASSWORD: fixture
+          POSTGRES_DB: sutra_ci_actions
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd 'pg_isready -U fixture -d sutra_ci_actions'
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-sutra
+        with:
+          smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
+      - run: npm run test:migration-local
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          DATABASE_URL_LOCAL: postgres://fixture:fixture@127.0.0.1:5432/sutra_ci_actions

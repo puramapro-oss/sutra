@@ -1,5 +1,4 @@
 // Script de parcours réel : fichiers locaux produits et mesurés via ffprobe.
-/* eslint-disable no-console */
 // -----------------------------------------------------------------------------
 // PARCOURS COMPLET moteur local — VRAI fichier, mesuré, AUCUN appel payant.
 //
@@ -18,6 +17,7 @@ import { promisify } from 'node:util'
 import { writeFileSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { once } from 'node:events'
 
 const run = promisify(execFile)
 
@@ -25,7 +25,6 @@ process.env.NEXT_PUBLIC_SUPABASE_URL ??= 'https://test-ref.supabase.co'
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??= 'test-anon-key'
 process.env.NEXT_PUBLIC_APP_SCHEMA ??= 'sutra'
 
-const STUB = 'http://127.0.0.1:7861'
 const OWNER = 'matiss.frasne@gmail.com' // super-admin de référence (utils.ts)
 
 // --- garde anti-appel-externe -------------------------------------------------
@@ -49,22 +48,18 @@ const { getWanDimensions } = await import('../src/lib/wan.ts')
 // --- stub autonome : démarré ici, arrêté à la fin ------------------------------
 const stubProc = spawn(
   process.execPath,
-  [join(import.meta.dirname, 'local-engine-stub-server.mjs'), '7861'],
-  { stdio: 'ignore' }
+  [join(import.meta.dirname, 'local-engine-stub-server.mjs'), '0'],
+  { stdio: ['ignore', 'ignore', 'ignore', 'ipc'] }
 )
+let STUB: string
 {
-  let ready = false
-  for (let i = 0; i < 40 && !ready; i++) {
-    try {
-      const res = await realFetch(`${STUB}/health`, { signal: AbortSignal.timeout(500) })
-      ready = res.ok
-    } catch {
-      await new Promise((r) => setTimeout(r, 250))
-    }
-  }
-  if (!ready) {
+  try {
+    const [message] = await once(stubProc, 'message', { signal: AbortSignal.timeout(10_000) })
+    assert.ok(Number.isInteger(message.port) && message.port > 0 && message.port < 65536)
+    STUB = `http://127.0.0.1:${message.port}`
+  } catch (error) {
     stubProc.kill()
-    throw new Error('stub moteur local non prêt après 10s (ffmpeg installé ?)')
+    throw new Error('stub moteur local non prêt après 10s (ffmpeg installé ?)', { cause: error })
   }
 }
 test.after(() => stubProc.kill())

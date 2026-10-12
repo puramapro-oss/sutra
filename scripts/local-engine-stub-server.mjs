@@ -26,7 +26,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 const run = promisify(execFile)
-const port = Number(process.argv[2] ?? 7860)
+let port = Number(process.argv[2] ?? 7860)
 const dir = join(tmpdir(), 'sutra-local-engine-stub')
 mkdirSync(dir, { recursive: true })
 
@@ -89,5 +89,7 @@ const server = http.createServer(async (req, res) => {
 })
 
 server.listen(port, '127.0.0.1', () => {
+  port = server.address().port
+  process.send?.({ port })
   console.log(`stub moteur local prêt sur http://127.0.0.1:${port}`)
 })
