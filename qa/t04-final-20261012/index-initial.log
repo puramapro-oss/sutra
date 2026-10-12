@@ -1,0 +1,22 @@
+
+  GitNexus Analyzer (1.6.12)
+
+  GitNexus Analyzer (1.6.12)
+
+  Skipped 3 large files (>512KB, likely generated/vendored)
+
+  - graphify-out/graph.html
+
+  - graphify-out/graph.json
+
+  - qa/integration-20261012/evidence/legacy-first-results.json
+
+  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+{"level":40,"time":1791831474194,"name":"gitnexus","msg":"[scope-resolution] 383 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean \"unused\" — it means the definition anchor is in a different language. Affected: show (typescript), NEXT_PUBLIC_APP_SCHEMA (javascript), NEXT_PUBLIC_SUPABASE_ANON_KEY (javascript), NEXT_PUBLIC_SUPABASE_URL (javascript), RESEND_API_KEY (javascript), STRIPE_SECRET_KEY (javascript), SUPABASE_SERVICE_ROLE_KEY (javascript), VERCEL (javascript), a (javascript), app_metadata (javascript), …"}
+{"level":40,"time":1791831474253,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":929,"entryPointsUnexplored":0,"walksCutByBudget":4,"tracesDepthCapped":0,"calleesDropped":519,"processesDropped":0},"msg":"[processes] 369 flows reported, but whole flows are MISSING: 929 of 1129 candidate entry point(s) never ranked in, 0 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 519 callee(s) skipped at maxBranching, 4 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}
+{"level":30,"time":1791831481567,"name":"gitnexus","msg":"name-fallback resolution: 38 call sites (10 distinct caller-file/name pairs), 0 refused as impossible (guessed/refused by language: javascript 34/0, typescript 4/0)"}
+
+  Repository indexed successfully (16.1s)
+
+  12,754 nodes | 24,730 edges | 266 clusters | 369 flows
+  /Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012

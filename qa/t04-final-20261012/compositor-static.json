@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+    "--experimental-test-module-mocks",
+    "--import",
+    "tsx",
+    "--import",
+    "./scripts/helpers/local-media-fixture.mts",
+    "--test",
+    "--test-concurrency=1",
+    "src/lib/ffmpeg-compositor.test.ts",
+    "src/lib/ffmpeg-compositor-formats.test.ts",
+    "src/lib/media-validation.test.ts"
+  ],
+  "exitCode": 0,
+  "durationSeconds": 24.507,
+  "environment": "same sanitized fixtures as scripts/run-ci.mjs; PATH prepends test-results/media-bin (T01 proven ffmpeg-static binary used read-only)"
+}

@@ -136,3 +136,15 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+
+
+## 2026-10-12 — SUTRA T04, reprise depuis intégration 589732c
+
+- [x] Coordination/LOCKS/politiques vérifiés, POLICY_OK ; nouveau worktree et branche T04 isolés.
+- [x] Delta seul, sans reprendre S5 ni modifier les autres propriétaires. Cinq défauts reproduits et corrigés ; code `449150e4daa6e9e608b6b2ee0a490ca626d311bd`.
+- [x] 432 contrats PASS/7 SKIP, schedule/composition/publication PASS ; 33 médias PASS ; TypeScript/lint/build197 PASS. Ciblés147 inclus, échecs d'environnement conservés et résolus par reprises ciblées.
+- [x] Impacts GitNexus pré-édition et detect-changes pré-commit exécutés ; limites du graphe documentées.
+- [x] Handoff T04 actualisé, manifest de sources committées, garde anti-preview T04.
+- [ ] Acceptation du delta T04 par le coordinateur ; aucune certification fournisseur live/release ni déploiement.
+
+Mandat courant : commit + push de la seule branche `codex/sutra-t04-providers-final-20261012`, puis SHA final dans le pointeur coordinateur. Aucun appel payant. Détails : HANDOFF-SUTRA-T04-20261012.md.

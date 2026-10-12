@@ -1,13 +1,11 @@
-# BATON — SUTRA T01, intégration du 2026-10-12
+# BATON — SUTRA T04, reprise intégrée du 2026-10-12
 
-Branche `codex/sutra-t01-integration-20261012`, worktree isolé homonyme sous `purama-worktrees`. Livraison = commit contenant ce BATON, manifest de sources `qa/integration-20261012/verification.json`.
+Branche `codex/sutra-t04-providers-final-20261012`, worktree isolé homonyme sous `purama-worktrees`. Base T01 `589732cb49959c1a576a3ba381b310cd594600ac`, commit produit `449150e4daa6e9e608b6b2ee0a490ca626d311bd`. Le commit contenant ce BATON ajoute les documents/preuves ; pointeur coordinateur pour le SHA final poussé.
 
-Les huit lots sont réconciliés avec PR1/PR2/PR3 et `05d164d`, sans fusion aveugle S5. Cinq références protégées dans l'ascendance, main et 47 worktrees étrangers préservés. Matrice : `qa/integration-20261012/MATRIX.md` ; commandes et limitations : `HANDOFF-SUTRA-T01-20261012.md`.
+DELTA_T04_LOCAL_VERIFIE. Cinq défauts corrigés : checkpoint absent refusé, wrappers d'une même scène sérialisés, aucune substitution stock/WAN avec intention LTX, ID valide conservé malgré acceptation malformée pour GET uniquement. Propriété fournisseurs exclusivement ; checkpoint T03 et protections T02 conservés.
 
-Gates locales : contrats427 PASS/7 SKIP, média33 PASS, PostgreSQL13+9+49 PASS, qualité typecheck/lint/build197pages PASS, Python déploiement9 PASS. Legacy complet1013 PASS/9 FAIL/25 SKIP puis neuf corrections requalifiées9 PASS : agrégat1022 PASS/25 SKIP. Navigateur203 PASS agrégés (suite202 + reprise ciblée5),155 audits axe/0 violation,0 erreur navigateur ; détail au handoff. Audit0haute/critique,5modérées/2faibles. Aucun appel payant ni migration distante.
+Gates fraîches : 432 contrats PASS/7 SKIP (+ schedule/composition/publication), 33 médias PASS après binaire FFmpeg T01, typecheck PASS, lint 0 erreur/111 warnings, build 197 pages PASS avec vraies polices mises en cache hors réseau. Tests ciblés 147 PASS inclus dans les contrats. Premiers échecs d'environnement archivés. Aucun appel payant/déploiement/secret/DB distante ; garde anti-preview de la seule branche T04.
 
-Release non certifiée : Docker/Linux/OVH/fournisseurs réels et schéma distant non testés. Fonctionnalités S5 versions/hybride/logger non intégrées ; script éditeur sans régénération vocale. Ne pas transformer ces limites en PASS.
+Handoff courant : HANDOFF-SUTRA-T04-20261012.md ; preuves et hashes committés : qa/t04-final-20261012/manifest.json. Handoff T01 conservé pour les preuves historiques inchangées (SQL/browser/legacy non rejoués). GitNexus tronqué, impacts initiaux HIGH/CRITICAL pris en compte ; aucun certificat global.
 
-Mandat courant autorise commit et push de cette branche, pas un déploiement. Prochaine étape : lire le résultat CI distante du commit poussé, puis qualifier le schéma et le runtime OVH après autorisation distincte. Ne pas refaire les tests inchangés. Recette et rollback sous `deploy/README.md`.
-
-Premier push `0e7575e` confirmé ; CI38289108161 échoue avant tests sur credential SMARANA absent et healthcheck PostgreSQL mal cité. Guillemets du healthcheck corrigés dans le commit courant, actionlint PASS ; aucun code produit modifié.
+Prochain pas : coordinateur accepte le delta produit depuis la base exacte et fusionne les seuls documents/gardes concurrents. Limites : providers live/coûts réels et runtime distant non qualifiés, webhook/annulation distante LTX non documentés, journaux crash-safe de bout en bout WAN/voix/musique non prouvés. Ne pas rejouer les PASS inchangés ni redévelopper S5. Aucun déploiement dans ce mandat.
