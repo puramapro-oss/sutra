@@ -136,3 +136,12 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+
+## 2026-10-12 — T05 reprise finale sur integration 589732c
+
+- [x] LOCKS/owners, politiques POLICY_OK, base exacte et worktree isolé ; ancien T05/T01/WIP préservés.
+- [x] Delta media/export seul : source/native/amélioré/audio mesurés avant preuve buffer ; liaison SHA/bytes avant upload.
+- [x] Régressions rouge puis vert ; contrats429 PASS/7 SKIP, média34 PASS, tsc/lint PASS ; build local197 PASS après reprise avec WOFF2 T01 locaux (échec réseau initial conservé).
+- [x] Code committé `834e30edefafd224461616e9854ded42e857f3d4` ; GitNexus impact puis detect-changes, graphe partiel signalé.
+- [x] Handoff et manifest T05 préparés ; garde anti-preview exacte pour le push autorisé. SHA final/push : voir pointeur coordinateur T05.
+- [ ] Externe T01 : intégrer ce delta et qualifier CI vierge/polices ; providers réels et runtime déployé non testés.
