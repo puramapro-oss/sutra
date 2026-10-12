@@ -1,3 +1,14 @@
+## État courant 2026-10-13 — prime sur les cases historiques ci-dessous
+
+- [x] Secret SMARANA disponible, CI3591818 complète verte (38320118213).
+- [x] Backup/restore136 tables,6 migrations atomiques production, cutover bucket privé.
+- [x] DNS Cloudflare sutra →OVH, certificat Let’s Encrypt et5 GET HTTPS PASS.
+- [x] Smoke Supabase détecte403 jobs ; rollback applicatif automatique vérifié healthy.
+- [x] Régression des privilèges reproduite ; migration corrective minimale et test sans ACL par défaut.
+- [ ] CI du correctif, sauvegarde fraîche, migration corrective puis déploiement et smoke final.
+
+---
+
 ## Reprise CI du 2026-10-13
 
 - [x] Secret GitHub disponible ; CI9b0c2c9 relancée (run38313595126 tentative2).

@@ -1,11 +1,7 @@
-# BATON — SUTRA T01, autorisation production 2026-10-12
+# BATON — SUTRA T01, production autorisée
 
-**RELEASE_BLOCKED_CI — reprise 2026-10-13.** Secret SMARANA_READ_TOKEN ajouté, setup CI résolu. Run38313595126 tentative2 : contrats/médias/PostgreSQL/typecheck/lint/build/redteam/navigateur PASS ; legacy1019 PASS,25 SKIP,3 échecs de synchronisation navigation. Correction e2e/navigation.spec.ts : legacy complet1022 PASS,25 SKIP,0 FAIL,0 flaky ; lint ciblé PASS. Aucun changement applicatif ni production. Prochaine étape : push du correctif et CI complète verte avant migration/déploiement.
+2026-10-13 : **CORRECTION_PERMISSIONS_AVANT_REDEPLOIEMENT**. CI3591818 intégralement verte (run38320118213). Six migrations appliquées atomiquement après backup/restore136 tables. Candidat Linux exact promu ; cinq GET HTTPS PASS, DNS Cloudflare A144.217.14.210 DNS-only, TLS Let’s Encrypt valide.
 
-État précédent : **CODE_LOCAL_PASS / RELEASE_BLOCKED_CI.** Branche unique codex/sutra-t01-integration-20261012, base89250c7 ; T02–T08 intégrés,53 worktrees étrangers préservés.
+Le smoke Supabase supplémentaire a détecté403 sur video_jobs : les migrations v10/v11 ne donnaient aucun droit SQL au service_role. Rollback applicatif effectué et healthy ; migrations additives, bucket privé et DNS OVH conservés. Migration20261013_job_service_permissions.sql ajoute uniquement SELECT/INSERT/UPDATE sur jobs/quota. Test corrigé pour ne plus injecter de droits par défaut ; régression reproduite. Aucun appel payant.
 
-Médias privés durables et signatures renouvelables livrés ; permissions Storage restrictives testées164 assertions. Contrats473/7SKIP, médias34, PostgreSQL13+12, typecheck/lint111warnings/build197 PASS ; redteam14, navigateur217/axe165, legacy1022/25SKIP PASS.
-
-Sauvegarde cohérente OVH restaurée :136 tables et6 migrations deux fois PASS sur PostgreSQL15.8 ; seule la copie privée a été migrée. Image Linux44cdcd5 construite sur OVH ; cinq GET et FFmpeg PASS sans réseau sortant, candidat arrêté. Wrapper rollback17 tests et6 cas smoke isolés PASS. Détails exacts et preuves : HANDOFF-SUTRA-T01-20261012.md, qa/production-20261012/.
-
-Prochaine tâche : secret GitHub SMARANA_READ_TOKEN readonly absent à fournir, puis CI verte avant migration/cutover/déploiement. Accès Cloudflare disponible ; DNS wildcard vers Vercel402 inchangé, TLS origine à qualifier. Aucun appel payant, aucun déploiement. Ne pas rejouer les PASS inchangés. Logger déjà présent ; limites S5 hybride/versions/cron-runs non validées conservées.
+Prochaine étape : CI du correctif verte, sauvegarde fraîche, migration corrective testée sur copie privée, promotion du candidat exact, smoke Supabase + HTTP + DNS/TLS. Preuves : qa/deployment-20261013/. Le rapport final remplacera les états historiques du handoff et du plan. Conserver les53 worktrees étrangers, les7 lots intégrés, les commits protégés et toutes les images/backups.

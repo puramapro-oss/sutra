@@ -106,10 +106,10 @@ try {
     GRANT UPDATE(is_admin) ON sutra.profiles TO PUBLIC;
     GRANT SELECT(access_token) ON sutra.social_accounts TO PUBLIC;
     CREATE POLICY accidental_broad_read ON sutra.profiles FOR SELECT USING (true);`)
-  // Apply the integrated migration order with realistic Supabase grants, then test isolation.
+  // The DDL owner can differ from the role that configured Supabase defaults.
+  // New tables must obtain server privileges from migrations, never the fixture.
   await sql(`CREATE TABLE sutra.videos(id uuid PRIMARY KEY,user_id uuid,status text,created_at timestamptz DEFAULT now());
-    CREATE TABLE sutra.sutra_auto_videos(id uuid PRIMARY KEY,user_id uuid,status text);
-    ALTER DEFAULT PRIVILEGES IN SCHEMA sutra GRANT ALL ON TABLES TO service_role;`)
+    CREATE TABLE sutra.sutra_auto_videos(id uuid PRIMARY KEY,user_id uuid,status text);`)
   for (const name of ['v10_durable_jobs_quota.sql', 'v11_pipeline_checkpoints.sql', '20261012_social_publication_journals.sql', '20261012_private_media.sql']) {
     const source = await readFile(new URL('../migrations/' + name, import.meta.url), 'utf8')
     await sql(source); await sql(source)
@@ -136,6 +136,8 @@ try {
     GRANT TRUNCATE ON sutra.sutra_auto_memory TO PUBLIC, anon;`)
   const finalMigration = await readFile(new URL('../migrations/20261012_t02_final_permissions.sql', import.meta.url), 'utf8')
   await sql(finalMigration); await sql(finalMigration)
+  const jobPermissions = await readFile(new URL('../migrations/20261013_job_service_permissions.sql', import.meta.url), 'utf8')
+  await sql(jobPermissions); await sql(jobPermissions)
   for (const table of ['purama_points', ...rewardTables]) {
     for (const privilege of ['INSERT', 'UPDATE', 'DELETE']) {
       assert.equal(await sql(`SELECT has_table_privilege('authenticated','sutra.${table}','${privilege}');`), 'f'); checks++
@@ -202,6 +204,20 @@ try {
       await assert.rejects(sql(`SET ROLE ${role}; SELECT * FROM sutra.${table};`), error => /permission denied/.test(error.stderr)); checks++
     }
   }
+  for (const table of ['video_jobs', 'video_quota_counters']) {
+    for (const privilege of ['SELECT', 'INSERT', 'UPDATE']) {
+      assert.equal(await sql(`SELECT has_table_privilege('service_role','sutra.${table}','${privilege}');`), 't'); checks++
+    }
+    for (const privilege of ['DELETE', 'TRUNCATE']) {
+      assert.equal(await sql(`SELECT has_table_privilege('service_role','sutra.${table}','${privilege}');`), 'f'); checks++
+    }
+  }
+  await sql(`SET ROLE service_role; INSERT INTO sutra.video_jobs(user_id,kind,idempotency_key)
+    VALUES('${alice}','production','service-role-smoke');`)
+  assert.equal(await sql(`SET ROLE service_role; UPDATE sutra.video_jobs SET status='cancelled'
+    WHERE idempotency_key='service-role-smoke' RETURNING status;`), 'cancelled'); checks++
+  assert.equal(await sql(`SET ROLE service_role; SELECT status FROM sutra.video_jobs
+    WHERE idempotency_key='service-role-smoke';`), 'cancelled'); checks++
   for (const role of ['authenticated', 'anon']) {
     assert.equal(await sql(`SELECT has_function_privilege('${role}','sutra.submit_video_job(uuid,text,uuid,jsonb,text,text,integer,jsonb)','EXECUTE');`), 'f'); checks++
     assert.equal(await sql(`SELECT has_function_privilege('${role}','sutra.persist_video_job_video(uuid,text,text,uuid,jsonb,boolean)','EXECUTE');`), 'f'); checks++
