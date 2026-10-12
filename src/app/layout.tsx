@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import AppClientProviders from '@/components/layout/AppClientProviders';
 import { NextIntlClientProvider } from "next-intl";
@@ -7,11 +7,11 @@ import { getLocale, getMessages } from "next-intl/server";
 import CookieConsentBannerMount from "@/components/legal/CookieConsentBannerMount";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin", "latin-ext"],
+const spaceGrotesk = localFont({
+  src: "./fonts/SpaceGrotesk-Variable.ttf",
   variable: "--font-space-grotesk",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: "300 700",
 });
 
 const APP_NAME = "SUTRA";

@@ -69,19 +69,21 @@ export function useProductionGeneration({
       }
 
       const result = await awaitJobResult(res, controller.signal)
+      controller.signal.throwIfAborted()
       setGeneratedData((prev) => ({ ...prev, [step]: result.data }))
       setStepStatus((prev) => ({ ...prev, [step]: 'done' }))
 
-      // Auto-advance to next step
-      if (currentStep < STEPS.length - 1) {
-        setCurrentStep((prev) => prev + 1)
-      }
+      // Keep navigation performed while the request was pending.
+      setCurrentStep((prev) => prev === currentStep ? Math.min(prev + 1, STEPS.length - 1) : prev)
     } catch (err) {
+      if (controller.signal.aborted) return
       setStepStatus((prev) => ({ ...prev, [step]: 'error' }))
       setError(err instanceof Error ? err.message : 'Erreur lors de la generation')
     } finally {
-      active.current = null
-      setIsGenerating(false)
+      if (active.current === controller) {
+        active.current = null
+        if (!controller.signal.aborted) setIsGenerating(false)
+      }
     }
   }, [idea, template, format, engine, voice, musicStyle, tone, generatedData, currentStep, setCurrentStep])
 
@@ -115,19 +117,23 @@ export function useProductionGeneration({
       }
 
       const result = await awaitJobResult(res, controller.signal)
+      controller.signal.throwIfAborted()
       setGeneratedData(result.data ?? {})
       setStepStatus({
         idea: 'done', script: 'done', video: 'done',
         voice: 'done', music: 'done', assembly: 'done', thumbnail: 'done',
       })
-      setCurrentStep(STEPS.length - 1)
+      setCurrentStep((prev) => prev === currentStep ? STEPS.length - 1 : prev)
     } catch (err) {
+      if (controller.signal.aborted) return
       setError(err instanceof Error ? err.message : 'Erreur lors de la production')
     } finally {
-      active.current = null
-      setIsGenerating(false)
+      if (active.current === controller) {
+        active.current = null
+        if (!controller.signal.aborted) setIsGenerating(false)
+      }
     }
-  }, [idea, template, format, engine, voice, musicStyle, tone, setCurrentStep])
+  }, [idea, template, format, engine, voice, musicStyle, tone, currentStep, setCurrentStep])
 
   return {
     stepStatus,

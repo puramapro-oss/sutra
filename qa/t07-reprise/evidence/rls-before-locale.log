@@ -1,0 +1,25 @@
+npm warn exec The following package was not found and will be installed: node@24.21.0
+Local-only fixture retained: /tmp/sutra-t02-pg-aSzm2U
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /opt/homebrew/opt/postgresql@18/bin/pg_ctl -D /tmp/sutra-t02-pg-aSzm2U/data -l /tmp/sutra-t02-pg-aSzm2U/server.log -o -h '' -k /tmp/sutra-t02-pg-aSzm2U -p 55432 -w start
+pg_ctl : n'a pas pu démarrer le serveur
+Examinez le journal applicatif.
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: "/opt/homebrew/opt/postgresql@18/bin/pg_ctl -D /tmp/sutra-t02-pg-aSzm2U/data -l /tmp/sutra-t02-pg-aSzm2U/server.log -o -h '' -k /tmp/sutra-t02-pg-aSzm2U -p 55432 -w start",
+  stdout: 'en attente du démarrage du serveur.... attente arrêtée\n',
+  stderr: "pg_ctl : n'a pas pu démarrer le serveur\nExaminez le journal applicatif.\n"
+}
+
+Node.js v24.21.0

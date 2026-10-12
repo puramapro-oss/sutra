@@ -1,0 +1,37 @@
+
+  GitNexus Detect Changes (1.6.12)
+{"level":40,"time":1791835794690,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}
+Changes: 410 files, 134 symbols
+Affected processes: 16
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01 CHEF — 2026-10-12 → BATON.md
+  Section SUTRA T01 CHEF — 2026-10-12 → HANDOFF-SUTRA-T01-20261012.md
+  Section Préservation et autorité → HANDOFF-SUTRA-T01-20261012.md
+  Section Lot T01 livré → HANDOFF-SUTRA-T01-20261012.md
+  Section Tests exacts et portée → HANDOFF-SUTRA-T01-20261012.md
+  Section Matrice des huit lots → HANDOFF-SUTRA-T01-20261012.md
+  Section Contrats à réconcilier, conflits et doublons → HANDOFF-SUTRA-T01-20261012.md
+  Section GitNexus et preuves → HANDOFF-SUTRA-T01-20261012.md
+  Section Reprise unique → HANDOFF-SUTRA-T01-20261012.md
+  Section SUTRA T02 — securite — 2026-10-12 → HANDOFF-SUTRA-T02-20261012.md
+  Section Provenance et propriete → HANDOFF-SUTRA-T02-20261012.md
+  Section Defauts et corrections → HANDOFF-SUTRA-T02-20261012.md
+  Section Chemins et contrats consommateurs → HANDOFF-SUTRA-T02-20261012.md
+  Section Validation → HANDOFF-SUTRA-T02-20261012.md
+  Section Blocage unique de cloture : integration des contrats et preuve distante → HANDOFF-SUTRA-T02-20261012.md
+... and 119 more
+
+Affected execution flows:
+  • GET → FetchWithRetry (5 steps) — changed: runPublicationJournal
+  • GET → BreakerKey (7 steps) — changed: runPublicationJournal
+  • GET → Abort (7 steps) — changed: runPublicationJournal
+  • GET → ContentWithTags (5 steps) — changed: runPublicationJournal
+  • GET → ProviderPlatform (5 steps) — changed: runPublicationJournal
+  • GET → Headers (5 steps) — changed: runPublicationJournal
+  • GET → PublicationOutcome (4 steps) — changed: runPublicationJournal
+  • RunPublicationJournal → PublicPostUrl (4 steps) — changed: runPublicationJournal
+  • CreatePage → GetPipelineSteps (3 steps) — changed: useVideoGeneration, CreatePage
+  • RunPublicationJournal → ProviderPlatform (4 steps) — changed: runPublicationJournal
+... and 6 more

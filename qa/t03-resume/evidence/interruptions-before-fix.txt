@@ -1,0 +1,46 @@
+npm warn exec The following package was not found and will be installed: node@24.21.0
+✔ restart after durable script checkpoint preserves all nine independent outputs (1.368583ms)
+✔ restart after durable scenes checkpoint preserves all nine independent outputs (0.318083ms)
+✔ restart after durable images checkpoint preserves all nine independent outputs (0.252875ms)
+✔ restart after durable voice checkpoint preserves all nine independent outputs (0.260084ms)
+✔ restart after durable music checkpoint preserves all nine independent outputs (0.222583ms)
+✔ restart after durable subtitles checkpoint preserves all nine independent outputs (0.255834ms)
+✔ restart after durable composition checkpoint preserves all nine independent outputs (0.196542ms)
+✔ restart after durable export checkpoint preserves all nine independent outputs (0.205459ms)
+✔ restart after durable publication checkpoint preserves all nine independent outputs (0.251167ms)
+✔ paid call safety with intent-not-written (0.150542ms)
+✔ paid call safety with intent-ack-lost (0.061708ms)
+✔ paid call safety with result-not-written (0.054375ms)
+✔ paid call safety with result-ack-lost (0.038083ms)
+✔ 30 simultaneous requests in one executor share one provider operation (4.731541ms)
+✔ a durable remote id allows polling, never another submission (0.182209ms)
+✔ forged or non-finite final media proof cannot authorize ready (0.195708ms)
+✖ final proof requires literal validation flags and positive finite integer dimensions (0.844458ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 16
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 200.566458
+
+✖ failing tests:
+
+test at scripts/test-pipeline-interruptions.mts:1:3945
+✖ final proof requires literal validation flags and positive finite integer dimensions (0.844458ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-pipeline-resume-20261012/scripts/test-pipeline-interruptions.mts:73:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RECONCILIATION/,
+    operator: 'throws',
+    diff: 'simple'
+  }

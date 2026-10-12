@@ -16,20 +16,34 @@ export interface LtxJobState {
 export interface LtxJobPersistence {
   current?: LtxJobState
   save: (state: LtxJobState) => Promise<void>
+  /** Shared identity for wrappers of one scene in the same lease-owned steps. */
+  readonly serializationKey?: object
 }
 export class LtxJobError extends Error {
   constructor(message: string, readonly jobId?: string) { super(message); this.name = 'LtxJobError' }
 }
 
-/** Store intent BEFORE the non-idempotent POST and ID BEFORE polling/downloading. */
+const journalScopes = new WeakMap<Record<string, unknown>, Map<string, object>>()
+
+/** Store intent BEFORE the non-idempotent POST and ID BEFORE polling/downloading.
+ * Each wrapper retains its own lease-fenced callback, but reads the current slot
+ * and shares serialization with other wrappers of that slot in this worker. */
 export function durableLtxJob(steps: Record<string, unknown>, key: string,
   checkpoint?: (key: string, value: unknown) => Promise<void>): LtxJobPersistence {
-  const job: LtxJobPersistence = { current: steps[key] as LtxJobState | undefined, save: async state => {
-    await checkpoint?.(key, state)
-    steps[key] = state
-    job.current = state
-  } }
-  return job
+  let scopes = journalScopes.get(steps)
+  if (!scopes) { scopes = new Map(); journalScopes.set(steps, scopes) }
+  let serializationKey = scopes.get(key)
+  if (!serializationKey) { serializationKey = {}; scopes.set(key, serializationKey) }
+  return {
+    serializationKey,
+    get current() { return steps[key] as LtxJobState | undefined },
+    set current(state) { steps[key] = state },
+    async save(state) {
+      if (!checkpoint) throw new LtxJobError('SUTRA_LTX_DURABLE_CHECKPOINT_REQUIRED')
+      await checkpoint(key, state)
+      steps[key] = state
+    },
+  }
 }
 
 function validJobId(value: unknown): value is string {

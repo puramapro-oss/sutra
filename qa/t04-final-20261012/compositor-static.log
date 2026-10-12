@@ -1,0 +1,53 @@
+(node:60249) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60249) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+▶ ffmpeg-compositor — matrice formats x qualites (export strict)
+  ✔ 16:9 @ 720p -> sortie exactement 1280x720 (export strict, source 320x240 4:3) (352.933958ms)
+  ✔ 16:9 @ 1080p -> sortie exactement 1920x1080 (export strict, source 320x240 4:3) (452.665291ms)
+  ✔ 16:9 @ 4k -> sortie exactement 3840x2160 (export strict, source 320x240 4:3) (943.529667ms)
+  ✔ 9:16 @ 720p -> sortie exactement 720x1280 (export strict, source 320x240 4:3) (325.125959ms)
+  ✔ 9:16 @ 1080p -> sortie exactement 1080x1920 (export strict, source 320x240 4:3) (383.98125ms)
+  ✔ 9:16 @ 4k -> sortie exactement 2160x3840 (export strict, source 320x240 4:3) (1062.76825ms)
+  ✔ 1:1 @ 720p -> sortie exactement 720x720 (export strict, source 320x240 4:3) (484.517667ms)
+  ✔ 1:1 @ 1080p -> sortie exactement 1080x1080 (export strict, source 320x240 4:3) (393.939458ms)
+  ✔ 1:1 @ 4k -> sortie exactement 2160x2160 (export strict, source 320x240 4:3) (599.269875ms)
+  ✔ 4K demande == 4K produit, jamais silencieusement degrade vers 1080p/hd (bug Shotstack corrige, verifie ici cote FFmpeg) (1199.125834ms)
+✔ ffmpeg-compositor — matrice formats x qualites (export strict) (6222.171958ms)
+▶ ffmpeg-compositor — pipeline complet realiste (multi-scenes + voix + musique + watermark + intro/outro + sous-titres)
+  ✔ simule un /api/create complet en 16:9 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (3642.700833ms)
+  ✔ simule un /api/create complet en 9:16 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (3777.454833ms)
+  ✔ simule un /api/create complet en 1:1 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (3026.712833ms)
+✔ ffmpeg-compositor — pipeline complet realiste (multi-scenes + voix + musique + watermark + intro/outro + sous-titres) (10717.988584ms)
+(node:61156) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61156) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+▶ ffmpeg-compositor
+  ✔ assemble 2 clips + voix + musique + watermark + sous-titres -> mp4 valide, duree exacte (1458.476625ms)
+  ✔ fonctionne sans aucun audio (silence genere) (341.847541ms)
+  ✔ intro + outro rallongent la duree totale (838.809042ms)
+  ✔ rejette un job sans clip (0.36425ms)
+  ✔ rejette un clip de duree nulle ou negative avant tout telechargement (0.097041ms)
+  ✔ rejette une duree totale au-dela du plafond de la qualite demandee (garde-fou CPU/RAM) (0.069083ms)
+  ✔ libere toujours le slot de concurrence meme si le pipeline echoue apres l acquisition (ex: asset introuvable) (1.240125ms)
+  ✔ maxDurationSeconds permet de surcharger explicitement le plafond par defaut (0.149959ms)
+  ✔ un signal deja annule rejette immediatement avec step=cancelled, jamais de secours declenche par l appelant (0.42375ms)
+  ✔ reprise identique reutilise les etapes completes; un brief modifie ne reutilise rien (681.837333ms)
+✔ ffmpeg-compositor (3430.759583ms)
+(node:61302) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:61302) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ brief : voix/musique facultatives, obligatoires, desactivees; durees et sous-titres invalides (183.94825ms)
+✔ rendu : voix decalee, intro/outro silencieuses, logo visible et sous-titre seulement dans sa fenetre (993.532459ms)
+✔ musique courte boucle jusqu a la fin; voix trop longue refusee (478.420208ms)
+✔ pixels carres ET conservation du ratio affiche d une source anamorphique (254.519ms)
+✔ logo texte : ponctuation et expressions percent restent litterales (440.74025ms)
+✔ mesures source/native/amelioree et 4K native attestee distinctes de l upscale (1140.81275ms)
+✔ final : corruption, troncature et reponse HTML refusees; controles metadonnees sans faux vert (340.747917ms)
+ℹ tests 30
+ℹ suites 3
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24428.807959

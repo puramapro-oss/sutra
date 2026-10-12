@@ -1,15 +1,12 @@
 'use client'
 
 import { Wind, Play, Pause, RotateCcw, Timer } from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
 import { useBreathingSession } from '@/hooks/useBreathingSession'
 import Button from '@/components/ui/Button'
 import BreathingCircle from '@/components/breathe/BreathingCircle'
 import SessionCompleted from '@/components/breathe/SessionCompleted'
-import { XP_REWARD } from './constants'
 
 export default function BreathePage() {
-  const { profile } = useAuth()
   const {
     phase,
     secondsLeft,
@@ -22,7 +19,7 @@ export default function BreathePage() {
     handleStart,
     handlePause,
     handleReset,
-  } = useBreathingSession(profile?.id)
+  } = useBreathingSession()
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100dvh-8rem)] px-4 max-w-lg mx-auto">
@@ -88,7 +85,6 @@ export default function BreathePage() {
         ) : (
           <SessionCompleted
             cycleCount={cycleCount}
-            xpReward={XP_REWARD}
             onReset={handleReset}
           />
         )}

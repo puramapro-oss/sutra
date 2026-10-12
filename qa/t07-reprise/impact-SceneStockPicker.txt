@@ -1,0 +1,46 @@
+{
+  "target": {
+    "id": "Function:src/components/create/StockPicker.tsx:SceneStockPicker",
+    "name": "SceneStockPicker",
+    "type": "Function",
+    "filePath": "src/components/create/StockPicker.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Create",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/components/create/wizard/ManualFormStep3.tsx:ManualFormStep3",
+        "name": "ManualFormStep3",
+        "filePath": "src/components/create/wizard/ManualFormStep3.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

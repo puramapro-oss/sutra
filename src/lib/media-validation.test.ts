@@ -8,7 +8,7 @@ import { createServer, type Server } from 'node:http'
 import { resolveFfmpegBinary } from './ffmpeg-io.ts'
 import { composeVideo, type ComposeVideoParams } from './ffmpeg-compositor.ts'
 import { compositionPlan } from './composition-contract.ts'
-import { assertFinalMedia, mediaValidation, validateRenderedMedia } from './media-validation.ts'
+import { assertFinalMedia, mediaValidation, validateRenderedMedia, validateRenderedBuffer } from './media-validation.ts'
 import { probeMedia, mediaCommand } from './media-inspection.ts'
 import { generateSRT } from './ffmpeg-filters.ts'
 
@@ -140,4 +140,24 @@ test('final : corruption, troncature et reponse HTML refusees; controles metadon
   }
   await assert.rejects(() => validateRenderedMedia(`${base}/black.mp4`, contract()), /brute/)
   await assert.rejects(() => mediaCommand('ffprobe', ['-version'], 1000, AbortSignal.abort()), /annulee/)
+})
+
+test('validation du buffer : mesure toutes les sources et leur provenance avant export', async () => {
+  const brief = { ...contract(), clips: [{ url: `${base}/black.mp4`, durationSeconds: 1,
+    lineage: { nativeUrl: `${base}/native.mp4`, enhancedUrl: `${base}/black.mp4`, generation: { kind: 'upscaled' as const, evidence: 'synthetic-only' } } }] }
+  const rendered = await composeVideo(brief)
+  const proof = await validateRenderedBuffer(rendered.buffer, brief)
+  assert.equal(proof.sources.length, 1)
+  assert.equal(proof.sources[0].source.video?.width, 320)
+  assert.equal(proof.sources[0].native?.video?.width, 160)
+  assert.equal(proof.sources[0].enhanced?.video?.width, 320)
+  assert.equal(proof.resolutionOrigin, 'upscaled')
+  assert.equal(proof.final.sha256, rendered.validation?.final.sha256)
+  assert.throws(() => mediaValidation(brief, proof.final, []), /mesures source/)
+  assert.throws(() => mediaValidation(brief, proof.final, [{ ...proof.sources[0], native: null }]), /mesures source/)
+  await assert.rejects(validateRenderedBuffer(rendered.buffer, { ...brief,
+    clips: [{ ...brief.clips[0], lineage: { nativeUrl: `${base}/voice.wav` } }],
+  }), /mesures source/)
+  await assert.rejects(validateRenderedBuffer(rendered.buffer, { ...brief, voiceUrl: `${base}/black.mp4` }), /Voix/)
+  await assert.rejects(validateRenderedBuffer(rendered.buffer, { ...brief, musicUrl: `${base}/black.mp4` }), /Musique/)
 })

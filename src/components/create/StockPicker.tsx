@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles, Loader2, RefreshCw, ImageOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -52,50 +52,72 @@ export function SceneStockPicker({
   const [results, setResults] = useState<StockResult[]>([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState(keywords.join(' '))
+  const [error, setError] = useState<string | null>(null)
+  const active = useRef<{ query: string; controller: AbortController } | null>(null)
+  const selection = useRef({ selected, fallbackToAI, onSelect })
+  useEffect(() => { selection.current = { selected, fallbackToAI, onSelect } }, [selected, fallbackToAI, onSelect])
+  const keywordQuery = keywords.join(' ')
 
   const search = useCallback(
     async (q: string) => {
-      if (!q.trim()) {
+      const trimmed = q.trim()
+      if (active.current?.query === trimmed) return
+      active.current?.controller.abort()
+      active.current = null
+      setQuery(q)
+      setError(null)
+      if (!trimmed) {
         setResults([])
         setLoading(false)
         return
       }
+      const controller = new AbortController()
+      active.current = { query: trimmed, controller }
       setLoading(true)
       try {
         const res = await fetch('/api/stock/search', {
           method: 'POST',
+          signal: controller.signal,
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: q, orientation, type: 'any' }),
+          body: JSON.stringify({ query: trimmed, orientation, type: 'any' }),
         })
         const data = await res.json()
-        const list = (data.results ?? []) as StockResult[]
+        controller.signal.throwIfAborted()
+        if (!res.ok || !Array.isArray(data.results)) throw new Error('Recherche indisponible. Réessaie dans un instant.')
+        const list = data.results as StockResult[]
         setResults(list)
         // Auto-select first 4K if nothing selected yet
-        if (!selected && !fallbackToAI && list.length > 0) {
+        if (!selection.current.selected && !selection.current.fallbackToAI && list.length > 0) {
           const first4k = list.find((r) => r.quality === '4k') ?? list[0]
-          onSelect(first4k)
+          selection.current.onSelect(first4k)
         }
       } catch {
-        setResults([])
+        if (controller.signal.aborted) return
+        setError('Recherche indisponible. Réessaie dans un instant.')
       } finally {
-        setLoading(false)
+        if (active.current?.controller === controller) {
+          active.current = null
+          if (!controller.signal.aborted) setLoading(false)
+        }
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [orientation]
   )
 
   useEffect(() => {
-    void search(keywords.join(' '))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [keywords.join('|'), orientation])
+    void search(keywordQuery)
+    return () => {
+      active.current?.controller.abort()
+      active.current = null
+    }
+  }, [keywordQuery, search])
 
   return (
     <div
       data-testid={`scene-picker-${sceneIndex}`}
       className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-4 space-y-3"
     >
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <p className="text-xs font-semibold text-violet-300 uppercase tracking-wide">
             Scene {sceneIndex + 1}
@@ -107,8 +129,9 @@ export function SceneStockPicker({
             type="button"
             onClick={onFallbackAI}
             data-testid={`fallback-ai-${sceneIndex}`}
+            aria-pressed={fallbackToAI}
             className={cn(
-              'shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all',
+              'shrink-0 min-h-11 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors',
               fallbackToAI
                 ? 'bg-violet-600/25 border-violet-500/50 text-violet-200'
                 : 'bg-white/[0.03] border-white/[0.06] text-white/60 hover:border-white/[0.15]'
@@ -123,6 +146,7 @@ export function SceneStockPicker({
       <div className="flex items-center gap-2">
         <input
           type="text"
+          aria-label={`Recherche de médias pour la scène ${sceneIndex + 1}`}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
@@ -132,15 +156,15 @@ export function SceneStockPicker({
             }
           }}
           placeholder="Mots-cles (EN)"
-          className="flex-1 px-3 py-2 rounded-lg text-xs text-white/90 bg-white/[0.04] border border-white/[0.06] focus:border-violet-500/50 outline-none"
+          className="min-w-0 min-h-11 flex-1 px-3 py-2 rounded-lg text-xs text-white/90 bg-white/[0.04] border border-white/[0.06] focus-visible:ring-2 focus-visible:ring-violet-400 outline-none"
         />
         <button
           type="button"
           onClick={() => void search(query)}
-          className="px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:border-white/[0.15] text-white/70"
+          className="shrink-0 min-h-11 min-w-11 px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.06] hover:border-white/[0.15] text-white/70 focus-visible:ring-2 focus-visible:ring-violet-400"
           aria-label="Rechercher"
         >
-          <RefreshCw className={cn('h-3.5 w-3.5', loading && 'animate-spin')} />
+          <RefreshCw aria-hidden="true" className={cn('h-3.5 w-3.5', loading && 'motion-safe:animate-spin')} />
         </button>
       </div>
 
@@ -152,18 +176,23 @@ export function SceneStockPicker({
           </p>
         </div>
       ) : loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+        <div role="status" aria-label={`Recherche de médias en cours pour la scène ${sceneIndex + 1}`} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="aspect-video rounded-lg bg-white/[0.03] border border-white/[0.04] animate-pulse flex items-center justify-center"
+              aria-hidden="true"
+              className="aspect-video rounded-lg bg-white/[0.03] border border-white/[0.04] motion-safe:animate-pulse flex items-center justify-center"
             >
-              <Loader2 className="h-4 w-4 text-white/20 animate-spin" />
+              <Loader2 className="h-4 w-4 text-white/20 motion-safe:animate-spin" />
             </div>
           ))}
         </div>
+      ) : error ? (
+        <div role="alert" className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-5 text-center text-sm text-amber-200">
+          {error}
+        </div>
       ) : results.length === 0 ? (
-        <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-5 text-center space-y-2">
+        <div role="status" className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-5 text-center space-y-2">
           <ImageOff className="h-5 w-5 mx-auto text-amber-300" />
           <p className="text-sm text-amber-200">
             Aucun media reel ≥1080p trouve pour cette scene.
@@ -187,10 +216,12 @@ export function SceneStockPicker({
                 key={r.id}
                 type="button"
                 data-testid={`stock-item-${r.id}`}
+                aria-pressed={isSel}
+                aria-label={`${r.type === 'video' ? 'Vidéo' : 'Photo'} ${r.author ?? r.source}, ${r.quality}`}
                 onClick={() => onSelect(r)}
                 whileTap={{ scale: 0.96 }}
                 className={cn(
-                  'group relative aspect-video rounded-lg overflow-hidden border-2 transition-all',
+                  'group relative aspect-video rounded-lg overflow-hidden border-2 transition-colors focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
                   isSel
                     ? 'border-amber-400 shadow-[0_0_18px_rgba(251,191,36,0.5)]'
                     : 'border-transparent hover:border-white/30'

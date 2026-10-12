@@ -46,12 +46,14 @@ export async function checkpointStage(
 /** Cached booleans and provider URLs are not proof of a composed final file. */
 export function assertFinalMedia(media: AssembleResult, rawUrls: string[], requireAudio: boolean) {
   const proof = media.verification
-  if (!media.outputVerified || !proof || proof.url !== media.url || !/^[a-f\d]{64}$/.test(proof.sha256)
+  if (media.outputVerified !== true || !proof || !media.outputSize || typeof media.url !== 'string' || !media.url.trim()
+      || proof.url !== media.url || !/^[a-f\d]{64}$/.test(proof.sha256)
       || rawUrls.includes(media.url) || !Number.isFinite(media.duration) || media.duration <= 0
       || proof.width !== media.outputSize.width || proof.height !== media.outputSize.height
-      || !Number.isFinite(proof.duration) || Math.abs(proof.duration - media.duration) > 0.1
-      || !Number.isFinite(proof.fps) || proof.fps <= 0 || proof.width <= 0 || proof.height <= 0
-      || (requireAudio && !proof.hasAudio)) {
+      || !Number.isFinite(proof.duration) || proof.duration <= 0 || Math.abs(proof.duration - media.duration) > 0.1
+      || !Number.isFinite(proof.fps) || proof.fps <= 0
+      || !Number.isSafeInteger(proof.width) || !Number.isSafeInteger(proof.height) || proof.width <= 0 || proof.height <= 0
+      || (requireAudio && proof.hasAudio !== true)) {
     throw new Error('SUTRA_RECONCILIATION_REQUIRED: final media proof missing or raw media')
   }
 }

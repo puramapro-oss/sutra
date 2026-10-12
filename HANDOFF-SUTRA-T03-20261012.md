@@ -1,3 +1,76 @@
+# SUTRA T03 — reprise finale sur intégration 589732c
+
+Code : **`8103fff5f86fb3cfc60e2ed921f24b41897f0ded`**. Branche : **`codex/sutra-t03-pipeline-resume-20261012`**.
+Base exacte : `589732cb49959c1a576a3ba381b310cd594600ac`. La livraison documentaire est le commit contenant ce handoff ; son SHA final et la confirmation de push sont remis au coordinateur dans `.coord/handoffs/SUTRA-20261012/T03-REPRISE-589732c.md` à la racine PURAMA.
+Worktree : `/Users/matissdornier/purama-worktrees/sutra-t03-pipeline-resume-20261012`.
+État : **LOCAL_DELTA_VERIFIED**, intégration des reprises des autres terminaux à réaliser par T01, **RELEASE_NOT_CERTIFIED**.
+
+## Reprise et delta exact
+
+LOCKS, worktrees, branches et T01 distant vérifiés avant écriture. `POLICY_OK`.
+PR1 `a322e53`, PR2 `e1bdd1b`, PR3 `7088a0a` et correctif `05d164d` sont déjà dans l'ascendance de T01, ainsi que le premier lot T03 `289eaa4`/`fc308f1`. Aucun de ces lots n'a été dupliqué. Ancien T03, T01 et WIP étrangers préservés ; seules les preuves nécessaires du nouveau delta ont été reprises.
+
+Les neuf checkpoints, la file durable PR1, les protections PR2, les reçus DB et la reprise sans seconde génération payante étaient déjà intégrés. Le nouveau delta corrige des refus incomplets démontrés par tests rouges avant correctif :
+
+- Une comparaison SQL avec `NULL` laissait passer un bail absent ou un propriétaire absent dans trois RPC. `finish_video_job`, `persist_video_job_video` et `record_video_job_event` rejettent désormais explicitement ces états, avant toute mutation ou règlement de quota. Heartbeat et checkpoint étaient déjà fermés et restent couverts.
+- La présence d'une clé de checkpoint ne prouve pas sa fin. `ready`/`pending_approval` exigent huit étapes terminées ou explicitement non applicables ; scènes, composition et export doivent être `complete`, avec une liste de scènes non vide. Une piste obligatoire doit être `complete`, contenir une chaîne non blanche autre que `null`, et le média final doit prouver l'audio par le booléen JSON `true`.
+- La preuve finale exige des booléens littéraux, des dimensions positives entières, des durées positives et une fréquence valide. Les champs numériques JSON encodés comme chaînes et les URL blanches sont refusés. Le garde TypeScript refuse aussi NaN/Infinity, dimensions fractionnaires et durée mesurée nulle. Les contrôles URL brute, hash, dimensions et durée concordantes restent actifs.
+- Les pistes facultatives peuvent rester `skipped` et la publication `pending` jusqu'au processus de publication T06. Aucune seconde publication ni nouvelle architecture de file n'est introduite.
+
+## Fichiers du commit de code
+
+| Fichier | Modification |
+| --- | --- |
+| `src/lib/pipeline-state.ts` | Garde de preuve finale strict |
+| `migrations/v11_pipeline_checkpoints.sql` | Bail/propriétaire non NULL et garde DB `ready` |
+| `scripts/test-pipeline-interruptions.mts` | Durées, dimensions et booléens invalides ; reprise/idempotence conservées |
+| `scripts/test-pipeline-postgres.mts` | Trois nouveaux tests SQL, valeurs invalides et invariance des écritures/quota |
+| `qa/t03-resume/run-postgres.mjs` | Cluster privé local avec arrêt en finally et données conservées |
+| `qa/t03-resume/run-gate.mjs` | Build/navigateur/legacy hors réseau avec véritables polices en cache |
+| `vercel.json` | Désactivation du déploiement automatique de cette seule branche |
+
+Documentation/proofs : ce handoff, `BATON.md`, `task_plan.md`, `LOCKS-T03.md`, `qa/t03-resume/README.md`, `qa/t03-resume/verification.json` et `qa/t03-resume/evidence/*`. Liste exhaustive et empreintes dans le manifest. Aucune modification des adaptateurs T04, du média T05, de la publication T06, de l'UI T07, de la sécurité T02 ou de la CI/dépendances T01.
+
+## Tests gratuits et preuves
+
+Commandes et environnement : [qa/t03-resume/README.md](qa/t03-resume/README.md).
+Sources liées au commit et empreintes des preuves : [verification.json](qa/t03-resume/verification.json).
+
+| Gate locale | Résultat |
+| --- | --- |
+| Contrats Node, concurrence, reçus perdus, neuf reprises indépendantes | **428 PASS / 7 SKIP / 0 FAIL** ; 17 interruptions incluses |
+| Schedule / composition / publication | **PASS** pour les trois scripts complémentaires |
+| PostgreSQL v10 / pipeline v11 / permissions RLS | **13 + 12 + 49 PASS** ; bases locales distinctes, migrations rejouées |
+| FFmpeg synthétique réel, moteur et composition | **33 PASS** avec FFmpeg 6.0 complet |
+| Navigateur Chromium réel, serveur Next local et Supabase factice | **203 PASS**, 155 audits axe, 0 violation, 0 exception navigateur |
+| Legacy desktop/tablette/mobile complet | **1 022 PASS / 25 SKIP / 0 FAIL**, 0 flaky |
+| Typecheck / lint global / build final | **PASS / 0 erreur (111 avertissements) / 197 pages PASS** |
+| Tests Python du déploiement, mocks uniquement | **9 PASS**, aucun déploiement |
+| Audit npm production | **0 critique / 0 haute**, 5 modérées et 2 faibles héritées |
+| Diff et GitNexus avant commit | Diff sans erreur ; 7 fichiers, 28 symboles, listes de graphe abrégées |
+
+Les fournisseurs sont simulés, jamais appelés. Les tests SQL vérifient notamment 12 soumissions concurrentes, 24 checkpoints parallèles, l'ancien worker et les baux NULL, les effets dédupliqués, le règlement unique et les refus `ready` sans piste/scène/preuve. Les tests d'interruption vérifient la perte de reçu avant/après écriture et 30 appels concurrents partageant une opération. Un résultat fournisseur ambigu reste en réconciliation, jamais une autorisation de resoumission payante.
+
+Le navigateur et le legacy portent sur les parcours UI/API factices inchangés. Le tout dernier resserrement durée TypeScript/type numérique SQL a été revalidé par les contrats, PostgreSQL, RLS, typecheck, lint et build ; les suites UI déjà vertes n'ont pas été rejouées pour ce delta sans changement de leur parcours. Aucun résultat navigateur n'est une preuve fournisseur ni une validation visuelle manuelle.
+
+GitNexus : impact préalable **CRITICAL**, cinq appelants directs et cinq processus ; avertissement avant édition. Fonctions SQL non résolues : **UNKNOWN**, revue directe et tests PostgreSQL. Index final : 12 859 nœuds, 25 072 relations, 369 flux, mais 931 entrées/519 callees omis et quatre parcours limités. Le résultat `LOW/0 processus` de detect-changes ne remplace pas cet impact ni une revue exhaustive. Analyse exécutée aussi avant le commit documentaire.
+
+## Blocages réels et intégration T01
+
+1. **Migration locale seulement.** Appliquer ou réappliquer le contenu corrigé de `v11_pipeline_checkpoints.sql` après v10 sur le schéma cible uniquement sous autorisation distincte. Conserver l'ordre intégré : v10, v11, `20261012_social_publication_journals.sql`, puis `20261012_t02_account_permissions.sql` pour les permissions finales. Ne pas lancer une ancienne v11 par-dessus les derniers droits T02 sans les réappliquer. Aucun accès ni changement de DB distante ici.
+2. **CI de la base T01 en échec avant les tests** : [run 38289517548](https://github.com/puramapro-oss/sutra/actions/runs/38289517548), credential `SMARANA_READ_TOKEN` absent. Aucun secret lu ni modifié. Les filtres push actuels ne lancent pas la CI sur cette nouvelle branche T03 ; aucune CI distante verte n'est revendiquée.
+3. **Environnement de build vierge hors réseau** : Google Fonts est refusé par le garde QA. Le build passe avec les octets WOFF2 authentiques déjà en cache T01, dont les hashes sont archivés. Ce harnais local ne corrige pas la CI T01 : prévoir des polices/cache offline dans son périmètre. Le FFmpeg système sans libass/drawtext produit six échecs ; le binaire complet local donne 33 PASS. Les échecs initiaux sont conservés, les reprises réussies identifiées.
+4. **Intégration des reprises propriétaires encore distincte.** Comparer les deltas T02/T04/T05/T06/T07/T08 depuis la même base ; ne pas écraser leurs reprises par les fichiers de ce worktree. Conserver les gardes de branches de `vercel.json`. T08 a signalé à T07 une double soumission UI export ; cela ne prouve pas une double dépense et n'autorise pas T03 à modifier le hook UI.
+5. Docker/Linux/OVH, média privé publié, schéma distant complet, providers réels et preuves appareil/Store restent non testés. Les 7 SKIP contrats et 25 SKIP legacy ne sont pas des PASS. Audit npm résiduel transmis à T01/T02. Aucun blocage de tests locaux T03 restant ; aucune certification de release déduite.
+
+Commit et push limités à la branche T03 autorisée. Aucun déploiement, appel payant, publication réelle, secret ou nettoyage ; artefacts et worktrees conservés. Confirmation SHA local/distant dans le pointeur coordinateur après push.
+
+---
+
+## Archive — premier lot T03, déjà intégré dans 589732c
+
+Le texte ci-dessous conserve le contexte historique. Ses mentions de non-intégration, lint rouge et absence de push ne décrivent pas la reprise actuelle.
+
 # SUTRA — T03 pipeline vidéo — 2026-10-12
 
 **Implémentation locale : `289eaa41c8a57fde60d0709e98550ee3d81208ef`.**

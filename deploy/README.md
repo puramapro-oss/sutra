@@ -1,16 +1,22 @@
-# Déploiement OVH SUTRA — préparé, jamais exécuté par la CI
+# Déploiement OVH SUTRA — recette conditionnelle
 
-Depuis ce worktree, remplacer `<SHA40>` par le commit final poussé :
+**2026-10-12 : RELEASE_BLOCKED. Ne pas exécuter le déploiement avec l’état constaté.** Trois tables et quinze fonctions requises sont absentes du schéma OVH ; `sutra-assets` est public et le contrat de référence média privée durable reste à terminer. Le domaine public répond HTTP 402 depuis Vercel. Preuves : `qa/release-20261012/ovh-schema.json`, `ovh-http-cloudflare.json`, `ovh-origin-tls.log`.
+
+Après résolution des contrôles critiques, depuis le checkout du commit final poussé :
 
 ```sh
-python3 deploy/ovh.py deploy --source-ref <SHA40> --schema-ready
-python3 deploy/ovh.py rollback --source-ref <SHA40>
+SUTRA_RELEASE_SHA="$(git rev-parse HEAD)"
+python3 deploy/ovh.py deploy --source-ref "$SUTRA_RELEASE_SHA" --schema-ready
+# Retour à la configuration et à l’image précédentes :
+python3 deploy/ovh.py rollback --source-ref "$SUTRA_RELEASE_SHA"
 ```
 
-Ne lancer la première commande qu'après revue et vérification du schéma distant. La migration est séparée, manuelle et non effectuée dans cette livraison. Ordre testé sur PostgreSQL local jetable : `v10_durable_jobs_quota.sql`, `v11_pipeline_checkpoints.sql`, `20261012_social_publication_journals.sql`, `20261012_t02_account_permissions.sql`. Les fonctions/RLS existantes de production doivent être inventoriées avant application ; le jeu local ne prouve pas la compatibilité de données distantes inconnues.
+`--schema-ready` est une attestation opérateur, pas un contournement du précontrôle. Ordre des migrations vérifié sur PostgreSQL local jetable : `v10_durable_jobs_quota.sql`, `v11_pipeline_checkpoints.sql`, `20261012_social_publication_journals.sql`, `20261012_t02_account_permissions.sql`, puis **en dernier** `20261012_t02_final_permissions.sql`. Aucune migration de production effectuée. Le contrôle local n'atteste pas les données, grants ou compatibilités de production.
 
-Le wrapper exige un SHA complet, un commit disponible et le hash attendu du helper OVH canonique. Il archive Compose et la configuration runtime par copies opaques privées dans `/opt/purama/apps/sutra/rollback-<SHA40>/`. Le snapshot refuse l'écrasement, son marqueur n'est écrit qu'après les deux copies. Le helper prend les sources par `git archive` du SHA ; ESLint vient de ce même commit, SMARANA du commit verrouillé. Il prépare l'image Node 24/webpack, FFmpeg avec drawtext/subtitles, puis le service `purama-sutra` sur `root@144.217.14.210`.
+Le wrapper impose un SHA40 disponible et le hash du helper canonique `purama/.coord/handoffs/OVH-MIGRATION-20261005/deploy_next.py`. Les sources proviennent de `git archive`, ESLint du même commit et SMARANA du commit verrouillé. Une nouvelle image est construite avant remplacement de SUTRA. Le helper restaure automatiquement Compose si le remplacement échoue au contrôle de santé ; ce mécanisme n'est pas une preuve de rollback réel, ni une qualification des parcours métier. La route `/api/health` contacte des fournisseurs : ne pas l'utiliser pour une recette sans fournisseur.
 
-Rollback : restauration du Compose et du runtime précédents, `docker compose up -d --no-deps sutra`, attente explicite de l'état healthy. Les anciennes images doivent rester disponibles. Aucune annulation SQL automatique : les migrations restent en place. Un échec de santé est bloquant, jamais un succès silencieux. La commande est locale à cette machine : helper épinglé sous `purama/.coord/handoffs/OVH-MIGRATION-20261005/deploy_next.py` et son inventaire nécessaires.
+Avant remplacement, Compose et le runtime sont copiés de façon opaque dans `/opt/purama/apps/sutra/rollback-<SHA40>/` ; la création refuse tout écrasement. Le rollback explicite restaure les deux fichiers, ne redémarre que SUTRA et attend son état healthy. Les anciennes images doivent rester disponibles. Aucune annulation SQL automatique. Un smoke applicatif ou public en échec après remplacement impose d'exécuter ce rollback avant toute autre action ; ne pas se fier au seul healthcheck du conteneur.
 
-Preuve bornée : tests Python sans SSH, Docker ni credentials. Docker absent localement ; image Linux et rollback OVH réel **non exécutés**. Aucun contact avec OVH ni fichier de secrets lu pendant l'intégration.
+Sauvegarde SUTRA créée sur OVH dans `/opt/purama/apps/sutra/backup-t01-20261012-OXl8CklD/`, permissions 0700/0600. `sutra.dump` contient le schéma SUTRA et ses données ; `public-social.dump` les trois tables publiques social_accounts/social_posts/social_autopilot_config. Les deux archives ont été entièrement décodées par `pg_restore --file=/dev/null` et hashées, sans afficher leur contenu. Ce sont deux snapshots cohérents séparés, pas un snapshot transactionnel commun ; aucun test de restauration dans une DB n'a été effectué. Les blobs Storage et autres applications sont exclus et inchangés. Ne pas présenter cette sauvegarde comme une restauration complète de Supabase.
+
+Conteneur en place : `purama/sutra:35c137fc0bc0-9d0c6671-envn1`, healthy ; GET locaux `/` et `/login` → 200, `/api/points` sans session → 401. Aucun remplacement, déploiement, migration, changement DNS ou rollback effectué dans cette reprise. HTTPS direct vers OVH échoue à la validation de l’émetteur ; le chemin Cloudflare complet reste à qualifier.

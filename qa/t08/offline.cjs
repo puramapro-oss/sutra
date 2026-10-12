@@ -2,6 +2,7 @@
 // Defense in depth: synthetic environment supplied by run.mjs; no remote I/O.
 const net = require('node:net');
 const fs = require('node:fs');
+const { fileURLToPath } = require('node:url');
 const { syncBuiltinESMExports } = require('node:module');
 const allowed = new Set(['127.0.0.1', '::1', 'localhost']);
 const originalConnect = net.Socket.prototype.connect;
@@ -18,7 +19,8 @@ globalThis.fetch = function (input, init) {
   return originalFetch(input, init);
 };
 function checkPath(path) {
-  if (/(^|\/)\.env[^/]*$/.test(String(path))) {
+  const decoded = path instanceof URL ? fileURLToPath(path) : String(path);
+  if (/(^|\/)\.env[^/]*$/.test(decoded)) {
     const error = new Error('T08_ENV_FILE_DENIED');
     error.code = 'ENOENT';
     throw error;

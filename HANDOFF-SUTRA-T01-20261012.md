@@ -1,18 +1,18 @@
-# SUTRA T01 CHEF — intégration finale, 2026-10-12
+# SUTRA T01 CHEF — sept reprises intégrées, 2026-10-12
 
-Branche unique `codex/sutra-t01-integration-20261012`, worktree `/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012`. Le commit contenant ce handoff est la livraison intégrée ; `qa/integration-20261012/verification.json` lie les fichiers exécutables à leurs SHA-256. Les preuves T01 antérieures (`19ea35f`, `21363e0`) restent historiques.
+**LOCAL_INTEGRATION_PASS / RELEASE_BLOCKED. Aucun nouveau commit déployé.** Le dernier mandat autorise commit/push et un déploiement OVH seulement si tous les contrôles critiques passent. Cette condition échoue : stockage média privé non livré, schéma OVH incomplet, domaine public HTTP 402. Aucune migration de production, aucun changement DNS, aucune publication ni aucun appel fournisseur payant effectué.
 
-**INTEGRATION_LOCALE — RELEASE_NON_CERTIFIEE.** Commit et push de cette seule branche autorisés par le dernier mandat utilisateur. Aucun déploiement, migration distante, paiement, publication réelle ou appel fournisseur payant effectué. `vercel.json` désactive explicitement le déploiement Git de cette seule branche T01 pour éviter un preview involontaire au push ([contrat Vercel](https://vercel.com/docs/project-configuration/git-configuration)). Les workflows locaux ne déploient pas cette branche ; mobile se limite à main.
+Branche finale unique `codex/sutra-t01-integration-20261012`, worktree `/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012`. Base de cette reprise : `589732cb49959c1a576a3ba381b310cd594600ac`. Le commit contenant ce handoff est la livraison finale de code ; son SHA se lit avec `git rev-parse HEAD`. Manifest des sources, dépendances, configuration et preuves : [verification.json](qa/release-20261012/verification.json). Matrice courante : [MATRIX.md](qa/release-20261012/MATRIX.md). Les matrices et rapports antérieurs restent historiques.
 
-## Préservation et collecte
+## Collecte et préservation
 
-AGENTS, politique canonique (`POLICY_OK`), les deux LOCKS, handoffs, branches/worktrees, processus visibles et modifications locales inspectés avant écriture. Réservation `SUTRA-T01-20261012:FINAL-INTEGRATION` dans les deux LOCKS. Livraison des huit propriétaires recensée dans [MATRIX.md](qa/integration-20261012/MATRIX.md), avec SHA exacts, conflits, décisions et disposition des 46 cas T08 historiques.
+AGENTS, POLITIQUE-GLOBALE, fichiers d’état, les deux LOCKS, handoffs, branches/worktrees, processus visibles et modifications locales inspectés avant écriture. Contrôle de politique : `POLICY_OK`. Claim courant dans les deux LOCKS : `SUTRA-T01-20261012:REPRISE-7-LOTS-RELEASE`. Aucun reset/stash/clean, aucune suppression de worktree, aucun arrêt de processus étranger.
 
-48 worktrees présents inspectés, dont T01 ; les 47 worktrees étrangers conservent HEAD, état Git et hashes du WIP suivi (`preservation-final.json`). Une entrée worktree prunable `/private/tmp/r2_sutra_claude_fix` est absente du disque, donc non inspectable, et a été conservée. Aucun reset/stash/clean, suppression de worktree ou écrasement de fichiers étrangers. Les six fichiers suivis modifiés du checkout canonique `renfort/r4-sutra-smart-split-double-effects@8ff4fd26` sont inchangés. Les fichiers non suivis étrangers n'ont pas été récupérés.
+54 entrées de worktrees recensées, dont T01 ; les 53 entrées étrangères conservent leur HEAD, état Git et hashes des fichiers suivis modifiés : [preservation-final.json](qa/release-20261012/preservation-final.json). L’entrée `/private/tmp/r2_sutra_claude_fix` reste absente/prunable, conservée et non inspectable. Le checkout canonique `renfort/r4-sutra-smart-split-double-effects@8ff4fd26bb85178eb239496ae171bbd8ea9a1afb` et ses six fichiers suivis modifiés restent inchangés. Aucun fichier WIP ou non suivi étranger repris.
 
-Références conservées dans l'ascendance :
+`main` reste `a6568e81c108d911ff827756c9b0ab20c9ae1c97`. Les cinq références protégées sont toujours ancêtres de la branche finale :
 
-| Référence | SHA |
+| Référence | SHA vérifié |
 | --- | --- |
 | main demandé | `35c137fc0bc0bd5ff6e54c3ef44ef8b6e46b2fc5` |
 | PR1 | `a322e53d046b02005b3e05b91f42083a5ca20b1e` |
@@ -20,60 +20,87 @@ Références conservées dans l'ascendance :
 | correctif média | `05d164daafff3502ab764d852742f5e1bf17a8ca` |
 | PR3 | `7088a0a3e733de8d2e85f3576bd86627127da369` |
 
-Le nom de branche local `main` pointait déjà sur `a6568e81c108d911ff827756c9b0ab20c9ae1c97` et n'a pas été déplacé. Les branches propriétaires restent intactes. Le cluster PostgreSQL T01 (PID57391, port51269) a été arrêté proprement après les preuves ; aucun processus étranger arrêté. Aucun merge/cherry-pick global de S5.
+## Sept livraisons vérifiées et acceptées
 
-## Résultat intégré
+Chaque branche propriétaire est propre ; objet Git, HEAD propriétaire et SHA distant comparés. Les 1105 entrées SHA-256 des manifests propriétaires sont vérifiées sans divergence. Deltas calculés depuis leur base commune `589732c`, revus puis appliqués par chemins, sans merge/cherry-pick global. 329 chemins acceptés ; BATON/task_plan réconciliés par T01, gardes Vercel réunies. Les huit branches ont leur déploiement Git Vercel désactivé pour que le push ne déploie rien. [Inventaire](qa/release-20261012/deliveries.json), [comparaison des octets acceptés](qa/release-20261012/accepted-content-audit.json).
 
-- CI et dépendances T01 : Node24, ESLint embarqué avec provenance, SMARANA au commit verrouillé, gates isolées, garde SQL loopback, réseau fournisseur bloqué. Audit production : 0 haute/critique, 5 modérées et 2 faibles résiduelles dans la chaîne OpenTimestamps.
-- T02/T03 : auth/OAuth/admin, stockage/downloader sécurisés, quota atomique, jobs/claims/checkpoints, statut privé et persistance fail-closed. Les tests PostgreSQL démontrent la concurrence et les transactions ; les doubles de DB sont identifiés séparément.
-- T04 : adaptateurs LTX V2 réconciliés avec la persistance PR3. Intention ambiguë sans ID = réconciliation, aucune nouvelle dépense automatique ; ancien fingerprint uniquement pour reprendre un ID existant. JSON fournisseur borné et validation DNS/URL.
-- T05 : contrat FFmpeg/Shotstack complet, probe T05 renommé `media-inspection.ts`, correctif `05d164d` conservé dans `media-probe.ts`. Contrat et octets hashés, durée mesurée et provenance vérifiée avant stockage, y compris après reprise ; volume vocal dans les deux moteurs.
-- T06 : journal par destination, retry partiel, révocation honnête et CAS des tâches dues ; calendrier PR2 timezone/DST conservé. Les default grants réalistes ont révélé DELETE/TRUNCATE hérités sur le journal : révocation explicite puis droits SELECT/INSERT/UPDATE seulement.
-- T07 et raccords : création/production attendent le résultat d'un job 202 ; export de l'éditeur récupère les sources réelles, normalise les volumes et refuse les sources absentes. Boucle de chargement évitée ; libellés, contraste et petits écrans de l'éditeur vérifiés.
-- T08 : sources/rapports S5 archivés sans modification ; runner courant pointe vers les gates intégrées. Les 25 PASS/21 FAIL historiques ne sont jamais additionnés aux preuves PR3.
+| Lot | SHA final propriétaire | Résultat intégré |
+| --- | --- | --- |
+| T02 | `0b8df4d348d29d6b98e3b4a3b3e0a6ba18099f46` | POST points refuse avant lecture/effet ; permissions SQL finales, droits de colonnes OAuth, 147 assertions SQL |
+| T03 | `79b4b974773a21ab8c249f2a16ced08c7354a2bd` | Worker/lease SQL obligatoire ; ready exige étapes, scènes, pistes applicables et preuve média finale mesurée ; 12 tests PostgreSQL |
+| T04 | `23d188d668af5708e87d43cf383d7f0259c3d636` | Journal avant POST LTX payant ; reprise concurrente sérialisée, pas de fallback dépensier sur état ambigu, conflit WAN typé |
+| T05 | `09c1e4890951c0968aa699f20f0b3a3ece666f8e` | Validation native/enhanced/voix/musique, provenance complète ; hash/taille des octets uploadés égaux à la preuve |
+| T06 | `b2ec2eca250948fdb1012ada36829c0296ccab4e` | Revalidation compte/profil/approbation après claim avant publication ; réponses ambiguës conservées en réconciliation |
+| T07 | `4993feb9b95196200ac611203285da3ed9842a5b` | Ref synchrone anti-double export ; abort et réponses obsolètes ; navigation utilisateur préservée ; recherche stock cohérente avec le script |
+| T08 | `a5ac45b8e8e237244b896a94a6d8b3ade0450987` | Garde fichiers/réseau, 14 tests redteam et six scénarios navigateur adversariaux ; rapports historiques conservés |
 
-## Tests exacts et preuves
+Aucune divergence d’octets sur les chemins acceptés T02–T07. Trois ajustements T08 assumés : runner sans cache Google Fonts, extension navigateur avec le scénario respiration T01 et horloge isolée, README courant. Les preuves historiques des sept lots restent intactes.
 
-macOS arm64, Node `24.21.0`, npm `11.12.1`, PostgreSQL local `18.4`. La CI prévoit PostgreSQL16 ; cette différence n'est pas présentée comme un test distant. Journaux et résultats dans `qa/integration-20261012/evidence/` ; seuls les espaces de fin de ligne des copies texte sont normalisés. Les rapports sources dans test-results restent intacts.
+Raccords T01 : police Space Grotesk embarquée avec licence/provenance/hash, `next/font/local` pour le build sans réseau ; écran respiration cohérent avec le refus sécurisé T02, sans POST points ni XP annoncé ; CI exécute redteam et browser-redteam. PR1/PR2/PR3 et `05d164d` conservent les contrats déjà réconciliés à589 : calendrier/DST, persistance asynchrone, deux probes médias distincts et publication par destination.
 
-| Commande exacte (depuis le worktree) | Résultat |
+## Commandes exactes et résultats frais
+
+macOS arm64, Node24.21.0, npm11.12.1, PostgreSQL local18.4. OVH utilise PostgreSQL15.8 ; la CI prévoit16. Ce sont des environnements distincts. Préfixe local équivalent aux appels du binaire absolu exécutés :
+
+```sh
+SUTRA_NODE=/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node
+```
+
+Toutes les commandes suivantes partent du worktree final. FFmpeg/ffprobe proviennent des dépendances T05 existantes, exposées par les symlinks `test-results/media-bin` ; aucune dépendance étrangère modifiée. Les tests applicatifs utilisent environnements synthétiques et garde réseau T08. Seuls les audits gratuits et contrôles OVH en lecture/sauvegarde ont joint des services externes.
+
+| Commande | Résultat frais |
 | --- | --- |
-| `npm exec --yes --package=node@24 -- node scripts/run-ci.mjs contracts` | 427 PASS, 7 SKIP, 0 FAIL sur 434 ; schedule/composition/publication PASS |
-| `PATH="$PWD/test-results/media-bin:$PATH" npm exec --yes --package=node@24 -- node scripts/run-ci.mjs media` | 33 PASS (3 moteur local + 30 composition/décodage/audio/sous-titres), 0 FAIL |
-| `npm exec --yes --package=node@24 -- node scripts/run-ci.mjs quality` | typecheck PASS, lint 0 erreur/111 avertissements, build webpack 197 pages PASS |
-| `npm exec --yes --package=node@24 -- node scripts/run-ci.mjs browser` | Dernière suite complète : 202 PASS, puis 1 erreur du parseur URL du test serveur ; 155 audits axe sans violation |
-| `npm exec --yes --package=node@24 -- node scripts/run-ci.mjs browser-profiles` | 5 PASS après correction URL relative ; agrégat 203 contrôles PASS, aucun échec restant (pas une seconde suite complète) |
-| `npm exec --yes --package=node@24 -- node scripts/run-ci.mjs legacy` | Exécution complète : 1013 PASS, 9 FAIL, 25 SKIP sur 1047 ; attentes historiques corrigées ensuite |
-| `npm exec --yes --package=node@24 -- node scripts/run-ci.mjs legacy-regressions` | 9 PASS, 0 FAIL après corrections ; agrégat 1022 PASS/25 SKIP, aucun échec restant, pas une seconde exécution complète |
-| `SUTRA_DISPOSABLE_DB=1 DATABASE_URL_LOCAL=postgres://matissdornier@127.0.0.1:51269/sutra_ci_t01 npm exec --yes --package=node@24 -- node scripts/test-migration-local.mjs` | 13 contrôles PASS sur cluster local jetable |
-| `SUTRA_DISPOSABLE_DB=1 PGHOST=127.0.0.1 PGPORT=51269 npm exec --yes --package=node@24 -- node --import tsx --test scripts/test-pipeline-postgres.mts` | 9 PASS, concurrence réelle multi-sessions |
-| `npm exec --yes --package=node@24 -- node scripts/test-security-rls.mjs` | 49 assertions PASS, cluster privé local, droits réels et rejeu migrations |
-| `python3 -m unittest discover -s deploy -p 'test_*.py'` | 9 PASS sans SSH/Docker |
-| `actionlint .github/workflows/web-ci.yml` et `shellcheck tooling/git-askpass.sh` | PASS |
-| `npm audit --omit=dev --audit-level=high` | PASS seuil high ; 5 modérées/2 faibles conservées |
-| `./node_modules/.bin/eslint scripts/test-ui-isolated.mjs scripts/run-ci.mjs` | PASS après séparation des pannes serveur/client du test profil, seuls deltas JS après la gate qualité |
+| `PATH="$PWD/test-results/media-bin:$PATH" "$SUTRA_NODE" scripts/run-ci.mjs contracts` | 466 PASS, 7 SKIP, 0 FAIL sur473 ; schedule/composition/publication PASS |
+| `PATH="$PWD/test-results/media-bin:$PATH" "$SUTRA_NODE" scripts/run-ci.mjs media` | 34 PASS, 0 FAIL : moteur local3 + composition/probe/décodage31 |
+| `"$SUTRA_NODE" scripts/run-ci.mjs quality` | Typecheck PASS ; lint 0 erreur/111 avertissements ; build webpack197 pages PASS, sans cache/police distante |
+| `"$SUTRA_NODE" qa/release-20261012/run-postgres.mjs --full` | 13 contrôles migration +12 tests pipeline PostgreSQL PASS ; cluster privé arrêté proprement |
+| `LC_ALL=C "$SUTRA_NODE" scripts/test-security-rls.mjs` | 147 assertions PASS, droits SQL réels et double application des migrations ; cluster privé arrêté |
+| `"$SUTRA_NODE" qa/t08/run.mjs redteam` | 14 PASS : 12 gardes fichiers/réseau +2 charges en mémoire |
+| `"$SUTRA_NODE" qa/t08/run.mjs browser-redteam` | Suite complète PASS : 210 contrôles canoniques +7 supplémentaires ; 165 audits axe, 0 violation, 0 erreur navigateur |
+| `"$SUTRA_NODE" qa/t08/run.mjs legacy-offline` | Suite complète : 1022 PASS, 25 SKIP, 0 FAIL, 0 flaky sur1047 |
+| `python3 -m unittest discover -s deploy -p 'test_*.py'` | 9 PASS ; transport SSH/Docker simulé |
+| `actionlint .github/workflows/web-ci.yml` | PASS |
+| `shellcheck tooling/git-askpass.sh` | PASS |
+| `npm audit --omit=dev --audit-level=high --json` | PASS seuil high ; 0 haute/critique, 5 modérées et2 faibles OpenTimestamps résiduelles |
+| `"$SUTRA_NODE" node_modules/eslint/bin/eslint.js qa/t08/run.mjs qa/t08/integrated/browser-extension.mjs` | PASS après isolation de l’horloge du nouveau scénario |
 
-Le binaire média utilisé est un lien local en lecture vers `/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012/node_modules/ffmpeg-static/ffmpeg` ; aucune dépendance étrangère modifiée. La CI Linux installe FFmpeg et DejaVu. Les images editor-a11y-320 et editor-export-1280 ont été affichées pour contrôle visuel ; le média factice ne prouve pas une lecture fournisseur réelle.
+Les sept exclusions contrats sont quatre INSEE live, deux DB distantes et un OTS réseau. Les exclusions legacy restent détaillées dans son rapport. `test-connect.mjs` et `test-storage-video-proofs.mjs` nécessitent des secrets/mutations distantes ; non exécutés. Les wrappers déjà inclus ne sont pas recomptés. Aucun test mobile/appareil réel ni parcours navigateur complet sur DB réelle n’est revendiqué.
 
-Les trois corrections des attentes legacy : accent de « Rester connecté », cron sans secret refuse 401/503 (ne doit plus attendre un 200), redirection SQL malformée inspectée sans la suivre hors du serveur isolé. Les 25 exclusions restent nommées dans la matrice.
+Diagnostic navigateur conservé : première exécution, les six scénarios T08 et la respiration passent mais l’horloge accélérée installée dans la page principale efface ses observations Performance API. Correction du harnais : contexte navigateur séparé, guard localhost, stockage synthétique, fermeture garantie ; la page principale conserve son horloge native. La nouvelle exécution complète est verte. Preuves avant correction : `qa/release-20261012/browser-before-clock-isolation/`. Captures respiration et landing affichées ; pas de validation visuelle exhaustive ni de média fournisseur réel.
 
-Deux exécutions navigateur ont passé 201 contrôles et 155 audits axe sans violation, puis échoué sur le scénario de profil. Porter le délai de 5s à 20s n'a pas résolu la cause : la fixture mettait en panne la vérification de droits serveur T02 et redirigeait vers login avant l'écran T07. Le harnais distingue maintenant la lecture complète du profil client (erreur visible, rechargement fonctionnel) de la vérification serveur (redirection 307 vers login avec retour settings). Aucun assouplissement du code produit. Les deux échecs diagnostiques restent archivés `browser-before-deadline.*` et `browser-before-profile-split.*`. La suite suivante passe 202 contrôles et 155 audits axe, puis le nouveau contrôle serveur échoue uniquement car `Location` est relatif. Après correction `new URL(location, base)`, la reprise ciblée `browser-profiles` passe ses 5 contrôles (dont refus serveur et récupération client). Union des cas : 203 PASS, 0 erreur navigateur, 0 violation axe ; preuve `evidence/browser-aggregate.json`. Le troisième échec et les commandes restent archivés, sans faux PASS de suite complète.
+Résultats bruts copiés dans `qa/release-20261012/evidence/`. Aucune preuve propriétaire remplacée. Tous les changements de code des lots acceptés sont couverts par la gate intégrée ; les preuves historiques ne sont pas additionnées aux résultats frais.
 
-## GitNexus
+## OVH : lecture, sauvegarde et smoke gratuits
 
-Impacts exécutés avant modifications (213 cibles initiales, dont 41 HIGH/27 CRITICAL signalées, puis impacts ciblés des raccords). `check` du harnais navigateur : 4 dépendants directs, LOW connu. Graphe limité : risque UNKNOWN lorsque symboles non résolus ; ce n'est pas une absence de risque.
+Hôte `144.217.14.210`, seul service SUTRA inspecté. Conteneur inchangé `purama-sutra`, image `purama/sutra:35c137fc0bc0-9d0c6671-envn1`, healthy. GET internes réels : `/`200, `/login`200, `/api/points`401 sans session. `/api/health` n’a pas été appelé car il contacte des fournisseurs. Aucune génération, publication sociale ou paiement déclenché.
 
-Index final propre T01 : 12701 nœuds, 24670 relations, 266 clusters, 369 flux. **TRUNCATED** : 929 candidats d'entrée, 519 callees, 4 walks coupés ; pas de certification exhaustive. `detect-changes --scope staged --repo sutra-t01-20261012 --limit 3000` exécuté avant commit : 281 fichiers préparés, 1770 symboles, 123 flux, risque CRITICAL. La sortie CLI reste limitée à 15 symboles/10 flux malgré la limite demandée, donc ne constitue pas un inventaire exhaustif. Résultat archivé. Revue directe des chemins et tests complètent le graphe.
+Lecture SQL en transaction read-only : 133 tables SUTRA existantes. Manquent `video_jobs`, `video_quota_counters`, `social_publication_journals` et15 fonctions requises ; détail dans [ovh-schema.json](qa/release-20261012/ovh-schema.json). La table `public.social_accounts` correspond au contrat Zernio attendu. Le bucket `sutra-assets` est **public**. Aucun DDL ni changement de bucket effectué.
 
-## Limites réelles et prochaine étape
+Sauvegardes autorisées créées dans `/opt/purama/apps/sutra/backup-t01-20261012-OXl8CklD/`, dossier0700/fichiers0600 :
 
-- Approbation budgétaire hybride, gestion/restauration de versions et logger de S5 ne sont pas présents dans la base PR3 retenue ; ils ne sont pas déclarés livrés. Le bouton de restauration indique honnêtement son indisponibilité. Modifier le script de l'éditeur ne régénère pas la voix.
-- Les 7 SKIP contrats : 4 INSEE live, 2 DB distante, 1 OTS réseau. `test-connect.mjs` et `test-storage-video-proofs.mjs` exigent des secrets et mutent des services réels, donc non exécutés. Les wrappers T06 déjà inclus ne sont pas comptés deux fois.
-- Docker absent localement : image Linux, santé OVH et rollback réel non exécutés. Aucun appel GPU/Stripe/social/stockage de production. Schéma distant et compatibilité de ses données inconnus, migrations non appliquées.
-- La CI distante nécessite `SMARANA_READ_TOKEN`, absent de la liste des secrets du dépôt au contrôle final (noms seuls consultés) ; aucune valeur de secret lue. Son résultat doit être suivi après push ; les preuves locales ne garantissent pas son passage.
+- `sutra.dump` : 5079451 octets, SHA256 `452dd860599e2a63abfed92dc6645eddfccd0e040c3360915b4b451e206b92f5`.
+- `public-social.dump` : 22282 octets, SHA256 `08048685ff23b18ac9139249463104bf475024db7ed3552befafa222a2183a56`.
 
-Recette exacte et rollback : [deploy/README.md](deploy/README.md). Utiliser le SHA40 final poussé ; `--schema-ready` confirme une revue et une vérification séparées du schéma distant. Snapshot Compose/runtime protégé contre l'écrasement, restauration suivie d'une attente healthy ; aucune annulation SQL automatique. **Ne pas déployer dans cette session.**
+Archives décodées intégralement avec `pg_restore --file=/dev/null`, sans afficher ni transférer leur contenu. Deux snapshots cohérents séparés, aucune garantie d’un snapshot transactionnel commun. Aucun restore dans une DB ; blobs Storage, auth et autres applications exclus. Ce n’est pas une qualification de restauration complète Supabase.
 
-## Contrôle après premier push
+**URL publique non fonctionnelle** : `https://sutra.purama.dev/`, `/login`, `/api/points`, `/api/video/jobs/00000000-0000-0000-0000-000000000000` répondent HTTP402, serveur Vercel, sans cf-ray. DNS A `216.150.16.129` et `216.150.1.65` ; NS `viddy.ns.cloudflare.com` et `rita.ns.cloudflare.com`. Cloudflare fournit le DNS, mais le routage HTTP observé aboutit encore à Vercel. HTTPS direct OVH avec SNI SUTRA échoue à valider l’émetteur TLS (curl60/verify20) ; configuration Cloudflare/TLS complète non qualifiée. Aucun DNS modifié.
 
-Commit intégré initial `0e7575ed6aca39c930671d5e56fc0b0654c5b82b` poussé et SHA distant confirmé. [CI 38289108161](https://github.com/puramapro-oss/sutra/actions/runs/38289108161) : contrats/qualité arrêtés dans setup sur `SMARANA_READ_TOKEN` manquant ; aucun test distant exécuté. Le conteneur PostgreSQL échoue séparément avec `unknown shorthand flag: U` : les apostrophes du healthcheck sont traitées comme arguments littéraux par le runner. Correction de configuration : guillemets doubles autour de la commande `pg_isready`, puis `actionlint` PASS. Aucune source produit modifiée, preuves locales conservées ; SHA-256 du workflow actualisé. Le commit contenant ce complément est le commit final ; son nouveau run doit encore confirmer le démarrage du conteneur, puis restera bloqué par le credential privé absent.
+## Blocages et reprise nécessaire
+
+1. **Code/contrat stockage privé** : `uploadToStorage` retourne une URL publique persistée par les jobs, médias et journaux. T02/T06 signalent explicitement le besoin d’une référence durable bucket/chemin/propriétaire et de signatures renouvelées après autorisation. Changer seulement le bucket ou persister une URL expirante casse la reprise immuable. Migration des références/objets existants et tests interutilisateurs nécessaires ; aucune équivalence inventée.
+2. **Schéma OVH** : trois tables/quinze fonctions manquent. Ordre vérifié localement : v10, v11, publication journals, account permissions, puis final permissions T02 en dernier. L’interdiction précédente de migration de production n’a pas été remplacée par une autorisation explicite de DDL. Compatibilité des données et migration de production à qualifier/autoriser séparément ; ne pas passer `--schema-ready` dans l’état actuel.
+3. **CI distante** : aucun secret de dépôt disponible au contrôle des noms ; `SMARANA_READ_TOKEN` manque. Run précédent38289517548 : trois jobs bloqués en setup, PostgreSQL16 démarre. Le nouveau push déclenche la CI ; résultat à joindre à la clôture. Aucun token lu ni source privée SMARANA copiée dans le dépôt public.
+4. **Exploitation** : domaine sur Vercel402, chaîne TLS directe non qualifiée. Accès Cloudflare/configuration de l’origine nécessaires après résolution des autres contrôles. Docker local absent ; nouvelle image Linux non construite/déployée. Aucun rollback réel revendiqué.
+5. **Fonctions S5 non livrées** : approbation budgétaire hybride, restauration des versions, logger/cron-runs ; le script édité ne régénère pas la voix. Ce sont des limites de produit explicites, pas des tests PASS.
+
+Le déploiement n’a pas commencé : aucun rollback n’était nécessaire. Commandes conditionnelles exactes et limites d’automatisation dans [deploy/README.md](deploy/README.md). Le helper construit avant remplacement et restaure Compose en cas d’échec de santé ; un échec de smoke applicatif/public requiert aussi le rollback explicite. Ce mécanisme n’a pas été exécuté ni qualifié en production.
+
+## GitNexus et contrôle avant commit
+
+Impacts exécutés avant modification : plusieurs dépendances HIGH/CRITICAL signalées (média/pipeline/publication). Les raccords respiration et harnais sont LOW connus, certains composants restent UNKNOWN. Index T01 deux commits en retard, marqué TRUNCATED (929 entrées,519 callees,4 walks coupés) : jamais utilisé comme preuve d’exhaustivité. Diffs directs, manifests propriétaires et tests frais complètent cette preuve limitée.
+
+`node /Users/matissdornier/purama/.gitnexus/run.cjs detect-changes --scope staged --repo sutra-t01-20261012 --limit 3000` exécuté : 410 fichiers,134 symboles,16 flux, risque CRITICAL. La sortie CLI ne développe que15 symboles/10 flux ; résultat dans `gitnexus-detect-staged.log`, non exhaustif. Portée revue directement, aucun chemin produit hors SUTRA.
+
+Gitleaks8.30.1 sur le diff préparé : 31 détections brutes,31 SHA-256 sources vérifiés,0 non classée dans `gitleaks-triage.json` ; chaque empreinte signalée est vérifiée contre le contenu source au commit exact. Aucun secret/env lu. Les copies T01 des logs ont leurs espaces de fin de ligne normalisés ; originaux de test et preuves propriétaires inchangés. Licence de police conservée avec fins de ligne LF.
+
+Le commit final ne modifie que le worktree T01. Push de la branche finale uniquement, sans force, sans toucher main ni branches propriétaires. Les claims racine/.coord seront clos avec son SHA et `RELEASE_BLOCKED`.

@@ -117,7 +117,7 @@ export async function generateVideoSmart(
   const track = { userId: options.userId ?? null, videoId: options.videoId ?? null, plan, engineRequested: engine, modelRequested: model }
   // WAN is an explicitly selected plan engine, never a post-submission fallback.
   if (engine === 'wan-classic') {
-    if (options.job?.current) throw new Error('SUTRA_LTX_RESUME_CONFLICT')
+    if (options.job?.current || options.execution) throw new LtxJobError('SUTRA_LTX_RESUME_CONFLICT', options.job?.current?.v2 ?? null)
     if (options.imageUri || options.lastFrameUri || options.cameraMotion) throw new Error('WAN_UNSUPPORTED_REFERENCE_OR_CAMERA')
     return generateWanVideoWithTracking({ prompt, quality, format, duration, userEmail, track, fallbackTriggered: false, fallbackReason: null })
   }

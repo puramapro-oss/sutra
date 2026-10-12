@@ -1,63 +1,79 @@
-# SUTRA T02 — securite — 2026-10-12
+# SUTRA T02 — sécurité — reprise finale du 2026-10-12
 
-Statut : livraison locale du delta de securite ; integration et mise en production BLOQUEES par les contrats ci-dessous. Aucun push, deploiement, appel fournisseur reel, publication sociale ou migration distante.
+## Livraison et provenance
 
-## Provenance et propriete
+- Branche : `codex/sutra-t02-security-final-20261012`.
+- Worktree : `/Users/matissdornier/purama-worktrees/sutra-t02-security-final-20261012`.
+- Base d’intégration exacte, vérifiée propre : `codex/sutra-t01-integration-20261012` à `589732cb49959c1a576a3ba381b310cd594600ac`.
+- Livraison = commit atomique contenant ce handoff ; SHA et confirmation distante déposés après push dans `/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T02-COORDINATION.md`.
+- AGENTS, politique, LOCKS, handoffs, branches/worktrees/processus contrôlés avant écriture ; `POLICY_OK`. Nouveau worktree isolé créé depuis cette base, sans copie ni réintégration de WIP.
+- Le premier lot T02 `d4626a426ad1f3f29e670fb1a19c65298d2f7809` est déjà intégré. Son handoff reste dans cet ancien commit et ses preuves historiques sous `qa/t02/`. Ils ne sont pas présentés comme de nouveaux résultats.
+- Seul fichier produit changé : `src/app/api/points/route.ts` (permission POST). Packages, lockfile, workflows, harnais T01/T08, export T05, interface T07 et publication T06 inchangés. `assertCronAuth`, OAuth persistant, sessions, downloader et révocation existants conservés ; leurs tests figurent dans la suite contrats.
+- Push de cette seule branche autorisé par le mandat courant ; garde Vercel `git.deploymentEnabled[branche]=false` ajoutée avant push, sans retirer la garde T01. Aucun déploiement, appel payant, publication sociale, secret ou DB distante.
 
-- Branche : `codex/sutra-t02-security-pr3-20261012`.
-- Worktree : `/Users/matissdornier/purama-worktrees/sutra-t02-security-pr3-20261012`.
-- Base PR3 : `7088a0a3e733de8d2e85f3576bd86627127da369`.
-- Livraison atomique : le commit contenant ce handoff, les sources et `qa/t02/verification.json`. Le SHA final est depose dans `.coord/handoffs/SUTRA-20261012/T02-COORDINATION.md` du depot PURAMA. Verifier les empreintes du manifeste contre `git show <commit>:<chemin>`.
-- AGENTS, politique canonique, LOCKS, handoffs, branches et worktrees controles avant ecriture ; controle demarrage `POLICY_OK`.
-- Premier worktree S5 `sutra-t02-security-20261012` conserve sans delta produit. Aucune substitution de fichier S5 dans PR3.
-- Fichiers T01 tooling/dependances, T03 pipelines, T04 adaptateurs, T05 FFmpeg/probe/export, T06 comptes/publication/zernio et T07 UI preserves. Aucun WIP tiers integre.
+## Vulnérabilités résiduelles reproduites et corrigées
 
-## Defauts et corrections
+La nouvelle migration `migrations/20261012_t02_final_permissions.sql` s’applique **après toutes les migrations intégrées et `20261012_t02_account_permissions.sql`**, avec le propriétaire de migration. Transactionnelle, rejouable, sans modification de données, montant, split, corps métier ou payload de publication.
 
-| Defaut prouve localement | Correction | Preuve et limite |
+| Preuve PostgreSQL avant correction | Correction | Preuve après correction |
 | --- | --- | --- |
-| Un compte banni conserve une identite Supabase valide ; les routes service-role ne recontrolaient pas le ban | Controle du profil courant dans le client SSR canonique et middleware, refus sur ban/revocation/profil absent/erreur DB ; aucune session concurrente | Tests du client et des vrais handlers avec SDK simule ; pas de fournisseur Auth reel |
-| Une mise a jour de facturation peut remplacer `subscription_status=banned` | Marqueur distinct `access_revoked_at`, protege des clients, ecrit/efface par ban/unban | Tests JS + SQL local ; pas de modification des regles de facturation |
-| La RLS proprietaire autorise la modification des champs privilegies de son propre profil sous grants ordinaires | Retrait des grants de table ET de colonnes ; UPDATE client sur preferences explicites seulement ; politique proprietaire restrictive | Escalade `is_admin`, credits et auto-deban reproduite avant migration puis refusee ; grants distants NON TESTES |
-| Les tokens de `sutra.social_accounts` sont lisibles sous les memes grants | SELECT client limite aux colonnes descriptives ; ecriture et tokens serveur seulement | SELECT token/refresh/metadata et ecritures clients refuses dans PostgreSQL local |
-| Le helper V7 `karma_award_seeds` est SECURITY DEFINER avec EXECUTE PUBLIC par defaut et montant/beneficiaire libres | EXECUTE reserve au service_role ; search_path fixe ; corps et regles metier inchanges | Attribution arbitraire a un autre utilisateur reproduite avant migration ; authenticated/anon refuses apres ; service valide |
-| Un JWT existant conserve l'acces direct aux tables apres ban applicatif | Politique restrictive `account_is_active()` sur toutes les tables RLS existantes du schema sutra | Tests owner/cross-user/ban/unban et reecriture billing ; ne revoque pas les JWT Supabase ni les autres schemas |
-| Les changements admin peuvent annoncer un succes malgre erreur DB/absence de ligne | Verification cible et ligne effectivement modifiee ; erreur generique | Tests ban/unban/set_plan, cible absente et erreurs ; aucun changement de prix ou de plan autorise |
-| Initiation OAuth non bornee et messages fournisseur exposes | Reutilisation du limiteur existant (10/min/utilisateur), erreurs statiques connect/callback | 11e appel refuse avant fournisseur ; aucun detail sensible reflechi |
-| Telechargement : erreurs DNS brutes et absence de contrat securise commun audio/image/annulation | Extension du downloader PR3 existant, DNS epingle par saut, HTTPS/443, bornes, signal externe, MIME/signatures raster/audio | Transport simule, cas DNS mixte/rebinding/metadata/redirect/overflow/compression/playlist/SVG ; decodage complet reste T05 |
-| Stockage : erreurs fournisseur exposees et suppression annoncee sans verifier le resultat | Erreurs generiques upload/delete/list ; resultat fournisseur obligatoire | Tests resultats et exceptions, contrat de succes conserve ; confidentialite du bucket NON PROUVEE |
+| Le `GRANT ALL` canonique de `sutra_auto.sql` permet à un utilisateur révoqué de `TRUNCATE` les souvenirs de tous les utilisateurs ; la RLS refuse pourtant son SELECT | Retrait de TRUNCATE/REFERENCES/TRIGGER aux rôles clients sur les tables existantes de `sutra` | TRUNCATE anon/authenticated refusé, lignes des deux utilisateurs préservées |
+| Sous grants clients ordinaires, la RLS propriétaire permet de changer son solde `purama_points` et d’insérer un faux cadeau | Écritures des sept tables de soldes/reçus/récompenses réservées au serveur ; retrait des grants de table et colonne, lecture propriétaire actif seulement | INSERT/UPDATE/DELETE clients refusés, lecture autre utilisateur et compte révoqué refusées, écriture serveur conservée |
+| Le schéma réel `public.social_accounts` de `sql/social-autopilot.sql` laisse lire le token et réactiver/modifier l’identité d’un compte via grants clients ; la première migration T02 protégeait seulement `sutra.social_accounts` | Tokens, metadata brute et écritures serveur seulement ; SELECT de colonnes descriptives explicites, politique restrictive propriétaire actif | Tokens/refresh/metadata/SELECT étoile et écritures clients refusés ; métadonnées propres lisibles, autre utilisateur/compte révoqué refusés, service autorisé |
 
-`assertCronAuth` est conserve sans second mecanisme. La suite PR3 revalide les crons sans secret, avec secret incorrect et en developpement. L'etat OAuth hache, persistant, lie a la session/plateforme et consommable une seule fois est reutilise. Les redirections de session PR3 sont conservees et retestees.
+Les sept tables : `purama_points`, `point_transactions`, `point_purchases`, `point_milestones`, `daily_gifts`, `user_achievements`, `lottery_tickets`. Les définitions utilisées par les tests proviennent des migrations canoniques, avec rôles PostgreSQL réels et identités synthétiques. Les grants distants ne sont pas connus : ces reproductions locales ne sont pas la preuve d’une exploitation en production.
 
-## Chemins et contrats consommateurs
+Le contrat `public.social_accounts` a été retrouvé via le handoff T06. La migration exige son commentaire canonique et ses colonnes d’autorité ; un schéma inconnu déclenche `SUTRA_SOCIAL_SCHEMA_REVIEW_REQUIRED` et annule toute la transaction. Une table absente est ignorée. Les deux chemins sont testés, y compris le rollback des grants. Vérification humaine du schéma partagé requise avant application distante. Ne pas réappliquer ensuite un ancien script de grants ; les tables créées ultérieurement nécessitent leurs propres permissions.
 
-Sources : `src/lib/account-access.ts`, `src/lib/supabase-server.ts`, `src/middleware.ts`, `src/app/api/admin/users/[id]/route.ts`, `src/app/api/social/{connect,callback}/route.ts`, `src/lib/media-download.ts`, `src/lib/storage.ts`.
+### Contournement de l’autorité serveur sur les points
 
-Migration additive : `migrations/20261012_t02_account_permissions.sql`. Tests : `scripts/test-security-{account,routes,media,storage}.mts` et `scripts/test-security-rls.mjs`.
+Le POST `/api/points` de la base accepte `action`, `amount` et `source` du navigateur après la seule authentification. La reproduction sur le handler réel avec SDK simulé renvoie **200, 15 écritures privilégiées et six appels `creditWallet`** pour 1 000 000 points choisis par le client ; un faux `breathe_session` est également accepté. Cette voie contourne les permissions SQL et les contrôles de profil actif ne suffisent pas.
 
-Le schema doit etre migre **avant** le code SSR : sans `access_revoked_at`, les requetes echouent ferme. Executer les migrations historiques d'abord, puis cette migration, avec leur proprietaire BYPASSRLS. La migration est transactionnelle et rejouable. Ne pas reexecuter ensuite un ancien script de grants ou un CREATE OR REPLACE FUNCTION qui retablirait des permissions publiques. Les futures tables RLS doivent reprendre la politique restrictive ; cette migration ne les anticipe pas.
+Le POST renvoie maintenant **403** pour une session active, avant lecture du corps, création du service client ou effet financier. Les sessions absentes/interdites/révoquées restent refusées ; le GET propriétaire est conservé. Aucun taux, montant, split ni nouveau système d’attribution n’est inventé. Les actions serveur dédiées existantes restent intactes. **Conséquence produit explicite : l’ancien crédit de respiration par ce POST est suspendu** tant qu’il n’existe pas de preuve serveur de l’activité. Le seul appelant trouvé, `src/hooks/useBreathingSession.ts:96`, appartient à T07 ; son toast de réussite inconditionnel et son appel `addXp` doivent être réconciliés par ce propriétaire. Ne pas réouvrir le POST sur la seule valeur `source` du navigateur.
 
-T05 : `downloadMediaBytes(url, { kind: 'video' | 'audio' | 'image', maxBytes?, timeoutMs?, signal? }): Promise<Buffer>` dans le downloader existant. `downloadVideoBytes` conserve sa signature et delegue au meme moteur. Audio mp3/wav/aac/m4a/ogg ; images png/jpeg/webp ; playlists et SVG refuses. Les signatures ne remplacent pas le decodage/ffprobe. Le cablage de tous les consommateurs audio/image reste a faire par leur proprietaire.
+Dix tests négatifs/positifs exécutent le handler réel, avec Supabase/portefeuille simulés et réseau interdit ; cinq échouent avant correction, dix passent après. `scripts/test-security-account.mts` charge la nouvelle suite pour qu’elle s’exécute déjà dans le runner de contrats canonique, sans modifier celui de T01.
 
-## Validation
+## Validation gratuite et isolée
 
-Les commandes, versions, resultats et empreintes sont dans `qa/t02/verification.json` et `qa/t02/evidence/`.
+Environnement : Node **24.21.0**, PostgreSQL **18.4** local, dépendances exactes T01/base589 en lecture seule, aucune installation ni modification dans son `node_modules`. Les preuves et empreintes sont dans `qa/t02-final/verification.json` et `qa/t02-final/evidence/`.
 
-- **PROUVE local : 169/169 tests**, dont 31 tests T02 et regressions PR3 cron/OAuth/session/media ; 0 skip. Les fournisseurs et le transport HTTPS sont simules.
-- **PROUVE PostgreSQL local : 36 assertions**, reproductions avant/apres, double application de migration, roles anon/authenticated/service_role, isolation et revocation. Cluster propre sans TCP ni URL DB, arrete ensuite. Aucun schema distant inspecte/applique.
-- **PROUVE local : typecheck PASS, build webpack PASS (197/197 pages)** avec environnement synthetique. Aucun test navigateur live ni fournisseur reel.
-- Lint fichiers T02 : PASS. Lint global PR3 : FAIL, 12 erreurs et 131 avertissements hors delta (tooling/.gitnexus et fichiers T03/T04/T06). Les correctifs de tooling appartiennent a T01 ; aucun faux PASS global.
-- Dependances figees T01 `19ea35fbbfe99a978f119f3939ff9935362191dc`, utilisees en lecture seule, Next 16.3.8/Supabase 2.100.1/TypeScript 5.9.3. Node local 26.0.0 ; Node CI T01 24 non rejoue ici. Le lockfile PR3 reste intact : cette preuve lie explicitement les dependances T01.
-- Premier typecheck/build invalide par un lien temporaire `packages` qui incluait des sources externes : lien T02 seul retire, nouvelle validation en isolation. Aucun repertoire source supprime.
+| Commande / preuve | Résultat |
+| --- | --- |
+| `node scripts/test-security-rls.mjs` | **147 assertions PASS**, sur Node24 ; reproduction avant/après, double migration, grants de colonne/PUBLIC, RLS restrictive, révocation et rollback. Cluster socket privé arrêté, conservé. Premier passage Node26 également PASS, sans additionner les deux |
+| `node scripts/run-ci.mjs contracts` | **437 PASS / 7 SKIP / 0 FAIL**, dont les dix tests points nouveaux ; schedule/composition/publication PASS. SDK/transport fournisseurs simulés |
+| `node scripts/run-ci.mjs media`, FFmpeg local T05 en lecture seule | **33 PASS / 0 FAIL** : moteur local3 et composition/décodage30, médias synthétiques |
+| `node scripts/test-migration-local.mjs`, puis `node --import tsx --test scripts/test-pipeline-postgres.mts` | **13 validations migration + 9 tests concurrence PASS**, cluster jetable loopback créé par T02, arrêté ensuite ; aucune base préexistante utilisée |
+| `node scripts/run-ci.mjs quality` (premier passage) | Typecheck PASS, lint PASS **0 erreur / 111 avertissements** ; build canonique **FAIL** : la garde réseau refuse le téléchargement Google Fonts |
+| `node qa/t02-final/run-free-gates.mjs quality` (après correctif points) | **Typecheck, lint 0 erreur / 111 avertissements et build197 PASS**, avec la police locale et la garde réseau inchangée |
+| `node qa/t02-final/run-free-gates.mjs build` | Build **197/197 pages PASS** avec police publique mise en cache localement ; aucune modification de layout, config ou runner canonique |
+| Lint ciblé du test RLS et du harnais QA T02 | PASS, 0 avertissement |
+| Navigateur et legacy avec le même harnais de police locale | **203 contrôles navigateur PASS**, 155 audits axe / 0 violation / 0 erreur navigateur ; **1022 legacy PASS / 25 SKIP / 0 FAIL** |
+| `python3 -m unittest discover -s deploy -p 'test_*.py'` | **9 PASS**, mocks de déploiement uniquement |
+| actionlint workflows web/mobile ; shellcheck `tooling/git-askpass.sh` | PASS |
+| `npm audit --omit=dev --audit-level=high --json` | PASS seuil high : **0 haute/critique, 5 modérées, 2 faibles** ; dépendances non changées |
 
-GitNexus avant edition : `createServerClient` CRITICAL (128 appelants directs/32 processus), `downloadVideoBytes` CRITICAL (5/5), `uploadToStorage` CRITICAL (10/9), alertes annoncees avant les modifications. Routes/middleware et SQL sans arcs exploitables : UNKNOWN, revue directe complementaire. Index final tronque (855 entrees exclues, 624 callees omis, 4 parcours coupes). `detect-changes --scope staged` : 17 fichiers, 127 symboles, 254 processus, CRITICAL attendu pour les helpers partages ; chemins du delta verifies directement. Sortie CLI elle-meme abregee : **aucune certification exhaustive du graphe**. Les preuves/documents finaux sont ajoutes apres cette analyse, sans changement du payload source/test.
+Le harnais `qa/t02-final/run-free-gates.mjs` dérive une copie temporaire du runner T01, ajoute seulement le fixture Next/font et un profil build ciblé. Il vérifie les SHA-256 de cinq polices publiques ; les fichiers binaires restent dans `test-results/t02-fonts`. Les seules requêtes externes de préparation sont ces téléchargements publics gratuits et l’audit npm. Les tests applicatifs gardent la garde réseau T08, les environnements synthétiques et l’interdiction `.env`. Cette preuve ne clôt pas l’erreur du **runner canonique** : T01 doit intégrer son propre contrat de police hors réseau. Aucun faux PASS de `npm run check` inchangé.
 
-## Blocage unique de cloture : integration des contrats et preuve distante
+Les suites navigateur/legacy complètes précèdent le dernier correctif POST points ; leurs pages/contrats UI sont inchangés et les API navigateur sont simulées. Elles ne prouvent pas le crédit de respiration, désormais suspendu. Le delta route est requalifié ensuite par la suite contrats437 (GET et POST réels avec SDK simulé) et la qualité complète. Aucun rendu visuel manuel n’est revendiqué.
 
-1. **Stockage prive / URLs signees — T01/T05/T06 avec T02.** Les generateurs et journaux persistent une URL publique durable de `sutra-assets`, souvent sans prefixe utilisateur. Il faut une reference stable bucket/chemin/proprietaire, une verification d'acces serveur et une signature courte renouvelee a la lecture/publication, ainsi qu'une reprise des objets et references existants. Remplacer aveuglement `getPublicUrl` par une URL expirante casserait la reprise. Aucune bascule de bucket faite ; ce point reste BLOQUE.
-2. **Schema social public — proprietaire DB/T01/T06.** Callback/comptes/publication utilisent `public.social_accounts`, dont le contrat de propriete/migration ne figure pas dans PR3 et differe de `sutra.social_accounts`. La migration T02 protege seulement le schema SUTRA. Ne pas attribuer ces preuves a la table partagee ; audit des grants/RLS et migration exacte requis avant livraison.
-3. **Revocation sociale et logs — T06.** Le code PR3 ignore `false` de `disconnectAccount`, et `zernio.ts:logError` imprime `err.message` brut. Findings transmis dans T02-COORDINATION ; fichiers reserves et WIP preserves. Integrer le resultat confirme du proprietaire, sans accepter son WIP comme preuve.
-4. **Organisations : NON TESTE.** Aucun modele `org_id`/`organization_id`/`tenant_id` canonique trouve dans ce checkout. L'isolation locale prouvee est par utilisateur ; aucune isolation organisation inventee/certifiee.
-5. **Exploitation : NON TESTE.** Application DB, grants effectifs, Auth reel, invalidation globale refresh/JWT, stockage prive, redirections fournisseur et publication reelle restent a verifier lors d'une integration autorisee. Le limiteur OAuth existant est en memoire par processus ; limite multi-instance non prouvee. Les dependances OpenTimestamps residuelles signalees par T01 restent a traiter dans son scope sans downgrade arbitraire.
+Sept skips contrats explicites : INSEE authentifié4, DB distante2, OpenTimestamps réseau1. Aucun test live nécessitant configuration réelle ou publication lancé. Diagnostic PostgreSQL initial : démarrage refusé sous locale macOS non définie, corrigé dans le lanceur local par `LC_ALL=C` ; aucun service étranger arrêté.
 
-Reprise T01 : integrer uniquement le delta commite, appliquer les migrations dans l'ordre, resoudre les contrats ci-dessus avec leurs proprietaires, puis executer les gates d'integration. Ne pas rejouer les preuves locales inchangees. Aucune autorisation de production n'est deduite de ce handoff.
+GitNexus : impacts exécutés avant édition, `expectDenied` LOW/1 appelant/0 processus ; SQL `account_is_active`/table réelle non résolus, **UNKNOWN** et revue SQL directe. POST points UNKNOWN/0 appelant résolu ; recherche directe : un consommateur HTTP T07. Fixture compte LOW/1 appelant/0 processus. Index propre au worktree final rafraîchi, mais des entrées/callees/parcours restent tronqués (chiffres dans `gitnexus-index-final.log`). Analyse des changements stagés avant commit archivée ; aucune certification exhaustive du graphe ou de la RLS déduite de LOW.
+
+## Blocages réels à transmettre au coordinateur
+
+1. **Stockage privé et URLs signées : contrat interpropriétaires encore absent.** `src/lib/storage.ts` retourne `getPublicUrl` de `sutra-assets`. Les consommateurs T03/T05/T06 persistent cette URL avec preuve/hash/reprise. Il faut une référence stable bucket/chemin/propriétaire, contrôle d’accès puis signature renouvelée à la lecture/publication, ainsi qu’une reprise des objets et références existants. Aucun consumer réservé ni bucket modifié. Une URL expirante persistée directement casserait le replay exact ; T06 confirme ce blocage dans son handoff.
+2. **Schéma/Auth/Storage distants NON TESTÉS.** Migration uniquement locale ; propriété effective de la table publique et grants distants à vérifier avant application autorisée. Invalidations réelles JWT/refresh/provider, stockage privé et tests interorganisations ne sont pas prouvés. Aucun modèle canonique d’organisation trouvé ; isolation prouvée par utilisateur seulement. Limiteur OAuth existant par processus, limite multi-instance non prouvée.
+3. **T01 tooling/CI.** Runner canonique build bloqué par Google Fonts hors réseau ; adaptation locale documentée, fichier réservé intact. CI distante de l’intégration589 bloquée avant suites par `SMARANA_READ_TOKEN` absent selon sa clôture ; cette reprise ne fournit pas de preuve GitHub CI. Résiduel audit 5 modérées/2 faibles transmis, aucun downgrade improvisé.
+4. **T06 publication/logs.** Révocation locale de T06 intégrée à589 ; sa nouvelle vérification après claim est livrée séparément sur `codex/sutra-t06-social-final-20261012` à `b2ec2eca250948fdb1012ada36829c0296ccab4e` (coordination relue), à intégrer par T01. Aucun WIP T06 repris, aucun test provider réel. L’ancienne demande de supprimer les messages d’erreurs fournisseur bruts doit être soldée par son propriétaire.
+
+5. **T07 récompense respiration.** Adapter l’appel et le toast du hook cité ci-dessus ; attribution suspendue faute de preuve serveur d’activité. Aucun mécanisme financier parallèle ajouté.
+
+## Fichiers du delta
+
+- Produit : `src/app/api/points/route.ts`, `migrations/20261012_t02_final_permissions.sql`.
+- Tests : `scripts/test-security-rls.mjs`, `scripts/test-security-points.mts`, import dans `scripts/test-security-account.mts`.
+- Garde push : `vercel.json` (ajout de la seule branche T02 à `deploymentEnabled=false`, conserver les gardes des autres terminaux à l’intégration).
+- Livraison : ce handoff, ajouts T02 à `BATON.md` et `task_plan.md`, harnais/polices textuelles/manifest/preuves sous `qa/t02-final/`.
+
+Statut : **delta permissions localement vérifié**, commit/push de livraison uniquement ; stockage privé et preuve d’exploitation restent bloqués. Les étapes restantes sont précisément celles ci-dessus, aucune certification de release ou de déploiement.

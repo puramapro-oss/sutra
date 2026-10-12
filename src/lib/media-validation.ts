@@ -57,6 +57,13 @@ export function assertFinalMedia(media: MediaProbe, contract: CompositionContrac
 export function mediaValidation(contract: CompositionContract, final: MediaProbe, sources: SourceMeasurement[]): MediaValidation {
   assertFinalMedia(final, contract)
   const plan = compositionPlan(contract)
+  const measuredImage = (media: MediaProbe | null) => media?.fullDecode === true && media.bytes > 0 &&
+    media.video !== null && Number.isFinite(media.video.width) && media.video.width > 0 && Number.isFinite(media.video.height) && media.video.height > 0
+  if (sources.length !== contract.clips.length || sources.some((s, index) => !measuredImage(s.source) ||
+      (s.native !== null && !measuredImage(s.native)) || (s.enhanced !== null && !measuredImage(s.enhanced)) ||
+      (contract.clips[index].lineage?.nativeUrl && !s.native) || (contract.clips[index].lineage?.enhancedUrl && !s.enhanced))) {
+    throw new FfmpegCompositorError('Preuve media incomplete : mesures source/native/amelioree absentes ou sans image', 'final-validation')
+  }
   const size = (m: MediaProbe | null) => m?.video ? Math.min(m.video.width, m.video.height) : 0
   const target = Math.min(plan.width, plan.height)
   const upscaled = sources.some(s => size(s.source) < target || (s.native !== null && size(s.native) < target) || s.generation?.kind === 'upscaled')
@@ -117,10 +124,14 @@ export async function measureCompositionAudio(contract: CompositionContract, sig
 }
 
 export async function validateRenderedBuffer(buffer: Buffer, contract: CompositionContract, sources: SourceMeasurement[] = [], signal?: AbortSignal): Promise<MediaValidation> {
+  compositionPlan(contract)
   const dir = await mkdtemp(join(tmpdir(), 'sutra-t05-validate-'))
   try {
     const path = join(dir, 'final.mp4')
     await writeFile(path, buffer)
-    return mediaValidation(contract, await probeMedia(path, { signal }), sources)
+    const final = await probeMedia(path, { signal })
+    const measured = sources.length ? sources : await measureSources(contract, signal)
+    await measureCompositionAudio(contract, signal)
+    return mediaValidation(contract, final, measured)
   } finally { await rm(dir, { recursive: true, force: true }) }
 }

@@ -198,3 +198,79 @@ test('T06: controle service isole utilisateur et production, sans nouvelle reque
     request: { videoUrl: h.db.video.video_url, caption: '', hashtags: [] }, authorize: async () => {} }, h.db.client, h.gateway), /JOURNAL_INVALID/)
   assert.equal(h.counts().posts, 1)
 })
+
+for (const path of ['replay', 'retry'] as const) {
+  for (const change of ['revoked', 'disconnected', 'external-id', 'media-hash', 'profile-revoked'] as const) {
+    test(`T06: ${path} reautorise apres claim si ${change} change`, async () => {
+      const h = harness()
+      h.gateway.publish = path === 'replay' ? async () => { throw new Error('lost') } : async request => results(request, 'failed')
+      h.gateway.reconcile = async (_id, request) => results(request, 'failed')
+      await h.invoke(); h.advance(120001)
+      const original = structuredClone(h.db.tables.social_publication_journals[0].operations[0].request)
+      let changed = false
+      h.db.settings.hook = (table, mutation) => {
+        const op = mutation?.operations?.[0]
+        if (changed || table !== 'social_publication_journals' || !op?.claimedAt) return
+        changed = true
+        if (change === 'revoked' || change === 'disconnected') h.db.accounts[0].status = change
+        if (change === 'external-id') h.db.accounts[0].external_id = secondAccount
+        if (change === 'media-hash') h.db.video.shotstack_json!.sutraVerification.sha256 = 'b'.repeat(64)
+        if (change === 'profile-revoked') h.db.profile.access_revoked_at = new Date().toISOString()
+      }
+      // Media CAS can reject the projection, but the durable journal still records the refusal.
+      await h.invoke().catch(error => { assert.match(error.message, /projection/) })
+      assert.equal(changed, true)
+      assert.equal(h.counts().replays + h.counts().retries, 0)
+      const operation = h.db.tables.social_publication_journals[0].operations[0]
+      assert.deepEqual(operation.request, original)
+      assert.match(operation.results![0].error!, /REVOKED|MEDIA_CHANGED|ACCESS_DENIED/)
+      if (path === 'retry') assert.equal(operation.phase, 'recorded', 'a POST never attempted must remain recoverable')
+      h.db.settings.hook = undefined
+      h.db.accounts[0].status = 'connected'; h.db.accounts[0].external_id = accountId
+      h.db.video.shotstack_json!.sutraVerification.sha256 = 'a'.repeat(64); h.db.profile.access_revoked_at = null
+      h.advance(120001)
+      assert.equal((await h.invoke()).status, 'published')
+      assert.equal(h.counts().replays + h.counts().retries, 1)
+      assert.deepEqual(h.db.tables.social_publication_journals[0].operations[0].request, original)
+    })
+  }
+  test(`T06: autonomie ${path} refuse une approbation retiree apres claim`, async () => {
+    const h = harness(); h.db.config.publish_platforms = ['youtube']
+    h.gateway.publish = path === 'replay' ? async () => { throw new Error('lost') } : async request => results(request, 'failed')
+    h.gateway.reconcile = async (_id, request) => results(request, 'failed')
+    const invoke = () => publishAutoVideoRecord('u', 'v', path === 'retry', h.db.client, undefined, h.gateway)
+    await invoke(); h.advance(120001)
+    h.db.settings.hook = (table, mutation) => {
+      if (table === 'social_publication_journals' && mutation?.operations?.[0].claimedAt) h.db.config.publish_platforms = []
+    }
+    const outcome = await invoke()
+    assert.equal(h.counts().replays + h.counts().retries, 0)
+    assert.equal(outcome.success, false)
+    assert.match(outcome.results[0].error!, /DESTINATION_REVOKED/)
+  })
+}
+for (const kind of ['video', 'auto']) for (const reason of ['banned', 'revoked', 'missing', 'unreadable']) {
+  test(`T06: profil ${reason} refuse la publication ${kind} service-role`, async () => {
+    const h = harness()
+    if (reason === 'banned') h.db.profile.subscription_status = 'banned'
+    if (reason === 'revoked') h.db.profile.access_revoked_at = new Date().toISOString()
+    if (reason === 'missing') h.db.tables.profiles.length = 0
+    if (reason === 'unreadable') h.db.settings.failProfileRead = true
+    await assert.rejects(() => kind === 'video' ? h.invoke() : publishAutoVideoRecord('u', 'v', false, h.db.client, undefined, h.gateway), /ACCESS_DENIED|ACCESS_UNAVAILABLE/)
+    assert.equal(h.counts().posts + h.counts().replays + h.counts().retries, 0)
+  })
+}
+test('T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET', async () => {
+  const h = harness()
+  h.db.settings.hook = (table, mutation) => {
+    if (table === 'social_publication_journals' && mutation?.operations?.length) h.db.profile.access_revoked_at = new Date().toISOString()
+  }
+  const outcome = await h.invoke()
+  assert.equal(h.counts().posts, 0); assert.match(outcome.results[0].error!, /ACCESS_DENIED/)
+  h.db.settings.hook = undefined; h.db.profile.access_revoked_at = null
+  h.gateway.replay = async request => results(request, 'publishing'); h.advance(120001)
+  await h.invoke()
+  h.db.profile.access_revoked_at = new Date().toISOString()
+  assert.equal((await h.invoke()).status, 'published')
+  assert.equal(h.counts().gets, 1); assert.equal(h.counts().posts + h.counts().retries, 0)
+})

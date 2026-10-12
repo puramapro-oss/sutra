@@ -61,6 +61,34 @@ test('visual fallback never converts an uncertain paid outcome to stock or WAN',
   assert.equal(calls[0].url, 'https://api.ltx.io/v2/text-to-video')
 })
 
+test('existing LTX intent or execution never becomes stock when credentials or plan change', async () => {
+  delete process.env.LTX_API_KEY
+  delete process.env.RUNPOD_API_KEY
+  delete process.env.RUNPOD_ENDPOINT_ID
+  process.env.PEXELS_API_KEY = 'test-only'
+  try {
+    for (const plan of ['creator', 'free'] as const) {
+      for (const track of [
+        { job: { current: { endpoint: '/text-to-video', fingerprint: 'legacy', started: true as const, id: 'paid-job' }, save: async () => {} } },
+        { execution: execution() },
+      ]) {
+        mock(() => json({ videos: [] }))
+        await assert.rejects(generateVisualWithFallback('p', '720p', null, plan, '16:9', false, track))
+        assert.equal(calls.length, 0, `no stock or new provider request for ${plan}`)
+      }
+    }
+  } finally { process.env.LTX_API_KEY = 'test-only'; delete process.env.PEXELS_API_KEY }
+})
+
+test('a configured WAN cannot replace an explicit LTX execution', async () => {
+  process.env.RUNPOD_API_KEY = 'test-only'; process.env.RUNPOD_ENDPOINT_ID = 'test-endpoint'
+  mock()
+  try {
+    await assert.rejects(generateVideoSmart('p', 'free', null, { execution: execution() }), /RESUME_CONFLICT/)
+    assert.equal(calls.length, 0)
+  } finally { delete process.env.RUNPOD_API_KEY; delete process.env.RUNPOD_ENDPOINT_ID }
+})
+
 test('smart: source provenance includes job/cost/timeout/quota, excludes signed output URL', async () => {
   const T = '2026-10-12T10:00:00.000Z'
   mock((url, init) => init?.method === 'POST' ? json({ id: 'job-smart', created_at: T }, 202) : url.startsWith('https://api.ltx.io') ? json({ id: 'job-smart', created_at: T, completed_at: T, status: 'completed', result: { video_url: 'https://output.test/v.mp4?signature=redacted' } }) : new Response(new Uint8Array([1])))
@@ -213,7 +241,7 @@ test('visual: storage failure after paid WAN/LTX success retains job, never gene
       if (url.startsWith('https://output.test/')) return new Response(new Uint8Array([1]))
       throw new Error('unexpected network')
     })
-    await assert.rejects(generateVisualWithFallback('p', '720p', null, plan, '16:9', false, { execution: execution() }), (e) => {
+    await assert.rejects(generateVisualWithFallback('p', '720p', null, plan, '16:9', false, plan === 'creator' ? { execution: execution() } : {}), (e) => {
       assert.ok(e instanceof RunpodJobError || e instanceof LtxJobError)
       assert.ok(e.code.includes('UPLOAD_FAILED_RESUME_SAME_JOB')); assert.equal(e.fallbackAllowed, false)
       assert.ok(!e.message.includes('private-storage-failure'))

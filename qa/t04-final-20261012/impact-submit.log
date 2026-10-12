@@ -1,0 +1,69 @@
+
+  GitNexus Impact (1.6.12)
+{"level":40,"time":1791831812611,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}
+{
+  "target": {
+    "id": "Function:src/lib/ltx-v2.ts:createLtxClient.submit@94:2",
+    "name": "submit",
+    "type": "Function",
+    "filePath": "src/lib/ltx-v2.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 21,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "lower-bound",
+  "boundaries": [
+    "29 call sites invoking `submit` were dropped at index time because the receiver's type could not be established (e.g. an unresolved constructor, factory or chained expression). Those callers are absent from this result — actual impact may be higher."
+  ],
+  "causes": {
+    "scopeExtractionFiles": 0,
+    "receiverTyping": 29,
+    "dispatchBoundary": 0,
+    "externalBoundary": 0,
+    "undecidedSatisfaction": 0,
+    "callableValueReferences": 0
+  },
+  "summary": {
+    "direct": 3,
+    "processes_affected": 0,
+    "modules_affected": 5
+  },
+  "byDepthCounts": {
+    "1": 3,
+    "2": 9,
+    "3": 9
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 7,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_246",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_234",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Generate",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Hooks",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ]
+}

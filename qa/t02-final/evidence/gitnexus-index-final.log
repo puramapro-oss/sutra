@@ -1,0 +1,28 @@
+
+  GitNexus Analyzer (1.6.12)
+
+  GitNexus Analyzer (1.6.12)
+[2K
+  Skipped 3 large files (>512KB, likely generated/vendored)
+[2K
+  - graphify-out/graph.html
+[2K
+  - graphify-out/graph.json
+[2K
+  - qa/integration-20261012/evidence/legacy-first-results.json
+[2K
+  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+{"level":40,"time":1791833145769,"name":"gitnexus","msg":"[scope-resolution] 406 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean \"unused\" — it means the definition anchor is in a different language. Affected: show (typescript), NEXT_PUBLIC_APP_SCHEMA (javascript), NEXT_PUBLIC_SUPABASE_ANON_KEY (javascript), NEXT_PUBLIC_SUPABASE_URL (javascript), PGHOST (javascript), PGPORT (javascript), PGUSER (javascript), RESEND_API_KEY (javascript), STRIPE_SECRET_KEY (javascript), SUPABASE_SERVICE_ROLE_KEY (javascript), …"}
+{"level":40,"time":1791833145859,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":931,"entryPointsUnexplored":0,"walksCutByBudget":4,"tracesDepthCapped":0,"calleesDropped":517,"processesDropped":0},"msg":"[processes] 368 flows reported, but whole flows are MISSING: 931 of 1131 candidate entry point(s) never ranked in, 0 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 517 callee(s) skipped at maxBranching, 4 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}
+[2K
+Incremental: changed=8, added=4, deleted=0 (skipping wipe + 1045 unchanged file rows preserved)
+[2K
+Incremental: +1 importer(s) added to writable set (BFS depth ≤ 4)
+{"level":30,"time":1791833149883,"name":"gitnexus","msg":"name-fallback resolution: 38 call sites (10 distinct caller-file/name pairs), 0 refused as impossible (guessed/refused by language: javascript 34/0, typescript 4/0)"}
+[2K
+Parse cache: pruned 4 stale chunk entries
+
+  Repository indexed successfully (6.9s)
+
+  12,859 nodes | 24,939 edges | 270 clusters | 368 flows
+  /Users/matissdornier/purama-worktrees/sutra-t02-security-final-20261012

@@ -1,0 +1,25 @@
+
+  GitNexus Analyzer (1.6.12)
+
+  GitNexus Analyzer (1.6.12)
+Warning: npm 11.x can crash while installing gitnexus via npx (npm/arborist "node.target is null"). Prefer: pnpm --allow-build=@ladybugdb/core --allow-build=gitnexus --allow-build=tree-sitter dlx gitnexus@latest analyze or npm install -g gitnexus@latest. See https://github.com/abhigyanpatwari/GitNexus/issues/1939
+[2K
+  Skipped 2 large files (>512KB, likely generated/vendored)
+[2K
+  - graphify-out/graph.html
+[2K
+  - graphify-out/graph.json
+[2K
+  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+{"level":40,"time":1791832582221,"name":"gitnexus","msg":"[scope-resolution] 442 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean \"unused\" — it means the definition anchor is in a different language. Affected: show (typescript), NEXT_PUBLIC_APP_SCHEMA (javascript), NEXT_PUBLIC_SUPABASE_ANON_KEY (javascript), NEXT_PUBLIC_SUPABASE_URL (javascript), RESEND_API_KEY (javascript), STRIPE_SECRET_KEY (javascript), SUPABASE_SERVICE_ROLE_KEY (javascript), VERCEL (javascript), a (javascript), app_metadata (javascript), …"}
+{"level":40,"time":1791832582314,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":930,"entryPointsUnexplored":0,"walksCutByBudget":4,"tracesDepthCapped":0,"calleesDropped":519,"processesDropped":0},"msg":"[processes] 369 flows reported, but whole flows are MISSING: 930 of 1130 candidate entry point(s) never ranked in, 0 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 519 callee(s) skipped at maxBranching, 4 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}
+[2K
+Incremental: changed=4, added=8, deleted=1 (skipping wipe + 994 unchanged file rows preserved)
+{"level":30,"time":1791832587747,"name":"gitnexus","msg":"name-fallback resolution: 34 call sites (14 distinct caller-file/name pairs), 1 refused as impossible (guessed/refused by language: javascript 30/1, typescript 4/0)"}
+[2K
+Parse cache: pruned 4 stale chunk entries
+
+  Repository indexed successfully (16.3s)
+
+  12,775 nodes | 24,830 edges | 267 clusters | 369 flows
+  /Users/matissdornier/purama-worktrees/sutra-t08-qa-integrated-20261012

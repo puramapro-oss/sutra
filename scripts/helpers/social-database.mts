@@ -13,11 +13,12 @@ export function socialDatabase() {
   const config = { user_id: 'u', is_active: true, auto_publish: true, require_approval_before_publish: false, publish_platforms: ['youtube', 'instagram'], schedules: [] }
   const accounts: Array<{ id: string; user_id: string; platform: string; external_id: string; status: string; token_expires_at?: string }> = [{ id: 'local-y', user_id: 'u', platform: 'youtube', external_id: accountId, status: 'connected' },
     { id: 'local-i', user_id: 'u', platform: 'instagram', external_id: secondAccount, status: 'connected' }]
-  const tables = { videos: [video], sutra_auto_videos: [auto], sutra_auto_config: [config], social_accounts: accounts,
+  const profile = { id: 'u', subscription_status: 'active', access_revoked_at: null as string | null }
+  const tables = { profiles: [profile], videos: [video], sutra_auto_videos: [auto], sutra_auto_config: [config], social_accounts: accounts,
     social_publication_journals: [] as Array<Row & { operations: PublicationOperation[] }>, social_posts: [] as Row[], scheduled_posts: [] as Row[], video_jobs: [{ user_id: 'u', kind: 'auto', status: 'done',
       progress: { steps: { assembly: { verification: { url, sha256: 'a'.repeat(64) } } } } }] }
   const rowsByTable: Record<string, Row[]> = tables
-  const settings = { failRead: false, failClaim: false, failFinal: false, failHistory: false, failProjection: false,
+  const settings = { failProfileRead: false, failRead: false, failClaim: false, failFinal: false, failHistory: false, failProjection: false,
     hook: undefined as undefined | ((table: string, mutation?: Row) => void) }
   const client = { schema: () => client, from: (table: string) => {
     if (!rowsByTable[table]) throw new Error(`Unexpected table ${table}`)
@@ -25,6 +26,7 @@ export function socialDatabase() {
     let mutation: Row | undefined, insert: Row | undefined, upsert: Row[] | undefined, deleting = false, single = false
     const execute = () => {
       settings.hook?.(table, mutation)
+      if (settings.failProfileRead && table === 'profiles') return { data: null, error: { message: 'profile read failed' } }
       if (settings.failRead && !mutation && !insert && !upsert) return { data: null, error: { message: 'read failed' } }
       const rows = rowsByTable[table].filter(row => filters.every(f => f(row)))
       if (insert) {
@@ -64,5 +66,5 @@ export function socialDatabase() {
     }
     return builder
   } }
-  return { client: client as never, video, auto, config, accounts, tables, settings }
+  return { client: client as never, profile, video, auto, config, accounts, tables, settings }
 }

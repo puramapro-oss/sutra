@@ -9,6 +9,7 @@ process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??= 'test-anon-key'
 import { test, describe } from 'node:test'
 import { simulatedValidation } from '../../scripts/helpers/media-validation-fixture.ts'
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 const { composeVideoWithFallback } = await import('./video-compositor.ts')
 const { FfmpegCompositorError } = await import('./ffmpeg-compositor.ts')
 type VideoCompositionJob = Parameters<typeof composeVideoWithFallback>[0]
@@ -29,7 +30,12 @@ describe('composeVideoWithFallback', () => {
   test('moteur FFmpeg primaire : succes sans jamais appeler Shotstack', async () => {
     let shotstackCalled = false
     const result = await composeVideoWithFallback(baseJob(), {
-      compose: async () => ({ buffer: Buffer.from('mp4'), durationSeconds: 5, resolution: '1920x1080', validation: simulatedValidation(baseJob()) }),
+      compose: async () => {
+        const buffer = Buffer.from('mp4')
+        const validation = simulatedValidation(baseJob())
+        Object.assign(validation.final, { bytes: buffer.length, sha256: createHash('sha256').update(buffer).digest('hex') })
+        return { buffer, durationSeconds: 5, resolution: '1920x1080', validation }
+      },
       assemble: async () => {
         shotstackCalled = true
         return { url: 'https://cdn/should-not-happen.mp4', timeline: {}, duration: 0, outputVerified: false, outputQuality: 'hd', outputSize: { width: 0, height: 0 } }
@@ -78,5 +84,35 @@ describe('composeVideoWithFallback', () => {
       /duree de clip invalide/
     )
     assert.equal(shotstackCalled, false)
+  })
+
+  test('preuve de bytes perimee refusee avant stockage, sans appel Shotstack', async () => {
+    for (const mismatch of ['hash', 'size']) {
+      let uploaded = false, assembled = false
+      const buffer = Buffer.from('synthetic-bytes')
+      const validation = simulatedValidation(baseJob())
+      validation.final.bytes = mismatch === 'size' ? buffer.length + 1 : buffer.length
+      validation.final.sha256 = mismatch === 'hash' ? '0'.repeat(64) : createHash('sha256').update(buffer).digest('hex')
+      await assert.rejects(composeVideoWithFallback(baseJob(), {
+        compose: async () => ({ buffer, durationSeconds: 5, resolution: '1920x1080', validation }),
+        assemble: async () => { assembled = true; throw new Error('unexpected remote render') },
+        upload: async () => { uploaded = true; return 'https://cdn/invalid.mp4' },
+      }), /octets/)
+      assert.equal(uploaded, false)
+      assert.equal(assembled, false)
+    }
+  })
+
+  test('deux echecs moteur ou URL brute du secours ne livrent jamais un clip source', async () => {
+    const job = baseJob()
+    const common = { compose: async () => { throw new Error('local unavailable') },
+      upload: async () => { throw new Error('unexpected upload') } }
+    await assert.rejects(composeVideoWithFallback(job, { ...common,
+      assemble: async () => { throw new Error('remote failed') },
+    }), /remote failed/)
+    await assert.rejects(composeVideoWithFallback(job, { ...common,
+      assemble: async () => ({ url: job.clips[0].url, timeline: {}, duration: 5,
+        outputVerified: false, outputQuality: 'hd', outputSize: { width: 1920, height: 1080 }, validation: simulatedValidation(job) }),
+    }), /brute/)
   })
 })

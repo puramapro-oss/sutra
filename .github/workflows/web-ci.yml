@@ -27,11 +27,14 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
       - run: npm run test:contracts
       - run: npm run test:media
+      - run: node qa/t08/run.mjs redteam
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: sutra-contract-results
-          path: test-results/ci
+          path: |
+            test-results/ci
+            test-results/t08
           if-no-files-found: warn
 
   quality:
@@ -46,7 +49,7 @@ jobs:
           smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
       - run: npm run check
       - run: npx playwright install --with-deps chromium
-      - run: node scripts/run-ci.mjs browser
+      - run: node qa/t08/run.mjs browser-redteam
       - run: node scripts/run-ci.mjs legacy
       - run: python3 -m unittest discover -s deploy -p 'test_*.py'
       - name: Audit production dependencies
@@ -60,6 +63,7 @@ jobs:
             test-results/ci
             test-results/ui-isolated
             test-results/legacy
+            test-results/t08
           if-no-files-found: warn
 
   disposable-database:

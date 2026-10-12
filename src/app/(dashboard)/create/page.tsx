@@ -269,7 +269,7 @@ export default function CreatePage() {
               setStep={(s) => {
                 setManualStep(s)
                 // When entering medias step (step index 3) in stock/mixed mode, fetch keywords
-                if (s === 3 && mediaMode !== 'ai' && script.trim() && sceneKeywords.length === 0) {
+                if (s === 3 && mediaMode !== 'ai' && script.trim()) {
                   void fetchKeywords(script)
                 }
               }}
@@ -287,4 +287,3 @@ export default function CreatePage() {
     </motion.div>
   )
 }
-

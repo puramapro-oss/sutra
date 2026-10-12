@@ -1,0 +1,18 @@
+✔ 12 concurrent claims obtain one owner; 24 independent checkpoints survive parallel writes (263.901667ms)
+✔ expired/replaced/cancelled owner cannot heartbeat, checkpoint, finish or write business output (17.812375ms)
+✔ ready refuses raw URL, missing proof, missing stage and mandatory audio; verified export persists (120.6685ms)
+✔ AUTO ready effects are atomic and once-only across concurrent replays (128.461666ms)
+✔ finish requires result, settles once; missing quota rolls back status; exhausted jobs quarantine (38.439541ms)
+✔ notification writes deduplicate atomically; owner mismatch and missing row refuse success (44.309ms)
+✔ 12 same-intent submissions atomically create one job, one video and one quota reservation (29.391708ms)
+✔ failed initial video insert rolls back quota and task; retry after lost response reuses committed task (6.164625ms)
+LOCAL_TEST_DATABASE=sutra_t03_67355_1791832225906
+✔ cancellation settles original month once and never consumes a new month reservation (5.659834ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 875.643625

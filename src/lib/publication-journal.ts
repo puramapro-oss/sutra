@@ -96,6 +96,13 @@ export async function runPublicationJournal(options: {
   const authorize = async (operation: PublicationOperation) => {
     if (options.reconcileOnly) throw new Error('SUTRA_PUBLICATION_READ_ONLY')
     await options.authorize(operation.request)
+    // Service-role sends bypass session/RLS guards. Apply the same live profile
+    // contract as account-access.ts; a prior approval cannot outlive revocation.
+    const profile = await service.from('profiles').select('id,subscription_status,access_revoked_at')
+      .eq('id', options.userId).maybeSingle()
+    if (profile.error) throw new Error('SUTRA_ACCOUNT_ACCESS_UNAVAILABLE')
+    if (!profile.data || profile.data.id !== options.userId || profile.data.subscription_status === 'banned'
+      || profile.data.access_revoked_at) throw new Error('SUTRA_ACCOUNT_ACCESS_DENIED')
     const current = await accountsQuery()
     if (current.error) throw new Error('SUTRA_SOCIAL_ACCOUNTS_READ_FAILED')
     for (const platform of operation.request.platforms) {
@@ -131,6 +138,11 @@ export async function runPublicationJournal(options: {
           await authorize(operation)
           operation.phase = 'retrying'; operation.claimedAt = new Date(gateway.now()).toISOString()
           await save()
+          try { await authorize(operation) } catch (error) {
+            // No POST was attempted: release this claim so re-authorization can
+            // recover it. A lost provider response must instead stay retrying.
+            operation.phase = 'recorded'; throw error
+          }
           operation.results = normalize(operation, await gateway.retry(postId, operation.request))
           operation.phase = 'recorded'
           await save()
@@ -147,6 +159,7 @@ export async function runPublicationJournal(options: {
         if (operation.request.scheduledAt && Date.parse(operation.request.scheduledAt) <= gateway.now()) throw new Error('SUTRA_SCHEDULE_RECONCILIATION_REQUIRED')
         await authorize(operation)
         operation.claimedAt = new Date(gateway.now()).toISOString(); await save()
+        await authorize(operation)
         operation.results = normalize(operation, await gateway.replay(operation.request))
         operation.phase = operation.results.some(r => r.postId) ? 'recorded' : 'submitting'; await save()
       }

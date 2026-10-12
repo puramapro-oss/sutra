@@ -1,0 +1,21 @@
+(node:87742) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:87742) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ client cannot mutate points or credit wallet: {"action":"earn","amount":1000000,"source":"forged"} (2.879208ms)
+✔ client cannot mutate points or credit wallet: {"action":"earn","amount":50,"source":"breathe_session"} (1.0975ms)
+✔ client cannot mutate points or credit wallet: {"action":"earn","amount":25000,"source":"daily_gift","user_id":"bob","role":"service_role"} (0.288625ms)
+✔ client cannot mutate points or credit wallet: {"action":"spend","amount":1,"source":"forged"} (0.206917ms)
+✔ malformed/replayed client requests cannot authorize point mutations (0.470667ms)
+✔ anonymous session cannot read or mutate points (0.285041ms)
+✔ banned session cannot read or mutate points (0.445208ms)
+✔ revoked session cannot read or mutate points (0.193375ms)
+✔ authentication failure is closed without leaking diagnostics or creating a service client (0.452083ms)
+✔ active user can still read only their own points and history (0.31ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 164.926334

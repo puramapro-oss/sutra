@@ -64,3 +64,17 @@ test('forged or non-finite final media proof cannot authorize ready',()=>{
   assert.doesNotThrow(()=>assertFinalMedia(media as never,['raw'],true))
   for(const invalid of [ {...media,verification:{...media.verification,duration:NaN}}, {...media,verification:{...media.verification,fps:Infinity}}, {...media,verification:{...media.verification,hasAudio:false}}, {...media,url:'raw'} ]) assert.throws(()=>assertFinalMedia(invalid as never,['raw'],true),/RECONCILIATION/)
 })
+
+test('final proof requires literal validation flags and positive finite integer dimensions', () => {
+  const media = { url: 'final', duration: 6, outputVerified: true, outputQuality: 'hd', outputSize: { width: 720, height: 1280 },
+    verification: { url: 'final', sha256: 'a'.repeat(64), duration: 6, width: 720, height: 1280, fps: 30, hasAudio: true } }
+  for (const width of [Infinity, NaN, 0, -1, 0.5, '720']) {
+    const invalid = { ...media, outputSize: { ...media.outputSize, width }, verification: { ...media.verification, width } }
+    assert.throws(() => assertFinalMedia(invalid as never, ['raw'], true), /RECONCILIATION/)
+  }
+  for (const invalid of [ { ...media, outputVerified: 'true' }, { ...media, verification: { ...media.verification, hasAudio: 'false' } },
+    { ...media, duration: 0.05, verification: { ...media.verification, duration: 0 } },
+    { ...media, duration: 0.05, verification: { ...media.verification, duration: -0.01 } } ]) {
+    assert.throws(() => assertFinalMedia(invalid as never, ['raw'], true), /RECONCILIATION/)
+  }
+})

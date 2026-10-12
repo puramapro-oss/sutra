@@ -138,6 +138,9 @@ export function createLtxClient(deps: { fetch?: typeof fetch; now?: () => number
       const retry = Number(response.headers.get('retry-after'))
       job = await persist(job, execution.store, {
         state: rejected ? 'rejected' : 'submission_unknown', lastHttpStatus: response.status,
+        // A malformed acceptance is not permission to forget a paid job. Only
+        // trust its ID for read-only reconciliation, never as terminal success.
+        ...(response.status === 202 && typeof data?.id === 'string' && /^[A-Za-z0-9_-]{1,200}$/.test(data.id) && { id: data.id }),
         errorCode: rejected ? `LTX_HTTP_${response.status}` : 'LTX_SUBMISSION_UNKNOWN',
         quota: { status: response.status === 429 ? 'queue_limited' : response.status === 402 ? 'insufficient_credits' : 'unknown', retryAfterSeconds: response.headers.has('retry-after') && Number.isFinite(retry) && retry >= 0 ? retry : null, remaining: null },
       })
@@ -172,7 +175,7 @@ export function createLtxClient(deps: { fetch?: typeof fetch; now?: () => number
     if (!data || data.id !== job.id || !timestamp(data.created_at) || !['pending', 'processing', 'completed', 'failed'].includes(String(data.status))) throw new LtxJobError('LTX_INVALID_POLL_RESPONSE', job)
     const status = data.status as LtxJob['remoteStatus']
     if ((job.state === 'completed' || job.state === 'failed') && status !== job.state) throw new LtxJobError('LTX_REMOTE_STATE_REGRESSION', job)
-    const patch: Partial<LtxJob> = { remoteStatus: status, lastHttpStatus: res.status }
+    const patch: Partial<LtxJob> = { remoteStatus: status, remoteCreatedAt: data.created_at, lastHttpStatus: res.status }
     if (status === 'completed' || status === 'failed') {
       if (!timestamp(data.completed_at)) throw new LtxJobError('LTX_INVALID_POLL_RESPONSE', job)
       patch.state = status

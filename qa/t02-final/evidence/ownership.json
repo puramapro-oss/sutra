@@ -1,0 +1,20 @@
+{
+  "base": "589732cb49959c1a576a3ba381b310cd594600ac",
+  "branch": "codex/sutra-t02-security-final-20261012",
+  "protected_paths_unchanged": [
+    "package.json",
+    "package-lock.json",
+    ".github",
+    "next.config.ts",
+    "scripts/run-ci.mjs",
+    "scripts/test-ui-isolated.mjs",
+    "src/lib/cron-auth.ts",
+    "src/hooks/useBreathingSession.ts"
+  ],
+  "only_src_change": [
+    "src/app/api/points/route.ts"
+  ],
+  "deployment_enabled": false,
+  "integration_deployment_enabled": false,
+  "cron_source_sha256": "9d02a80e5a255bb0c4d5d81adb950aebec74a38317129e636705caf3bc561323"
+}

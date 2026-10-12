@@ -160,3 +160,76 @@ test('cancellation settles original month once and never consumes a new month re
  const rows=(await query('SELECT reserved,released FROM video_quota_counters WHERE user_id=$1 ORDER BY period_start',[j.user])).rows
  assert.deepEqual(rows,[{reserved:0,released:1},{reserved:1,released:0}])
 })
+
+test('NULL lease or owner cannot authorize any mutation, even with a matching worker', async () => {
+  for (const absent of ['lease_until', 'locked_by']) {
+    const j = await job('create')
+    await query("INSERT INTO videos(id,user_id,status) VALUES($1,$2,'generating')", [j.video,j.user])
+    await query(`UPDATE video_jobs SET ${absent}=NULL WHERE id=$1`, [j.id])
+    const worker = absent === 'locked_by' ? null : 'w'
+    for (const [sql, params] of [
+      ['SELECT heartbeat_video_job_v2($1,$2,600)', [j.id,worker]],
+      ["SELECT checkpoint_video_job_v2($1,$2,'{}','{}')", [j.id,worker]],
+      ["SELECT finish_video_job($1,$2,'failed')", [j.id,worker]],
+      ["SELECT persist_video_job_video($1,$2,'videos',$3,$4,false)", [j.id,worker,j.video,{title:'invalid'}]],
+      ["SELECT record_video_job_event($1,$2,'user_notifications','ready',$3)", [j.id,worker,{user_id:j.user,type:'success',title:'invalid'}]],
+    ] as [string,unknown[]][]) await assert.rejects(() => query(sql,params), /LEASE_LOST/)
+    assert.equal((await query('SELECT status FROM video_jobs WHERE id=$1',[j.id])).rows[0].status, 'processing')
+    assert.equal((await query('SELECT title FROM videos WHERE id=$1',[j.video])).rows[0].title, null)
+    assert.equal((await query('SELECT reserved FROM video_quota_counters WHERE user_id=$1',[j.user])).rows[0].reserved, 1)
+  }
+})
+
+test('ready refuses unfinished checkpoints, invalid track values and zero-size export', async () => {
+  const j = await job()
+  const write = () => persist(j.id,j.id,{user_id:j.user,status:'ready',video_url:proof().url},'videos','w',true)
+  for (const stage of ['scenes','composition','export','voice','music']) {
+    for (const status of ['pending','skipped',null]) {
+      await checkpoint(j.id,'w',stages())
+      await checkpoint(j.id,'w',{[`stage:${stage}`]:{ ...stages()[`stage:${stage}` as keyof ReturnType<typeof stages>], status }})
+      await assert.rejects(write,/STAGE_CHECKPOINT|TRACK_MISSING/)
+    }
+  }
+  for (const value of ['   ', '\t\n', 'null', {}, [], false, 42]) {
+    await checkpoint(j.id,'w',stages())
+    await checkpoint(j.id,'w',{'stage:voice':{status:'complete',value}})
+    await assert.rejects(write,/TRACK_MISSING/)
+  }
+  await checkpoint(j.id,'w',stages())
+  const zero = { ...proof(), outputSize: {width:0,height:0}, verification: {...proof().verification,width:0,height:0} }
+  await checkpoint(j.id,'w',{'stage:export':{status:'complete',value:zero}})
+  await assert.rejects(write,/PROOF_REQUIRED/)
+  for (const invalid of [
+    {...proof(),url:' ',verification:{...proof().verification,url:' '}},
+    {...proof(),duration:0,verification:{...proof().verification,duration:0.05}},
+    {...proof(),verification:{...proof().verification,fps:'Infinity'}},
+    {...proof(),verification:{...proof().verification,duration:'1'}},
+    {...proof(),outputSize:{width:'720',height:'1280'}},
+  ]) {
+    await checkpoint(j.id,'w',{'stage:export':{status:'complete',value:invalid}})
+    await assert.rejects(() => persist(j.id,j.id,{user_id:j.user,status:'ready',video_url:invalid.url},'videos','w',true),/PROOF_REQUIRED/)
+  }
+  assert.equal((await query('SELECT count(*)::int n FROM videos WHERE id=$1',[j.id])).rows[0].n,0)
+})
+
+test('silent export can skip optional tracks, but cannot skip scenes or use string validation flags', async () => {
+  const j = await job()
+  await query("UPDATE video_jobs SET payload=jsonb_set(payload,'{input,musicStyle}','\"none\"') WHERE id=$1", [j.id])
+  const s = { ...stages(),
+    'stage:script': {status:'complete',value:{narration:'',music_style:'none'}},
+    'stage:voice': {status:'skipped',value:null}, 'stage:music': {status:'skipped',value:null},
+    'stage:export': {status:'complete',value:{...proof(),verification:{...proof().verification,hasAudio:false}}},
+  }
+  const write = () => persist(j.id,j.id,{user_id:j.user,status:'ready',video_url:proof().url},'videos','w',true)
+  for (const value of [null, [], 'raw']) {
+    await checkpoint(j.id,'w',s)
+    await checkpoint(j.id,'w',{'stage:scenes':{status:'complete',value}})
+    await assert.rejects(write,/STAGE_CHECKPOINT/)
+  }
+  await checkpoint(j.id,'w',s)
+  await checkpoint(j.id,'w',{'stage:export':{status:'complete',value:{...s['stage:export'].value,outputVerified:'true'}}})
+  await assert.rejects(write,/PROOF_REQUIRED/)
+  await checkpoint(j.id,'w',s)
+  await write()
+  assert.equal((await query('SELECT status FROM videos WHERE id=$1',[j.id])).rows[0].status,'ready')
+})

@@ -1,0 +1,95 @@
+✔ T06: une production peut cibler deux comptes distincts sans reposter au premier (6.909541ms)
+✔ T06: compte manquant conserve le partiel puis reprend uniquement cette destination (0.667791ms)
+✔ T06: compte revoked refuse avant POST (0.168708ms)
+✔ T06: compte disconnected refuse avant POST (0.116125ms)
+✔ T06: compte expired refuse avant POST (0.128125ms)
+✔ T06: compte invalid-expiry refuse avant POST (0.116125ms)
+✔ T06: revocation apres reservation empeche le POST (0.4765ms)
+✔ T06: revocation locale precedente a la panne distante; historique conserve et reprise possible (0.706666ms)
+✔ T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST (0.805208ms)
+✔ T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay (1.064292ms)
+✔ T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate (0.455417ms)
+✔ T06: replay refuse si revoked a change (0.437125ms)
+✔ T06: replay refuse si external-id a change (0.339666ms)
+✔ T06: replay refuse si media-hash a change (0.220875ms)
+✔ T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed (0.521583ms)
+✔ T06: panne de projection reparee depuis journal sans creation distante (0.240416ms)
+✔ T06: succes video ne valide pas un nouvel export url (0.238666ms)
+✔ T06: succes video ne valide pas un nouvel export sha256 (0.183291ms)
+✔ T06: succes auto ne valide pas un nouvel export url (0.428459ms)
+✔ T06: succes auto ne valide pas un nouvel export sha256 (0.546417ms)
+✔ T06: import PR3 multi-destination conserve le succes et les identifiants historiques (0.405084ms)
+✔ T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication (0.132792ms)
+✔ T06: autonomie refuse inactive (0.111625ms)
+✔ T06: autonomie refuse approval (0.084917ms)
+✔ T06: autonomie refuse not-due (0.080125ms)
+✔ T06: autonomie refuse invalid-date (0.070458ms)
+✔ T06: autonomie refuse no-proof (0.051125ms)
+✔ T06: approbation explicite autorise le media verifie meme avec mode automatique arrete (0.400625ms)
+✔ T06: autorisation retiree entre reservation et envoi ferme toute destination (0.222917ms)
+✔ T06: controle service isole utilisateur et production, sans nouvelle requete (0.232416ms)
+✔ T06: replay reautorise apres claim si revoked change (0.673542ms)
+✔ T06: replay reautorise apres claim si disconnected change (1.068875ms)
+✔ T06: replay reautorise apres claim si external-id change (0.562834ms)
+✔ T06: replay reautorise apres claim si media-hash change (0.671208ms)
+✔ T06: replay reautorise apres claim si profile-revoked change (0.654208ms)
+✖ T06: autonomie replay refuse une approbation retiree apres claim (1.593ms)
+✔ T06: retry reautorise apres claim si revoked change (0.586041ms)
+✔ T06: retry reautorise apres claim si disconnected change (0.48375ms)
+✔ T06: retry reautorise apres claim si external-id change (0.48175ms)
+✔ T06: retry reautorise apres claim si media-hash change (0.41625ms)
+✔ T06: retry reautorise apres claim si profile-revoked change (0.4425ms)
+✖ T06: autonomie retry refuse une approbation retiree apres claim (0.419625ms)
+✔ T06: profil banned refuse la publication video service-role (0.128791ms)
+✔ T06: profil revoked refuse la publication video service-role (0.106875ms)
+✔ T06: profil missing refuse la publication video service-role (0.075292ms)
+✔ T06: profil unreadable refuse la publication video service-role (0.080792ms)
+✔ T06: profil banned refuse la publication auto service-role (0.108917ms)
+✔ T06: profil revoked refuse la publication auto service-role (0.109208ms)
+✔ T06: profil missing refuse la publication auto service-role (0.103875ms)
+✔ T06: profil unreadable refuse la publication auto service-role (0.109ms)
+✔ T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET (0.887167ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 49
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 379.88175
+
+✖ failing tests:
+
+test at scripts/test-t06-social-autonomy.mts:1:14402
+✖ T06: autonomie replay refuse une approbation retiree apres claim (1.593ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /AUTHORIZED/. Input:
+
+  'SUTRA_DESTINATION_REVOKED'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:249:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SUTRA_DESTINATION_REVOKED',
+    expected: /AUTHORIZED/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:14402
+✖ T06: autonomie retry refuse une approbation retiree apres claim (0.419625ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /AUTHORIZED/. Input:
+
+  'SUTRA_DESTINATION_REVOKED'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:249:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SUTRA_DESTINATION_REVOKED',
+    expected: /AUTHORIZED/,
+    operator: 'match',
+    diff: 'simple'
+  }

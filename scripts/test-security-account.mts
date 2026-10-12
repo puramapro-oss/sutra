@@ -58,3 +58,6 @@ test('anonymous requests cannot read profiles', async () => {
   const f = fixture(); f.anonymous()
   assert.equal((await f.client.auth.getUser()).data.user, null); assert.equal(f.queries(), 0)
 })
+
+// Keep the points authority regression in the existing canonical contracts entry.
+await import('./test-security-points.mts')

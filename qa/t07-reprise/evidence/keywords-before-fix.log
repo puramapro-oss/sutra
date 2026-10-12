@@ -1,0 +1,110 @@
+npm warn exec The following package was not found and will be installed: node@24.21.0
+PASS cookie choice works without browser storage
+PASS protected URL preserves destination and query through login
+PASS mobile search reaches all navigation items and restores keyboard focus
+PASS production completion preserves a newer navigation choice
+PASS stock search has an accessible name and fits all five widths
+PASS stock search failure is announced separately from an empty result and can retry
+PASS stock search keeps the newest response and deduplicates a pending query
+PASS editing the script refreshes stock keywords while unchanged steps reuse the selection
+FAIL returning to a previous script cancels newer pending keywords and keeps that script current: Error: expect(locator).toHaveValue(expected) failed
+
+Locator:  getByTestId('scene-picker-0').getByRole('textbox')
+Expected: "ocean"
+Received: "foret"
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.have.value" with timeout 5000ms
+  - waiting for getByTestId('scene-picker-0').getByRole('textbox')
+    6 × locator resolved to <input type="text" value="foret" placeholder="Mots-cles (EN)" aria-label="Recherche de médias pour la scène 1" class="min-w-0 min-h-11 flex-1 px-3 py-2 rounded-lg text-xs text-white/90 bg-white/[0.04] border border-white/[0.06] focus-visible:ring-2 focus-visible:ring-violet-400 outline-none"/>
+      - unexpected value "foret"
+
+FAIL leaving the editor cancels client export feedback without claiming server cancellation: Error: expect(page).toHaveURL(expected) failed
+
+Expected: "http://127.0.0.1:54276/library"
+Received: "http://127.0.0.1:54276/editor/44444444-4444-4444-8444-444444444444"
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.have.url" with timeout 5000ms
+    9 × unexpected value "http://127.0.0.1:54276/editor/44444444-4444-4444-8444-444444444444"
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: T07 reprise regressions
++ actual - expected
+
++ [
++   {
++     error: 'Error: expect(locator).toHaveValue(expected) failed\n' +
++       '\n' +
++       "Locator:  getByTestId('scene-picker-0').getByRole('textbox')\n" +
++       'Expected: "ocean"\n' +
++       'Received: "foret"\n' +
++       'Timeout:  5000ms\n' +
++       '\n' +
++       'Call log:\n' +
++       '  - Expect "to.have.value" with timeout 5000ms\n' +
++       "  - waiting for getByTestId('scene-picker-0').getByRole('textbox')\n" +
++       '    6 × locator resolved to <input type="text" value="foret" placeholder="Mots-cles (EN)" aria-label="Recherche de médias pour la scène 1" class="min-w-0 min-h-11 flex-1 px-3 py-2 rounded-lg text-xs text-white/90 bg-white/[0.04] border border-white/[0.06] focus-visible:ring-2 focus-visible:ring-violet-400 outline-none"/>\n' +
++       '      - unexpected value "foret"\n',
++     name: 'returning to a previous script cancels newer pending keywords and keeps that script current'
++   },
++   {
++     error: 'Error: expect(page).toHaveURL(expected) failed\n' +
++       '\n' +
++       'Expected: "http://127.0.0.1:54276/library"\n' +
++       'Received: "http://127.0.0.1:54276/editor/44444444-4444-4444-8444-444444444444"\n' +
++       'Timeout:  5000ms\n' +
++       '\n' +
++       'Call log:\n' +
++       '  - Expect "to.have.url" with timeout 5000ms\n' +
++       '    9 × unexpected value "http://127.0.0.1:54276/editor/44444444-4444-4444-8444-444444444444"\n',
++     name: 'leaving the editor cancels client export feedback without claiming server cancellation'
++   }
++ ]
+- []
+
+    at runT07Reprise (file:///Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012/scripts/ui-isolated/t07-reprise.mjs:123:10)
+    at async runT07Flows (file:///Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012/scripts/ui-isolated/t07-flows.mjs:7:5)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012/scripts/test-ui-isolated.mjs:224:21 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [
+    {
+      name: 'returning to a previous script cancels newer pending keywords and keeps that script current',
+      error: 'Error: expect(locator).toHaveValue(expected) failed\n' +
+        '\n' +
+        "Locator:  getByTestId('scene-picker-0').getByRole('textbox')\n" +
+        'Expected: "ocean"\n' +
+        'Received: "foret"\n' +
+        'Timeout:  5000ms\n' +
+        '\n' +
+        'Call log:\n' +
+        '  - Expect "to.have.value" with timeout 5000ms\n' +
+        "  - waiting for getByTestId('scene-picker-0').getByRole('textbox')\n" +
+        '    6 × locator resolved to <input type="text" value="foret" placeholder="Mots-cles (EN)" aria-label="Recherche de médias pour la scène 1" class="min-w-0 min-h-11 flex-1 px-3 py-2 rounded-lg text-xs text-white/90 bg-white/[0.04] border border-white/[0.06] focus-visible:ring-2 focus-visible:ring-violet-400 outline-none"/>\n' +
+        '      - unexpected value "foret"\n'
+    },
+    {
+      name: 'leaving the editor cancels client export feedback without claiming server cancellation',
+      error: 'Error: expect(page).toHaveURL(expected) failed\n' +
+        '\n' +
+        'Expected: "http://127.0.0.1:54276/library"\n' +
+        'Received: "http://127.0.0.1:54276/editor/44444444-4444-4444-8444-444444444444"\n' +
+        'Timeout:  5000ms\n' +
+        '\n' +
+        'Call log:\n' +
+        '  - Expect "to.have.url" with timeout 5000ms\n' +
+        '    9 × unexpected value "http://127.0.0.1:54276/editor/44444444-4444-4444-8444-444444444444"\n'
+    }
+  ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

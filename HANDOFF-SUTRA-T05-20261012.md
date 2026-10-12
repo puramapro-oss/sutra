@@ -1,96 +1,80 @@
-# SUTRA T05 — média et export — 2026-10-12
+# SUTRA T05 — média et export — reprise du 2026-10-12
 
-Statut : **DELTA_LOCAL_VERIFIE / INTEGRATION_PR3_NON_TESTEE / BUILD_BASE_BLOQUE**.
-Code livré : `6fd2f8576761887a7a2d8ac8a3214c486aa69dcd`. Base exacte : `6a64fba103a084c71ecbfd1a07af53076af097c6`.
-Branche : `codex/sutra-t05-media-export-20261012`.
-Worktree : `/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012`.
+Statut : **DELTA_T05_LOCAL_VERIFIE_SUR_INTEGRATION_589732c**. Aucun déploiement ni appel payant. Ce handoff remplace le compte rendu S5 de cette branche ; l'ancien travail reste conservé dans son worktree et son historique.
 
-## Autorité et intégration
+- Base demandée, vérifiée avant travail : `codex/sutra-t01-integration-20261012` à `589732cb49959c1a576a3ba381b310cd594600ac`.
+- Branche livrée : `codex/sutra-t05-media-export-final-20261012`.
+- Code et tests : `834e30edefafd224461616e9854ded42e857f3d4` ; commit de preuves = commit contenant ce handoff.
+- Worktree isolé : `/Users/matissdornier/purama-worktrees/sutra-t05-media-export-final-20261012`.
+- Pointeur coordinateur et SHA final après push : `/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T05-POINTEUR.md`.
 
-AGENTS/POLITIQUE lus, contrôle démarrage POLICY_OK, LOCKS et propriétaires vérifiés avant création du worktree. Ancien scope compositeur libéré ; réservation SUTRA-T05-20261012:media-export. WIP principal et autres worktrees préservés. Aucun push, déploiement, appel fournisseur réel, génération payante, DB distante, média réel, secret ou fichier .env lu.
+## Ownership et reprise
 
-T01 impose PR3 `7088a0a3e733de8d2e85f3576bd86627127da369` comme base d'intégration. Le travail T05 avait commencé sur S5 : conserver ce worktree et intégrer **les hunks revus**, jamais remplacer les fichiers PR3 par S5. Les cinq fichiers export-pipeline, shotstack, ffmpeg-compositor, ffmpeg-filters, video-compositor diffèrent entre les bases ; les trois fichiers FFmpeg/video-compositor sont absents de PR3. Aucun merge/rebase/cherry-pick aveugle effectué. Package.json et lockfile inchangés (propriété T01).
+AGENTS, politique canonique, BATON/plan/brief/ERRORS et deux LOCKS lus ; contrôle de démarrage `POLICY_OK`. Réservation `SUTRA-T05-20261012:REPRISE-589732c` dans les deux LOCKS. Base T01 propre et ancien T05 propre préservés. Aucun reset, stash, clean, remplacement de worktree ou reprise du WIP étranger. Dépendances T01 utilisées en lecture seule ; aucune installation.
 
-## Comportement livré
+Le lot T05 initial est déjà réconcilié par T01 : aucune deuxième implémentation. `media-probe.ts` canonique et le downloader/stockage T02 restent inchangés. Aucun changement dans les adaptateurs T04, workers/checkpoints T03, UI T07, package/lockfile ou CI T01. Seule exception de configuration : désactivation de l'auto-preview Vercel pour cette branche exacte, conformément au mandat de push sans déploiement.
 
-- Contrat commun : voix, musique, sous-titres, intro, outro et logo `optional|required|disabled`. Défaut compatible `optional`; actif fourni invalide => erreur, jamais omission silencieuse. Les exigences doivent provenir du brief canonique fourni par le caller.
-- Horloge à 30 FPS, durées finies normalisées à l'image, sous-titres relatifs au corps puis décalés par l'intro, absence de chevauchements. Voix placée après l'intro ; voix trop longue refusée. Musique courte bouclée ; sources vidéo muettes ; mix/padding/synchronisation contrôlés.
-- Intro/outro, logo image ou texte littéral, ordre des calques Shotstack corrigé. Texte FFmpeg via fichier + expansion désactivée (apostrophes, deux-points, pourcentages). Correction SRT à la retenue de seconde. Sources anamorphiques normalisées en conservant leur ratio affiché.
-- Le résultat FFmpeg est probé/décodé avant upload. Une erreur d'upload ou annulation ne déclenche pas de rendu Shotstack. Si les deux moteurs échouent, erreur propagée : aucune URL brute retournée. L'export rejette aussi explicitement une URL finale égale à un clip source.
-- Shotstack demande des dimensions explicites sans preset contradictoire et valide le fichier retourné ; pas de succès 4K pour un fichier HD. Rendu cloud **SIMULÉ**, aucun service live testé.
-- Reprise FFmpeg liée au hash du brief et marqueurs d'étapes terminées. Reprise export sans nouveau rendu payant mais revalidation du fichier, y compris ancien checkpoint `saved`. Brief changé ou preuve incompatible => rejet. Persistance après validation, durée mesurée.
+## Delta livré et fichiers
 
-## Mesures et limites de preuve
-
-`MediaValidation` retourne SHA-256/octet, durée, bitrate et pistes de chaque fichier : source réelle de composition, natif et amélioré lorsque leurs URLs sont fournies, demande, fichier final. Natif/amélioré absents restent `null` (aucune mesure inventée).
-
-Contrôle final : dimensions/orientation et rotation, FPS moyen/nominal à 30, H.264/yuv420p, bitrate positif mesuré (pas un seuil esthétique inventé), durée container/video, nombre d'images, décodage complet de toutes les pistes A/V, audio AAC mono/stéréo 44.1/48 kHz, horloges A/V, pixels carrés SAR 1:1, corruption et absence de pistes sous-titres externes inattendues. Tolérances explicites : vidéo 0,1 s, container 0,12 s, ±1 image, début audio 0,08 s, fin audio 0,12 s.
-
-Test concret : source 320×180, natif 160×90, amélioré 320×180, demandé/final 3840×2160 => `upscaled`. Source native synthétique 3840×2160 avec attestation explicite => `native-4k-attested`; sans attestation => `4k-origin-unknown`. Le preset 4K ne prouve jamais une génération IA native 4K. T04 doit fournir la provenance authentique ; les attestations des tests sont **synthétiques**.
-
-Sous-titres brûlés : fenêtres/texte validés par contrat ; présence/absence temporelle réellement vérifiée par pixels dans les tests synthétiques FFmpeg. Le rapport runtime marque `verification: render-contract` : pas d'OCR du fichier final arbitraire ni de preuve linguistique/lip-sync. Les contrôles audio runtime vérifient pistes/horloges, pas l'identité sémantique de la voix ou musique. Tests synthétiques : onde audio, silence intro/outro, boucle musique et fenêtres de sous-titres réellement décodés.
-
-## Preuves reproductibles
-
-[Manifest des fichiers committés et journaux](docs/t05-evidence/manifest.json). Les hashes source proviennent de `git show 6fd2f8576761887a7a2d8ac8a3214c486aa69dcd:<path>`, jamais de WIP. Journaux conservés dans `docs/t05-evidence/`.
-
-Environnement : Node 26.0.0, TypeScript 5.9.3, Next effectif 16.3.5, ffmpeg-static déjà installé via node_modules partagé en lecture seule, ffprobe système 9.0.2. Zéro installation. Ce n'est pas l'environnement PR3/T01 Node24/Next16.3.8.
-
-| Contrôle | Résultat exact |
+| Fichier | Changement |
 | --- | --- |
-| Gate ciblée finale, 15 fichiers | 118 tests : 117 PASS, 1 FAIL, 0 SKIP ; seule erreur assertion `/HTTP 404/` trop stricte |
-| Delta après correction assertion + typage du helper de test | 17/17 PASS, 0 SKIP ; aucun échec test restant, pas de replay de la gate inchangée |
-| Médias locaux | FFmpeg/ffprobe réels, fixtures lavfi + HTTP loopback uniquement |
-| Export/Shotstack/storage | Doubles de contrats SIMULÉS ; pas de preuve fournisseur/stockage live |
-| Lint applicatif | 0 erreur, 144 avertissements hérités ; exclusion du lanceur `.gitnexus/**` généré localement |
-| Typecheck final | BLOQUÉ : 5 exports de routes inchangés depuis base S5, aucun diagnostic T05 restant |
-| Build webpack | Compilation terminée avec warnings ; build arrêté au typecheck. 3 diagnostics T05 initiaux corrigés puis tsc rejoué ; build entier non rejoué |
-| GitNexus staged | 17 fichiers, 105 symboles, 0 processus retourné, low ; graphe PARTIEL, pas certification exhaustive |
-| Intégration PR3/provider/déploiement | NON TESTÉ |
+| `src/lib/media-validation.ts` | `validateRenderedBuffer` mesure désormais les sources, le natif/amélioré déclarés et les entrées voix/musique avant de délivrer une preuve. `mediaValidation` refuse les listes incomplètes et les provenances déclarées absentes ou sans image décodable. |
+| `src/lib/video-compositor.ts` | Avant upload local, compare la taille et le SHA-256 de la preuve avec le buffer réellement livré. Une preuve périmée est une erreur de validation, sans bascule payante. |
+| `src/lib/media-validation.test.ts` | Régression réelle FFmpeg : buffer sans mesures, source/native/amélioré, provenance audio-only, voix/musique sans audio. |
+| `src/lib/video-compositor.test.mts` | Contrats simulés : preuve périmée taille/hash, échec des deux moteurs, URL brute retournée par le secours. |
+| `scripts/helpers/media-validation-fixture.ts` | Métadonnées simulées complètes pour les tests injectés ; jamais présentées comme preuve runtime. |
+| `vercel.json` | `deploymentEnabled["codex/sutra-t05-media-export-final-20261012"] = false`. Les workflows présents ne déclenchent aucun déploiement sur cette branche. |
 
-Commande gate (TMPDIR propre au lot obligatoire pour isoler les anciens sweep FFmpeg) :
+Documentation et preuves : ce handoff, ajouts T05 à `BATON.md`/`task_plan.md`, `docs/t05-final-evidence/` (journaux, manifest et script de replay du build local).
+
+Régressions observées avant correction : test de preuve périmée en échec `Missing expected rejection` ; test de validation du buffer en échec `0 !== 1` sur le nombre de sources. Après correction : ciblé **6/6 PASS**, puis gates finales ci-dessous. Le changement de comportement est volontaire : une source ou provenance déclarée devenue inaccessible/invalide bloque la validation ; aucune mesure ni provenance n'est inventée.
+
+## Contrat média conservé et requalifié
+
+- Exigences `optional|required|disabled` pour voix, musique, sous-titres, intro, outro et logo, issues du brief. Une entrée fournie invalide n'est pas supprimée silencieusement. Voix positionnée après l'intro et limitée au corps ; musique courte bouclée ; intro/outro/logo et fenêtres des sous-titres conservés.
+- Montage FFmpeg prioritaire ; secours Shotstack uniquement sur panne moteur admissible. Échec de validation, d'upload ou annulation : erreur propagée. Si les deux moteurs échouent ou si l'URL retournée est un clip source : aucun fallback vers la vidéo brute.
+- Mesures distinctes : source de composition, fichier natif et amélioré si déclarés, dimensions/durée/FPS demandés et fichier final. Les références native/améliorée non fournies restent `null`.
+- Contrôles finaux : dimensions, orientation/rotation, 30 FPS moyen et nominal, H.264/yuv420p, bitrate positif mesuré, durées container/vidéo, nombre d'images, décodage intégral A/V, audio AAC mono/stéréo 44,1/48 kHz, synchronisation, SAR 1:1, corruption et absence de piste externe de sous-titres inattendue. Tolérances existantes : vidéo 0,1 s, container 0,12 s, ±1 image, début audio 0,08 s, fin audio 0,12 s.
+- Preuve 4K synthétique : source **320×180**, native **160×90**, améliorée **320×180**, demandé/final **3840×2160** => `upscaled`. Source/native **3840×2160** avec attestation synthétique => `native-4k-attested` ; sans attestation => `4k-origin-unknown`. Un preset ou un upscale 4K ne démontre jamais une génération IA native 4K.
+- Les tests FFmpeg lisent réellement les pixels du logo et des fenêtres de sous-titres ainsi que l'onde audio/silence/boucle musicale. La preuve runtime des sous-titres reste `verification: render-contract` : ni OCR d'un rendu arbitraire, ni contrôle sémantique de la voix ou lip-sync. Les attestations de génération réelle restent à fournir par T04.
+
+## Tests gratuits et preuves
+
+[Manifest](docs/t05-final-evidence/manifest.json) : SHA exact du code, 26 fichiers d'entrée hachés depuis `git show`, journaux hachés. Environnement : Node **24.21.0**, Next **16.3.8**, FFmpeg **6.0** avec libass, ffprobe **9.0.2**. Médias lavfi/ondes/formes synthétiques et HTTP loopback seulement ; réseau distant et lectures `.env` bloqués par la garde existante. Identifiants de tests fictifs, aucun secret lu.
+
+| Commande / gate | Résultat frais sur le code livré |
+| --- | --- |
+| `node scripts/run-ci.mjs contracts` | **429 PASS, 7 SKIP, 0 FAIL** ; schedule/composition/publication PASS supplémentaires. |
+| `node scripts/run-ci.mjs media` | **34 PASS, 0 SKIP, 0 FAIL** (3 local-engine + 31 compositor/formats/validation). |
+| `node scripts/run-ci.mjs quality` — typecheck | **PASS**, `--noEmit --incremental false`. |
+| Même gate — lint | **PASS**, 0 erreur / 111 avertissements hérités. |
+| Même gate — build initial | **FAIL environnement** : Google Fonts Space Grotesk bloqué par la garde réseau `T08_NETWORK_DENIED`. Journal conservé. |
+| Replay du seul build avec les polices locales T01 | **PASS, 197/197 pages** ; même code, garde réseau maintenue, réponse du chargeur de police injectée avec les vrais fichiers WOFF2 T01, hashes enregistrés. |
+| `git diff --check`, contrôle des chemins réservés | **PASS** ; package/lockfile, probe canonique, Shotstack et export-pipeline inchangés depuis la base. |
+
+Les 7 SKIP concernent INSEE live (4), DB distante (2) et OpenTimestamps réseau (1). Ils ne sont pas comptés PASS. Contrats Shotstack/storage injectés = **SIMULÉS**, pas une preuve fournisseur. Les suites UI/SQL/déploiement hors scope dont le code n'a pas changé restent les preuves historiques T01 au SHA de base ; elles ne sont pas présentées comme rejouées ici. Aucun test payant.
+
+Reproduction (binaires déjà présents, aucune réinstallation) :
 
 ```sh
-T05_TMP=$(mktemp -d -t sutra-t05-gate)
-TMPDIR="$T05_TMP" node --import tsx --experimental-test-module-mocks --test --test-concurrency=1 \
-  src/lib/ffmpeg-compositor.test.ts src/lib/ffmpeg-compositor-formats.test.ts \
-  src/lib/ffmpeg-concurrency.test.ts src/lib/ffmpeg-encoder.test.ts src/lib/ffmpeg-filters.test.ts \
-  src/lib/ffmpeg-io.test.ts src/lib/shotstack.test.ts src/lib/video-compositor.test.mts \
-  src/lib/auto-pipeline.test.mts src/lib/video-cancel-registry.test.ts \
-  src/lib/video-generation-export-contract.test.ts src/lib/media-validation.test.ts \
-  src/lib/export-media.test.mts scripts/test-shotstack-contracts.mts scripts/test-auto-export-queue.mts
+T05_TMP=$(mktemp -d -t sutra-t05-final-gates)
+export TMPDIR="$T05_TMP"
+export PATH="/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin:/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/test-results/media-bin:$PATH"
+node scripts/run-ci.mjs contracts
+node scripts/run-ci.mjs media
+node scripts/run-ci.mjs quality
+# Si le chargement distant de Space Grotesk est bloqué : rejouer seulement le build.
+python3 docs/t05-final-evidence/build_with_local_fonts.py \
+  /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012 \
+  /Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node
 ```
 
-Rerun affecté : même préfixe/env, uniquement `src/lib/ffmpeg-compositor.test.ts src/lib/media-validation.test.ts`.
-Autres commandes : `npm run lint -- --ignore-pattern '.gitnexus/**'`, `node_modules/.bin/tsc --noEmit`.
-Build lancé sans fichier .env chargeable, avec valeurs publiques fictives de test :
+Le replay des polices certifie la compilation locale du delta, pas la disponibilité réseau Google Fonts ni un build CI vierge. Il lit le build T01 sans le modifier. Le problème de reproductibilité hors cache est transmis au propriétaire T01, sans modification de son runner ou de la police UI.
 
-```sh
-NEXT_PUBLIC_SUPABASE_URL=https://test-ref.supabase.co NEXT_PUBLIC_SUPABASE_ANON_KEY=test-anon-key NEXT_PUBLIC_APP_SCHEMA=sutra NEXT_TELEMETRY_DISABLED=1 node_modules/.bin/next build --webpack
-```
+## Impact et limites réelles
 
-Blocage base S5 (fichiers inchangés, `git diff 6a64fba -- <ces chemins>` vide) :
+Skill GitNexus appliqué avant modification. Impact upstream : `mediaValidation` **HIGH**, 13 affectés/4 directs ; `composeVideoWithFallback` **CRITICAL**, 14 affectés/1 direct, via final-composition et les pipelines create/production/export/auto/worker ; `validateRenderedBuffer` LOW, 7 affectés/1 direct ; fixture LOW. Risques annoncés avant édition. `detect-changes --scope staged` avant commit : **6 fichiers, 18 symboles, risque low, 0 flow retourné**. Ce résultat n'annule pas l'impact upstream : graphe **PARTIEL**, 929 entrées et 519 callees écartés, 4 parcours coupés. Inventaire exhaustif assuré par Git, pas par le graphe.
 
-- `src/app/api/ai/chat/route.ts` : export `NAMA_MUSE_SYSTEM_PROMPT`.
-- `src/app/api/cron/scheduled-posts/route.ts` : export `publishDuePost`.
-- `src/app/api/karma/games/dharma/route.ts` : export `DHARMA_SEGMENTS`.
-- `src/app/api/publish/[id]/route.ts` : export `cancelScheduledPostCore`.
-- `src/app/api/video/[id]/cancel/route.ts` : export `cancelVideoRenderCore`.
+**Aucun blocage local T05 restant.** Restent externes : intégration par T01 de ce delta avec les reprises des autres terminaux ; CI vierge/reproductibilité des polices ; rendu Shotstack réel et génération native 4K réelle non testés ; runtime Linux/OVH, stockage réel et schéma distant non qualifiés. Le dernier handoff T01 signale également `SMARANA_READ_TOKEN` absent sur sa CI : constat T01 hérité, pas une nouvelle preuve distante T05. La branche T05 n'est pas déclenchée par le workflow web actuel ; aucun workflow manuel lancé.
 
-Ne pas résoudre ces exports dans T05 : réconcilier avec PR3 sous T01/T03/T06. Un commit local demandé n'est pas un PASS build/release.
-
-## Impact GitNexus
-
-Analyse upstream avant modifications : assembleFinalVideo 4 callers directs/6 affectés HIGH ; buildTracks 1/7 HIGH ; clipAsset 1/6 HIGH ; pollShotstackRender 1/7 HIGH ; actualQualityFor 5/13 CRITICAL (corps legacy conservé, type/documentation élargis seulement). Autres helpers LOW. composeVideo zéro caller retourné => UNKNOWN, recherche directe complémentaire. Risques annoncés avant édition.
-
-Index final 13 939 nœuds, 29 977 liens, 517 flows ; 982 points d'entrée écartés, 3 091 callees écartés, 8 parcours coupés par budget. Detect-changes exécuté après staging (nouveaux fichiers inclus). Sa liste textuelle est tronquée : utiliser le manifest/Git pour l'inventaire complet, aucune absence de flow interprétée comme absence d'impact.
-
-## Contrats à raccorder par les propriétaires
-
-1. **T01** : revoir les 17 chemins du manifest sur PR3, intégrer uniquement le delta ; dépendance runtime FFmpeg + **ffprobe dans PATH** requise, droits processus/temp et budget worker adaptés. Script optionnel à ajouter sous votre ownership : `node --import tsx --test src/lib/media-validation.test.ts src/lib/export-media.test.mts` avec TMPDIR isolé. Aucun changement package livré.
-2. **T03** : propager `requirements`, branding, durées, `clips[].lineage` et signal depuis le brief ; conserver `mediaContractHash` et `mediaValidation` via checkpoint. Les workers/callers ne sont pas modifiés ici. `composeAutoVideo` de S5 perd les nouveaux champs et reconstruit une qualité legacy : adapter ce caller sur la version canonique, ne pas considérer le lot intégré avant cela. `export-pipeline.ts` est le delta T05 de validation ; arbitrer les checkpoints avec T03.
-3. **T04** : fournir `nativeUrl`, `enhancedUrl`, `generation.kind/evidence` issus du fournisseur et de ses mesures, sans prétendre qu'un fichier upscalé est une génération native. Conserver required/optional du brief en cas d'échec voix/musique.
-4. **T02** : réutiliser votre downloader SSRF et stockage privé canoniques PR3. T05 réutilise `downloadToFile` existant et ne livre aucun second downloader réseau ni changement d'auth. Conciliation URLs signées/expiration/validation à l'intégration.
-5. **T06/T07/T08** : publication uniquement après validation finale ; présenter demandé/final/provenance séparément, aucun label natif déduit de 4K. Rejouer les tests touchés sur le commit intégré ; aucun PASS S5 ne certifie PR3.
-
-Prochaine étape externe unique : **intégration revue du delta T05 par T01 avec raccord des contrats propriétaires, puis gate PR3**. Worktree conservé ; aucun nettoyage d'artefacts tiers.
+Pour le coordinateur : reprendre uniquement les six fichiers du commit code et les preuves T05 ; les raccords T01/T03 existants restent canoniques. Pas de migration, secret, appel fournisseur, push sur main ou déploiement demandé. Commit et push de cette seule branche autorisés par le dernier mandat ; confirmation finale et SHA distant dans le pointeur de coordination.

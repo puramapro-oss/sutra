@@ -35,6 +35,15 @@ try {
   const ledger = karma.match(/CREATE TABLE IF NOT EXISTS sutra\.karma_seed_transactions \([\s\S]*?\n\);/)?.[0]
   const award = karma.match(/CREATE OR REPLACE FUNCTION sutra\.karma_award_seeds\([\s\S]*?\$\$ LANGUAGE plpgsql SECURITY DEFINER;/)?.[0]
   assert.ok(seeds && ledger && award)
+  const features = await readFile(new URL('../migrations/v3_features.sql', import.meta.url), 'utf8')
+  const auto = await readFile(new URL('../migrations/sutra_auto.sql', import.meta.url), 'utf8')
+  const publicSocial = await readFile(new URL('../sql/social-autopilot.sql', import.meta.url), 'utf8')
+  const points = features.match(/CREATE TABLE IF NOT EXISTS sutra\.purama_points \([\s\S]*?\n\);/)?.[0]
+  const pointsPolicy = features.match(/CREATE POLICY "own_purama_points"[^;]+;/)?.[0]
+  const memory = auto.match(/CREATE TABLE IF NOT EXISTS sutra\.sutra_auto_memory \([\s\S]*?\n\);/)?.[0]
+  const memoryPolicy = auto.match(/CREATE POLICY "auto_memory_owner"[^;]+;/)?.[0]
+  const memoryGrant = auto.match(/GRANT ALL ON sutra\.sutra_auto_memory\s+TO authenticated, service_role;/)?.[0]
+  assert.ok(points && pointsPolicy && memory && memoryPolicy && memoryGrant)
   await sql(`CREATE ROLE authenticated; CREATE ROLE anon; CREATE ROLE service_role BYPASSRLS;
     CREATE SCHEMA auth; CREATE SCHEMA sutra;
     CREATE TABLE auth.users (id uuid PRIMARY KEY);
@@ -59,6 +68,33 @@ try {
   await sql(`${seeds} ${ledger} ${award}
     ALTER TABLE sutra.karma_seeds ENABLE ROW LEVEL SECURITY;
     ALTER TABLE sutra.karma_seed_transactions ENABLE ROW LEVEL SECURITY;`)
+  await sql(`${points} ${memory}
+    ALTER TABLE sutra.purama_points ENABLE ROW LEVEL SECURITY;
+    ALTER TABLE sutra.sutra_auto_memory ENABLE ROW LEVEL SECURITY;
+    ${pointsPolicy} ${memoryPolicy} ${memoryGrant}
+    GRANT ALL ON sutra.purama_points TO authenticated, service_role;
+    INSERT INTO sutra.purama_points(user_id,balance) VALUES ('${alice}',10),('${bob}',20);
+    INSERT INTO sutra.sutra_auto_memory(user_id,memory_type,content)
+      VALUES ('${alice}','preference','A'),('${bob}','preference','B');`)
+  const rewardTables = ['point_transactions', 'point_purchases', 'point_milestones', 'daily_gifts', 'user_achievements', 'lottery_tickets']
+  for (const table of ['point_shop_items', 'achievements', 'lottery_draws', ...rewardTables]) {
+    const definition = features.match(new RegExp(`CREATE TABLE IF NOT EXISTS sutra\\.${table} \\([\\s\\S]*?\\n\\);`))?.[0]
+    assert.ok(definition, `Missing canonical definition: ${table}`)
+    await sql(definition)
+    if (rewardTables.includes(table)) {
+      const policy = features.match(new RegExp(`CREATE POLICY "own_${table}"[^;]+;`))?.[0]
+      assert.ok(policy, `Missing canonical policy: ${table}`)
+      await sql(`ALTER TABLE sutra.${table} ENABLE ROW LEVEL SECURITY; ${policy}
+        GRANT ALL ON sutra.${table} TO authenticated, service_role;`)
+    }
+  }
+  // This is the actual schema used by the OAuth/T06 routes, not sutra.social_accounts.
+  await sql(`SET search_path=public; ${publicSocial}
+    GRANT ALL ON public.social_accounts TO authenticated, service_role;
+    GRANT SELECT(access_token),UPDATE(status) ON public.social_accounts TO PUBLIC;
+    INSERT INTO public.social_accounts(user_id,platform,external_id,access_token,status)
+      VALUES ('${alice}','youtube','one','fixture-token','revoked'),
+             ('${bob}','youtube','two','fixture-token','connected');`)
 
   // Prove the vulnerable canonical policy under ordinary authenticated table grants.
   assert.equal(await asUser(`UPDATE sutra.profiles SET is_admin=true, credits=999, subscription_status='banned' WHERE id='${alice}' RETURNING is_admin;`), 't'); checks++
@@ -80,6 +116,57 @@ try {
   }
   const migration = await readFile(new URL('../migrations/20261012_t02_account_permissions.sql', import.meta.url), 'utf8')
   await sql(migration); await sql(migration) // replay-safe, no changed privileges on retry
+  // Reproduce residual defects on the integrated 589732c schema, after the first T02 migration.
+  assert.equal(await asUser(`UPDATE sutra.purama_points SET balance=999 WHERE user_id='${alice}' RETURNING balance;`), '999'); checks++
+  assert.equal(await asUser('SELECT count(access_token) FROM public.social_accounts;'), '1'); checks++
+  assert.equal(await asUser(`UPDATE public.social_accounts SET status='connected',external_id='forged' WHERE user_id='${alice}' RETURNING status;`), 'connected'); checks++
+  assert.equal(await asUser(`INSERT INTO sutra.daily_gifts(user_id,gift_type,gift_value) VALUES('${alice}','mega_coupon','{}') RETURNING user_id;`), alice); checks++
+  // RLS does not apply to TRUNCATE: even a revoked user can delete Bob's rows.
+  await sql(`UPDATE sutra.profiles SET access_revoked_at=now() WHERE id='${alice}';`)
+  assert.equal(await asUser('SELECT count(*) FROM sutra.sutra_auto_memory;'), '0'); checks++
+  await asUser('TRUNCATE sutra.sutra_auto_memory;')
+  assert.equal(await sql('SELECT count(*) FROM sutra.sutra_auto_memory;'), '0'); checks++
+  await sql(`UPDATE sutra.profiles SET access_revoked_at=null WHERE id='${alice}';
+    INSERT INTO sutra.sutra_auto_memory(user_id,memory_type,content)
+      VALUES ('${alice}','preference','A'),('${bob}','preference','B');
+    UPDATE sutra.purama_points SET balance=10 WHERE user_id='${alice}';
+    UPDATE public.social_accounts SET status='revoked',external_id='one' WHERE user_id='${alice}';
+    CREATE POLICY accidental_public_social_read ON public.social_accounts FOR SELECT USING(true);
+    GRANT UPDATE(balance) ON sutra.purama_points TO PUBLIC;
+    GRANT TRUNCATE ON sutra.sutra_auto_memory TO PUBLIC, anon;`)
+  const finalMigration = await readFile(new URL('../migrations/20261012_t02_final_permissions.sql', import.meta.url), 'utf8')
+  await sql(finalMigration); await sql(finalMigration)
+  for (const table of ['purama_points', ...rewardTables]) {
+    for (const privilege of ['INSERT', 'UPDATE', 'DELETE']) {
+      assert.equal(await sql(`SELECT has_table_privilege('authenticated','sutra.${table}','${privilege}');`), 'f'); checks++
+      assert.equal(await sql(`SELECT has_any_column_privilege('authenticated','sutra.${table}','${privilege === 'DELETE' ? 'REFERENCES' : privilege}');`), 'f'); checks++
+    }
+    assert.equal(await sql(`SELECT has_table_privilege('service_role','sutra.${table}','SELECT,INSERT,UPDATE,DELETE');`), 't'); checks++
+  }
+  await expectDenied(`INSERT INTO sutra.daily_gifts(user_id,gift_type,gift_value) VALUES('${alice}','mega_coupon','{}');`)
+  for (const role of ['authenticated', 'anon']) {
+    for (const table of ['sutra.sutra_auto_memory', 'sutra.purama_points', 'public.social_accounts']) {
+      await assert.rejects(sql(`SET ROLE ${role}; TRUNCATE ${table};`), error => /permission denied/.test(error.stderr)); checks++
+      for (const privilege of ['TRIGGER', 'REFERENCES']) {
+        assert.equal(await sql(`SELECT has_table_privilege('${role}','${table}','${privilege}');`), 'f'); checks++
+      }
+    }
+  }
+  assert.equal(await sql('SELECT count(*) FROM sutra.sutra_auto_memory;'), '2'); checks++
+  for (const statement of [
+    'UPDATE sutra.purama_points SET balance=999;', 'DELETE FROM sutra.purama_points;',
+    `INSERT INTO sutra.purama_points(user_id,balance) VALUES('${alice}',999);`,
+    'SELECT access_token FROM public.social_accounts;', 'SELECT refresh_token FROM public.social_accounts;',
+    'SELECT metadata FROM public.social_accounts;', 'SELECT * FROM public.social_accounts;',
+    "UPDATE public.social_accounts SET status='connected';", 'DELETE FROM public.social_accounts;',
+    `INSERT INTO public.social_accounts(user_id,platform) VALUES('${alice}','tiktok');`,
+  ]) await expectDenied(statement)
+  assert.equal(await asUser('SELECT external_id FROM public.social_accounts;'), 'one'); checks++
+  assert.equal(await asUser('SELECT balance FROM sutra.purama_points;'), '10'); checks++
+  await assert.rejects(sql('SET ROLE anon; SELECT external_id FROM public.social_accounts;'), error => /permission denied/.test(error.stderr)); checks++
+  assert.equal(await sql('SET ROLE service_role; SELECT count(access_token) FROM public.social_accounts;'), '2'); checks++
+  assert.equal(await sql(`SET ROLE service_role; UPDATE public.social_accounts SET status='connected' WHERE user_id='${alice}' RETURNING status;`), 'connected'); checks++
+  assert.equal(await sql(`SET ROLE service_role; UPDATE sutra.purama_points SET balance=11 WHERE user_id='${alice}' RETURNING balance;`), '11'); checks++
   await expectDenied(`SELECT sutra.karma_award_seeds('${bob}',999,'synthetic');`)
   await assert.rejects(sql(`SET ROLE anon; SELECT sutra.karma_award_seeds('${bob}',999,'synthetic');`), error => /permission denied/.test(error.stderr)); checks++
   await sql(`SET ROLE service_role; SELECT sutra.karma_award_seeds('${bob}',1,'synthetic');`)
@@ -101,6 +188,9 @@ try {
   assert.equal(await sql(`SET ROLE service_role; UPDATE sutra.profiles SET subscription_status='banned',access_revoked_at=now() WHERE id='${alice}' RETURNING id;`), alice); checks++
   assert.equal(await asUser('SELECT count(*) FROM sutra.profiles;'), '0'); checks++
   assert.equal(await asUser('SELECT count(body) FROM sutra.security_test_documents;'), '0'); checks++
+  assert.equal(await asUser('SELECT count(id) FROM public.social_accounts;'), '0'); checks++
+  assert.equal(await asUser('SELECT count(*) FROM sutra.purama_points;'), '0'); checks++
+  await expectDenied('TRUNCATE sutra.sutra_auto_memory;')
   await expectDenied(`INSERT INTO sutra.security_test_documents VALUES ('${alice}','forbidden');`)
   await sql(`SET ROLE service_role; UPDATE sutra.profiles SET subscription_status='active' WHERE id='${alice}';`)
   assert.equal(await asUser('SELECT count(body) FROM sutra.security_test_documents;'), '0'); checks++
@@ -121,6 +211,18 @@ try {
   await sql(`SET ROLE service_role; INSERT INTO sutra.social_publication_journals(production_id,kind,user_id) VALUES('${operation}','video','${alice}');`)
   assert.equal(await sql('SET ROLE service_role; SELECT count(*) FROM sutra.social_publication_journals;'), '1'); checks++
   await assert.rejects(sql('SET ROLE service_role; DELETE FROM sutra.social_publication_journals;'), error => /permission denied/.test(error.stderr)); checks++
+  // Unknown shared schema: the complete transaction rolls back, no partial permission change.
+  await sql(`COMMENT ON TABLE public.social_accounts IS 'another application';
+    GRANT TRUNCATE ON sutra.sutra_auto_memory TO authenticated;`)
+  await assert.rejects(sql(finalMigration), error => /SUTRA_SOCIAL_SCHEMA_REVIEW_REQUIRED/.test(error.stderr)); checks++
+  assert.equal(await sql("SELECT has_table_privilege('authenticated','sutra.sutra_auto_memory','TRUNCATE');"), 't'); checks++
+  await sql("COMMENT ON TABLE public.social_accounts IS 'OAuth-connected social media accounts via Zernio';")
+  await sql(finalMigration)
+  assert.equal(await sql("SELECT has_table_privilege('authenticated','sutra.sutra_auto_memory','TRUNCATE');"), 'f'); checks++
+  // A deployment without the optional public social schema must remain migratable.
+  await sql('ALTER TABLE public.social_accounts RENAME TO unrelated_accounts;')
+  await sql(finalMigration)
+  assert.equal(await sql('SELECT count(*) FROM public.unrelated_accounts;'), '2'); checks++
   process.stdout.write(`RLS_LOCAL_PASS ${checks} assertions; baseline escalation reproduced; migration replayed; no remote DB\n`)
 } finally {
   if (started) await exec(join(bin, 'pg_ctl'), ['-D', data, '-m', 'fast', '-w', 'stop'])

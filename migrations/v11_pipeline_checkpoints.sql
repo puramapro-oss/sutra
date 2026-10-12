@@ -36,7 +36,8 @@ RETURNS text LANGUAGE plpgsql SET search_path = sutra, pg_temp AS $$
 DECLARE j video_jobs; target text;
 BEGIN
  SELECT * INTO j FROM video_jobs WHERE id=p_job_id FOR UPDATE;
- IF j.id IS NULL OR j.status<>'processing' OR j.locked_by IS DISTINCT FROM p_worker OR j.lease_until<=clock_timestamp() THEN
+ IF j.id IS NULL OR j.status<>'processing' OR p_worker IS NULL OR j.locked_by IS DISTINCT FROM p_worker
+  OR j.lease_until IS NULL OR j.lease_until<=clock_timestamp() THEN
   RAISE EXCEPTION 'SUTRA_JOB_LEASE_LOST';
  END IF;
  IF p_status NOT IN ('done','failed','queued','reconciliation_required') THEN RAISE EXCEPTION 'SUTRA_INVALID_JOB_TRANSITION'; END IF;
@@ -75,7 +76,8 @@ RETURNS boolean LANGUAGE plpgsql SET search_path = sutra, pg_temp AS $$
 DECLARE j video_jobs; cols text; sets text; vals text; changed uuid; old_url text; old_user uuid; old_status text; media jsonb; proof jsonb; final_url text; required_voice boolean; required_music boolean; stage text;
 BEGIN
  SELECT * INTO j FROM video_jobs WHERE id=p_job_id FOR UPDATE;
- IF j.id IS NULL OR j.status<>'processing' OR j.locked_by IS DISTINCT FROM p_worker OR j.lease_until<=clock_timestamp() THEN RAISE EXCEPTION 'SUTRA_JOB_LEASE_LOST'; END IF;
+ IF j.id IS NULL OR j.status<>'processing' OR p_worker IS NULL OR j.locked_by IS DISTINCT FROM p_worker
+  OR j.lease_until IS NULL OR j.lease_until<=clock_timestamp() THEN RAISE EXCEPTION 'SUTRA_JOB_LEASE_LOST'; END IF;
  IF p_table NOT IN ('videos','sutra_auto_videos') OR p_values IS NULL OR jsonb_typeof(p_values)<>'object' OR p_values='{}'::jsonb
  OR (p_values ? 'user_id' AND p_values->>'user_id'<>j.user_id::text) OR p_values ? 'id' THEN RAISE EXCEPTION 'SUTRA_INVALID_VIDEO_WRITE'; END IF;
  IF (j.kind='production' AND (p_table<>'videos' OR p_id<>j.id))
@@ -88,17 +90,30 @@ BEGIN
  IF p_values->>'status' IN ('ready','pending_approval') THEN
   media:=j.progress->'steps'->'stage:export'->'value'; proof:=media->'verification';
   final_url:=coalesce(p_values->>'video_url',p_values->>'video_final_url');
-  IF final_url IS NULL OR NOT coalesce((media->>'outputVerified')::boolean,false)
+  IF NOT coalesce(final_url ~ '[^[:space:]]',false) OR media->'outputVerified' IS DISTINCT FROM 'true'::jsonb
+   OR jsonb_typeof(media->'url') IS DISTINCT FROM 'string' OR jsonb_typeof(proof->'url') IS DISTINCT FROM 'string'
    OR proof->>'url' IS DISTINCT FROM final_url OR media->>'url' IS DISTINCT FROM final_url
    OR coalesce(proof->>'sha256','') !~ '^[a-f0-9]{64}$'
-   OR NOT coalesce((proof->>'duration')::numeric>0 AND (proof->>'fps')::numeric>0
+   OR jsonb_typeof(media->'duration') IS DISTINCT FROM 'number'
+   OR EXISTS(SELECT 1 FROM unnest(ARRAY['width','height']) field
+    WHERE jsonb_typeof(media->'outputSize'->field) IS DISTINCT FROM 'number')
+   OR EXISTS(SELECT 1 FROM unnest(ARRAY['duration','fps','width','height']) field
+    WHERE jsonb_typeof(proof->field) IS DISTINCT FROM 'number')
+   OR NOT coalesce((media->>'duration')::numeric>0 AND (proof->>'duration')::numeric>0 AND (proof->>'fps')::numeric>0
+    AND (proof->>'width')::int>0 AND (proof->>'height')::int>0
     AND (proof->>'width')::int=(media->'outputSize'->>'width')::int
     AND (proof->>'height')::int=(media->'outputSize'->>'height')::int
     AND abs((proof->>'duration')::numeric-(media->>'duration')::numeric)<=0.1,false)
    THEN RAISE EXCEPTION 'SUTRA_FINAL_MEDIA_PROOF_REQUIRED'; END IF;
   FOREACH stage IN ARRAY ARRAY['script','scenes','images','voice','music','subtitles','composition','export'] LOOP
-   IF NOT coalesce(j.progress->'steps' ? ('stage:'||stage),false) THEN RAISE EXCEPTION 'SUTRA_STAGE_CHECKPOINT_REQUIRED: %',stage; END IF;
+   IF NOT coalesce(j.progress->'steps'->('stage:'||stage)->>'status' IN ('complete','skipped'),false)
+    OR (stage IN ('scenes','composition','export') AND j.progress->'steps'->('stage:'||stage)->>'status'<>'complete')
+    THEN RAISE EXCEPTION 'SUTRA_STAGE_CHECKPOINT_REQUIRED: %',stage; END IF;
   END LOOP;
+  IF jsonb_typeof(j.progress->'steps'->'stage:scenes'->'value') IS DISTINCT FROM 'array'
+   THEN RAISE EXCEPTION 'SUTRA_STAGE_CHECKPOINT_REQUIRED: scenes'; END IF;
+  IF jsonb_array_length(j.progress->'steps'->'stage:scenes'->'value')=0
+   THEN RAISE EXCEPTION 'SUTRA_STAGE_CHECKPOINT_REQUIRED: scenes'; END IF;
   IF EXISTS(SELECT 1 FROM jsonb_array_elements(j.progress->'steps'->'stage:scenes'->'value') clip
    WHERE coalesce(clip->>'url',clip#>>'{}')=final_url) OR p_values->>'video_raw_url'=final_url
    THEN RAISE EXCEPTION 'SUTRA_RAW_MEDIA_FORBIDDEN'; END IF;
@@ -109,9 +124,15 @@ BEGIN
    WHEN j.kind='export' THEN coalesce((j.payload->'input'->'requiredTracks'->>'music')::boolean,true)
    WHEN j.kind='create' THEN coalesce(j.progress->'steps'->'stage:script'->'value'->>'music_style','none') NOT IN ('','none')
    ELSE coalesce(j.payload->'input'->>'musicStyle','cinematic')<>'none' END;
-  IF required_voice AND coalesce(j.progress->'steps'->'stage:voice'->>'value','') IN ('','null')
-   OR required_music AND coalesce(j.progress->'steps'->'stage:music'->>'value','') IN ('','null')
-   OR (required_voice OR required_music) AND NOT coalesce((proof->>'hasAudio')::boolean,false)
+  IF required_voice AND (j.progress->'steps'->'stage:voice'->>'status' IS DISTINCT FROM 'complete'
+    OR jsonb_typeof(j.progress->'steps'->'stage:voice'->'value') IS DISTINCT FROM 'string'
+    OR j.progress->'steps'->'stage:voice'->>'value'='null'
+    OR NOT coalesce(j.progress->'steps'->'stage:voice'->>'value' ~ '[^[:space:]]',false))
+   OR required_music AND (j.progress->'steps'->'stage:music'->>'status' IS DISTINCT FROM 'complete'
+    OR jsonb_typeof(j.progress->'steps'->'stage:music'->'value') IS DISTINCT FROM 'string'
+    OR j.progress->'steps'->'stage:music'->>'value'='null'
+    OR NOT coalesce(j.progress->'steps'->'stage:music'->>'value' ~ '[^[:space:]]',false))
+   OR (required_voice OR required_music) AND proof->'hasAudio' IS DISTINCT FROM 'true'::jsonb
    THEN RAISE EXCEPTION 'SUTRA_REQUIRED_TRACK_MISSING'; END IF;
  END IF;
  -- Publication owns these states: replay may acknowledge the same final file only.
@@ -150,7 +171,8 @@ RETURNS boolean LANGUAGE plpgsql SET search_path = sutra, pg_temp AS $$
 DECLARE j video_jobs; cols text; vals text; receipt uuid;
 BEGIN
  SELECT * INTO j FROM video_jobs WHERE id=p_job_id FOR UPDATE;
- IF j.id IS NULL OR j.status<>'processing' OR j.locked_by IS DISTINCT FROM p_worker OR j.lease_until<=clock_timestamp() THEN RAISE EXCEPTION 'SUTRA_JOB_LEASE_LOST'; END IF;
+ IF j.id IS NULL OR j.status<>'processing' OR p_worker IS NULL OR j.locked_by IS DISTINCT FROM p_worker
+  OR j.lease_until IS NULL OR j.lease_until<=clock_timestamp() THEN RAISE EXCEPTION 'SUTRA_JOB_LEASE_LOST'; END IF;
  IF p_table NOT IN ('api_logs','activity_logs','user_notifications') OR p_key IS NULL OR p_values IS NULL
   OR jsonb_typeof(p_values)<>'object' OR p_values->>'user_id' IS DISTINCT FROM j.user_id::text
   OR EXISTS(SELECT 1 FROM jsonb_object_keys(p_values) k WHERE k NOT IN ('user_id','service','endpoint','status','response_time_ms','error_message','type','title','message','description','metadata'))

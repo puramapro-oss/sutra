@@ -13,6 +13,7 @@
  * qu'une video est prete.
  */
 import { composeVideo, isCancelledError, isValidationError, FfmpegCompositorError, type ComposeVideoParams } from '@/lib/ffmpeg-compositor'
+import { createHash } from 'node:crypto'
 
 export { isCancelledError }
 import { assembleFinalVideo, type AssembleParams } from '@/lib/shotstack'
@@ -104,6 +105,9 @@ export async function composeVideoWithFallback(
     const validation = result.validation ?? await (deps.validateBuffer ?? validateRenderedBuffer)(result.buffer, job, [], job.signal)
     if (validation.contractHash !== compositionHash(job)) throw new FfmpegCompositorError('Preuve media incompatible avec le brief', 'final-validation')
     assertFinalMedia(validation.final, job)
+    if (validation.final.bytes !== result.buffer.length || validation.final.sha256 !== createHash('sha256').update(result.buffer).digest('hex')) {
+      throw new FfmpegCompositorError('Preuve media incompatible avec les octets du rendu', 'final-validation')
+    }
     local = { buffer: result.buffer, validation }
   } catch (err) {
     job.signal?.throwIfAborted()

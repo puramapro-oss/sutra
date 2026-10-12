@@ -4,6 +4,7 @@ export type { LtxJobPersistence } from './ltx-workflow'
 export { resumeLegacyLtx } from './ltx-workflow'
 
 const executions = new WeakMap<LtxJobPersistence, LtxExecution>()
+const pendingByScope = new WeakMap<object, Promise<unknown>>()
 
 /** T03 persists each CAS through its lease-fenced checkpoint RPC before any POST.
  * A slot belongs to exactly one scene; the workflow lease excludes other workers.
@@ -11,13 +12,13 @@ const executions = new WeakMap<LtxJobPersistence, LtxExecution>()
 export function executionForCheckpoint(journal: LtxJobPersistence): LtxExecution {
   const existing = executions.get(journal)
   if (existing) return existing
-  let pending: Promise<unknown> = Promise.resolve()
+  const scope = journal.serializationKey ?? journal
   const execution: LtxExecution = {
     operationKey: 'scene-ltx-v2',
     store: {
       load: async () => journal.current?.v2 ?? null,
       compareAndSet(key, revision, next) {
-        const operation = pending.then(async () => {
+        const operation = (pendingByScope.get(scope) ?? Promise.resolve()).then(async () => {
           const previous = journal.current?.v2
           if (journal.current && !previous) return false
           if (revision === null ? Boolean(previous) : previous?.revision !== revision) return false
@@ -30,7 +31,7 @@ export function executionForCheckpoint(journal: LtxJobPersistence): LtxExecution
           journal.current = state
           return true
         })
-        pending = operation.catch(() => {})
+        pendingByScope.set(scope, operation.catch(() => {}))
         return operation
       },
     },
