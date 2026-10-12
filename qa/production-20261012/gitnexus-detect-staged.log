@@ -1,0 +1,37 @@
+
+  GitNexus Detect Changes (1.6.12)
+{"level":40,"time":1791841341083,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}
+Changes: 69 files, 33 symbols
+Affected processes: 27
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01 CHEF — 2026-10-12 → BATON.md
+  Section SUTRA T01 CHEF — 2026-10-12 → HANDOFF-SUTRA-T01-20261012.md
+  Section Préservation et autorité → HANDOFF-SUTRA-T01-20261012.md
+  Section Lot T01 livré → HANDOFF-SUTRA-T01-20261012.md
+  Section Tests exacts et portée → HANDOFF-SUTRA-T01-20261012.md
+  Section Matrice des huit lots → HANDOFF-SUTRA-T01-20261012.md
+  Section Déploiement OVH SUTRA — préparé, jamais exécuté par la CI → deploy/README.md
+  Const nodeTests → scripts/run-ci.mjs
+  Function POST → src/app/api/voice/generate/route.ts
+  Function publishAutoVideo → src/lib/auto-publication.ts
+  Function publishAutoVideoRecord → src/lib/auto-publication.ts
+  Function downloadMediaBytes → src/lib/media-download.ts
+  Function runPublicationJournal → src/lib/publication-journal.ts
+  Property operations → src/lib/publication-journal.ts
+  Function assembleFinalVideo → src/lib/shotstack.ts
+... and 18 more
+
+Affected execution flows:
+  • GET → FetchWithRetry (5 steps) — changed: runPublicationJournal, publishAutoVideoRecord
+  • GET → BreakerKey (7 steps) — changed: runPublicationJournal, publishAutoVideoRecord
+  • GET → Abort (7 steps) — changed: runPublicationJournal, publishAutoVideoRecord
+  • GET → CreateServiceClient (6 steps) — changed: runVideoJob
+  • GET → ContentWithTags (5 steps) — changed: runPublicationJournal, publishAutoVideoRecord, buildPublishPayload
+  • GET → ProviderPlatform (5 steps) — changed: runPublicationJournal, publishAutoVideoRecord, buildPublishPayload
+  • GET → Headers (5 steps) — changed: runPublicationJournal, publishAutoVideoRecord
+  • GET → PersistPipelineVideo (5 steps) — changed: runVideoJob
+  • GET → PublicationOutcome (4 steps) — changed: runPublicationJournal, publishAutoVideoRecord
+  • GET → SanitizeScriptData (4 steps) — changed: runVideoJob
+... and 17 more

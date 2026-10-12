@@ -110,7 +110,7 @@ try {
   await sql(`CREATE TABLE sutra.videos(id uuid PRIMARY KEY,user_id uuid,status text,created_at timestamptz DEFAULT now());
     CREATE TABLE sutra.sutra_auto_videos(id uuid PRIMARY KEY,user_id uuid,status text);
     ALTER DEFAULT PRIVILEGES IN SCHEMA sutra GRANT ALL ON TABLES TO service_role;`)
-  for (const name of ['v10_durable_jobs_quota.sql', 'v11_pipeline_checkpoints.sql', '20261012_social_publication_journals.sql']) {
+  for (const name of ['v10_durable_jobs_quota.sql', 'v11_pipeline_checkpoints.sql', '20261012_social_publication_journals.sql', '20261012_private_media.sql']) {
     const source = await readFile(new URL('../migrations/' + name, import.meta.url), 'utf8')
     await sql(source); await sql(source)
   }
@@ -197,7 +197,7 @@ try {
   assert.equal(await sql(`SET ROLE service_role; UPDATE sutra.profiles SET access_revoked_at=null WHERE id='${alice}' RETURNING id;`), alice); checks++
   assert.equal(await asUser('SELECT body FROM sutra.security_test_documents;'), 'A'); checks++
   await assert.rejects(sql('SET ROLE anon; SELECT email FROM sutra.profiles;'), error => /permission denied/.test(error.stderr)); checks++
-  for (const table of ['video_jobs', 'video_quota_counters', 'social_publication_journals']) {
+  for (const table of ['video_jobs', 'video_quota_counters', 'social_publication_journals', 'media_ownership']) {
     for (const role of ['authenticated', 'anon']) {
       await assert.rejects(sql(`SET ROLE ${role}; SELECT * FROM sutra.${table};`), error => /permission denied/.test(error.stderr)); checks++
     }
@@ -210,6 +210,11 @@ try {
   const operation = '30000000-0000-4000-8000-000000000003'
   await sql(`SET ROLE service_role; INSERT INTO sutra.social_publication_journals(production_id,kind,user_id) VALUES('${operation}','video','${alice}');`)
   assert.equal(await sql('SET ROLE service_role; SELECT count(*) FROM sutra.social_publication_journals;'), '1'); checks++
+  await sql(`SET ROLE service_role; INSERT INTO sutra.media_ownership(object_path,user_id) VALUES('legacy/alice.mp4','${alice}');`)
+  assert.equal(await sql('SET ROLE service_role; SELECT count(*) FROM sutra.media_ownership;'), '1'); checks++
+  await expectDenied(`INSERT INTO sutra.media_ownership(object_path,user_id) VALUES('legacy/forged.mp4','${alice}');`)
+  await expectDenied(`UPDATE sutra.media_ownership SET user_id='${bob}';`)
+  await expectDenied('DELETE FROM sutra.media_ownership;')
   await assert.rejects(sql('SET ROLE service_role; DELETE FROM sutra.social_publication_journals;'), error => /permission denied/.test(error.stderr)); checks++
   // Unknown shared schema: the complete transaction rolls back, no partial permission change.
   await sql(`COMMENT ON TABLE public.social_accounts IS 'another application';
@@ -223,6 +228,27 @@ try {
   await sql('ALTER TABLE public.social_accounts RENAME TO unrelated_accounts;')
   await sql(finalMigration)
   assert.equal(await sql('SELECT count(*) FROM public.unrelated_accounts;'), '2'); checks++
+  // Storage cutover is scoped to one bucket, even with broad legacy policies.
+  await sql(`CREATE SCHEMA storage;
+    GRANT USAGE ON SCHEMA storage TO anon, authenticated, service_role;
+    CREATE TABLE storage.buckets(id text PRIMARY KEY, public boolean NOT NULL);
+    CREATE TABLE storage.objects(id text PRIMARY KEY, bucket_id text NOT NULL);
+    INSERT INTO storage.buckets VALUES('sutra-assets',true),('other-app',true);
+    INSERT INTO storage.objects VALUES('sutra-object','sutra-assets'),('other-object','other-app');
+    ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+    GRANT ALL ON storage.objects TO anon, authenticated, service_role;
+    CREATE POLICY broad_legacy_access ON storage.objects FOR ALL USING(true) WITH CHECK(true);`)
+  const cutover = await readFile(new URL('../deploy/private-media-cutover.sql', import.meta.url), 'utf8')
+  await sql(cutover); await sql(cutover)
+  assert.equal(await sql("SELECT public FROM storage.buckets WHERE id='sutra-assets';"), 'f'); checks++
+  assert.equal(await sql("SELECT public FROM storage.buckets WHERE id='other-app';"), 't'); checks++
+  for (const role of ['anon', 'authenticated']) {
+    assert.equal(await sql(`SET ROLE ${role}; SELECT id FROM storage.objects ORDER BY id;`), 'other-object'); checks++
+    assert.equal(await sql(`SET ROLE ${role}; DELETE FROM storage.objects WHERE bucket_id='sutra-assets' RETURNING id;`), ''); checks++
+    await assert.rejects(sql(`SET ROLE ${role}; INSERT INTO storage.objects VALUES('forged','sutra-assets');`), error => /row-level security/.test(error.stderr)); checks++
+    await assert.rejects(sql(`SET ROLE ${role}; UPDATE storage.objects SET bucket_id='sutra-assets' WHERE id='other-object';`), error => /row-level security/.test(error.stderr)); checks++
+  }
+  assert.equal(await sql('SET ROLE service_role; SELECT count(*) FROM storage.objects;'), '2'); checks++
   process.stdout.write(`RLS_LOCAL_PASS ${checks} assertions; baseline escalation reproduced; migration replayed; no remote DB\n`)
 } finally {
   if (started) await exec(join(bin, 'pg_ctl'), ['-D', data, '-m', 'fast', '-w', 'stop'])

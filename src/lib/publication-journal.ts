@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from 'node:crypto'
 import { createServiceClient } from '@/lib/supabase'
+import { publicationMediaUrl } from './private-media'
 import { buildPublishPayload, publishToPlatforms, getPublicationResults, replayPublication, retryPublication,
   type PublishRequest, type PublishResult, type SocialPlatform } from '@/lib/zernio'
 
@@ -191,6 +192,12 @@ export async function runPublicationJournal(options: {
     }
     const request: PublishRequest = { ...options.request, platforms: [platform],
       accountIds: { [platform]: account.external_id } as PublishRequest['accountIds'], idempotencyKey: randomUUID() }
+    // Allocate once before the durable claim; replays keep the same bytes.
+    const providerMediaUrl = await publicationMediaUrl(request.videoUrl, {
+      userId: options.userId, productionId: options.productionId, kind: options.kind,
+      operationId: request.idempotencyKey!, expires: Math.max(gateway.now(), Date.parse(request.scheduledAt ?? '') || 0) + 7 * 24 * 3600_000,
+    }, service)
+    if (providerMediaUrl) request.providerMediaUrl = providerMediaUrl
     buildPublishPayload(request)
     const operation: PublicationOperation = { id: request.idempotencyKey!, phase: 'submitting',
       createdAt: new Date(gateway.now()).toISOString(), request, accountRows: { [platform]: account.id } }

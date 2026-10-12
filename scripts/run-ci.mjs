@@ -17,7 +17,7 @@ const nodeTests = [
   'tooling/disposable-database.test.mjs',
   'scripts/test-pipeline-interruptions.mts', 'scripts/test-pipeline-submit.mts',
   'scripts/test-release-oauth.mts', 'scripts/test-security-account.mts',
-  'scripts/test-security-media.mts', 'scripts/test-security-routes.mts', 'scripts/test-security-storage.mts',
+  'scripts/test-private-media.mts', 'scripts/test-security-media.mts', 'scripts/test-security-routes.mts', 'scripts/test-security-storage.mts',
   'scripts/test-t06-social-autonomy.mts', 'scripts/test-t06-social-routes.mts',
   'scripts/test-ltx-v2-contracts.mts', 'scripts/test-provider-safety.mts',
   'src/lib/video-compositor.test.mts', 'src/lib/ffmpeg-concurrency.test.ts',

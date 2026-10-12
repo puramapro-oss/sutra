@@ -8,6 +8,7 @@ import { compositionPlan, type CompositionContract, type CompositionRequirements
 import { measureCompositionAudio, validateRenderedBuffer, type MediaValidation } from './media-validation'
 import { buildTracks, shotstackContract } from './shotstack-timeline'
 import { boundedProviderJson } from './provider-json'
+import { resolveMediaTree } from './private-media'
 
 export type ShotstackFormat = '9:16' | '16:9' | '1:1'
 export type ShotstackQuality = 'sd' | 'hd' | '1080' | '4k'
@@ -165,8 +166,9 @@ export async function assembleFinalVideo(params: AssembleParams, deps: { measure
   const body = {timeline,output}
   let id: unknown = params.renderJob?.id
   if (id === undefined) {
+    const transportBody = await resolveMediaTree(body)
     await params.renderJob?.onSubmitting?.()
-    const res = await fetchWithRetry(`${base}/render`, {method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey},body:JSON.stringify(body),signal:params.signal,redirect:'error'})
+    const res = await fetchWithRetry(`${base}/render`, {method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey},body:JSON.stringify(transportBody),signal:params.signal,redirect:'error'})
     if (!res.ok) throw new Error(`Shotstack: ${await httpErrorMessage(res)}`)
     const data = await boundedProviderJson(res) as { response?: { id?: unknown } }
     id = data?.response?.id

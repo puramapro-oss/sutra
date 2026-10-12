@@ -1,11 +1,9 @@
-# BATON — SUTRA T01, clôture des sept reprises du 2026-10-12
+# BATON — SUTRA T01, autorisation production 2026-10-12
 
-**LOCAL_INTEGRATION_PASS / RELEASE_BLOCKED. Aucun nouveau déploiement.** Branche finale `codex/sutra-t01-integration-20261012`, base589732c, livraison = commit contenant ce BATON. Sept HANDOFF et SHA distants vérifiés, 1105 empreintes propriétaires concordantes,329 chemins acceptés ; aucun WIP étranger intégré. Les 53 entrées worktrees étrangères sont préservées, main restea6568e8, cinq références PR1/PR2/PR3/correctif/main historique conservées dans l’ascendance.
+**CODE_LOCAL_PASS / RELEASE_BLOCKED_CI.** Branche unique codex/sutra-t01-integration-20261012, base89250c7 ; T02–T08 intégrés,53 worktrees étrangers préservés.
 
-Preuves courantes : `qa/release-20261012/verification.json`, `MATRIX.md`, `evidence/`, `HANDOFF-SUTRA-T01-20261012.md`. Les dossiers `qa/integration-20261012` et preuves propriétaires restent historiques.
+Médias privés durables et signatures renouvelables livrés ; permissions Storage restrictives testées164 assertions. Contrats473/7SKIP, médias34, PostgreSQL13+12, typecheck/lint111warnings/build197 PASS ; redteam14, navigateur217/axe165, legacy1022/25SKIP PASS.
 
-Gates fraîches : contrats466 PASS/7 SKIP ; médias34 PASS ; SQL local13 migration+12 pipeline+147 permissions PASS ; typecheck/lint0 erreur111 avertissements/build197pages PASS ; redteam14 PASS ; navigateur complet210+7 PASS,165 audits axe/0 violation ; legacy complet1022 PASS/25 SKIP/0 flaky ; déploiement simulé9 PASS ; actionlint/shellcheck PASS ; audit0haute/critique (5modérées/2faibles). Police embarquée hors réseau, double export corrigé T07, respiration sans attribution/annonce XP cohérente avec T02.
+Sauvegarde cohérente OVH restaurée :136 tables et6 migrations deux fois PASS sur PostgreSQL15.8 ; seule la copie privée a été migrée. Construction Linux candidate à exécuter. Détails exacts et preuves : HANDOFF-SUTRA-T01-20261012.md, qa/production-20261012/.
 
-OVH en lecture seule :3 tables/15 fonctions requises manquent, bucket sutra-assets public. Sauvegardes SUTRA+public-social créées et décodées dans `/opt/purama/apps/sutra/backup-t01-20261012-OXl8CklD/`, sans restore ni blob Storage. Ancien conteneur35c137f healthy, GET internes200/200/401. Domaine `https://sutra.purama.dev` répond402 Vercel ; DNS sous Cloudflare, chemin OVH/TLS non qualifié. Aucun DDL, remplacement de conteneur, rollback, changement DNS ni appel payant.
-
-Prochaine tâche non vérifiée : réconcilier le stockage privé durable jobs/médias/publication et les références existantes ; qualifier/faire autoriser les migrations de production ; fournir à GitHub le credential privé SMARANA_READ_TOKEN absent ; qualifier Cloudflare/TLS avant tout remplacement. Les fonctions S5 hybride/versions/logger restent absentes. Commandes conditionnelles et rollback dans deploy/README.md ; ne pas attester --schema-ready dans l’état présent. Aucun PASS local inchangé à rejouer.
+Prochaine tâche : secret GitHub SMARANA_READ_TOKEN readonly absent à fournir, puis CI verte avant migration/cutover/déploiement. Accès Cloudflare disponible ; DNS wildcard vers Vercel402 inchangé, TLS origine à qualifier. Aucun appel payant, aucun déploiement. Ne pas rejouer les PASS inchangés. Logger déjà présent ; limites S5 hybride/versions/cron-runs non validées conservées.

@@ -4,6 +4,7 @@ import https from 'node:https'
 import { isIP } from 'node:net'
 import type { LookupFunction } from 'node:net'
 import { MAX_VIDEO_BYTES } from './media-probe'
+import { resolveMediaUrl } from './private-media'
 
 function ipv6Number(address: string): bigint {
   const [left, right = ''] = address.split('::')
@@ -107,7 +108,7 @@ export async function downloadMediaBytes(value: string, options: MediaDownloadOp
       || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 120_000) throw new Error('SUTRA_MEDIA_INVALID_DOWNLOAD_LIMIT')
   const deadline = AbortSignal.timeout(timeoutMs)
   const signal = options.signal ? AbortSignal.any([deadline, options.signal]) : deadline
-  let url = validateMediaUrl(value)
+  let url = validateMediaUrl(await resolveMediaUrl(value))
   for (let redirects = 0; redirects <= 3; redirects++) {
     const address = await resolvePublic(url, signal)
     // Node must not perform a second DNS lookup after validation (DNS rebinding).

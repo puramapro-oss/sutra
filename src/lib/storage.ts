@@ -1,4 +1,5 @@
 import { createServiceClient } from '@/lib/supabase'
+import { ownedMediaPath, durableMediaUrl } from './private-media'
 
 export async function uploadToStorage(
   path: string,
@@ -6,22 +7,19 @@ export async function uploadToStorage(
   contentType: string
 ): Promise<string> {
   try {
+    const objectPath = ownedMediaPath(path)
     const supabase = createServiceClient()
 
     const { error } = await supabase.storage
       .from('sutra-assets')
-      .upload(path, data, {
+      .upload(objectPath, data, {
         contentType,
         upsert: true,
       })
 
     if (error) throw new Error('SUTRA_STORAGE_UPLOAD_FAILED')
 
-    const { data: urlData } = supabase.storage
-      .from('sutra-assets')
-      .getPublicUrl(path)
-
-    return urlData.publicUrl
+    return durableMediaUrl(objectPath)
   } catch {
     throw new Error('SUTRA_STORAGE_UPLOAD_FAILED')
   }

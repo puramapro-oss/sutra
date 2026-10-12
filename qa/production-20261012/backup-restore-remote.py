@@ -1,0 +1,122 @@
+"""Run via SSH stdin on OVH. Appended MIGRATIONS contains reviewed SQL only.
+
+Backs up SUTRA in a shared read-only snapshot, then restores to a new private
+database. Never migrates postgres or restores over an existing database.
+Real rows and diagnostics stay in the mode-0700 remote backup directory.
+"""
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import tempfile
+
+
+def run_backup(migrations):
+    os.umask(0o077)
+    directory = Path(tempfile.mkdtemp(prefix='backup-t01-coherent-', dir='/opt/purama/apps/sutra'))
+    database = 'sutra_restore_t01_' + directory.name.rsplit('-', 1)[-1]
+    if not re.fullmatch(r'sutra_restore_t01_[a-z0-9_]+', database):
+        raise RuntimeError('Invalid disposable database name')
+    base = ['docker', 'exec', '-i', 'supabase-db']
+    def sql(command, db='postgres'):
+        role = 'postgres' if db == 'postgres' else 'supabase_admin'
+        result = subprocess.run(base + ['psql', '-X', '-qAt', '-U', role, '-d', db,
+            '-v', 'ON_ERROR_STOP=1'], input=command.encode(), capture_output=True)
+        if result.returncode:
+            with (directory / 'diagnostics.txt').open('ab') as log:
+                log.write(result.stderr)
+            raise RuntimeError('SQL failed; private diagnostics retained')
+        return result.stdout.decode().strip()
+    keeper = subprocess.Popen(base + ['psql', '-X', '-qAt', '-U', 'postgres', '-d', 'postgres',
+        '-v', 'ON_ERROR_STOP=1'], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+        stderr=(directory / 'snapshot-errors.txt').open('wb'), text=True)
+    keeper.stdin.write('BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY; SELECT pg_export_snapshot();\n')
+    keeper.stdin.flush()
+    snapshot = keeper.stdout.readline().strip()
+    if not re.fullmatch(r'[A-Fa-f0-9-]+', snapshot):
+        raise RuntimeError('Snapshot export failed')
+    report = {'directory': str(directory), 'database': database, 'snapshotShared': True,
+              'productionDdl': False, 'artifacts': {}, 'migrations': []}
+    try:
+        for name, selection in [('sutra.dump', ['-n', 'sutra']), ('public-social.dump',
+            ['-t', 'public.social_accounts', '-t', 'public.social_posts', '-t', 'public.social_autopilot_config'])]:
+            with (directory / name).open('wb') as output, (directory / 'dump-errors.txt').open('ab') as errors:
+                subprocess.run(base + ['pg_dump', '-U', 'postgres', '-d', 'postgres', '-Fc',
+                    '--snapshot=' + snapshot] + selection, stdout=output, stderr=errors, check=True)
+        # Only auth IDs referenced by SUTRA foreign keys are needed by this restore.
+        # No auth passwords, sessions, user metadata, or other application data.
+        fk_columns = json.loads(sql("""SELECT coalesce(json_agg(json_build_object('schema',n.nspname,
+          'table',r.relname,'column',a.attname)), '[]') FROM pg_constraint c
+          JOIN pg_class r ON r.oid=c.conrelid JOIN pg_namespace n ON n.oid=r.relnamespace
+          JOIN pg_attribute a ON a.attrelid=r.oid AND a.attnum=c.conkey[1]
+          WHERE c.contype='f' AND c.confrelid='auth.users'::regclass AND cardinality(c.conkey)=1
+          AND (n.nspname='sutra' OR (n.nspname='public' AND r.relname IN
+            ('social_accounts','social_posts','social_autopilot_config')))"""))
+        def ident(value):
+            return '"' + value.replace('"', '""') + '"'
+        queries = ['SELECT ' + ident(c['column']) + ' AS id FROM ' + ident(c['schema']) + '.' + ident(c['table']) for c in fk_columns]
+        ids = sql("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY; SET TRANSACTION SNAPSHOT '" + snapshot +
+            "'; SELECT coalesce(json_agg(id),'[]') FROM (" + ' UNION '.join(queries) + ") x WHERE id IS NOT NULL; COMMIT;")
+        (directory / 'referenced-auth-ids.json').write_text(ids + '\n')
+        metadata = sql("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY; SET TRANSACTION SNAPSHOT '" + snapshot +
+            "'; SELECT json_build_object('buckets',(SELECT json_agg(b) FROM storage.buckets b WHERE id='sutra-assets')," +
+            "'objects',(SELECT json_agg(o) FROM storage.objects o WHERE bucket_id='sutra-assets')); COMMIT;")
+        (directory / 'storage-metadata.json').write_text(metadata + '\n')
+        # pg_dump -t does not include a trigger function from another schema.
+        dependencies = sql("SELECT pg_get_functiondef('public.update_social_updated_at()'::regprocedure)")
+        (directory / 'public-social-dependencies.sql').write_text(dependencies + '\n')
+        tables = json.loads(sql("SELECT json_agg(tablename) FROM pg_tables WHERE schemaname='sutra'"))
+        count_query = "SELECT json_object_agg(name,n) FROM (" + ' UNION ALL '.join(
+            ["SELECT 'sutra." + t + "' AS name,count(*) AS n FROM sutra." + ident(t) for t in tables] +
+            ["SELECT 'public." + t + "' AS name,count(*) AS n FROM public." + ident(t)
+             for t in ['social_accounts', 'social_posts', 'social_autopilot_config']]) + ") c"
+        before = json.loads(sql("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY; SET TRANSACTION SNAPSHOT '" + snapshot + "'; " + count_query + '; COMMIT;'))
+        blob_root = Path('/opt/supabase/docker/volumes/storage/stub/stub/sutra-assets')
+        subprocess.run(['tar', '-czf', str(directory / 'sutra-assets.tar.gz'), '-C', str(blob_root.parent), blob_root.name],
+                       stdout=subprocess.DEVNULL, stderr=(directory / 'tar-errors.txt').open('wb'), check=True)
+    finally:
+        keeper.stdin.write('ROLLBACK;\n'); keeper.stdin.close()
+        if keeper.wait(timeout=20) != 0:
+            raise RuntimeError('Snapshot session failed')
+    sql('CREATE DATABASE ' + database + ' TEMPLATE template0;')
+    sql('REVOKE CONNECT ON DATABASE ' + database + ' FROM PUBLIC, anon, authenticated, service_role;')
+    auth_ids = json.loads(ids)
+    sql("""CREATE SCHEMA auth; CREATE SCHEMA extensions;
+      CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
+      CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA extensions;
+      CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA extensions;
+      CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA extensions;
+      CREATE TABLE auth.users(id uuid PRIMARY KEY);
+      CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS
+        $$ SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
+      CREATE FUNCTION auth.jwt() RETURNS jsonb LANGUAGE sql STABLE AS
+        $$ SELECT coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb $$;
+      CREATE FUNCTION auth.role() RETURNS text LANGUAGE sql STABLE AS
+        $$ SELECT current_setting('request.jwt.claim.role',true) $$;
+      GRANT USAGE ON SCHEMA auth, extensions TO authenticated, anon, service_role;
+      """ + ('INSERT INTO auth.users VALUES ' + ','.join("('" + str(i) + "'::uuid)" for i in auth_ids) + ';' if auth_ids else ''), database)
+    sql(dependencies, database)
+    for name in ['sutra.dump', 'public-social.dump']:
+        with (directory / name).open('rb') as dump, (directory / 'restore-errors.txt').open('ab') as errors:
+            subprocess.run(base + ['pg_restore', '-U', 'supabase_admin', '-d', database, '--exit-on-error'],
+                           stdin=dump, stdout=subprocess.DEVNULL, stderr=errors, check=True)
+    after = json.loads(sql(count_query, database))
+    if before != after:
+        raise RuntimeError('Restored table counts differ')
+    report['restoredTables'] = len(before)
+    report['rowCountsMatch'] = True
+    for name, source in migrations:
+        sql(source, database)
+        sql(source, database)
+        report['migrations'].append({'file': name, 'sha256': hashlib.sha256(source.encode()).hexdigest(), 'applications': 2})
+    report['restoredSchema'] = json.loads(sql("SELECT json_build_object('jobs',to_regclass('sutra.video_jobs') IS NOT NULL,'quota',to_regclass('sutra.video_quota_counters') IS NOT NULL,'journals',to_regclass('sutra.social_publication_journals') IS NOT NULL,'mediaOwnership',to_regclass('sutra.media_ownership') IS NOT NULL)", database))
+    for name in ['sutra.dump', 'public-social.dump', 'public-social-dependencies.sql', 'sutra-assets.tar.gz', 'storage-metadata.json', 'referenced-auth-ids.json']:
+        path = directory / name
+        report['artifacts'][name] = {'bytes': path.stat().st_size, 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+    report['limitations'] = ['Auth is an ID-only fixture, not a complete Supabase auth backup.',
+        'Blob archive is not transactionally frozen; no SUTRA database references existed at inventory time.',
+        'Production was not migrated. Private restore database retained; no public access.']
+    (directory / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps(report))

@@ -7,6 +7,7 @@ import { executeCreateJob, type CreateJobInput } from '@/lib/video-pipeline'
 import { executeAutoJob, buildAutoProviders, type AutoJobInput } from '@/lib/auto-pipeline'
 import { executeExportJob, persistExportResult, type ExportJobInput } from '@/lib/export-pipeline'
 import { type AssembleClip } from '@/lib/shotstack'
+import { withMediaOwner } from './private-media'
 
 /** One executor for inline and recovery. Only single-key deltas reach the DB. */
 export async function runVideoJob(job: VideoJob, worker: string): Promise<unknown> {
@@ -18,7 +19,7 @@ export async function runVideoJob(job: VideoJob, worker: string): Promise<unknow
     heartbeat: () => heartbeat(job.id, worker),
     onStepResolved: (key: string, value: unknown) => checkpoint(job.id, worker, { steps: { [key]: value } }),
   }
-  return withPipelineLease(job.id, worker, async () => {
+  return withMediaOwner(job.user_id, () => withPipelineLease(job.id, worker, async () => {
     await hooks.heartbeat()
     const service = createServiceClient()
     let result: unknown
@@ -47,5 +48,5 @@ export async function runVideoJob(job: VideoJob, worker: string): Promise<unknow
     } else throw new Error('SUTRA_INVALID_JOB_KIND')
     await checkpoint(job.id, worker, { result })
     return result
-  })
+  }))
 }

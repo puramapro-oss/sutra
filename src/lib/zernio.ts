@@ -6,7 +6,7 @@ export type SocialPlatform = 'tiktok' | 'youtube' | 'instagram' | 'facebook' | '
 
 export interface OAuthUrlResponse { url: string; state: string }
 export interface AccountProfile { platform: SocialPlatform; externalId: string; username: string; displayName: string; avatarUrl?: string; accessToken?: string; refreshToken?: string; tokenExpiresAt?: string }
-export interface PublishRequest { videoUrl: string; verifiedSha256?: string; caption: string; hashtags: string[]; platforms: SocialPlatform[]; accountIds: Record<SocialPlatform, string>; scheduledAt?: string; format?: string; idempotencyKey?: string; captionsByPlatform?: Partial<Record<SocialPlatform, { caption: string; hashtags: string[] }>> }
+export interface PublishRequest { videoUrl: string; providerMediaUrl?: string; verifiedSha256?: string; caption: string; hashtags: string[]; platforms: SocialPlatform[]; accountIds: Record<SocialPlatform, string>; scheduledAt?: string; format?: string; idempotencyKey?: string; captionsByPlatform?: Partial<Record<SocialPlatform, { caption: string; hashtags: string[] }>> }
 export type PublicationStatus = 'published' | 'scheduled' | 'publishing' | 'failed' | 'unknown'
 export const PUBLICATION_STATUS_LABELS: Record<PublicationStatus, string> = {
   published: 'Publie', scheduled: 'Programme', publishing: 'En cours', failed: 'Echec', unknown: 'A verifier',
@@ -56,14 +56,14 @@ export function buildPublishPayload(req: PublishRequest): Record<string, unknown
   if (!platforms.length || platforms.some(p => !SUPPORTED_PUBLICATION_PLATFORMS.has(p))) throw new Error('SUTRA_ZERNIO_PLATFORM_UNAVAILABLE')
   // Zernio account IDs are provider IDs, never the UUID of public.social_accounts.
   if (platforms.some(p => !/^[a-f\d]{24}$/i.test(req.accountIds[p] ?? ''))) throw new Error('SUTRA_ZERNIO_ACCOUNT_RECONNECTION_REQUIRED')
-  const url = new URL(req.videoUrl)
+  const url = new URL(req.providerMediaUrl ?? req.videoUrl)
   if (url.protocol !== 'https:' || url.username || url.password) throw new Error('SUTRA_ZERNIO_INVALID_MEDIA_URL')
   if (!req.idempotencyKey || req.idempotencyKey.length > 255) throw new Error('SUTRA_ZERNIO_IDEMPOTENCY_REQUIRED')
   if (req.scheduledAt && (!/(Z|[+-]\d\d:\d\d)$/.test(req.scheduledAt) || !Number.isFinite(Date.parse(req.scheduledAt)) || Date.parse(req.scheduledAt) <= Date.now())) {
     // Provider silently publishes a past schedule immediately. Refuse that change of intent.
     throw new Error('SUTRA_ZERNIO_SCHEDULE_MUST_BE_FUTURE')
   }
-  return { content: contentWithTags(req.caption, req.hashtags), mediaItems: [{ type: 'video', url: req.videoUrl }],
+  return { content: contentWithTags(req.caption, req.hashtags), mediaItems: [{ type: 'video', url: req.providerMediaUrl ?? req.videoUrl }],
     platforms: platforms.map(platform => ({ platform: providerPlatform(platform), accountId: req.accountIds[platform],
       ...(req.captionsByPlatform?.[platform] ? { customContent: contentWithTags(req.captionsByPlatform[platform]!.caption, req.captionsByPlatform[platform]!.hashtags) } : {}),
     })), ...(req.scheduledAt ? { scheduledFor: req.scheduledAt } : { publishNow: true }),

@@ -27,6 +27,7 @@ const PLATFORM_ALIASES: Record<string, SocialPlatform> = {
 export async function publishAutoVideo(params: {
   config: AutoConfig
   videoUrl: string
+  providerMediaUrl?: string
   title: string
   description: string
   hashtags: string[]
@@ -58,7 +59,7 @@ export async function publishAutoVideo(params: {
   }
 
   const results = await publishToPlatforms({
-    videoUrl: params.videoUrl,
+    videoUrl: params.videoUrl, providerMediaUrl: params.providerMediaUrl,
     caption: `${params.title}\n\n${params.description}`,
     hashtags: params.hashtags,
     platforms: platforms.filter((p) => accountIds[p]),
@@ -138,7 +139,7 @@ export async function publishAutoVideoRecord(
   }, service, { ...gateway, publish: gateway.publish ?? (async request => publish({
     config: { ...config, publish_platforms: request.platforms,
       zernio_connected_platforms: request.platforms.map(platform => ({ platform, account_id: request.accountIds[platform], username: '' })) } as AutoConfig,
-    videoUrl: request.videoUrl, title: video.title ?? '', description: video.description ?? '', hashtags: request.hashtags,
+    videoUrl: request.videoUrl, providerMediaUrl: request.providerMediaUrl, title: video.title ?? '', description: video.description ?? '', hashtags: request.hashtags,
     idempotencyKey: request.idempotencyKey,
   })) })
   // Do not rewrite ambiguous legacy evidence as an empty journal.

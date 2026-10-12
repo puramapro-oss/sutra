@@ -1,13 +1,14 @@
-## Jalon T01 courant — intégration des sept reprises, 2026-10-12
+## Jalon T01 courant — autorisation production, 2026-10-12
 
-- [x] POLICY_OK, LOCKS racine/.coord, processus, handoffs, branches/worktrees/WIP inspectés ; 53 entrées étrangères préservées.
-- [x] T02–T08 : sept SHA propriétaires/distants vérifiés,1105 empreintes concordantes,329 chemins acceptés depuis589732c ; contrats PR1/PR2/PR3/05d164d conservés sans doublon.
-- [x] Contrats466/7skip, médias34, SQL13+12+147, redteam14, navigateur217/axe165, legacy1022/25skip ; aucun échec courant. Typecheck/lint/build197pages et9 tests de déploiement simulé PASS. Commandes exactes au handoff T01, preuve liée aux fichiers dans qa/release-20261012/verification.json.
-- [x] Schéma OVH inspecté sans DDL ; sauvegardes SUTRA/public-social créées et entièrement décodées, pas de restore.
-- [x] Smoke ancien conteneur200/200/401 ; HTTP public402Vercel constaté, NS Cloudflare, TLS origine non qualifié.
-- [ ] RELEASE_BLOCKED : stockage privé durable non livré ; OVH3tables/15fonctions manquantes ; credential CI SMARANA absent ; DNS/TLS à qualifier. Aucun nouveau déploiement, aucun appel payant. Versions/hybride/logger S5 non livrés.
+- [x] Ownership/WIP/branches/processus/LOCKS réinspectés ;53 entrées étrangères préservées ; sept lots acceptés conservés.
+- [x] Références médias privées durables, autorisation propriétaire, capability journal stable, renouvellement des signatures ; tests interutilisateurs et révocations.
+- [x] Gates locales gratuites : contrats473/7SKIP, médias34, PostgreSQL13+12+164, typecheck/lint/build197, redteam14, navigateur217/axe165, legacy1022/25SKIP.
+- [x] Sauvegarde cohérente et restore136 tables sur copie privée OVH PostgreSQL15.8 ; six migrations testées deux fois.
+- [ ] Construire et tester le candidat Linux sans réseau, sans modifier le service actuel.
+- [ ] CI distante : SMARANA_READ_TOKEN readonly absent ; action manuelle unique au handoff.
+- [ ] Après gates critiques : production SQL, bucket privé, remplacement progressif, DNS/TLS et smoke réels avec rollback.
 
-Les cases historiques ci-dessous ne certifient ni l’état courant ni le déploiement. Source de reprise : BATON.md, HANDOFF-SUTRA-T01-20261012.md et qa/release-20261012/MATRIX.md. Ne pas rejouer les PASS inchangés.
+Source courante : HANDOFF-SUTRA-T01-20261012.md, BATON.md, qa/production-20261012/MATRIX.md. Les cases historiques ci-dessous ne certifient pas la production actuelle.
 
 ---
 

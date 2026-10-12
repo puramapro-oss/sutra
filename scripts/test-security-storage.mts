@@ -12,12 +12,13 @@ mock.module('../src/lib/supabase.ts', { namedExports: { createServiceClient: () 
     getPublicUrl: () => { publicUrlReads++; return { data: { publicUrl: 'https://storage.invalid/fixture' } } },
   }) },
 }) } })
+const { withMediaOwner, durableMediaUrl } = await import('../src/lib/private-media.ts')
 const { uploadToStorage, deleteFromStorage, listStorageFiles } = await import('../src/lib/storage.ts')
 for (const mode of ['result', 'exception'] as const) {
   test(`storage ${mode}: failed upload/delete/list never report success or expose provider details`, async () => {
     failure = mode; publicUrlReads = 0
     for (const [operation, code] of [
-      [() => uploadToStorage('test.mp4', Buffer.alloc(12), 'video/mp4'), 'UPLOAD'],
+      [() => withMediaOwner('owner-a', () => uploadToStorage('test.mp4', Buffer.alloc(12), 'video/mp4')), 'UPLOAD'],
       [() => deleteFromStorage('test.mp4'), 'DELETE'],
       [() => listStorageFiles('test'), 'LIST'],
     ] as const) {
@@ -26,8 +27,10 @@ for (const mode of ['result', 'exception'] as const) {
     assert.equal(publicUrlReads, 0)
   })
 }
-test('successful legacy storage operations retain their existing contract', async () => {
+test('uploads return stable owner references, never a public or expiring URL', async () => {
   failure = null
-  assert.equal(await uploadToStorage('test.mp4', Buffer.alloc(12), 'video/mp4'), 'https://storage.invalid/fixture')
+  assert.equal(await withMediaOwner('owner-a', () => uploadToStorage('test.mp4', Buffer.alloc(12), 'video/mp4')), durableMediaUrl('owners/owner-a/test.mp4'))
+  assert.equal(publicUrlReads, 0)
+  await assert.rejects(() => uploadToStorage('test.mp4', Buffer.alloc(12), 'video/mp4'), /UPLOAD_FAILED/)
   await deleteFromStorage('test.mp4'); assert.deepEqual(await listStorageFiles('test'), [])
 })
