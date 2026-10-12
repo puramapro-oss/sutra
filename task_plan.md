@@ -120,3 +120,18 @@ Scope exclu (confirmé) : TERRA NOVA IRL, NAMA-VIDA santé, KYC Onfido, Ordonnan
 - src/middleware.ts (/contact public)
 - src/app/api/cron/contest-weekly/route.ts (10 winners, 6%CA)
 - src/app/api/cron/contest-monthly/route.ts (10 winners, 4%CA, lottery)
+
+
+## 2026-10-12 — SUTRA T01 CHEF (périmètre courant)
+
+Les instructions historiques de déploiement plus haut ne font pas partie de ce mandat. Aucun push/déploiement/migration de production autorisé.
+
+- [x] Inspection politiques (`POLICY_OK`), deux LOCKS, handoffs, Git/worktrees/processus/WIP avant écriture ; branche/worktree T01 uniques sur PR3.
+- [x] Code T01 committé `19ea35fbbfe99a978f119f3939ff9935362191dc` : CI, lockfile/install autonome, garde SQL, runner de validation et port média isolé. Cinq références protégées conservées.
+- [x] Gates locales bornées enregistrées : Node24.21.0, contrats243 PASS+1 SKIP, média3/3, SQL local13/13, typecheck/build PASS, lint T01 PASS. Commandes exactes et hashes dans HANDOFF-SUTRA-T01-20261012.md et qa/t01/verification.json.
+- [ ] Lint global : FAIL3 max-lines dans fichiers T03/T04/T06 inchangés ici ; propriétaires informés, règles produit conservées.
+- [ ] Intégration T02–T08 : commits/handoffs finaux attendus, collisions export-pipeline/test-auto-export-queue T03/T05 et test-release-regressions T03/T06 à arbitrer. T04/T05/T08 sur S5 à réconcilier contre PR3 ; aucun WIP accepté.
+- [ ] QA T08 S5 à adapter/requalifier sur le futur HEAD intégré ; brouillon observé distinct de PR3.
+- [ ] CI distante NON EXÉCUTÉE : accès lecture seule SMARANA à configurer. Release/fournisseurs réels/DB distante/Store NON TESTÉS.
+
+Statut : T01_SCOPE_PASS, GLOBAL_GATE_FAIL, INTEGRATION_BLOCKED_OWNER_DELIVERIES. Reprendre uniquement le delta accepté des propriétaires, pas les PASS inchangés. Voir BATON et handoff T01.

@@ -1,0 +1,340 @@
+{
+  "observedAt": "2026-10-12T00:21:28.758292+00:00",
+  "lots": [
+    {
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012",
+      "head": "19ea35fbbfe99a978f119f3939ff9935362191dc",
+      "branch": "refs/heads/codex/sutra-t01-integration-20261012",
+      "containsPR3": true,
+      "status": [
+        "?? qa/t01/coordination-snapshot.json",
+        "?? qa/t01/evidence/audit-gate.txt",
+        "?? qa/t01/evidence/audit.json",
+        "?? qa/t01/evidence/build.txt",
+        "?? qa/t01/evidence/composition.txt",
+        "?? qa/t01/evidence/contracts.txt",
+        "?? qa/t01/evidence/detect-code.txt",
+        "?? qa/t01/evidence/impact-migration.json",
+        "?? qa/t01/evidence/impact-stub.txt",
+        "?? qa/t01/evidence/install-node24.txt",
+        "?? qa/t01/evidence/lint-global.txt",
+        "?? qa/t01/evidence/lint-t01.txt",
+        "?? qa/t01/evidence/media.txt",
+        "?? qa/t01/evidence/migration-v10.txt",
+        "?? qa/t01/evidence/publication.txt",
+        "?? qa/t01/evidence/schedule.txt",
+        "?? qa/t01/evidence/typecheck.txt",
+        "?? qa/t01/initial-state.json"
+      ],
+      "handoffs": []
+    },
+    {
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t02-security-20261012",
+      "head": "6a64fba103a084c71ecbfd1a07af53076af097c6",
+      "branch": "refs/heads/codex/sutra-t02-security-20261012",
+      "containsPR3": false,
+      "status": [],
+      "handoffs": []
+    },
+    {
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t02-security-pr3-20261012",
+      "head": "7088a0a3e733de8d2e85f3576bd86627127da369",
+      "branch": "refs/heads/codex/sutra-t02-security-pr3-20261012",
+      "containsPR3": true,
+      "status": [
+        " M src/app/api/admin/users/[id]/route.ts",
+        " M src/app/api/social/callback/route.ts",
+        " M src/app/api/social/connect/route.ts",
+        " M src/lib/media-download.ts",
+        " M src/lib/storage.ts",
+        " M src/lib/supabase-server.ts",
+        " M src/middleware.ts",
+        "?? migrations/20261012_t02_account_permissions.sql",
+        "?? packages",
+        "?? scripts/test-security-account.mts",
+        "?? scripts/test-security-media.mts",
+        "?? scripts/test-security-rls.mjs",
+        "?? scripts/test-security-routes.mts",
+        "?? scripts/test-security-storage.mts",
+        "?? src/lib/account-access.ts"
+      ],
+      "handoffs": []
+    },
+    {
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t03-pipeline-20261012",
+      "head": "7088a0a3e733de8d2e85f3576bd86627127da369",
+      "branch": "refs/heads/codex/sutra-t03-pipeline-20261012",
+      "containsPR3": true,
+      "status": [
+        " M scripts/test-auto-export-queue.mts",
+        " M scripts/test-production-queue.mts",
+        " M scripts/test-release-regressions.mts",
+        " M src/app/api/auto/generate/route.ts",
+        " M src/app/api/create/route.ts",
+        " M src/app/api/cron/video-worker/route.ts",
+        " M src/app/api/production/route.ts",
+        " M src/app/api/video/export/route.ts",
+        " M src/lib/auto-pipeline.ts",
+        " M src/lib/export-pipeline.ts",
+        " M src/lib/production-pipeline.ts",
+        " M src/lib/video-pipeline.ts",
+        " M src/lib/video-queue.ts",
+        "?? LOCKS-T03.md",
+        "?? migrations/v11_pipeline_checkpoints.sql",
+        "?? scripts/test-pipeline-postgres.mts",
+        "?? src/lib/pipeline-state.ts",
+        "?? src/lib/video-worker.ts"
+      ],
+      "handoffs": []
+    },
+    {
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t04-ai-providers-20261012",
+      "head": "6a64fba103a084c71ecbfd1a07af53076af097c6",
+      "branch": "refs/heads/codex/sutra-t04-ai-providers-20261012",
+      "containsPR3": false,
+      "status": [
+        " M package.json",
+        " M scripts/test-api-contracts.mts",
+        " M scripts/test-hybrid-estimate.mts",
+        " M scripts/test-hybrid-formats.mts",
+        " M scripts/test-hybrid-licenses.mts",
+        " M src/lib/fallbacks.ts",
+        " M src/lib/ltx-types.ts",
+        " M src/lib/ltx.ts",
+        " M src/lib/provider-pricing.ts",
+        "?? scripts/test-ltx-v2-contracts.mts",
+        "?? scripts/test-provider-safety.mts",
+        "?? src/lib/ltx-job-store.ts",
+        "?? src/lib/ltx-v2-contract.ts",
+        "?? src/lib/ltx-v2.ts"
+      ],
+      "handoffs": []
+    },
+    {
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012",
+      "head": "7088a0a3e733de8d2e85f3576bd86627127da369",
+      "branch": "refs/heads/codex/sutra-t06-social-autonomy-20261012",
+      "containsPR3": true,
+      "status": [
+        " M scripts/test-auto-publication.mjs",
+        " M scripts/test-auto-schedule.mjs",
+        " M scripts/test-release-regressions.mts",
+        " M scripts/test-social-publication.mts",
+        " M src/app/api/auto/videos/[id]/route.ts",
+        " M src/app/api/cron/sutra-auto/route.ts",
+        " M src/app/api/social/accounts/route.ts",
+        " M src/app/api/social/publish/route.ts",
+        " M src/lib/social-publication.ts",
+        " M src/lib/sutra-auto-utils.ts",
+        " M src/lib/sutra-auto.ts",
+        " M src/lib/zernio.ts",
+        "?? migrations/20261012_social_publication_journals.sql",
+        "?? scripts/helpers/social-database.mts",
+        "?? scripts/test-t06-social-autonomy.mts",
+        "?? src/lib/auto-publication.ts",
+        "?? src/lib/publication-journal.ts",
+        "?? src/lib/social-account-revocation.ts"
+      ],
+      "handoffs": []
+    },
+    {
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012",
+      "head": "7088a0a3e733de8d2e85f3576bd86627127da369",
+      "branch": "refs/heads/codex/sutra-t07-ux-ui-20261012",
+      "containsPR3": true,
+      "status": [
+        " M scripts/test-ui-isolated.mjs",
+        " M src/app/(dashboard)/library/page.tsx",
+        " M src/app/(dashboard)/production/page.tsx",
+        " M src/components/create/AutoForm.tsx",
+        " M src/components/create/CreateHelpers.tsx",
+        " M src/components/create/ManualForm.tsx",
+        " M src/components/create/MediaModeCards.tsx",
+        " M src/components/create/ModeToggle.tsx",
+        " M src/components/create/wizard/ManualFormStep1.tsx",
+        " M src/components/create/wizard/ManualFormStep3.tsx",
+        " M src/components/create/wizard/ManualFormStep4.tsx",
+        " M src/components/dashboard/VideoCard.tsx",
+        " M src/components/home/AmbassadorBlock.tsx",
+        " M src/components/layout/DashboardChrome.tsx",
+        " M src/components/library/FolderModal.tsx",
+        " M src/components/library/FolderPills.tsx",
+        " M src/components/library/LibraryFilters.tsx",
+        " M src/components/library/LibraryHeader.tsx",
+        " M src/components/library/LibrarySkeleton.tsx",
+        " M src/components/library/VideoGrid.tsx",
+        " M src/components/library/VideoList.tsx",
+        " M src/components/production/IdeaStep.tsx",
+        " M src/components/production/MusicStep.tsx",
+        " M src/components/production/ScriptStep.tsx",
+        " M src/components/production/StepGenerateCard.tsx",
+        " M src/components/production/StepProgressBar.tsx",
+        " M src/components/production/VoiceStep.tsx",
+        " M src/components/settings/AbonnementTab.tsx",
+        " M src/components/settings/DonneesTab.tsx",
+        " M src/components/settings/NotificationsTab.tsx",
+        " M src/components/settings/ProfilTab.tsx",
+        " M src/components/shared/SpiritualLayer.tsx",
+        " M src/components/ui/Tabs.tsx",
+        " M src/hooks/useLibraryVideos.ts",
+        "?? scripts/ui-isolated/t07-flows.mjs"
+      ],
+      "handoffs": []
+    },
+    {
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t08-qa-redteam-20261012",
+      "head": "6a64fba103a084c71ecbfd1a07af53076af097c6",
+      "branch": "refs/heads/codex/sutra-t08-qa-redteam-20261012",
+      "containsPR3": false,
+      "status": [
+        "?? .gitnexusignore",
+        "?? BATON.md",
+        "?? HANDOFF-SUTRA-T08-20261012.md",
+        "?? qa/t08/.gitignore",
+        "?? qa/t08/README.md",
+        "?? qa/t08/auth-server.mts",
+        "?? qa/t08/browser.spec.ts",
+        "?? qa/t08/contracts.test.mts",
+        "?? qa/t08/evidence/browser-full-results.json",
+        "?? qa/t08/evidence/browser-results.json",
+        "?? qa/t08/evidence/contracts-final.tap",
+        "?? qa/t08/fake-db.mts",
+        "?? qa/t08/infrastructure.test.mts",
+        "?? qa/t08/offline.cjs",
+        "?? qa/t08/playwright.config.ts",
+        "?? qa/t08/run.mjs"
+      ],
+      "handoffs": [
+        "HANDOFF-SUTRA-T08-20261012.md"
+      ]
+    },
+    {
+      "worktree": "/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012",
+      "head": "6a64fba103a084c71ecbfd1a07af53076af097c6",
+      "branch": "refs/heads/codex/sutra-t05-media-export-20261012",
+      "containsPR3": false,
+      "status": [
+        " M package.json",
+        " M scripts/test-auto-export-queue.mts",
+        " M scripts/test-shotstack-contracts.mts",
+        " M src/lib/export-pipeline.ts",
+        " M src/lib/ffmpeg-compositor-formats.test.ts",
+        " M src/lib/ffmpeg-compositor.test.ts",
+        " M src/lib/ffmpeg-compositor.ts",
+        " M src/lib/ffmpeg-filters.ts",
+        " M src/lib/shotstack.test.ts",
+        " M src/lib/shotstack.ts",
+        " M src/lib/video-compositor.test.mts",
+        " M src/lib/video-compositor.ts",
+        "?? scripts/helpers/media-validation-fixture.ts",
+        "?? src/lib/composition-contract.ts",
+        "?? src/lib/export-media.test.mts",
+        "?? src/lib/media-probe.ts",
+        "?? src/lib/media-validation.test.ts",
+        "?? src/lib/media-validation.ts"
+      ],
+      "handoffs": []
+    }
+  ],
+  "canonicalTrackedWipUnchanged": {
+    "DECISIONS.md": true,
+    "S4-UI-A11Y-HANDOFF.md": true,
+    "next.config.ts": true,
+    "package-lock.json": true,
+    "src/lib/connect.ts": true,
+    "task_plan.md": true
+  },
+  "visibleProcesses": [
+    {
+      "pid": 2979,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t08-qa-redteam-20261012"
+    },
+    {
+      "pid": 2999,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t08-qa-redteam-20261012"
+    },
+    {
+      "pid": 3002,
+      "command": "esbuild",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t08-qa-redteam-20261012"
+    },
+    {
+      "pid": 20668,
+      "command": "Python",
+      "cwd": "/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012"
+    },
+    {
+      "pid": 20692,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012"
+    },
+    {
+      "pid": 20893,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012"
+    },
+    {
+      "pid": 20908,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012"
+    },
+    {
+      "pid": 20911,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012"
+    },
+    {
+      "pid": 21117,
+      "command": "chrome_crashpad_handler",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012"
+    },
+    {
+      "pid": 21714,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012"
+    },
+    {
+      "pid": 21953,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012"
+    },
+    {
+      "pid": 21959,
+      "command": "esbuild",
+      "cwd": "/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012"
+    },
+    {
+      "pid": 22023,
+      "command": "Google Chrome Helper",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012"
+    },
+    {
+      "pid": 22024,
+      "command": "lsof",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012"
+    },
+    {
+      "pid": 22033,
+      "command": "ffmpeg",
+      "cwd": "/Users/matissdornier/purama/sutra/.worktrees/sutra-t05-media-export-20261012"
+    },
+    {
+      "pid": 84381,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t08-qa-redteam-20261012"
+    },
+    {
+      "pid": 84515,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t08-qa-redteam-20261012"
+    },
+    {
+      "pid": 84516,
+      "command": "node",
+      "cwd": "/Users/matissdornier/purama-worktrees/sutra-t08-qa-redteam-20261012"
+    }
+  ],
+  "processVisibility": "lsof cwd only; no complete process-ownership certification"
+}

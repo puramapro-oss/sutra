@@ -1,0 +1,14 @@
+✓ migration v10 appliquée (search_path sutra, backfill exécuté)
+✓ backfill : consommations du mois reprises, quota immédiatement borné
+✓ rejouabilité : re-run sans double comptage, réservations vivantes intactes
+✓ quota atomique : course limite 1 → exactement 1 réservée, 1 refusée
+✓ settlement : complete consomme la place, release la libère
+✓ illimité (limite 0) : traçable sans blocage
+✓ claim exclusif : 2 workers → 2 tâches distinctes
+✓ reprise : bail expiré → repris par un autre worker, tentative tracée
+✓ claim par clé : ciblé, exclusif, borné par tentatives
+✓ checkpoint (reprise sans régénérer) + heartbeat + idempotence UNIQUE
+✓ annulation (queued) : cancelled + place libérée atomiquement, jamais re-claimable
+✓ annulation en vol : place libérée, tâche jamais reprise
+✓ checkpoint MERGE : morceaux successifs cumulés sans écrasement
+MIGRATION v10 : tous les tests passent

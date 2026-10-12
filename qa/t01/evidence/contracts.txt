@@ -1,0 +1,327 @@
+✔ ElevenLabs generateVoice: succes (1.749042ms)
+✔ ElevenLabs generateVoice: 401 remonte explicitement (0.357417ms)
+✔ ElevenLabs generateVoice: 429 non rejoue, erreur explicite (0.1585ms)
+✔ ElevenLabs generateVoice: cle absente -> erreur SUTRA_ENV_MISSING explicite (0.083125ms)
+✔ ElevenLabs listVoices: 403 refuse + reponse invalide detectee (0.284708ms)
+[pexels] recherche videos: HTTP 404 — resultats vides
+✔ Suno: succes apres polling (3002.949833ms)
+✔ Suno: POST 500 = UNE SEULE tentative (pas de rejeu génératif payant) (0.401709ms)
+✔ Suno: 401 au poll -> abandon immediat (pas de boucle 2 min) (0.252208ms)
+✔ Suno: reponse invalide (id absent) -> detail fournisseur remonte (0.124ms)
+✔ Suno: cle absente -> erreur explicite (0.087458ms)
+✔ RunPod submit: succes avec jobId (0.16575ms)
+✔ RunPod submit: 401 explicite (0.092ms)
+✔ RunPod submit: reponse invalide (pas de job ID) (0.11325ms)
+✔ RunPod: endpoint absent -> erreur explicite (pas de crash import) (0.043458ms)
+✔ LTX: une reponse binaire V1 n'est plus acceptee comme succes V2 (0.33125ms)
+✔ LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx) (0.098167ms)
+✔ LTX: cle absente -> erreur explicite (0.082208ms)
+✔ Pexels searchVideos: succes + format portrait dans la requête (0.450125ms)
+✔ Pexels searchVideos: 404 -> liste vide (dégradation propre) (0.346917ms)
+✔ Pexels searchVideos: clé absente -> liste vide sans appel réseau (0.032167ms)
+✔ generateVoiceWithFallback: 500 ne soumet jamais une seconde synthese (0.108542ms)
+✔ generateVoiceWithFallback: erreur permanente preservee sans attente ni retry (0.079625ms)
+✔ many consumers share one session read, subscription and profile request (10.92075ms)
+✔ token refresh updates the token without reloading a loaded profile (16.656417ms)
+✔ a newer sign-in wins over an older getSession result (6.133875ms)
+✔ switching accounts clears the old profile and ignores its late response (17.504083ms)
+✔ sign-out cancels the in-flight profile and leaves no former user data (11.781958ms)
+✔ strict-mode cleanup and remount install a fresh working subscription (4.987666ms)
+✔ wrong-owner profile is rejected and a refetch can recover (10.169292ms)
+✔ simultaneous manual refreshes are deduplicated (6.02375ms)
+✔ the server snapshot never contains a client session (6.014667ms)
+✔ reject unsafe or looping return path null (0.171833ms)
+✔ reject unsafe or looping return path "" (0.034083ms)
+✔ reject unsafe or looping return path "https://evil.invalid" (0.020667ms)
+✔ reject unsafe or looping return path "//evil.invalid" (0.019792ms)
+✔ reject unsafe or looping return path "/\\evil.invalid" (0.037917ms)
+✔ reject unsafe or looping return path "/%2f%2fevil.invalid" (0.053833ms)
+✔ reject unsafe or looping return path "/%5cevil.invalid" (0.025916ms)
+✔ reject unsafe or looping return path "/login" (0.051625ms)
+✔ reject unsafe or looping return path "/api/delete" (0.046625ms)
+✔ reject unsafe or looping return path "/auth/callback" (0.015542ms)
+✔ reject unsafe or looping return path "/broken%zz" (0.038958ms)
+✔ reject unsafe or looping return path "/\n/evil.invalid" (0.011875ms)
+✔ preserve return path /create?mode=manual&format=9%3A16 (0.036583ms)
+✔ preserve return path /settings?tab=apparence#logo (0.0255ms)
+✔ preserve return path /reset-password (0.017542ms)
+✔ session-only choice removes expiry on every refresh without changing cookie safety flags (0.049709ms)
+✔ remember-me uses thirty days (0.021292ms)
+✔ cookie deletion remains deletion (0.016125ms)
+✔ existing sessions without a new choice keep their prior cookie options (0.015834ms)
+✔ raster image signatures determine storage type (0.328416ms)
+✔ image uploads reject SVG, MIME mismatch, empty and oversized files (1.099666ms)
+✔ literal internal navigation points to an existing page or declared redirect (62.531541ms)
+✓ export : interruption→reprise sans double rendu, re-reprise 100% en cache
+✓ auto : crash assets → plan conservé, chaque étape payée une fois au total
+✓ auto : échec montage tracé, aucune URL finale publiable
+✓ voix 7 Mo : checkpointée et jamais resynthétisée après interruption
+✓ voix 24 Mo : 3 morceaux checkpointés, jamais resynthétisée après interruption
+✔ EXPORT : crash pendant le rendu → reprise SANS re-rendu de l'acquis (0.920584ms)
+✔ AUTO : crash pendant les assets → plan conservé, assets/assemblage une seule fois (1.284209ms)
+✔ AUTO : échec de montage → aucun résultat final, erreur transmise au worker (0.336334ms)
+✔ VOIX >5 Mo : buffer checkpointé — interruption ne régénère PAS la voix (4.144083ms)
+✔ VOIX 24 Mo : morceaux checkpointés — interruption ne régénère PAS (46.737625ms)
+✔ fetchWithRetry: 500 x2 puis 200 -> succes (retry borne) (3476.273292ms)
+✔ fetchWithRetry: 404 jamais rejoue (retour immediat) (0.2605ms)
+✔ fetchWithRetry: 429 non rejoue (retour immediat, consommateur decide) (0.130417ms)
+✔ fetchWithRetry: erreur reseau apres retries -> echec enregistre (1368.714917ms)
+✔ fetchWithRetry: POST JAMAIS rejoue sans clé idempotence (anti double facturation) (0.231542ms)
+✔ fetchWithRetry: POST avec contrat fournisseur ET cle idempotence → reprise autorisee (1001.692708ms)
+✔ estimateCost: grille officielle LTX 2.3 (fast 1080p = 0.06 USD/s) (0.176958ms)
+✔ snapLtxDuration: durées ramenées aux valeurs admises par LTX 2.3 (0.066416ms)
+✔ ltxCompatibleFormat: le carré part en 16:9 (recadré au montage) (0.041042ms)
+✔ clampQualityToPlan: starter demandant 4k → 720p AVANT tout appel payant (0.082042ms)
+✔ resolveVoiceProviderId: jamais un alias brut vers l'API TTS (0.087583ms)
+✔ env: requireEnv message explicite (nom + .env.local), sans valeur (0.10525ms)
+✔ env: providerConfigStatus ne divulgue aucune valeur (0.3985ms)
+✔ env: isEnvSet ignore les valeurs vides (0.062459ms)
+✔ env: inventaire providers couvre les fournisseurs attendus (0.065792ms)
+✔ local: sans configuration, route proprietaire reservee sans repli payant (0.4445ms)
+✔ local: configuré → propriétaire OUI, client JAMAIS (0.15ms)
+✔ local: faux MP4 base64 refuse apres inspection des octets (120.546625ms)
+✔ local: erreur HTTP → message explicite (serveur local à vérifier) (0.374209ms)
+✔ local: sonde santé — 200 ok, erreur réseau détaillée (0.214875ms)
+✔ Media refuse adresse privee/reservee 0.0.0.0 (0.702709ms)
+✔ Media refuse adresse privee/reservee 10.0.0.1 (0.180875ms)
+✔ Media refuse adresse privee/reservee 127.0.0.1 (0.054125ms)
+✔ Media refuse adresse privee/reservee 169.254.169.254 (0.049291ms)
+✔ Media refuse adresse privee/reservee 172.16.0.1 (0.057625ms)
+✔ Media refuse adresse privee/reservee 192.168.0.1 (0.052417ms)
+✔ Media refuse adresse privee/reservee 100.64.0.1 (0.036958ms)
+✔ Media refuse adresse privee/reservee 198.18.0.1 (0.035209ms)
+✔ Media refuse adresse privee/reservee 192.0.2.1 (0.037458ms)
+✔ Media refuse adresse privee/reservee 198.51.100.1 (0.06ms)
+✔ Media refuse adresse privee/reservee 203.0.113.1 (0.031166ms)
+✔ Media refuse adresse privee/reservee 224.0.0.1 (0.035375ms)
+✔ Media refuse adresse privee/reservee 255.255.255.255 (0.027584ms)
+✔ Media refuse adresse privee/reservee ::1 (3.112083ms)
+✔ Media refuse adresse privee/reservee :: (0.063583ms)
+✔ Media refuse adresse privee/reservee ::ffff:127.0.0.1 (0.035709ms)
+✔ Media refuse adresse privee/reservee ::ffff:7f00:1 (0.0515ms)
+✔ Media refuse adresse privee/reservee fc00::1 (0.044583ms)
+✔ Media refuse adresse privee/reservee fe80::1 (0.035333ms)
+✔ Media refuse adresse privee/reservee 2001:db8::1 (0.044583ms)
+✔ Media refuse adresse privee/reservee 2002:7f00:1:: (0.044416ms)
+✔ Media refuse adresse privee/reservee 64:ff9b::7f00:1 (0.045042ms)
+✔ Media refuse adresse privee/reservee 3fff::1 (0.0395ms)
+✔ Media refuse adresse privee/reservee invalid (0.031542ms)
+✔ Media autorise les adresses publiques IPv4 et IPv6 (0.067ms)
+✔ Media refuse protocoles, credentials, ports et IP obfusquees (0.251875ms)
+✔ Media epingle le DNS valide et ne transmet pas de credentials (1.850875ms)
+✔ Media refuse une reponse DNS melangeant IP publique et privee (0.192ms)
+✔ Media revalide les redirections avant le second telechargement (0.179708ms)
+✔ Media suit une redirection publique bornee (0.312ms)
+✔ Media bloque les boucles de redirection (1.930042ms)
+✔ Media refuse MIME HTML (0.131583ms)
+✔ Media refuse faux MP4 (0.183208ms)
+✔ Media refuse taille declaree (0.103125ms)
+✔ Media refuse taille stream (0.102ms)
+✔ Media refuse troncature (0.15925ms)
+✔ Media refuse compression (0.077792ms)
+✔ Media refuse HTTP 403 (0.081041ms)
+✔ Media timeout couvre aussi le corps de reponse (13.238416ms)
+✔ LTX V2 soumet 202, sauvegarde ID, poll GET et telecharge sans token (2.119458ms)
+✔ LTX image conserve references, camera et endpoint lors du polling (0.556416ms)
+✔ LTX reprise apres reponse de download perdue ne refait aucun POST (0.57525ms)
+✔ LTX le meme objet de reprise conserve aussi son identifiant apres succes (0.766417ms)
+✔ LTX reponse POST perdue bloque la deuxieme soumission (0.205375ms)
+✔ LTX erreur du checkpoint ID interdit polling et nouvelle soumission (0.196583ms)
+✔ LTX echec terminal reste terminal sans regeneration (0.206ms)
+✔ LTX requete modifiee sous le meme checkpoint refusee avant reseau (0.23225ms)
+✔ LTX rejette une reponse incomplete {"status":"completed","result":{"video_url":"https://media.invalid/x"}} (0.126875ms)
+✔ LTX rejette une reponse incomplete {"id":"other","status":"completed"} (0.113292ms)
+✔ LTX rejette une reponse incomplete {"id":"job-1","status":"unknown"} (0.12825ms)
+✔ LTX rejette une reponse incomplete {"id":"job-1","status":"completed","result":{}} (0.142542ms)
+✔ LTX requete acceptee puis erreur ne declenche pas de fallback payant WAN (0.336125ms)
+✔ LTX circuit ouvert ne perd ni image de reference ni contrainte camera (0.072958ms)
+✔ Export cloud: fichier decode, dimensions/audio mesures, copie durable avant validation (110.309375ms)
+✔ Export cloud: fausse resolution refusee sans upload ni succes (19.740625ms)
+✔ Export cloud: fichier tronque refuse avant copie durable (20.35025ms)
+✔ Export cloud: echec stockage reste une erreur; la reprise reutilise les memes octets (84.551583ms)
+✔ A pending proof serialized by 0.4.5 remains readable byte for byte (0.883917ms)
+✔ API surface expected (0.057292ms)
+✔ DetachedTimestampFile.fromHash stores the exact digest (0.227708ms)
+✔ serializeToBytes returns non-empty Uint8Array with magic header (0.068ms)
+✔ Different payloads produce different SHA-256 (collision sanity) (0.048208ms)
+✔ Base64 encode/decode of proof bytes is lossless (0.059041ms)
+✔ Purama sha256 contract : hex 64 chars lowercase (0.091917ms)
+﹣ NETWORK : real stamp() → deserialize → fileDigest round-trip (0.03025ms) # SKIP
+✓ interruption : acquis avant crash checkpointé (script+musique+scène 0)
+✓ reprise : aucun acquis régénéré, chaque ressource payée une fois (scène tuée: 2 appels max)
+✓ étape video : reprise complète, scènes saines jamais régénérées
+✓ voix : reprise après crash upload sans resynthèse (1 seul débit ElevenLabs)
+✓ annulation : nouvelle requête repart de zéro, aucun résultat annulé réutilisé
+✔ INTERRUPTION : crash à la scène 1 — les résultats déjà payés sont checkpointés (1.123542ms)
+✔ REPRISE : seules les scènes manquantes sont générées — AUCUN double appel (0.634708ms)
+✔ étape VIDEO step-by-step : interruption scène 0 puis reprise complète (0.200084ms)
+✔ VOIX : buffer checkpointé — crash avant upload ne re-paie pas la synthèse (0.358125ms)
+✔ ANNULATION (niveau pipeline) : une tâche annulée ne rejoue pas depuis ses checkpoints (0.237125ms)
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: invalid authorization
+[sutra:quota] completed media requires accounting reconciliation finished-job
+(node:14908) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ cron account-deletion: secret absent, dev et invalide refusent avant toute operation (5.939583ms)
+✔ cron ambassador-check: secret absent, dev et invalide refusent avant toute operation (8.57ms)
+✔ cron asso-transfer: secret absent, dev et invalide refusent avant toute operation (23.273458ms)
+✔ cron auto-learn: secret absent, dev et invalide refusent avant toute operation (4.030084ms)
+✔ cron auto-plan: secret absent, dev et invalide refusent avant toute operation (4.639917ms)
+✔ cron auto-trends: secret absent, dev et invalide refusent avant toute operation (2.81275ms)
+✔ cron contest-judge: secret absent, dev et invalide refusent avant toute operation (33.537208ms)
+✔ cron contest-monthly: secret absent, dev et invalide refusent avant toute operation (5.333333ms)
+✔ cron contest-weekly: secret absent, dev et invalide refusent avant toute operation (6.102958ms)
+✔ cron email-sequences: secret absent, dev et invalide refusent avant toute operation (5.659416ms)
+✔ cron fiscal-palier: secret absent, dev et invalide refusent avant toute operation (3.390041ms)
+✔ cron karma-defi: secret absent, dev et invalide refusent avant toute operation (3.339875ms)
+✔ cron karma-lightning: secret absent, dev et invalide refusent avant toute operation (2.882375ms)
+✔ cron karma-split-distribute: secret absent, dev et invalide refusent avant toute operation (4.114875ms)
+✔ cron karma-tournoi: secret absent, dev et invalide refusent avant toute operation (3.372791ms)
+✔ cron smart-split: secret absent, dev et invalide refusent avant toute operation (3.757041ms)
+✔ cron streak-update: secret absent, dev et invalide refusent avant toute operation (3.665167ms)
+✔ cron sutra-auto: secret absent, dev et invalide refusent avant toute operation (1.399459ms)
+✔ cron upgrade-ots-proofs: secret absent, dev et invalide refusent avant toute operation (156.169ms)
+✔ cron video-worker: secret absent, dev et invalide refusent avant toute operation (14.855666ms)
+✔ cron: secret valide accepte, secret lu a chaque appel (0.103833ms)
+✔ AUTO: musique sans voix declenche le montage et conserve le branding (0.359666ms)
+✔ AUTO: voix requise manquante bloque ready et efface toute URL finale (0.206ms)
+✔ AUTO: musique requise manquante bloque la publication (0.067834ms)
+✔ AUTO: echec de montage transmis au worker, jamais checkpointé comme succes (0.13025ms)
+✔ EXPORT: resultat cloud non verifie ne peut pas atteindre la sauvegarde ready (0.520375ms)
+✔ AUTO: verification cloud echouee efface URL finale et conserve le rendu deja paye (0.135583ms)
+✔ AUTO: ancien checkpoint URL brute sans validation exige reconciliation (0.073917ms)
+✔ VOIX: crash entre morceaux de 24 MiB ne melange pas deux syntheses (22.0345ms)
+✔ VOIX: reponse fournisseur incertaine ne declenche pas de nouvelle synthese (0.157417ms)
+✔ PRODUCTION: une scene manquante interdit le montage raccourci (0.214583ms)
+✔ SHOTSTACK: apres interruption du polling, reprise par ID sans nouveau POST (1.111208ms)
+✔ SHOTSTACK: soumission sans ID confirme bloque un second rendu (0.051375ms)
+✔ EXPORT: echec de checkpoint apres rendu conserve ID distant pour la reprise (0.151125ms)
+✔ PLANNING: deux horaires proches et un passage tardif restent enumeres (11.888291ms)
+✔ QUEUE: erreurs RPC et finalisation sans ligne ne sont jamais des succes (2.07625ms)
+✔ QUEUE: cle dupliquee conserve statut et acquis; changement de payload refuse (1.015417ms)
+✔ PUBLICATION: video annulee refusee avant appel externe (0.228833ms)
+✔ PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publie rien (0.061916ms)
+✔ PUBLICATION: succes partiel reste partiel et comptes issus du serveur (0.147ms)
+✔ PUBLICATION: deux requetes concurrentes ne soumettent qu une fois (0.122875ms)
+✔ PUBLICATION: echec reservation ne contacte pas le fournisseur (0.054291ms)
+✔ PUBLICATION: resultat non enregistre exige reconciliation et bloque le rejeu (0.078ms)
+✔ OAUTH: utilisateur, plateforme et navigateur doivent correspondre sans consommer le bon etat (0.348084ms)
+✔ OAUTH: expiration et rejeu concurrent refusés (0.098875ms)
+✔ OAUTH: erreur de base bloque initiation et consommation (0.082292ms)
+✔ PRODUCTION: sauvegarde reprise une fois sans doublon ni remise a ready apres publication (2.677416ms)
+✔ PRODUCTION: DB refusee ou conflit de proprietaire ne produit pas de succes (0.086166ms)
+✔ EXPORT: aucune confirmation si DB indisponible ou video detenue par un autre utilisateur (0.108917ms)
+✔ QUOTA: un debit incertain apres succes ne requeue pas la generation terminee (0.392791ms)
+✔ Shotstack: 4K autorisee — preset demande, fichier encore non verifie (2.110542ms)
+✔ Shotstack: 1080p 16:9 exporte en 1920×1080 (0.57075ms)
+✔ Shotstack: horloge de montage — intro décale voix et sous-titres, durées par clip (0.6445ms)
+✔ Shotstack: une PHOTO devient un asset image, pas vidéo (0.282416ms)
+✔ Shotstack: transition fade demandée = fade appliquée (pas none) (0.320416ms)
+✔ Shotstack: 429 au submit -> erreur explicite (0.436125ms)
+✔ Shotstack: rendu failed -> erreur explicite (0.296584ms)
+✔ Shotstack: cle absente -> erreur explicite (0.154084ms)
+✔ Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence (2.489208ms)
+✔ Zernio accepte 201 programme sans jamais annoncer publie (0.288417ms)
+✔ Zernio convertit x en twitter et transmet chaque caption propre (0.099167ms)
+✔ Zernio refuse une echeance passee au lieu de publier immediatement (0.207666ms)
+✔ Zernio refuse UUID local, plateforme indisponible et cle absente avant appel (0.190333ms)
+✔ Zernio succes pour un autre compte reste inconnu (0.070917ms)
+✔ Zernio resultat partiel conserve toutes les destinations demandees (0.067542ms)
+✔ Zernio ancienne reponse success=true sans preuve n'est pas acceptee (0.054833ms)
+✔ Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable (0.240334ms)
+✔ Publication: proprietaire incorrect et video non prete ne soumettent rien (0.414875ms)
+✔ Publication: une ancienne video ready sans preuve du fichier final est bloquee (0.073125ms)
+✔ Zernio HTTP 207 conserve le succes et l'echec de chaque compte (0.193709ms)
+✔ Publication: deux requetes simultanees ne soumettent qu'une fois (1.5645ms)
+✔ Publication: timeout apres soumission laisse une reservation qui bloque les doublons (0.218375ms)
+✔ Publication: succes partiel ne marque pas la video entierement publiee (0.245375ms)
+✔ Publication: programmation puis reconciliation utilise GET sans nouvelle soumission (0.465958ms)
+✔ Publication: echec DB apres fournisseur bloque la resoumission (0.234125ms)
+✔ Publication: un export concurrent ne fait pas passer la nouvelle version a published (0.126375ms)
+✔ Publication: historique secondaire reparable sans nouvelle publication (0.209541ms)
+✔ Publication: comptes absents/ambigus et lecture en erreur bloquent avant soumission (0.163292ms)
+✔ Publication: les trois routes historiques appellent exactement le meme handler (30.902791ms)
+✔ WAN preserves landscape, portrait and square formats (0.462458ms)
+✔ Pexels uses the current video endpoint and keeps provenance (0.108917ms)
+✔ fallbacks preserve requested format (0.196959ms)
+✔ cost estimates include quality and duration (0.090958ms)
+✔ AI outputs are schema validated before use (0.119334ms)
+✔ stock search includes cached Pixabay and Pexels sources (0.31575ms)
+✔ accepts explicitly disposable loopback databases (0.529333ms)
+✔ rejects missing confirmation without leaking connection data (0.196584ms)
+✔ rejects remote host without leaking connection data (0.048ms)
+✔ rejects hostname alias without leaking connection data (0.042083ms)
+✔ rejects shared database without leaking connection data (0.043ms)
+✔ rejects missing port without leaking connection data (0.041417ms)
+✔ rejects host query override without leaking connection data (0.041958ms)
+✔ rejects socket query override without leaking connection data (0.033834ms)
+✔ rejects encoded database name without leaking connection data (0.391542ms)
+✔ rejects wrong protocol without leaking connection data (0.099958ms)
+✔ rejects invalid URL without leaking connection data (0.060917ms)
+ℹ tests 244
+ℹ suites 0
+ℹ pass 243
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 6828.748916

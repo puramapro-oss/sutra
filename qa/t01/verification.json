@@ -1,0 +1,287 @@
+{
+  "observedAt": "2026-10-12T00:21:28.758292+00:00",
+  "codeCommit": "19ea35fbbfe99a978f119f3939ff9935362191dc",
+  "baseCommit": "7088a0a3e733de8d2e85f3576bd86627127da369",
+  "protectedAncestors": [
+    "35c137fc0bc0bd5ff6e54c3ef44ef8b6e46b2fc5",
+    "a322e53d046b02005b3e05b91f42083a5ca20b1e",
+    "e1bdd1b5489721aef7b7b8a42e946e2dee1202e8",
+    "05d164daafff3502ab764d852742f5e1bf17a8ca",
+    "7088a0a3e733de8d2e85f3576bd86627127da369"
+  ],
+  "node": "v24.21.0",
+  "npm": "11.12.1",
+  "postgres": "18.4 local disposable",
+  "platform": "darwin arm64",
+  "fileManifest": {
+    ".eslintignore": {
+      "deleted": true
+    },
+    ".github/actions/setup-sutra/action.yml": {
+      "sha256": "455485471fa9450737593379c5f3edc8004b48e088b877b016f68d6c292c1f51"
+    },
+    ".github/workflows/web-ci.yml": {
+      "sha256": "6d30bbb487b47108515bcc86618ae9b3c3bff94288118861e5a3dc0830e8f789"
+    },
+    ".nvmrc": {
+      "sha256": "68ca3fba3b7e864770cb61aeb306d4bd4354b68ab4dd38450860c5d823e42a53"
+    },
+    "eslint.config.mjs": {
+      "sha256": "f5be18dbcdbd78d3fc135f4be332906f1686ba407d16dde26cb8db3a2e0eb427"
+    },
+    "package-lock.json": {
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+    },
+    "package.json": {
+      "sha256": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e"
+    },
+    "scripts/local-engine-stub-server.mjs": {
+      "sha256": "5da159fe5e429bef2dcdcce66c1cfd93076155ba72a8930be711b9c56516eb22"
+    },
+    "scripts/run-ci.mjs": {
+      "sha256": "2fc2330555c070cc980fc66b2d204dd2e0f1f3dba7ae7dd3829832bee2629142"
+    },
+    "scripts/test-local-engine-e2e.mts": {
+      "sha256": "5f3c21dfb20dbc7b9a40ae9473cf224bb20a3d928a8581c81c754c13712a4c27"
+    },
+    "scripts/test-migration-local.mjs": {
+      "sha256": "067936b15faf3f944ec9ab12b908259ffee1dc123e841668fc2aa7c707554c22"
+    },
+    "tooling/disposable-database.mjs": {
+      "sha256": "c3bd9fa7ddeefdbc5a95f04ddfc4598d769f2b40f208eccfce48e520240b0124"
+    },
+    "tooling/disposable-database.test.mjs": {
+      "sha256": "ae1e9bda5c9d13255d00a555b3e6f41c480edfd1160d07ee9237ac39d47eb900"
+    },
+    "tooling/eslint-config-purama/PROVENANCE.md": {
+      "sha256": "6109b04ecf96f64da54f3d3589535beb323922b4d44434df3e1acfa76b860f3e"
+    },
+    "tooling/eslint-config-purama/index.mjs": {
+      "sha256": "987fcb95af879ce9c793bd9a865363dd229d64d9004c756be3d2a98046f4d9d6"
+    },
+    "tooling/eslint-config-purama/package.json": {
+      "sha256": "6aae62a1b893d3c69181297bde54b0b343616b30439d2e3c0f1f204b08f94382"
+    },
+    "tooling/git-askpass.sh": {
+      "sha256": "cb9c7915d73b808e19a8fbce9755eacf01e36b2e0447f50a49f7239d286a4da4"
+    }
+  },
+  "ciProfiles": {
+    "contracts": [
+      {
+        "name": "contracts",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "--test",
+          "--test-concurrency=2",
+          "scripts/test-api-contracts.mts",
+          "scripts/test-env-contracts.mts",
+          "scripts/test-local-engine.mts",
+          "scripts/test-shotstack-contracts.mts",
+          "scripts/test-production-queue.mts",
+          "scripts/test-auto-export-queue.mts",
+          "scripts/test-release-regressions.mts",
+          "scripts/test-video-contracts.mjs",
+          "scripts/test-opentimestamps.mjs",
+          "scripts/test-ltx-v2-media.mts",
+          "scripts/test-social-publication.mts",
+          "scripts/test-auth-session.mts",
+          "tooling/disposable-database.test.mjs"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 6863
+      },
+      {
+        "name": "schedule",
+        "command": [
+          "node",
+          "scripts/test-auto-schedule.mjs"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 95
+      },
+      {
+        "name": "composition",
+        "command": [
+          "node",
+          "scripts/test-auto-composition.mjs"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 80
+      },
+      {
+        "name": "publication",
+        "command": [
+          "node",
+          "scripts/test-auto-publication.mjs"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 80
+      }
+    ],
+    "media": [
+      {
+        "name": "media",
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "--test",
+          "scripts/test-local-engine-e2e.mts"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 498
+      }
+    ],
+    "quality": [
+      {
+        "name": "typecheck",
+        "command": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "--noEmit",
+          "--incremental",
+          "false"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 7942
+      },
+      {
+        "name": "lint",
+        "command": [
+          "node",
+          "node_modules/eslint/bin/eslint.js",
+          "."
+        ],
+        "status": "FAIL",
+        "exitCode": 1,
+        "signal": null,
+        "durationMs": 11598
+      },
+      {
+        "name": "build",
+        "command": [
+          "node",
+          "node_modules/next/dist/bin/next",
+          "build",
+          "--webpack"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 23857
+      }
+    ]
+  },
+  "scopeLint": "PASS 0 errors 0 warnings",
+  "workflowLint": "actionlint PASS",
+  "shellLint": "shellcheck PASS",
+  "askpass": "4 positive and negative checks PASS; dummy value only",
+  "migration": "13 checks PASS; own cluster stopped",
+  "githubWorkflow": "NOT_RUN; read-only SMARANA_READ_TOKEN must be configured",
+  "audit": {
+    "info": 0,
+    "low": 2,
+    "moderate": 5,
+    "high": 0,
+    "critical": 0,
+    "total": 7
+  },
+  "graph": {
+    "files": 17,
+    "symbols": 20,
+    "processesReported": 0,
+    "reportedRisk": "LOW",
+    "truncated": true,
+    "entryPointsDropped": 792,
+    "calleesDropped": 595,
+    "walksCut": 1,
+    "exhaustiveCertification": false
+  },
+  "notes": [
+    "The final two edits remove redundant eslint-disable comments and document the SQL guard; scoped lint was rerun after them. Runtime code matches final gate.",
+    "Global lint remains FAIL on 3 unchanged PR3 product files; no false global PASS.",
+    "Owner WIP is observation only, never an accepted integration payload.",
+    "Text evidence normalizes CRLF and trailing whitespace only; raw and stored SHA256 recorded separately."
+  ],
+  "evidenceFiles": {
+    "audit-gate.txt": {
+      "rawSha256": "31db730d05cd0c42dd0f998e367553172281cbc23cc441ba5c48f2156dc1de37",
+      "storedSha256": "31db730d05cd0c42dd0f998e367553172281cbc23cc441ba5c48f2156dc1de37"
+    },
+    "audit.json": {
+      "rawSha256": "d0c76d9c7d27c7e55724ed6b10443a43c058c0f71da112efb75acde5f1bb7105",
+      "storedSha256": "d0c76d9c7d27c7e55724ed6b10443a43c058c0f71da112efb75acde5f1bb7105"
+    },
+    "build.txt": {
+      "rawSha256": "864bee0707097264150892acc5dcf87f904da70569fc3e5ac37b8121d9660332",
+      "storedSha256": "1dd6e6fcdbe31f8eb2898e7fc4de0e28d41f593a5886452c986a5a418a980302"
+    },
+    "composition.txt": {
+      "rawSha256": "334a206530d290c78bbd8c7db73602a285816b257419251a389595e7d09705ec",
+      "storedSha256": "334a206530d290c78bbd8c7db73602a285816b257419251a389595e7d09705ec"
+    },
+    "contracts.txt": {
+      "rawSha256": "bee98b2f7c8938bbba5b6398fbc9e3050b7339d67be76fca6fb1886815ff6c0f",
+      "storedSha256": "bee98b2f7c8938bbba5b6398fbc9e3050b7339d67be76fca6fb1886815ff6c0f"
+    },
+    "detect-code.txt": {
+      "rawSha256": "6dd6368cba9936152dc42a8c9bfac7c427131187fb4923067d5fe962fb95746f",
+      "storedSha256": "6dd6368cba9936152dc42a8c9bfac7c427131187fb4923067d5fe962fb95746f"
+    },
+    "impact-migration.json": {
+      "rawSha256": "1b689f39bde9cf7d4ebd847b7145f8e2ee61598fc6e269c5106192253f7a97e4",
+      "storedSha256": "1b689f39bde9cf7d4ebd847b7145f8e2ee61598fc6e269c5106192253f7a97e4"
+    },
+    "impact-stub.txt": {
+      "rawSha256": "3058752fac9077edaa8c2c2b1ad331067188dbb3c8e4ca0cf3882201e270d8ed",
+      "storedSha256": "3058752fac9077edaa8c2c2b1ad331067188dbb3c8e4ca0cf3882201e270d8ed"
+    },
+    "install-node24.txt": {
+      "rawSha256": "f6c56554f8cd3d579b5cc0dfac138b65c919cd50ab67c970ffbcef56881556f4",
+      "storedSha256": "f6c56554f8cd3d579b5cc0dfac138b65c919cd50ab67c970ffbcef56881556f4"
+    },
+    "lint-global.txt": {
+      "rawSha256": "69230b2fa8afadfe3487b58b7ec929decd006f040298d85f06c14abab423dd6b",
+      "storedSha256": "283c7e366ff9ffe1a66d1c051c23fd41ad2f8343c7d0774511ca4c1b8e5b0456"
+    },
+    "lint-t01.txt": {
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "media.txt": {
+      "rawSha256": "0952241501b00de15a0a470c69656959171549c4e1eeab7b8c25cd8939bba1fd",
+      "storedSha256": "0952241501b00de15a0a470c69656959171549c4e1eeab7b8c25cd8939bba1fd"
+    },
+    "migration-v10.txt": {
+      "rawSha256": "f5c7c4cd9bb06d635ddf560bc66102c985d8ea8bba9834bb63a8a265abab1794",
+      "storedSha256": "f5c7c4cd9bb06d635ddf560bc66102c985d8ea8bba9834bb63a8a265abab1794"
+    },
+    "publication.txt": {
+      "rawSha256": "13c9727ecf06db7aadbbaf1c9173a01d9a60bcf116247bbbbd9daddc15664283",
+      "storedSha256": "13c9727ecf06db7aadbbaf1c9173a01d9a60bcf116247bbbbd9daddc15664283"
+    },
+    "schedule.txt": {
+      "rawSha256": "1ff7aa037e085a17cf91ce1e753598107eb30c665bea860996414cb7402fac5e",
+      "storedSha256": "1ff7aa037e085a17cf91ce1e753598107eb30c665bea860996414cb7402fac5e"
+    },
+    "typecheck.txt": {
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
