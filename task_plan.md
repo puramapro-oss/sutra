@@ -136,3 +136,16 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+
+
+## 2026-10-12 — Reprise SUTRA T08 QA (branche intégrée dédiée)
+
+- [x] Deux LOCKS, politiques et coordinations vérifiés ; T01 propre à `589732cb49959c1a576a3ba381b310cd594600ac`, ancien T08 S5 préservé ; worktree isolé neuf.
+- [x] 806 sources T01 hashées à la base ; aucun delta produit/dependance/tooling T01. Corrections limitées à la garde et au harnais T08.
+- [x] Tests gratuits exécutés : contrats427/7 SKIP, média33, QA14, navigateur203 + 5/1 FAIL T08, legacy1022/25 SKIP sans reprise, Python9 ; typecheck/lint PASS, build197 avec cache local.
+- [x] Matrice exhaustive de la demande et preuves courantes : `qa/t08/integrated/`; 43 exigences : 26 PASS, 5 FAIL, 5 BLOQUE, 7 NON TESTE. SQL T01 réutilisé sans migration.
+- [x] Défaut T08-I01 remis à T07/T01 via coordination : double dispatch export UI ; aucune correction produit hors ownership.
+- [x] Handoff T08 et manifest de source/commandes/artefacts préparés pour commit/push autorisé ; SHA de livraison = commit contenant ces fichiers, pointeur coordinateur mis à jour après push.
+- [ ] T01 : intégrer les SHA propriétaires, faire corriger T08-I01 par T07 ; qualifier CI/DB/runtime et exigences absentes avant certification. Aucun déploiement/appel payant autorisé.
+
+Statut T08 : recette livrée avec défaut reproductible ; certification release BLOQUE. Détail et commandes exactes : `HANDOFF-SUTRA-T08-20261012.md`.
