@@ -136,3 +136,14 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+
+## 2026-10-12 — T06 reprise après589732c
+
+- [x] LOCKS/coordination/politique et branche T01 exacte vérifiés ; ancien worktree T06 propre réutilisé sur nouvelle branche isolée, ancienne branche conservée.
+- [x] Comparaison du lot initial déjà intégré : calendrier IANA/DST/récurrences, déduplication, partiel et statut distant préservés.
+- [x] 21 nouvelles régressions RED avant correction ; profil actif et relecture après claim replay/retry corrigés dans le seul journal T06.
+- [x] Gate gratuite : contrats448/7 SKIP, scripts calendrier/composition/publication, média33, navigateur203/155 axe, legacy1022/25 SKIP, Python9, typecheck/lint/build197 PASS. Détails des échecs diagnostiques et reprises dans qa/t06-final.
+- [x] Commit code `d4238596abb84a88f84e3c3e49f3a46aed44fd0d`, manifest lié aux objets Git ; handoff T06 prêt pour le push autorisé, aucun déploiement.
+- [ ] Coordinateur : intégration du delta final avec T02/T03/T04/T05/T07/T08 ; qualification externe distincte, aucun PASS fournisseur/DB distante/OVH déduit.
+
+Statut : LOCAL_DELTA_VERIFIED, release non certifiée. Branche `codex/sutra-t06-social-final-20261012`. Preuves canoniques : HANDOFF-SUTRA-T06-20261012.md et qa/t06-final/verification.json.
