@@ -1,3 +1,7 @@
+import { submissionIdentity, submitVideoJob, submissionErrorStatus } from '@/lib/pipeline-submit'
+import type { Profile } from '@/types'
+import { randomUUID } from 'node:crypto'
+import { runVideoJob } from '@/lib/video-worker'
 /**
  * /api/auto/generate
  * Declenche la generation de la prochaine video pour un user — TÂCHE
@@ -9,24 +13,20 @@ import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import {
-  reserveQuota, completeQuotaForFinishedJob, releaseQuota,
-  enqueueJob, claimJobByKey, checkpoint, finishJob, heartbeat,
+  completeQuotaForFinishedJob, claimJobByKey, finishJob,
 } from '@/lib/video-queue'
-import { executeAutoJob, buildAutoProviders, type AutoJobInput } from '@/lib/auto-pipeline'
+import { type AutoJobInput } from '@/lib/auto-pipeline'
 import { loadAutoContext, type AutoConfig } from '@/lib/sutra-auto'
 
 export const maxDuration = 300
 
 export async function POST(req: Request) {
-  let quotaReserved = false
-  let authUserId: string | null = null
+  const worker = `inline-${randomUUID()}`
   let jobId: string | null = null
-  let videoRowId: string | null = null
   try {
     const supabase = await createServerClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
-    authUserId = user.id
 
     const body = await req.json().catch(() => ({}))
     const scheduleId: string | null = body.schedule_id ?? null
@@ -46,91 +46,47 @@ export async function POST(req: Request) {
       .eq('id', user.id)
       .single()
     if (quotaProfileError || !quotaProfile) throw new Error('Profil et quota non verifiables')
-    if (quotaProfile) {
-      const reserved = await reserveQuota(quotaProfile as never)
-      if (!reserved) {
-        return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
-      }
-      quotaReserved = true
-    }
-
-    const { data: profile } = await service
-      .from('profiles')
-      .select('plan, email')
-      .eq('id', user.id)
-      .single()
-
-    // La ligne auto existe AVANT la tâche durable : la reprise s'y accroche.
     const startedAt = new Date().toISOString()
-    const { data: videoRow } = await service
-      .from('sutra_auto_videos')
-      .insert({
-        user_id: user.id,
-        schedule_id: scheduleId,
-        status: 'generating_video',
-        generation_started_at: startedAt,
-      })
-      .select('id')
-      .single()
-    if (!videoRow) throw new Error('Insert echoue')
-    videoRowId = videoRow.id
+    const videoRowId = randomUUID()
 
     const input: AutoJobInput = {
       userId: user.id,
-      videoRowId: videoRow.id,
+      videoRowId,
       scheduleId,
-      userEmail: profile?.email ?? null,
-      planTier: (profile?.plan ?? 'free') as never,
+      userEmail: quotaProfile.email ?? null,
+      planTier: (quotaProfile.plan ?? 'free') as never,
       config,
       generationStartedAt: startedAt,
     }
 
-    // Tâche durable AVANT tout appel fournisseur, claim ciblé inline.
-    const jobKey = `auto-${videoRow.id}`
-    await enqueueJob({ videoId: null, userId: user.id, kind: 'auto', payload: { input }, idempotencyKey: jobKey })
-    const job = await claimJobByKey(jobKey, `inline-auto-${videoRow.id}`, 600)
-    if (!job) {
-      quotaReserved = false
-      return NextResponse.json({ video: { id: videoRow.id, status: 'planning' }, queued: true }, { status: 202 })
+    const identity = submissionIdentity(`auto-${user.id}`, { schedule_id: scheduleId, config }, body.requestId ?? req.headers.get('Idempotency-Key'))
+    const submitted = await submitVideoJob(quotaProfile as Profile, {
+      kind: 'auto', videoId: null, input, ...identity,
+      initialVideo: { schedule_id: scheduleId, generation_started_at: startedAt },
+    })
+    const resultVideoId = (submitted.payload.input as AutoJobInput).videoRowId
+    if (submitted.status === 'done') {
+      const { data: video, error } = await service.from('sutra_auto_videos').select('*').eq('id', resultVideoId).eq('user_id', user.id).single()
+      if (error || !video) throw new Error('Lecture du resultat indisponible')
+      return NextResponse.json({ video })
     }
+    if (!['queued', 'processing'].includes(submitted.status)) return NextResponse.json({ error: 'Tache terminee ou a reconcilier', status: submitted.status }, { status: 409 })
+    const job = await claimJobByKey(identity.key, worker, 600)
+    if (!job) return NextResponse.json({ jobId: submitted.id, status: submitted.status, video: { id: resultVideoId, status: 'planning' }, jobStatus: submitted.status, queued: true }, { status: 202 })
     jobId = job.id
-    const worker = `inline-auto-${videoRow.id}`
-    const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
+    const final = await runVideoJob(job, worker) as import('@/lib/auto-pipeline').AutoFinalState
 
-    const final = await executeAutoJob(input, { steps: stepsDone }, {
-      heartbeat: () => heartbeat(job.id, worker, 600),
-      onStepResolved: async (key, value) => {
-        stepsDone[key] = value
-        await checkpoint(job.id, worker, { steps: stepsDone })
-      },
-    }, buildAutoProviders(user.id, videoRow.id, config, input.userEmail, input.planTier, service))
-
-    await finishJob(job.id, 'done')
-    quotaReserved = false
+    await finishJob(job.id, worker, 'done')
     const quotaConfirmed = await completeQuotaForFinishedJob(user.id, job.id)
     jobId = null
-    return NextResponse.json({ quotaReconciliationRequired: !quotaConfirmed, video: { id: videoRow.id, schedule_id: scheduleId, status: final.status, video_final_url: final.videoFinalUrl, video_raw_url: final.assets.video_raw_url, audio_voice_url: final.assets.audio_voice_url, audio_music_url: final.assets.audio_music_url, error_message: final.assemblyError } })
+    return NextResponse.json({ quotaReconciliationRequired: !quotaConfirmed, video: { id: resultVideoId, schedule_id: scheduleId, status: final.status, video_final_url: final.videoFinalUrl, video_raw_url: final.assets.video_raw_url, audio_voice_url: final.assets.audio_voice_url, audio_music_url: final.assets.audio_music_url, error_message: final.assemblyError } })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
-    if (jobId) {
-      const { data: fresh } = await createServiceClient()
-        .from('video_jobs').select('attempts, max_attempts').eq('id', jobId).single()
-      const exhausted = (fresh?.attempts ?? 0) >= (fresh?.max_attempts ?? 3)
-      await finishJob(jobId, exhausted ? 'failed' : 'queued', message).catch(() => {})
-      if (exhausted) {
-        await releaseQuota(authUserId!).catch(() => {})
-        quotaReserved = false
-        if (authUserId && videoRowId) {
-          await createServiceClient()
-            .from('sutra_auto_videos')
-            .update({ status: 'failed', error_message: message })
-            .eq('id', videoRowId)
-            .then(() => undefined, () => undefined)
-        }
-      }
-    } else if (quotaReserved && authUserId) {
-      await releaseQuota(authUserId).catch(() => {})
+    try {
+      if (jobId) await finishJob(jobId, worker, 'queued', message)
+    } catch {
+      return NextResponse.json({ error: 'Generation indisponible', status: 'write_unconfirmed' }, { status: 503 })
     }
-    return NextResponse.json({ error: 'Erreur generation', details: message }, { status: 500 })
+    return NextResponse.json({ error: 'Erreur generation', code: 'SUTRA_GENERATION_FAILED' }, { status: submissionErrorStatus(message) })
   }
 }

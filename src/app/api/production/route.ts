@@ -1,15 +1,16 @@
+import { submissionIdentity, submitVideoJob, submissionErrorStatus } from '@/lib/pipeline-submit'
+import { runVideoJob } from '@/lib/video-worker'
 import { NextResponse } from 'next/server'
 import { randomUUID } from 'node:crypto'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import {
-  reserveQuota, completeQuotaForFinishedJob, releaseQuota,
-  enqueueJob, claimJobByKey, getJobByKey, cancelJobByKey, checkpoint, finishJob, heartbeat,
+  completeQuotaForFinishedJob,
+  claimJobByKey, cancelJobByKey, finishJob,
 } from '@/lib/video-queue'
-import { executeProductionStep, persistProductionResult, type ProductionJobInput, type ProductionStep } from '@/lib/production-pipeline'
+import { type ProductionJobInput, type ProductionStep } from '@/lib/production-pipeline'
 import { clampQualityToPlan } from '@/lib/ltx-utils'
 import { type AssembleClip } from '@/lib/shotstack'
-import { logApiCall } from '@/lib/logger'
 import { productionSchema, sanitizeScriptData } from '@/lib/production-schema'
 import type { Plan, Profile } from '@/types'
 
@@ -19,10 +20,6 @@ export const maxDuration = 300
 /** Étapes à coût fournisseur : exécutées comme TÂCHES DURABLES (reprise sans
  *  double génération ni double débit — checkpoint par résultat, audit #10/#14). */
 const COST_STEPS = new Set<ProductionStep>(['script', 'video', 'voice', 'music', 'assembly', 'all'])
-
-const STEP_PROVIDER: Record<string, string> = {
-  script: 'claude', video: 'ltx', voice: 'elevenlabs', music: 'suno', assembly: 'shotstack', all: 'multi',
-}
 
 /** Validations AVANT réservation de quota : une erreur client ne doit jamais
  *  consommer de place ni partir en worker-retry (400 immédiat). */
@@ -40,14 +37,12 @@ function validateStepInputs(step: string, previousData: Record<string, unknown>)
 }
 
 export async function POST(req: Request) {
-  let authUserId: string | null = null
+  const worker = `inline-${randomUUID()}`
   let jobId: string | null = null
-  let quotaReserved = false
   try {
     const supabase = await createServerClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
-    authUserId = user.id
 
     const parsed = productionSchema.safeParse(await req.json())
     if (!parsed.success) {
@@ -93,30 +88,10 @@ export async function POST(req: Request) {
     const mediaFormat = (['9:16', '16:9', '1:1'].includes(format ?? '') ? format : '16:9') as ProductionJobInput['mediaFormat']
     const genPlan: Plan = engine === 'wan-classic' ? 'free' : userPlan
 
-    const requestKey = requestId ?? randomUUID()
-    const jobKey = `production-${user.id}-${step}-${requestKey}`
-
-    // Idempotence de RETRY : tâche déjà faite → résultat checkpointé renvoyé
-    // tel quel (AUCUN nouvel appel fournisseur, AUCUNE nouvelle réservation).
-    const existing = await getJobByKey(jobKey)
-    if (existing?.status === 'done') {
-      const cached = (existing.progress as { result?: unknown } | null)?.result
-      if (cached !== undefined) return NextResponse.json({ data: cached })
-    }
-    if (existing?.status === 'processing') {
-      return NextResponse.json({ error: 'Etape deja en cours — reessaie dans un instant' }, { status: 409 })
-    }
-    if (existing?.status === 'cancelled') {
-      return NextResponse.json({ error: 'Etape annulee — relance avec un nouveau requestId' }, { status: 409 })
-    }
-    if (existing?.status === 'queued') return NextResponse.json({ data: { status: 'queued', jobKey } }, { status: 202 })
-    if (existing) return NextResponse.json({ error: 'Cette tache necessite une reconciliation' }, { status: 409 })
-
-    // Réservation ATOMIQUE (migration v10) — fail-closed.
-    if (!(await reserveQuota(profile as unknown as Profile))) {
-      return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
-    }
-    quotaReserved = true
+    const { requestId: _requestId, ...requestContent } = parsed.data
+    const identity = submissionIdentity(`production-${user.id}-${step}`, requestContent, requestId ?? req.headers.get('Idempotency-Key'))
+    const requestKey = identity.key
+    const jobKey = identity.key
 
     const input: ProductionJobInput = {
       step: step as ProductionStep,
@@ -137,47 +112,25 @@ export async function POST(req: Request) {
       requestKey,
     }
 
-    // Tâche durable AVANT tout appel fournisseur, claim ciblé inline.
-    await enqueueJob({ videoId: null, userId: user.id, kind: 'production', payload: { input }, idempotencyKey: jobKey })
-    const job = await claimJobByKey(jobKey, `inline-${requestKey}`, 600)
-    if (!job) {
-      quotaReserved = false // The worker owns the queued reservation.
-      return NextResponse.json({ data: { status: 'queued', jobKey } }, { status: 202 })
-    }
+    const submitted = await submitVideoJob(profile as Profile, { kind: 'production', videoId: null, input, ...identity })
+    if (submitted.status === 'done') return NextResponse.json({ data: submitted.progress.result })
+    if (!['queued', 'processing'].includes(submitted.status)) return NextResponse.json({ error: 'Tache terminee ou a reconcilier', status: submitted.status }, { status: 409 })
+    const job = await claimJobByKey(jobKey, worker, 600)
+    if (!job) return NextResponse.json({ jobId: submitted.id, status: submitted.status, jobKey }, { status: 202 })
     jobId = job.id
-    const worker = `inline-${requestKey}`
-    const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
+    const finalData = await runVideoJob(job, worker) as unknown
 
-    const result = await executeProductionStep(input, { steps: stepsDone }, {
-      heartbeat: () => heartbeat(job.id, worker, 600),
-      onStepResolved: async (key, value) => {
-        stepsDone[key] = value
-        await checkpoint(job.id, worker, { steps: stepsDone })
-      },
-    })
-
-    const finalData = await persistProductionResult(job.id, step, result, stepsDone, input, serviceClient)
-    // Résultat final checkpointé : un retry du même requestId ne paie plus rien.
-    await checkpoint(job.id, worker, { steps: stepsDone, result: finalData })
-    await finishJob(job.id, 'done')
-    quotaReserved = false
+    await finishJob(job.id, worker, 'done')
     const quotaConfirmed = await completeQuotaForFinishedJob(user.id, jobId!)
     jobId = null
-    await logApiCall(user.id, STEP_PROVIDER[step] ?? 'multi', `production-${step}`, 'success')
     return NextResponse.json({ data: finalData, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
-    if (jobId) {
-      // Tâche requeueée : le worker reprendra AVEC les checkpoints (les scènes
-      // déjà payées ne sont pas régénérées) ; épuisée → place libérée.
-      const { data: fresh } = await createServiceClient()
-        .from('video_jobs').select('attempts, max_attempts').eq('id', jobId).single()
-      const exhausted = (fresh?.attempts ?? 0) >= (fresh?.max_attempts ?? 3)
-      await finishJob(jobId, exhausted ? 'failed' : 'queued', message).catch(() => {})
-      if (exhausted) { await releaseQuota(authUserId!).catch(() => {}); quotaReserved = false }
-    } else if (quotaReserved && authUserId) {
-      await releaseQuota(authUserId).catch(() => {})
+    try {
+      if (jobId) await finishJob(jobId, worker, 'queued', message)
+    } catch {
+      return NextResponse.json({ error: 'Generation indisponible', status: 'write_unconfirmed' }, { status: 503 })
     }
-    return NextResponse.json({ error: message }, { status: 500 })
+    return NextResponse.json({ error: message }, { status: submissionErrorStatus(message) })
   }
 }

@@ -41,16 +41,17 @@ export default function IdeaStep({
             <button
               key={t.id}
               data-testid={`template-${t.id}`}
+              aria-pressed={template === t.id}
               onClick={() => setTemplate(t.id)}
               className={cn(
                 'flex flex-col items-center gap-2 p-4 rounded-xl border transition-all duration-200 text-center',
                 template === t.id
                   ? 'bg-violet-600/15 border-violet-500/40 text-white'
-                  : 'bg-white/[0.02] border-white/[0.06] text-white/50 hover:border-white/[0.12]'
+                  : 'bg-white/[0.02] border-white/[0.06] text-white/65 hover:border-white/[0.12]'
               )}
             >
               <span className="text-sm font-semibold">{t.label}</span>
-              <span className="text-[10px] text-white/40">{t.format} - {t.duration}</span>
+              <span className="text-[10px] text-white/65">{t.format} - {t.duration}</span>
             </button>
           ))}
         </div>
@@ -59,6 +60,7 @@ export default function IdeaStep({
       <SectionCard title="Decris ton idee de video">
         <textarea
           data-testid="production-idea"
+          aria-label="Décris ton idée de vidéo"
           value={idea}
           onChange={(e) => setIdea(e.target.value)}
           placeholder="Ex: Une video documentaire sur les volcans sous-marins, avec des images cinematiques et une narration captivante..."
@@ -77,12 +79,13 @@ export default function IdeaStep({
           {TONE_OPTIONS.map((t) => (
             <button
               key={t}
+              aria-pressed={tone === t}
               onClick={() => setTone(t)}
               className={cn(
                 'px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 capitalize',
                 tone === t
                   ? 'bg-violet-600/20 border-violet-500/40 text-violet-300'
-                  : 'bg-white/[0.03] border-white/[0.06] text-white/50 hover:text-white/70'
+                  : 'bg-white/[0.03] border-white/[0.06] text-white/65 hover:text-white/70'
               )}
             >
               {t}
@@ -92,26 +95,27 @@ export default function IdeaStep({
       </SectionCard>
 
       <SectionCard title="Moteur video">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {VIDEO_ENGINES.map((eng) => {
             const available = currentPlanRank >= (planRank[eng.minPlan] ?? 0)
             return (
               <button
                 key={eng.id}
                 data-testid={`prod-engine-${eng.id}`}
+                aria-pressed={engine === eng.id}
                 onClick={() => available && setEngine(eng.id as VideoEngine)}
                 disabled={!available}
                 className={cn(
                   'flex flex-col items-center gap-1.5 p-4 rounded-xl border transition-all duration-200',
                   engine === eng.id
                     ? 'bg-violet-600/15 border-violet-500/40 text-white'
-                    : 'bg-white/[0.02] border-white/[0.06] text-white/50 hover:border-white/[0.12]',
+                    : 'bg-white/[0.02] border-white/[0.06] text-white/65 hover:border-white/[0.12]',
                   !available && 'opacity-40 cursor-not-allowed'
                 )}
               >
                 <span className="text-lg">{eng.icon}</span>
                 <span className="text-sm font-semibold">{eng.label}</span>
-                <span className="text-[11px] text-white/40">{eng.description}</span>
+                <span className="text-[11px] text-white/65">{eng.description}</span>
                 {!available && <span className="text-[10px] text-violet-400">Plan {eng.minPlan}+</span>}
               </button>
             )

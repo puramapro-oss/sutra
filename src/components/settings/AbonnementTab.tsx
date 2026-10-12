@@ -46,11 +46,11 @@ export default function AbonnementTab({
 
         {/* Usage stats */}
         <div className="space-y-4 pt-4 border-t border-white/[0.06]">
-          <h4 className="text-xs font-medium text-white/40">Utilisation ce mois</h4>
+          <h4 className="text-xs font-medium text-white/65">Utilisation ce mois</h4>
           <div className="space-y-3">
             <div>
               <div className="flex items-center justify-between text-sm mb-1.5">
-                <span className="text-white/50">Videos</span>
+                <span className="text-white/65">Videos</span>
                 <span className="text-white/70">
                   {profile?.monthly_video_count ?? 0} / {limits.videos === 9999 ? '∞' : limits.videos}
                 </span>
@@ -63,19 +63,19 @@ export default function AbonnementTab({
             </div>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div className="p-3 rounded-xl bg-white/[0.02]">
-                <p className="text-white/40 text-xs">Qualite max</p>
+                <p className="text-white/65 text-xs">Qualite max</p>
                 <p className="text-white/70 font-medium">{limits.quality}</p>
               </div>
               <div className="p-3 rounded-xl bg-white/[0.02]">
-                <p className="text-white/40 text-xs">Voix clonees</p>
+                <p className="text-white/65 text-xs">Voix clonees</p>
                 <p className="text-white/70 font-medium">{limits.voices === 0 ? 'Non inclus' : limits.voices}</p>
               </div>
               <div className="p-3 rounded-xl bg-white/[0.02]">
-                <p className="text-white/40 text-xs">Autopilot</p>
+                <p className="text-white/65 text-xs">Autopilot</p>
                 <p className="text-white/70 font-medium">{limits.autopilot === 0 ? 'Non inclus' : `${limits.autopilot} series`}</p>
               </div>
               <div className="p-3 rounded-xl bg-white/[0.02]">
-                <p className="text-white/40 text-xs">Reseaux</p>
+                <p className="text-white/65 text-xs">Reseaux</p>
                 <p className="text-white/70 font-medium">{limits.networks === 0 ? 'Non inclus' : limits.networks}</p>
               </div>
             </div>

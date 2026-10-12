@@ -1,3 +1,4 @@
+import { simulatedValidation } from './helpers/media-validation-fixture.ts'
 // Script de test : compteurs d'appels, sorties lisibles.
 /* eslint-disable no-console */
 // -----------------------------------------------------------------------------
@@ -39,13 +40,16 @@ async function run<T>(fn: (resume: { steps: Steps }) => Promise<T>): Promise<{ o
 // --- EXPORT --------------------------------------------------------------------
 test('EXPORT : crash pendant le rendu → reprise SANS re-rendu de l\'acquis', async () => {
   let assembleCalls = 0
+  let submissions = 0
   let persistCalls = 0
   let failOnce = true
   const providers: ExportProviders = {
-    assemble: async () => {
+    validate: async (_url, contract) => { const value = simulatedValidation(contract); value.final.sha256 = 'a'.repeat(64); return value },
+    assemble: async (params) => {
+      if (!params.renderJob?.id) { await params.renderJob?.onSubmitting?.(); submissions++; await params.renderJob?.onSubmitted?.('remote-render') }
       assembleCalls++
       if (failOnce) throw new Error('RENDU INTERROMPU (worker tue chez Shotstack)')
-      return { url: 'https://storage.test/export.mp4', duration: 30, outputQuality: '1080' as const, outputVerified: true as const, outputSize: { width: 1920, height: 1080 }, timeline: {} }
+      return { url: 'https://storage.test/export.mp4', duration: 30, outputQuality: '1080' as const, outputVerified: true as const, outputSize: { width: 1920, height: 1080 }, verification: { url: 'https://storage.test/export.mp4', sha256: 'a'.repeat(64), duration: 30, width: 1920, height: 1080, fps: 30, hasAudio: true }, timeline: {} }
     },
     persist: async (_input, update) => {
       persistCalls++
@@ -54,7 +58,7 @@ test('EXPORT : crash pendant le rendu → reprise SANS re-rendu de l\'acquis', a
   }
   const input: ExportJobInput = {
     videoId: 'v1', userId: 'u1', quality: '1080p', format: '16:9',
-    voiceUrl: 'https://storage.test/voice.mp3', musicUrl: null, musicVolume: 0.3,
+    voiceUrl: 'https://storage.test/voice.mp3', musicUrl: null, musicVolume: 0.3, requiredTracks: { voice: true, music: false },
     clips: [{ url: 'https://storage.test/scene.mp4', type: 'ia', kind: 'video', duration: 30 }],
     subtitles: [],
   }
@@ -66,12 +70,13 @@ test('EXPORT : crash pendant le rendu → reprise SANS re-rendu de l\'acquis', a
   assert.equal(assembleCalls, 1, 'un seul appel tué en vol')
   assert.equal(persistCalls, 0)
 
-  // 2. Reprise : le rendu est retenté (rien n'était acquis), puis persist UNE fois.
+  // 2. Reprise : polling du meme ID distant, puis persistance une fois.
   failOnce = false
   const run2 = await run((resume) => executeExportJob(input, { steps: Object.assign(resume.steps, run1.steps) }, {}, providers))
   assert.equal(run2.ok, true, 'reprise aboutit')
   assert.equal((run2.result as { url: string }).url, 'https://storage.test/export.mp4')
   assert.equal(assembleCalls, 2, 'rendu : appel tué + reprise, jamais 3')
+  assert.equal(submissions, 1, 'une seule soumission payante; reprise du polling')
   assert.equal(persistCalls, 1, 'persistance exactement une fois')
 
   // 3. RE-REPRISE depuis les checkpoints complets : PLUS AUCUN appel.
@@ -98,7 +103,7 @@ test('AUTO : crash pendant les assets → plan conservé, assets/assemblage une 
       if (failAssetsOnce) throw new Error('GENERATION INTERROMPUE (worker tue pendant RunPod)')
       return { video_raw_url: 'https://storage.test/raw.mp4', audio_music_url: 'm', audio_voice_url: 'v' } satisfies AutoAssets
     },
-    assemble: async () => { assembleCalls++; return { url: 'https://storage.test/final.mp4', duration: 6, outputQuality: '1080' as const, outputVerified: true as const, outputSize: { width: 1080, height: 1920 }, timeline: {} } },
+    assemble: async () => { assembleCalls++; return { url: 'https://storage.test/final.mp4', duration: 6, outputQuality: '1080' as const, outputVerified: true as const, outputSize: { width: 1080, height: 1920 }, verification: { url: 'https://storage.test/final.mp4', sha256: 'a'.repeat(64), duration: 6, width: 1080, height: 1920, fps: 30, hasAudio: true }, timeline: {} } },
     persist: async (_input, final) => { persistCalls++; assert.equal(final.status, 'ready') },
   }
   const input: AutoJobInput = {

@@ -181,8 +181,9 @@ test.describe('Security', () => {
     expect(content).not.toContain('<script>alert(1)</script>')
   })
 
-  test('21 — SQL injection in URL does not cause error', async ({ page }) => {
-    const res = await page.goto("/go/'; DROP TABLE users; --")
-    expect(res?.status()).toBeLessThan(500)
+  test('21 — SQL injection in URL does not cause error', async ({ request }) => {
+    const res = await request.get("/go/'; DROP TABLE users; --", { maxRedirects: 0 })
+    expect(res.status()).toBe(302)
+    expect(new URL(res.headers().location).pathname).toBe("/")
   })
 })

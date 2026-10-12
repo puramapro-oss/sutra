@@ -124,14 +124,15 @@ Scope exclu (confirmé) : TERRA NOVA IRL, NAMA-VIDA santé, KYC Onfido, Ordonnan
 
 ## 2026-10-12 — SUTRA T01 CHEF (périmètre courant)
 
-Les instructions historiques de déploiement plus haut ne font pas partie de ce mandat. Aucun push/déploiement/migration de production autorisé.
+Les instructions historiques ci-dessus restent des archives. Le dernier mandat autorise commit et push sur l'unique branche T01, aucun déploiement ni migration de production.
 
-- [x] Inspection politiques (`POLICY_OK`), deux LOCKS, handoffs, Git/worktrees/processus/WIP avant écriture ; branche/worktree T01 uniques sur PR3.
-- [x] Code T01 committé `19ea35fbbfe99a978f119f3939ff9935362191dc` : CI, lockfile/install autonome, garde SQL, runner de validation et port média isolé. Cinq références protégées conservées.
-- [x] Gates locales bornées enregistrées : Node24.21.0, contrats243 PASS+1 SKIP, média3/3, SQL local13/13, typecheck/build PASS, lint T01 PASS. Commandes exactes et hashes dans HANDOFF-SUTRA-T01-20261012.md et qa/t01/verification.json.
-- [ ] Lint global : FAIL3 max-lines dans fichiers T03/T04/T06 inchangés ici ; propriétaires informés, règles produit conservées.
-- [ ] Intégration T02–T08 : commits/handoffs finaux attendus, collisions export-pipeline/test-auto-export-queue T03/T05 et test-release-regressions T03/T06 à arbitrer. T04/T05/T08 sur S5 à réconcilier contre PR3 ; aucun WIP accepté.
-- [ ] QA T08 S5 à adapter/requalifier sur le futur HEAD intégré ; brouillon observé distinct de PR3.
-- [ ] CI distante NON EXÉCUTÉE : accès lecture seule SMARANA à configurer. Release/fournisseurs réels/DB distante/Store NON TESTÉS.
+- [x] Inspection politiques (`POLICY_OK`), deux LOCKS, handoffs, branches/worktrees/processus/WIP ; 47 worktrees étrangers présents préservés.
+- [x] Réception des sept livraisons propriétaires et de leurs preuves, deltas revus contre PR3. Matrice complète : `qa/integration-20261012/MATRIX.md`.
+- [x] Réconciliation LTX durable, FFmpeg/Shotstack/export, downloader/probe, journal et permissions SQL ; cinq références protégées conservées.
+- [x] Raccords UI jobs202/export éditeur et correctifs a11y ; aucune source S5 fusionnée aveuglément.
+- [x] Gates contrats427/7 SKIP, média33, SQL13+9+49, qualité typecheck/lint/build, Python9 ; legacy1022 PASS agrégés/25 SKIP. Navigateur203 PASS agrégés/155 audits axe sans violation ; commandes et historique des reprises dans le handoff.
+- [x] Recette OVH et rollback préparés et testés sans SSH ; déploiement non exécuté.
+- [ ] CI distante du commit poussé : résultat à lire, secret lecture seule SMARANA requis.
+- [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
-Statut : T01_SCOPE_PASS, GLOBAL_GATE_FAIL, INTEGRATION_BLOCKED_OWNER_DELIVERIES. Reprendre uniquement le delta accepté des propriétaires, pas les PASS inchangés. Voir BATON et handoff T01.
+Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.

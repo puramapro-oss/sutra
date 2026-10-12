@@ -24,8 +24,8 @@ test('Pexels uses the current video endpoint and keeps provenance', () => {
 test('fallbacks preserve requested format', () => {
   const ltx = read('src/lib/ltx.ts')
   const fallback = read('src/lib/fallbacks.ts')
-  assert.match(ltx, /!options.imageUri && !options.lastFrameUri && !options.cameraMotion/)
-  assert.match(ltx, /format,\n\s+duration,/)
+  assert.match(ltx, /WAN_UNSUPPORTED_REFERENCE_OR_CAMERA/)
+  assert.match(ltx, /quality, format, duration,/)
   assert.match(fallback, /searchVideos\(prompt, 3, \{ format: stockFormat \}\)/)
 })
 

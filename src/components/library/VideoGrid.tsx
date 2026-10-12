@@ -48,8 +48,8 @@ export default function VideoGrid({
         >
           <VideoCard video={video} onDelete={onDelete} />
 
-          {/* Action buttons overlay */}
-          <div className="absolute bottom-3 right-3 z-20 flex items-center gap-1">
+          {/* Actions remain visible on touch screens and at narrow widths. */}
+          <div className="flex flex-wrap items-center justify-end gap-2 pt-2">
             {/* Share */}
             <button
               data-testid={`share-${video.id}`}
@@ -86,6 +86,8 @@ export default function VideoGrid({
                   }}
                   className="p-1.5 rounded-lg bg-black/40 backdrop-blur-sm text-white/50 hover:text-violet-400 transition-colors"
                   aria-label="Ajouter au dossier"
+                  aria-expanded={openFolderMenu === video.id}
+                  onKeyDown={event => { if (event.key === 'Escape') setOpenFolderMenu(null) }}
                 >
                   <FolderPlus className="h-3.5 w-3.5" />
                 </button>
@@ -93,12 +95,14 @@ export default function VideoGrid({
                 <AnimatePresence>
                   {openFolderMenu === video.id && (
                     <motion.div
+                      data-testid={`folder-menu-${video.id}`}
                       initial={{ opacity: 0, scale: 0.95, y: -4 }}
                       animate={{ opacity: 1, scale: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95, y: -4 }}
-                      className="absolute bottom-full right-0 mb-1 w-44 rounded-xl bg-[#0c0b14]/95 backdrop-blur-2xl border border-white/[0.08] shadow-2xl z-40 overflow-hidden"
+                      onKeyDown={event => { if (event.key === 'Escape') { setOpenFolderMenu(null); document.querySelector<HTMLButtonElement>(`[data-testid="add-folder-${video.id}"]`)?.focus() } }}
+                      className="absolute bottom-full right-0 mb-1 w-44 max-h-[60dvh] overflow-y-auto rounded-xl bg-[#0c0b14]/95 backdrop-blur-2xl border border-white/[0.08] shadow-2xl z-40"
                     >
-                      <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-white/30 border-b border-white/[0.06]">
+                      <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-white/65 border-b border-white/[0.06]">
                         Ajouter au dossier
                       </div>
                       {folders.map((folder) => {
@@ -111,6 +115,7 @@ export default function VideoGrid({
                               if (!alreadyIn) {
                                 onAddToFolder(folder.id, video.id)
                                 setOpenFolderMenu(null)
+                                document.querySelector<HTMLButtonElement>(`[data-testid="add-folder-${video.id}"]`)?.focus()
                               }
                             }}
                             disabled={alreadyIn}
@@ -121,8 +126,8 @@ export default function VideoGrid({
                                 : 'text-white/60 hover:text-white hover:bg-white/5'
                             )}
                           >
-                            <Folder className="h-3.5 w-3.5" />
-                            {folder.name}
+                            <Folder className="h-3.5 w-3.5 shrink-0" />
+                            <span className="min-w-0 break-words text-left">{folder.name}</span>
                             {alreadyIn && (
                               <span className="ml-auto text-[10px] text-white/20">
                                 deja
@@ -165,6 +170,7 @@ export default function VideoGrid({
                   ? 'bg-red-500/20 text-red-400'
                   : 'bg-black/40 text-white/50 hover:text-red-400'
               )}
+              aria-pressed={favorites.has(video.id)}
               aria-label={favorites.has(video.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}
             >
               <Heart

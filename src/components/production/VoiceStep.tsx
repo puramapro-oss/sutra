@@ -31,6 +31,7 @@ export default function VoiceStep({
         <div className="mb-4">
           <select
             data-testid="prod-voice-select"
+            aria-label="Voix de narration"
             value={voice}
             onChange={(e) => setVoice(e.target.value)}
             className={cn(

@@ -64,7 +64,9 @@ export default function ProfilTab({
               onClick={() => avatarInputRef.current?.click()}
               disabled={uploadingAvatar}
               data-testid="settings-avatar-upload"
-              className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"
+              aria-label="Changer la photo de profil"
+              aria-busy={uploadingAvatar}
+              className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 transition-opacity rounded-2xl"
             >
               {uploadingAvatar ? (
                 <Loader2 className="h-5 w-5 text-white animate-spin" />
@@ -80,9 +82,9 @@ export default function ProfilTab({
               className="hidden"
             />
           </div>
-          <div>
+          <div className="min-w-0 break-words">
             <p className="text-sm text-white/70">{profile?.name ?? 'Utilisateur'}</p>
-            <p className="text-xs text-white/30">{profile?.email}</p>
+            <p className="text-xs text-white/65">{profile?.email}</p>
           </div>
         </div>
 
@@ -96,17 +98,18 @@ export default function ProfilTab({
         {/* Preferred niche */}
         <div>
           <label className="text-sm font-medium text-white/60 mb-2 block">Niche preferee</label>
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {NICHES.map((niche) => (
               <button
                 key={niche}
                 onClick={() => setPreferredNiche(niche)}
                 data-testid={`settings-niche-${niche}`}
+                aria-pressed={preferredNiche === niche}
                 className={cn(
                   'px-3 py-2 rounded-xl text-xs font-medium border transition-all capitalize',
                   preferredNiche === niche
                     ? 'bg-violet-500/20 border-violet-500/40 text-violet-400'
-                    : 'bg-white/[0.02] border-white/[0.06] text-white/40 hover:text-white/60'
+                    : 'bg-white/[0.02] border-white/[0.06] text-white/65 hover:text-white/60'
                 )}
               >
                 {niche.replace('-', ' ')}
@@ -124,11 +127,12 @@ export default function ProfilTab({
                 key={q.value}
                 onClick={() => setPreferredQuality(q.value)}
                 data-testid={`settings-quality-${q.value}`}
+                aria-pressed={preferredQuality === q.value}
                 className={cn(
                   'flex-1 px-3 py-2.5 rounded-xl text-sm border transition-all',
                   preferredQuality === q.value
                     ? 'bg-violet-500/20 border-violet-500/40 text-violet-400'
-                    : 'bg-white/[0.02] border-white/[0.06] text-white/40'
+                    : 'bg-white/[0.02] border-white/[0.06] text-white/65'
                 )}
               >
                 {q.label}
@@ -139,11 +143,12 @@ export default function ProfilTab({
 
         {/* Voice */}
         <div>
-          <label className="text-sm font-medium text-white/60 mb-2 block">Voix preferee</label>
+          <label htmlFor="settings-voice" className="text-sm font-medium text-white/60 mb-2 block">Voix preferee</label>
           <select
             value={preferredVoice}
             onChange={(e) => setPreferredVoice(e.target.value)}
             data-testid="settings-voice-select"
+            id="settings-voice"
             className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-sm text-white/80 outline-none appearance-none cursor-pointer"
           >
             <option value="" className="bg-[#0c0b14]">Aucune preference</option>

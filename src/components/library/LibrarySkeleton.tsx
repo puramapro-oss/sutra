@@ -2,21 +2,21 @@ import { Skeleton } from '@/components/ui/Skeleton'
 
 export default function LibrarySkeleton() {
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+    <div role="status" aria-label="Chargement de la bibliothèque" className="max-w-6xl mx-auto space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <Skeleton width={240} height={32} rounded="lg" />
           <Skeleton width={120} height={16} rounded="md" className="mt-1" />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Skeleton width={140} height={40} rounded="xl" />
           <Skeleton width={160} height={40} rounded="xl" />
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <Skeleton width={240} height={40} rounded="xl" />
-        <Skeleton width={340} height={40} rounded="xl" />
+        <Skeleton width={340} height={40} rounded="xl" className="max-w-full" />
         <Skeleton width={100} height={40} rounded="xl" />
         <Skeleton width={80} height={40} rounded="xl" />
       </div>

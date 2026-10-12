@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react'
+import { awaitJobResult } from '@/lib/generation-client'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { STEPS } from '@/lib/production-constants'
 import type { ProductionStep, TemplateId, StepStatus } from '@/types/production'
 import type { VideoEngine } from '@/lib/ltx'
@@ -33,8 +34,13 @@ export function useProductionGeneration({
   const [generatedData, setGeneratedData] = useState<Record<string, unknown>>({})
   const [error, setError] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
+  const active = useRef<AbortController | null>(null)
+  useEffect(() => () => active.current?.abort(), [])
 
   const generateStep = useCallback(async (step: ProductionStep) => {
+    if (active.current) return
+    const controller = new AbortController()
+    active.current = controller
     setIsGenerating(true)
     setError(null)
     setStepStatus((prev) => ({ ...prev, [step]: 'generating' }))
@@ -42,6 +48,7 @@ export function useProductionGeneration({
     try {
       const res = await fetch('/api/production', {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           step,
@@ -61,7 +68,7 @@ export function useProductionGeneration({
         throw new Error(data.error ?? `Erreur ${res.status}`)
       }
 
-      const result = await res.json()
+      const result = await awaitJobResult(res, controller.signal)
       setGeneratedData((prev) => ({ ...prev, [step]: result.data }))
       setStepStatus((prev) => ({ ...prev, [step]: 'done' }))
 
@@ -73,17 +80,22 @@ export function useProductionGeneration({
       setStepStatus((prev) => ({ ...prev, [step]: 'error' }))
       setError(err instanceof Error ? err.message : 'Erreur lors de la generation')
     } finally {
+      active.current = null
       setIsGenerating(false)
     }
   }, [idea, template, format, engine, voice, musicStyle, tone, generatedData, currentStep, setCurrentStep])
 
   const generateAll = useCallback(async () => {
+    if (active.current) return
+    const controller = new AbortController()
+    active.current = controller
     setIsGenerating(true)
     setError(null)
 
     try {
       const res = await fetch('/api/production', {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           step: 'all',
@@ -102,7 +114,7 @@ export function useProductionGeneration({
         throw new Error(data.error ?? `Erreur ${res.status}`)
       }
 
-      const result = await res.json()
+      const result = await awaitJobResult(res, controller.signal)
       setGeneratedData(result.data ?? {})
       setStepStatus({
         idea: 'done', script: 'done', video: 'done',
@@ -112,6 +124,7 @@ export function useProductionGeneration({
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur lors de la production')
     } finally {
+      active.current = null
       setIsGenerating(false)
     }
   }, [idea, template, format, engine, voice, musicStyle, tone, setCurrentStep])

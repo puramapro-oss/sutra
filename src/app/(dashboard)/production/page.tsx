@@ -7,16 +7,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
-  Check,
-  Loader2,
-  Play,
-  Download,
-  FileText,
   Film,
-  Mic,
-  Music,
   Layers,
-  ImageIcon,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useProductionGeneration } from '@/hooks/useProductionGeneration'
@@ -73,7 +65,7 @@ export default function ProductionPage() {
   if (authLoading) {
     return (
       <div className="max-w-4xl mx-auto space-y-8 py-8">
-        <Skeleton width="300px" height={32} rounded="lg" className="mx-auto" />
+        <Skeleton width="300px" height={32} rounded="lg" className="mx-auto max-w-full" />
         <Skeleton width="100%" height={200} rounded="xl" />
       </div>
     )
@@ -218,6 +210,7 @@ export default function ProductionPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          role="alert"
           className="rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-sm text-red-400"
         >
           {error}
@@ -225,7 +218,7 @@ export default function ProductionPage() {
       )}
 
       {/* Navigation + Generate All */}
-      <div className="flex items-center justify-between pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
         <Button
           variant="ghost"
           size="md"
@@ -241,10 +234,11 @@ export default function ProductionPage() {
             data-testid="generate-all"
             variant="primary"
             size="lg"
-            disabled={!idea.trim() || isGenerating}
+            disabled={!idea.trim()}
+            loading={isGenerating}
             onClick={generateAll}
           >
-            {isGenerating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5" />}
+            <Sparkles className="h-5 w-5" />
             Tout generer
           </Button>
         )}

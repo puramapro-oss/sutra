@@ -91,5 +91,10 @@
       "maxDuration": 60
     }
   },
-  "installCommand": "git config --global url.\"https://${SMARANA_GIT_TOKEN}@github.com/\".insteadOf \"ssh://git@github.com/\" && npm install"
+  "installCommand": "git config --global url.\"https://${SMARANA_GIT_TOKEN}@github.com/\".insteadOf \"ssh://git@github.com/\" && npm install",
+  "git": {
+    "deploymentEnabled": {
+      "codex/sutra-t01-integration-20261012": false
+    }
+  }
 }

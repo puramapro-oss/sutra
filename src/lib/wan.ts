@@ -1,5 +1,5 @@
-import { submitVideoJob, pollVideoJob } from '@/lib/runpod'
-import { downloadVideoBytes } from '@/lib/media-download'
+import { downloadVideoBytes } from './media-download'
+import { submitVideoJob, pollVideoJob, runpodProvenance, RunpodJobError, type RunpodProvenance } from '@/lib/runpod'
 
 export type WanQuality = '720p' | '1080p' | '4k'
 export type WanFormat = '9:16' | '16:9' | '1:1'
@@ -14,6 +14,7 @@ export type WanResult = {
   requestedQuality: WanQuality
   format: WanFormat
   native4k: boolean
+  provenance: RunpodProvenance
 }
 
 type Dimensions = { width: number; height: number }
@@ -76,10 +77,15 @@ export async function generateWanVideo(params: {
   )
 
   const videoUrl = await pollVideoJob(jobId, baseUrl, POLL_TIMEOUT_MS)
-  const videoBuffer = Uint8Array.from(await downloadVideoBytes(videoUrl)).buffer
+  const provenance = runpodProvenance(jobId, 'COMPLETED', POLL_TIMEOUT_MS, 200)
+  let videoBuffer: ArrayBuffer
+  try {
+    videoBuffer = Uint8Array.from(await downloadVideoBytes(videoUrl)).buffer
+  } catch { throw new RunpodJobError('DOWNLOAD_FAILED_RESUME_SAME_JOB', provenance) }
 
   return {
     videoBuffer,
+    provenance,
     model: 'wan-2.2',
     duration,
     resolution: `${width}x${height}`,

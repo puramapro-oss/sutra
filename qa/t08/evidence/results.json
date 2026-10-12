@@ -1,0 +1,770 @@
+{
+  "sourceBase": "6a64fba103a084c71ecbfd1a07af53076af097c6",
+  "candidatePR3": "7088a0a3e733de8d2e85f3576bd86627127da369",
+  "certification": "BLOQUE",
+  "scope": "S5 local simulated boundaries only; PR3 unverified",
+  "counts": {
+    "PASS": 25,
+    "FAIL": 21,
+    "cases": 46
+  },
+  "commands": {
+    "contracts": "node qa/t08/run.mjs contracts",
+    "browser": "T08_CHROMIUM=/Users/matissdornier/Library/Caches/ms-playwright/chromium_headless_shell-1217/chrome-headless-shell-mac-arm64/chrome-headless-shell node qa/t08/run.mjs browser",
+    "focused": "same browser command with --grep T08-B02",
+    "lint": "node qa/t08/run.mjs lint",
+    "typecheck": "node qa/t08/run.mjs typecheck"
+  },
+  "contracts": [
+    {
+      "name": "T08-01 authenticated create / checkpoints / assembly / export (simulated boundaries)",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-02 unauthenticated create and export reject before side effects",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-03 exhausted quota blocks generation",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-04 hybrid without approval must release its reservation",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-05 failed video INSERT must release its reservation",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-06 missing worker claim must not execute generation",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-07 concurrent duplicate creation with same Idempotency-Key generates once",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-08 interrupted scene preserves checkpoint and recovery only regenerates missing visual",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-09 checkpoint rejection stops assembly and provider failure releases quota",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-10 create response must redact provider credential-shaped errors",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-11 export IDOR rejects foreign video before render",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-12 export rejects a version attached to another video",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-13 export DB UPDATE failure must not return success",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-14 export version INSERT failure must not return success",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-15 concurrent exports allocate distinct durable version numbers",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-16 approval consumption is one-shot under 8 concurrent callers",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-17 approval DB outage prevents generation authorization",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-18 expired or altered approval cannot authorize generation",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-19 validate / schedule / publish two platforms through real handlers",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-20 invalid schedule is rejected without DB write",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-21 account ownership configuration cannot be forged by PATCH",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-22 foreign approval and publication produce zero mutations",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-23 approval must not overwrite a worker transition after its read",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-24 bounded load: 8 workers / 32 videos / 64 simulated publications",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-25 partial publication and retry retain successful platforms",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-26 claim DB failure has zero publication effects",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-27 finish RPC failure must not report confirmed provider success",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-28 publication video-read DB outage must not become permanent content failure",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-39 authenticated text/plain cross-origin creation must reject before effects",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-29 cron rejects 64 forged credentials and permits exact synthetic credential",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-30 media download must reject private / metadata / loopback addresses before fetch",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-31 aborted media download makes zero requests and leaves no file",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-32 observability emits one correlation id from start to finish",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-33 cron terminal result must not be overwritten by a second finish",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-34 observability log must redact credential-shaped errors",
+      "status": "FAIL"
+    },
+    {
+      "name": "T08-35 stale reconciliation preserves current and completed runs",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-36 schedule DST autumn overlap emits at most one occurrence per local day",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-37 network guard rejects remote egress without contacting provider",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-38 environment-file guard denies reads before filesystem access",
+      "status": "PASS"
+    },
+    {
+      "name": "T08-40 observability must not indefinitely block work on a hung DB transport",
+      "status": "FAIL"
+    }
+  ],
+  "browserFullRun": {
+    "startTime": "2026-10-12T00:16:28.577Z",
+    "tests": [
+      {
+        "name": "T08-B01 actual login form handles invalid credentials then opens dashboard (GoTrue simulated)",
+        "status": "PASS",
+        "durationMs": 10174
+      },
+      {
+        "name": "T08-B02 budget gate then one generation and navigation to editor (API fixtures)",
+        "status": "FAIL",
+        "durationMs": 19295,
+        "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 1\nReceived: 0\n\n"
+      },
+      {
+        "name": "T08-B03 editor XSS escaping, subtitle edit, failed export and retry (API fixtures)",
+        "status": "PASS",
+        "durationMs": 6488
+      },
+      {
+        "name": "T08-A11Y-login mobile WCAG serious/critical and overflow",
+        "status": "FAIL",
+        "durationMs": 1181,
+        "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  -   1\n+ Received  + 644\n\n- Array []\n+ Array [\n+   Object {\n+     \"id\": \"color-contrast\",\n+     \"impact\": \"serious\",\n+     \"nodes\": Array [\n+       Object {\n+         \"all\": Array [],\n+         \"any\": Array [\n+           Object {\n+             \"data\": Object {\n+               \"bgColor\": \"#120923\",\n+               \"colorParse\": ",
+        "axe": [
+          {
+            "rule": "color-contrast",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  ".mt-2"
+                ],
+                "html": "<p class=\"text-white/50 text-sm mt-2\">Connecte-toi a ton compte</p>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.35 (foreground color: #2f273d, background color: #120923, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".border-white\\/\\[0\\.08\\] > span"
+                ],
+                "html": "<span class=\"\">",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.91 (foreground color: #474054, background color: #150c25, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".px-3"
+                ],
+                "html": "<span class=\"bg-[#06050e] px-3 text-white/30\">ou</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.19 (foreground color: #221a32, background color: #0d061c, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "label[for=\"_R_66iatqbn5ralb_\"]"
+                ],
+                "html": "<label for=\"_R_66iatqbn5ralb_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 left-11 top-1/2 -translate-y-1/2 text-sm text-white/40\">Email</label>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.8 (foreground color: #726d7c, background color: #140b24, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "#_R_66iatqbn5ralb_"
+                ],
+                "html": "<input id=\"_R_66iatqbn5ralb_\" class=\"w-full py-3 rounded-...\" data-testid=\"email-input\" type=\"email\" autocomplete=\"email\" value=\"\">",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.93 (foreground color: #474054, background color: #140b24, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "label[for=\"_R_a6iatqbn5ralb_\"]"
+                ],
+                "html": "<label for=\"_R_a6iatqbn5ralb_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 left-11 top-1/2 -translate-y-1/2 text-sm text-white/40\">Mot de passe</label>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.78 (foreground color: #726f82, background color: #140f2f, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "#_R_a6iatqbn5ralb_"
+                ],
+                "html": "<input id=\"_R_a6iatqbn5ralb_\" class=\"w-full py-3 rounded-...\" data-testid=\"password-input\" type=\"password\" autocomplete=\"current-password\" value=\"\">",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.95 (foreground color: #47435d, background color: #140f2f, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".text-white\\/50.text-xs"
+                ],
+                "html": "<span class=\"text-xs text-white/50\">Rester connecte</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.37 (foreground color: #2f2a47, background color: #120d2e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "a[href$=\"forgot-password\"]"
+                ],
+                "html": "<a class=\"text-xs text-violet-400 hover:text-violet-300 transition-colors\" href=\"/forgot-password\">Mot de passe oublie ?</a>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.48 (foreground color: #372a62, background color: #120d2e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".mt-6.text-center.text-white\\/40"
+                ],
+                "html": "<p class=\"text-center text-sm text-white/40 mt-6\">Pas de compte ?<!-- --> <a class=\"text-violet-400 hover:text-violet-300 font-medium transition-colors\" href=\"/signup\">Inscris-toi</a></p>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.26 (foreground color: #292442, background color: #120d2e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "a[href$=\"signup\"]"
+                ],
+                "html": "<a class=\"text-violet-400 hover:text-violet-300 font-medium transition-colors\" href=\"/signup\">Inscris-toi</a>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.48 (foreground color: #372a62, background color: #120d2e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".text-white\\/20"
+                ],
+                "html": "<p class=\"text-center text-xs text-white/20 mt-6\">SUTRA by Purama — Generation video IA</p>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.1 (foreground color: #141626, background color: #07091a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ]
+          }
+        ],
+        "timing": {
+          "domInteractiveMs": 97.70000004768372,
+          "responseStartMs": 79.20000004768372,
+          "width": 390,
+          "scrollWidth": 390
+        }
+      },
+      {
+        "name": "T08-A11Y-create mobile WCAG serious/critical and overflow",
+        "status": "FAIL",
+        "durationMs": 2009,
+        "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  -    1\n+ Received  + 1138\n\n- Array []\n+ Array [\n+   Object {\n+     \"id\": \"button-name\",\n+     \"impact\": \"critical\",\n+     \"nodes\": Array [\n+       Object {\n+         \"all\": Array [],\n+         \"any\": Array [\n+           Object {\n+             \"data\": null,\n+             \"id\": \"button-has-visible-text\",\n+             \"impact\": ",
+        "axe": [
+          {
+            "rule": "button-name",
+            "impact": "critical",
+            "nodes": [
+              {
+                "target": [
+                  "button[data-testid=\"theme-toggle\"]"
+                ],
+                "html": "<button class=\"p-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors\" data-testid=\"theme-toggle\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  "button[data-testid=\"notification-bell\"]"
+                ],
+                "html": "<button class=\"relative p-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors\" data-testid=\"notification-bell\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              }
+            ]
+          },
+          {
+            "rule": "color-contrast",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  "button[data-testid=\"mode-manual\"]"
+                ],
+                "html": "<button data-testid=\"mode-manual\" class=\"relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200 text-white/40 hover:text-white/60\">",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.46 (foreground color: #515157, background color: #0d0c15, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".mt-1\\.5"
+                ],
+                "html": "<p class=\"text-xs text-white/30 mt-1.5\">Sois precis : plus ta description est detaillee, meilleur sera le resultat.</p>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.74 (foreground color: #39383f, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"media-mode-stock\"] > div:nth-child(2) > .leading-relaxed.text-xs.text-white\\/50"
+                ],
+                "html": "<div class=\"text-xs text-white/50 leading-relaxed\">Videos &amp; photos reelles (Pexels, Unsplash, Coverr) en 1080p+ ou 4K.</div>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #5e5e64, background color: #0b0a13, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"media-mode-mixed\"] > div:nth-child(2) > .leading-relaxed.text-xs.text-white\\/50"
+                ],
+                "html": "<div class=\"text-xs text-white/50 leading-relaxed\">Combine medias reels et IA pour le meilleur des deux mondes.</div>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #5e5e64, background color: #0b0a13, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"media-mode-hybrid\"] > div:nth-child(2) > .leading-relaxed.text-xs.text-white\\/50"
+                ],
+                "html": "<div class=\"text-xs text-white/50 leading-relaxed\">Banques 4K sous licence d’abord, IA payante seulement si besoin. Estimation + validation avant chaque centime.</div>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #5e5e64, background color: #0b0a13, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"format-16x9\"] > .font-semibold.text-sm"
+                ],
+                "html": "<span class=\"text-sm font-semibold\">16:9</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.04 (foreground color: #5d5d62, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"format-16x9\"] > .text-\\[11px\\].text-white\\/40"
+                ],
+                "html": "<span class=\"text-[11px] text-white/40\">YouTube, Desktop</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.33 (foreground color: #4c4c52, background color: #090811, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"format-9x16\"] > .text-\\[11px\\].text-white\\/40"
+                ],
+                "html": "<span class=\"text-[11px] text-white/40\">TikTok, Reels</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.36 (foreground color: #534c62, background color: #120827, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"format-1x1\"] > .font-semibold.text-sm"
+                ],
+                "html": "<span class=\"text-sm font-semibold\">1:1</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.04 (foreground color: #5d5d62, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"format-1x1\"] > .text-\\[11px\\].text-white\\/40"
+                ],
+                "html": "<span class=\"text-[11px] text-white/40\">Instagram, Feed</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.33 (foreground color: #4c4c52, background color: #090811, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"quality-1080p\"] > .font-semibold.text-sm"
+                ],
+                "html": "<span class=\"text-sm font-semibold\">1080p</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.04 (foreground color: #5d5d62, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"quality-4k\"] > .font-semibold.text-sm"
+                ],
+                "html": "<span class=\"text-sm font-semibold\">4K</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.04 (foreground color: #5d5d62, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"engine-ltx-fast\"] > .text-\\[11px\\].text-white\\/40"
+                ],
+                "html": "<span class=\"text-[11px] text-white/40\">LTX 2.3 Fast — generation rapide</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.36 (foreground color: #534c62, background color: #120827, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"engine-wan-classic\"] > .font-semibold.text-sm"
+                ],
+                "html": "<span class=\"text-sm font-semibold\">Classique</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.04 (foreground color: #5d5d62, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"engine-wan-classic\"] > .text-\\[11px\\].text-white\\/40"
+                ],
+                "html": "<span class=\"text-[11px] text-white/40\">WAN 2.2 — inclus gratuit</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.33 (foreground color: #4c4c52, background color: #090811, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"style-educatif\"]"
+                ],
+                "html": "<button data-testid=\"style-educatif\" class=\"px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 bg-white/[0.03] border-white/[0.06] text-white/50 hover:text-white/70 hover:border-white/[0.12]\"><span class=\"mr-1.5\">📚</span>Educatif</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #5e5e64, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"style-divertissement\"]"
+                ],
+                "html": "<button data-testid=\"style-divertissement\" class=\"px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 bg-white/[0.03] border-white/[0.06] text-white/50 hover:text-white/70 hover:border-white/[0.12]\"><span class=\"mr-1.5\">🎬</span>Divertissement</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #5e5e64, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"style-motivation\"]"
+                ],
+                "html": "<button data-testid=\"style-motivation\" class=\"px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 bg-white/[0.03] border-white/[0.06] text-white/50 hover:text-white/70 hover:border-white/[0.12]\"><span class=\"mr-1.5\">🔥</span>Motivation</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #5e5e64, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"style-storytelling\"]"
+                ],
+                "html": "<button data-testid=\"style-storytelling\" class=\"px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 bg-white/[0.03] border-white/[0.06] text-white/50 hover:text-white/70 hover:border-white/[0.12]\"><span class=\"mr-1.5\">📖</span>Storytelling</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #5e5e64, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"style-tutoriel\"]"
+                ],
+                "html": "<button data-testid=\"style-tutoriel\" class=\"px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 bg-white/[0.03] border-white/[0.06] text-white/50 hover:text-white/70 hover:border-white/[0.12]\"><span class=\"mr-1.5\">🎓</span>Tutoriel</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #5e5e64, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ]
+          },
+          {
+            "rule": "select-name",
+            "impact": "critical",
+            "nodes": [
+              {
+                "target": [
+                  "select[data-testid=\"niche-select\"]"
+                ],
+                "html": "<select data-testid=\"niche-select\" class=\"w-full px-4 py-3 rounded-xl text-sm text-white/90 bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] hover:border-white/[0.12] focus:border-violet-500/60 outline-none transition-all duration-200 appearance-none cursor-pointer\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  "select[data-testid=\"voice-select\"]"
+                ],
+                "html": "<select data-testid=\"voice-select\" class=\"w-full px-4 py-3 rounded-xl text-sm text-white/90 bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] hover:border-white/[0.12] focus:border-violet-500/60 outline-none transition-all duration-200 appearance-none cursor-pointer\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              }
+            ]
+          }
+        ],
+        "timing": {
+          "domInteractiveMs": 203.30000019073486,
+          "responseStartMs": 115.80000019073486,
+          "width": 390,
+          "scrollWidth": 390
+        }
+      },
+      {
+        "name": "T08-A11Y-editor mobile WCAG serious/critical and overflow",
+        "status": "FAIL",
+        "durationMs": 2287,
+        "error": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  -    1\n+ Received  + 1459\n\n- Array []\n+ Array [\n+   Object {\n+     \"id\": \"button-name\",\n+     \"impact\": \"critical\",\n+     \"nodes\": Array [\n+       Object {\n+         \"all\": Array [],\n+         \"any\": Array [\n+           Object {\n+             \"data\": null,\n+             \"id\": \"button-has-visible-text\",\n+             \"impact\": ",
+        "axe": [
+          {
+            "rule": "button-name",
+            "impact": "critical",
+            "nodes": [
+              {
+                "target": [
+                  "button[data-testid=\"theme-toggle\"]"
+                ],
+                "html": "<button class=\"p-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors\" data-testid=\"theme-toggle\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  "button[data-testid=\"notification-bell\"]"
+                ],
+                "html": "<button class=\"relative p-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors\" data-testid=\"notification-bell\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-back\"]"
+                ],
+                "html": "<button data-testid=\"editor-back\" class=\"p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/60 hover:text-white hover:bg-white/10 transition-colors\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  ".gap-1\\.5"
+                ],
+                "html": "<button data-testid=\"editor-versions\" class=\"flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/60 hover:text-white hover:bg-white/10 transition-colors\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  ".bg-black\\/20"
+                ],
+                "html": "<button data-testid=\"editor-play-overlay\" class=\"absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors group\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-play-pause\"]"
+                ],
+                "html": "<button data-testid=\"editor-play-pause\" class=\"p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-mute\"]"
+                ],
+                "html": "<button data-testid=\"editor-mute\" class=\"p-1.5 rounded-lg text-white/50 hover:text-white transition-colors\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have inner text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              }
+            ]
+          },
+          {
+            "rule": "color-contrast",
+            "impact": "serious",
+            "nodes": [
+              {
+                "target": [
+                  ".tabular-nums"
+                ],
+                "html": "<span class=\"text-xs text-white/50 font-mono tabular-nums min-w-[80px]\">0:00 / 0:05</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #6c6b71, background color: #0c0b14, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-speed-0.5\"]"
+                ],
+                "html": "<button data-testid=\"editor-speed-0.5\" class=\"px-2 py-1 rounded-md text-xs font-medium transition-colors text-white/40 hover:text-white/70 hover:bg-white/5\">0.5x</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".bg-violet-500\\/20"
+                ],
+                "html": "<button data-testid=\"editor-speed-1\" class=\"px-2 py-1 rounded-md text-xs font-medium transition-colors bg-violet-500/20 text-violet-400\">1x</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.23 (foreground color: #8a6dd5, background color: #201639, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-speed-1.5\"]"
+                ],
+                "html": "<button data-testid=\"editor-speed-1.5\" class=\"px-2 py-1 rounded-md text-xs font-medium transition-colors text-white/40 hover:text-white/70 hover:bg-white/5\">1.5x</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-speed-2\"]"
+                ],
+                "html": "<button data-testid=\"editor-speed-2\" class=\"px-2 py-1 rounded-md text-xs font-medium transition-colors text-white/40 hover:text-white/70 hover:bg-white/5\">2x</button>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".text-xs.text-white\\/50.font-medium"
+                ],
+                "html": "<span class=\"text-xs font-medium text-white/50\">Timeline</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #6c6b71, background color: #0c0b14, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-tab-scenes\"]"
+                ],
+                "html": "<button data-testid=\"editor-tab-scenes\" class=\"flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px text-white/40 border-transparent hover:text-white/60\">",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-tab-audio\"]"
+                ],
+                "html": "<button data-testid=\"editor-tab-audio\" class=\"flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px text-white/40 border-transparent hover:text-white/60\">",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  "button[data-testid=\"editor-tab-subtitles\"]"
+                ],
+                "html": "<button data-testid=\"editor-tab-subtitles\" class=\"flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 -mb-px text-white/40 border-transparent hover:text-white/60\">",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".mt-2"
+                ],
+                "html": "<p class=\"text-xs text-white/30 mt-2\">6 mots</p>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.05 (foreground color: #45454c, background color: #0c0b14, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".justify-between.text-sm:nth-child(1) > .text-white\\/40"
+                ],
+                "html": "<span class=\"text-white/40\">Format</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".justify-between.text-sm:nth-child(2) > .text-white\\/40"
+                ],
+                "html": "<span class=\"text-white/40\">Qualite</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".justify-between.text-sm:nth-child(3) > .text-white\\/40"
+                ],
+                "html": "<span class=\"text-white/40\">Duree</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".justify-between.text-sm:nth-child(4) > .text-white\\/40"
+                ],
+                "html": "<span class=\"text-white/40\">Scenes</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".justify-between.text-sm:nth-child(5) > .text-white\\/40"
+                ],
+                "html": "<span class=\"text-white/40\">Statut</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".justify-between.text-sm:nth-child(6) > .text-white\\/40"
+                ],
+                "html": "<span class=\"text-white/40\">Cree le</span>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              },
+              {
+                "target": [
+                  ".mb-4"
+                ],
+                "html": "<p class=\"text-xs text-white/40 mb-4\">Qualite selectionnee : 4k</p>",
+                "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.77 (foreground color: #59585e, background color: #0c0b14, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ]
+          },
+          {
+            "rule": "label",
+            "impact": "critical",
+            "nodes": [
+              {
+                "target": [
+                  ".h-1\\.5"
+                ],
+                "html": "<input min=\"0\" max=\"5\" data-testid=\"editor-seek\" class=\"flex-1 h-1.5 rounded...\" type=\"range\" value=\"0\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              },
+              {
+                "target": [
+                  ".w-20"
+                ],
+                "html": "<input min=\"0\" max=\"1\" step=\"0.05\" data-testid=\"editor-volume\" class=\"w-20 h-1 rounded-ful...\" type=\"range\" value=\"1\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              }
+            ]
+          },
+          {
+            "rule": "select-name",
+            "impact": "critical",
+            "nodes": [
+              {
+                "target": [
+                  "select"
+                ],
+                "html": "<select data-testid=\"editor-quality-select\" class=\"px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/80 outline-none appearance-none cursor-pointer\">",
+                "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+              }
+            ]
+          }
+        ],
+        "timing": {
+          "domInteractiveMs": 452.89999985694885,
+          "responseStartMs": 190.09999990463257,
+          "width": 390,
+          "scrollWidth": 390
+        }
+      }
+    ]
+  },
+  "browserFinalFixtureFocusedRun": {
+    "startTime": "2026-10-12T00:18:24.931Z",
+    "tests": [
+      {
+        "name": "T08-B02 budget gate then one generation and navigation to editor (API fixtures)",
+        "status": "FAIL",
+        "durationMs": 19536,
+        "error": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 1\nReceived: 0\n\n"
+      }
+    ]
+  },
+  "boundedLoad": {
+    "workers": 8,
+    "videos": 32,
+    "publications": 64,
+    "dbQueries": 240,
+    "elapsedMs": 3,
+    "proof": "in-memory RPC model; not SQL or provider throughput"
+  },
+  "runtime": {
+    "node": "v26.0.0",
+    "next": "16.3.5",
+    "react": "19.2.4",
+    "typescript": "5.9.3",
+    "tsx": "4.23.13",
+    "playwright": "1.58.2",
+    "axe": "4.11.1",
+    "chromiumCache": "1217"
+  },
+  "limits": [
+    "Browser default revision 1208 unavailable, used installed 1217",
+    "Font remote fetch blocked; fallback fonts",
+    "Node test module mocks experimental",
+    "S5 standard videos and auto videos journeys are separate segments",
+    "No SQL/RLS/migrations/remote DB/provider/media decoding proof",
+    "CSRF cookies/CORS not reproduced in browser",
+    "No production build or release performance proof"
+  ]
+}

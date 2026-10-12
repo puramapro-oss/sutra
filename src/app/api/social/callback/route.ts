@@ -54,7 +54,7 @@ export async function GET(req: Request) {
     const errorParam = url.searchParams.get('error')
 
     if (errorParam) {
-      return redirectToSettings(siteUrl, { error: errorParam })
+      return redirectToSettings(siteUrl, { error: 'oauth_denied' })
     }
 
     if (!code || !state || !platformParam) {

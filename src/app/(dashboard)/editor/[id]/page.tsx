@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useEditorHistory } from '@/hooks/useEditorHistory'
 import { useVideoPlayer } from '@/hooks/useVideoPlayer'
 import { useEditorHandlers } from '@/hooks/useEditorHandlers'
+import { editorScenes } from '@/lib/editor-export'
 import { PLAN_LIMITS } from '@/lib/constants'
 import { EditorLoadingState, EditorNotFoundState } from '@/components/editor/EditorStates'
 import { EditorHeader } from '@/components/editor/EditorHeader'
@@ -24,6 +25,7 @@ export default function EditorPage() {
   const params = useParams()
   const { profile, plan, loading: authLoading } = useAuth()
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const loadedVideoId = useRef<string | null>(null)
   const videoId = params?.id as string
 
   // Core state
@@ -33,6 +35,7 @@ export default function EditorPage() {
 
   // Player controls (hook)
   const player = useVideoPlayer(videoRef)
+  const { setDuration } = player
 
   // Editor state
   const [activeTab, setActiveTab] = useState<SideTab>('script')
@@ -95,7 +98,8 @@ export default function EditorPage() {
 
   // Fetch video
   useEffect(() => {
-    if (!videoId || authLoading) return
+    if (!videoId || authLoading || loadedVideoId.current === videoId) return
+    loadedVideoId.current = videoId
 
     async function fetchVideo() {
       setLoading(true)
@@ -114,8 +118,9 @@ export default function EditorPage() {
       const v = data as Video
       setVideo(v)
       setScript(v.script_data?.narration ?? '')
-      setScenes(v.script_data?.scenes ?? [])
-      player.setDuration(v.duration ?? 0)
+      const recoveredScenes = editorScenes(v.script_data?.scenes ?? [], v.shotstack_json)
+      setScenes(recoveredScenes)
+      setDuration(v.duration ?? 0)
 
       // Generate subtitle entries from narration
       const narration = v.script_data?.narration ?? ''
@@ -142,7 +147,7 @@ export default function EditorPage() {
       // Push initial history
       pushHistory({
         script: v.script_data?.narration ?? '',
-        scenes: v.script_data?.scenes ?? [],
+        scenes: recoveredScenes,
         subtitles: [],
         voiceVolume: 80,
         musicVolume: 50,
@@ -160,7 +165,7 @@ export default function EditorPage() {
     }
 
     fetchVideo()
-  }, [videoId, authLoading, plan, pushHistory, player])
+  }, [videoId, authLoading, plan, pushHistory, setDuration])
 
   // Keyboard shortcuts
   useEffect(() => {

@@ -7,6 +7,7 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
+  'scripts/test-insee.mjs', 'scripts/test-editor-export.mts', 'scripts/test-export-integration.mts', 'scripts/test-integration.mts', 'scripts/test-ltx-tiers.mjs', 'scripts/test-karma-split.mjs',
   'scripts/test-api-contracts.mts', 'scripts/test-env-contracts.mts',
   'scripts/test-local-engine.mts', 'scripts/test-shotstack-contracts.mts',
   'scripts/test-production-queue.mts', 'scripts/test-auto-export-queue.mts',
@@ -14,29 +15,45 @@ const nodeTests = [
   'scripts/test-opentimestamps.mjs', 'scripts/test-ltx-v2-media.mts',
   'scripts/test-social-publication.mts', 'scripts/test-auth-session.mts',
   'tooling/disposable-database.test.mjs',
+  'scripts/test-pipeline-interruptions.mts', 'scripts/test-pipeline-submit.mts',
+  'scripts/test-release-oauth.mts', 'scripts/test-security-account.mts',
+  'scripts/test-security-media.mts', 'scripts/test-security-routes.mts', 'scripts/test-security-storage.mts',
+  'scripts/test-t06-social-autonomy.mts', 'scripts/test-t06-social-routes.mts',
+  'scripts/test-ltx-v2-contracts.mts', 'scripts/test-provider-safety.mts',
+  'src/lib/video-compositor.test.mts', 'src/lib/ffmpeg-concurrency.test.ts',
+
 ]
 const profiles = {
   contracts: [
-    ['contracts', ['--import', 'tsx', '--test', '--test-concurrency=2', ...nodeTests]],
+    ['contracts', ['--experimental-test-module-mocks', '--import', 'tsx', '--test', '--test-concurrency=2', ...nodeTests]],
     ['schedule', ['scripts/test-auto-schedule.mjs']],
     ['composition', ['scripts/test-auto-composition.mjs']],
     ['publication', ['scripts/test-auto-publication.mjs']],
   ],
-  media: [['media', ['--import', 'tsx', '--test', 'scripts/test-local-engine-e2e.mts']]],
+  media: [
+    ['local-engine', ['--import', 'tsx', '--test', 'scripts/test-local-engine-e2e.mts']],
+    ['compositor', ['--experimental-test-module-mocks', '--import', 'tsx', '--import', './scripts/helpers/local-media-fixture.mts', '--test', '--test-concurrency=1', 'src/lib/ffmpeg-compositor.test.ts', 'src/lib/ffmpeg-compositor-formats.test.ts', 'src/lib/media-validation.test.ts']],
+  ],
+  browser: [['browser', ['scripts/test-ui-isolated.mjs']]],
+  'browser-profiles': [['profiles', ['scripts/test-ui-isolated.mjs', '--profile-only']]],
+  editor: [['editor', ['scripts/test-ui-isolated.mjs', '--editor-only']]],
+  legacy: [['legacy', ['scripts/test-ui-isolated.mjs', '--legacy']]],
+  'legacy-regressions': [['legacy-regressions', ['scripts/test-ui-isolated.mjs', '--legacy', '--legacy-regressions']]],
   quality: [
     ['typecheck', ['node_modules/typescript/bin/tsc', '--noEmit', '--incremental', 'false']],
     ['lint', ['node_modules/eslint/bin/eslint.js', '.']],
     ['build', ['node_modules/next/dist/bin/next', 'build', '--webpack']],
   ],
 }
-if (!Object.hasOwn(profiles, profile)) throw new Error('Usage: node scripts/run-ci.mjs contracts|media|quality')
+if (!Object.hasOwn(profiles, profile)) throw new Error('Usage: node scripts/run-ci.mjs contracts|media|quality|browser|browser-profiles|editor|legacy|legacy-regressions')
 if (readdirSync(root).some(name => name.startsWith('.env') && name !== '.env.example')) {
   throw new Error('Run CI gates in an isolated checkout without local environment files.')
 }
 const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot'].flatMap(key =>
   process.env[key] ? [[key, process.env[key]]] : []))
 Object.assign(env, {
-  CI: '1', NEXT_TELEMETRY_DISABLED: '1', OTS_NETWORK: '0', LTX_TRACK_DB: '0',
+  NODE_OPTIONS: `--require=${resolve(root, 'qa/t08/offline.cjs')}`,
+  CI: '1', SUTRA_UI_PRODUCTION: '1', NEXT_TELEMETRY_DISABLED: '1', OTS_NETWORK: '0', LTX_TRACK_DB: '0',
   NEXT_PUBLIC_SUPABASE_URL: 'https://sutra-test.invalid',
   NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fixture-anon', NEXT_PUBLIC_APP_SCHEMA: 'sutra',
   SUPABASE_SERVICE_ROLE_KEY: 'fixture-service', STRIPE_SECRET_KEY: 'sk_test_isolated',

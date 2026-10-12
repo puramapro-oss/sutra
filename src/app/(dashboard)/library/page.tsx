@@ -51,6 +51,7 @@ export default function LibraryPage() {
     loadingMore,
     hasMore,
     totalCount,
+    error,
     loadMore,
     handleDelete,
     refetch,
@@ -89,11 +90,7 @@ export default function LibraryPage() {
   }
 
   return (
-    <LoadingTimeout
-      loading={loading}
-      onRetry={refetch}
-      skeleton={<LibrarySkeleton />}
-    >
+    <>
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -124,6 +121,13 @@ export default function LibraryPage() {
           onDeleteFolder={handleDeleteFolder}
         />
 
+        <LoadingTimeout loading={loading} onRetry={refetch} skeleton={<LibrarySkeleton />} >
+        {error && (
+          <div role="alert" data-testid="library-error" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100">
+            <p>{error}</p>
+            <Button variant="secondary" size="sm" className="mt-3" onClick={refetch}>Réessayer</Button>
+          </div>
+        )}
         {displayedVideos.length > 0 ? (
           <>
             {viewMode === 'grid' ? (
@@ -162,14 +166,14 @@ export default function LibraryPage() {
               </div>
             )}
           </>
-        ) : (
+        ) : !error ? (
           <EmptyState
             icon={Film}
             title="Aucune video trouvee"
             description={
               search || filter !== 'all' || activeFolder
                 ? 'Aucune video ne correspond a tes filtres. Essaie de modifier ta recherche.'
-                : "Tu n&apos;as pas encore de video. Cree ta premiere !"
+                : "Tu n’as pas encore de vidéo. Crée ta première !"
             }
             action={
               search || filter !== 'all' || activeFolder
@@ -185,7 +189,8 @@ export default function LibraryPage() {
             }
             data-testid="empty-library"
           />
-        )}
+        ) : null}
+        </LoadingTimeout>
       </motion.div>
 
       <FolderModal
@@ -193,6 +198,6 @@ export default function LibraryPage() {
         onClose={() => setShowFolderModal(false)}
         onCreate={createFolder}
       />
-    </LoadingTimeout>
+    </>
   )
 }

@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { getOAuthUrl, type SocialPlatform } from '@/lib/zernio'
 import { issueSocialOAuthState, socialOAuthCookieName, SOCIAL_OAUTH_TTL_SECONDS } from '@/lib/social-oauth-state'
+import { enforceRateLimit } from '@/lib/rate-limit'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -55,6 +56,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
+    const limited = enforceRateLimit(`social:connect:${user.id}`, 10, 60_000)
+    if (limited) return limited
+
     const body = await req.json().catch(() => null)
     const parsed = connectSchema.safeParse(body)
 
@@ -87,10 +91,9 @@ export async function POST(req: Request) {
       path: '/api/social', maxAge: SOCIAL_OAUTH_TTL_SECONDS,
     })
     return response
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur connexion OAuth'
+  } catch {
     return NextResponse.json(
-      { error: 'Erreur génération OAuth', details: message },
+      { error: 'Erreur génération OAuth' },
       { status: 500 }
     )
   }

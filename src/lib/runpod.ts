@@ -1,8 +1,33 @@
-import { fetchWithRetry, sleep, httpErrorMessage } from '@/lib/utils/api'
+import { fetchWithRetry, sleep } from '@/lib/utils/api'
 import { requireEnv, optionalEnv, isEnvSet } from '@/lib/env'
 import { isSuperAdmin } from '@/lib/utils'
 
 export type RunpodFormat = '9:16' | '16:9' | '1:1'
+
+export type RunpodRemoteStatus = 'unknown' | 'IN_QUEUE' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'TIMED_OUT'
+export interface RunpodProvenance {
+  provider: 'runpod'
+  id: string | null
+  remoteStatus: RunpodRemoteStatus
+  timeoutMs: number
+  lastHttpStatus: number | null
+  cost: { currency: 'USD'; estimated: null; actual: null; actualStatus: 'not_reported'; basis: 'worker_gpu_profile_required' }
+  quota: { remaining: null; retryAfterSeconds: number | null }
+  source: 'https://docs.runpod.io/serverless/endpoints/send-requests'
+}
+export function runpodProvenance(id: string | null, remoteStatus: RunpodRemoteStatus, timeoutMs: number, lastHttpStatus: number | null = null): RunpodProvenance {
+  return { provider: 'runpod', id, remoteStatus, timeoutMs, lastHttpStatus,
+    cost: { currency: 'USD', estimated: null, actual: null, actualStatus: 'not_reported', basis: 'worker_gpu_profile_required' },
+    quota: { remaining: null, retryAfterSeconds: null }, source: 'https://docs.runpod.io/serverless/endpoints/send-requests' }
+}
+export class RunpodJobError extends Error {
+  readonly retrySubmission = false
+  readonly fallbackAllowed = false
+  constructor(readonly code: string, readonly provenance: RunpodProvenance) {
+    super(`RunPod: ${code}${provenance.id ? ` (job ${provenance.id})` : ''}; resoumission non autorisee`)
+    this.name = 'RunpodJobError'
+  }
+}
 
 interface VideoGenRequest {
   prompt: string
@@ -33,12 +58,13 @@ function getBaseUrl(userEmail?: string | null): string {
 export async function submitVideoJob(
   req: VideoGenRequest,
   userEmail?: string | null
-): Promise<{ jobId: string; baseUrl: string }> {
+): Promise<{ jobId: string; baseUrl: string; provenance: RunpodProvenance }> {
   const apiKey = requireEnv('RUNPOD_API_KEY', 'generation video WAN/RunPod')
   const baseUrl = getBaseUrl(userEmail)
 
-  const res = await fetchWithRetry(`${baseUrl}/run`, {
-    method: 'POST',
+  let res: Response
+  try { res = await fetchWithRetry(`${baseUrl}/run`, {
+    method: 'POST', cache: 'no-store', redirect: 'error',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
@@ -55,14 +81,17 @@ export async function submitVideoJob(
         seed: req.seed,
       },
     }),
-  })
+  }) } catch { throw new RunpodJobError('SUBMISSION_UNKNOWN', runpodProvenance(null, 'unknown', 300_000)) }
 
-  if (!res.ok) {
-    throw new Error(`RunPod: ${await httpErrorMessage(res)}`)
-  }
-  const data = (await res.json()) as { id?: string; error?: string }
-  if (!data.id) throw new Error(`RunPod: ${data.error ?? 'pas de job ID'}`)
-  return { jobId: data.id, baseUrl }
+  const provenance = runpodProvenance(null, 'unknown', 300_000, res.status)
+  const retry = Number(res.headers.get('retry-after'))
+  if (res.headers.has('retry-after') && Number.isFinite(retry) && retry >= 0) provenance.quota.retryAfterSeconds = retry
+  if (!res.ok) throw new RunpodJobError(`HTTP ${res.status}`, provenance)
+  const data = await res.json().catch(() => null) as { id?: string; status?: string } | null
+  if (!data?.id || !/^[A-Za-z0-9_-]{1,200}$/.test(data.id)) throw new RunpodJobError('pas de job ID / SUBMISSION_UNKNOWN', provenance)
+  provenance.id = data.id
+  if (data.status === 'IN_QUEUE' || data.status === 'IN_PROGRESS') provenance.remoteStatus = data.status
+  return { jobId: data.id, baseUrl, provenance }
 }
 
 export async function pollVideoJob(
@@ -74,21 +103,32 @@ export async function pollVideoJob(
   const endpointId = requireEnv('RUNPOD_ENDPOINT_ID', 'generation video WAN/RunPod')
   const pollUrl = baseUrl ?? `https://api.runpod.ai/v2/${endpointId}`
   const start = Date.now()
+  const provenance = runpodProvenance(jobId, 'unknown', timeoutMs)
+  if (!/^[A-Za-z0-9_-]{1,200}$/.test(jobId) || !Number.isFinite(timeoutMs) || timeoutMs <= 0) throw new RunpodJobError('INVALID_POLL_CONTEXT', provenance)
 
   while (Date.now() - start < timeoutMs) {
-    const res = await fetch(`${pollUrl}/status/${jobId}`, {
+    let res: Response
+    try { res = await fetch(`${pollUrl}/status/${encodeURIComponent(jobId)}`, {
+      cache: 'no-store', redirect: 'error',
       headers: { Authorization: `Bearer ${apiKey}` },
-      signal: AbortSignal.timeout(15_000),
-    })
+      signal: AbortSignal.timeout(Math.max(1, Math.min(15_000, timeoutMs - (Date.now() - start)))),
+    }) } catch { throw new RunpodJobError('POLL_NETWORK_UNKNOWN', provenance) }
+    provenance.lastHttpStatus = res.status
     if (!res.ok) {
       // 401/403/404 : clé invalide ou job inconnu → inutile de re-sonder.
       if (res.status === 401 || res.status === 403 || res.status === 404) {
-        throw new Error(`RunPod status: HTTP ${res.status} pour le job ${jobId}`)
+        throw new RunpodJobError(`HTTP ${res.status}`, provenance)
       }
-      await sleep(3000)
+      if (res.status !== 429 && res.status < 500) throw new RunpodJobError(`HTTP ${res.status}`, provenance)
+      const retry = Number(res.headers.get('retry-after'))
+      provenance.quota.retryAfterSeconds = res.headers.has('retry-after') && Number.isFinite(retry) && retry >= 0 ? retry : null
+      const pause = Math.max(3000, (provenance.quota.retryAfterSeconds ?? 0) * 1000)
+      if (Date.now() - start + pause >= timeoutMs) break
+      await sleep(pause)
       continue
     }
-    const data = (await res.json()) as {
+    const data = (await res.json().catch(() => null)) as null | {
+      id?: string
       status?: string
       error?: string
       output?: string | {
@@ -97,6 +137,8 @@ export async function pollVideoJob(
       }
     }
 
+    if (!data || (data.id && data.id !== jobId) || !['IN_QUEUE', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED', 'TIMED_OUT'].includes(data.status ?? '')) throw new RunpodJobError('INVALID_POLL_RESPONSE', provenance)
+    provenance.remoteStatus = data.status as RunpodRemoteStatus
     if (data.status === 'COMPLETED') {
       const output = data.output
       let raw: string | { type?: string; data?: string } | undefined
@@ -107,21 +149,20 @@ export async function pollVideoJob(
         if (typeof first === 'string') raw = first
         else raw = first ?? (output.video_url ? output.video_url : undefined)
       }
-      if (!raw) throw new Error('RunPod: pas de video dans la reponse')
+      if (!raw) throw new RunpodJobError('OUTPUT_MISSING', provenance)
       if (typeof raw === 'string') return raw
-      if (!raw.data) throw new Error('RunPod: reponse invalide (data absente)')
+      if (!raw.data) throw new RunpodJobError('OUTPUT_MISSING', provenance)
       return raw.type === 's3_url'
         ? raw.data
         : `data:video/mp4;base64,${raw.data}`
     }
 
-    if (data.status === 'FAILED') {
-      throw new Error(`RunPod: generation echouee - ${data.error ?? 'erreur inconnue'}`)
-    }
+    if (['FAILED', 'CANCELLED', 'TIMED_OUT'].includes(data.status!)) throw new RunpodJobError(`REMOTE_${data.status}`, provenance)
 
+    if (Date.now() - start + 3000 >= timeoutMs) break
     await sleep(3000)
   }
-  throw new Error('RunPod: timeout apres 5 minutes')
+  throw new RunpodJobError('WAIT_TIMEOUT_REMOTE_UNCHANGED', provenance)
 }
 
 export async function generateAllScenes(

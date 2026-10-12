@@ -82,6 +82,7 @@ function matchesFrequency(
 /** Returns the next occurrence in the schedule's IANA timezone. */
 export function computeNextRun(schedule: AutoSchedule, from: Date = new Date()): Date | null {
   if (!schedule.is_active || Number.isNaN(from.getTime())) return null
+  if (typeof schedule.time !== 'string' || !/^\d{2}:\d{2}$/.test(schedule.time) || !Array.isArray(schedule.days)) return null
   const [hour, minute] = schedule.time.split(':').map(Number)
   if (!Number.isInteger(hour) || !Number.isInteger(minute) || hour < 0 || hour > 23 || minute < 0 || minute > 59) return null
 
@@ -123,6 +124,13 @@ export function autoOccurrences(schedules: AutoSchedule[], from: Date, through: 
   if (through.getTime() - from.getTime() > 24 * 60 * 60 * 1000) throw new Error('Scheduling window too large')
   const occurrences: Array<{ schedule: AutoSchedule; at: Date }> = []
   const seen = new Set<string>()
+  const definitions = new Map<string, string>()
+  for (const schedule of schedules) {
+    if (!schedule.id) throw new Error('Missing schedule identity')
+    const definition = JSON.stringify([schedule.is_active, schedule.frequency, schedule.time, schedule.timezone, [...(schedule.days ?? [])].sort()])
+    if (definitions.has(schedule.id) && definitions.get(schedule.id) !== definition) throw new Error('Conflicting schedule identity')
+    definitions.set(schedule.id, definition)
+  }
   for (const schedule of schedules) {
     let cursor = from
     for (let count = 0; count < 3; count++) {

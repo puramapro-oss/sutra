@@ -1,6 +1,8 @@
-import { assembleFinalVideo, generateSubtitlesFromScript, durableRenderJob, verifyAndStoreRenderedVideo } from '@/lib/shotstack'
+import { assembleFinalVideo } from './final-composition'
+import { pipelineSteps, checkpointStage, assertFinalMedia, persistPipelineVideo } from '@/lib/pipeline-state'
+import { generateSubtitlesFromScript, durableRenderJob, verifyAndStoreRenderedVideo } from '@/lib/shotstack'
 import {
-  loadAutoContext, planNextVideo, generateAutoVideoAssets, recordMemory,
+  loadAutoContext, planNextVideo, generateAutoVideoAssets,
   type AutoConfig, type VideoPlan,
 } from '@/lib/sutra-auto'
 import type { Plan } from '@/types'
@@ -71,19 +73,16 @@ export async function executeAutoJob(
   providers: AutoProviders
 ): Promise<AutoFinalState> {
   const done = resume.steps
-  const step = async <T,>(key: string, fn: () => Promise<T>): Promise<T> => {
-    const cached = done[key]
-    if (cached !== undefined) return cached as T
-    await hooks.heartbeat?.()
-    const value = await fn()
-    await hooks.onStepResolved?.(key, value)
-    done[key] = value
-    return value
-  }
+  const step = pipelineSteps(done, hooks)
 
-  const plan = await step('plan', () => providers.plan())
+  const plan = await step('plan', () => providers.plan(), true)
+  await checkpointStage(done, hooks, 'script', plan)
   const assets = await step('assets', () => providers.assets(plan, { steps: done, ...hooks }))
 
+  await checkpointStage(done, hooks, 'scenes', [assets.video_raw_url])
+  await checkpointStage(done, hooks, 'images', [], 'skipped')
+  await checkpointStage(done, hooks, 'voice', assets.audio_voice_url, assets.audio_voice_url ? 'complete' : 'skipped')
+  await checkpointStage(done, hooks, 'music', assets.audio_music_url, assets.audio_music_url ? 'complete' : 'skipped')
   // A failed required composition must never expose the raw URL as final.
   let assembly: { url: string | null; error: string | null; outputVerified?: boolean }
   try {
@@ -96,9 +95,9 @@ export async function executeAutoJob(
     if (cached?.error) throw new Error('SUTRA_RECONCILIATION_REQUIRED: ancien montage en echec')
     assembly = await step('assembly', async () => {
       const duration = Math.max(1, input.config.default_duration ?? 6)
-      const subtitles = plan.script
-        ? generateSubtitlesFromScript(plan.script, [{ duration_seconds: duration }])
-        : []
+      const subtitles = await step('subtitles', async () => plan.script
+        ? generateSubtitlesFromScript(plan.script, [{ duration_seconds: duration }]) : [])
+      await checkpointStage(done, hooks, 'subtitles', subtitles)
       // Even a silent clip is exported to the requested format/size, then verified.
       // A raw provider URL is never treated as a validated final export.
       const rendered = await step('rendered', () => providers.assemble({
@@ -116,13 +115,18 @@ export async function executeAutoJob(
           logo_url: input.config.watermark_url ?? undefined,
         },
         renderJob: durableRenderJob(done, hooks.onStepResolved),
-      }))
-      const assembled = await verifyAndStoreRenderedVideo(rendered, {
+      }), true, typeof done.assembly_render_id === 'string')
+      await checkpointStage(done, hooks, 'composition', rendered)
+      const assembled = await step('verified', () => verifyAndStoreRenderedVideo(rendered, {
         userId: input.userId, mediaId: input.videoRowId,
         requireAudio: Boolean(assets.audio_music_url || assets.audio_voice_url),
-      })
+      }))
+      assertFinalMedia(assembled, [assets.video_raw_url], Boolean(assets.audio_music_url || assets.audio_voice_url))
+      await checkpointStage(done, hooks, 'export', assembled)
       return { url: assembled.url, error: null as string | null, outputVerified: true, verification: assembled.verification }
     })
+    if (!done.verified) throw new Error('SUTRA_RECONCILIATION_REQUIRED: missing export checkpoint')
+    assertFinalMedia(done.verified as import('@/lib/shotstack').AssembleResult, [assets.video_raw_url], Boolean(assets.audio_music_url || assets.audio_voice_url))
     if (!assembly.outputVerified) throw new Error('SUTRA_RECONCILIATION_REQUIRED: ancien resultat final non verifie')
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
@@ -141,6 +145,7 @@ export async function executeAutoJob(
     await providers.persist(input, state, plan)
     return state
   })
+  await checkpointStage(done, hooks, 'publication', { reason: input.config.require_approval_before_publish ? 'approval required' : 'scheduler publication pending' }, 'pending')
   return final
 }
 
@@ -168,9 +173,7 @@ export function buildAutoProviders(
     assets: (plan, progress) => generateAutoVideoAssets({ videoId: videoRowId, plan, config, userEmail, plan_tier: planTier, progress }),
     assemble: (args) => assembleFinalVideo(args),
     persist: async (input, final, plan) => {
-      const { data: updated, error: updateError } = await service
-        .from('sutra_auto_videos')
-        .update({
+      await persistPipelineVideo(service, 'sutra_auto_videos', input.videoRowId, {
           status: final.status,
           title: plan.title,
           description: plan.description,
@@ -192,29 +195,7 @@ export function buildAutoProviders(
             Math.floor((Date.now() - new Date(input.generationStartedAt).getTime()) / 1000)
           ),
         })
-        .eq('id', input.videoRowId)
-        .eq('user_id', userId)
-        .select('id')
-        .single()
-      if (updateError || !updated) throw new Error(`Enregistrement video impossible: ${updateError?.message ?? 'ligne absente'}`)
-      if (final.status === 'compositing') return
-      await recordMemory({
-        userId,
-        type: 'preference',
-        content: `Video generee: "${plan.title}" — theme: ${plan.theme_id ?? 'libre'}, raison: ${plan.reasoning}`,
-        importance: 0.5,
-        related_video_id: input.videoRowId,
-      }).catch(() => {})
-      if (plan.theme_id) {
-        const ctx = await loadAutoContext(userId).catch(() => null)
-        const used = ctx?.themes.find((t) => t.id === plan.theme_id)?.times_used ?? 0
-        await service
-          .from('sutra_auto_themes')
-          .update({ last_used_at: new Date().toISOString(), times_used: used + 1 })
-          .eq('id', plan.theme_id)
-          .eq('user_id', userId)
-          .then(() => undefined, () => undefined)
-      }
+
     },
   }
 }

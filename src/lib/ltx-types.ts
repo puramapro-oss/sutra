@@ -17,8 +17,9 @@ export interface LtxTextToVideoRequest {
   resolution: string
   fps?: number
   generate_audio?: boolean
-  camera_motion?: CameraMotion
+  /** Retained only to match PR3 checkpoint fingerprints; new V2 requests reject it. */
   seed?: number
+  camera_motion?: CameraMotion
 }
 
 export interface LtxImageToVideoRequest {
@@ -35,6 +36,7 @@ export interface LtxImageToVideoRequest {
 
 export interface LtxResult {
   videoBuffer: ArrayBuffer
+  provenance?: Omit<import('./ltx-v2').LtxJob, 'output'> | import('./runpod').RunpodProvenance
   engine: VideoEngine
   model: LtxModel | 'wan-2.2' | 'local-m4max'
   duration: number

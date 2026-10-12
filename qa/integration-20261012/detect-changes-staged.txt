@@ -1,0 +1,36 @@
+LISTING CAPPED: the changed-symbol list was capped, so it does not name every changed symbol. The counts and risk level still cover all of them.
+
+Changes: 281 files, 1770 symbols
+Affected processes: 123
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01 CHEF — 2026-10-12 → BATON.md
+  Section SUTRA T01 CHEF — 2026-10-12 → HANDOFF-SUTRA-T01-20261012.md
+  Section Préservation et autorité → HANDOFF-SUTRA-T01-20261012.md
+  Section Lot T01 livré → HANDOFF-SUTRA-T01-20261012.md
+  Section Tests exacts et portée → HANDOFF-SUTRA-T01-20261012.md
+  Section Matrice des huit lots → HANDOFF-SUTRA-T01-20261012.md
+  Section SUTRA T02 — securite — 2026-10-12 → HANDOFF-SUTRA-T02-20261012.md
+  Section Provenance et propriete → HANDOFF-SUTRA-T02-20261012.md
+  Section Defauts et corrections → HANDOFF-SUTRA-T02-20261012.md
+  Section Chemins et contrats consommateurs → HANDOFF-SUTRA-T02-20261012.md
+  Section Validation → HANDOFF-SUTRA-T02-20261012.md
+  Section Blocage unique de cloture : integration des contrats et preuve distante → HANDOFF-SUTRA-T02-20261012.md
+  Section SUTRA — T03 pipeline vidéo — 2026-10-12 → HANDOFF-SUTRA-T03-20261012.md
+  Section Base et propriété → HANDOFF-SUTRA-T03-20261012.md
+  Section Comportement livré → HANDOFF-SUTRA-T03-20261012.md
+... and 1755 more
+
+Affected execution flows:
+  • GET → FetchWithRetry (5 steps) — changed: GET, publishAutoVideoRecord, runPublicationJournal, getPublicationResults
+  • LibraryPage → FetchVideos (3 steps) — changed: LibraryPage, fetchVideos, useLibraryVideos
+  • GET → BreakerKey (7 steps) — changed: GET, publishAutoVideoRecord, runPublicationJournal, getPublicationResults
+  • GET → Abort (7 steps) — changed: GET, publishAutoVideoRecord, runPublicationJournal, getPublicationResults
+  • GET → CreateServiceClient (6 steps) — changed: GET, persistProductionResult, pipelineActivity, pipelineEvent, runVideoJob
+  • GET → Denied (5 steps) — changed: denied, enforceAccountAccess, createServerClient
+  • GET → ContentWithTags (5 steps) — changed: GET, publishAutoVideoRecord, runPublicationJournal
+  • GET → ProviderPlatform (5 steps) — changed: GET, publishAutoVideoRecord, runPublicationJournal
+  • GET → Headers (5 steps) — changed: GET, publishAutoVideoRecord, runPublicationJournal, getPublicationResults
+  • GET → PersistPipelineVideo (5 steps) — changed: GET, persistVideo, persistProductionResult, persistPipelineVideo, runVideoJob
+... and 113 more

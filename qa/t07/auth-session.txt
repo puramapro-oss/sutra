@@ -1,0 +1,43 @@
+
+> sutra@0.1.0 test:auth-session
+> node --import tsx --test scripts/test-auth-session.mts
+
+✔ many consumers share one session read, subscription and profile request (14.603375ms)
+✔ token refresh updates the token without reloading a loaded profile (15.966125ms)
+✔ a newer sign-in wins over an older getSession result (6.280792ms)
+✔ switching accounts clears the old profile and ignores its late response (17.601625ms)
+✔ sign-out cancels the in-flight profile and leaves no former user data (12.496ms)
+✔ strict-mode cleanup and remount install a fresh working subscription (5.285375ms)
+✔ wrong-owner profile is rejected and a refetch can recover (12.757ms)
+✔ simultaneous manual refreshes are deduplicated (6.057334ms)
+✔ the server snapshot never contains a client session (6.633542ms)
+✔ reject unsafe or looping return path null (0.222291ms)
+✔ reject unsafe or looping return path "" (0.031916ms)
+✔ reject unsafe or looping return path "https://evil.invalid" (0.023459ms)
+✔ reject unsafe or looping return path "//evil.invalid" (0.018ms)
+✔ reject unsafe or looping return path "/\\evil.invalid" (0.036375ms)
+✔ reject unsafe or looping return path "/%2f%2fevil.invalid" (0.107125ms)
+✔ reject unsafe or looping return path "/%5cevil.invalid" (0.029083ms)
+✔ reject unsafe or looping return path "/login" (0.049625ms)
+✔ reject unsafe or looping return path "/api/delete" (0.045917ms)
+✔ reject unsafe or looping return path "/auth/callback" (0.017709ms)
+✔ reject unsafe or looping return path "/broken%zz" (0.023334ms)
+✔ reject unsafe or looping return path "/\n/evil.invalid" (0.013333ms)
+✔ preserve return path /create?mode=manual&format=9%3A16 (0.034375ms)
+✔ preserve return path /settings?tab=apparence#logo (0.022417ms)
+✔ preserve return path /reset-password (0.017ms)
+✔ session-only choice removes expiry on every refresh without changing cookie safety flags (2.220916ms)
+✔ remember-me uses thirty days (0.051459ms)
+✔ cookie deletion remains deletion (0.026333ms)
+✔ existing sessions without a new choice keep their prior cookie options (0.02175ms)
+✔ raster image signatures determine storage type (0.595792ms)
+✔ image uploads reject SVG, MIME mismatch, empty and oversized files (1.005708ms)
+✔ literal internal navigation points to an existing page or declared redirect (49.274167ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 788.284542

@@ -1,18 +1,20 @@
+import { assembleFinalVideo } from './final-composition'
+import { pipelineSteps, checkpointStage, assertFinalMedia, requireTracks, persistPipelineVideo } from '@/lib/pipeline-state'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { createServiceClient } from '@/lib/supabase'
+import { generateMusic } from '@/lib/suno'
 import { generateScript } from '@/lib/claude'
 import {
   generateVisualWithFallback,
-  generateMusicWithFallback,
   type VisualResult,
 } from '@/lib/fallbacks'
 import { searchVideos, type MediaFormat } from '@/lib/pexels'
-import { assembleFinalVideo, actualQualityFor, durableRenderJob, verifyAndStoreRenderedVideo, type AssembleClip } from '@/lib/shotstack'
+import { actualQualityFor, durableRenderJob, verifyAndStoreRenderedVideo, type AssembleClip } from '@/lib/shotstack'
 import { durableLtxJob, type LtxJobState } from '@/lib/ltx'
 import { executeProductionStep } from '@/lib/production-pipeline'
 import { estimateCost, selectEngine, type VideoQuality } from '@/lib/ltx-utils'
 import { stampVideoWhenReady } from '@/lib/video-proofs'
-import { logApiCall, sendNotification } from '@/lib/logger'
+import { pipelineLog as logApiCall, pipelineNotification as sendNotification } from '@/lib/pipeline-state'
 import { type SocialPlatform } from '@/lib/zernio'
 import { publishVideoRecord } from '@/lib/social-publication'
 import type { Plan, ScriptData } from '@/types'
@@ -74,18 +76,17 @@ function createPublicServiceClient() {
   return createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { db: { schema: 'public' }, auth: { autoRefreshToken: false, persistSession: false } })
 }
 
-async function triggerAutopilot(args: { userId: string; videoId: string; videoUrl: string; videoTitle: string; videoDescription: string; videoTags: string[] }): Promise<void> {
-  try {
-    const publicClient = createPublicServiceClient()
-    const { data: config, error: configError } = await publicClient.from('social_autopilot_config').select('*').eq('user_id', args.userId).maybeSingle()
-    if (configError || !config || !config.enabled) return
-    const platforms = (config.default_platforms ?? []) as SocialPlatform[]
-    if (platforms.length === 0) return
-    await publishVideoRecord(args.userId, {
-      videoId: args.videoId, platforms, caption: args.videoTitle, hashtags: args.videoTags,
-      autoCaption: Boolean(config.auto_caption),
-    })
-  } catch (err) { console.error('[autopilot] unexpected error:', err instanceof Error ? err.message : err) }
+async function triggerAutopilot(args: { userId: string; videoId: string; videoUrl: string; videoTitle: string; videoDescription: string; videoTags: string[] }) {
+  const { data: config, error } = await createPublicServiceClient().from('social_autopilot_config').select('*').eq('user_id', args.userId).maybeSingle()
+  if (error) throw new Error('SUTRA_PUBLICATION_CONFIG_UNAVAILABLE')
+  if (!config?.enabled || !config.default_platforms?.length) return { status: 'skipped' }
+  // publishVideoRecord owns its durable CAS intent and provider reconciliation.
+  const outcome = await publishVideoRecord(args.userId, {
+    videoId: args.videoId, platforms: config.default_platforms as SocialPlatform[], caption: args.videoTitle,
+    hashtags: args.videoTags, autoCaption: Boolean(config.auto_caption),
+  })
+  if (!['published', 'scheduled'].includes(outcome.status)) throw new Error('SUTRA_RECONCILIATION_REQUIRED: publication ' + outcome.status)
+  return outcome
 }
 
 function generateSubtitles(narration: string, totalDuration: number): Array<{ text: string; start: number; end: number }> {
@@ -108,17 +109,9 @@ export async function executeCreateJob(
   const { videoId, userId, userEmail, genPlan, quality, format, mediaFormat } = input
   const done = resume.steps ?? {}
   const save = async (key: string, value: unknown) => { await hooks.onStepResolved?.(key, value); done[key] = value }
-  const step = async <T,>(key: string, run: () => Promise<T>, paid = false): Promise<T> => {
-    if (done[key] !== undefined) return done[key] as T
-    if (paid && done[`${key}:started`]) throw new Error(`SUTRA_RECONCILIATION_REQUIRED: ${key}`)
-    if (paid) await save(`${key}:started`, true)
-    const value = await run()
-    await save(key, value)
-    return value
-  }
+  const step = pipelineSteps(done, hooks)
   const updateVideo = async (update: Record<string, unknown>) => {
-    const { data, error } = await serviceClient.from('videos').update(update).eq('id', videoId).eq('user_id', userId).select('id').single()
-    if (error || !data) throw new Error('SUTRA_VIDEO_PERSISTENCE_FAILED')
+    await persistPipelineVideo(serviceClient, 'videos', videoId, update)
   }
 
   // ---------------------------------------------------------------- Script
@@ -147,7 +140,8 @@ export async function executeCreateJob(
     await logApiCall(userId, 'claude', 'generateScript', 'success', Date.now() - scriptStart)
   }
   if (!script.scenes.length || script.scenes.length > 60) throw new Error('SUTRA_INVALID_SCENE_COUNT')
-  await updateVideo({ title: script.title, description: script.description, tags: script.tags, script_data: script })
+  await checkpointStage(done, hooks, 'script', script)
+  await step('metadata_saved', async () => { await updateVideo({ title: script.title, description: script.description, tags: script.tags, script_data: script }); return true })
 
   // ---------------------------------------------------- Scènes (reprise ok)
   const stockByIndex = new Map<number, CreateJobInput['stockSelections'][number]>()
@@ -220,7 +214,7 @@ export async function executeCreateJob(
       qualityCap: quality, mediaFormat, idea: input.topic, template: null, format, voice: input.voiceId,
       musicStyle: script.music_style, tone: null, previousData: { script }, brandKit: null, requestKey: videoId,
     }, { steps: done }, hooks) as Promise<{ url: string }>,
-    step('music', () => generateMusicWithFallback(script.music_prompt, script.music_style, script.estimated_duration), true).then(async (url) => {
+    step('music', async () => (await generateMusic({ prompt: script.music_prompt, style: script.music_style as Parameters<typeof generateMusic>[0]['style'], duration: script.estimated_duration, instrumental: true })).audio_url, true).then(async (url) => {
       if (script.music_style && !url) throw new Error('SUTRA_REQUIRED_MUSIC_MISSING')
       await logApiCall(userId, 'suno', 'generateMusic', url ? 'success' : 'skipped')
       return url
@@ -244,10 +238,16 @@ export async function executeCreateJob(
   const musicUrl = (generated[1] as PromiseFulfilledResult<string>).value
   const clipsResult = (generated[2] as PromiseFulfilledResult<AssembleClip[]>).value
 
+  await checkpointStage(done, hooks, 'scenes', clipsResult)
+  await checkpointStage(done, hooks, 'images', clipsResult.filter(c => c.kind === 'photo'))
   const voiceUrl = voice.url
-  await updateVideo({ voice_url: voiceUrl, music_url: musicUrl || null })
+  requireTracks(voiceUrl, musicUrl, { voice: Boolean(script.narration), music: Boolean(script.music_style) })
+  await checkpointStage(done, hooks, 'voice', voiceUrl)
+  await checkpointStage(done, hooks, 'music', musicUrl)
+  await step('tracks_saved', async () => { await updateVideo({ voice_url: voiceUrl, music_url: musicUrl || null }); return true })
 
-  const subtitles = generateSubtitles(script.narration, script.estimated_duration)
+  const subtitles = await step('subtitles', async () => generateSubtitles(script.narration, script.estimated_duration))
+  await checkpointStage(done, hooks, 'subtitles', subtitles)
   await hooks.heartbeat?.()
   const rendered = await step('assembly', () => assembleFinalVideo({
     clips: clipsResult,
@@ -260,10 +260,13 @@ export async function executeCreateJob(
     quality,
     brandKit: input.brandKit,
     renderJob: durableRenderJob(done, hooks.onStepResolved),
-  }))
+  }), true, typeof done.assembly_render_id === 'string')
+  await checkpointStage(done, hooks, 'composition', rendered)
   const assembled = await step('verified', () => verifyAndStoreRenderedVideo(rendered, {
     userId, mediaId: videoId, requireAudio: Boolean(voiceUrl || musicUrl),
   }))
+  assertFinalMedia(assembled, clipsResult.map(c => c.url), Boolean(voiceUrl || musicUrl))
+  await checkpointStage(done, hooks, 'export', assembled)
   await logApiCall(userId, 'shotstack', 'assembleFinalVideo', 'success')
 
   // Miniature : IMAGE uniquement (jamais un MP4 dans une balise <img>).
@@ -280,7 +283,7 @@ export async function executeCreateJob(
     (0.05 + 0.1 + 0.08 + estimateCost(engine, generatedSeconds, videoQuality) + 0.07).toFixed(4)
   )
 
-  await updateVideo({
+  await step('saved', async () => { await updateVideo({
     video_url: assembled.url,
     thumbnail_url: thumbnailUrl,
     shotstack_json: assembled.timeline,
@@ -288,7 +291,7 @@ export async function executeCreateJob(
     status: 'ready',
     quality: actualQuality,
     cost_estimate: costEstimate,
-  })
+  }); return true })
 
   try {
     const stampOutcome = await stampVideoWhenReady({ videoId, userId, videoUrl: assembled.url })
@@ -303,18 +306,11 @@ export async function executeCreateJob(
     message: `Ta video "${script.title}" est prete a etre visionnee.`,
   })
 
-  try {
-    await triggerAutopilot({
-      userId,
-      videoId,
-      videoUrl: assembled.url,
-      videoTitle: script.title ?? '',
-      videoDescription: script.description ?? '',
-      videoTags: script.tags ?? [],
-    })
-  } catch (err) {
-    console.error('[create] autopilot trigger failed:', err instanceof Error ? err.message : err)
-  }
+  const publication = await step('publication', () => triggerAutopilot({
+    userId, videoId, videoUrl: assembled.url, videoTitle: script.title ?? '',
+    videoDescription: script.description ?? '', videoTags: script.tags ?? [],
+  }))
+  await checkpointStage(done, hooks, 'publication', publication)
 
   return { videoUrl: assembled.url, actualQuality, duration: assembled.duration }
 }

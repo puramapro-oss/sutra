@@ -26,7 +26,7 @@ export interface VideoJob {
   payload: Record<string, unknown>
   progress: Record<string, unknown>
   provider_job_ids: Record<string, unknown>
-  status: 'queued' | 'processing' | 'done' | 'failed' | 'cancelled'
+  status: 'queued' | 'processing' | 'done' | 'failed' | 'cancelled' | 'reconciliation_required'
   attempts: number
   max_attempts: number
   locked_by: string | null
@@ -62,20 +62,10 @@ export async function completeQuota(userId: string): Promise<void> {
 
 /** Do not requeue already finished media because quota accounting is uncertain. */
 export async function completeQuotaForFinishedJob(userId: string, jobId: string): Promise<boolean> {
-  try {
-    await completeQuota(userId)
-    return true
-  } catch {
-    // No automatic RPC replay: a lost response may follow a committed debit.
-    // The operator must reconcile the existing job against its reservation.
-    try {
-      const { error } = await createServiceClient().from('video_jobs')
-        .update({ last_error: 'SUTRA_QUOTA_RECONCILIATION_REQUIRED' }).eq('id', jobId).eq('status', 'done')
-      if (error) console.error('[sutra:quota] reconciliation marker unavailable', jobId)
-    } catch { console.error('[sutra:quota] reconciliation marker unavailable', jobId) }
-    console.error('[sutra:quota] completed media requires accounting reconciliation', jobId)
-    return false
-  }
+  // v11 settles quota atomically with finish_video_job. This is a read-only receipt.
+  const { data, error } = await createServiceClient().from('video_jobs')
+    .select('status').eq('id', jobId).eq('user_id', userId).single()
+  return !error && data?.status === 'done'
 }
 
 export async function releaseQuota(userId: string): Promise<void> {
@@ -162,12 +152,12 @@ export async function claimJobByKey(
 /** Prolonge le bail pendant une phase longue (worker vivant). */
 export async function heartbeat(jobId: string, worker: string, leaseSeconds = 600): Promise<void> {
   const supabase = createServiceClient()
-  const { error } = await supabase.rpc('heartbeat_video_job', {
+  const { data, error } = await supabase.rpc('heartbeat_video_job_v2', {
     p_job_id: jobId,
     p_worker: worker,
     p_lease_seconds: leaseSeconds,
   })
-  if (error) throw new Error(`Renouvellement du bail impossible: ${error.message}`)
+  if (error || data !== true) throw new Error(`SUTRA_JOB_LEASE_LOST: ${error?.message ?? 'heartbeat not confirmed'}`)
 }
 
 /**
@@ -209,26 +199,23 @@ export async function checkpoint(
   providerJobIds?: Record<string, unknown>
 ): Promise<void> {
   const supabase = createServiceClient()
-  const { error } = await supabase.rpc('checkpoint_video_job', {
+  const { data, error } = await supabase.rpc('checkpoint_video_job_v2', {
     p_job_id: jobId,
     p_worker: worker,
     p_progress: progress,
     p_provider_job_ids: providerJobIds ?? null,
   })
-  if (error) throw new Error(`Checkpoint impossible: ${error.message}`)
+  if (error || data !== true) throw new Error(`SUTRA_CHECKPOINT_FAILED: ${error?.message ?? 'checkpoint not confirmed'}`)
 }
 
 export async function finishJob(
-  jobId: string,
-  status: 'done' | 'failed' | 'cancelled' | 'queued',
-  lastError?: string | null
-): Promise<void> {
-  const supabase = createServiceClient()
-  const { data, error } = await supabase
-    .from('video_jobs')
-    .update({ status, last_error: lastError ?? null, lease_until: null, updated_at: new Date().toISOString() })
-    .eq('id', jobId)
-    .select('id')
-    .single()
-  if (error || !data) throw new Error(`Finalisation de tache impossible: ${error?.message ?? 'ligne absente'}`)
+  jobId: string, worker: string, status: 'done' | 'failed' | 'queued' | 'reconciliation_required', lastError?: string,
+): Promise<string> {
+  const { data, error } = await createServiceClient().rpc('finish_video_job', {
+    p_job_id: jobId, p_worker: worker, p_status: status, p_error: lastError ?? null,
+  })
+  if (error || !['done', 'failed', 'queued', 'reconciliation_required'].includes(data)) {
+    throw new Error(`SUTRA_JOB_FINISH_UNCONFIRMED: ${error?.message ?? 'no receipt'}`)
+  }
+  return data
 }

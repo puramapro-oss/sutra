@@ -31,10 +31,11 @@ export function ModeToggle({ mode, onChange, className }: ModeToggleProps) {
           <button
             key={opt.id}
             data-testid={`mode-${opt.id}`}
+            aria-pressed={isActive}
             onClick={() => onChange(opt.id)}
             className={cn(
-              'relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200',
-              isActive ? 'text-white' : 'text-white/40 hover:text-white/60'
+              'relative z-10 flex items-center gap-2 px-3 sm:px-5 py-2.5 rounded-lg text-sm font-medium transition-colors duration-200',
+              isActive ? 'text-white' : 'text-white/65 hover:text-white/60'
             )}
           >
             <opt.icon className="h-4 w-4" />

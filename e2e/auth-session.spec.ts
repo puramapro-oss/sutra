@@ -58,7 +58,7 @@ test.describe('Auth session security', () => {
   test('remember-me label text is visible', async ({ page }) => {
     await page.goto(`${BASE}/login`)
     await dismissCookieBanner(page)
-    await expect(page.locator('[data-testid="remember-me-label"]')).toContainText('Rester connecte')
+    await expect(page.locator('[data-testid="remember-me-label"]')).toContainText('Rester connecté')
   })
 
   test('cookie banner appears on first visit', async ({ page }) => {

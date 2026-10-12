@@ -38,7 +38,7 @@ export default function CompteTab({
             disabled
             data-testid="settings-email"
           />
-          <p className="text-xs text-white/25">L&apos;email ne peut pas etre modifie.</p>
+          <p className="text-xs text-white/65">L&apos;email ne peut pas etre modifie.</p>
         </CardContent>
       </Card>
 

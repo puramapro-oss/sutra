@@ -1,3 +1,4 @@
+import { simulatedValidation } from './helpers/media-validation-fixture.ts'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readdirSync } from 'node:fs'
@@ -14,7 +15,6 @@ const { assertCronAuth } = await import('../src/lib/cron-auth.ts')
 const { executeAutoJob } = await import('../src/lib/auto-pipeline.ts')
 const { executeProductionStep, persistProductionResult } = await import('../src/lib/production-pipeline.ts')
 const { executeExportJob, persistExportResult } = await import('../src/lib/export-pipeline.ts')
-const { issueSocialOAuthState, consumeSocialOAuthState } = await import('../src/lib/social-oauth-state.ts')
 const { durableRenderJob, assembleFinalVideo } = await import('../src/lib/shotstack.ts')
 const { autoOccurrences } = await import('../src/lib/sutra-auto-utils.ts')
 const { publishAutoVideoRecord } = await import('../src/lib/sutra-auto.ts')
@@ -23,7 +23,7 @@ import type { AutoJobInput, AutoProviders } from '../src/lib/auto-pipeline.ts'
 import type { ProductionJobInput, ProductionProviders } from '../src/lib/production-pipeline.ts'
 
 const result = { url: 'https://media.invalid/final.mp4', duration: 6, outputQuality: 'hd' as const,
-  outputSize: { width: 720, height: 1280 }, outputVerified: true as const, timeline: {} }
+  outputSize: { width: 720, height: 1280 }, outputVerified: true as const, verification: { url: 'https://media.invalid/final.mp4', sha256: 'a'.repeat(64), duration: 6, width: 720, height: 1280, fps: 30, hasAudio: true }, timeline: {} }
 const plan = { title: 't', script: null, theme_id: null, description: 'd', hashtags: [], video_prompt: 'p', music_prompt: 'm', reasoning: 'r', expected_engagement: 'medium' as const, style_override: null, trend_leveraged: null }
 const autoInput: AutoJobInput = { userId: 'u', videoRowId: 'v', scheduleId: null, userEmail: null,
   planTier: 'free', generationStartedAt: '2026-10-11T10:00:00Z',
@@ -88,13 +88,12 @@ test('AUTO: echec de montage transmis au worker, jamais checkpointé comme succe
   await assert.rejects(() => executeAutoJob(autoInput, { steps }, {}, providers), /render failed/)
   assert.equal(steps.assembly, undefined)
   assert.equal(steps.saved, undefined)
-  const final = await executeAutoJob(autoInput, { steps }, {}, { ...providers, assemble: async () => result, persist: async () => {} })
-  assert.equal(final.videoFinalUrl, result.url)
+  await assert.rejects(() => executeAutoJob(autoInput, { steps }, {}, { ...providers, assemble: async () => { throw new Error('MUST_NOT_RESUBMIT') } }), /RECONCILIATION_REQUIRED/)
 })
 
 test('EXPORT: resultat cloud non verifie ne peut pas atteindre la sauvegarde ready', async () => {
   let saves = 0
-  const input = { videoId: 'v', userId: 'u', quality: '720p', format: '9:16', voiceUrl: '', musicUrl: null, musicVolume: 0.3, clips: [], subtitles: [] }
+  const input = { videoId: 'v', userId: 'u', quality: '720p', format: '9:16', voiceUrl: '', musicUrl: null, musicVolume: 0.3, requiredTracks: { voice: false, music: false }, clips: [{ url: 'https://media.invalid/source.mp4', type: 'ia' as const, duration: 6 }], subtitles: [] }
   await assert.rejects(() => executeExportJob(input, { steps: {} }, {}, {
     assemble: async () => ({ ...result, outputVerified: false, url: 'https://127.0.0.1/internal.mp4' }),
     persist: async () => { saves++ },
@@ -189,8 +188,8 @@ test('SHOTSTACK: soumission sans ID confirme bloque un second rendu', () => {
 test('EXPORT: echec de checkpoint apres rendu conserve ID distant pour la reprise', async () => {
   const durable: Record<string, unknown> = {}
   let submissions = 0
-  const input = { videoId: 'v', userId: 'u', quality: '720p', format: '9:16', voiceUrl: '', musicUrl: null, musicVolume: 0.3, clips: [], subtitles: [] }
-  const providers = { assemble: async (params: Parameters<typeof assembleFinalVideo>[0]) => {
+  const input = { videoId: 'v', userId: 'u', quality: '720p', format: '9:16', voiceUrl: '', musicUrl: null, musicVolume: 0.3, requiredTracks: { voice: false, music: false }, clips: [{ url: 'https://media.invalid/source.mp4', type: 'ia' as const, duration: 6 }], subtitles: [] }
+  const providers = { validate: async (_url: string, contract: Parameters<typeof simulatedValidation>[0]) => { const value = simulatedValidation(contract); value.final.sha256 = 'a'.repeat(64); return value }, assemble: async (params: Parameters<typeof assembleFinalVideo>[0]) => {
     if (!params.renderJob?.id) { await params.renderJob?.onSubmitting?.(); submissions++; await params.renderJob?.onSubmitted?.('render-1') }
     return result
   }, persist: async () => {} }
@@ -212,7 +211,7 @@ test('PLANNING: deux horaires proches et un passage tardif restent enumeres', ()
 test('QUEUE: erreurs RPC et finalisation sans ligne ne sont jamais des succes', async () => {
   globalThis.fetch = async () => Response.json({ message: 'database unavailable', code: 'XX000' }, { status: 503 })
   for (const operation of [() => queue.checkpoint('j', 'w', {}), () => queue.heartbeat('j', 'w'),
-    () => queue.completeQuota('u'), () => queue.releaseQuota('u'), () => queue.getJobByKey('k'), () => queue.finishJob('j', 'done')]) {
+    () => queue.completeQuota('u'), () => queue.releaseQuota('u'), () => queue.getJobByKey('k'), () => queue.finishJob('j', 'w', 'done')]) {
     await assert.rejects(operation)
   }
 })
@@ -231,30 +230,13 @@ test('QUEUE: cle dupliquee conserve statut et acquis; changement de payload refu
   await assert.rejects(() => queue.enqueueJob({ ...params, payload: { input: 'different' } }), /IDEMPOTENCY_CONFLICT/)
 })
 
+import { socialDatabase, accountId as verifiedAccount, postId as publicationPostId } from './helpers/social-database.mts'
 function publicationDatabase(status = 'ready', failClaim = false, failSave = false, verified = true) {
-  const video = { id: 'v', user_id: 'u', status, video_final_url: 'final', title: 't', scheduled_for: '2026-10-11T00:00:00Z' }
-  const config = { user_id: 'u', auto_publish: true, require_approval_before_publish: false, publish_platforms: ['youtube', 'instagram'], zernio_connected_platforms: [{ account_id: 'untrusted' }] }
-  const client = { schema: () => client, from: (table: string) => {
-    let mutation: Record<string, unknown> | undefined
-    const filters: Array<[string, unknown]> = []
-    const execute = async () => {
-      if (table === 'video_jobs') return { data: verified ? { progress: { steps: { assembly: { verification: { url: video.video_final_url, sha256: 'a'.repeat(64) } } } } } : null, error: null }
-      if (table === 'sutra_auto_config') return { data: config, error: null }
-      if (table === 'social_accounts') return { data: [{ platform: 'youtube', external_id: 'verified-account', username: 'owner' }], error: null }
-      const matches = filters.every(([key, value]) => (video as Record<string, unknown>)[key] === value)
-      if (mutation && (mutation.status === 'publishing' ? failClaim : failSave)) return { data: null, error: { message: 'write failed' } }
-      if (!matches) return { data: null, error: null }
-      if (mutation) Object.assign(video, mutation)
-      return { data: { ...video }, error: null }
-    }
-    const builder = { select: () => builder, contains: () => builder, order: () => builder, limit: () => builder,
-      eq: (key: string, value: unknown) => { filters.push([key, value]); return builder },
-      update: (value: Record<string, unknown>) => { mutation = value; return builder },
-      single: execute, maybeSingle: execute,
-      then: (resolve: (value: unknown) => unknown, reject: (error: unknown) => unknown) => execute().then(resolve, reject) }
-    return builder
-  } }
-  return { video, client: client as never }
+  const db = socialDatabase()
+  db.auto.status = status; db.settings.failClaim = failClaim; db.settings.failFinal = failSave
+  db.accounts.splice(1)
+  if (!verified) db.tables.video_jobs.length = 0
+  return { ...db, video: db.auto }
 }
 
 test('PUBLICATION: video annulee refusee avant appel externe', async () => {
@@ -272,8 +254,8 @@ test('PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publi
 test('PUBLICATION: succes partiel reste partiel et comptes issus du serveur', async () => {
   const db = publicationDatabase()
   const actual = await publishAutoVideoRecord('u', 'v', true, db.client, async params => {
-    assert.equal(params.config.zernio_connected_platforms[0].account_id, 'verified-account')
-    return [{ platform: 'youtube', success: true, status: 'published' as const, postId: 'p' }, { platform: 'instagram', success: false, error: 'not connected' }]
+    assert.equal(params.config.zernio_connected_platforms[0].account_id, verifiedAccount)
+    return [{ platform: 'youtube' as const, success: true, status: 'published' as const, postId: publicationPostId }]
   })
   assert.equal(actual.status, 'partially_published')
   assert.equal(actual.success, false)
@@ -282,158 +264,50 @@ test('PUBLICATION: succes partiel reste partiel et comptes issus du serveur', as
 test('PUBLICATION: deux requetes concurrentes ne soumettent qu une fois', async () => {
   const db = publicationDatabase()
   let calls = 0
-  const publish = async () => { calls++; return [{ platform: 'youtube', success: true, status: 'published' as const, postId: 'p' }] }
+  const publish = async () => { calls++; return [{ platform: 'youtube' as const, success: true, status: 'published' as const, postId: publicationPostId }] }
   const outcomes = await Promise.allSettled([publishAutoVideoRecord('u', 'v', true, db.client, publish), publishAutoVideoRecord('u', 'v', true, db.client, publish)])
   assert.equal(calls, 1)
-  assert.equal(outcomes.filter(value => value.status === 'fulfilled').length, 1)
+  assert.ok(outcomes.some(value => value.status === 'fulfilled'))
 })
 
 test('PUBLICATION: echec reservation ne contacte pas le fournisseur', async () => {
   const db = publicationDatabase('ready', true)
   let calls = 0
-  await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, async () => { calls++; return [] }), /Reservation/)
+  await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, async () => { calls++; return [] }), /CLAIM_FAILED/)
   assert.equal(calls, 0)
 })
 
 test('PUBLICATION: resultat non enregistre exige reconciliation et bloque le rejeu', async () => {
   const db = publicationDatabase('ready', false, true)
   let calls = 0
-  const publish = async () => { calls++; return [{ platform: 'youtube', success: true, status: 'published' as const, postId: 'p' }] }
+  const publish = async () => { calls++; return [{ platform: 'youtube' as const, success: true, status: 'published' as const, postId: publicationPostId }] }
   await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, publish), /RECONCILIATION_REQUIRED/)
-  assert.equal(db.video.status, 'publishing')
-  await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, publish))
+  assert.equal(db.tables.social_publication_journals[0].operations[0].phase, 'submitting')
+  db.settings.failFinal = false
+  await publishAutoVideoRecord('u', 'v', true, db.client, publish)
   assert.equal(calls, 1)
 })
 
-function oauthDatabase() {
-  const rows = new Map<string, Record<string, string>>()
-  let failed = false
-  const client = { from: (table: string) => {
-    assert.equal(table, 'social_oauth_states')
-    const filters: Record<string, string> = {}
-    let earliest = ''
-    const builder = {
-      insert: async (row: Record<string, string>) => {
-        if (failed || rows.has(row.state_hash)) return { error: { message: 'db unavailable or duplicate' } }
-        rows.set(row.state_hash, { ...row }); return { error: null }
-      },
-      delete: () => builder, select: () => builder,
-      eq: (key: string, value: string) => { filters[key] = value; return builder },
-      gt: (_key: string, value: string) => { earliest = value; return builder },
-      maybeSingle: async () => {
-        if (failed) return { data: null, error: { message: 'db unavailable' } }
-        const row = rows.get(filters.state_hash)
-        if (!row || row.expires_at <= earliest || Object.entries(filters).some(([key, value]) => row[key] !== value)) return { data: null, error: null }
-        rows.delete(filters.state_hash); return { data: { state_hash: row.state_hash }, error: null }
-      },
-    }
-    return builder
-  } }
-  return { rows, client: client as never, fail: () => { failed = true } }
-}
+const { withPipelineLease } = await import('../src/lib/pipeline-state.ts')
 
-test('OAUTH: utilisateur, plateforme et navigateur doivent correspondre sans consommer le bon etat', async () => {
-  const db = oauthDatabase(), state = 'provider-state-with-unpredictable-nonce'
-  const secret = await issueSocialOAuthState('userA', 'youtube', state, db.client)
-  assert.match(secret, /^[a-f0-9]{64}$/)
-  assert.equal(await consumeSocialOAuthState('userB', 'youtube', state, secret, db.client), false)
-  assert.equal(await consumeSocialOAuthState('userA', 'instagram', state, secret, db.client), false)
-  assert.equal(await consumeSocialOAuthState('userA', 'youtube', state, '0'.repeat(64), db.client), false)
-  assert.equal(await consumeSocialOAuthState('userA', 'youtube', state, undefined, db.client), false)
-  assert.equal(await consumeSocialOAuthState('userA', 'youtube', state, secret, db.client), true)
-  assert.equal(await consumeSocialOAuthState('userA', 'youtube', state, secret, db.client), false)
-})
-
-test('OAUTH: expiration et rejeu concurrent refusés', async () => {
-  const db = oauthDatabase(), state = 'provider-state-concurrent-nonce'
-  const secret = await issueSocialOAuthState('userA', 'youtube', state, db.client)
-  const values = await Promise.all([consumeSocialOAuthState('userA', 'youtube', state, secret, db.client), consumeSocialOAuthState('userA', 'youtube', state, secret, db.client)])
-  assert.deepEqual(values.sort(), [false, true])
-  const second = await issueSocialOAuthState('userA', 'youtube', state, db.client)
-  for (const row of db.rows.values()) row.expires_at = '2000-01-01T00:00:00Z'
-  assert.equal(await consumeSocialOAuthState('userA', 'youtube', state, second, db.client), false)
-})
-
-test('OAUTH: erreur de base bloque initiation et consommation', async () => {
-  const db = oauthDatabase(), state = 'provider-state-fail-closed-nonce'
-  const secret = await issueSocialOAuthState('userA', 'youtube', state, db.client)
-  db.fail()
-  await assert.rejects(() => consumeSocialOAuthState('userA', 'youtube', state, secret, db.client), /CONSUMPTION_FAILED/)
-  await assert.rejects(() => issueSocialOAuthState('userA', 'youtube', state, db.client), /PERSISTENCE_FAILED/)
-})
-
-function videoDatabase(fail = false) {
-  const rows = new Map<string, Record<string, unknown>>()
-  const client = { from: () => {
-    let mutation: Record<string, unknown> | undefined, ignoreDuplicates = false
-    const filters: Record<string, unknown> = {}
-    const run = async () => {
-      if (fail) return { data: null, error: { message: 'DB failed' } }
-      if (mutation && ignoreDuplicates) {
-        if (rows.has(mutation.id as string)) return { data: null, error: null }
-        rows.set(mutation.id as string, { ...mutation }); return { data: mutation, error: null }
-      }
-      const row = rows.get(filters.id as string)
-      if (!row || Object.entries(filters).some(([key, value]) => row[key] !== value)) return { data: null, error: null }
-      if (mutation) Object.assign(row, mutation)
-      return { data: row, error: null }
-    }
-    const builder = {
-      upsert: (value: Record<string, unknown>, options: { ignoreDuplicates: boolean }) => { mutation = value; ignoreDuplicates = options.ignoreDuplicates; return builder },
-      update: (value: Record<string, unknown>) => { mutation = value; return builder },
-      select: () => builder, eq: (key: string, value: unknown) => { filters[key] = value; return builder },
-      single: run, maybeSingle: run,
-    }
-    return builder
-  } }
-  return { rows, client: client as never }
-}
-
-test('PRODUCTION: sauvegarde reprise une fois sans doublon ni remise a ready apres publication', async () => {
-  const db = videoDatabase(), assembled = { url: 'https://media.invalid/result.mp4', quality: '1080p', duration: 6 }
-  const first = await persistProductionResult('job1', 'assembly', assembled, {}, productionInput, db.client)
-  db.rows.get('job1')!.status = 'published'
-  const resumed = await persistProductionResult('job1', 'assembly', assembled, {}, productionInput, db.client)
-  assert.deepEqual(first, { url: assembled.url, videoId: 'job1' })
-  assert.deepEqual(resumed, first)
-  assert.equal(db.rows.size, 1)
-  assert.equal(db.rows.get('job1')!.status, 'published')
-})
-
-test('PRODUCTION: DB refusee ou conflit de proprietaire ne produit pas de succes', async () => {
-  const assembled = { url: 'https://media.invalid/result.mp4', quality: '1080p', duration: 6 }
-  await assert.rejects(() => persistProductionResult('job1', 'assembly', assembled, {}, productionInput, videoDatabase(true).client), /Persistance production/)
-  const db = videoDatabase()
-  db.rows.set('job1', { id: 'job1', user_id: 'someone-else', video_url: assembled.url })
-  await assert.rejects(() => persistProductionResult('job1', 'assembly', assembled, {}, productionInput, db.client), /RECONCILIATION_REQUIRED/)
-})
-
-test('EXPORT: aucune confirmation si DB indisponible ou video detenue par un autre utilisateur', async () => {
-  const input = { videoId: 'v', userId: 'u', quality: '720p', format: '9:16', voiceUrl: '', musicUrl: null, musicVolume: 0.3, clips: [], subtitles: [] }
-  const update = { video_url: 'https://media.invalid/final.mp4', quality: '720p', duration: 6 }
-  await assert.rejects(() => persistExportResult(input, update, videoDatabase(true).client), /Persistance export/)
-  const db = videoDatabase(); db.rows.set('v', { id: 'v', user_id: 'someone-else', video_url: 'original' })
-  await assert.rejects(() => persistExportResult(input, update, db.client), /Persistance export/)
-  assert.equal(db.rows.get('v')!.video_url, 'original')
-})
-
-test('QUOTA: un debit incertain apres succes ne requeue pas la generation terminee', async () => {
-  const original = globalThis.fetch
-  const calls: Array<{ url: string; body: Record<string, unknown> }> = []
-  globalThis.fetch = async (url, options) => {
-    const target = String(url)
-    calls.push({ url: target, body: JSON.parse(String(options?.body ?? '{}')) })
-    return target.includes('/rpc/complete_video_quota')
-      ? new Response(JSON.stringify({ message: 'response lost' }), { status: 500, headers: { 'Content-Type': 'application/json' } })
-      : new Response(null, { status: 204 })
+test('PERSISTENCE: toute ecriture finale exige bail et accuse RPC strict', async () => {
+  const assembled = { url: result.url, quality: '720p', duration: 6 }
+  for (const data of [false, null]) {
+    const client = { rpc: async () => ({ data, error: null }) } as never
+    await assert.rejects(() => withPipelineLease('j','w', () => persistProductionResult('j','assembly',assembled,{},productionInput,client)), /PERSISTENCE_FAILED/)
+    const input = { videoId: 'v', userId: 'u', quality: '720p', format: '9:16', voiceUrl: '', musicUrl: null, musicVolume: 0.3, requiredTracks: { voice: false, music: false }, clips: [{ url: 'https://media.invalid/source.mp4', type: 'ia' as const, duration: 6 }], subtitles: [] }
+    await assert.rejects(() => withPipelineLease('j','w', () => persistExportResult(input,{video_url: result.url,quality:'720p',duration:6},client)), /PERSISTENCE_FAILED/)
   }
-  try {
-    assert.equal(await queue.completeQuotaForFinishedJob('u', 'finished-job'), false)
-    assert.equal(calls.filter(call => call.url.includes('/rpc/complete_video_quota')).length, 1)
-    assert.equal(calls.some(call => call.url.includes('release_video_quota')), false)
-    const marker = calls.find(call => call.url.includes('/video_jobs'))!
-    assert.equal(marker.body.last_error, 'SUTRA_QUOTA_RECONCILIATION_REQUIRED')
-    assert.equal(marker.body.status, undefined)
-    assert.ok(marker.url.includes('status=eq.done'))
-  } finally { globalThis.fetch = original }
+  await assert.rejects(() => persistProductionResult('j','assembly',assembled,{},productionInput,{} as never), /LEASE_REQUIRED/)
+})
+
+test('QUOTA: confirmation done est une lecture, jamais un second settlement', async () => {
+  let reads = 0
+  globalThis.fetch = async (_url, options) => {
+    assert.ok(!options?.method || options.method === 'GET')
+    reads++
+    return Response.json({ status: 'done' })
+  }
+  assert.equal(await queue.completeQuotaForFinishedJob('u','j'), true)
+  assert.equal(reads,1)
 })

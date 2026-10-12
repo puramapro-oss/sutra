@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+{"level":40,"time":1791765077090,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}
+Changes: 37 files, 79 symbols
+Affected processes: 10
+Risk level: high
+
+Changed symbols:
+  Function fake → scripts/test-ui-isolated.mjs
+  Function send → scripts/test-ui-isolated.mjs
+  Const fixtureURL → scripts/test-ui-isolated.mjs
+  Const appPort → scripts/test-ui-isolated.mjs
+  Const portProbe → scripts/test-ui-isolated.mjs
+  Const base → scripts/test-ui-isolated.mjs
+  Const log → scripts/test-ui-isolated.mjs
+  Const env → scripts/test-ui-isolated.mjs
+  Property NEXT_PUBLIC_APP_SCHEMA → scripts/test-ui-isolated.mjs
+  Property NEXT_PUBLIC_SUPABASE_ANON_KEY → scripts/test-ui-isolated.mjs
+  Property NEXT_PUBLIC_SUPABASE_URL → scripts/test-ui-isolated.mjs
+  Property NEXT_TELEMETRY_DISABLED → scripts/test-ui-isolated.mjs
+  Property RESEND_API_KEY → scripts/test-ui-isolated.mjs
+  Property STRIPE_SECRET_KEY → scripts/test-ui-isolated.mjs
+  Property SUPABASE_SERVICE_ROLE_KEY → scripts/test-ui-isolated.mjs
+... and 64 more
+
+Affected execution flows:
+  • LibraryPage → LoadFavorites (3 steps) — changed: LibraryPage
+  • LibraryPage → LoadFolders (3 steps) — changed: LibraryPage
+  • LibraryPage → FetchVideos (3 steps) — changed: LibraryPage, fetchVideos, useLibraryVideos
+  • CreatePage → TikTokIcon (3 steps) — changed: ModeToggle
+  • CreatePage → TikTokIcon (3 steps) — changed: ModeToggle
+  • CreatePage → TikTokIcon (3 steps) — changed: ModeToggle
+  • CreatePage → Cn (4 steps) — changed: CreateSkeleton
+  • ProductionPage → UseHydrated (3 steps) — changed: ProductionPage
+  • ProductionPage → Cn (3 steps) — changed: ProductionPage
+  • VideoList → Cn (3 steps) — changed: VideoList

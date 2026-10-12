@@ -51,6 +51,7 @@ export function MediaModeCards({
             key={m.id}
             type="button"
             data-testid={`media-mode-${m.id}`}
+            aria-pressed={selected}
             onClick={() => onChange(m.id)}
             whileTap={{ scale: 0.97 }}
             whileHover={{ y: -2 }}
@@ -75,7 +76,7 @@ export function MediaModeCards({
               <div className="text-base font-semibold text-white mb-1 font-[var(--font-display)]">
                 {m.title}
               </div>
-              <div className="text-xs text-white/50 leading-relaxed">{m.desc}</div>
+              <div className="text-xs text-white/65 leading-relaxed">{m.desc}</div>
               {selected && (
                 <motion.div
                   layoutId="media-mode-dot"

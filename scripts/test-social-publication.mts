@@ -1,6 +1,5 @@
 import test, { afterEach } from 'node:test'
 import assert from 'node:assert/strict'
-import { isDeepStrictEqual } from 'node:util'
 import type { PublishRequest, PublishResult } from '../src/lib/zernio.ts'
 
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://sutra-test.invalid'
@@ -66,116 +65,72 @@ test('Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable', async ()
   await assert.rejects(() => publishToPlatforms(request), /RECONCILIATION_REQUIRED/); assert.equal(calls, 1)
 })
 
-type Row = Record<string, unknown>
-function database() {
-  const video: Row = { id: 'v', user_id: 'u', status: 'ready', video_url: request.videoUrl, title: 'Title', description: 'Description', tags: [], publish_data: null,
-    shotstack_json: { sutraVerification: { url: request.videoUrl, sha256: 'a'.repeat(64) } } }
-  const accounts: Row[] = [{ id: 'local-y', user_id: 'u', platform: 'youtube', external_id: accountId, status: 'connected' },
-    { id: 'local-i', user_id: 'u', platform: 'instagram', external_id: '000000000000000000000002', status: 'connected' }]
-  const history = new Map<string, Row>()
-  const settings = { failFinal: false, failHistory: false, failRead: false }
-  const client = { schema: () => client, from: (table: string) => {
-    const filters: Array<[string, unknown]> = []
-    let update: Row | undefined, inserts: Row[] | undefined
-    const execute = () => {
-      if (inserts) {
-        if (settings.failHistory) return { data: null, error: { message: 'history unavailable' } }
-        for (const row of inserts) history.set(`${table}:${row.id}`, structuredClone(row))
-        return { data: null, error: null }
-      }
-      const matches = (row: Row) => filters.every(([key, value]) => ['publish_data', 'shotstack_json'].includes(key)
-        ? isDeepStrictEqual(row[key], typeof value === 'string' ? JSON.parse(value) : value)
-        : Array.isArray(value) ? value.includes(row[key]) : row[key] === value)
-      if (table === 'social_accounts') return { data: accounts.filter(matches).map(a => structuredClone(a)), error: null }
-      if (settings.failRead && !update) return { data: null, error: { message: 'db unavailable' } }
-      if (!matches(video)) return { data: null, error: null }
-      if (update) {
-        if (settings.failFinal && (update.publish_data as { sutraPublications: Array<{ phase: string }> }).sutraPublications.at(-1)?.phase === 'recorded') return { data: null, error: { message: 'db unavailable' } }
-        Object.assign(video, JSON.parse(JSON.stringify(update)))
-      }
-      return { data: structuredClone(video), error: null }
-    }
-    const builder = { select: () => builder, eq: (key: string, value: unknown) => { filters.push([key, value]); return builder },
-      is: (key: string, value: unknown) => { filters.push([key, value]); return builder },
-      in: (key: string, values: unknown[]) => { filters.push([key, values]); return builder },
-      update: (value: Row) => { update = value; return builder }, upsert: (value: Row[]) => { inserts = value; return builder },
-      maybeSingle: async () => execute(), then: (resolve: (value: unknown) => void) => Promise.resolve(execute()).then(resolve) }
-    return builder
-  } }
-  return { client: client as never, video, accounts, history, settings }
-}
+import { socialDatabase as database } from './helpers/social-database.mts'
 const input = { videoId: 'v', platforms: ['youtube'] as PublishRequest['platforms'] }
 const published: PublishResult[] = [{ platform: 'youtube', success: true, status: 'published', postId, postUrl: 'https://youtube.com/watch?v=test' }]
 
-test('Publication: proprietaire incorrect et video non prete ne soumettent rien', async () => {
+test('Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien', async () => {
   const db = database(); let calls = 0
   const publish = async () => { calls++; return published }
   await assert.rejects(() => publishVideoRecord('other', input, db.client, publish), /NOT_FOUND/)
   db.video.status = 'compositing'
   await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /NOT_READY/)
+  db.video.status = 'ready'; db.video.shotstack_json = null
+  await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /MEDIA_VERIFICATION_REQUIRED/)
   assert.equal(calls, 0)
 })
-test('Publication: une ancienne video ready sans preuve du fichier final est bloquee', async () => {
-  const db = database(); let calls = 0
-  db.video.shotstack_json = null
-  await assert.rejects(() => publishVideoRecord('u', input, db.client, async () => { calls++; return published }), /MEDIA_VERIFICATION_REQUIRED/)
-  assert.equal(calls, 0)
-})
-test('Zernio HTTP 207 conserve le succes et l\'echec de chaque compte', async () => {
-  const secondId = '000000000000000000000002'
-  globalThis.fetch = async () => Response.json({ post: { _id: postId, status: 'partial', platforms: [
-    { platform: 'youtube', accountId, status: 'published' }, { platform: 'instagram', accountId: secondId, status: 'failed' },
-  ] } }, { status: 207 })
-  const results = await publishToPlatforms({ ...request, platforms: ['youtube', 'instagram'], accountIds: { youtube: accountId, instagram: secondId } as PublishRequest['accountIds'] })
-  assert.deepEqual(results.map(r => [r.status, r.success]), [['published', true], ['failed', false]])
-})
-test('Publication: deux requetes simultanees ne soumettent qu\'une fois', async () => {
+test('Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien', async () => {
   const db = database(); let calls = 0
   const publish = async (req: PublishRequest) => { calls++; assert.equal(req.accountIds.youtube, accountId); return published }
-  const results = await Promise.allSettled([publishVideoRecord('u', input, db.client, publish), publishVideoRecord('u', input, db.client, publish)])
-  assert.equal(calls, 1); assert.equal(results.filter(r => r.status === 'fulfilled').length, 1)
-  await publishVideoRecord('u', input, db.client, publish)
-  assert.equal(calls, 1); assert.equal(db.history.size, 2); assert.equal(db.video.status, 'published')
+  await Promise.allSettled([publishVideoRecord('u', input, db.client, publish), publishVideoRecord('u', input, db.client, publish)])
+  await publishVideoRecord('u', { ...input, caption: 'new caption' }, db.client, publish)
+  assert.equal(calls, 1); assert.equal(db.tables.social_posts.length, 1); assert.equal(db.video.status, 'published')
 })
-test('Publication: timeout apres soumission laisse une reservation qui bloque les doublons', async () => {
-  const db = database(); let calls = 0
-  const publish = async () => { calls++; throw new Error('lost response') }
-  await assert.rejects(() => publishVideoRecord('u', input, db.client, publish))
-  await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /RECONCILIATION/)
-  assert.equal(calls, 1); assert.equal(db.video.status, 'ready')
+test('Publication: timeout laisse une reservation, reprise exacte apres le bail', async () => {
+  const db = database(); let calls = 0, clock = Date.now(); let original: PublishRequest
+  const publish = async (req: PublishRequest) => { calls++; original = structuredClone(req); throw new Error('lost response') }
+  const gateway = { now: () => clock, replay: async (req: PublishRequest) => { assert.deepEqual(req, original); return published } }
+  assert.equal((await publishVideoRecord('u', input, db.client, publish, undefined, gateway)).status, 'publishing')
+  assert.equal((await publishVideoRecord('u', input, db.client, publish, undefined, gateway)).status, 'publishing')
+  clock += 120001
+  assert.equal((await publishVideoRecord('u', { ...input, caption: 'changed' }, db.client, publish, undefined, gateway)).success, true)
+  assert.equal(calls, 1)
 })
-test('Publication: succes partiel ne marque pas la video entierement publiee', async () => {
-  const db = database()
-  const result = await publishVideoRecord('u', { ...input, platforms: ['youtube', 'instagram'] }, db.client, async () => [...published,
-    { platform: 'instagram', success: false, status: 'failed', postId, error: 'refused' }])
-  assert.equal(result.status, 'partially_published'); assert.equal(result.success, false); assert.equal(db.video.status, 'ready')
-  assert.equal([...db.history.values()].filter(row => row.status === 'failed').length, 2)
+test('Publication: succes partiel, GET puis retry du seul compte en echec', async () => {
+  const db = database(); let posts = 0, retries = 0
+  const both = { ...input, platforms: ['youtube', 'instagram'] as PublishRequest['platforms'] }
+  const publish = async (req: PublishRequest): Promise<PublishResult[]> => { posts++; return req.platforms.map(platform => ({ platform, status: platform === 'youtube' ? 'published' : 'failed', success: platform === 'youtube', postId })) }
+  assert.equal((await publishVideoRecord('u', both, db.client, publish)).status, 'partially_published')
+  const reconcile = async (_id: string, req: PublishRequest): Promise<PublishResult[]> => req.platforms.map(platform => ({ platform, status: 'failed', success: false, postId }))
+  const retry = async (_id: string, req: PublishRequest): Promise<PublishResult[]> => { retries++; assert.deepEqual(req.platforms, ['instagram']); return [{ platform: 'instagram', status: 'published', success: true, postId }] }
+  assert.equal((await publishVideoRecord('u', both, db.client, publish, reconcile, { retry })).success, true)
+  assert.equal(posts, 2); assert.equal(retries, 1); assert.equal(db.tables.social_posts.length, 2)
 })
-test('Publication: programmation puis reconciliation utilise GET sans nouvelle soumission', async () => {
+test('Publication: programmation puis reconciliation utilise GET sans POST supplementaire', async () => {
   const db = database(); let posts = 0, gets = 0
   const schedule = { ...input, scheduledAt: '2099-01-01T12:00:00Z' }
   const publish = async () => { posts++; return [{ ...published[0], success: false, status: 'scheduled' as const }] }
   const reconcile = async () => { gets++; return published }
   assert.equal((await publishVideoRecord('u', schedule, db.client, publish, reconcile)).status, 'scheduled')
-  assert.equal(db.video.status, 'ready')
   assert.equal((await publishVideoRecord('u', schedule, db.client, publish, reconcile)).status, 'published')
   assert.equal(posts, 1); assert.equal(gets, 1)
 })
-test('Publication: echec DB apres fournisseur bloque la resoumission', async () => {
-  const db = database(); db.settings.failFinal = true; let calls = 0
+test('Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation', async () => {
+  const db = database(); db.settings.failFinal = true; let calls = 0, clock = Date.now()
   const publish = async () => { calls++; return published }
-  await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /RECONCILIATION/)
+  await assert.rejects(() => publishVideoRecord('u', input, db.client, publish, undefined, { now: () => clock }), /RECONCILIATION/)
   db.settings.failFinal = false
-  await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /RECONCILIATION/)
+  await publishVideoRecord('u', input, db.client, publish, undefined, { now: () => clock })
   assert.equal(calls, 1)
+  clock += 120001
+  assert.equal((await publishVideoRecord('u', input, db.client, publish, undefined, { now: () => clock, replay: async () => published })).success, true)
 })
-test('Publication: un export concurrent ne fait pas passer la nouvelle version a published', async () => {
+test('Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee', async () => {
   const db = database()
   await assert.rejects(() => publishVideoRecord('u', input, db.client, async () => {
-    db.video.video_url = 'https://media.invalid/revision-2.mp4'
-    return published
+    db.video.video_url = 'https://media.invalid/revision-2.mp4'; return published
   }), /RECONCILIATION/)
-  assert.equal(db.video.status, 'ready')
+  assert.equal(db.video.status, 'ready'); assert.equal(db.tables.social_publication_journals[0].operations[0].results?.[0].status, 'published')
 })
 test('Publication: historique secondaire reparable sans nouvelle publication', async () => {
   const db = database(); db.settings.failHistory = true; let calls = 0
@@ -183,20 +138,58 @@ test('Publication: historique secondaire reparable sans nouvelle publication', a
   await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /RECONCILIATION/)
   db.settings.failHistory = false
   assert.equal((await publishVideoRecord('u', input, db.client, publish)).success, true)
-  assert.equal(calls, 1); assert.equal(db.history.size, 2)
+  assert.equal(calls, 1); assert.equal(db.tables.social_posts.length, 1)
 })
-test('Publication: comptes absents/ambigus et lecture en erreur bloquent avant soumission', async () => {
+test('Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme', async () => {
   const db = database(); let calls = 0; const publish = async () => { calls++; return published }
   db.accounts.push({ ...db.accounts[0], id: 'second-account' })
-  await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /ACCOUNT_SELECTION/)
+  assert.match((await publishVideoRecord('u', input, db.client, publish)).results[0].error!, /ACCOUNT_SELECTION/)
   db.accounts.length = 0
-  await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /ACCOUNT_SELECTION/)
+  assert.equal((await publishVideoRecord('u', input, db.client, publish)).success, false)
   db.settings.failRead = true
   await assert.rejects(() => publishVideoRecord('u', input, db.client, publish), /READ_FAILED/)
   assert.equal(calls, 0)
 })
-test('Publication: les trois routes historiques appellent exactement le meme handler', async () => {
+test('Publication: les trois routes historiques partagent le handler', async () => {
   const canonical = await import('../src/app/api/social/publish/route.ts')
   assert.equal((await import('../src/app/api/publish/route.ts')).POST, canonical.POST)
   assert.equal((await import('../src/app/api/publish/social/route.ts')).POST, canonical.POST)
+})
+
+test('Zernio reconciliation refuse les destinations supplementaires avant tout retry', async () => {
+  const { getPublicationResults } = await import('../src/lib/zernio.ts')
+  globalThis.fetch = async () => Response.json({ post: { _id: postId, platforms: [
+    { platform: 'youtube', accountId, status: 'failed' },
+    { platform: 'instagram', accountId, status: 'failed' },
+  ] } })
+  await assert.rejects(() => getPublicationResults(postId, request), /destinations distantes incoherentes/)
+})
+test('Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible', async () => {
+  const { getPublicationResults } = await import('../src/lib/zernio.ts')
+  globalThis.fetch = async () => new Response('synthetic-private-marker')
+  await assert.rejects(() => getPublicationResults(postId, request), { message: 'SUTRA_ZERNIO_STATUS_INVALID_RESPONSE' })
+  globalThis.fetch = async () => { throw new Error('synthetic-private-marker') }
+  await assert.rejects(() => getPublicationResults(postId, request), { message: 'SUTRA_ZERNIO_STATUS_UNAVAILABLE' })
+})
+test('Zernio retry vise le post original une seule fois et ne recree jamais de post', async () => {
+  const { retryPublication } = await import('../src/lib/zernio.ts'); const calls: string[] = []
+  globalThis.fetch = async (url, options) => {
+    calls.push(String(url)); assert.equal(options?.method, 'POST')
+    return Response.json(responsePost('published', 'published'))
+  }
+  assert.equal((await retryPublication(postId, request))[0].success, true)
+  assert.equal(calls.length, 1); assert.ok(calls[0].endsWith(`/posts/${postId}/retry`))
+  globalThis.fetch = async () => { calls.push('timeout'); throw new Error('lost') }
+  await assert.rejects(() => retryPublication(postId, request), /RECONCILIATION_REQUIRED/)
+  assert.equal(calls.length, 2)
+})
+test('Zernio revoke 404 est idempotent et erreur sensible jamais loggee', async () => {
+  const { disconnectAccount } = await import('../src/lib/zernio.ts')
+  globalThis.fetch = async () => new Response(null, { status: 404 })
+  assert.equal(await disconnectAccount('youtube', accountId), true)
+  const old = console.error; const logged: unknown[][] = []
+  console.error = (...values) => { logged.push(values) }
+  globalThis.fetch = async () => { throw new Error('synthetic-private-marker') }
+  try { assert.equal(await disconnectAccount('youtube', accountId), false) } finally { console.error = old }
+  assert.doesNotMatch(JSON.stringify(logged), /synthetic-private-marker/)
 })

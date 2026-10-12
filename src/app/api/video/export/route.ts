@@ -1,14 +1,15 @@
+import { submissionIdentity, submitVideoJob, submissionErrorStatus } from '@/lib/pipeline-submit'
+import { runVideoJob } from '@/lib/video-worker'
 import { NextResponse } from 'next/server'
-import { createHash, randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import {
-  reserveQuota, completeQuotaForFinishedJob, releaseQuota,
-  enqueueJob, claimJobByKey, getJobByKey, checkpoint, finishJob, heartbeat,
+  completeQuotaForFinishedJob, claimJobByKey, finishJob,
 } from '@/lib/video-queue'
-import { executeExportJob, persistExportResult, type ExportJobInput } from '@/lib/export-pipeline'
-import { assembleFinalVideo, type AssembleClip } from '@/lib/shotstack'
+import { type ExportJobInput } from '@/lib/export-pipeline'
+import { type AssembleClip } from '@/lib/shotstack'
 import type { Profile } from '@/types'
 import { clampQualityToPlan } from '@/lib/ltx-utils'
 
@@ -46,24 +47,17 @@ const exportSchema = z.object({
     )
     .max(600)
     .optional(),
-  voiceVolume: z.number().min(0).max(2).optional(),
-  musicVolume: z.number().min(0).max(2).optional(),
+  voiceVolume: z.number().min(0).max(1).optional(),
+  musicVolume: z.number().min(0).max(1).optional(),
 })
 
-/** Clé déterministe sans requestId : retry des MÊMES réglages = même tâche. */
-function payloadHash(parsed: z.infer<typeof exportSchema>): string {
-  return createHash('sha256').update(JSON.stringify(parsed)).digest('hex').slice(0, 16)
-}
-
 export async function POST(req: Request) {
-  let quotaReserved = false
-  let authUserId: string | null = null
+  const worker = `inline-${randomUUID()}`
   let jobId: string | null = null
   try {
     const supabase = await createServerClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
-    authUserId = user.id
 
     const parsed = exportSchema.safeParse(await req.json())
     if (!parsed.success) {
@@ -72,12 +66,12 @@ export async function POST(req: Request) {
         { status: 400 }
       )
     }
-    const { videoId, quality, scenes, subtitles, musicVolume } = parsed.data
+    const { videoId, quality, scenes, subtitles, voiceVolume, musicVolume } = parsed.data
 
     const service = createServiceClient()
     const { data: video } = await service
       .from('videos')
-      .select('id, user_id, voice_url, music_url, format, status')
+      .select('id, user_id, voice_url, music_url, format, status, script_data')
       .eq('id', videoId)
       .single()
 
@@ -96,36 +90,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Aucune scene a exporter' }, { status: 400 })
     }
 
-    // Idempotence de RETRY : même export déjà fait → résultat en cache.
-    const jobKey = `export-${videoId}-${parsed.data.requestId ?? payloadHash(parsed.data)}`
-    const existing = await getJobByKey(jobKey)
-    if (existing?.status === 'done') {
-      const cached = (existing.progress as { result?: unknown } | null)?.result
-      if (cached !== undefined) return NextResponse.json({ success: true, ...(cached as object) })
-    }
-    if (existing?.status === 'processing') {
-      return NextResponse.json({ error: 'Export deja en cours — reessaie dans un instant' }, { status: 409 })
-    }
-    if (existing?.status === 'cancelled') {
-      return NextResponse.json({ error: 'Export annule — relance avec un nouveau requestId' }, { status: 409 })
-    }
-    if (existing?.status === 'queued') return NextResponse.json({ status: 'queued', jobKey }, { status: 202 })
-    if (existing) return NextResponse.json({ error: 'Cette tache necessite une reconciliation' }, { status: 409 })
-
     // Un export re-rend chez Shotstack = un coût : garde de quota.
     const { data: profile } = await service.from('profiles').select('*').eq('id', user.id).single()
     if (!profile) return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
     if (clampQualityToPlan(quality, profile.plan ?? 'free', user.email) !== quality) {
       return NextResponse.json({ error: 'Qualite non autorisee par votre plan' }, { status: 403 })
     }
-    {
-      const reserved = await reserveQuota(profile as Profile)
-      if (!reserved) {
-        return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan.' }, { status: 403 })
-      }
-      quotaReserved = true
-    }
-
     const input: ExportJobInput = {
       videoId,
       userId: user.id,
@@ -133,49 +103,37 @@ export async function POST(req: Request) {
       format: video.format ?? '16:9',
       voiceUrl: video.voice_url ?? '',
       musicUrl: video.music_url ?? null,
+      voiceVolume: voiceVolume ?? 1,
       musicVolume: musicVolume ?? 0.3,
+      requiredTracks: {
+        voice: (voiceVolume ?? 1) > 0 && Boolean(video.script_data?.narration || video.voice_url),
+        music: (musicVolume ?? 0.3) > 0 && Boolean(video.music_url || (video.script_data?.music_style && video.script_data.music_style !== 'none')),
+      },
       clips,
       subtitles: subtitles ?? [],
     }
 
-    await enqueueJob({ videoId, userId: user.id, kind: 'export', payload: { input }, idempotencyKey: jobKey })
-    const job = await claimJobByKey(jobKey, `inline-export-${videoId}`, 600)
-    if (!job) {
-      quotaReserved = false // The durable worker owns this reservation.
-      return NextResponse.json({ status: 'queued', jobKey }, { status: 202 })
-    }
+    const { requestId: _requestId, ...requestContent } = parsed.data
+    const identity = submissionIdentity(`export-${videoId}`, requestContent, parsed.data.requestId ?? req.headers.get('Idempotency-Key'))
+    const submitted = await submitVideoJob(profile as Profile, { kind: 'export', videoId, input, ...identity })
+    if (submitted.status === 'done') return NextResponse.json({ success: true, ...(submitted.progress.result as object) })
+    if (!['queued', 'processing'].includes(submitted.status)) return NextResponse.json({ error: 'Tache terminee ou a reconcilier', status: submitted.status }, { status: 409 })
+    const job = await claimJobByKey(identity.key, worker, 600)
+    if (!job) return NextResponse.json({ jobId: submitted.id, status: submitted.status, jobKey: identity.key }, { status: 202 })
     jobId = job.id
-    const worker = `inline-export-${videoId}`
-    const stepsDone = { ...(((job.progress as { steps?: Record<string, unknown> } | null)?.steps) ?? {}) }
+    const result = await runVideoJob(job, worker) as import('@/lib/export-pipeline').ExportJobResult
 
-    const result = await executeExportJob(input, { steps: stepsDone }, {
-      heartbeat: () => heartbeat(job.id, worker, 600),
-      onStepResolved: async (key, value) => {
-        stepsDone[key] = value
-        await checkpoint(job.id, worker, { steps: stepsDone })
-      },
-    }, {
-      assemble: (args) => assembleFinalVideo(args),
-      persist: (jobInput, update) => persistExportResult(jobInput, update, service),
-    })
-
-    await checkpoint(job.id, worker, { steps: stepsDone, result })
-    await finishJob(job.id, 'done')
-    quotaReserved = false
+    await finishJob(job.id, worker, 'done')
     const quotaConfirmed = await completeQuotaForFinishedJob(user.id, jobId!)
     jobId = null
     return NextResponse.json({ success: true, url: result.url, quality: result.quality, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
-    if (jobId) {
-      const { data: fresh } = await createServiceClient()
-        .from('video_jobs').select('attempts, max_attempts').eq('id', jobId).single()
-      const exhausted = (fresh?.attempts ?? 0) >= (fresh?.max_attempts ?? 3)
-      await finishJob(jobId, exhausted ? 'failed' : 'queued', message).catch(() => {})
-      if (exhausted) { await releaseQuota(authUserId!).catch(() => {}); quotaReserved = false }
-    } else if (quotaReserved && authUserId) {
-      await releaseQuota(authUserId).catch(() => {})
+    try {
+      if (jobId) await finishJob(jobId, worker, 'queued', message)
+    } catch {
+      return NextResponse.json({ error: 'Generation indisponible', status: 'write_unconfirmed' }, { status: 503 })
     }
-    return NextResponse.json({ error: 'Erreur lors de l\'export', details: message }, { status: 500 })
+    return NextResponse.json({ error: 'Erreur lors de l\'export', code: 'SUTRA_GENERATION_FAILED' }, { status: submissionErrorStatus(message) })
   }
 }

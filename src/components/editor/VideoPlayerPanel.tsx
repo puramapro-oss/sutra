@@ -60,8 +60,8 @@ export function VideoPlayerPanel({
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
                 <Film className="h-12 w-12 text-white/20 mx-auto mb-3" />
-                <p className="text-sm text-white/40">Apercu non disponible</p>
-                <p className="text-xs text-white/25 mt-1">La video est en cours de generation</p>
+                <p className="text-sm text-white/70">Apercu non disponible</p>
+                <p className="text-xs text-white/70 mt-1">La video est en cours de generation</p>
               </div>
             </div>
           )}
@@ -71,6 +71,7 @@ export function VideoPlayerPanel({
             <button
               onClick={onTogglePlay}
               data-testid="editor-play-overlay"
+            aria-label="Lire la vidéo"
               className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors group"
             >
               <div className="h-16 w-16 rounded-full bg-violet-600/90 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -86,13 +87,14 @@ export function VideoPlayerPanel({
           <button
             onClick={onTogglePlay}
             data-testid="editor-play-pause"
+            aria-label={isPlaying ? "Mettre en pause" : "Lire la vidéo"}
             className="p-2 rounded-lg text-white/70 hover:text-white hover:bg-white/5 transition-colors"
           >
             {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
           </button>
 
           {/* Time */}
-          <span className="text-xs text-white/50 font-mono tabular-nums min-w-[80px]">
+          <span className="text-xs text-white/70 font-mono tabular-nums min-w-[80px]">
             {formatTime(currentTime)} / {formatTime(duration)}
           </span>
 
@@ -104,7 +106,8 @@ export function VideoPlayerPanel({
             value={currentTime}
             onChange={(e) => onSeek(Number(e.target.value))}
             data-testid="editor-seek"
-            className="flex-1 h-1.5 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
+            aria-label="Position de lecture"
+            className="min-w-0 flex-1 h-1.5 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
           />
 
           {/* Volume */}
@@ -112,7 +115,8 @@ export function VideoPlayerPanel({
             <button
               onClick={onToggleMute}
               data-testid="editor-mute"
-              className="p-1.5 rounded-lg text-white/50 hover:text-white transition-colors"
+              aria-label={isMuted ? "Activer le son" : "Couper le son"}
+              className="p-1.5 rounded-lg text-white/70 hover:text-white transition-colors"
             >
               {isMuted || volume === 0 ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
             </button>
@@ -124,6 +128,7 @@ export function VideoPlayerPanel({
               value={isMuted ? 0 : volume}
               onChange={(e) => onVolumeChange(Number(e.target.value))}
               data-testid="editor-volume"
+            aria-label="Volume du lecteur"
               className="w-20 h-1 rounded-full appearance-none bg-white/10 accent-violet-500 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
             />
           </div>
@@ -138,8 +143,8 @@ export function VideoPlayerPanel({
                 className={cn(
                   'px-2 py-1 rounded-md text-xs font-medium transition-colors',
                   speed === s
-                    ? 'bg-violet-500/20 text-violet-400'
-                    : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+                    ? 'bg-violet-500/20 text-violet-300'
+                    : 'text-white/70 hover:text-white/70 hover:bg-white/5'
                 )}
               >
                 {s}x

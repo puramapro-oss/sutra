@@ -1,3 +1,4 @@
+import { durableLtxJob } from '../src/lib/ltx-workflow.ts'
 // Tests contractuels API — 100% mockés (succès/401/403/404/429/500/timeout/invalide/clé absente/fallback).
 // Exécution : npm run test:api-contracts
 import test from 'node:test'
@@ -179,7 +180,7 @@ test('RunPod submit: reponse invalide (pas de job ID)', async () => {
   setKey('RUNPOD_API_KEY', true)
   process.env.RUNPOD_ENDPOINT_ID = 'ep-test'
   mockFetch(() => okJson({ error: 'gpu unavailable' }))
-  await assertThrowsWith(() => submitVideoJob({ prompt: 'p' }), 'gpu unavailable')
+  await assertThrowsWith(() => submitVideoJob({ prompt: 'p' }), 'SUBMISSION_UNKNOWN')
 })
 
 test('RunPod: endpoint absent -> erreur explicite (pas de crash import)', async () => {
@@ -195,15 +196,15 @@ test('RunPod: endpoint absent -> erreur explicite (pas de crash import)', async 
 test('LTX: une reponse binaire V1 n\'est plus acceptee comme succes V2', async () => {
   setKey('LTX_API_KEY', true)
   mockFetch(() => new Response(new ArrayBuffer(4), { status: 200 }))
-  await assert.rejects(() => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 5, resolution: '1280x720' }), /SUBMISSION_HTTP_200/)
+  await assert.rejects(() => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx')), /SUBMISSION_UNKNOWN/)
 })
 
 test('LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx)', async () => {
   setKey('LTX_API_KEY', true)
   mockFetch(() => jsonResponse(402, { error: { message: 'engine overloaded' } }))
   await assertThrowsWith(
-    () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 5, resolution: '1280x720' }),
-    'SUBMISSION_HTTP_402'
+    () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx')),
+    'LTX_HTTP_402'
   )
   assert.equal(calls.length, 1)
 })
@@ -211,7 +212,7 @@ test('LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx)'
 test('LTX: cle absente -> erreur explicite', async () => {
   setKey('LTX_API_KEY', false)
   await assert.rejects(
-    () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 5, resolution: '1280x720' }),
+    () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx')),
     (err: unknown) => {
       assert.ok(err instanceof Error)
       assert.match(err.message, /LTX_API_KEY/)
@@ -277,6 +278,6 @@ test('generateVoiceWithFallback: 500 ne soumet jamais une seconde synthese', asy
 test('generateVoiceWithFallback: erreur permanente preservee sans attente ni retry', async () => {
   setKey('ELEVENLABS_API_KEY', true)
   mockFetch(() => textResponse(401, 'invalid credentials'))
-  await assertThrowsWith(() => generateVoiceWithFallback('texte', 'v1'), '401')
+  await assertThrowsWith(() => generateVoiceWithFallback('texte', 'v1'), 'PROVIDER_RESULT_UNKNOWN')
   assert.equal(calls.length, 1)
 })

@@ -58,24 +58,30 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     const service = createServiceClient()
 
     // Prevent banning the super admin himself
-    const { data: target } = await service.from('profiles').select('email').eq('id', id).maybeSingle()
+    const { data: target, error: targetError } = await service.from('profiles').select('email').eq('id', id).maybeSingle()
+    if (targetError) return NextResponse.json({ error: 'Verification indisponible' }, { status: 503 })
+    if (!target) return NextResponse.json({ error: 'Utilisateur introuvable' }, { status: 404 })
     if (target?.email && isSuperAdmin(target.email)) {
       return NextResponse.json({ error: 'Impossible de modifier le super admin' }, { status: 403 })
     }
 
     if (action === 'ban') {
-      await service
+      const { data, error } = await service
         .from('profiles')
-        .update({ subscription_status: 'banned', updated_at: new Date().toISOString() })
+        .update({ subscription_status: 'banned', access_revoked_at: new Date().toISOString(), updated_at: new Date().toISOString() })
         .eq('id', id)
+        .select('id').maybeSingle()
+      if (error || data?.id !== id) return NextResponse.json({ error: 'Modification non confirmee' }, { status: 503 })
       return NextResponse.json({ success: true, status: 'banned' })
     }
 
     if (action === 'unban') {
-      await service
+      const { data, error } = await service
         .from('profiles')
-        .update({ subscription_status: 'active', updated_at: new Date().toISOString() })
+        .update({ subscription_status: 'active', access_revoked_at: null, updated_at: new Date().toISOString() })
         .eq('id', id)
+        .select('id').maybeSingle()
+      if (error || data?.id !== id) return NextResponse.json({ error: 'Modification non confirmee' }, { status: 503 })
       return NextResponse.json({ success: true, status: 'active' })
     }
 
@@ -85,16 +91,17 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       if (!allowed.includes(plan)) {
         return NextResponse.json({ error: 'Plan invalide' }, { status: 400 })
       }
-      await service
+      const { data, error } = await service
         .from('profiles')
         .update({ plan, updated_at: new Date().toISOString() })
         .eq('id', id)
+        .select('id').maybeSingle()
+      if (error || data?.id !== id) return NextResponse.json({ error: 'Modification non confirmee' }, { status: 503 })
       return NextResponse.json({ success: true, plan })
     }
 
     return NextResponse.json({ error: 'Action inconnue' }, { status: 400 })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Modification indisponible' }, { status: 500 })
   }
 }

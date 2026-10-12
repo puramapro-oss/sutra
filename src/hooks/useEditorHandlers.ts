@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { toast } from 'sonner'
+import { editorExportScenes, editorVolume } from '@/lib/editor-export'
 import type { Scene, VideoVersion } from '@/types'
 import type { SubtitleEntry, HistoryState } from '@/types/editor'
 import { useVideoPlayer } from '@/hooks/useVideoPlayer'
@@ -121,17 +122,18 @@ export function useEditorHandlers({
           videoId,
           quality: exportQuality,
           script,
-          scenes,
+          scenes: editorExportScenes(scenes),
           subtitles,
-          voiceVolume,
-          musicVolume,
+          voiceVolume: editorVolume(voiceVolume),
+          musicVolume: editorVolume(musicVolume),
         }),
       })
 
-      if (!res.ok) throw new Error('Export failed')
-      toast.success('Export lance avec succes ! Tu seras notifie quand la video sera prete.')
-    } catch {
-      toast.error("Erreur lors de l&apos;export. Reessaie.")
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.error || 'Export indisponible')
+      toast.success(res.status === 202 ? 'Export en cours. Consulte la bibliotheque pour suivre son resultat.' : 'Export termine. La video est disponible dans la bibliotheque.')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Erreur lors de l’export. Reessaie.')
     } finally {
       setExporting(false)
     }
@@ -140,7 +142,7 @@ export function useEditorHandlers({
   // Load version
   const loadVersion = useCallback(
     (version: VideoVersion) => {
-      toast.success(`Version ${version.version_number} chargee`)
+      toast.info(`Version ${version.version_number} : la restauration des reglages de cette version est indisponible.`)
     },
     []
   )

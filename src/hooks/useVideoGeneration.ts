@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react'
+import { awaitGeneration } from '@/lib/generation-client'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { getPipelineSteps } from '@/lib/create-utils'
 import type { PipelineStep, VideoFormat, VideoQuality } from '@/types'
 import type { VideoEngine } from '@/lib/ltx'
@@ -37,6 +38,9 @@ export function useVideoGeneration({
   mediaMode,
   isOverLimit,
 }: UseVideoGenerationProps) {
+  const intent = useRef<{ body: string; key: string } | null>(null)
+  const active = useRef<AbortController | null>(null)
+  useEffect(() => () => active.current?.abort(), [])
   // States
   const [isGenerating, setIsGenerating] = useState(false)
   const [pipelineSteps, setPipelineSteps] = useState<PipelineStep[]>(getPipelineSteps('wan-classic'))
@@ -77,6 +81,9 @@ export function useVideoGeneration({
 
   // Reset generation state
   const resetGeneration = useCallback(() => {
+    active.current?.abort()
+    active.current = null
+    intent.current = null
     setIsGenerating(false)
     setPipelineSteps(getPipelineSteps('wan-classic').map((s) => ({ ...s, status: 'pending' as const })))
     setVideoId(null)
@@ -87,17 +94,16 @@ export function useVideoGeneration({
 
   // Start generation
   const startGeneration = useCallback(async () => {
-    if (!topic.trim() || isOverLimit) return
+    if (!topic.trim() || isOverLimit || active.current) return
+    const controller = new AbortController()
+    active.current = controller
 
     setIsGenerating(true)
     setError(null)
     setPipelineSteps(getPipelineSteps(engine).map((s) => ({ ...s, status: 'pending' as const })))
 
     try {
-      const response = await fetch('/api/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const body = JSON.stringify({
           topic: topic.trim(),
           format,
           quality,
@@ -120,19 +126,15 @@ export function useVideoGeneration({
                   quality: s.selected?.quality ?? null,
                   fallbackToAI: s.fallbackToAI,
                 })),
-        }),
-      })
+        })
+      if (intent.current?.body !== body) intent.current = { body, key: crypto.randomUUID() }
+      const response = await fetch('/api/create', { method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': intent.current.key },
+        body, signal: controller.signal })
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Erreur inconnue' }))
-        throw new Error(errorData.error ?? `Erreur ${response.status}`)
-      }
-
-      // Contrat réel de /api/create (audit #2) : la route est SYNCHRONE et
-      // renvoie { success, video: { id, ... } } — succès = vidéo prête, le
-      // spinner s'arrête immédiatement et l'ID alimente la suite du parcours.
-      const result = await response.json()
-      const resolvedVideoId: string | null = result?.video?.id ?? result?.videoId ?? null
+      const resolvedVideoId = await awaitGeneration(response, controller.signal)
+      controller.signal.throwIfAborted()
+      intent.current = null
 
       setVideoId(resolvedVideoId)
       setIsGenerating(false)
@@ -142,9 +144,12 @@ export function useVideoGeneration({
         setError('Video generee mais identifiant manquant dans la reponse — actualise ta bibliotheque.')
       }
     } catch (err) {
+      if (controller.signal.aborted) return
       const message = err instanceof Error ? err.message : 'Erreur lors de la generation'
       setError(message)
       setIsGenerating(false)
+    } finally {
+      if (active.current === controller) active.current = null
     }
   }, [topic, format, quality, engine, niche, style, voice, mode, script, mediaMode, sceneSelections, isOverLimit])
 

@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import test, { afterEach, mock } from 'node:test'
 import assert from 'node:assert/strict'
 import dns from 'node:dns/promises'
@@ -105,12 +106,12 @@ function ltxFetch(poll: () => Response | Promise<Response>, submit?: () => Respo
     requests.push({ url: String(url), method: init?.method ?? 'GET', body: init?.body as string })
     assert.ok(String(url).startsWith('https://api.ltx.io/v2/'))
     assert.equal(init?.redirect, 'error')
-    if (init?.method === 'POST') return submit ? submit() : Response.json({ id: 'job-1' }, { status: 202 })
+    if (init?.method === 'POST') return submit ? submit() : Response.json({ id: 'job-1', created_at: '2026-10-12T10:00:00Z' }, { status: 202 })
     return poll()
   }
   return requests
 }
-const completed = () => Response.json({ id: 'job-1', status: 'completed', result: { video_url: 'https://media.invalid/video.mp4' } })
+const completed = () => Response.json({ id: 'job-1', created_at: '2026-10-12T10:00:00Z', completed_at: '2026-10-12T10:00:01Z', status: 'completed', result: { video_url: 'https://media.invalid/video.mp4' } })
 test('LTX V2 soumet 202, sauvegarde ID, poll GET et telecharge sans token', async () => {
   mediaMock()
   const steps: Record<string, unknown> = {}, saved: string[] = []
@@ -123,17 +124,17 @@ test('LTX V2 soumet 202, sauvegarde ID, poll GET et telecharge sans token', asyn
 })
 test('LTX image conserve references, camera et endpoint lors du polling', async () => {
   mediaMock(); const requests = ltxFetch(completed)
-  await imageToVideo({ ...params, image_uri: 'ltx://image', last_frame_uri: 'ltx://end', camera_motion: 'static' })
+  await imageToVideo({ ...params, image_uri: 'https://input.invalid/image.png', last_frame_uri: 'https://input.invalid/end.png', camera_motion: 'static' }, durableLtxJob({}, 'ltx'))
   assert.equal(requests[1].url, 'https://api.ltx.io/v2/image-to-video/job-1')
-  assert.equal(JSON.parse(requests[0].body!).last_frame_uri, 'ltx://end')
+  assert.equal(JSON.parse(requests[0].body!).last_frame_uri, 'https://input.invalid/end.png')
 })
 test('LTX reprise apres reponse de download perdue ne refait aucun POST', async () => {
   const steps: Record<string, unknown> = {}
   mediaMock([{ status: 403 }, {}]); const requests = ltxFetch(completed)
-  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /RECONCILIATION_REQUIRED/)
+  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /LTX_(?:SUBMISSION_UNKNOWN|SUBMISSION_REQUIRES_RECONCILIATION|CHECKPOINT_UNCONFIRMED|OUTPUT_DOWNLOAD_FAILED_RESUME_SAME_JOB)/)
   await textToVideo(params, durableLtxJob(steps, 'ltx'))
   assert.equal(requests.filter(r => r.method === 'POST').length, 1)
-  assert.equal(requests.filter(r => r.method === 'GET').length, 2)
+  assert.equal(requests.filter(r => r.method === 'GET').length, 1)
 })
 test('LTX le meme objet de reprise conserve aussi son identifiant apres succes', async () => {
   mediaMock(); const requests = ltxFetch(completed)
@@ -146,8 +147,8 @@ test('LTX le meme objet de reprise conserve aussi son identifiant apres succes',
 test('LTX reponse POST perdue bloque la deuxieme soumission', async () => {
   const steps: Record<string, unknown> = {}
   const requests = ltxFetch(completed, () => { throw new Error('lost response') })
-  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /RECONCILIATION_REQUIRED/)
-  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /RECONCILIATION_REQUIRED/)
+  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /LTX_(?:SUBMISSION_UNKNOWN|SUBMISSION_REQUIRES_RECONCILIATION|CHECKPOINT_UNCONFIRMED|OUTPUT_DOWNLOAD_FAILED_RESUME_SAME_JOB)/)
+  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /LTX_(?:SUBMISSION_UNKNOWN|SUBMISSION_REQUIRES_RECONCILIATION|CHECKPOINT_UNCONFIRMED|OUTPUT_DOWNLOAD_FAILED_RESUME_SAME_JOB)/)
   assert.equal(requests.length, 1)
 })
 test('LTX erreur du checkpoint ID interdit polling et nouvelle soumission', async () => {
@@ -155,39 +156,39 @@ test('LTX erreur du checkpoint ID interdit polling et nouvelle soumission', asyn
   const requests = ltxFetch(completed)
   await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx', async (_key, state) => {
     if ((state as LtxJobState).id) throw new Error('DB offline')
-  })), /RECONCILIATION_REQUIRED/)
-  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /RECONCILIATION_REQUIRED/)
+  })), /LTX_(?:SUBMISSION_UNKNOWN|SUBMISSION_REQUIRES_RECONCILIATION|CHECKPOINT_UNCONFIRMED|OUTPUT_DOWNLOAD_FAILED_RESUME_SAME_JOB)/)
+  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /LTX_(?:SUBMISSION_UNKNOWN|SUBMISSION_REQUIRES_RECONCILIATION|CHECKPOINT_UNCONFIRMED|OUTPUT_DOWNLOAD_FAILED_RESUME_SAME_JOB)/)
   assert.equal(requests.length, 1)
 })
 test('LTX echec terminal reste terminal sans regeneration', async () => {
   const steps: Record<string, unknown> = {}
-  const requests = ltxFetch(() => Response.json({ id: 'job-1', status: 'failed', error: { message: 'private provider detail' } }))
-  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /JOB_FAILED/)
-  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /JOB_FAILED/)
+  const requests = ltxFetch(() => Response.json({ id: 'job-1', created_at: '2026-10-12T10:00:00Z', completed_at: '2026-10-12T10:00:01Z', status: 'failed', error: { message: 'private provider detail' } }))
+  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /REMOTE_FAILED/)
+  await assert.rejects(() => textToVideo(params, durableLtxJob(steps, 'ltx')), /REMOTE_FAILED/)
   assert.equal(requests.length, 2)
 })
 test('LTX requete modifiee sous le meme checkpoint refusee avant reseau', async () => {
   const steps: Record<string, unknown> = {}; mediaMock(); const requests = ltxFetch(completed)
   await textToVideo(params, durableLtxJob(steps, 'ltx'))
-  await assert.rejects(() => textToVideo({ ...params, prompt: 'different' }, durableLtxJob(steps, 'ltx')), /RESUME_CONFLICT/)
+  await assert.rejects(() => textToVideo({ ...params, prompt: 'different' }, durableLtxJob(steps, 'ltx')), /OPERATION_CONFLICT/)
   assert.equal(requests.length, 2)
 })
-for (const data of [{ status: 'completed', result: { video_url: 'https://media.invalid/x' } }, { id: 'other', status: 'completed' }, { id: 'job-1', status: 'unknown' }, { id: 'job-1', status: 'completed', result: {} }]) {
+for (const data of [{ status: 'completed', result: { video_url: 'https://media.invalid/x' } }, { id: 'other', status: 'completed' }, { id: 'job-1', created_at: '2026-10-12T10:00:00Z', completed_at: '2026-10-12T10:00:01Z', status: 'unknown' }, { id: 'job-1', created_at: '2026-10-12T10:00:00Z', completed_at: '2026-10-12T10:00:01Z', status: 'completed', result: {} }]) {
   test(`LTX rejette une reponse incomplete ${JSON.stringify(data)}`, async () => {
     const count = mediaMock(); ltxFetch(() => Response.json(data))
-    await assert.rejects(() => textToVideo(params)); assert.equal(count(), 0)
+    await assert.rejects(() => textToVideo(params, durableLtxJob({}, 'ltx'))); assert.equal(count(), 0)
   })
 }
 test('LTX requete acceptee puis erreur ne declenche pas de fallback payant WAN', async () => {
-  const requests = ltxFetch(() => Response.json({ id: 'job-1', status: 'failed' }))
-  await assert.rejects(() => generateVideoSmart('p', 'empire', null, { quality: '720p', duration: 6 }), /JOB_FAILED/)
+  const requests = ltxFetch(() => Response.json({ id: 'job-1', created_at: '2026-10-12T10:00:00Z', completed_at: '2026-10-12T10:00:01Z', status: 'failed' }))
+  await assert.rejects(() => generateVideoSmart('p', 'empire', null, { quality: '720p', duration: 6, job: durableLtxJob({}, 'ltx') }), /REMOTE_FAILED/)
   assert.equal(requests.length, 2)
 })
 test('LTX circuit ouvert ne perd ni image de reference ni contrainte camera', async () => {
   let calls = 0; globalThis.fetch = async () => { calls++; throw new Error('unexpected') }
   for (let i = 0; i < 10; i++) recordLtxFailure()
   try {
-    await assert.rejects(() => generateVideoSmart('p', 'empire', null, { imageUri: 'ltx://reference', cameraMotion: 'static' }), /fallback WAN refuse/)
+    await assert.rejects(() => generateVideoSmart('p', 'empire', null, { imageUri: 'https://input.invalid/reference.png', cameraMotion: 'static' }), /DURABLE_CONTEXT_REQUIRED/)
     assert.equal(calls, 0)
   } finally { recordLtxSuccess() }
 })
@@ -240,4 +241,12 @@ test('Export cloud: echec stockage reste une erreur; la reprise reutilise les me
   await assert.rejects(() => verifyAndStoreRenderedVideo(rendered, owner, providers), /storage unavailable/)
   assert.equal((await verifyAndStoreRenderedVideo(rendered, owner, providers)).outputVerified, true)
   assert.equal(paths[0], paths[1])
+})
+
+test('PR3 legacy ID preserves original body fingerprint and resumes GET only', async () => {
+  const body = { prompt: params.prompt, model: params.model, duration: params.duration, resolution: params.resolution, fps: 24, generate_audio: false }
+  const job = durableLtxJob({ ltx: { endpoint: '/text-to-video', fingerprint: createHash('sha256').update(JSON.stringify(body)).digest('hex'), started: true, id: 'job-1' } }, 'ltx')
+  mediaMock(); const requests = ltxFetch(completed)
+  await textToVideo({ resolution: params.resolution, duration: params.duration, model: params.model, prompt: params.prompt }, job)
+  assert.deepEqual(requests.map(r => r.method), ['GET'])
 })

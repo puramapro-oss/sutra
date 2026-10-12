@@ -6,12 +6,12 @@ export type SocialPlatform = 'tiktok' | 'youtube' | 'instagram' | 'facebook' | '
 
 export interface OAuthUrlResponse { url: string; state: string }
 export interface AccountProfile { platform: SocialPlatform; externalId: string; username: string; displayName: string; avatarUrl?: string; accessToken?: string; refreshToken?: string; tokenExpiresAt?: string }
-export interface PublishRequest { videoUrl: string; caption: string; hashtags: string[]; platforms: SocialPlatform[]; accountIds: Record<SocialPlatform, string>; scheduledAt?: string; format?: string; idempotencyKey?: string; captionsByPlatform?: Partial<Record<SocialPlatform, { caption: string; hashtags: string[] }>> }
+export interface PublishRequest { videoUrl: string; verifiedSha256?: string; caption: string; hashtags: string[]; platforms: SocialPlatform[]; accountIds: Record<SocialPlatform, string>; scheduledAt?: string; format?: string; idempotencyKey?: string; captionsByPlatform?: Partial<Record<SocialPlatform, { caption: string; hashtags: string[] }>> }
 export type PublicationStatus = 'published' | 'scheduled' | 'publishing' | 'failed' | 'unknown'
 export const PUBLICATION_STATUS_LABELS: Record<PublicationStatus, string> = {
   published: 'Publie', scheduled: 'Programme', publishing: 'En cours', failed: 'Echec', unknown: 'A verifier',
 }
-export interface PublishResult { platform: SocialPlatform; success: boolean; status?: PublicationStatus; postId?: string; postUrl?: string; externalPostId?: string; publishedAt?: string; error?: string }
+export interface PublishResult { platform: SocialPlatform; accountId?: string; success: boolean; status?: PublicationStatus; postId?: string; postUrl?: string; externalPostId?: string; publishedAt?: string; error?: string }
 export interface AnalyticsData { views: number; likes: number; shares: number; comments: number; engagementRate?: number }
 
 function headers(): HeadersInit {
@@ -21,7 +21,7 @@ function headers(): HeadersInit {
 }
 // Toujours logger (prod inclus) : une erreur Zernio avalée silencieusement en
 // prod = publication sociale qui échoue sans aucune trace. Jamais de secret.
-function logError(context: string, err: unknown): void { console.error(`[zernio:${context}]`, err instanceof Error ? err.message : err) }
+function logError(context: string, err: unknown): void { void err; console.error(`[zernio:${context}]`, 'SUTRA_PROVIDER_REQUEST_FAILED') }
 
 export async function getOAuthUrl(platform: SocialPlatform, userId: string, redirectUri: string): Promise<OAuthUrlResponse> {
   try {
@@ -82,7 +82,7 @@ export function parsePublicationResults(data: unknown, req: PublishRequest): Pub
       : target?.status === 'failed' ? 'failed'
       : post.status === 'scheduled' && target?.status === 'pending' ? 'scheduled'
       : target && ['pending', 'processing', 'uploading', 'publishing'].includes(target.status ?? '') ? 'publishing' : 'unknown'
-    return { platform, status, success: status === 'published', postId: post._id as string,
+    return { platform, accountId: req.accountIds[platform], status, success: status === 'published', postId: post._id as string,
       postUrl: publicPostUrl(target?.platformPostUrl), externalPostId: target?.platformPostId,
       publishedAt: target?.publishedAt && Number.isFinite(Date.parse(target.publishedAt)) ? target.publishedAt : undefined,
       ...(status === 'failed' ? { error: 'Publication refusee par la plateforme' } : status === 'unknown' ? { error: 'Resultat distant a reconcilier' } : {}),
@@ -104,6 +104,25 @@ export async function publishToPlatforms(req: PublishRequest): Promise<PublishRe
     throw new Error('SUTRA_RECONCILIATION_REQUIRED: publication distante non confirmee')
   }
 }
+/** Replays only the original request; the durable caller enforces the 24h window. */
+export async function replayPublication(req: PublishRequest): Promise<PublishResult[]> {
+  return publishToPlatforms(req)
+}
+
+/** The original post owns the destination set. Zernio skips published targets. */
+export async function retryPublication(postId: string, req: PublishRequest): Promise<PublishResult[]> {
+  if (!/^[a-f\d]{24}$/i.test(postId)) throw new Error('SUTRA_ZERNIO_INVALID_POST_ID')
+  try {
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/posts/${postId}/retry`, {
+      method: 'POST', headers: headers(), redirect: 'error', timeoutMs: 90_000,
+    }, 1)
+    if (!res.ok) throw new Error('SUTRA_RECONCILIATION_REQUIRED')
+    const data = await res.json()
+    if (data?.post?._id !== postId) throw new Error('SUTRA_RECONCILIATION_REQUIRED')
+    return parsePublicationResults(data, req)
+  } catch { throw new Error('SUTRA_RECONCILIATION_REQUIRED: reprise distante non confirmee') }
+}
+
 export async function schedulePublication(req: PublishRequest): Promise<PublishResult[]> {
   if (!req.scheduledAt) throw new Error('SUTRA_ZERNIO_SCHEDULE_REQUIRED')
   return publishToPlatforms(req)
@@ -112,9 +131,18 @@ export async function schedulePublication(req: PublishRequest): Promise<PublishR
 export async function getPublicationResults(postId: string, req: PublishRequest): Promise<PublishResult[]> {
   if (!/^[a-f\d]{24}$/i.test(postId)) throw new Error('SUTRA_ZERNIO_INVALID_POST_ID')
   const res = await fetchWithRetry(`${ZERNIO_BASE}/posts/${postId}`, { method: 'GET', headers: headers(), redirect: 'error' }, 2)
+    .catch(() => { throw new Error('SUTRA_ZERNIO_STATUS_UNAVAILABLE') })
   if (!res.ok) throw new Error(`SUTRA_ZERNIO_STATUS_HTTP_${res.status}`)
-  const data = await res.json()
+  const data = await res.json().catch(() => { throw new Error('SUTRA_ZERNIO_STATUS_INVALID_RESPONSE') })
   if (data?.post?._id !== postId) throw new Error('SUTRA_RECONCILIATION_REQUIRED: identifiant publication incoherent')
+  // /retry replays every failed remote target, so an imported post must have
+  // exactly the authorized destination set before the journal may retry it.
+  const targets = data.post.platforms as Array<{ platform?: string; accountId?: string | { _id?: string } }> | undefined
+  if (!Array.isArray(targets) || targets.length !== req.platforms.length || req.platforms.some(platform =>
+    targets.filter(target => target.platform === providerPlatform(platform)
+      && (typeof target.accountId === 'string' ? target.accountId : target.accountId?._id) === req.accountIds[platform]).length !== 1)) {
+    throw new Error('SUTRA_RECONCILIATION_REQUIRED: destinations distantes incoherentes')
+  }
   return parsePublicationResults(data, req)
 }
 
@@ -141,7 +169,7 @@ export async function disconnectAccount(platform: SocialPlatform, accountId: str
   try {
     const qs = new URLSearchParams({ platform })
     const res = await fetchWithRetry(`${ZERNIO_BASE}/accounts/${encodeURIComponent(accountId)}?${qs.toString()}`, { method: 'DELETE', headers: headers() }, 2)
-    return res.ok
+    return res.ok || res.status === 404
   } catch (err) { logError('disconnectAccount', err); return false }
 }
 

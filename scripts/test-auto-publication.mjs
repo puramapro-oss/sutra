@@ -3,7 +3,7 @@
 import { readFileSync } from 'node:fs';
 import { stripTypeScriptTypes } from 'node:module';
 import assert from 'node:assert/strict';
-let source = readFileSync(new URL('../src/lib/sutra-auto.ts', import.meta.url), 'utf8');
+let source = readFileSync(new URL('../src/lib/auto-publication.ts', import.meta.url), 'utf8');
 source = source.slice(source.indexOf('const PLATFORM_ALIASES:'), source.indexOf('// Functions analyzePerformance'));
 source = stripTypeScriptTypes(source);
 const calls = [];
@@ -31,8 +31,7 @@ const disconnected = await publish({ ...params, config: { ...params.config, zern
 assert.equal(disconnected.length, 2);
 assert.ok(disconnected.every(r => !r.success));
 assert.equal(calls.length, 0);
-const empty = await publish({ ...params, config: { ...params.config, publish_platforms: [] } });
-assert.ok(empty.every(r => !r.success));
+await assert.rejects(() => publish({ ...params, config: { ...params.config, publish_platforms: [] } }), /NO_PLATFORMS/);
 assert.equal(calls.length, 0);
-console.log('PASS: mixed accounts, aliases, scheduledAt, disconnected accounts, empty configuration');
+console.error('PASS: mixed accounts, aliases, scheduledAt, disconnected accounts, empty configuration');
 // Does not validate the full Next.js build, real uploads, database concurrency, or provider responses.

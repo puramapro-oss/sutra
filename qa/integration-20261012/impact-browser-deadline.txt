@@ -1,0 +1,84 @@
+{
+  "target": {
+    "id": "Function:scripts/test-ui-isolated.mjs:check",
+    "name": "check",
+    "type": "Function",
+    "filePath": "scripts/test-ui-isolated.mjs"
+  },
+  "direction": "upstream",
+  "impactedCount": 4,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "lower-bound",
+  "boundaries": [
+    "1 call site invoking `check` was dropped at index time because the receiver's type could not be established (e.g. an unresolved constructor, factory or chained expression). Those callers are absent from this result — actual impact may be higher."
+  ],
+  "causes": {
+    "scopeExtractionFiles": 0,
+    "receiverTyping": 1,
+    "dispatchBoundary": 0,
+    "externalBoundary": 0,
+    "undecidedSatisfaction": 0,
+    "callableValueReferences": 0
+  },
+  "summary": {
+    "direct": 4,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 4
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Ui-isolated",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:scripts/test-ui-isolated.mjs",
+        "name": "test-ui-isolated.mjs",
+        "filePath": "scripts/test-ui-isolated.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/ui-isolated/t07-flows.mjs:runEditorFlow",
+        "name": "runEditorFlow",
+        "filePath": "scripts/ui-isolated/t07-flows.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/ui-isolated/t07-flows.mjs:runT07Flows",
+        "name": "runT07Flows",
+        "filePath": "scripts/ui-isolated/t07-flows.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/ui-isolated/t07-runtime.mjs:runT07Runtime",
+        "name": "runT07Runtime",
+        "filePath": "scripts/ui-isolated/t07-runtime.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      }
+    ]
+  }
+}

@@ -50,11 +50,13 @@ export async function generateWanVideoWithTracking(params: {
         generated_resolution: result.resolution,
         format: result.format,
         native_4k: result.native4k,
+        provider_provenance: result.provenance,
       },
     })
 
     return {
       videoBuffer: result.videoBuffer,
+      provenance: result.provenance,
       engine: 'wan-classic',
       model: 'wan-2.2',
       duration: result.duration,

@@ -1,0 +1,115 @@
+import { test, expect, type Page } from '@playwright/test';
+import { loginAsMockUser } from '../../e2e/support/session';
+import { buildMockVideo, buildMockProfile } from '../../e2e/support/mocks';
+const BASE = 'http://127.0.0.1:19835';
+const ID = '22222222-2222-4222-8222-222222222222';
+const XSS = '<img src=x onerror="window.T08_XSS=1">';
+const video = buildMockVideo({ title: XSS, video_url: `${BASE}/t08-media.mp4`, voice_url: null });
+
+test.beforeEach(async ({ page }) => {
+  // Playwright last matching route wins; explicit local fixtures follow this guard.
+  // No browser API mutation reaches a real Next handler. Those are tested separately.
+  await page.route('**/*', async route => {
+    const url = new URL(route.request().url());
+    if (!['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname)) return route.abort('blockedbyclient');
+    if (url.pathname.startsWith('/api/')) return route.fulfill({ status: 503, json: { error: 'T08 unconfigured API fixture' } });
+    if (url.pathname === '/t08-media.mp4') return route.fulfill({ status: 200, contentType: 'video/mp4', body: Buffer.alloc(0) });
+    return route.continue();
+  });
+  await page.route('**/rest/v1/profiles*', route => route.fulfill({ json: buildMockProfile() }));
+  await page.route('**/rest/v1/videos*', route => route.fulfill({ json: route.request().headers().accept?.includes('object') ? video : [video] }));
+  await page.route('**/rest/v1/video_versions*', route => route.fulfill({ json: [] }));
+  await page.addInitScript(() => {
+    localStorage.setItem('sutra_intro_seen', '1');
+    localStorage.setItem('purama_cookie_consent_v1', JSON.stringify({ necessaire: true, mesure: false, marketing: false, updatedAt: new Date().toISOString() }));
+  });
+});
+
+test('T08-B01 actual login form handles invalid credentials then opens dashboard (GoTrue simulated)', async ({ page }) => {
+  await page.goto('/login');
+  await page.getByTestId('email-input').fill('e2e@sutra.test');
+  await page.getByTestId('password-input').fill('wrong-password');
+  await page.getByTestId('login-button').click();
+  await expect(page.getByText(/Invalid login credentials|incorrect/i).first()).toBeVisible();
+  await page.getByTestId('password-input').fill('T08-synthetic-password');
+  await page.getByTestId('login-button').click();
+  await expect(page).toHaveURL(/\/dashboard/);
+});
+
+test('T08-B02 budget gate then one generation and navigation to editor (API fixtures)', async ({ page, context }) => {
+  await loginAsMockUser(context, BASE);
+  let withinBudget = false; const created: unknown[] = [];
+  await page.route('**/api/hybrid/estimate', route => route.fulfill({ json: { plan: {
+    estimateId: 'synthetic-estimate', planHash: 'a'.repeat(64), mode: 'auto', format: '16:9', quality: '1080p',
+    providersSearched: [], providersSkipped: {}, shots: [{ sceneIndex: 0, alternatives: [], recommended: {
+      route: 'local-processing', label: 'T08 synthetic local scene', costUsd: 0, delayClass: 'fast',
+      resolutionTruth: { native: { width: 1920, height: 1080 }, delivery: { width: 1920, height: 1080 }, transform: 'none' },
+    } }], totalCostUsd: 0, totalCostEur: 0, scriptCostUsd: 0, withinBudget,
+  } } }));
+  await page.route('**/api/hybrid/confirm', route => route.fulfill({ json: { approvalToken: '33333333-3333-4333-8333-333333333333' } }));
+  await page.route('**/api/create', async route => { created.push(route.request().postDataJSON()); await route.fulfill({ json: { videoId: ID } }); });
+  await page.goto('/create');
+  await page.getByTestId('topic-input').fill('Film synthetique T08 sans fournisseur');
+  await page.getByTestId('media-mode-hybrid').click();
+  await page.getByTestId('create-button').click();
+  await expect(page.getByTestId('hybrid-estimate-dialog')).toBeVisible();
+  await expect(page.getByTestId('hybrid-confirm-btn')).toBeDisabled();
+  expect(created).toHaveLength(0);
+  withinBudget = true;
+  await page.getByRole('button', { name: 'Ré-estimer' }).click();
+  await expect(page.getByTestId('hybrid-confirm-btn')).toBeEnabled();
+  await page.getByTestId('hybrid-confirm-btn').click();
+  await expect.poll(() => created.length).toBe(1);
+  expect(created[0]).toMatchObject({ approvalToken: '33333333-3333-4333-8333-333333333333', mediaMode: 'hybrid' });
+  await page.getByRole('button', { name: 'Voir ma video' }).click();
+  await expect(page).toHaveURL(new RegExp(`/editor/${ID}`));
+  await expect(page.getByTestId('editor-title')).toHaveText(XSS);
+});
+
+test('T08-B03 editor XSS escaping, subtitle edit, failed export and retry (API fixtures)', async ({ page, context }) => {
+  await loginAsMockUser(context, BASE);
+  const exported: unknown[] = [];
+  await page.route('**/api/video/export', async route => {
+    exported.push(route.request().postDataJSON());
+    await route.fulfill({ status: exported.length === 1 ? 503 : 200, json: exported.length === 1 ? { error: 'T08 export timeout' } : { success: true, versionNumber: 1 } });
+  });
+  await page.goto(`/editor/${ID}`);
+  await expect(page.getByTestId('editor-title')).toHaveText(XSS);
+  expect(await page.evaluate(() => 'T08_XSS' in window)).toBe(false);
+  await page.getByTestId('editor-tab-subtitles').click();
+  await page.getByTestId('add-subtitle').click();
+  await page.locator('[data-testid^="subtitle-text-"]').last().fill('Sous-titre T08 modifie');
+  await page.getByTestId('editor-sidebar-export').click();
+  await expect(page.getByText('T08 export timeout Reessaie.')).toBeVisible();
+  await expect(page.getByTestId('editor-sidebar-export')).toBeEnabled();
+  await page.getByTestId('editor-sidebar-export').click();
+  await expect(page.getByText('Export termine ! Ta video a ete mise a jour.')).toBeVisible();
+  expect(exported).toHaveLength(2);
+  expect(exported[1]).toMatchObject({ videoId: ID, subtitles: expect.arrayContaining([expect.objectContaining({ text: 'Sous-titre T08 modifie' })]) });
+});
+
+async function axeScan(page: Page) {
+  await page.addScriptTag({ path: 'node_modules/axe-core/axe.min.js' });
+  return page.evaluate(async () => {
+    const axeWindow = window as unknown as { axe: { run: (context: Document, options: unknown) => Promise<{ violations: Array<{ id: string; impact: string; nodes: unknown[] }> }> } };
+    const results = await axeWindow.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } });
+    return results.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes }));
+  });
+}
+for (const [name, path, selector] of [['login', '/login', 'login-button'], ['create', '/create', 'create-button'], ['editor', `/editor/${ID}`, 'editor-title']]) {
+  test(`T08-A11Y-${name} mobile WCAG serious/critical and overflow`, async ({ page, context }, info) => {
+    if (name !== 'login') await loginAsMockUser(context, BASE);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(path);
+    await expect(page.getByTestId(selector)).toBeVisible();
+    const violations = await axeScan(page);
+    await info.attach('axe', { body: JSON.stringify(violations, null, 2), contentType: 'application/json' });
+    const timing = await page.evaluate(() => {
+      const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      return { domInteractiveMs: nav.domInteractive, responseStartMs: nav.responseStart, width: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth };
+    });
+    await info.attach('local-dev-timing', { body: JSON.stringify(timing), contentType: 'application/json' });
+    expect.soft(timing.scrollWidth).toBeLessThanOrEqual(timing.width + 1);
+    expect(violations.filter(v => ['serious', 'critical'].includes(v.impact))).toEqual([]);
+  });
+}

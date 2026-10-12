@@ -1,12 +1,14 @@
+import { submissionIdentity, submitVideoJob, submissionErrorStatus } from '@/lib/pipeline-submit'
+import { randomUUID } from 'node:crypto'
+import { runVideoJob } from '@/lib/video-worker'
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import { createVideoSchema } from '@/lib/validators'
 import { clampQualityToPlan } from '@/lib/ltx-utils'
 import { resolveVoiceProviderId } from '@/lib/constants'
-import { enqueueJob, reserveQuota, completeQuotaForFinishedJob, releaseQuota, claimJobByKey, checkpoint, finishJob, heartbeat } from '@/lib/video-queue'
-import { executeCreateJob, type CreateJobInput, type CreateJobResume } from '@/lib/video-pipeline'
-import type { AssembleClip } from '@/lib/shotstack'
+import { completeQuotaForFinishedJob, claimJobByKey, finishJob } from '@/lib/video-queue'
+import { type CreateJobInput } from '@/lib/video-pipeline'
 import type { Plan, Profile } from '@/types'
 
 // Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
@@ -16,15 +18,12 @@ import type { Plan, Profile } from '@/types'
 export const maxDuration = 300
 
 export async function POST(req: Request) {
-  let createdVideoId: string | null = null
+  const worker = `inline-${randomUUID()}`
   let jobId: string | null = null
-  let userId: string | null = null
-  let quotaReserved = false
   try {
     const supabase = await createServerClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
-    userId = user.id
 
     const parsed = createVideoSchema.safeParse(await req.json())
     if (!parsed.success) {
@@ -35,28 +34,13 @@ export async function POST(req: Request) {
     const { data: profile } = await serviceClient.from('profiles').select('*').eq('id', user.id).single()
     if (!profile) return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
 
-    // Réservation ATOMIQUE de la place (migration v10) — fail-closed : aucune
-    // génération ne démarre si le quota ne peut pas être réservé.
-    const reserved = await reserveQuota(profile as Profile)
-    if (!reserved) {
-      return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan. Passez au plan superieur.' }, { status: 403 })
-    }
-    quotaReserved = true
-
     const { topic, format, quality: requestedQuality, voice_id, voice, engine, script: manualScript, niche, style, mode, mediaMode, stockSelections } = parsed.data
     const userPlan = (profile as Profile).plan ?? 'free'
     const quality = clampQualityToPlan(requestedQuality, userPlan, user.email)
     const genPlan: Plan = engine === 'wan-classic' ? 'free' : userPlan
     const voiceId = resolveVoiceProviderId(voice_id ?? voice)
 
-    const { data: videoRow, error: insertError } = await serviceClient
-      .from('videos')
-      .insert({ user_id: user.id, status: 'generating', format, quality, tags: [], media_mode: mediaMode, stock_sources: stockSelections ?? [] })
-      .select('id')
-      .single()
-    if (insertError || !videoRow) throw new Error('Erreur creation video')
-    const videoId = videoRow.id
-    createdVideoId = videoId
+    const videoId = randomUUID()
 
     const input: CreateJobInput = {
       videoId,
@@ -78,65 +62,37 @@ export async function POST(req: Request) {
       brandKit: (profile as Profile).brand_kit ?? null,
     }
 
-    // Tâche durable AVANT tout appel fournisseur (idempotente par videoId) —
-    // le payload complet permet au worker de reprendre TOUT, sans nous.
-    await enqueueJob({
-      videoId,
-      userId: user.id,
-      kind: 'create',
-      idempotencyKey: `create-${videoId}`,
-      payload: { input },
+    const identity = submissionIdentity(`create-${user.id}`, parsed.data, req.headers.get('Idempotency-Key'))
+    const submitted = await submitVideoJob(profile as Profile, {
+      kind: 'create', videoId, input, ...identity,
+      initialVideo: { format, quality, tags: [], media_mode: mediaMode, stock_sources: stockSelections ?? [] },
     })
-
-    // Claim ciblé par clé (atomique) : jamais la tâche d'un autre. Reprise du
-    // checkpoint si la tâche existait déjà (retry du même videoId / bail expiré).
-    const claimedJob = await claimJobByKey(`create-${videoId}`, `inline-${videoId}`, 600)
-    if (claimedJob) {
-      jobId = claimedJob.id
-    } else {
-      // Déjà en cours saine OU épuisée : on relit l'état pour répondre honnêtement.
-      const { data: existing } = await serviceClient
-        .from('video_jobs')
-        .select('id, status')
-        .eq('idempotency_key', `create-${videoId}`)
-        .single()
-      quotaReserved = false // The worker that owns this job also owns settlement.
-      return NextResponse.json({ success: false, videoId, jobId: existing?.id ?? null, status: existing?.status ?? 'unknown' }, { status: 202 })
+    const resultVideoId = (submitted.payload.input as CreateJobInput).videoId
+    if (submitted.status === 'done') {
+      const { data: video, error } = await serviceClient.from('videos').select('*').eq('id', resultVideoId).eq('user_id', user.id).single()
+      if (error || !video) throw new Error('Lecture du resultat indisponible')
+      return NextResponse.json({ success: true, video, jobId: submitted.id })
     }
-    const resumeScenes = (claimedJob.progress.scenes ?? {}) as Record<string, AssembleClip>
-    const scenesDone = { ...resumeScenes }
+    if (!['queued', 'processing'].includes(submitted.status)) return NextResponse.json({ error: 'Tache terminee ou a reconcilier', jobId: submitted.id, status: submitted.status }, { status: 409 })
+    const claimedJob = await claimJobByKey(identity.key, worker, 600)
+    if (!claimedJob) return NextResponse.json({ success: false, videoId: resultVideoId, jobId: submitted.id, status: submitted.status }, { status: 202 })
+    jobId = claimedJob.id
+    await runVideoJob(claimedJob, worker)
 
-    await executeCreateJob(input, { scenes: resumeScenes, steps: (claimedJob.progress.steps ?? {}) as Record<string, unknown> }, {
-      heartbeat: () => heartbeat(jobId!, `inline-${videoId}`, 600),
-      onStepResolved: (key, value) => checkpoint(jobId!, `inline-${videoId}`, { steps: { [key]: value } }),
-      onSceneResolved: async (idx, clip) => {
-        scenesDone[String(idx)] = clip
-        await checkpoint(jobId!, `inline-${videoId}`, { scenes: scenesDone })
-      },
-    })
-
-    if (jobId) await finishJob(jobId, 'done')
-    quotaReserved = false
+    if (jobId) await finishJob(jobId, worker, 'done')
     const quotaConfirmed = await completeQuotaForFinishedJob(user.id, claimedJob.id)
     jobId = null
-    createdVideoId = null
 
-    const { data: video, error: readError } = await serviceClient.from('videos').select('*').eq('id', videoId).eq('user_id', user.id).single()
-    if (readError || !video) return NextResponse.json({ error: 'Lecture du resultat indisponible', videoId, jobId: claimedJob.id, status: 'done' }, { status: 503 })
+    const { data: video, error: readError } = await serviceClient.from('videos').select('*').eq('id', resultVideoId).eq('user_id', user.id).single()
+    if (readError || !video) return NextResponse.json({ error: 'Lecture du resultat indisponible', videoId: resultVideoId, jobId: claimedJob.id, status: 'done' }, { status: 503 })
     return NextResponse.json({ success: true, video, jobId: claimedJob.id, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
-    if (createdVideoId) {
-      await createServiceClient()
-        .from('videos')
-        .update({ status: 'failed' })
-        .eq('id', createdVideoId)
-        .then(() => undefined, () => undefined)
+    try {
+      if (jobId) await finishJob(jobId, worker, 'queued', message)
+    } catch {
+      return NextResponse.json({ error: 'Generation indisponible', status: 'write_unconfirmed' }, { status: 503 })
     }
-    // Échec logiciel → tâche failed + quota LIBÉRÉ (jamais consommé pour rien).
-    if (jobId) await finishJob(jobId, 'failed', message).catch(() => {})
-    void createdVideoId
-    if (quotaReserved && userId) await releaseQuota(userId).catch(() => {})
-    return NextResponse.json({ error: 'Erreur lors de la generation de la video', details: message }, { status: 500 })
+    return NextResponse.json({ error: 'Erreur lors de la generation de la video', code: 'SUTRA_GENERATION_FAILED' }, { status: submissionErrorStatus(message) })
   }
 }

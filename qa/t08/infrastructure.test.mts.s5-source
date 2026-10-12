@@ -1,0 +1,83 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { test, beforeEach, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import { FakeDb } from './fake-db.mts';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+let db: FakeDb;
+mock.module('@/lib/supabase', { namedExports: { createServiceClient: () => db } });
+beforeEach(() => { db = new FakeDb(); });
+const { startCronRun, logAutonomyEvent, reconcileStaleRuns } = await import('../../src/lib/autonomy/observability.ts');
+const { assertCronAuth } = await import('../../src/lib/cron-auth.ts');
+const { downloadToFile } = await import('../../src/lib/ffmpeg-io.ts');
+const { occurrencesBetween } = await import('../../src/lib/sutra-auto-utils.ts');
+
+test('T08-29 cron rejects 64 forged credentials and permits exact synthetic credential', () => {
+  for (let i = 0; i < 64; i++) assert.equal(assertCronAuth(new Request('http://localhost/cron', { headers: { authorization: `Bearer fake-${i}` } }))?.status, 401);
+  assert.equal(assertCronAuth(new Request('http://localhost/cron', { headers: { authorization: 'Bearer t08-synthetic-cron' } })), null);
+  const saved = process.env.CRON_SECRET; delete process.env.CRON_SECRET;
+  try { assert.equal(assertCronAuth(new Request('http://localhost/cron'))?.status, 503); } finally { process.env.CRON_SECRET = saved; }
+});
+test('T08-30 media download must reject private / metadata / loopback addresses before fetch', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 't08-owned-download-'));
+  const original = globalThis.fetch; const attempted: string[] = [];
+  globalThis.fetch = async url => { attempted.push(String(url)); return new Response('synthetic bytes'); };
+  try {
+    for (const url of ['http://127.0.0.1/private', 'http://169.254.169.254/latest/meta-data/', 'http://10.0.0.1/private', 'http://[::1]/private']) {
+      try { await downloadToFile(url, join(directory, 'synthetic.bin'), 't08'); } catch { /* rejection is required */ }
+    }
+    assert.deepEqual(attempted, [], 'unsafe URLs reached fetch (intercepted, no network)');
+  } finally { globalThis.fetch = original; await rm(directory, { recursive: true }); }
+});
+test('T08-31 aborted media download makes zero requests and leaves no file', async () => {
+  const original = globalThis.fetch; let calls = 0;
+  globalThis.fetch = async () => { calls++; return new Response('synthetic'); };
+  try { await assert.rejects(downloadToFile('https://assets.invalid/x', '/unused', 't08', AbortSignal.abort()), /annulee/); assert.equal(calls, 0); }
+  finally { globalThis.fetch = original; }
+});
+test('T08-32 observability emits one correlation id from start to finish', async () => {
+  const run = await startCronRun(db as any, 't08'); await run.finish('ok', { count: 2 });
+  const rows = db.rows('sutra_cron_runs'); assert.equal(rows.length, 1);
+  assert.equal(rows[0].run_id, run.runId); assert.equal(rows[0].status, 'ok'); assert.equal(rows[0].stats.count, 2);
+});
+test('T08-33 cron terminal result must not be overwritten by a second finish', async () => {
+  const run = await startCronRun(db as any, 't08'); await run.finish('ok'); await run.finish('error', {}, 'late failure');
+  assert.equal(db.rows('sutra_cron_runs')[0].status, 'ok');
+});
+// Captures the actual stdout sink to verify redaction; restores it in finally.
+/* eslint-disable no-console */
+test('T08-34 observability log must redact credential-shaped errors', () => {
+  const logs: string[] = []; const original = console.log;
+  console.log = value => { logs.push(String(value)); };
+  try { logAutonomyEvent('test', { error: 'Bearer T08_SYNTHETIC_CANARY_ONLY', runId: 't08' }); } finally { console.log = original; }
+  assert.doesNotMatch(logs.join('\n'), /T08_SYNTHETIC_CANARY_ONLY/);
+});
+/* eslint-enable no-console */
+test('T08-35 stale reconciliation preserves current and completed runs', async () => {
+  db.rows('sutra_cron_runs').push({ run_id: 'old', job: 't08', status: 'running', started_at: '2020-01-01T00:00:00Z' }, { run_id: 'fresh', job: 't08', status: 'running', started_at: new Date().toISOString() }, { run_id: 'done', job: 't08', status: 'ok', started_at: '2020-01-01T00:00:00Z' });
+  await reconcileStaleRuns(db as any);
+  assert.deepEqual(db.rows('sutra_cron_runs').map(row => row.status), ['error', 'running', 'ok']);
+});
+test('T08-36 schedule DST autumn overlap emits at most one occurrence per local day', () => {
+  const schedule: any = { id: 'dst', name: 'dst', frequency: 'daily', days: [], time: '02:30', timezone: 'Europe/Paris', is_active: true };
+  const occurrences = occurrencesBetween(schedule, new Date('2026-10-24T00:00:00Z'), new Date('2026-10-27T00:00:00Z'));
+  assert.equal(occurrences.length, 3);
+  assert.equal(new Set(occurrences.map(date => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(date))).size, 3);
+});
+test('T08-37 network guard rejects remote egress without contacting provider', async () => {
+  await assert.rejects(fetch('https://example.invalid/must-never-connect'), /T08_NETWORK_DENIED/);
+});
+test('T08-38 environment-file guard denies reads before filesystem access', async () => {
+  await assert.rejects(readFile('/nonexistent/.env.t08-must-not-open'), /T08_ENV_FILE_DENIED/);
+});
+
+test('T08-40 observability must not indefinitely block work on a hung DB transport', async () => {
+  // 50 ms is a bounded diagnostic watchdog, not a production SLA. Never resolves.
+  const hung = { from: () => ({ insert: () => ({ then: () => new Promise(() => {}) }) }) };
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    const result = await Promise.race([startCronRun(hung as any, 't08').then(() => 'returned'), new Promise(resolve => { timer = setTimeout(() => resolve('pending'), 50); })]);
+    assert.equal(result, 'returned', 'no local deadline: logging still blocks the caller');
+  } finally { clearTimeout(timer); }
+});

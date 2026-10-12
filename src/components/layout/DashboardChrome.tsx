@@ -83,6 +83,7 @@ export default function DashboardChrome({
           className="flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden"
         >
           {!error || profile ? children : null}
+          <SpiritualLayer />
         </motion.main>
       </div>
 
@@ -91,9 +92,6 @@ export default function DashboardChrome({
 
       {/* Tutorial overlay - first login only */}
       <TutorialOverlay />
-
-      {/* Spiritual layer — affirmation + quotes */}
-      <SpiritualLayer />
 
       {/* Subconscious engine — micro-pauses + subliminals */}
       <SubconsciousEngine />

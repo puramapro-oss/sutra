@@ -3,7 +3,7 @@ name: SUTRA web verification
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, 'codex/sutra-t01-integration-20261012']
   workflow_dispatch:
 
 permissions:
@@ -24,7 +24,7 @@ jobs:
       - uses: ./.github/actions/setup-sutra
         with:
           smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
-      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
       - run: npm run test:contracts
       - run: npm run test:media
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -45,6 +45,10 @@ jobs:
         with:
           smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
       - run: npm run check
+      - run: npx playwright install --with-deps chromium
+      - run: node scripts/run-ci.mjs browser
+      - run: node scripts/run-ci.mjs legacy
+      - run: python3 -m unittest discover -s deploy -p 'test_*.py'
       - name: Audit production dependencies
         if: always()
         run: npm audit --omit=dev --audit-level=high
@@ -52,7 +56,10 @@ jobs:
         if: always()
         with:
           name: sutra-quality-results
-          path: test-results/ci
+          path: |
+            test-results/ci
+            test-results/ui-isolated
+            test-results/legacy
           if-no-files-found: warn
 
   disposable-database:
@@ -81,3 +88,13 @@ jobs:
         env:
           SUTRA_DISPOSABLE_DB: '1'
           DATABASE_URL_LOCAL: postgres://fixture:fixture@127.0.0.1:5432/sutra_ci_actions
+      - name: Pipeline concurrency on disposable PostgreSQL
+        run: node --import tsx --test scripts/test-pipeline-postgres.mts
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          PGHOST: 127.0.0.1
+          PGPORT: '5432'
+          PGUSER: fixture
+          PGPASSWORD: fixture
+      - name: Account and integrated migration permissions on a private cluster
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-security-rls.mjs

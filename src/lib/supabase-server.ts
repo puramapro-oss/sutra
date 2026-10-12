@@ -1,11 +1,12 @@
 import { createServerClient as createSSRClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { sessionCookieOptions } from '@/lib/auth-navigation'
+import { enforceAccountAccess } from '@/lib/account-access'
 
 export async function createServerClient() {
   const cookieStore = await cookies()
 
-  return createSSRClient(
+  return enforceAccountAccess(createSSRClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -25,5 +26,5 @@ export async function createServerClient() {
         },
       },
     }
-  )
+  ))
 }

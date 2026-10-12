@@ -47,7 +47,8 @@ const setKey = (name: string, on: boolean) => {
   else delete process.env[name]
 }
 
-const { assembleFinalVideo, actualQualityFor, generateSubtitlesFromScript } = await import('../src/lib/shotstack.ts')
+const { assembleFinalVideo: realAssemble, actualQualityFor, generateSubtitlesFromScript } = await import('../src/lib/shotstack.ts')
+const assembleFinalVideo: typeof realAssemble = (params) => realAssemble(params, { measureAudio: async () => ({ voice: null, music: null }) })
 const { MissingEnvError } = await import('../src/lib/env.ts')
 
 const shotstackOk = () =>
@@ -130,7 +131,7 @@ test('Shotstack: horloge de montage — intro décale voix et sous-titres, duré
     brandKit: { intro_template: 'https://cdn/intro.mp4', outro_template: 'https://cdn/outro.mp4' },
   })
   const body = JSON.parse(String(calls[0].init?.body))
-  const [subTrack, videoTrack, voiceTrack] = body.timeline.tracks
+  const [subTrack, voiceTrack, videoTrack] = body.timeline.tracks
   const end = (t: { clips: Array<{ start: number; length: number }> }) =>
     Math.max(...t.clips.map((c) => c.start + c.length))
   // images : 3 + 10 + 10 + 3 = 26s
@@ -157,7 +158,7 @@ test('Shotstack: une PHOTO devient un asset image, pas vidéo', async () => {
     brandKit: null,
   })
   const body = JSON.parse(String(calls[0].init?.body))
-  const asset = body.timeline.tracks[0].clips[0].asset
+  const asset = body.timeline.tracks.at(-1).clips[0].asset
   assert.equal(asset.type, 'image')
   assert.equal(asset.src, 'https://cdn/photo.jpg')
 })
@@ -177,7 +178,7 @@ test('Shotstack: transition fade demandée = fade appliquée (pas none)', async 
     brandKit: null,
   })
   const body = JSON.parse(String(calls[0].init?.body))
-  assert.equal(body.timeline.tracks[0].clips[0].transition.in, 'fade')
+  assert.equal(body.timeline.tracks.at(-1).clips[0].transition.in, 'fade')
 })
 
 test('Shotstack: 429 au submit -> erreur explicite', async () => {

@@ -36,7 +36,7 @@ export default function StepProgressBar({ currentStep, stepStatus, onStepClick }
                 status === 'generating' ? 'bg-violet-500/20 border-violet-500/40 text-violet-400 animate-pulse' :
                 status === 'error' ? 'bg-red-500/20 border-red-500/40 text-red-400' :
                 i === currentStep ? 'bg-violet-600 border-violet-500 text-white' :
-                'bg-white/[0.03] border-white/[0.06] text-white/30'
+                'bg-white/[0.03] border-white/[0.06] text-white/65'
               )}>
                 {status === 'done' ? <Check className="h-3.5 w-3.5" /> :
                  status === 'generating' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> :
@@ -44,7 +44,7 @@ export default function StepProgressBar({ currentStep, stepStatus, onStepClick }
               </div>
               <span className={cn(
                 'text-[10px] font-medium hidden sm:block',
-                i === currentStep ? 'text-white/80' : 'text-white/30'
+                i === currentStep ? 'text-white/80' : 'text-white/65'
               )}>
                 {step.label}
               </span>

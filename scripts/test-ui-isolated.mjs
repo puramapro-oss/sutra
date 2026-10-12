@@ -1,5 +1,7 @@
 // Browser contract tests with a local fake Supabase service. No real accounts or providers.
 import assert from 'node:assert/strict'
+import { runT07Flows } from './ui-isolated/t07-flows.mjs'
+import { runT07Runtime } from './ui-isolated/t07-runtime.mjs'
 import { createServer } from 'node:http'
 import { spawn } from 'node:child_process'
 import { once } from 'node:events'
@@ -16,7 +18,8 @@ const user = { id: '11111111-1111-4111-8111-111111111111', aud: 'authenticated',
 const token = `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url')}.${Buffer.from(JSON.stringify({ sub: user.id, aud: 'authenticated', role: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600, iat: Math.floor(Date.now() / 1000), email: user.email })).toString('base64url')}.fixture-signature`
 let profile = { id: user.id, email: user.email, name: 'Studio Test', plan: 'creator', credits: 40, is_admin: false, tutorial_completed: true, brand_kit: null, created_at: new Date().toISOString() }
 let fixtureImage = Buffer.alloc(0)
-let profilesFail = false, videosFail = false, updateFails = false, uploaded = 0, passwordChanges = 0
+let profilesFail = false, accountAccessFails = false, updateFails = false, uploaded = 0, passwordChanges = 0
+const fixture = { videos: [], delay: 0, staleDelay: 0, deleteFails: false, videosFail: false }
 const requests = []
 const fake = createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -26,12 +29,12 @@ const fake = createServer(async (req, res) => {
   res.setHeader('Content-Type', 'application/json')
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
   const url = new URL(req.url, 'http://fixture.invalid')
-  requests.push({ path: url.pathname, method: req.method })
+  requests.push({ path: url.pathname, query: url.search, method: req.method })
   const chunks = []; for await (const chunk of req) chunks.push(chunk)
   let body = {}; try { body = JSON.parse(Buffer.concat(chunks).toString()) } catch { /* Storage multipart body. */ }
   const send = (value, status = 200) => { res.writeHead(status); res.end(JSON.stringify(value)) }
   if (url.pathname === '/auth/v1/token') {
-    if (body.password === 'wrong-password') return send({ error: 'invalid_grant', error_description: 'Invalid login credentials' }, 400)
+    if (body.password !== 'fixture-password-42') return send({ error: 'invalid_grant', error_description: 'Invalid login credentials' }, 400)
     return send({ access_token: token, refresh_token: 'fixture-refresh', expires_in: 3600, expires_at: Math.floor(Date.now() / 1000) + 3600, token_type: 'bearer', user })
   }
   if (url.pathname === '/auth/v1/user') {
@@ -46,12 +49,27 @@ const fake = createServer(async (req, res) => {
     res.setHeader('Content-Type', 'image/png'); res.end(fixtureImage); return
   }
   if (url.pathname === '/rest/v1/profiles') {
-    if (profilesFail || (updateFails && req.method === 'PATCH')) return send({ message: 'Fixture database unavailable' }, 503)
+    if (accountAccessFails || (profilesFail && url.searchParams.get('select') === '*') || (updateFails && req.method === 'PATCH')) return send({ message: 'Fixture database unavailable' }, 503)
     if (req.method === 'PATCH') profile = { ...profile, ...body }
     return send(req.headers.accept?.includes('object+json') ? profile : [profile])
   }
   if (url.pathname === '/rest/v1/legal_acceptances') return send(['mentions', 'cgu', 'cgv', 'confidentialite'].map(doc_type => ({ doc_type, version: '1.0' })))
-  if (url.pathname === '/rest/v1/videos' && videosFail) return send({ message: 'Fixture videos unavailable' }, 503)
+  if (url.pathname === '/rest/v1/videos') {
+    if (fixture.videosFail || (fixture.deleteFails && req.method === 'DELETE')) return send({ message: 'Fixture videos unavailable' }, 503)
+    if (req.method === 'DELETE') { fixture.videos = fixture.videos.filter(video => `eq.${video.id}` !== url.searchParams.get('id')); return send(null) }
+    let rows = [...fixture.videos]
+    const title = url.searchParams.get('title')?.replace(/^ilike.%|%$/g, '').toLowerCase()
+    if (title) rows = rows.filter(video => video.title.toLowerCase().includes(title))
+    const status = url.searchParams.get('status')?.replace(/^eq./, '')
+    if (status) rows = rows.filter(video => video.status === status)
+    const count = rows.length, offset = Number(url.searchParams.get('offset') || 0), limit = Number(url.searchParams.get('limit') || count)
+    if (url.searchParams.get('order')?.startsWith('title')) rows.sort((a, b) => a.title.localeCompare(b.title))
+    rows = rows.slice(offset, offset + limit)
+    const delay = title === 'ancien' ? fixture.staleDelay : fixture.delay
+    if (delay) await new Promise(done => setTimeout(done, delay))
+    res.setHeader('Content-Range', `${offset}-${Math.max(offset, offset + rows.length - 1)}/${count}`)
+    return send(req.headers.accept?.includes('object+json') ? rows[0] ?? null : rows)
+  }
   res.setHeader('Content-Range', '0-0/0')
   return send(req.headers.accept?.includes('object+json') ? null : [])
 })
@@ -63,8 +81,12 @@ const log = await open(resolve(output, 'server.log'), 'w')
 const env = { ...process.env, NEXT_TELEMETRY_DISABLED: '1', NEXT_PUBLIC_SUPABASE_URL: fixtureURL, NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fixture-anon', NEXT_PUBLIC_APP_SCHEMA: 'sutra', SUPABASE_SERVICE_ROLE_KEY: 'fixture-service', STRIPE_SECRET_KEY: 'sk_test_isolated', RESEND_API_KEY: 're_isolated', VERCEL: '' }
 let child, browser
 const results = [], browserErrors = [], accessibility = []
+const editorOnly = process.argv.includes('--editor-only')
+const profileOnly = process.argv.includes('--profile-only')
+const widths = editorOnly || profileOnly ? [] : [320, 375, 768, 1280, 1440]
+const diagnostic = process.env.SUTRA_UI_DIAGNOSTIC === '1'
 const mode = process.env.SUTRA_UI_PRODUCTION === '1' ? 'start' : 'dev'
-async function check(name, run) { await run(); results.push(name); console.log(`PASS ${name}`) }
+async function check(name, run) { await run(); results.push(name); process.stdout.write(`PASS ${name}\n`) }
 try {
   if (mode === 'start') {
     const build = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'build', '--webpack'], { cwd: root, env, stdio: ['ignore', log.fd, log.fd] })
@@ -75,6 +97,13 @@ try {
   let ready = false
   for (let i = 0; i < 90; i++) { try { const response = await fetch(`${base}/login`); if (response.ok) { ready = true; break } } catch { /* App booting. */ } await new Promise(done => setTimeout(done, 500)) }
   assert.ok(ready, 'local Next server ready')
+  if (process.argv.includes('--legacy')) {
+    const legacy = spawn(process.execPath, ['node_modules/@playwright/test/cli.js', 'test', '--config', 'playwright.offline.config.ts', ...(process.argv.includes('--legacy-regressions') ? ['--grep', 'remember-me label text|karma-defi sans secret|SQL injection in URL'] : [])], {
+      cwd: root, env: { ...env, PLAYWRIGHT_BASE_URL: base, E2E_BASE_URL: base }, stdio: 'inherit',
+    })
+    const [code] = await once(legacy, 'exit')
+    process.exitCode = code || 0
+  } else {
   browser = await chromium.launch({ ...(process.env.SUTRA_CHROMIUM_PATH ? { executablePath: process.env.SUTRA_CHROMIUM_PATH } : {}), headless: true })
   async function context(width, consent = true) {
     const ctx = await browser.newContext({ viewport: { width, height: 812 }, reducedMotion: 'reduce', locale: 'fr-FR' })
@@ -92,18 +121,36 @@ try {
       localStorage.setItem('sutra_intro_seen', '1'); localStorage.setItem('sutra_tutorial_dismissed', 'true')
       } catch { /* about:blank has no storage origin. */ }
     }, { consent })
-    ctx.on('page', page => page.on('pageerror', error => browserErrors.push({ url: page.url().replace(base, ''), message: error.message })))
+    ctx.on('page', page => {
+      page.on('pageerror', error => browserErrors.push({ url: page.url().replace(base, ''), message: error.message }))
+      page.on('console', message => { if (message.type() === 'error' && /hydration|did not match|server rendered/i.test(message.text())) browserErrors.push({ url: page.url().replace(base, ''), message: message.text() }) })
+    })
     return ctx
   }
-  async function noOverflow(page) { assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow') }
+  async function noOverflow(page) {
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, 'no horizontal overflow')
+    const clipped = await page.locator('main button, main input, main select, main textarea, [role=dialog] button, [role=dialog] input').evaluateAll(elements => elements.filter(el => {
+      const box = el.getBoundingClientRect()
+      if (!box.width || !box.height || (box.left >= -1 && box.right <= innerWidth + 1)) return false
+      for (let parent = el.parentElement; parent; parent = parent.parentElement) {
+        if (['auto', 'scroll'].includes(getComputedStyle(parent).overflowX) && parent.scrollWidth > parent.clientWidth) return false
+      }
+      return true
+    }).map(el => ({ text: el.textContent?.slice(0, 60), testId: el.getAttribute('data-testid') })))
+    if (diagnostic && clipped.length) process.stdout.write(`CLIPPED ${JSON.stringify(clipped)}\n`)
+    else assert.deepEqual(clipped, [], 'all controls inside viewport or usable scroller')
+  }
   async function screenshot(page, name) { await page.screenshot({ path: resolve(output, `${name}.png`), fullPage: false }) }
   async function auditAccessibility(page, name) {
+    // Framer opacity transitions can still run with reduced transform motion.
+    await page.waitForTimeout(650)
+    await noOverflow(page)
     await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') })
     const violations = await page.evaluate(async () => (await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } })).violations.map(({ id, impact, nodes }) => ({ id, impact, count: nodes.length, targets: nodes.slice(0, 8).map(node => node.target) })))
     accessibility.push({ name, violations })
-    assert.deepEqual(violations, [], `WCAG A/AA checks on ${name}`)
+    if (!diagnostic) assert.deepEqual(violations, [], `WCAG A/AA checks on ${name}`)
   }
-  for (const width of (process.env.SUTRA_UI_FOCUS === 'studio' ? [] : [1280, 375, 320])) {
+  for (const width of (process.env.SUTRA_UI_FOCUS ? [] : widths)) {
     const ctx = await context(width), page = await ctx.newPage()
     for (const path of ['/', '/login', '/signup', '/pricing', '/forgot-password', '/reset-password', '/how-it-works']) {
       await check(`${width}px ${path}: renders without overflow`, async () => {
@@ -129,8 +176,9 @@ try {
           }
         })
         await screenshot(page, `login-${width}`)
-        if (width === 375) await auditAccessibility(page, 'login-mobile')
+
       }
+      if (['/login', '/signup', '/forgot-password', '/reset-password'].includes(path)) await auditAccessibility(page, `${path.slice(1)}-${width}`)
     }
     await ctx.close()
   }
@@ -159,16 +207,25 @@ try {
     await page.getByTestId('search-trigger').click(); await page.getByTestId('search-input').fill('partenariat'); await page.getByTestId('search-result-partenaire').click()
     await expect(page).toHaveURL(base + '/partenaire'); await noOverflow(page)
   })
-  for (const path of ['/dashboard', '/create', '/production', '/library', '/settings']) {
-    await check(`375px authenticated fixture ${path}`, async () => {
-      await page.goto(base + path, { waitUntil: 'networkidle', timeout: 60_000 }); await expect(page.getByTestId('header')).toBeVisible(); await noOverflow(page)
-    })
-    if (path === '/production') await check('all production steps remain inside the mobile viewport', async () => {
-      const boxes = await page.getByRole('navigation', { name: 'Étapes de production' }).getByRole('button').all(); assert.equal(boxes.length, 7)
-      for (const button of boxes) { const box = await button.boundingBox(); assert.ok(box.x >= 0 && box.x + box.width <= 375) }
-    })
-    await screenshot(page, `studio-${path.slice(1)}`)
+  for (const width of (process.env.SUTRA_UI_FOCUS === 'flows' ? [] : widths)) {
+    await page.setViewportSize({ width, height: 812 })
+    for (const path of ['/dashboard', '/create', '/production', '/library', '/settings']) {
+      await check(`${width}px authenticated fixture ${path}`, async () => {
+        await page.goto(base + path, { waitUntil: 'networkidle', timeout: 60_000 }); await expect(page.getByTestId('header')).toBeVisible(); await noOverflow(page)
+      })
+      await auditAccessibility(page, `${path.slice(1)}-${width}`)
+      if (path === '/production') await check(`${width}px production navigation`, async () => {
+        const buttons = await page.getByRole('navigation', { name: 'Étapes de production' }).getByRole('button').all(); assert.equal(buttons.length, 7)
+        for (const button of buttons) { const box = await button.boundingBox(); assert.ok(box.x >= 0 && box.x + box.width <= width) }
+      })
+      await screenshot(page, `studio-${path.slice(1)}-${width}`)
+    }
   }
+  if (!profileOnly) await runT07Flows({ page, base, widths, check, noOverflow, auditAccessibility, screenshot, fixture, requests, user })
+  const performanceObservations = process.env.SUTRA_UI_FOCUS || editorOnly || profileOnly ? [] : await runT07Runtime({ page, base, check, noOverflow, screenshot })
+  if (!editorOnly && !profileOnly) {
+  await page.goto(base + '/settings', { waitUntil: 'networkidle' })
+  await page.setViewportSize({ width: 375, height: 812 })
   await check('settings logo is uploaded before persisting its durable URL', async () => {
     await page.getByText('Apparence', { exact: true }).click()
     const bytes = Buffer.from(await page.evaluate(() => { const canvas = document.createElement('canvas'); canvas.width = canvas.height = 16; canvas.getContext('2d').fillRect(0, 0, 16, 16); return canvas.toDataURL('image/png').split(',')[1] }), 'base64')
@@ -197,8 +254,8 @@ try {
   })
   await auditAccessibility(page, 'settings-mobile')
   await check('database errors are visible instead of false zero statistics', async () => {
-    videosFail = true; await page.goto(base + '/dashboard', { waitUntil: 'networkidle' }); await expect(page.getByRole('heading', { name: 'Le tableau de bord n’a pas pu être chargé' })).toBeVisible()
-    videosFail = false; await page.getByRole('button', { name: 'Réessayer', exact: true }).click(); await expect(page.getByTestId('dashboard-greeting')).toBeVisible()
+    fixture.videosFail = true; await page.goto(base + '/dashboard', { waitUntil: 'networkidle' }); await expect(page.getByRole('heading', { name: 'Le tableau de bord n’a pas pu être chargé' })).toBeVisible()
+    fixture.videosFail = false; await page.getByRole('button', { name: 'Réessayer', exact: true }).click(); await expect(page.getByTestId('dashboard-greeting')).toBeVisible()
   })
   await check('password recovery form updates through the auth service', async () => {
     await page.goto(base + '/reset-password', { waitUntil: 'networkidle' }); await page.getByLabel('Nouveau mot de passe', { exact: true }).fill('fixture-new-password-42'); await page.getByLabel('Confirmer le mot de passe').fill('fixture-new-password-42')
@@ -226,16 +283,31 @@ try {
     await page.keyboard.press('Escape'); await expect(page.getByTestId('search-trigger')).toBeFocused()
     await noOverflow(page); await screenshot(page, 'studio-desktop')
   })
-  await check('an unavailable profile does not masquerade as a free account', async () => {
+  }
+  if (!editorOnly) {
+  await check('an unavailable client profile does not masquerade as a free account', async () => {
+    // Keep the server's narrow account-access check healthy; fail only client profile loading.
     profilesFail = true; await page.goto(base + '/settings', { waitUntil: 'networkidle' })
-    await expect(page.getByRole('button', { name: 'Recharger le profil' })).toBeVisible()
+    // The auth store has a 12s deadline, including SDK retries of the fixture 503.
+    await expect(page.getByRole('button', { name: 'Recharger le profil' })).toBeVisible({ timeout: 20_000 })
     profilesFail = false; await page.getByRole('button', { name: 'Recharger le profil' }).click()
     await expect(page.getByTestId('settings-profil')).toBeVisible()
   })
+  await check('an unavailable server account check denies protected page access', async () => {
+    accountAccessFails = true
+    const response = await ctx.request.get(base + '/settings', { maxRedirects: 0 })
+    assert.equal(response.status(), 307)
+    const redirect = new URL(response.headers().location, base)
+    assert.equal(redirect.pathname, '/login')
+    assert.equal(redirect.searchParams.get('next'), '/settings')
+    accountAccessFails = false
+  })
+  }
   await ctx.close()
   assert.deepEqual(browserErrors, [], 'no uncaught browser exceptions')
-  await writeFile(resolve(output, 'results.json'), JSON.stringify({ mode, checks: results.length, results, browserErrors, accessibility, fakeServiceRequests: requests.length }, null, 2))
-  console.log(JSON.stringify({ checks: results.length, browserErrors, accessibility }))
+  await writeFile(resolve(output, 'results.json'), JSON.stringify({ mode, browser: browser.version(), widths, checks: results.length, results, browserErrors, accessibility, performanceObservations, fakeServiceRequests: requests.length }, null, 2))
+  process.stdout.write(JSON.stringify({ checks: results.length, browserErrors, accessibility }) + '\n')
+  }
 } catch (error) {
   await writeFile(resolve(output, 'failure.json'), JSON.stringify({ error: String(error), completed: results, browserErrors, accessibility }, null, 2))
   throw error

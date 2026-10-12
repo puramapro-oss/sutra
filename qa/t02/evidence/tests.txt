@@ -1,0 +1,247 @@
+✔ many consumers share one session read, subscription and profile request (10.655333ms)
+✔ token refresh updates the token without reloading a loaded profile (18.066083ms)
+✔ a newer sign-in wins over an older getSession result (6.180584ms)
+✔ switching accounts clears the old profile and ignores its late response (16.478833ms)
+✔ sign-out cancels the in-flight profile and leaves no former user data (13.567833ms)
+✔ strict-mode cleanup and remount install a fresh working subscription (5.409709ms)
+✔ wrong-owner profile is rejected and a refetch can recover (11.623208ms)
+✔ simultaneous manual refreshes are deduplicated (4.97375ms)
+✔ the server snapshot never contains a client session (5.000167ms)
+✔ reject unsafe or looping return path null (0.126917ms)
+✔ reject unsafe or looping return path "" (0.03125ms)
+✔ reject unsafe or looping return path "https://evil.invalid" (0.018167ms)
+✔ reject unsafe or looping return path "//evil.invalid" (0.015583ms)
+✔ reject unsafe or looping return path "/\\evil.invalid" (0.034ms)
+✔ reject unsafe or looping return path "/%2f%2fevil.invalid" (0.087917ms)
+✔ reject unsafe or looping return path "/%5cevil.invalid" (0.030792ms)
+✔ reject unsafe or looping return path "/login" (0.049041ms)
+✔ reject unsafe or looping return path "/api/delete" (0.045375ms)
+✔ reject unsafe or looping return path "/auth/callback" (0.016875ms)
+✔ reject unsafe or looping return path "/broken%zz" (0.026292ms)
+✔ reject unsafe or looping return path "/\n/evil.invalid" (0.013125ms)
+✔ preserve return path /create?mode=manual&format=9%3A16 (0.034ms)
+✔ preserve return path /settings?tab=apparence#logo (0.022584ms)
+✔ preserve return path /reset-password (0.016917ms)
+✔ session-only choice removes expiry on every refresh without changing cookie safety flags (0.639208ms)
+✔ remember-me uses thirty days (0.042209ms)
+✔ cookie deletion remains deletion (0.02775ms)
+✔ existing sessions without a new choice keep their prior cookie options (0.021834ms)
+✔ raster image signatures determine storage type (0.786375ms)
+✔ image uploads reject SVG, MIME mismatch, empty and oversized files (1.137458ms)
+✔ literal internal navigation points to an existing page or declared redirect (71.987333ms)
+✔ Media refuse adresse privee/reservee 0.0.0.0 (0.9535ms)
+✔ Media refuse adresse privee/reservee 10.0.0.1 (0.203167ms)
+✔ Media refuse adresse privee/reservee 127.0.0.1 (0.056417ms)
+✔ Media refuse adresse privee/reservee 169.254.169.254 (0.055833ms)
+✔ Media refuse adresse privee/reservee 172.16.0.1 (0.067125ms)
+✔ Media refuse adresse privee/reservee 192.168.0.1 (0.058625ms)
+✔ Media refuse adresse privee/reservee 100.64.0.1 (0.047958ms)
+✔ Media refuse adresse privee/reservee 198.18.0.1 (0.033875ms)
+✔ Media refuse adresse privee/reservee 192.0.2.1 (0.05525ms)
+✔ Media refuse adresse privee/reservee 198.51.100.1 (0.062375ms)
+✔ Media refuse adresse privee/reservee 203.0.113.1 (0.03625ms)
+✔ Media refuse adresse privee/reservee 224.0.0.1 (0.045125ms)
+✔ Media refuse adresse privee/reservee 255.255.255.255 (0.030625ms)
+✔ Media refuse adresse privee/reservee ::1 (3.4575ms)
+✔ Media refuse adresse privee/reservee :: (0.058542ms)
+✔ Media refuse adresse privee/reservee ::ffff:127.0.0.1 (0.036625ms)
+✔ Media refuse adresse privee/reservee ::ffff:7f00:1 (0.045333ms)
+✔ Media refuse adresse privee/reservee fc00::1 (0.05825ms)
+✔ Media refuse adresse privee/reservee fe80::1 (0.033917ms)
+✔ Media refuse adresse privee/reservee 2001:db8::1 (0.036292ms)
+✔ Media refuse adresse privee/reservee 2002:7f00:1:: (0.051375ms)
+✔ Media refuse adresse privee/reservee 64:ff9b::7f00:1 (0.052292ms)
+✔ Media refuse adresse privee/reservee 3fff::1 (0.037792ms)
+✔ Media refuse adresse privee/reservee invalid (0.023708ms)
+✔ Media autorise les adresses publiques IPv4 et IPv6 (0.077375ms)
+✔ Media refuse protocoles, credentials, ports et IP obfusquees (0.272334ms)
+✔ Media epingle le DNS valide et ne transmet pas de credentials (2.270375ms)
+✔ Media refuse une reponse DNS melangeant IP publique et privee (0.198958ms)
+✔ Media revalide les redirections avant le second telechargement (0.263459ms)
+✔ Media suit une redirection publique bornee (0.427708ms)
+✔ Media bloque les boucles de redirection (0.283708ms)
+✔ Media refuse MIME HTML (0.130958ms)
+✔ Media refuse faux MP4 (0.198542ms)
+✔ Media refuse taille declaree (0.122833ms)
+✔ Media refuse taille stream (0.117292ms)
+✔ Media refuse troncature (0.196209ms)
+✔ Media refuse compression (0.093958ms)
+✔ Media refuse HTTP 403 (0.106542ms)
+✔ Media timeout couvre aussi le corps de reponse (11.789916ms)
+✔ LTX V2 soumet 202, sauvegarde ID, poll GET et telecharge sans token (2.268833ms)
+✔ LTX image conserve references, camera et endpoint lors du polling (0.464625ms)
+✔ LTX reprise apres reponse de download perdue ne refait aucun POST (0.607959ms)
+✔ LTX le meme objet de reprise conserve aussi son identifiant apres succes (0.550833ms)
+✔ LTX reponse POST perdue bloque la deuxieme soumission (0.164958ms)
+✔ LTX erreur du checkpoint ID interdit polling et nouvelle soumission (0.215875ms)
+✔ LTX echec terminal reste terminal sans regeneration (0.240167ms)
+✔ LTX requete modifiee sous le meme checkpoint refusee avant reseau (0.292458ms)
+✔ LTX rejette une reponse incomplete {"status":"completed","result":{"video_url":"https://media.invalid/x"}} (0.154ms)
+✔ LTX rejette une reponse incomplete {"id":"other","status":"completed"} (0.13625ms)
+✔ LTX rejette une reponse incomplete {"id":"job-1","status":"unknown"} (0.145375ms)
+✔ LTX rejette une reponse incomplete {"id":"job-1","status":"completed","result":{}} (0.133042ms)
+✔ LTX requete acceptee puis erreur ne declenche pas de fallback payant WAN (0.401625ms)
+✔ LTX circuit ouvert ne perd ni image de reference ni contrainte camera (0.098708ms)
+✔ Export cloud: fichier decode, dimensions/audio mesures, copie durable avant validation (195.457084ms)
+✔ Export cloud: fausse resolution refusee sans upload ni succes (20.791958ms)
+✔ Export cloud: fichier tronque refuse avant copie durable (19.158917ms)
+✔ Export cloud: echec stockage reste une erreur; la reprise reutilise les memes octets (88.370958ms)
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: invalid authorization
+[sutra:quota] completed media requires accounting reconciliation finished-job
+(node:26178) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t02-security-pr3-20261012/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ cron account-deletion: secret absent, dev et invalide refusent avant toute operation (6.576291ms)
+✔ cron ambassador-check: secret absent, dev et invalide refusent avant toute operation (8.036166ms)
+✔ cron asso-transfer: secret absent, dev et invalide refusent avant toute operation (21.672334ms)
+✔ cron auto-learn: secret absent, dev et invalide refusent avant toute operation (3.7795ms)
+✔ cron auto-plan: secret absent, dev et invalide refusent avant toute operation (4.779125ms)
+✔ cron auto-trends: secret absent, dev et invalide refusent avant toute operation (3.196ms)
+✔ cron contest-judge: secret absent, dev et invalide refusent avant toute operation (63.546167ms)
+✔ cron contest-monthly: secret absent, dev et invalide refusent avant toute operation (5.792084ms)
+✔ cron contest-weekly: secret absent, dev et invalide refusent avant toute operation (5.144667ms)
+✔ cron email-sequences: secret absent, dev et invalide refusent avant toute operation (7.364125ms)
+✔ cron fiscal-palier: secret absent, dev et invalide refusent avant toute operation (3.702ms)
+✔ cron karma-defi: secret absent, dev et invalide refusent avant toute operation (3.725417ms)
+✔ cron karma-lightning: secret absent, dev et invalide refusent avant toute operation (3.922333ms)
+✔ cron karma-split-distribute: secret absent, dev et invalide refusent avant toute operation (3.796167ms)
+✔ cron karma-tournoi: secret absent, dev et invalide refusent avant toute operation (3.482041ms)
+✔ cron smart-split: secret absent, dev et invalide refusent avant toute operation (3.659ms)
+✔ cron streak-update: secret absent, dev et invalide refusent avant toute operation (3.997042ms)
+✔ cron sutra-auto: secret absent, dev et invalide refusent avant toute operation (2.05825ms)
+✔ cron upgrade-ots-proofs: secret absent, dev et invalide refusent avant toute operation (221.213583ms)
+✔ cron video-worker: secret absent, dev et invalide refusent avant toute operation (14.666417ms)
+✔ cron: secret valide accepte, secret lu a chaque appel (0.096916ms)
+✔ AUTO: musique sans voix declenche le montage et conserve le branding (0.325208ms)
+✔ AUTO: voix requise manquante bloque ready et efface toute URL finale (0.213375ms)
+✔ AUTO: musique requise manquante bloque la publication (0.071792ms)
+✔ AUTO: echec de montage transmis au worker, jamais checkpointé comme succes (0.1735ms)
+✔ EXPORT: resultat cloud non verifie ne peut pas atteindre la sauvegarde ready (0.732458ms)
+✔ AUTO: verification cloud echouee efface URL finale et conserve le rendu deja paye (0.149167ms)
+✔ AUTO: ancien checkpoint URL brute sans validation exige reconciliation (0.072959ms)
+✔ VOIX: crash entre morceaux de 24 MiB ne melange pas deux syntheses (21.105458ms)
+✔ VOIX: reponse fournisseur incertaine ne declenche pas de nouvelle synthese (0.217708ms)
+✔ PRODUCTION: une scene manquante interdit le montage raccourci (0.255834ms)
+✔ SHOTSTACK: apres interruption du polling, reprise par ID sans nouveau POST (1.671459ms)
+✔ SHOTSTACK: soumission sans ID confirme bloque un second rendu (0.090333ms)
+✔ EXPORT: echec de checkpoint apres rendu conserve ID distant pour la reprise (0.22275ms)
+✔ PLANNING: deux horaires proches et un passage tardif restent enumeres (14.401084ms)
+✔ QUEUE: erreurs RPC et finalisation sans ligne ne sont jamais des succes (2.274292ms)
+✔ QUEUE: cle dupliquee conserve statut et acquis; changement de payload refuse (0.963042ms)
+✔ PUBLICATION: video annulee refusee avant appel externe (0.267709ms)
+✔ PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publie rien (0.064667ms)
+✔ PUBLICATION: succes partiel reste partiel et comptes issus du serveur (0.152708ms)
+✔ PUBLICATION: deux requetes concurrentes ne soumettent qu une fois (0.127791ms)
+✔ PUBLICATION: echec reservation ne contacte pas le fournisseur (0.055792ms)
+✔ PUBLICATION: resultat non enregistre exige reconciliation et bloque le rejeu (0.08325ms)
+✔ OAUTH: utilisateur, plateforme et navigateur doivent correspondre sans consommer le bon etat (0.355875ms)
+✔ OAUTH: expiration et rejeu concurrent refusés (0.115125ms)
+✔ OAUTH: erreur de base bloque initiation et consommation (0.088459ms)
+✔ PRODUCTION: sauvegarde reprise une fois sans doublon ni remise a ready apres publication (3.009625ms)
+✔ PRODUCTION: DB refusee ou conflit de proprietaire ne produit pas de succes (0.098041ms)
+✔ EXPORT: aucune confirmation si DB indisponible ou video detenue par un autre utilisateur (0.089208ms)
+✔ QUOTA: un debit incertain apres succes ne requeue pas la generation terminee (0.473292ms)
+✔ verified active, free and paused users keep their Supabase identity (1.684833ms)
+✔ same valid session loses access on ban and recovers only after unban (0.2005ms)
+✔ missing and wrong-owner profiles cannot authorize a service-role handler (0.213125ms)
+✔ billing status changes cannot undo an administrative revocation (0.171916ms)
+✔ database errors and exceptions fail closed without leaking their message (0.288583ms)
+✔ anonymous requests cannot read profiles (0.079459ms)
+✔ audio and raster images use the pinned transport and preserve the downloaded bytes (7.136167ms)
+✔ audio: mixed private/public DNS is rejected before any connection (0.285125ms)
+✔ audio: redirects into cloud metadata are rejected (0.343209ms)
+✔ audio: compressed bodies and streamed overflow are rejected (0.28775ms)
+✔ image: mixed private/public DNS is rejected before any connection (0.148709ms)
+✔ image: redirects into cloud metadata are rejected (0.1595ms)
+✔ image: compressed bodies and streamed overflow are rejected (0.6565ms)
+✔ audio: reject playlist, SVG or mismatched audio/mpeg (0.871875ms)
+✔ audio: reject playlist, SVG or mismatched audio/wav (0.352ms)
+✔ image: reject playlist, SVG or mismatched image/svg+xml (0.173958ms)
+✔ image: reject playlist, SVG or mismatched image/png (0.370167ms)
+✔ DNS failure does not expose the requested host or signed URL (0.243958ms)
+✔ pre-cancelled downloads do not resolve DNS or connect (0.244417ms)
+✔ cancellation interrupts pending DNS without exposing the caller reason (0.182625ms)
+(node:26181) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26181) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ banned session fails in the actual OAuth and admin handlers before side effects (3.46775ms)
+✔ OAuth initiation is limited per authenticated user before contacting provider (4.482541ms)
+✔ OAuth provider exception is not returned to the browser (0.440709ms)
+✔ OAuth callback never reflects untrusted provider errors into a redirect URL (0.419667ms)
+✔ OAuth callback rejects missing one-use state before exchanging code (0.157084ms)
+✔ failed/missing target lookup cannot authorize a ban (0.2845ms)
+✔ ban, unban and plan changes require a confirmed database row (0.743916ms)
+✔ middleware blocks a banned dashboard session without a login redirect loop (1.153625ms)
+(node:26182) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:26182) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ storage result: failed upload/delete/list never report success or expose provider details (0.930334ms)
+✔ storage exception: failed upload/delete/list never report success or expose provider details (0.1685ms)
+✔ successful legacy storage operations retain their existing contract (0.610333ms)
+ℹ tests 169
+ℹ suites 0
+ℹ pass 169
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1176.102125

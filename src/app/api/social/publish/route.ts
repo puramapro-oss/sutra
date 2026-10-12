@@ -10,6 +10,7 @@ export const maxDuration = 120
 const schema = z.object({
   videoId: z.string().uuid(),
   platforms: z.array(z.enum(['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest', 'reddit', 'threads', 'snapchat', 'tumblr', 'mastodon', 'bluesky', 'vimeo'])).min(1).max(14),
+  accountIds: z.record(z.string(), z.string().uuid()).optional(),
   caption: z.string().max(20000).optional(), hashtags: z.array(z.string().max(100)).max(100).optional(),
   title: z.string().max(500).optional(), description: z.string().max(20000).optional(), tags: z.array(z.string().max(100)).max(100).optional(),
   autoCaption: z.boolean().optional(), scheduledAt: z.string().datetime({ offset: true }).optional(),

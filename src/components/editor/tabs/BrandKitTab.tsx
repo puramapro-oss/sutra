@@ -26,12 +26,12 @@ export default function BrandKitTab({ profile }: BrandKitTabProps) {
               />
             ) : (
               <div className="h-10 w-10 rounded-lg bg-violet-500/10 flex items-center justify-center">
-                <Palette className="h-5 w-5 text-violet-400" />
+                <Palette className="h-5 w-5 text-violet-300" />
               </div>
             )}
             <div>
               <p className="text-sm text-white/70">Brand Kit actif</p>
-              <p className="text-xs text-white/30">
+              <p className="text-xs text-white/70">
                 {profile.brand_kit.font ?? 'Police par defaut'}
               </p>
             </div>
@@ -50,14 +50,14 @@ export default function BrandKitTab({ profile }: BrandKitTabProps) {
                 className="h-8 w-8 rounded-lg border border-white/[0.08]"
                 style={{ backgroundColor: profile.brand_kit.colors.secondary }}
               />
-              <span className="text-xs text-white/40">Couleurs de marque</span>
+              <span className="text-xs text-white/70">Couleurs de marque</span>
             </div>
           )}
         </>
       ) : (
         <div className="py-8 text-center">
           <Palette className="h-8 w-8 text-white/20 mx-auto mb-3" />
-          <p className="text-sm text-white/40 mb-3">Aucun Brand Kit configure</p>
+          <p className="text-sm text-white/70 mb-3">Aucun Brand Kit configure</p>
           <Button
             variant="secondary"
             size="sm"
