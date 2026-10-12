@@ -136,3 +136,12 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+
+
+## 2026-10-12 — reprise T07 depuis 589732c
+
+- [x] LOCKS et intégration locale/distante vérifiés ; branche T07 isolée créée depuis le SHA demandé sans écrasement de l'ancienne livraison.
+- [x] Régressions client reproduites et correctifs bornés création/production/export ; design system et PR3 préservés.
+- [x] Typecheck/lint/build, contrats, médias compatibles, PostgreSQL local et Python PASS ; preuves dans `qa/t07-reprise`.
+- [x] Recette production210 PASS, axe164 sans violation aux cinq largeurs, legacy1022 PASS/25 SKIP et revue visuelle finale.
+- [x] Manifest et revue GitNexus du delta ; commit code/preuves `b2e7f3a89af740537f5b2e3fa8ab85d7a125dcda` ; handoff prêt pour le push autorisé. Le SHA distant final et la clôture LOCKS sont consignés dans le pointeur coordinateur T07.

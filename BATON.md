@@ -1,3 +1,13 @@
+# BATON — reprise SUTRA T07 du 2026-10-12
+
+Branche `codex/sutra-t07-ux-ui-reprise-20261012`, base intégrée et distante vérifiée `589732cb49959c1a576a3ba381b310cd594600ac`. Worktree T07 réutilisé propre ; ancienne branche et travaux étrangers préservés. LOCKS `SUTRA-T07-20261012:REPRISE-589732c`.
+
+Jalon : correctifs client de navigation production, recherche stock, cache de mots-clés et export après navigation implémentés. Typecheck/lint/build197 pages PASS ; contrats427/7 SKIP, média33, PostgreSQL13+9+49 et Python9 PASS. Recette production210 PASS / axe164 sans violation / 0 erreur navigateur ; legacy1022 PASS / 25 SKIP en une exécution complète. Revue visuelle des cinq largeurs effectuée. Commandes et preuves : `qa/t07-reprise/README.md`. Aucun contrat serveur modifié. Commit/push autorisés par la reprise utilisateur, garde anti-déploiement de cette seule branche ajoutée.
+
+Code et preuves committés : `b2e7f3a89af740537f5b2e3fa8ab85d7a125dcda` ; 44 empreintes de sources/configuration et 39 preuves vérifiées depuis Git. Handoff final : `HANDOFF-SUTRA-T07-20261012.md`. Le SHA distant de livraison est consigné dans `.coord/handoffs/SUTRA-20261012/T07-HANDOFF.md` à la racine PURAMA. Aucun blocage local restant ; intégration coordinateur et CI T01 (credential SMARANA absent) restent externes. Pas de release certifiée. Ne pas rejouer les PASS inchangés.
+
+## Archive T01 — base de reprise
+
 # BATON — SUTRA T01, intégration du 2026-10-12
 
 Branche `codex/sutra-t01-integration-20261012`, worktree isolé homonyme sous `purama-worktrees`. Livraison = commit contenant ce BATON, manifest de sources `qa/integration-20261012/verification.json`.

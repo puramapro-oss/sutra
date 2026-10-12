@@ -1,3 +1,67 @@
+# SUTRA T07 — reprise du 12 octobre 2026
+
+## Livraison courante
+
+- Branche : `codex/sutra-t07-ux-ui-reprise-20261012`.
+- Base T01 locale et distante vérifiée : `589732cb49959c1a576a3ba381b310cd594600ac`.
+- Statut : **LOCAL_T07_DELTA_VERIFIED — INTEGRATION_T01_REQUIRED**.
+- Code/preuves : `b2e7f3a89af740537f5b2e3fa8ab85d7a125dcda`. Le présent handoff est son commit documentaire enfant ; le SHA final poussé sera consigné dans `.coord/handoffs/SUTRA-20261012/T07-HANDOFF.md`. Les 44 empreintes source/configuration et les 39 empreintes de preuve sont vérifiées depuis ce commit avec `git show`.
+- Worktree : `/Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012`.
+- LOCKS : `SUTRA-T07-20261012:REPRISE-589732c`. Reprise limitée au delta UI ; ancienne branche T07 et WIP des autres propriétaires préservés. La livraison T07 initiale a déjà été intégrée par T01 : elle n'est pas réappliquée.
+- Mandat courant : commit et push autorisés. Aucun déploiement, secret, appel payant, migration distante ou changement serveur. `vercel.json` désactive l'auto-preview pour cette seule nouvelle branche ; la garde T01 est conservée.
+
+## Delta à intégrer
+
+| Fichiers | Correction |
+| --- | --- |
+| `src/hooks/useProductionGeneration.ts` | Une réponse tardive conserve l'étape choisie pendant la génération ; progression bornée, résultats et cleanup protégés après annulation client. |
+| `src/hooks/useEditorHandlers.ts` | Verrou synchrone d'export ; départ de l'éditeur annule le fetch client et supprime les notifications obsolètes. Ne prétend pas annuler le job serveur. |
+| `src/hooks/useVideoGeneration.ts`, `src/app/(dashboard)/create/page.tsx` | Mots-clés rattachés au script courant ; requêtes identiques en cours dédupliquées, réponses dépassées annulées. Une étape inchangée conserve sa sélection ; modifier puis revenir à un script pendant une requête conserve le bon script. |
+| `src/components/create/StockPicker.tsx` | Réponse la plus récente prioritaire, cleanup, déduplication et choix utilisateur préservés. Recherche nommée, focus visible, cibles de 44 px, état sélectionné annoncé, erreurs séparées du vide et chargement annoncé, responsive et motion réduit dans le design system existant. |
+| `scripts/ui-isolated/t07-reprise.mjs`, `scripts/ui-isolated/t07-flows.mjs` | Sept régressions navigateur ajoutées au harnais de production existant ; neuf audits axe supplémentaires. |
+| `vercel.json` | Garde anti-déploiement de la branche T07 uniquement. |
+| `qa/t07-reprise/`, `BATON.md`, `task_plan.md`, présent handoff | Preuves et reprise coordinateur. |
+
+Les cinq références protégées restent dans l'ascendance. Seize fichiers des zones PR3 (auth/session, navigation, modale, dépendances) sont strictement identiques à **T01 589732c**, y compris ses corrections post-PR3. [Préservation](qa/t07-reprise/preservation.json). Aucun lockfile ni contrat serveur modifié.
+
+## Validation locale fraîche
+
+Environnement : Node **24.21.0**, npm **11.12.1**, Next **16.3.8**, Chromium réel headless **145.0.7632.6**. Fixtures locales et connexions Node/navigateur externes bloquées pour les tests produit ; aucune lecture de fichier d'environnement. [Commandes reproductibles](qa/t07-reprise/README.md), [manifest source/configuration](qa/t07-reprise/source-manifest.json).
+
+| Gate | Résultat |
+| --- | --- |
+| Typecheck, ESLint, production webpack | **PASS**, 0 erreur lint / 111 avertissements ; 197 pages générées. |
+| Navigateur production `next start` | **210/210 PASS**, 320 / 375 / 768 / 1280 / 1440 px. |
+| Axe WCAG 2 A/AA | **164 audits, 0 violation détectée** ; 0 exception navigateur / erreur d'hydratation capturée. |
+| Legacy Playwright complet | **1022 PASS, 25 SKIP, 0 échec** en une exécution complète. |
+| Contrats Node | **427 PASS, 7 SKIP** ; schedule/composition/publication PASS. |
+| Médias locaux | **33 PASS** avec FFmpeg compatible. |
+| PostgreSQL isolé | Migration **13**, concurrence **9**, permissions/RLS **49** PASS. Clusters de test arrêtés et conservés. |
+| Python déploiement simulé | **9 PASS** ; aucun déploiement exécuté. |
+| Actionlint / Shellcheck | **PASS** sur workflow / askpass. |
+| Audit dépendances production | **0 haute/critique**, 5 modérées / 2 faibles ; seuil haute PASS. |
+
+Les 25 skips legacy sont documentés dans [skips.json](qa/t07-reprise/evidence/legacy/skips.json) : 6 barrières d'authentification, 6 skips explicites sans motif, 13 variantes non applicables au projet desktop/mobile. Aucun test flaky.
+
+Les sept skips des contrats concernent quatre tests INSEE réels, deux tests DB distante et un test réseau OpenTimestamps. Les tests PostgreSQL locaux séparés ne qualifient pas ces accès distants.
+
+[Résultats navigateur](qa/t07-reprise/evidence/browser/results.json), [captures affichées et revues](qa/t07-reprise/evidence/browser/screenshots/) : connexion 320, stock 320/1440, bibliothèque 375, production 768, réglages 1280, dashboard 1440, éditeur 1280. Les parcours incluent formulaires auth, navigation mobile, création, production, bibliothèque remplie/vide/loading/error, modales, réglages, clavier et focus. Mesures locales sur dix navigations avec animations normales : DOMContentLoaded **19–185 ms**, load **37–306 ms**, aucune tâche >50 ms observée. Mode réduit/canvas contrôlé. Ce ne sont ni des mesures terrain ni des performances de fournisseurs réels.
+
+Les essais RED conservés montrent les défauts client avant correction, dont la course du cache lors du retour au script précédent. Deux ajustements d'environnement sont documentés avec leurs échecs initiaux : FFmpeg Homebrew sans filtres drawtext/subtitles remplacé pour le test par le binaire compatible existant ; PostgreSQL lancé avec `LC_ALL=C` après refus macOS. Le code serveur n'a pas changé.
+
+## Risques et blocages réels
+
+- **Intégration T01 requise** : cette branche est une livraison propriétaire, sans merge ni déploiement. Revoir son delta depuis 589732c puis rejouer uniquement les gates touchées par l'intégration.
+- **GitNexus limité** : impacts directs résolus LOW (un appelant des hooks/composant), callbacks React parfois UNKNOWN. Index de la base TRUNCATED (929 candidats d'entrée exclus, 519 callees ignorés et quatre coupures de parcours). Détection staged : **19 symboles, 5 flux, risque MEDIUM** dans création/production ; nouveau module de test revu directement. Le CLI abrège ses résultats ; aucune certification exhaustive du graphe. Preuves `impact-*.txt` et `detect-staged.txt`.
+- **CI T01 externe bloquée** : run [38289517548](https://github.com/puramapro-oss/sutra/actions/runs/38289517548), SHA 589732c, échoue dans les trois jobs avant les tests car `SMARANA_READ_TOKEN` lecture seule manque. Initialisation PostgreSQL distante PASS. Lecture seule du résultat, aucun secret consulté/modifié. [Preuve](qa/t07-reprise/evidence/integration-ci.json). La branche T07 ne déclenche pas le workflow limité à main/T01.
+- **Non qualifié** : VoiceOver/NVDA natif, Safari/Firefox, appareils physiques, Docker/Linux/OVH, OAuth/DB/fournisseurs réels et production payante. Les noms/rôles/états sont testés par Chromium/axe/clavier, sans attestation de lecteur d'écran natif.
+- Les limites produit héritées de T01 restent explicites : fonctionnalités S5 hybride/versions/logger non intégrées ; édition de script sans régénération vocale ; contrat d'upload média manuel à qualifier par son propriétaire. Aucune correction serveur parallèle introduite.
+- Build avec avertissement Next Edge `process.cwd`, dépréciation Node `module.register` ; 111 avertissements lint. Les alertes de sécurité modérées/faibles agrégées ci-dessus restent à suivre par T01, sans modification de dépendances dans ce lot.
+
+## Archive — livraison initiale PR3 (supplantée par la reprise ci-dessus)
+
+Les résultats et blocages ci-dessous sont historiques. En particulier, l'ancien lint FAIL et l'ancien statut « aucun push » ne décrivent pas la reprise sur 589732c.
+
 # SUTRA T07 — UX/UI — 2026-10-12
 
 ## Livraison et propriété
