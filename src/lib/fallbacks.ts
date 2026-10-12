@@ -48,7 +48,7 @@ export async function generateVisualWithFallback(
     : isEnvSet('LTX_API_KEY')
   // Stock is eligible only BEFORE any paid call, when explicitly permitted by
   // strictAi=false and the selected provider is known to be unconfigured.
-  if (configured || strictAi) {
+  if (configured || strictAi || track.job?.current || track.execution) {
     const result = await generateVideoSmart(prompt, plan, userEmail, {
       quality, format, duration: track.duration, userId: track.userId,
       videoId: track.videoId, job: track.job, jobId: track.jobId, operationKey: track.operationKey, execution: track.execution,

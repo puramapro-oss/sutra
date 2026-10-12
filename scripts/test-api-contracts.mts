@@ -196,14 +196,14 @@ test('RunPod: endpoint absent -> erreur explicite (pas de crash import)', async 
 test('LTX: une reponse binaire V1 n\'est plus acceptee comme succes V2', async () => {
   setKey('LTX_API_KEY', true)
   mockFetch(() => new Response(new ArrayBuffer(4), { status: 200 }))
-  await assert.rejects(() => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx')), /SUBMISSION_UNKNOWN/)
+  await assert.rejects(() => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx', async () => {})), /SUBMISSION_UNKNOWN/)
 })
 
 test('LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx)', async () => {
   setKey('LTX_API_KEY', true)
   mockFetch(() => jsonResponse(402, { error: { message: 'engine overloaded' } }))
   await assertThrowsWith(
-    () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx')),
+    () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx', async () => {})),
     'LTX_HTTP_402'
   )
   assert.equal(calls.length, 1)
@@ -212,7 +212,7 @@ test('LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx)'
 test('LTX: cle absente -> erreur explicite', async () => {
   setKey('LTX_API_KEY', false)
   await assert.rejects(
-    () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx')),
+    () => textToVideo({ prompt: 'p', model: 'ltx-2-3-fast', duration: 6, resolution: '1280x720' }, durableLtxJob({}, 'ltx', async () => {})),
     (err: unknown) => {
       assert.ok(err instanceof Error)
       assert.match(err.message, /LTX_API_KEY/)

@@ -114,7 +114,7 @@ test('same operation with changed content rejects, including references/media me
 for (const [name, response] of [
   ['lost network response', new Error('lost')], ['HTTP 500', json({}, 500)], ['HTTP 503', json({}, 503)],
   ['malformed 202', json({ id: '../bad', created_at: T }, 202)], ['legacy binary HTTP 200', new Response(new Uint8Array([1]))],
-  ['missing timestamp', json({ id: 'job-123' }, 202)], ['null body', json(null, 202)],
+  ['null body', json(null, 202)],
 ] as const) {
   test(`uncertain paid outcome: ${name}; persistent barrier prevents retry/fallback`, async () => {
     const h = harness([response])
@@ -123,6 +123,23 @@ for (const [name, response] of [
     assert.equal(h.calls.length, 1)
   })
 }
+test('malformed acceptance retains a valid paid job ID for GET-only reconciliation', async () => {
+  const h = harness([json({ id: 'job-123' }, 202), done()])
+  await assert.rejects(h.client.submit('text-to-video', request, h.execution), (error) => {
+    assert.ok(error instanceof LtxJobError)
+    assert.equal(error.code, 'LTX_SUBMISSION_UNKNOWN')
+    assert.equal(error.job?.id, 'job-123')
+    assert.equal(error.job?.remoteCreatedAt, null)
+    return true
+  })
+  const result = await h.client.resume(h.execution)
+  assert.equal(result.id, 'job-123')
+  assert.equal(result.state, 'completed')
+  assert.equal(result.remoteCreatedAt, T)
+  await h.client.submit('text-to-video', request, h.execution)
+  assert.equal(h.calls.length, 2)
+  assert.equal(h.calls.filter(call => call.init?.method === 'POST').length, 1)
+})
 for (const http of [400, 401, 402, 403, 404, 422, 429]) {
   test(`submission HTTP ${http}: explicit status/quota, no automatic resubmission`, async () => {
     const h = harness([json({ error: { type: 'api_error', message: 'not logged' } }, http, { 'retry-after': '19' })])
@@ -279,6 +296,47 @@ test('checkpoint adapter refuses spend on failed lease persistence', async () =>
   const h = harness([accepted()], execution.store)
   await assert.rejects(h.client.submit('text-to-video', request, execution))
   assert.equal(h.calls.length, 0)
+})
+test('checkpoint adapter refuses spend when durable persistence is absent', async () => {
+  const steps = {}
+  const execution = executionForCheckpoint(durableLtxJob(steps, 'scene'))
+  const h = harness([accepted()])
+  await assert.rejects(h.client.submit('text-to-video', request, execution))
+  assert.equal(h.calls.length, 0)
+  assert.deepEqual(steps, {})
+})
+test('separate journal wrappers for one scene serialize before the paid POST', async () => {
+  const steps: Record<string, unknown> = { foreign: 'keep' }
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  const checkpoint = async () => { await gate }
+  const contexts = Array.from({ length: 16 }, () => executionForCheckpoint(durableLtxJob(steps, 'scene', checkpoint)))
+  const h = harness(Array.from({ length: 16 }, accepted))
+  const submits = contexts.map(context => h.client.submit('text-to-video', request, context))
+  await new Promise(resolve => setImmediate(resolve))
+  assert.equal(h.calls.length, 0, 'no spend before persistence acknowledgement')
+  release()
+  const outcomes = await Promise.allSettled(submits)
+  assert.equal(outcomes.filter(result => result.status === 'fulfilled').length, 1)
+  assert.equal(h.calls.length, 1)
+  assert.equal(steps.foreign, 'keep')
+  const resumed = executionForCheckpoint(durableLtxJob(steps, 'scene', async () => {}))
+  assert.equal((await h.client.submit('text-to-video', request, resumed)).id, 'job-123')
+  assert.equal(h.calls.length, 1)
+})
+test('journal coordination keeps scene scopes and current lease callbacks distinct', async () => {
+  const steps: Record<string, unknown> = {}
+  let oldSaves = 0, newSaves = 0
+  const expired = executionForCheckpoint(durableLtxJob(steps, 'scene', async () => { oldSaves++; throw new Error('LEASE_LOST') }))
+  const current = executionForCheckpoint(durableLtxJob(steps, 'scene', async () => { newSaves++ }))
+  const other = executionForCheckpoint(durableLtxJob(steps, 'other', async () => {}))
+  const h = harness([accepted(), accepted()])
+  await assert.rejects(h.client.submit('text-to-video', request, expired))
+  assert.equal(h.calls.length, 0)
+  await Promise.all([h.client.submit('text-to-video', request, current), h.client.submit('text-to-video', request, other)])
+  assert.equal(h.calls.length, 2)
+  assert.equal(oldSaves, 1)
+  assert.equal(newSaves, 2)
 })
 test('checkpoint adapter never overwrites a legacy job with a new POST', async () => {
   const execution = executionForCheckpoint(durableLtxJob({ scene: { started: true, id: 'legacy', endpoint: '/text-to-video', fingerprint: 'old' } }, 'scene'))
