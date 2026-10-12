@@ -1,7 +1,12 @@
 import assert from 'node:assert/strict'
 import { expect } from '@playwright/test'
+import { runT07Reprise } from './t07-reprise.mjs'
 
 export async function runT07Flows({ page, base, widths, check, noOverflow, auditAccessibility, screenshot, fixture, requests, user }) {
+  if (!process.argv.includes('--editor-only')) {
+    await runT07Reprise({ page, base, check, auditAccessibility, screenshot, fixture, user })
+    if (process.argv.includes('--reprise-only')) return
+  }
   if (process.argv.includes('--editor-only')) {
     await runEditorFlow({ page, base, check, auditAccessibility, screenshot, fixture, requests, user })
     return

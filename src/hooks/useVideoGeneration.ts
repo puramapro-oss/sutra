@@ -40,7 +40,12 @@ export function useVideoGeneration({
 }: UseVideoGenerationProps) {
   const intent = useRef<{ body: string; key: string } | null>(null)
   const active = useRef<AbortController | null>(null)
-  useEffect(() => () => active.current?.abort(), [])
+  const keywordsRequest = useRef<{ body: string; controller: AbortController } | null>(null)
+  const keywordsBody = useRef<string | null>(null)
+  useEffect(() => () => {
+    active.current?.abort()
+    keywordsRequest.current?.controller.abort()
+  }, [])
   // States
   const [isGenerating, setIsGenerating] = useState(false)
   const [pipelineSteps, setPipelineSteps] = useState<PipelineStep[]>(getPipelineSteps('wan-classic'))
@@ -58,22 +63,40 @@ export function useVideoGeneration({
         .map((l) => l.trim())
         .filter(Boolean)
       if (scenes.length === 0) return
+      const body = JSON.stringify({ scenes })
+      if (keywordsRequest.current?.body === body || (!keywordsRequest.current && keywordsBody.current === body)) return
+      keywordsRequest.current?.controller.abort()
+      const controller = new AbortController()
+      keywordsRequest.current = { body, controller }
       setKeywordsLoading(true)
       try {
         const res = await fetch('/api/stock/keywords', {
           method: 'POST',
+          signal: controller.signal,
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ scenes }),
+          body,
         })
         const data = await res.json()
-        const kws: string[][] = Array.isArray(data.keywords) ? data.keywords : scenes.map(() => [])
+        controller.signal.throwIfAborted()
+        if (!res.ok || !Array.isArray(data.keywords) || data.keywords.length !== scenes.length ||
+          !data.keywords.every((words: unknown) => Array.isArray(words) && words.every(word => typeof word === 'string'))) {
+          throw new Error('Mots-cles indisponibles')
+        }
+        const kws: string[][] = data.keywords
         setSceneKeywords(kws)
         setSceneSelections(scenes.map(() => ({ selected: null, fallbackToAI: false })))
       } catch {
+        if (controller.signal.aborted) return
         setSceneKeywords(scenes.map((s) => s.split(/\s+/).slice(0, 3)))
         setSceneSelections(scenes.map(() => ({ selected: null, fallbackToAI: false })))
       } finally {
-        setKeywordsLoading(false)
+        if (keywordsRequest.current?.controller === controller) {
+          keywordsRequest.current = null
+          if (!controller.signal.aborted) {
+            keywordsBody.current = body
+            setKeywordsLoading(false)
+          }
+        }
       }
     },
     []
@@ -82,6 +105,10 @@ export function useVideoGeneration({
   // Reset generation state
   const resetGeneration = useCallback(() => {
     active.current?.abort()
+    keywordsRequest.current?.controller.abort()
+    keywordsRequest.current = null
+    keywordsBody.current = null
+    setKeywordsLoading(false)
     active.current = null
     intent.current = null
     setIsGenerating(false)

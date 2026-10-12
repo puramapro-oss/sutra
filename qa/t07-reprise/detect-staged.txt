@@ -1,0 +1,31 @@
+
+  GitNexus Detect Changes (1.6.12)
+{"level":40,"time":1791832974878,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}
+Changes: 64 files, 19 symbols
+Affected processes: 5
+Risk level: medium
+
+Changed symbols:
+  Function runT07Flows → scripts/ui-isolated/t07-flows.mjs
+  Function CreatePage → src/app/(dashboard)/create/page.tsx
+  Function SceneStockPicker → src/components/create/StockPicker.tsx
+  Function search → src/components/create/StockPicker.tsx
+  Function useEditorHandlers → src/hooks/useEditorHandlers.ts
+  Function handleScriptChange → src/hooks/useEditorHandlers.ts
+  Function handleExport → src/hooks/useEditorHandlers.ts
+  Function loadVersion → src/hooks/useEditorHandlers.ts
+  Function handleVoiceVolumeChange → src/hooks/useEditorHandlers.ts
+  Function useProductionGeneration → src/hooks/useProductionGeneration.ts
+  Function generateStep → src/hooks/useProductionGeneration.ts
+  Function generateAll → src/hooks/useProductionGeneration.ts
+  Property stepStatus → src/hooks/useProductionGeneration.ts
+  Property generatedData → src/hooks/useProductionGeneration.ts
+  Property isGenerating → src/hooks/useProductionGeneration.ts
+... and 4 more
+
+Affected execution flows:
+  • CreatePage → GetPipelineSteps (3 steps) — changed: useVideoGeneration, CreatePage
+  • CreatePage → TikTokIcon (3 steps) — changed: CreatePage
+  • CreatePage → TikTokIcon (3 steps) — changed: CreatePage
+  • CreatePage → TikTokIcon (3 steps) — changed: CreatePage
+  • CreatePage → Cn (4 steps) — changed: CreatePage

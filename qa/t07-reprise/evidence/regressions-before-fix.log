@@ -1,0 +1,209 @@
+PASS cookie choice works without browser storage
+PASS protected URL preserves destination and query through login
+PASS mobile search reaches all navigation items and restores keyboard focus
+FAIL production completion preserves a newer navigation choice: Error: expect(locator).toHaveAccessibleName(expected) failed
+
+Locator: getByRole('navigation', { name: 'Étapes de production' }).locator('[aria-current=step]')
+Expected pattern: /^7\./
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.have.accessible.name" with timeout 5000ms
+  - waiting for getByRole('navigation', { name: 'Étapes de production' }).locator('[aria-current=step]')
+
+FAIL stock search has an accessible name and fits all five widths: Error: expect(locator).toHaveAccessibleName(expected) failed
+
+Locator: getByTestId('scene-picker-0').getByRole('textbox')
+Expected pattern: /Recherche.*scène 1/
+Received string:  "Mots-cles (EN)"
+Timeout: 5000ms
+
+Call log:
+  - Expect "to.have.accessible.name" with timeout 5000ms
+  - waiting for getByTestId('scene-picker-0').getByRole('textbox')
+    9 × locator resolved to <input type="text" value="montagne" placeholder="Mots-cles (EN)" class="flex-1 px-3 py-2 rounded-lg text-xs text-white/90 bg-white/[0.04] border border-white/[0.06] focus:border-violet-500/50 outline-none"/>
+      - unexpected value "Mots-cles (EN)"
+
+FAIL stock search failure is announced separately from an empty result and can retry: Error: expect(locator).toContainText(expected) failed
+
+Locator: getByTestId('scene-picker-0').getByRole('alert')
+Expected pattern: /indisponible/i
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.have.text" with timeout 5000ms
+  - waiting for getByTestId('scene-picker-0').getByRole('alert')
+
+FAIL stock search keeps the newest response and deduplicates a pending query: Error: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('scene-picker-0').getByTestId('stock-item-nouveau')
+Expected: visible
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 5000ms
+  - waiting for getByTestId('scene-picker-0').getByTestId('stock-item-nouveau')
+
+FAIL editing the script refreshes stock keywords while unchanged steps reuse the selection: Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 2
+Received: 1
+
+Call Log:
+- Timeout 5000ms exceeded while waiting on the predicate
+PASS leaving the editor cancels client export feedback without claiming server cancellation
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: T07 reprise regressions
++ actual - expected
+
++ [
++   {
++     error: 'Error: expect(locator).toHaveAccessibleName(expected) failed\n' +
++       '\n' +
++       "Locator: getByRole('navigation', { name: 'Étapes de production' }).locator('[aria-current=step]')\n" +
++       'Expected pattern: /^7\\./\n' +
++       'Timeout: 5000ms\n' +
++       'Error: element(s) not found\n' +
++       '\n' +
++       'Call log:\n' +
++       '  - Expect "to.have.accessible.name" with timeout 5000ms\n' +
++       "  - waiting for getByRole('navigation', { name: 'Étapes de production' }).locator('[aria-current=step]')\n",
++     name: 'production completion preserves a newer navigation choice'
++   },
++   {
++     error: 'Error: expect(locator).toHaveAccessibleName(expected) failed\n' +
++       '\n' +
++       "Locator: getByTestId('scene-picker-0').getByRole('textbox')\n" +
++       'Expected pattern: /Recherche.*scène 1/\n' +
++       'Received string:  "Mots-cles (EN)"\n' +
++       'Timeout: 5000ms\n' +
++       '\n' +
++       'Call log:\n' +
++       '  - Expect "to.have.accessible.name" with timeout 5000ms\n' +
++       "  - waiting for getByTestId('scene-picker-0').getByRole('textbox')\n" +
++       '    9 × locator resolved to <input type="text" value="montagne" placeholder="Mots-cles (EN)" class="flex-1 px-3 py-2 rounded-lg text-xs text-white/90 bg-white/[0.04] border border-white/[0.06] focus:border-violet-500/50 outline-none"/>\n' +
++       '      - unexpected value "Mots-cles (EN)"\n',
++     name: 'stock search has an accessible name and fits all five widths'
++   },
++   {
++     error: 'Error: expect(locator).toContainText(expected) failed\n' +
++       '\n' +
++       "Locator: getByTestId('scene-picker-0').getByRole('alert')\n" +
++       'Expected pattern: /indisponible/i\n' +
++       'Timeout: 5000ms\n' +
++       'Error: element(s) not found\n' +
++       '\n' +
++       'Call log:\n' +
++       '  - Expect "to.have.text" with timeout 5000ms\n' +
++       "  - waiting for getByTestId('scene-picker-0').getByRole('alert')\n",
++     name: 'stock search failure is announced separately from an empty result and can retry'
++   },
++   {
++     error: 'Error: expect(locator).toBeVisible() failed\n' +
++       '\n' +
++       "Locator: getByTestId('scene-picker-0').getByTestId('stock-item-nouveau')\n" +
++       'Expected: visible\n' +
++       'Timeout: 5000ms\n' +
++       'Error: element(s) not found\n' +
++       '\n' +
++       'Call log:\n' +
++       '  - Expect "to.be.visible" with timeout 5000ms\n' +
++       "  - waiting for getByTestId('scene-picker-0').getByTestId('stock-item-nouveau')\n",
++     name: 'stock search keeps the newest response and deduplicates a pending query'
++   },
++   {
++     error: 'Error: expect(received).toBe(expected) // Object.is equality\n' +
++       '\n' +
++       'Expected: 2\n' +
++       'Received: 1\n' +
++       '\n' +
++       'Call Log:\n' +
++       '- Timeout 5000ms exceeded while waiting on the predicate',
++     name: 'editing the script refreshes stock keywords while unchanged steps reuse the selection'
++   }
++ ]
+- []
+
+    at runT07Reprise (file:///Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012/scripts/ui-isolated/t07-reprise.mjs:112:10)
+    at async runT07Flows (file:///Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012/scripts/ui-isolated/t07-flows.mjs:7:5)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-ux-ui-20261012/scripts/test-ui-isolated.mjs:224:21 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [
+    {
+      name: 'production completion preserves a newer navigation choice',
+      error: 'Error: expect(locator).toHaveAccessibleName(expected) failed\n' +
+        '\n' +
+        "Locator: getByRole('navigation', { name: 'Étapes de production' }).locator('[aria-current=step]')\n" +
+        'Expected pattern: /^7\\./\n' +
+        'Timeout: 5000ms\n' +
+        'Error: element(s) not found\n' +
+        '\n' +
+        'Call log:\n' +
+        '  - Expect "to.have.accessible.name" with timeout 5000ms\n' +
+        "  - waiting for getByRole('navigation', { name: 'Étapes de production' }).locator('[aria-current=step]')\n"
+    },
+    {
+      name: 'stock search has an accessible name and fits all five widths',
+      error: 'Error: expect(locator).toHaveAccessibleName(expected) failed\n' +
+        '\n' +
+        "Locator: getByTestId('scene-picker-0').getByRole('textbox')\n" +
+        'Expected pattern: /Recherche.*scène 1/\n' +
+        'Received string:  "Mots-cles (EN)"\n' +
+        'Timeout: 5000ms\n' +
+        '\n' +
+        'Call log:\n' +
+        '  - Expect "to.have.accessible.name" with timeout 5000ms\n' +
+        "  - waiting for getByTestId('scene-picker-0').getByRole('textbox')\n" +
+        '    9 × locator resolved to <input type="text" value="montagne" placeholder="Mots-cles (EN)" class="flex-1 px-3 py-2 rounded-lg text-xs text-white/90 bg-white/[0.04] border border-white/[0.06] focus:border-violet-500/50 outline-none"/>\n' +
+        '      - unexpected value "Mots-cles (EN)"\n'
+    },
+    {
+      name: 'stock search failure is announced separately from an empty result and can retry',
+      error: 'Error: expect(locator).toContainText(expected) failed\n' +
+        '\n' +
+        "Locator: getByTestId('scene-picker-0').getByRole('alert')\n" +
+        'Expected pattern: /indisponible/i\n' +
+        'Timeout: 5000ms\n' +
+        'Error: element(s) not found\n' +
+        '\n' +
+        'Call log:\n' +
+        '  - Expect "to.have.text" with timeout 5000ms\n' +
+        "  - waiting for getByTestId('scene-picker-0').getByRole('alert')\n"
+    },
+    {
+      name: 'stock search keeps the newest response and deduplicates a pending query',
+      error: 'Error: expect(locator).toBeVisible() failed\n' +
+        '\n' +
+        "Locator: getByTestId('scene-picker-0').getByTestId('stock-item-nouveau')\n" +
+        'Expected: visible\n' +
+        'Timeout: 5000ms\n' +
+        'Error: element(s) not found\n' +
+        '\n' +
+        'Call log:\n' +
+        '  - Expect "to.be.visible" with timeout 5000ms\n' +
+        "  - waiting for getByTestId('scene-picker-0').getByTestId('stock-item-nouveau')\n"
+    },
+    {
+      name: 'editing the script refreshes stock keywords while unchanged steps reuse the selection',
+      error: 'Error: expect(received).toBe(expected) // Object.is equality\n' +
+        '\n' +
+        'Expected: 2\n' +
+        'Received: 1\n' +
+        '\n' +
+        'Call Log:\n' +
+        '- Timeout 5000ms exceeded while waiting on the predicate'
+    }
+  ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.0.0
