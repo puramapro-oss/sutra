@@ -1,0 +1,108 @@
+(node:87731) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:87731) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ client cannot mutate points or credit wallet: {"action":"earn","amount":1000000,"source":"forged"} (3.977042ms)
+✖ client cannot mutate points or credit wallet: {"action":"earn","amount":50,"source":"breathe_session"} (0.426375ms)
+✖ client cannot mutate points or credit wallet: {"action":"earn","amount":25000,"source":"daily_gift","user_id":"bob","role":"service_role"} (0.364459ms)
+✖ client cannot mutate points or credit wallet: {"action":"spend","amount":1,"source":"forged"} (0.301083ms)
+✖ malformed/replayed client requests cannot authorize point mutations (0.325917ms)
+✔ anonymous session cannot read or mutate points (0.512584ms)
+✔ banned session cannot read or mutate points (0.222792ms)
+✔ revoked session cannot read or mutate points (0.166792ms)
+✔ authentication failure is closed without leaking diagnostics or creating a service client (0.207667ms)
+✔ active user can still read only their own points and history (0.207292ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 5
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 186.336833
+
+✖ failing tests:
+
+test at scripts/test-security-points.mts:1:2986
+✖ client cannot mutate points or credit wallet: {"action":"earn","amount":1000000,"source":"forged"} (3.977042ms)
+  AssertionError [ERR_ASSERTION]: status=200; writes=15; walletCredits=6
+
+  200 !== 403
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-final-20261012/scripts/test-security-points.mts:57:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 403,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-security-points.mts:1:2986
+✖ client cannot mutate points or credit wallet: {"action":"earn","amount":50,"source":"breathe_session"} (0.426375ms)
+  AssertionError [ERR_ASSERTION]: status=200; writes=3; walletCredits=0
+
+  200 !== 403
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-final-20261012/scripts/test-security-points.mts:57:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 403,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-security-points.mts:1:2986
+✖ client cannot mutate points or credit wallet: {"action":"earn","amount":25000,"source":"daily_gift","user_id":"bob","role":"service_role"} (0.364459ms)
+  AssertionError [ERR_ASSERTION]: status=200; writes=5; walletCredits=1
+
+  200 !== 403
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-final-20261012/scripts/test-security-points.mts:57:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 403,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-security-points.mts:1:2986
+✖ client cannot mutate points or credit wallet: {"action":"spend","amount":1,"source":"forged"} (0.301083ms)
+  AssertionError [ERR_ASSERTION]: status=200; writes=3; walletCredits=0
+
+  200 !== 403
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-final-20261012/scripts/test-security-points.mts:57:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 403,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-security-points.mts:1:3247
+✖ malformed/replayed client requests cannot authorize point mutations (0.325917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  500 !== 403
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-final-20261012/scripts/test-security-points.mts:63:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 403,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

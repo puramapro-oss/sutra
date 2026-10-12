@@ -136,3 +136,17 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+
+
+## 2026-10-12 — reprise T02 sécurité sur intégration 589732c
+
+- [x] LOCKS/handoffs/branches/worktrees et base T01 exacte vérifiés ; nouveau worktree `sutra-t02-security-final-20261012`, anciennes branches et WIP conservés.
+- [x] Reproduction et correction locale des permissions TRUNCATE, récompenses et `public.social_accounts`, migration additive transactionnelle rejouable ; 147 assertions PostgreSQL.
+- [x] Régression gratuite contrats437 (10 tests points nouveaux), média33, SQL13+9, typecheck/lint, build197 avec police locale et navigateur203. Les skips, échec canonique Google Fonts et legacy1022 PASS/25SKIP sont consignés au handoff final.
+- [x] POST points : attribution/débit client arbitraire et conversion portefeuille fermés ; GET conservé, aucune règle financière créée.
+- [x] Handoff `HANDOFF-SUTRA-T02-20261012.md`, preuves `qa/t02-final/`, garde anti-preview de la seule branche T02 ; livraison atomique commit/push autorisée, SHA post-commit dans la coordination PURAMA.
+- [ ] T07 : supprimer la fausse confirmation de récompense respiration et définir une preuve serveur avant toute réouverture de ce crédit.
+- [ ] Contrat stockage privé/URL signée et reprise des références consommateurs réservés T03/T05/T06.
+- [ ] Application et preuve DB/Auth/Storage distants, modèle organisations et quota global multi-instance ; CI canonique T01/Google Fonts et credential SMARANA, résiduel audit5modérées/2faibles.
+
+Statut : delta permissions vérifié localement ; limites ci-dessus explicites. Ne pas rejouer les PASS inchangés. Aucun déploiement/publication réelle/appel payant.

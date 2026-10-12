@@ -11,3 +11,12 @@ Release non certifiée : Docker/Linux/OVH/fournisseurs réels et schéma distant
 Mandat courant autorise commit et push de cette branche, pas un déploiement. Prochaine étape : lire le résultat CI distante du commit poussé, puis qualifier le schéma et le runtime OVH après autorisation distincte. Ne pas refaire les tests inchangés. Recette et rollback sous `deploy/README.md`.
 
 Premier push `0e7575e` confirmé ; CI38289108161 échoue avant tests sur credential SMARANA absent et healthcheck PostgreSQL mal cité. Guillemets du healthcheck corrigés dans le commit courant, actionlint PASS ; aucun code produit modifié.
+
+
+## T02 — reprise sécurité finale depuis 589732c
+
+Branche isolée `codex/sutra-t02-security-final-20261012`, base exacte `589732cb49959c1a576a3ba381b310cd594600ac`. Le lot T02 antérieur est déjà intégré ; aucun doublon ni fichier produit d’un autre terminal modifié. Delta : migration additive permissions SQL (TRUNCATE global, écritures récompenses, tokens/autorité public.social_accounts), test RLS étendu, POST points arbitraire refusé avant écritures/crédit portefeuille et garde anti-déploiement de la seule branche avant push autorisé.
+
+Preuves fraîches : RLS147, contrats437/7SKIP dont dix nouveaux tests points, média33, SQL13+9, typecheck/lint0erreur111warnings, build197 avec police locale, navigateur203/155 audits axe sans violation. Build canonique hors réseau FAIL Google Fonts, harnais QA T02 explicite ; runner T01 intact. Legacy1022 PASS/25SKIP ; commandes détaillées : `HANDOFF-SUTRA-T02-20261012.md`, manifeste `qa/t02-final/verification.json`.
+
+Prochaine étape : intégrer uniquement le commit T02 depuis son handoff. Stockage privé/URL signée exige contrat durable T03/T05/T06 et migration des références ; DB/Auth/Storage distants et isolation organisations non prouvés. T07 doit adapter le toast/appel de récompense respiration maintenant refusé ; aucune nouvelle autorité financière inventée. Aucun déploiement ni appel payant. SHA final et confirmation du push dans `.coord/handoffs/SUTRA-20261012/T02-COORDINATION.md` à la racine PURAMA.
