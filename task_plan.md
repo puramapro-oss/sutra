@@ -5,7 +5,8 @@
 - [x] DNS Cloudflare sutra →OVH, certificat Let’s Encrypt et5 GET HTTPS PASS.
 - [x] Smoke Supabase détecte403 jobs ; rollback applicatif automatique vérifié healthy.
 - [x] Régression des privilèges reproduite ; migration corrective minimale et test sans ACL par défaut.
-- [ ] CI du correctif, sauvegarde fraîche, migration corrective puis déploiement et smoke final.
+- [x] Défaut identique sur25 tables v3 utilisées : correction serveur bornée et preuve de non-élargissement des droits clients.
+- [ ] CI du correctif étendu, sauvegarde fraîche, deux migrations correctives puis déploiement et smoke final.
 
 ---
 

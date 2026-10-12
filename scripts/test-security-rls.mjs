@@ -88,6 +88,12 @@ try {
         GRANT ALL ON sutra.${table} TO authenticated, service_role;`)
     }
   }
+  // Canonical feature definitions, without fabricated default/table grants.
+  const featureTables = []
+  for (const match of features.matchAll(/CREATE TABLE IF NOT EXISTS sutra\.(\w+) \([\s\S]*?\n\);/g)) {
+    featureTables.push(match[1])
+    await sql(match[0])
+  }
   // This is the actual schema used by the OAuth/T06 routes, not sutra.social_accounts.
   await sql(`SET search_path=public; ${publicSocial}
     GRANT ALL ON public.social_accounts TO authenticated, service_role;
@@ -138,6 +144,26 @@ try {
   await sql(finalMigration); await sql(finalMigration)
   const jobPermissions = await readFile(new URL('../migrations/20261013_job_service_permissions.sql', import.meta.url), 'utf8')
   await sql(jobPermissions); await sql(jobPermissions)
+  const featurePermissions = await readFile(new URL('../migrations/20261013_feature_service_permissions.sql', import.meta.url), 'utf8')
+  const clientPrivileges = `SELECT c.relname,r.rolname,p,has_table_privilege(r.rolname,c.oid,p)
+    FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace CROSS JOIN pg_roles r
+    CROSS JOIN unnest(ARRAY['SELECT','INSERT','UPDATE','DELETE','TRUNCATE','REFERENCES','TRIGGER']) p
+    WHERE n.nspname='sutra' AND c.relkind='r' AND r.rolname IN ('anon','authenticated')
+    ORDER BY c.relname,r.rolname,p;`
+  const beforeClientPrivileges = await sql(clientPrivileges)
+  await sql(featurePermissions); await sql(featurePermissions)
+  assert.equal(await sql(clientPrivileges), beforeClientPrivileges); checks++
+  const featureServiceTables = ['achievements', 'buddies', 'buddy_checkins', 'circle_members', 'contest_results', 'daily_gifts', 'email_sequences', 'gratitude_entries', 'lottery_draws', 'lottery_tickets', 'lottery_winners', 'love_circles', 'love_reactions', 'love_wall_posts', 'point_purchases', 'point_shop_items', 'point_transactions', 'pool_balances', 'pool_transactions', 'purama_points', 'share_conversions', 'social_shares', 'user_achievements', 'user_coupons', 'user_feedback']
+  for (const table of featureServiceTables) {
+    assert.ok(featureTables.includes(table))
+    for (const privilege of ['SELECT', 'INSERT', 'UPDATE']) {
+      assert.equal(await sql(`SELECT has_table_privilege('service_role','sutra.${table}','${privilege}');`), 't'); checks++
+    }
+  }
+  assert.equal(await sql("SELECT has_table_privilege('service_role','sutra.love_reactions','DELETE');"), 't'); checks++
+  // No blanket GRANT to unused tables or to another schema.
+  assert.equal(await sql("SELECT has_table_privilege('service_role','sutra.mentor_messages','SELECT');"), 'f'); checks++
+
   for (const table of ['purama_points', ...rewardTables]) {
     for (const privilege of ['INSERT', 'UPDATE', 'DELETE']) {
       assert.equal(await sql(`SELECT has_table_privilege('authenticated','sutra.${table}','${privilege}');`), 'f'); checks++
