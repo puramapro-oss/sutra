@@ -1,3 +1,19 @@
+# Mission active T03 — reprise 589732c, 2026-10-12
+
+- [x] Instructions, politique POLICY_OK, LOCKS et branche d'intégration vérifiés.
+- [x] Worktree T03 isolé depuis `589732cb49959c1a576a3ba381b310cd594600ac`, aucun doublon du lot déjà intégré.
+- [x] Correctifs baux NULL, étapes terminées/pistes requises et preuves média strictes ; commit code `8103fff5f86fb3cfc60e2ed921f24b41897f0ded`.
+- [x] Contrats428 PASS/7 SKIP ; SQL13+12+49 PASS ; média33 PASS ; navigateur203 PASS ; legacy1022 PASS/25 SKIP ; Python9 PASS ; typecheck/lint/build PASS selon recette documentée.
+- [x] GitNexus préalable et avant commit, limites du graphe documentées ; preuves et handoff propres au lot.
+- [ ] Réception/intégration T01 du delta et des reprises propriétaires, hors scope T03.
+- [ ] Credential CI manquant, build offline vierge, schéma/runtime distant à qualifier séparément ; aucun deploy dans cette mission.
+
+Livraison : `codex/sutra-t03-pipeline-resume-20261012` ; commit documentaire contenant ce plan. Confirmation push et SHA final dans le pointeur coordinateur `T03-REPRISE-589732c.md`. Ne pas réexécuter les instructions historiques de déploiement ci-dessous : archive, pas mandat courant.
+
+---
+
+## Archive du plan reçu à la base
+
 ## Goal
 SUTRA V3 — CLAUDE.md V3 ULTIMATE full feature set
 

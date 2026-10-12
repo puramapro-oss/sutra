@@ -1,3 +1,19 @@
+# BATON — SUTRA T03, reprise finale du 2026-10-12
+
+Branche `codex/sutra-t03-pipeline-resume-20261012`, base T01 `589732cb49959c1a576a3ba381b310cd594600ac`, code `8103fff5f86fb3cfc60e2ed921f24b41897f0ded`. Worktree isolé homonyme sous `/Users/matissdornier/purama-worktrees`.
+
+LOCAL_DELTA_VERIFIED : baux SQL NULL refusés ; checkpoints/pistes obligatoires et preuve finale stricts. Les neuf checkpoints et la file durable déjà intégrés sont préservés. Détails, fichiers et commandes : `HANDOFF-SUTRA-T03-20261012.md`, `qa/t03-resume/verification.json`.
+
+Gates : contrats428 PASS/7 SKIP ; média33 PASS ; SQL13+12+49 PASS ; navigateur203 PASS/155 audits axe sans violation ; legacy1022 PASS/25 SKIP ; Python9 PASS ; typecheck/lint0erreur/build197 PASS avec polices réelles en cache. Aucun test fournisseur payant. Dernier delta de garde revalidé par contrats/SQL/RLS/typecheck/lint/build ; parcours UI inchangés non rejoués.
+
+Prochaine étape appartenant à T01 : intégrer ce delta et les reprises propriétaires sans écrasement, fournir le credential CI SMARANA manquant et une recette offline de polices, qualifier/réappliquer v11 puis les permissions finales sur le schéma cible après autorisation distincte. Aucun déploiement ni DB distante dans ce mandat. Ne pas rejouer les PASS inchangés.
+
+Commit et push T03 autorisés ; SHA final/confirmation origin dans `.coord/handoffs/SUTRA-20261012/T03-REPRISE-589732c.md` racine PURAMA. Ancien T03, T01 et WIP étrangers préservés. Release non certifiée.
+
+---
+
+## Archive du BATON T01 reçu à la base
+
 # BATON — SUTRA T01, intégration du 2026-10-12
 
 Branche `codex/sutra-t01-integration-20261012`, worktree isolé homonyme sous `purama-worktrees`. Livraison = commit contenant ce BATON, manifest de sources `qa/integration-20261012/verification.json`.
