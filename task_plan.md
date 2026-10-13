@@ -1,3 +1,18 @@
+# SUTRA T01 — état final du 2026-10-13
+
+- [x] Secret SMARANA fourni par l’utilisateur ; CI 9b0c2c9 relancée.
+- [x] Trois courses de navigation E2E corrigées dans 3591818 ; aucun test désactivé.
+- [x] Régression de droits serveur révélée en production, rollback effectué, corrections minimales aaa94f2 et 3e5596e ; droits clients inchangés.
+- [x] CI complète du commit `3e5596ea287f36427f687d3f3882d35c3f7c407b` verte ; contrats, médias, sécurité, PostgreSQL, qualité et navigateurs gratuits.
+- [x] Sauvegarde cohérente et restauration de 140 tables ; huit migrations x2 sur copie privée ; migrations de production atomiques.
+- [x] Candidat Linux exact validé et promu ; contrôles live : 120 SQL + 35 Supabase + 10 GET HTTP/HTTPS PASS.
+- [x] Cloudflare DNS-only vers OVH, TLS valide ; snapshot de rollback et Vercel conservés.
+- [x] Handoff et preuves finales enregistrés ; 53 worktrees et cinq SHA protégés préservés.
+
+Aucun blocage externe ni action manuelle indispensable pour ce déploiement. Fournisseurs payants et parcours utilisateur authentifié live hors preuve. La branche S5 historique non validée reste exclue ; voir handoff. Les états ci-dessous sont des archives antérieures, remplacées par ce bilan.
+
+---
+
 ## État courant 2026-10-13 — prime sur les cases historiques ci-dessous
 
 - [x] Secret SMARANA disponible, CI3591818 complète verte (38320118213).

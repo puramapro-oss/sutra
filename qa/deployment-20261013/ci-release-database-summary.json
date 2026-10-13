@@ -1,0 +1,38 @@
+{
+  "job": 115054984997,
+  "run": 38322846966,
+  "selectedResults": [
+    "2026-10-12T23:36:14.6569718Z \u2714 12 concurrent claims obtain one owner; 24 independent checkpoints survive parallel writes (119.919784ms)",
+    "2026-10-12T23:36:14.6747203Z \u2714 expired/replaced/cancelled owner cannot heartbeat, checkpoint, finish or write business output (17.731997ms)",
+    "2026-10-12T23:36:14.7143842Z \u2714 ready refuses raw URL, missing proof, missing stage and mandatory audio; verified export persists (40.006458ms)",
+    "2026-10-12T23:36:14.7462462Z \u2714 AUTO ready effects are atomic and once-only across concurrent replays (31.389573ms)",
+    "2026-10-12T23:36:14.7556353Z \u2714 finish requires result, settles once; missing quota rolls back status; exhausted jobs quarantine (9.908214ms)",
+    "2026-10-12T23:36:14.7801437Z \u2714 notification writes deduplicate atomically; owner mismatch and missing row refuse success (18.237738ms)",
+    "2026-10-12T23:36:14.7941933Z \u2714 12 same-intent submissions atomically create one job, one video and one quota reservation (19.470163ms)",
+    "2026-10-12T23:36:14.7986077Z \u2714 failed initial video insert rolls back quota and task; retry after lost response reuses committed task (5.085147ms)",
+    "2026-10-12T23:36:14.8024823Z \u2714 cancellation settles original month once and never consumes a new month reservation (3.720618ms)",
+    "2026-10-12T23:36:14.8288656Z \u2714 NULL lease or owner cannot authorize any mutation, even with a matching worker (26.098685ms)",
+    "2026-10-12T23:36:15.0125432Z \u2714 ready refuses unfinished checkpoints, invalid track values and zero-size export (183.601646ms)",
+    "2026-10-12T23:36:15.0437428Z \u2714 silent export can skip optional tracks, but cannot skip scenes or use string validation flags (31.124813ms)",
+    "2026-10-12T23:36:15.0554413Z \u2139 tests 12",
+    "2026-10-12T23:36:15.0554715Z \u2139 pass 12",
+    "2026-10-12T23:36:15.0555084Z \u2139 fail 0",
+    "2026-10-12T23:36:15.0555541Z \u2139 skipped 0",
+    "2026-10-12T23:36:18.9311082Z RLS_LOCAL_PASS 254 assertions; baseline escalation reproduced; migration replayed; no remote DB"
+  ],
+  "migrationResults": [
+    "2026-10-12T23:36:14.3257373Z \u2713 migration v10 appliqu\u00e9e (search_path sutra, backfill ex\u00e9cut\u00e9)",
+    "2026-10-12T23:36:14.3284161Z \u2713 backfill : consommations du mois reprises, quota imm\u00e9diatement born\u00e9",
+    "2026-10-12T23:36:14.3315089Z \u2713 rejouabilit\u00e9 : re-run sans double comptage, r\u00e9servations vivantes intactes",
+    "2026-10-12T23:36:14.3367339Z \u2713 quota atomique : course limite 1 \u2192 exactement 1 r\u00e9serv\u00e9e, 1 refus\u00e9e",
+    "2026-10-12T23:36:14.3392783Z \u2713 settlement : complete consomme la place, release la lib\u00e8re",
+    "2026-10-12T23:36:14.3412298Z \u2713 illimit\u00e9 (limite 0) : tra\u00e7able sans blocage",
+    "2026-10-12T23:36:14.3448439Z \u2713 claim exclusif : 2 workers \u2192 2 t\u00e2ches distinctes",
+    "2026-10-12T23:36:14.3465582Z \u2713 reprise : bail expir\u00e9 \u2192 repris par un autre worker, tentative trac\u00e9e",
+    "2026-10-12T23:36:14.3503572Z \u2713 claim par cl\u00e9 : cibl\u00e9, exclusif, born\u00e9 par tentatives",
+    "2026-10-12T23:36:14.3555721Z \u2713 checkpoint (reprise sans r\u00e9g\u00e9n\u00e9rer) + heartbeat + idempotence UNIQUE",
+    "2026-10-12T23:36:14.3599754Z \u2713 annulation (queued) : cancelled + place lib\u00e9r\u00e9e atomiquement, jamais re-claimable",
+    "2026-10-12T23:36:14.3622516Z \u2713 annulation en vol : place lib\u00e9r\u00e9e, t\u00e2che jamais reprise",
+    "2026-10-12T23:36:14.3643748Z \u2713 checkpoint MERGE : morceaux successifs cumul\u00e9s sans \u00e9crasement"
+  ]
+}

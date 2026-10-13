@@ -1,34 +1,28 @@
-# Déploiement OVH SUTRA — recette conditionnelle
+# Déploiement OVH SUTRA — état du 2026-10-13
 
-**2026-10-12 : RELEASE_BLOCKED. Ne pas exécuter le déploiement avec l’état constaté.** Le code média privé durable et les migrations sont prêts et testés ; la CI reste bloquée par le secret readonly SMARANA absent. Le schéma de production et le bucket ne sont pas encore basculés. Le domaine public répond HTTP 402 depuis Vercel. Preuves : `qa/release-20261012/ovh-schema.json`, `ovh-http-cloudflare.json`, `ovh-origin-tls.log`.
+**Production active : `3e5596ea287f36427f687d3f3882d35c3f7c407b`**, https://sutra.purama.dev . CI 38322846966 verte. Image exacte `sha256:4c773d0275baf2260b341901775c7b0f47a64bea5c4c711a686ed4643393e6b3` ; runtime conservé opaquément. Handoff complet : `../HANDOFF-SUTRA-T01-20261012.md`.
 
-Après résolution des contrôles critiques, depuis le checkout du commit final poussé :
+Les huit migrations de la release sont appliquées ; restauration de 140 tables vérifiée avant les deux dernières corrections de droits. Sauvegarde privée : `/opt/purama/apps/sutra/backup-t01-coherent-qdule8xx`. Le bucket sutra-assets est privé ; aucun objet supprimé. 35 GET Supabase sans lignes, 120 assertions SQL et cinq GET internes + cinq HTTPS publics PASS. Aucun fournisseur payant appelé.
 
-```sh
-SUTRA_RELEASE_SHA="$(git rev-parse HEAD)"
-python3 deploy/ovh.py deploy --source-ref "$SUTRA_RELEASE_SHA" --schema-ready
-# Après la bascule DNS, smoke HTTPS gratuit et rollback applicatif automatique en cas d’échec :
-python3 deploy/ovh.py smoke --source-ref "$SUTRA_RELEASE_SHA" --public
-# Retour explicite à la configuration et à l’image précédentes :
-python3 deploy/ovh.py rollback --source-ref "$SUTRA_RELEASE_SHA"
-```
-
-`--schema-ready` est une attestation opérateur, pas un contournement du précontrôle. Ordre des migrations vérifié sur PostgreSQL local jetable : `v10_durable_jobs_quota.sql`, `v11_pipeline_checkpoints.sql`, `20261012_social_publication_journals.sql`, `20261012_private_media.sql`, `20261012_t02_account_permissions.sql`, puis **en dernier** `20261012_t02_final_permissions.sql`. Aucune migration de production effectuée. Le contrôle local n'atteste pas les données, grants ou compatibilités de production.
-
-Le wrapper impose un SHA40 disponible et le hash du helper canonique `purama/.coord/handoffs/OVH-MIGRATION-20261005/deploy_next.py`. Les sources proviennent de `git archive`, ESLint du même commit et SMARANA du commit verrouillé. Une nouvelle image est construite avant remplacement de SUTRA. Le helper restaure automatiquement Compose si le remplacement échoue au contrôle de santé ; ce mécanisme n'est pas une preuve de rollback réel, ni une qualification des parcours métier. La route `/api/health` contacte des fournisseurs : ne pas l'utiliser pour une recette sans fournisseur.
-
-Avant remplacement, Compose et le runtime sont copiés de façon opaque dans `/opt/purama/apps/sutra/rollback-<SHA40>/` ; la création refuse tout écrasement. Le rollback explicite restaure les deux fichiers, ne redémarre que SUTRA et attend son état healthy. Les anciennes images doivent rester disponibles. Aucune annulation SQL automatique. Le wrapper exécute cinq GET applicatifs après le helper et restaure automatiquement Compose/runtime si le helper ou ce smoke échoue. La commande `smoke --public` vérifie HTTPS sans désactiver TLS et déclenche le même rollback en cas d’échec. Elle exige le snapshot de la release. Ce rollback est applicatif : il ne restaure pas DNS ni SQL ; les valeurs DNS précédentes doivent rester sauvegardées et leur retour est une étape distincte de la bascule. Tests de contrôle :17 PASS ; programme JavaScript :6 cas isolés PASS. Aucun rollback réel n’a été exécuté.
-
-Sauvegarde cohérente dans `/opt/purama/apps/sutra/backup-t01-coherent-l01juhcq/` : SUTRA et trois tables publiques sociales partagent le même snapshot PostgreSQL. Dépendance trigger, métadonnées Storage et archive des blobs incluses. Restore réel136 tables avec comptages identiques ; six migrations appliquées deux fois sur une base privée PostgreSQL15.8. Auth est une fixture ID-only ; ce n’est pas une restauration complète Supabase. Les blobs ne sont pas gelés transactionnellement. Preuve : `qa/production-20261012/backup-restore.json`.
-
-Le cutover `deploy/private-media-cutover.sql` doit être appliqué avec le remplacement compatible. Il ferme le bucket et bloque les rôles anon/authenticated, y compris sous politiques globales permissives. Ne jamais rouvrir le bucket pour revenir à l’ancienne image ; un retour à celle-ci exige de garder les médias indisponibles jusqu’à correction compatible. Aucun objet orphelin supprimé ni propriétaire inventé.
-
-Construction préalable isolée, sans changement de service :
+Commandes de vérification/rollback depuis le worktree T01 :
 
 ```sh
-python3 deploy/candidate.py --source-ref "$SUTRA_RELEASE_SHA"
+python3 deploy/ovh.py smoke --source-ref 3e5596ea287f36427f687d3f3882d35c3f7c407b --public
+python3 deploy/ovh.py rollback --source-ref 3e5596ea287f36427f687d3f3882d35c3f7c407b
 ```
 
-Le candidat Linux démarre sans réseau externe, reçoit le runtime existant de façon opaque, vérifie cinq GET gratuits et FFmpeg puis s’arrête. Le conteneur arrêté, l’image et le log privé sont conservés. Un PASS de ce candidat n’atteste ni DNS/TLS, ni Supabase live, ni fournisseur payant.
+Le smoke contrôle 200 sur `/` et `/login`, 401 sur points/status vidéo/média sans session ; TLS vérifié normalement. Il exige le snapshot `/opt/purama/apps/sutra/rollback-3e5596ea287f36427f687d3f3882d35c3f7c407b` et rollback automatiquement en cas d’échec. La commande rollback restaure Compose/runtime et attend healthy. Un rollback réel de 3591818 a été effectué après 403 Supabase, avant correction puis déploiement final.
 
-Conteneur en place : `purama/sutra:35c137fc0bc0-9d0c6671-envn1`, healthy ; GET locaux `/` et `/login` →200, `/api/points` sans session →401. Aucun remplacement, migration de production, changement DNS ou rollback dans cette reprise. Cloudflare accessible par session authentifiée ; wildcard DNS only vers Vercel402. TLS direct OVH non qualifié.
+Le rollback applicatif conserve SQL/DNS et le bucket privé. Ne pas rouvrir les médias ni restaurer un ancien dump au-dessus de nouvelles écritures. Vercel, anciennes images et sauvegardes restent disponibles. Auth est sauvegardé seulement comme fixture d’ID référencés pour restauration SUTRA ; ce n’est pas une sauvegarde complète Supabase/Auth. Les blobs ne sont pas gelés transactionnellement.
+
+Cloudflare : A 144.217.14.210 DNS only, TTL Auto. TLS Let’s Encrypt valide ; resolver `mytlschallenge` ajouté au seul routeur SUTRA. DNS et TLS détaillés dans `../qa/deployment-20261013/dns-tls-release.json`.
+
+Pour une prochaine release, construire un nouveau candidat exact :
+
+```sh
+python3 deploy/candidate.py --source-ref SHA40
+```
+
+Ce candidat démarre sans réseau externe, vérifie cinq GET et FFmpeg puis s’arrête. Ne pas réutiliser aveuglément `ovh.py deploy` : le helper partagé signale actuellement un faux écart d’environnement sur deux clés Upstash. La release courante a promu l’image candidate vérifiée, avec CI verte, sauvegarde restaurée, runtime inchangé, snapshot exclusif, assertions SQL transactionnelles et rollback automatique. Procédure exécutée et preuve : `../qa/deployment-20261013/release-procedure.py.txt`, `deployment-release.json`. Ces archives opératoires sont liées au SHA et à la sauvegarde de cette release ; ne pas les relancer telles quelles. La reprise exige un rollback précédent réussi et un snapshot strictement identique au runtime courant, sans écrasement du snapshot.
+
+La route `/api/health` contacte des fournisseurs ; ne jamais l’utiliser pour une vérification gratuite. Aucun parcours authentifié ou fournisseur payant n’est revendiqué par les smokes publics.

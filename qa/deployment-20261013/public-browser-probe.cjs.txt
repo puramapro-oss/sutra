@@ -1,0 +1,40 @@
+const {createRequire}=require('node:module');
+const fs=require('node:fs');
+const root='/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012';
+const requireProject=createRequire(root+'/package.json');
+const {chromium}=requireProject('playwright');
+(async()=>{
+ const browser=await chromium.launch({headless:true});
+ const results=[];
+ try{
+  for(const viewport of [{width:1440,height:1000},{width:375,height:812}]){
+   const context=await browser.newContext({viewport,serviceWorkers:'block'});
+   const page=await context.newPage();const errors=[];const blocked=[];
+   await context.route('**/*',route=>{
+    const request=route.request();const url=new URL(request.url());
+    const safe=url.hostname==='sutra.purama.dev' && request.method()==='GET' && !url.pathname.startsWith('/api/');
+    if(safe)return route.continue();
+    blocked.push({host:url.hostname,path:url.pathname,method:request.method()});return route.abort('blockedbyclient');
+   });
+   page.on('pageerror',e=>errors.push(e.message));
+   const response=await page.goto('https://sutra.purama.dev/',{waitUntil:'domcontentloaded',timeout:30000});
+   if(response.status()!==200)throw Error('PUBLIC_HOME_STATUS_'+response.status());
+   await page.locator('[data-testid="landing-mounted"]').waitFor({state:'attached'});
+   const login=page.locator('a[href="/login"]').filter({visible:true}).first();
+   await login.waitFor({state:'visible'});await login.click();
+   await page.waitForURL('https://sutra.purama.dev/login');
+   await page.locator('input[type="email"]').waitFor({state:'visible'});
+   await page.locator('input[type="password"]').waitFor({state:'visible'});
+   const refuse=page.getByRole('button',{name:'Tout refuser',exact:true});
+   await refuse.waitFor({state:'visible'});await refuse.click();await refuse.waitFor({state:'hidden'});
+   await page.locator('input[type="email"]').fill('');
+   await page.waitForFunction(()=>{let el=document.querySelector('input[type=email]');if(!el)return false;for(;el;el=el.parentElement){if(Number(getComputedStyle(el).opacity)<0.99)return false;}return true;});
+   await page.screenshot({path:root+'/qa/deployment-20261013/public-login-'+viewport.width+'.png',fullPage:true});
+   if(errors.length)throw Error('PUBLIC_PAGE_ERRORS '+JSON.stringify(errors));
+   results.push({viewport,homeStatus:response.status(),landingHydrated:true,loginNavigation:true,credentialsFormVisible:true,optionalCookiesRefused:true,entranceAnimationComplete:true,pageErrors:errors,blockedRequests:blocked});
+   await context.close();
+  }
+ }finally{await browser.close();}
+ const result={source:'3e5596ea287f36427f687d3f3882d35c3f7c407b',observedAt:new Date().toISOString(),paidCalls:0,authenticatedJourney:false,results,status:'PASS'};
+ fs.writeFileSync(root+'/qa/deployment-20261013/public-browser-release.json',JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));
+})().catch(e=>{console.error(e.message);process.exit(1)});

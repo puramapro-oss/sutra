@@ -1,0 +1,80 @@
+import datetime,hashlib,importlib.util,json,os,pathlib,re,shlex,subprocess,sys,time
+os.umask(0o077)
+root=pathlib.Path('/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012');proof=root/'qa/deployment-20261013';sys.path.insert(0,str(root/'deploy'))
+import ovh
+sha='3e5596ea287f36427f687d3f3882d35c3f7c407b'
+ci=json.loads(subprocess.check_output(['gh','run','view','38322846966','--json','headSha,status,conclusion,jobs,url'],cwd=root))
+assert ci['headSha']==sha and ci['status']=='completed' and ci['conclusion']=='success'
+assert all(j['conclusion']=='success' for j in ci['jobs'])
+(proof/'ci-release-run.json').write_text(json.dumps(ci,indent=2)+'\n')
+candidate=json.loads((proof/'candidate-release.json').read_text());assert candidate['source']==sha and candidate['status']=='PASS'
+backup=json.loads((proof/'backup-release.json').read_text());assert backup['rowCountsMatch'] and backup['restoredTables']==140 and len(backup['migrations'])==8
+assert all(m['applications']==2 for m in backup['migrations'])
+restored=json.loads((proof/'permissions-release-restore.json').read_text());assert restored['database']==backup['database'] and restored['passed']==119 and all(restored['checks'].values())
+for m in backup['migrations']:
+ source=subprocess.check_output(['git','show',sha+':migrations/'+m['file']],cwd=root)
+ assert hashlib.sha256(source).hexdigest()==m['sha256']
+assert hashlib.sha256(ovh.HELPER.read_bytes()).hexdigest()==ovh.HELPER_SHA256
+spec=importlib.util.spec_from_file_location('helper',ovh.HELPER);helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+snapshot=ovh.REMOTE_ROOT+'/rollback-'+sha
+# Snapshot creation fails if it already exists: do not overwrite any previous work.
+helper.ssh(f'test -s {ovh.REMOTE_ROOT}/compose.yml && test -s {ovh.REMOTE_ROOT}/runtime/.env && umask 077 && mkdir {snapshot} && cp -a {ovh.REMOTE_ROOT}/compose.yml {snapshot}/compose.yml && cp -a {ovh.REMOTE_ROOT}/runtime/.env {snapshot}/runtime.env && touch {snapshot}/complete')
+check_sql=(proof/'permissions-live-check.sql').read_text()
+repair=(proof/'permission-repair.sql').read_text();assert repair.endswith('COMMIT;\n')
+assertion=check_sql.replace('SELECT json_object_agg(name,ok) FROM','SELECT json_object_agg(name,ok) INTO checks FROM',1)
+repair=repair[:-len('COMMIT;\n')]+"DO $release_assert$ DECLARE checks json; BEGIN\n"+assertion+"\nIF EXISTS (SELECT 1 FROM json_each(checks) WHERE value::text <> 'true' OR value::text IS NULL) THEN RAISE EXCEPTION 'SUTRA_RELEASE_PERMISSION_CHECK_FAILED'; END IF; END $release_assert$;\nCOMMIT;\n"+check_sql
+# Run the corrective DDL and all 120 assertions atomically. No rows or secret output.
+remote_migration="""import pathlib,subprocess,json
+folder=pathlib.Path(DIRECTORY)
+r=subprocess.run(['docker','exec','-i','supabase-db','psql','-X','-qAt','-U','supabase_admin','-d','postgres','-v','ON_ERROR_STOP=1'],input=SQL.encode(),capture_output=True)
+(folder/'permission-production-stdout.private').write_bytes(r.stdout)
+(folder/'permission-production-stderr.private').write_bytes(r.stderr)
+if r.returncode: raise RuntimeError('Atomic permission migration failed; diagnostics retained privately')
+checks=json.loads(r.stdout);assert len(checks)==120 and all(checks.values());print(json.dumps(checks))
+"""
+remote_migration='DIRECTORY='+repr(backup['directory'])+'\nSQL='+repr(repair)+'\n'+remote_migration
+try:
+ checks=json.loads(helper.ssh('python3 -c '+shlex.quote(remote_migration),capture=True).stdout)
+ (proof/'permissions-production-release.json').write_text(json.dumps({'source':sha,'backup':backup['directory'],'atomic':True,'sqlSha256':hashlib.sha256(repair.encode()).hexdigest(),'passed':len(checks),'checks':checks,'observedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},indent=2)+'\n')
+ # Promote the exact immutable image tested without external network; keep runtime opaque.
+ remote="""import pathlib,subprocess,json,re
+root=pathlib.Path('/opt/purama/apps/sutra');backup=root/('rollback-'+SHA)
+assert (backup/'complete').exists()
+assert (root/'compose.yml').read_bytes()==(backup/'compose.yml').read_bytes()
+assert (root/'runtime/.env').read_bytes()==(backup/'runtime.env').read_bytes()
+image=json.loads(subprocess.check_output(['docker','image','inspect',IMAGE]))[0]
+assert image['Id']==IMAGE_ID and image['Config']['Labels']['dev.purama.commit']==SHA
+old=(root/'compose.yml').read_text();new,n=re.subn(r'(?m)^    image: .*$', '    image: '+IMAGE,old);assert n==1
+label='      traefik.http.routers.sutra.tls.certresolver: mytlschallenge'
+if 'traefik.http.routers.sutra.tls.certresolver:' not in new:
+ anchor='      traefik.http.routers.sutra.tls: "true"';assert new.count(anchor)==1;new=new.replace(anchor,anchor+'\n'+label)
+else: assert label in new
+candidate=root/('compose.promotion-'+SHA+'.yml')
+with candidate.open('x') as file:file.write(new)
+candidate.chmod(0o600)
+subprocess.run(['docker','compose','--project-directory',str(root),'-f',str(candidate),'config','-q'],check=True)
+(root/'compose.yml').write_text(new)
+subprocess.run(['docker','compose','-f',str(root/'compose.yml'),'up','-d','--no-deps','--pull','never','sutra'],check=True)
+"""
+ remote='SHA='+repr(sha)+'\nIMAGE='+repr(candidate['image'])+'\nIMAGE_ID='+repr(candidate['imageId'])+'\n'+remote
+ helper.ssh('python3 -c '+shlex.quote(remote))
+ for attempt in range(18):
+  state=json.loads(helper.ssh("docker inspect --format='{{json .}}' purama-sutra",capture=True).stdout)
+  if state['State'].get('Health',{}).get('Status')=='healthy':break
+  time.sleep(5)
+ else:raise RuntimeError('Candidate production health failed')
+ assert state['Image']==candidate['imageId']
+ ovh.smoke(helper)
+ # Authenticated server-role requests fetch limit=0 only; no returned records/mutations/providers.
+ probe=(proof/'supabase-readonly-smoke.mjs').read_text()
+ database=json.loads(helper.ssh('docker exec purama-sutra node --input-type=module -e '+shlex.quote(probe),capture=True).stdout)
+ assert len(database['checks'])==35 and all(c['status']==c['expected'] for c in database['checks'])
+ (proof/'supabase-release-smoke.json').write_text(json.dumps(database,indent=2)+'\n')
+ ovh.smoke(helper,public=True)
+ result={'source':sha,'image':candidate['image'],'imageId':state['Image'],'health':state['State']['Health']['Status'],'runtimeUnchanged':True,'method':'Promote exact isolated candidate; Compose changes limited to image and SUTRA TLS resolver label','rollbackSnapshot':snapshot,'databaseBackup':backup['directory'],'sqlChecksPassed':120,'supabaseGetChecksPassed':35,'internalGetChecksPassed':5,'publicTlsGetChecksPassed':5,'paidCalls':0,'observedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+ (proof/'deployment-release.json').write_text(json.dumps(result,indent=2)+'\n')
+ print('RELEASE_PASS '+sha)
+except Exception:
+ ovh.restore_previous(helper,snapshot)
+ (proof/'release-failure-rollback.json').write_text(json.dumps({'source':sha,'rollback':'PASS','observedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},indent=2)+'\n')
+ raise
