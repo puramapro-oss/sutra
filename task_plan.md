@@ -1,3 +1,16 @@
+# SUTRA T06 — audit fournisseurs/social du 2026-10-13
+
+- [x] Instructions, politiques, deux LOCKS et WIP inspectés ; worktree T06 réutilisé isolé depuis intégration48f2d5e, POLICY_OK.
+- [x] Revue sociale : OAuth, profils, session, scopes, expiration/rotation/révocation, média autorisé/vérifié, réconciliation et publication partielle.
+- [x] Preuves propriétaires T01/T04/T08 consolidées sans sondes/gates en doublon ; snapshots expurgés et manifeste752 fichiers identiques.
+- [x] 480 contrats PASS/7SKIP et gates gratuites réutilisées ; nouveaux contre-tests1PASS/5FAIL conservés comme blocages.
+- [x] Rapport par fournisseur, provenance maître/Mac/OVH et liste de consentements réservés à l'utilisateur ; handoff T06 préparé.
+- [x] Garde anti-preview limitée à la branche T06 pour le push autorisé, aucun déploiement.
+- [ ] Blocages externes : RunPod/Shotstack refusés ; fournisseur musical à confirmer ; consentements sociaux après correction OAuth.
+- [ ] Travail des propriétaires : raccord OAuth/profils/scopes/lifecycle, Suno contrat/erreur2xx, acceptation des corrections T02/T05 ; pas d'intégration automatique par T06.
+
+Preuves : `qa/t06-provider-audit-20261013/`, `HANDOFF-SUTRA-T06-PROVIDER-AUDIT-20261013.md`. Commit/push exacts dans la transmission coordinateur. Les sections suivantes sont historiques.
+
 # Verification finale post-deploiement — etat prioritaire 2026-10-13
 
 - [x] LOCKS/handoffs/processus/branches/WIP inspectes ; deux auxiliaires libres affectes uniquement aux preuves manquantes.

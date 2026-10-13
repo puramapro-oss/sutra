@@ -1,0 +1,130 @@
+[
+  {
+    "name": "contracts",
+    "command": [
+      "node",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-concurrency=2",
+      "scripts/test-insee.mjs",
+      "scripts/test-editor-export.mts",
+      "scripts/test-export-integration.mts",
+      "scripts/test-integration.mts",
+      "scripts/test-ltx-tiers.mjs",
+      "scripts/test-karma-split.mjs",
+      "scripts/test-api-contracts.mts",
+      "scripts/test-env-contracts.mts",
+      "scripts/test-local-engine.mts",
+      "scripts/test-shotstack-contracts.mts",
+      "scripts/test-production-queue.mts",
+      "scripts/test-auto-export-queue.mts",
+      "scripts/test-release-regressions.mts",
+      "scripts/test-video-contracts.mjs",
+      "scripts/test-opentimestamps.mjs",
+      "scripts/test-ltx-v2-media.mts",
+      "scripts/test-social-publication.mts",
+      "scripts/test-auth-session.mts",
+      "scripts/test-public-origin.mts",
+      "tooling/disposable-database.test.mjs",
+      "scripts/test-pipeline-interruptions.mts",
+      "scripts/test-pipeline-submit.mts",
+      "scripts/test-release-oauth.mts",
+      "scripts/test-security-account.mts",
+      "scripts/test-private-media.mts",
+      "scripts/test-security-media.mts",
+      "scripts/test-security-routes.mts",
+      "scripts/test-security-storage.mts",
+      "scripts/test-t06-social-autonomy.mts",
+      "scripts/test-t06-social-routes.mts",
+      "scripts/test-ltx-v2-contracts.mts",
+      "scripts/test-provider-safety.mts",
+      "src/lib/video-compositor.test.mts",
+      "src/lib/ffmpeg-concurrency.test.ts"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "seconds": 9.29,
+    "timestamp": "2026-10-13T20:27:00.468346+00:00",
+    "fixture_only": true,
+    "network_guard": "qa/t08/offline.cjs",
+    "tests": 487,
+    "pass": 480,
+    "fail": 0,
+    "skipped": 7,
+    "cancelled": 0,
+    "todo": 0
+  },
+  {
+    "name": "schedule",
+    "command": [
+      "node",
+      "scripts/test-auto-schedule.mjs"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "seconds": 0.11,
+    "timestamp": "2026-10-13T20:27:00.580109+00:00",
+    "fixture_only": true,
+    "network_guard": "qa/t08/offline.cjs"
+  },
+  {
+    "name": "composition",
+    "command": [
+      "node",
+      "scripts/test-auto-composition.mjs"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "seconds": 0.1,
+    "timestamp": "2026-10-13T20:27:00.685096+00:00",
+    "fixture_only": true,
+    "network_guard": "qa/t08/offline.cjs"
+  },
+  {
+    "name": "publication",
+    "command": [
+      "node",
+      "scripts/test-auto-publication.mjs"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "seconds": 0.1,
+    "timestamp": "2026-10-13T20:27:00.787002+00:00",
+    "fixture_only": true,
+    "network_guard": "qa/t08/offline.cjs"
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "seconds": 6.83,
+    "timestamp": "2026-10-13T20:27:07.616275+00:00",
+    "fixture_only": true,
+    "network_guard": "qa/t08/offline.cjs"
+  },
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "."
+    ],
+    "exit_code": 0,
+    "status": "PASS",
+    "seconds": 9.21,
+    "timestamp": "2026-10-13T20:27:16.830219+00:00",
+    "fixture_only": true,
+    "network_guard": "qa/t08/offline.cjs",
+    "errors": 0,
+    "warnings": 111
+  }
+]

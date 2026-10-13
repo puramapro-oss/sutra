@@ -1,3 +1,11 @@
+# SUTRA T06 — audit fournisseurs/social, 2026-10-13 (état prioritaire)
+
+**AUDIT T06 TERMINÉ ; ACTIVATION FOURNISSEURS/OAUTH BLOQUÉE.** Branche `codex/sutra-t06-provider-audit-20261013`, base `48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4`. Aucun produit modifié ; comptes/consentements/révocation/reprise audités en complément des owners. Rapport `qa/t06-provider-audit-20261013/README.md`, handoff `HANDOFF-SUTRA-T06-PROVIDER-AUDIT-20261013.md` et manifeste de 752 fichiers équivalents T01/T08.
+
+Preuves communes fraîches : 480 contrats PASS/7SKIP ; calendrier/composition/publication, TypeScript et lint PASS (111 warnings). Contre-tests T08 1PASS/5FAIL : OAuth incompatible et fuite Suno2xx. RunPod401, Shotstack403 après normalisation maître en mémoire, Mac/OVH ; Suno tiers GET crédits200 mais adaptateur SUTRA incompatible ; Zernio GET200/aucun compte. Aucun déploiement/publication/génération ni changement de secret/config distante. Garde anti-preview de cette branche uniquement.
+
+Prochaine tâche non vérifiée : traitement des blocages par propriétaires OAuth/fournisseurs et décisions utilisateur listées au rapport ; ne pas redoubler leurs sondes, ne pas connecter de compte avant correction. Les états déployés ci-dessous sont historiques et n'autorisent aucune activation nouvelle.
+
 # SUTRA — reprise apres verification finale, 2026-10-13
 
 **OVH OPERATIONNEL / RECETTE CONNECTEE EN ATTENTE.** Commit applicatif `f770e272d2d8e3bb3dde5b523fe7aa37f122399d` deploye sur https://sutra.purama.dev ; CI38330861913 : trois jobs SUCCESS. Deux defauts origine Auth/CSRF corriges, sept regressions. Public desktop/mobile affiche et verifie ; 28 controles origine, 10 GET,120 SQL PASS ; logs/base healthy, sauvegarde restauree precedemment et empreintes revalidees, snapshot rollback du precedent3e conserve. Aucun appel payant ni nouvelle migration.
