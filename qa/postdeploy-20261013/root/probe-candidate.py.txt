@@ -1,0 +1,21 @@
+import subprocess,hashlib,importlib.util,json,pathlib,shlex,sys,time
+root=pathlib.Path('/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012');proof=root/'qa/postdeploy-20261013/root';sys.path.insert(0,str(root/'deploy'))
+import ovh
+assert hashlib.sha256(ovh.HELPER.read_bytes()).hexdigest()==ovh.HELPER_SHA256
+spec=importlib.util.spec_from_file_location('helper',ovh.HELPER);helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+candidate=json.loads((proof/'candidate.json').read_text());assert candidate['source']=='f770e272d2d8e3bb3dde5b523fe7aa37f122399d'
+container=candidate['container'];assert helper.ssh('docker inspect --format="{{.HostConfig.NetworkMode}}" '+container,capture=True).stdout.strip()=='none'
+probe=(proof/'origin-runtime-probe.cjs.txt').read_text()
+helper.ssh('docker start '+container+' >/dev/null')
+try:
+ time.sleep(3)
+ try:
+  r=helper.ssh('docker exec '+container+' node -e '+shlex.quote(probe),capture=True)
+ except subprocess.CalledProcessError as e:
+  (proof/'candidate-origin-failed.json').write_text(e.stdout or '{}')
+  print(e.stdout or 'Probe transport failure; no JSON produced')
+  raise RuntimeError('Candidate origin probe failed; report preserved') from None
+ result=json.loads(r.stdout);assert result['passed']==14 and result['failed']==0
+ result['source']=candidate['source'];result['imageId']=candidate['imageId'];result['network']='none'
+ (proof/'candidate-origin.json').write_text(json.dumps(result,indent=2)+'\n');print('CANDIDATE_ORIGIN_14_PASS')
+finally:helper.ssh('docker stop '+container+' >/dev/null')

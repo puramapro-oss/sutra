@@ -1,0 +1,36 @@
+{
+  "previousSource": "3e5596ea287f36427f687d3f3882d35c3f7c407b",
+  "currentSource": "f770e272d2d8e3bb3dde5b523fe7aa37f122399d",
+  "checks": [
+    {
+      "path": "src/app/api/cron",
+      "unchanged": true
+    },
+    {
+      "path": "src/app/api/social/callback",
+      "unchanged": true
+    },
+    {
+      "path": "src/lib/cron-auth.ts",
+      "unchanged": true
+    },
+    {
+      "path": "src/lib/social-oauth-state.ts",
+      "unchanged": true
+    },
+    {
+      "path": "src/lib/auth-navigation.ts",
+      "unchanged": true
+    },
+    {
+      "path": "src/app/api/media",
+      "unchanged": true
+    }
+  ],
+  "reusedEvidence": [
+    "security/public-negative-results.json:42 cron and 9 OAuth checks",
+    "media/public-media.json:30 media assertions",
+    "../deployment-20261013/backup-release.json:restore of 140 tables and eight migrations twice"
+  ],
+  "changedGuards": "middleware public origin; revalidate on candidate and production with 14 targeted checks each; full CI remains required"
+}

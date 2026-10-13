@@ -1,11 +1,16 @@
-# Vérification post-déploiement — état prioritaire 2026-10-13
+# Verification finale post-deploiement — etat prioritaire 2026-10-13
 
-- [x] LOCKS/handoffs, processus, 54 entrées worktrees, état local inspectés ; WIP étrangers préservés.
-- [x] 30 assertions médias et 56 assertions cron/OAuth/origine PASS ; 4 FAIL ramenés à deux défauts origine interne.
-- [x] Correction bornée origine canonique + 7 régressions ; pas de nouvel appel fournisseur ni migration.
-- [x] Santé DB/conteneur/logs et intégrité sauvegarde/rollback vérifiées.
-- [ ] CI/candidat exact puis promotion avec rollback et sondes publiques corrigées.
-- [ ] Recette authentifiée live : compte QA dédié requis, question utilisateur en attente.
+- [x] LOCKS/handoffs/processus/branches/WIP inspectes ; deux auxiliaires libres affectes uniquement aux preuves manquantes.
+- [x] Deux defauts publics origine Auth/CSRF reproduits, corriges et couverts par sept regressions.
+- [x] CI exacte f770e272 run38330861913 entierement verte ; candidat isole valide.
+- [x] Promotion OVH exacte avec snapshot exclusif, runtime/schema inchanges ;28 origine +10 GET +120 SQL PASS.
+- [x] Navigateur public desktop/mobile affiche et inspecte ;0 erreur JS et0 debordement.
+- [x] Cron/OAuth negatifs et medias publics valides ; preuve inchangee conservee.
+- [x] Logs, DB, six empreintes backup, restauration precedente et nouveau snapshot rollback verifies ; DNS/TLS valides.
+- [x] Handoff final et preuves prepares ; aucun appel fournisseur payant.
+- [ ] Unique blocage externe : adresse d'un compte SUTRA dedie QA pour recette connectee, creation projet, pipeline gratuit, medias prives et SRT. Ne pas creer Authuser global ni emprunter un compte reel.
+
+Les sections suivantes sont historiques ; elles ne remplacent pas ce verdict et cette limite de recette live.
 
 # SUTRA T01 — état final du 2026-10-13
 

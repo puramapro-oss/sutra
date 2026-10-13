@@ -1,0 +1,163 @@
+{
+  "observedAt": "2026-10-13T01:29:28.743Z",
+  "base": "http://127.0.0.1:3000",
+  "paidCalls": 0,
+  "checks": [
+    {
+      "path": "/auth/callback",
+      "method": "GET",
+      "origin": null,
+      "forgedHeaders": false,
+      "status": 307,
+      "expectedStatus": 307,
+      "location": "https://sutra.purama.dev/login?error=missing_code",
+      "expectedLocation": "https://sutra.purama.dev/login?error=missing_code",
+      "pass": true
+    },
+    {
+      "path": "/auth/callback?next=https://untrusted.invalid",
+      "method": "GET",
+      "origin": null,
+      "forgedHeaders": false,
+      "status": 307,
+      "expectedStatus": 307,
+      "location": "https://sutra.purama.dev/login?error=missing_code",
+      "expectedLocation": "https://sutra.purama.dev/login?error=missing_code",
+      "pass": true
+    },
+    {
+      "path": "/auth/callback",
+      "method": "GET",
+      "origin": null,
+      "forgedHeaders": true,
+      "status": 307,
+      "expectedStatus": 307,
+      "location": "https://sutra.purama.dev/login?error=missing_code",
+      "expectedLocation": "https://sutra.purama.dev/login?error=missing_code",
+      "pass": true
+    },
+    {
+      "path": "/auth/callback?code=postdeploy-invalid-code",
+      "method": "GET",
+      "origin": null,
+      "forgedHeaders": false,
+      "status": 307,
+      "expectedStatus": 307,
+      "location": "https://sutra.purama.dev/login?error=callback_failed",
+      "expectedLocation": "https://sutra.purama.dev/login?error=callback_failed",
+      "pass": true
+    },
+    {
+      "path": "/dashboard?postdeploy=1",
+      "method": "GET",
+      "origin": null,
+      "forgedHeaders": false,
+      "status": 307,
+      "expectedStatus": 307,
+      "location": "https://sutra.purama.dev/login?next=%2Fdashboard%3Fpostdeploy%3D1",
+      "expectedLocation": "https://sutra.purama.dev/login?next=%2Fdashboard%3Fpostdeploy%3D1",
+      "pass": true
+    },
+    {
+      "path": "/login",
+      "method": "GET",
+      "origin": null,
+      "forgedHeaders": false,
+      "status": 200,
+      "expectedStatus": 200,
+      "location": null,
+      "expectedLocation": null,
+      "pass": true
+    },
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "origin": "https://sutra.purama.dev",
+      "forgedHeaders": false,
+      "status": 401,
+      "expectedStatus": 401,
+      "location": null,
+      "expectedLocation": null,
+      "pass": true
+    },
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "origin": "https://sutra.purama.dev",
+      "forgedHeaders": true,
+      "status": 401,
+      "expectedStatus": 401,
+      "location": null,
+      "expectedLocation": null,
+      "pass": true
+    },
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "origin": "https://untrusted.invalid",
+      "forgedHeaders": false,
+      "status": 403,
+      "expectedStatus": 403,
+      "location": null,
+      "expectedLocation": null,
+      "pass": true
+    },
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "origin": null,
+      "forgedHeaders": false,
+      "status": 401,
+      "expectedStatus": 401,
+      "location": null,
+      "expectedLocation": null,
+      "pass": true
+    },
+    {
+      "path": "/api/social/callback?error=postdeploy-invalid",
+      "method": "GET",
+      "origin": null,
+      "forgedHeaders": false,
+      "status": 302,
+      "expectedStatus": 302,
+      "location": "https://sutra.purama.dev/settings/social?error=oauth_denied",
+      "expectedLocation": "https://sutra.purama.dev/settings/social?error=oauth_denied",
+      "pass": true
+    },
+    {
+      "path": "/api/create",
+      "method": "POST",
+      "origin": "https://sutra.purama.dev",
+      "forgedHeaders": false,
+      "status": 401,
+      "expectedStatus": 401,
+      "location": null,
+      "expectedLocation": null,
+      "pass": true
+    },
+    {
+      "path": "/api/production",
+      "method": "POST",
+      "origin": "https://sutra.purama.dev",
+      "forgedHeaders": false,
+      "status": 401,
+      "expectedStatus": 401,
+      "location": null,
+      "expectedLocation": null,
+      "pass": true
+    },
+    {
+      "path": "/api/video/export",
+      "method": "POST",
+      "origin": "https://sutra.purama.dev",
+      "forgedHeaders": false,
+      "status": 401,
+      "expectedStatus": 401,
+      "location": null,
+      "expectedLocation": null,
+      "pass": true
+    }
+  ],
+  "passed": 14,
+  "failed": 0
+}

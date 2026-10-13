@@ -1,0 +1,104 @@
+{
+  "source": "f770e272d2d8e3bb3dde5b523fe7aa37f122399d",
+  "ci": "https://github.com/puramapro-oss/sutra/actions/runs/38330861913",
+  "status": "PASS",
+  "observedAt": "2026-10-13T01:31:45.368778+00:00",
+  "commands": [
+    {
+      "command": "npm run test:contracts",
+      "pass": 480,
+      "skip": 7,
+      "fail": 0,
+      "other": "schedule/composition/publication PASS; counts from same-code local log, exact CI command PASS"
+    },
+    {
+      "command": "npm run test:media",
+      "pass": 34,
+      "fail": 0,
+      "other": "FFmpeg real; unchanged suites and exact CI PASS"
+    },
+    {
+      "command": "node qa/t08/run.mjs redteam",
+      "pass": 14,
+      "fail": 0
+    },
+    {
+      "command": "npm run check",
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "build": "PASS",
+      "lintWarnings": 111,
+      "buildRoutes": 197
+    },
+    {
+      "command": "node qa/t08/run.mjs browser-redteam",
+      "pass": 217,
+      "axeAudits": 165,
+      "axeViolations": 0,
+      "browserErrors": 0
+    },
+    {
+      "command": "node scripts/run-ci.mjs legacy",
+      "startTime": "2026-10-13T01:21:12.085Z",
+      "duration": 461229.441,
+      "expected": 1022,
+      "skipped": 25,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    {
+      "command": "npm run test:migration-local",
+      "pass": 13,
+      "other": "disposable PostgreSQL 16"
+    },
+    {
+      "command": "node --import tsx --test scripts/test-pipeline-postgres.mts",
+      "pass": 12,
+      "other": "disposable PostgreSQL concurrency"
+    },
+    {
+      "command": "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-security-rls.mjs",
+      "pass": 254,
+      "other": "private PostgreSQL cluster"
+    },
+    {
+      "command": "python3 -m unittest discover -s deploy -p 'test_*.py'",
+      "pass": 17
+    },
+    {
+      "command": "npm audit --omit=dev --audit-level=high",
+      "status": "PASS",
+      "high": 0,
+      "critical": 0,
+      "moderate": 5,
+      "low": 2
+    }
+  ],
+  "production": {
+    "originChecks": 28,
+    "httpChecks": 10,
+    "sqlChecks": 120,
+    "publicBrowserWidths": [
+      1440,
+      375
+    ],
+    "publicMediaAssertionsReused": 30,
+    "publicCronAssertionsReused": 42,
+    "paidCalls": 0,
+    "schemaChanged": false
+  },
+  "notVerifiedLive": [
+    "authenticated sign-in and complete OAuth consent",
+    "project creation and authenticated free pipeline",
+    "private media read and SRT export with a dedicated QA session"
+  ],
+  "blocker": "dedicated existing SUTRA QA account address required; no password; global Auth creation excluded because 57 other-schema triggers",
+  "artifacts": {
+    "ci-quality/t08/browser/results.json": "efc85b45d5765278d91e9507b39abc0805aff29236a6c4302c874b9f3868fc37",
+    "ci-quality/t08/browser-extra.json": "d4ab305728c4dc1497cf4fe7f9ff3d91987563bffa3503c644697ac3e3cc4299",
+    "ci-quality/legacy/results.json": "057632d0a29271f4894883749f4250ac97886020b5a7a80066d943df0c4c85d3",
+    "ci-quality/ci/quality/results.json": "4ebabcb062893f5b4984a3f533bff1076644000af9fc3fae0b38e0f57d0f3bcd",
+    "ci-contracts/ci/contracts/results.json": "92305d1117360e4a8056ec843a2f05203cfafc9de97ec3c235a830867ce7335a",
+    "ci-contracts/ci/media/results.json": "5b750b0fb2af61f4927f9be83260dfa1d754f7edf02eefaed484aff737a48cdc"
+  }
+}

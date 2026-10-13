@@ -1,0 +1,12 @@
+{
+  "observedAt": "2026-10-13T01:35:18.137706+00:00",
+  "source": "f770e272d2d8e3bb3dde5b523fe7aa37f122399d",
+  "productDiff": "none; final evidence/documentation only",
+  "diffCheck": "PASS",
+  "gitleaks": "PASS; redacted staged scan, exact three previously verified source hashes allowed; no new finding",
+  "gitnexus": {
+    "command": "node /Users/matissdornier/purama/.gitnexus/run.cjs detect-changes --scope staged --repo sutra-t01-20261012",
+    "output": "Changes: 40 files, 8 symbols\nAffected processes: 0\nRisk level: low\n\nChanged symbols:\n  Section BATON \u2014 SUTRA T01, autorisation production 2026-10-12 \u2192 BATON.md\n  Section SUTRA T01 \u2014 autorisation production, 2026-10-12 \u2192 HANDOFF-SUTRA-T01-20261012.md\n  Section Correctif courant \u2192 HANDOFF-SUTRA-T01-20261012.md\n  Section Validation gratuite fra\u00eeche \u2192 HANDOFF-SUTRA-T01-20261012.md\n  Section Sauvegarde et production \u2192 HANDOFF-SUTRA-T01-20261012.md\n  Section Blocage externe et \u00e9tat Cloudflare \u2192 HANDOFF-SUTRA-T01-20261012.md\n  Section Cl\u00f4ture du delta OVH autoris\u00e9 \u2192 task_plan.md\n  Section Jalon T01 courant \u2014 autorisation production, 2026-10-12 \u2192 task_plan.md\n",
+    "limitation": "historical stale/truncated index; bounded documentation check, not exhaustive code certification"
+  }
+}

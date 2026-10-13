@@ -1,10 +1,8 @@
-# Reprise post-déploiement — 2026-10-13
+# SUTRA — reprise apres verification finale, 2026-10-13
 
-Contrôles manquants répartis après LOCKS/handoffs : T01 opérations/auth et deux auxiliaires bornés (médias, sécurité). Deux défauts live reproduits : callback Auth vers 0.0.0.0:3000 et POST same-origin rejeté. Correction limitée à une origine canonique validée dans le callback/middleware, sans confiance aux en-têtes proxy ; cookies et safeNextPath conservés. Sept nouvelles régressions, revue auxiliaire sans défaut. Aucun appel payant ni modification SQL.
+**OVH OPERATIONNEL / RECETTE CONNECTEE EN ATTENTE.** Commit applicatif `f770e272d2d8e3bb3dde5b523fe7aa37f122399d` deploye sur https://sutra.purama.dev ; CI38330861913 : trois jobs SUCCESS. Deux defauts origine Auth/CSRF corriges, sept regressions. Public desktop/mobile affiche et verifie ; 28 controles origine, 10 GET,120 SQL PASS ; logs/base healthy, sauvegarde restauree precedemment et empreintes revalidees, snapshot rollback du precedent3e conserve. Aucun appel payant ni nouvelle migration.
 
-Étape en cours : gates locales, CI du correctif, candidat réseau coupé, promotion exacte avec snapshot du déploiement 3e5596e, puis contrôles publics ciblés. Base healthy ; six artefacts de sauvegarde aux SHA identiques, snapshot rollback présent. Preuves : qa/postdeploy-20261013/.
-
-Limite explicite : aucun compte QA SUTRA existant identifié. Créer un compte Auth déclencherait 57 triggers de schémas partagés ; ne pas le faire pour ce contrôle SUTRA seul. Adresse d'un compte de recette dédiée demandée à l'utilisateur (aucun mot de passe). Sans réponse : parcours connecté/création de projet/médias privés/SRT live restent non vérifiés ; preuves déterministes gratuites conservées.
+Prochaine tache non verifiee : recette connectee avec un compte SUTRA QA existant dont l'utilisateur fournit uniquement l'adresse. Ne pas creer Authuser (57 triggers hors SUTRA), ne pas utiliser de compte utilisateur reel. Creation de projet, pipeline gratuit authentifie, media prive et SRT live restent non verifies. Ne pas rejouer les gates vertes sans delta. Preuves exactes, commandes et rollback : HANDOFF-SUTRA-T01-20261012.md et qa/postdeploy-20261013/README.md.
 
 Les états plus anciens ci-dessous restent historiques.
 

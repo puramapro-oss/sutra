@@ -1,0 +1,97 @@
+{
+  "observedAt": "2026-10-13T01:30:23.412681+00:00",
+  "source": "f770e272d2d8e3bb3dde5b523fe7aa37f122399d",
+  "container": {
+    "image": "purama/sutra-candidate:f770e272d2d8e3bb3dde5b523fe7aa37f122399d-1791853843381843000",
+    "id": "sha256:956b477deb4b7049914db5f51d934cf15fb0c3ea5fe289d6029c23b4c599e417",
+    "health": "healthy",
+    "restarts": 0,
+    "startedAt": "2026-10-13T01:29:15.515171017Z"
+  },
+  "backup": {
+    "directory": "/opt/purama/apps/sutra/backup-t01-coherent-qdule8xx",
+    "mode": "0o700",
+    "files": [
+      {
+        "name": "sutra.dump",
+        "bytes": 5191522,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "public-social.dump",
+        "bytes": 25703,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "public-social-dependencies.sql",
+        "bytes": 172,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "sutra-assets.tar.gz",
+        "bytes": 686,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "storage-metadata.json",
+        "bytes": 976,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "referenced-auth-ids.json",
+        "bytes": 829081,
+        "mode": "0o600",
+        "hashMatches": true
+      }
+    ],
+    "allHashesMatch": true
+  },
+  "rollback": {
+    "path": "/opt/purama/apps/sutra/rollback-f770e272d2d8e3bb3dde5b523fe7aa37f122399d",
+    "exists": true,
+    "files": [
+      {
+        "name": "compose.yml",
+        "bytes": 1022,
+        "mode": "0o600"
+      },
+      {
+        "name": "runtime.env",
+        "bytes": 5376,
+        "mode": "0o600"
+      },
+      {
+        "name": "complete",
+        "bytes": 0,
+        "mode": "0o600"
+      }
+    ]
+  },
+  "logs": {
+    "since": "2026-10-13T01:29:15.515171017Z",
+    "lineCount": 5,
+    "categories": {
+      "fatal": 0,
+      "db_connection": 0,
+      "permission": 0,
+      "application_error": 0,
+      "startup": 2
+    },
+    "rawContentNotExported": true
+  },
+  "database": {
+    "version": "15.8",
+    "recovery": false,
+    "connections": 46,
+    "maxConnections": "100",
+    "waitingLocks": 0,
+    "longTransactions": 0,
+    "sutraTables": 137,
+    "restoreTables": 1
+  }
+}
