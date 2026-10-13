@@ -1,4 +1,18 @@
-# SUTRA T05 — média et export — reprise du 2026-10-12
+# SUTRA T05 — complément fournisseurs du 2026-10-13
+
+**SHOTSTACK_LOCAL_PASS / PROVIDER_AUTH_AND_OAUTH_BLOCKED**. Branche `codex/sutra-t05-provider-contract-20261013`, base d'intégration `48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4`. Le commit contenant cette section est la livraison du delta ; SHA et push confirmés dans `.coord/handoffs/SUTRA-20261012/T05-PROVIDER-COORDINATION-20261013.md` à la racine PURAMA.
+
+Correctif : `src/lib/shotstack.ts` utilise la clé propre à stage/production avant toute résolution média ; `scripts/test-shotstack-contracts.mts` couvre sept nouveaux cas sans réseau. `vercel.json` désactive uniquement l'auto-preview de cette nouvelle branche. Aucun autre fournisseur, OAuth, configuration de secrets ou WIP étranger modifié. Docs locales : BATON/plan, ce handoff et `qa/t05/providers-20261013/`.
+
+Preuves T05 : régression rouge puis 89 tests ciblés PASS ; gate complète 488 PASS/7 SKIP/0 FAIL ; schedule/composition/publication PASS ; TypeScript PASS ; lint 0 erreur/111 avertissements existants ; build hors réseau197 pages PASS. Source/config/dépendances et preuves hachées dans le manifest. Contrats purement simulés ; pas de rendu Shotstack réel ni génération native 4K revendiquée. Tests FFmpeg synthétiques historiques inchangés non rejoués.
+
+Preuves propriétaires réutilisées : T04 master/Mac/OVH RunPod401, Shotstack403 pour les deux clés/environnements, Suno503 sans envoi de clé et contrat non qualifié, Zernio200/0 compte. Six variables du maître portent un suffixe littéral `\n` ; suppression diagnostique en mémoire sans lever les refus, aucun fichier de secrets modifié. T08 conserve5 FAIL/1 PASS sur les contrats OAuth/Suno actuels. T06 documente scopes, state, profil/organisation, tokens, révocation et consentements. Ce ne sont pas des sondes T05 ni une certification globale.
+
+Blocages internes transmis : diagnostic `src/lib/env.ts` à aligner sur la clé Shotstack d'environnement par T01/T04 ; raccord Zernio/API/callback/profil et fuite d'erreur Suno à corriger par leurs propriétaires ; rotation/révocation et origine callback non qualifiées. Actions utilisateur : clés RunPod/Shotstack et accès/contrat Suno ; consentements sociaux uniquement après correction OAuth. Aucun déploiement, fusion, migration, compte connecté, publication ou appel payant.
+
+Rapport détaillé et liens officiels : [audit fournisseurs](qa/t05/providers-20261013/README.md). L'historique ci-dessous reste conservé ; ses blocages d'intégration/polices/OVH du 12 octobre sont historiques et ne décrivent pas l'état courant.
+
+# Archive — SUTRA T05 média et export — reprise du 2026-10-12
 
 Statut : **DELTA_T05_LOCAL_VERIFIE_SUR_INTEGRATION_589732c**. Aucun déploiement ni appel payant. Ce handoff remplace le compte rendu S5 de cette branche ; l'ancien travail reste conservé dans son worktree et son historique.
 

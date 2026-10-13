@@ -1,4 +1,10 @@
-# SUTRA — reprise apres verification finale, 2026-10-13
+# SUTRA T05 — delta Shotstack, 2026-10-13
+
+Worktree/branche `sutra-t05-provider-contract-20261013`, base T01 `48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4`. Sélection de clé stage/production corrigée et testée : 89 ciblés PASS ; gate contrats488PASS/7SKIP ; TypeScript, lint0erreur/111warnings, build197pages hors réseau PASS. Preuves et commandes hachées dans `qa/t05/providers-20261013/manifest.json` ; livraison = commit contenant ce jalon. Pas de déploiement ni appel payant.
+
+Prochaine étape propriétaire : T01 reçoit ce delta seul, aligne le diagnostic administratif `src/lib/env.ts`, puis traite avec T04/T02 les blocages RunPod/Shotstack/Suno/OAuth documentés. T04 a audité master/Mac/OVH ; T08 conserve5 échecs contractuels réels ; T06 précise les consentements. Aucun doublon de leurs sondes. Les statuts T01 historiques ci-dessous ne sont pas une validation des fournisseurs actuels. Handoff : `HANDOFF-SUTRA-T05-20261012.md` et `qa/t05/providers-20261013/README.md`.
+
+# Archive — SUTRA reprise apres verification finale, 2026-10-13
 
 **OVH OPERATIONNEL / RECETTE CONNECTEE EN ATTENTE.** Commit applicatif `f770e272d2d8e3bb3dde5b523fe7aa37f122399d` deploye sur https://sutra.purama.dev ; CI38330861913 : trois jobs SUCCESS. Deux defauts origine Auth/CSRF corriges, sept regressions. Public desktop/mobile affiche et verifie ; 28 controles origine, 10 GET,120 SQL PASS ; logs/base healthy, sauvegarde restauree precedemment et empreintes revalidees, snapshot rollback du precedent3e conserve. Aucun appel payant ni nouvelle migration.
 

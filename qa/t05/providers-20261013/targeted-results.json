@@ -1,0 +1,18 @@
+{
+  "command": [
+    "node",
+    "--experimental-test-module-mocks",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=2",
+    "scripts/test-shotstack-contracts.mts",
+    "scripts/test-release-regressions.mts",
+    "scripts/test-export-integration.mts",
+    "scripts/test-provider-safety.mts",
+    "src/lib/video-compositor.test.mts"
+  ],
+  "exit": 0,
+  "secret_environment": "excluded",
+  "network": "external denied by offline.cjs"
+}

@@ -207,3 +207,14 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+# 2026-10-13 — T05 complément fournisseur livré localement
+
+- [x] Politiques/LOCKS/WIP et intégration48f2d5e vérifiés ; worktree T05 isolé, aucun écrasement.
+- [x] Régression Shotstack stage/production reproduite, clé propre sélectionnée avant média/HTTP, sept cas ajoutés.
+- [x] 89 tests ciblés ; contrats488PASS/7SKIP ; TypeScript, lint0erreur/111warnings et build197pages hors réseau PASS. Commandes et empreintes : `qa/t05/providers-20261013/manifest.json`.
+- [x] Preuves T04 master/Mac/OVH, T08 contrats distants et T06 consentements réutilisées sans sonde en doublon ; FAIL distincts des PASS.
+- [x] Handoff T05 actualisé, aucune génération/rendu payant, publication, migration, fusion ou déploiement.
+- [ ] T01/T04 : intégrer le delta et aligner le diagnostic administratif Shotstack ; corriger les raccords Suno/Zernio et les problèmes de sécurité identifiés par T08/T02.
+- [ ] Utilisateur : clés valides RunPod/Shotstack et contrat d'accès Suno ; consentements sociaux après correction seulement.
+
+Les plans ci-dessous sont des archives. SHA de livraison = commit contenant ce jalon ; reçu de push dans le pointeur T05 de coordination PURAMA.
