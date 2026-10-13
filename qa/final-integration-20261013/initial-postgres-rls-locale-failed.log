@@ -1,0 +1,24 @@
+Local-only fixture retained: /tmp/sutra-t02-pg-NVCvfu
+node:internal/errors:998
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /opt/homebrew/opt/postgresql@18/bin/pg_ctl -D /tmp/sutra-t02-pg-NVCvfu/data -l /tmp/sutra-t02-pg-NVCvfu/server.log -o -h '' -k /tmp/sutra-t02-pg-NVCvfu -p 55432 -w start
+pg_ctl : n'a pas pu démarrer le serveur
+Examinez le journal applicatif.
+
+    at genericNodeError (node:internal/errors:998:15)
+    at wrappedFn (node:internal/errors:543:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:509:20)
+    at maybeClose (node:internal/child_process:1108:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:305:5) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: "/opt/homebrew/opt/postgresql@18/bin/pg_ctl -D /tmp/sutra-t02-pg-NVCvfu/data -l /tmp/sutra-t02-pg-NVCvfu/server.log -o -h '' -k /tmp/sutra-t02-pg-NVCvfu -p 55432 -w start",
+  stdout: 'en attente du démarrage du serveur.... attente arrêtée\n',
+  stderr: "pg_ctl : n'a pas pu démarrer le serveur\nExaminez le journal applicatif.\n"
+}
+
+Node.js v26.0.0

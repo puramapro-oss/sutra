@@ -1,0 +1,121 @@
+[zernio:getOAuthUrl] SUTRA_PROVIDER_REQUEST_FAILED
+(node:65065) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65065) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ T08-Z01 current connect endpoint must replace undocumented /oauth/url (3.194291ms)
+✖ T08-Z02 initiation must carry owned profileId, redirect_url and posting scopes (1.783375ms)
+✖ T08-Z03 documented authUrl response must survive adapter parsing (0.285625ms)
+✖ T08-Z04 hosted callback must reach session verification without requiring an obsolete code (0.85175ms)
+✖ T08-S01 provider 2xx error payload must never reach the music API caller (1.345083ms)
+✔ T08-S02 provider 401 payload stays redacted at the same music API boundary (0.412042ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 1
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 303.228916
+
+✖ failing tests:
+
+test at qa/t08/providers-20261013/provider-contract-redteam.test.mts:1:2093
+✖ T08-Z01 current connect endpoint must replace undocumented /oauth/url (3.194291ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + '/api/v1/oauth/url'
+  - '/api/v1/connect/youtube'
+             ^
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/provider-contract-redteam.test.mts:50:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '/api/v1/oauth/url',
+    expected: '/api/v1/connect/youtube',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t08/providers-20261013/provider-contract-redteam.test.mts:1:2539
+✖ T08-Z02 initiation must carry owned profileId, redirect_url and posting scopes (1.783375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   profileId: null,
+  +   redirect: null,
+  +   scopes: null
+  -   profileId: 'aaaaaaaaaaaaaaaaaaaaaaaa',
+  -   redirect: 'https://sutra.invalid/api/social/callback',
+  -   scopes: 'posting'
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/provider-contract-redteam.test.mts:61:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { profileId: null, redirect: null, scopes: null },
+    expected: { profileId: 'aaaaaaaaaaaaaaaaaaaaaaaa', redirect: 'https://sutra.invalid/api/social/callback', scopes: 'posting' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t08/providers-20261013/provider-contract-redteam.test.mts:1:2969
+✖ T08-Z03 documented authUrl response must survive adapter parsing (0.285625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+      state: 't08-fixture-unpredictable-state',
+  +   url: ''
+  -   url: 'https://oauth.invalid/authorize'
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/provider-contract-redteam.test.mts:67:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { url: '', state: 't08-fixture-unpredictable-state' },
+    expected: { url: 'https://oauth.invalid/authorize', state: 't08-fixture-unpredictable-state' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t08/providers-20261013/provider-contract-redteam.test.mts:1:3190
+✖ T08-Z04 hosted callback must reach session verification without requiring an obsolete code (0.85175ms)
+  AssertionError [ERR_ASSERTION]: current callback is rejected as missing_params before authentication
+
+  0 !== 1
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/provider-contract-redteam.test.mts:76:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t08/providers-20261013/provider-contract-redteam.test.mts:1:3742
+✖ T08-S01 provider 2xx error payload must never reach the music API caller (1.345083ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /T08_SYNTHETIC_PRIVATE_PROVIDER_BODY/. Input:
+
+  '{"error":"Erreur generation musique","details":"Suno: T08_SYNTHETIC_PRIVATE_PROVIDER_BODY"}'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/provider-contract-redteam.test.mts:90:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{"error":"Erreur generation musique","details":"Suno: T08_SYNTHETIC_PRIVATE_PROVIDER_BODY"}',
+    expected: /T08_SYNTHETIC_PRIVATE_PROVIDER_BODY/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

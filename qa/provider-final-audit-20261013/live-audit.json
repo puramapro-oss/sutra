@@ -1,0 +1,260 @@
+{
+  "timestamp_utc": "2026-10-13T20:23:17.121796+00:00",
+  "code_base": "48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4",
+  "credential_source": "~/.env.purama.master",
+  "master_mode": "0o600",
+  "variables": [
+    {
+      "name": "RUNPOD_API_KEY",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "RUNPOD_ENDPOINT_ID",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "RUNPOD_POD_URL",
+      "present": false,
+      "occurrences": 0
+    },
+    {
+      "name": "SHOTSTACK_API_KEY",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "SHOTSTACK_PRODUCTION_KEY",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "SHOTSTACK_ENV",
+      "present": false,
+      "occurrences": 0
+    },
+    {
+      "name": "SUNO_API_KEY",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "SUNO_BASE_URL",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "SUNO_API_BASE_URL",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "ZERNIO_API_KEY",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "ZERNIO_BASE_URL",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "ZERNIO_WEBHOOK_SECRET",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "NEXT_PUBLIC_SITE_URL",
+      "present": true,
+      "occurrences": 1
+    },
+    {
+      "name": "NEXT_PUBLIC_APP_URL",
+      "present": true,
+      "occurrences": 1
+    }
+  ],
+  "mac_config": {
+    "source": "~/purama/sutra/.env.local",
+    "mode": "0o600",
+    "comparison": [
+      {
+        "name": "RUNPOD_API_KEY",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": false
+      },
+      {
+        "name": "RUNPOD_ENDPOINT_ID",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": false
+      },
+      {
+        "name": "RUNPOD_POD_URL",
+        "master_present": false,
+        "candidate_present": false,
+        "matches_master": null
+      },
+      {
+        "name": "SHOTSTACK_API_KEY",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": false
+      },
+      {
+        "name": "SHOTSTACK_PRODUCTION_KEY",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": false
+      },
+      {
+        "name": "SHOTSTACK_ENV",
+        "master_present": false,
+        "candidate_present": false,
+        "matches_master": null
+      },
+      {
+        "name": "SUNO_API_KEY",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": false
+      },
+      {
+        "name": "SUNO_BASE_URL",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": false
+      },
+      {
+        "name": "SUNO_API_BASE_URL",
+        "master_present": true,
+        "candidate_present": false,
+        "matches_master": false
+      },
+      {
+        "name": "ZERNIO_API_KEY",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": true
+      },
+      {
+        "name": "ZERNIO_BASE_URL",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": true
+      },
+      {
+        "name": "ZERNIO_WEBHOOK_SECRET",
+        "master_present": true,
+        "candidate_present": false,
+        "matches_master": false
+      },
+      {
+        "name": "NEXT_PUBLIC_SITE_URL",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": false
+      },
+      {
+        "name": "NEXT_PUBLIC_APP_URL",
+        "master_present": true,
+        "candidate_present": true,
+        "matches_master": false
+      }
+    ]
+  },
+  "master_probes_from_mac": {
+    "runpod_list": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 401,
+      "json": false,
+      "recognized_error": null,
+      "edge_challenge": false
+    },
+    "runpod_health": {
+      "result": "MISSING_OR_INVALID_ENDPOINT"
+    },
+    "shotstack_api_key_stage": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_api_key_v1": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_production_key_stage": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_production_key_v1": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "suno": {
+      "master_key_present": true,
+      "auth_validated": false,
+      "reason": "NO_VERIFIED_AUTH_CONTRACT",
+      "credentials_sent": false,
+      "base_matches_legacy_code_default": false,
+      "unused_alias_matches_base": false
+    },
+    "zernio": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 200,
+      "json": true,
+      "recognized_error": null,
+      "edge_challenge": false,
+      "returned_account_count": 0
+    }
+  },
+  "vps": {
+    "result": "SSH_FAILED"
+  },
+  "qualification": "EXCLUDED_INITIAL_LITERAL_NEWLINE_PARSER_DIAGNOSTIC",
+  "superseded_by": "normalized-live-audit.json",
+  "note": "Initial parser retained a literal escape where dotenv decodes a newline; raw HTTP results are not application authentication proof. Initial SSH failure was generated Python syntax, fixed before final audit."
+}

@@ -207,3 +207,79 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+
+
+<!-- Livraison 8e62dde1b3f913bed9fd327ac721e7207f72d7ea -->
+
+## 2026-10-13 — T04 audit fournisseurs, mandat borné
+
+- [x] Politiques/LOCKS/WIP/branche intégrée vérifiés ; POLICY_OK ; worktree T04 isolé depuis48f2d5e,589732c ancêtre.
+- [x] Source maître opaque, comparaison Mac/OVH, sondes GET gratuites avec preuves expurgées ; aucune copie de secret. Réserve SSH maître documentée.
+- [x] RunPod/Shotstack/Suno/Zernio et OAuth/permissions/state/expiration/révocation audités ; propriétaires respectés, aucune connexion.
+- [x] Corrections locales Suno et diagnostic Shotstack ; trois fichiers de tests fournisseurs ; garde anti-preview limitée.
+- [x] 483contratsPASS/7SKIP ; TS/lint/build197pagesPASS ; Suno contre-tests T08 désormais2PASS ; quatre OAuthFAIL conservés. Commandes/hashes : qa/provider-final-audit-20261013.
+- [ ] Action compte RunPod/Shotstack et format des six variables maître ; droits réels non qualifiés.
+- [ ] Décision fournisseur et nouvel adaptateur Suno ; raccord OAuth actuel avec profil/session/organisation/scopes, après décision des propriétaires.
+- [ ] Consentements des comptes sociaux choisis par l'utilisateur, seulement après correction OAuth.
+
+Handoff : HANDOFF-SUTRA-T04-20261012.md, complément du13octobre. Pas de merge/deploy/migration/publication/génération.
+
+- [x] T04 contrôle secrets opaque/Gitleaks, graphe isolé et revue staged HIGH bornée ; preuves et manifest archivés pour transmission du SHA après commit.
+
+
+<!-- Livraison 47e49ee94381ed1e8a378f22efd66676b68e032f -->
+# 2026-10-13 — T05 complément fournisseur livré localement
+
+- [x] Politiques/LOCKS/WIP et intégration48f2d5e vérifiés ; worktree T05 isolé, aucun écrasement.
+- [x] Régression Shotstack stage/production reproduite, clé propre sélectionnée avant média/HTTP, sept cas ajoutés.
+- [x] 89 tests ciblés ; contrats488PASS/7SKIP ; TypeScript, lint0erreur/111warnings et build197pages hors réseau PASS. Commandes et empreintes : `qa/t05/providers-20261013/manifest.json`.
+- [x] Preuves T04 master/Mac/OVH, T08 contrats distants et T06 consentements réutilisées sans sonde en doublon ; FAIL distincts des PASS.
+- [x] Handoff T05 actualisé, aucune génération/rendu payant, publication, migration, fusion ou déploiement.
+- [ ] T01/T04 : intégrer le delta et aligner le diagnostic administratif Shotstack ; corriger les raccords Suno/Zernio et les problèmes de sécurité identifiés par T08/T02.
+- [ ] Utilisateur : clés valides RunPod/Shotstack et contrat d'accès Suno ; consentements sociaux après correction seulement.
+
+Les plans ci-dessous sont des archives. SHA de livraison = commit contenant ce jalon ; reçu de push dans le pointeur T05 de coordination PURAMA.
+
+
+## Livraison 312522a
+Document propriétaire complet : `qa/final-integration-20261013/312522a-task_plan.md`.
+
+
+## Livraison 460acd3
+Document propriétaire complet : `qa/final-integration-20261013/460acd3-task_plan.md`.
+
+
+## Livraison 0e38a92
+Document propriétaire complet : `qa/final-integration-20261013/0e38a92-task_plan.md`.
+
+
+<!-- Livraison 5b374994378e3840c4b0dd9bea706b3aa7306f43 -->
+
+
+## 2026-10-13 — T08 reprise fournisseurs (delta QA)
+
+Base 48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4, branche codex/sutra-t08-provider-audit-20261013, worktree isole. Rapport : [qa/t08/providers-20261013/README.md](qa/t08/providers-20261013/README.md). Produit intact, verrous et WIP etrangers preserves.
+
+- VERIFIED : 6 contre-tests hors reseau, 1 PASS et 5 FAIL conserves (quatre assertions de contrat Zernio, une erreur Suno 2xx reflechie au navigateur). Defauts remis aux proprietaires T04/T06/T02, aucune correction produit T08.
+- VERIFIED : typegen, TypeScript et lint T08 exit 0, 111 avertissements herites. T01 480 contrats PASS/7 SKIP et schedule/composition/publication PASS reutilises, 752 fichiers sources/config identiques verifies par hash. Aucun build identique duplique.
+- VERIFIED : preuves partagees T04 master normalise, Mac/OVH en lecture seule : RunPod 401, Shotstack 403 quatre combinaisons, Suno legacy public 503 sans auth, Zernio 200/zero compte. Aucun appel fournisseur ou SSH T08.
+- BLOQUE : release, raccord OAuth/isolation profil, Suno erreur et contrat, acces fournisseurs. SSH T04 par alias existant reussi ; SSH avec seuls parametres master T01 refuse, distinction conservee. Aucun .env.local cree, aucun secret affiche, aucune generation/publication/deploy/migration/fusion.
+- Livraison locale : nouvelles preuves/tests et append documentaire uniquement. Push en attente de garde anti-preview pour cette nouvelle branche : vercel.json reserve a T05 sur son propre delta ; aucune modification de ce fichier par T08. L'autorisation de push precedente ne permet pas de declencher un deploiement interdit.
+
+Matrice du delta : 22 exigences, 8 PASS / 4 FAIL / 7 BLOQUE / 3 NON TESTE. Les preuves du 12 octobre restent historiques et ne sont pas rejouees. Prochaine action proprietaires : corriger les deux classes de defaut et rejouer uniquement redteam, qualifier les credentials et OAuth apres intervention humaine. SHA de livraison remis dans la coordination apres commit.
+
+
+## 2026-10-13 — T01 reprise finale fournisseurs intégrée et testée
+
+Mandat courant : corrections locales et intégration seulement, aucun push/deploy/migration distante/publication/génération payante/rotation/fermeture. Branche `codex/sutra-final-providers-20261013`, base `48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4`. Livraison = commit contenant ce jalon. Les décisions et compteurs antérieurs sont historiques.
+
+- INTEGRE : deltas T04 8e62dde, T05 47e49ee, T02 312522a, T06 460acd3, T03 0e38a92, T08 5b37499 par chemins revus ; 187 entrées, aucun manque. T07 4993feb documentaire archivé, code déjà intégré. Commits protégés conservés.
+- CORRIGE : quatre défauts OAuth Z01–Z04 par propriétaire unique (contrat Zernio, profil autorisé, state/session/compte, tokens gérés par Zernio), cinq connecteurs non qualifiés désactivés ; adaptateur SunoAPI tiers authentifié avec soumission unique et contrat vérifié.
+- TESTE : contrats 537 PASS/7 SKIP ; médias 31 PASS + moteur ; PostgreSQL 12 + 254 assertions + 13 contrôles migration locale ; rollback unitaire 17 ; TypeScript/lint/build PASS (111 avertissements historiques) ; redteam 14 ; browser 210/164 audits axe et browser-redteam 210+7/165 audits axe ; legacy 1022/25 SKIP ; UI sociale 28 ; audit dépendances 0 haute/critique (5 modérées/2 faibles conservées). Aucun test requis rouge.
+- BLOQUE EXTERNE : RunPod 401 après normalisation, Shotstack 403 sur les quatre couples clé/environnement ; `ZERNIO_PROFILE_BINDINGS` absent puis consentements utilisateurs requis. Ancienne configuration Suno applicative incompatible : activation distante future uniquement.
+- NON TESTE : génération réelle, publication réelle, tokens sociaux/rotation/révocation réels, cinq connecteurs désactivés ; limites TikTok/Pinterest du rapport T06 non qualifiées pour activation. Aucune certification de release.
+- WIP : 359 fichiers tiers sauvegardés privés et identiques ; T02–T08 propres aux SHAs vérifiés, handoffs conservés et FERMABLE. T01 fermable après commit de ce jalon. Aucun terminal/service existant fermé.
+
+Preuves et commandes exactes : `qa/final-integration-20261013/README.md`, manifest source, matrice de clôture et reçus. Prochaine tâche : seules actions de compte documentées RunPod/Shotstack, attribution Zernio puis consentements ; aucune répétition des PASS inchangés.
+
+Complément utilisateur 23h55 : mise en service OVH SUTRA autorisée après commit/manifeste/gates de ce jalon, sauvegarde/rollback vérifiés et smokes gratuits ; le plafond local précédent est remplacé pour cette étape suivante. Aucune dépense, génération, publication ni rotation. Le déploiement n’est pas encore une preuve de ce commit.

@@ -113,11 +113,11 @@ test('ElevenLabs listVoices: 403 refuse + reponse invalide detectee', async () =
 
 test('Suno: succes apres polling', async () => {
   setKey('SUNO_API_KEY', true)
-  process.env.SUNO_BASE_URL = 'https://suno.test/v1'
+  process.env.SUNO_API_BASE_URL = 'https://api.sunoapi.org/api/v1'
   queueResponses(
-    () => okJson({ id: 'song-1' }),
-    () => okJson({ id: 'song-1', status: 'pending' }),
-    () => okJson({ id: 'song-1', status: 'completed', audio_url: 'https://cdn/song-1.mp3' })
+    () => okJson({ code: 200, data: { taskId: 'song-1' } }),
+    () => okJson({ code: 200, data: { taskId: 'song-1', status: 'PENDING' } }),
+    () => okJson({ code: 200, data: { taskId: 'song-1', status: 'SUCCESS', response: { taskId: 'song-1', sunoData: [{ id: 'song-1', audio_url: 'https://cdn/song-1.mp3' }] } } })
   )
   const song = await generateMusic({ prompt: 'beat', style: 'cinematic', duration: 30 })
   assert.equal(song.audio_url, 'https://cdn/song-1.mp3')
@@ -137,7 +137,7 @@ test('Suno: POST 500 = UNE SEULE tentative (pas de rejeu génératif payant)', a
 test('Suno: 401 au poll -> abandon immediat (pas de boucle 2 min)', async () => {
   setKey('SUNO_API_KEY', true)
   queueResponses(
-    () => okJson({ id: 'song-3' }),
+    () => okJson({ code: 200, data: { taskId: 'song-3' } }),
     () => textResponse(403, 'forbidden')
   )
   await assertThrowsWith(
@@ -146,10 +146,15 @@ test('Suno: 401 au poll -> abandon immediat (pas de boucle 2 min)', async () => 
   )
 })
 
-test('Suno: reponse invalide (id absent) -> detail fournisseur remonte', async () => {
+test('Suno: reponse invalide (id absent) -> detail fournisseur expurge', async () => {
   setKey('SUNO_API_KEY', true)
   mockFetch(() => okJson({ error: 'quota exceeded' }))
-  await assertThrowsWith(() => generateMusic({ prompt: 'x', style: 'lo-fi', duration: 20 }), 'quota exceeded')
+  await assert.rejects(() => generateMusic({ prompt: 'x', style: 'lo-fi', duration: 20 }), (error: unknown) => {
+    assert.ok(error instanceof Error)
+    assert.equal(error.message, 'Suno: reponse invalide (id absent ou invalide)')
+    assert.ok(!error.message.includes('quota exceeded'))
+    return true
+  })
 })
 
 test('Suno: cle absente -> erreur explicite', async () => {

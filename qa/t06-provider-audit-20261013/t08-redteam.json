@@ -1,0 +1,16 @@
+{
+  "name": "redteam",
+  "command": [
+    "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+    "--experimental-test-module-mocks",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "qa/t08/providers-20261013/provider-contract-redteam.test.mts"
+  ],
+  "exitCode": 1,
+  "elapsedMs": 367,
+  "fixtureOnly": true,
+  "networkGuard": "qa/t08/offline.cjs"
+}

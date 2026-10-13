@@ -1,4 +1,5 @@
 import { fetchWithRetry } from '@/lib/utils/api'
+import { boundedProviderJson } from '@/lib/provider-json'
 
 const ZERNIO_BASE = process.env.ZERNIO_BASE_URL ?? 'https://zernio.com/api/v1'
 
@@ -23,24 +24,65 @@ function headers(): HeadersInit {
 // prod = publication sociale qui échoue sans aucune trace. Jamais de secret.
 function logError(context: string, err: unknown): void { void err; console.error(`[zernio:${context}]`, 'SUTRA_PROVIDER_REQUEST_FAILED') }
 
-export async function getOAuthUrl(platform: SocialPlatform, userId: string, redirectUri: string): Promise<OAuthUrlResponse> {
+/** Only these platforms use the documented hosted OAuth flow in SUTRA. */
+export const OAUTH_PLATFORMS = ['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest', 'reddit', 'threads'] as const
+const providerId = (value: unknown): value is string => typeof value === 'string' && /^[a-f0-9]{24}$/.test(value)
+
+/** Explicit server-side tenancy. Never select the team's first/default profile. */
+export function getAuthorizedProfileId(userId: string): string {
   try {
-    const qs = new URLSearchParams({ platform, user_id: userId, redirect_uri: redirectUri })
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/oauth/url?${qs.toString()}`, { method: 'GET', headers: headers() }, 2)
-    if (!res.ok) { logError('getOAuthUrl', `HTTP ${res.status}`); return { url: '', state: '' } }
-    const data = await res.json()
-    return { url: String(data.url ?? ''), state: String(data.state ?? '') }
-  } catch (err) { logError('getOAuthUrl', err); return { url: '', state: '' } }
+    const bindings: unknown = JSON.parse(process.env.ZERNIO_PROFILE_BINDINGS ?? '{}')
+    if (!bindings || typeof bindings !== 'object' || Array.isArray(bindings)) throw new Error()
+    const entries = Object.entries(bindings)
+    if (!entries.length || entries.some(([user, profile]) => !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(user) || !providerId(profile))
+      || new Set(entries.map(([, profile]) => profile)).size !== entries.length) throw new Error()
+    const profile = entries.find(([user]) => user === userId)?.[1]
+    if (!providerId(profile)) throw new Error()
+    return profile
+  } catch { throw new Error('SUTRA_ZERNIO_PROFILE_BINDING_REQUIRED') }
 }
 
-export async function exchangeOAuthCode(platform: SocialPlatform, code: string, state: string): Promise<AccountProfile> {
-  const empty: AccountProfile = { platform, externalId: '', username: '', displayName: '' }
+export async function getOAuthUrl(platform: SocialPlatform, profileId: string, redirectUri: string): Promise<OAuthUrlResponse> {
   try {
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/oauth/exchange`, { method: 'POST', headers: headers(), body: JSON.stringify({ platform, code, state }) }, 2)
-    if (!res.ok) { logError('exchangeOAuthCode', `HTTP ${res.status}`); return empty }
-    const data = await res.json()
-    return { platform, externalId: String(data.external_id ?? data.externalId ?? ''), username: String(data.username ?? ''), displayName: String(data.display_name ?? data.displayName ?? data.username ?? ''), avatarUrl: data.avatar_url ?? data.avatarUrl, accessToken: data.access_token ?? data.accessToken, refreshToken: data.refresh_token ?? data.refreshToken, tokenExpiresAt: data.token_expires_at ?? data.tokenExpiresAt }
-  } catch (err) { logError('exchangeOAuthCode', err); return empty }
+    if (!(OAUTH_PLATFORMS as readonly string[]).includes(platform) || !providerId(profileId)) throw new Error()
+    const redirect = new URL(redirectUri)
+    if (redirect.protocol !== 'https:' || redirect.username || redirect.password) throw new Error()
+    const qs = new URLSearchParams({ profileId, redirect_url: redirectUri, scopes: 'posting' })
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/connect/${providerPlatform(platform)}?${qs}`, {
+      method: 'GET', headers: headers(), redirect: 'error', timeoutMs: 20_000,
+    }, 1)
+    if (!res.ok) throw new Error()
+    const data = await boundedProviderJson(res)
+    if (typeof data.authUrl !== 'string' || data.authUrl.length > 16384) throw new Error()
+    const destination = new URL(data.authUrl)
+    if (destination.protocol !== 'https:' || destination.username || destination.password) throw new Error()
+    return { url: destination.href, state: typeof data.state === 'string' ? data.state : '' }
+  } catch { throw new Error('SUTRA_ZERNIO_CONNECT_UNAVAILABLE') }
+}
+
+/** Read provider-owned identity after hosted consent. Callback fields are not identity proof. */
+export async function getConnectedAccount(platform: SocialPlatform, profileId: string, accountId: string): Promise<AccountProfile> {
+  try {
+    if (!providerId(profileId) || !providerId(accountId)) throw new Error()
+    const query = new URLSearchParams({ profileId })
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/accounts?${query}`, {
+      method: 'GET', headers: headers(), redirect: 'error', timeoutMs: 20_000,
+    }, 1)
+    if (!res.ok) throw new Error()
+    const data = await boundedProviderJson(res)
+    if (!Array.isArray(data.accounts)) throw new Error()
+    const matches = data.accounts.filter((value): value is Record<string, unknown> =>
+      Boolean(value && typeof value === 'object' && value._id === accountId))
+    const account = matches.length === 1 ? matches[0] : undefined
+    const owner = typeof account?.profileId === 'string' ? account.profileId
+      : (account?.profileId as { _id?: unknown } | undefined)?._id
+    if (!account || owner !== profileId || account.platform !== providerPlatform(platform)
+      || account.isActive !== true || typeof account.username !== 'string' || !account.username.trim()
+      || account.username.length > 512) throw new Error()
+    return { platform, externalId: accountId, username: account.username,
+      displayName: typeof account.displayName === 'string' ? account.displayName.slice(0, 512) : account.username,
+      avatarUrl: publicPostUrl(account.profilePicture ?? account.avatarUrl) }
+  } catch { throw new Error('SUTRA_ZERNIO_ACCOUNT_VERIFICATION_FAILED') }
 }
 
 const SUPPORTED_PUBLICATION_PLATFORMS = new Set(['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest', 'reddit', 'threads', 'bluesky'])
@@ -173,14 +215,7 @@ export async function disconnectAccount(platform: SocialPlatform, accountId: str
   } catch (err) { logError('disconnectAccount', err); return false }
 }
 
-export async function refreshAccessToken(platform: SocialPlatform, refreshToken: string): Promise<{ accessToken: string; expiresAt: string }> {
-  try {
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/oauth/refresh`, { method: 'POST', headers: headers(), body: JSON.stringify({ platform, refresh_token: refreshToken }) }, 2)
-    if (!res.ok) { logError('refreshAccessToken', `HTTP ${res.status}`); return { accessToken: '', expiresAt: '' } }
-    const data = await res.json()
-    return { accessToken: String(data.access_token ?? data.accessToken ?? ''), expiresAt: String(data.expires_at ?? data.expiresAt ?? '') }
-  } catch (err) { logError('refreshAccessToken', err); return { accessToken: '', expiresAt: '' } }
-}
+// Hosted Zernio connections own token refresh. Reconnection requires fresh user consent.
 
 export function getOptimalFormat(platform: SocialPlatform): string {
   const formats: Record<SocialPlatform, string> = { tiktok: '9:16', youtube: '16:9', instagram: '1:1', facebook: '16:9', x: '16:9', linkedin: '16:9', pinterest: '1:1', reddit: '16:9', threads: '9:16', snapchat: '9:16', tumblr: '1:1', mastodon: '16:9', bluesky: '16:9', vimeo: '16:9' }

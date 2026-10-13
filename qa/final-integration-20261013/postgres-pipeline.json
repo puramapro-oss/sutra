@@ -1,0 +1,14 @@
+{
+  "name": "postgres-pipeline",
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "--test",
+    "scripts/test-pipeline-postgres.mts"
+  ],
+  "exitCode": 0,
+  "elapsedSeconds": 0.56,
+  "fixtureOnly": true,
+  "networkGuard": "qa/t08/offline.cjs"
+}

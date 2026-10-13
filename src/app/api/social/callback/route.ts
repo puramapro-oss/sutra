@@ -1,29 +1,13 @@
 import { NextResponse } from 'next/server'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-import { exchangeOAuthCode, type SocialPlatform } from '@/lib/zernio'
+import { getConnectedAccount, getAuthorizedProfileId, OAUTH_PLATFORMS, type SocialPlatform } from '@/lib/zernio'
 import { cookies } from 'next/headers'
 import { createServerClient } from '@/lib/supabase-server'
 import { consumeSocialOAuthState, socialOAuthCookieName } from '@/lib/social-oauth-state'
+import { publicOrigin } from '@/lib/public-origin'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
-
-const ALLOWED_PLATFORMS: readonly string[] = [
-  'tiktok',
-  'youtube',
-  'instagram',
-  'facebook',
-  'x',
-  'linkedin',
-  'pinterest',
-  'reddit',
-  'threads',
-  'snapchat',
-  'tumblr',
-  'mastodon',
-  'bluesky',
-  'vimeo',
-]
 
 function createPublicServiceClient() {
   return createSupabaseClient(
@@ -45,10 +29,12 @@ function redirectToSettings(baseUrl: string, params: Record<string, string>) {
 }
 
 export async function GET(req: Request) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sutra.purama.dev'
+  const siteUrl = publicOrigin('https://sutra.purama.dev')
   try {
     const url = new URL(req.url)
-    const code = url.searchParams.get('code')
+    const connected = url.searchParams.get('connected')
+    const returnedProfileId = url.searchParams.get('profileId')
+    const accountId = url.searchParams.get('accountId')
     const state = url.searchParams.get('state')
     const platformParam = url.searchParams.get('platform')
     const errorParam = url.searchParams.get('error')
@@ -57,11 +43,11 @@ export async function GET(req: Request) {
       return redirectToSettings(siteUrl, { error: 'oauth_denied' })
     }
 
-    if (!code || !state || !platformParam) {
+    if (!connected || !state || !platformParam || !returnedProfileId || !accountId) {
       return redirectToSettings(siteUrl, { error: 'missing_params' })
     }
 
-    if (!ALLOWED_PLATFORMS.includes(platformParam)) {
+    if (!(OAUTH_PLATFORMS as readonly string[]).includes(platformParam)) {
       return redirectToSettings(siteUrl, { error: 'invalid_platform' })
     }
 
@@ -70,16 +56,24 @@ export async function GET(req: Request) {
     const session = await createServerClient()
     const { data: { user }, error: authError } = await session.auth.getUser()
     if (authError || !user) return redirectToSettings(siteUrl, { error: 'session_required' })
+    const { data: claimsData, error: claimsError } = await session.auth.getClaims()
+    const sessionId = claimsData?.claims.session_id
+    if (claimsError || claimsData?.claims.sub !== user.id || typeof sessionId !== 'string') return redirectToSettings(siteUrl, { error: 'session_required' })
+    const profileId = getAuthorizedProfileId(user.id)
+    if (returnedProfileId !== profileId || connected !== (platform === 'x' ? 'twitter' : platform)) {
+      return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
+    }
+    const binding = { profileId, sessionId }
     const cookieStore = await cookies()
     const cookieName = socialOAuthCookieName(state)
-    const consumed = await consumeSocialOAuthState(user.id, platform, state, cookieStore.get(cookieName)?.value)
+    const consumed = await consumeSocialOAuthState(user.id, platform, state, cookieStore.get(cookieName)?.value, binding)
     if (!consumed) return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
     cookieStore.set(cookieName, '', { path: '/api/social', maxAge: 0, httpOnly: true,
       secure: new URL(siteUrl).protocol === 'https:', sameSite: 'lax' })
     const userId = user.id
 
-    // Exchange OAuth code for account profile + tokens
-    const profile = await exchangeOAuthCode(platform, code, state)
+    // Zernio holds all platform tokens; verify the hosted result by a scoped server GET.
+    const profile = await getConnectedAccount(platform, profileId, accountId)
 
     const client = createPublicServiceClient()
 
@@ -97,11 +91,11 @@ export async function GET(req: Request) {
           username: profile.username,
           display_name: profile.displayName ?? null,
           avatar_url: profile.avatarUrl ?? null,
-          access_token: profile.accessToken ?? null,
-          refresh_token: profile.refreshToken ?? null,
-          token_expires_at: profile.tokenExpiresAt ?? null,
+          access_token: null,
+          refresh_token: null,
+          token_expires_at: null,
           status: 'connected',
-          metadata: {},
+          metadata: { zernio_profile_id: profileId, credential_owner: 'zernio' },
           connected_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         },

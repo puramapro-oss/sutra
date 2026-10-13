@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { Badge } from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
-import { PLATFORM_INFO, type SocialPlatform } from '@/lib/zernio'
+import { OAUTH_PLATFORMS, PLATFORM_INFO, type SocialPlatform } from '@/lib/zernio'
 
 interface SocialAccount {
   id: string
@@ -67,6 +67,7 @@ export function PlatformGrid({
         const account = accountsByPlatform[platform]
         const isConnected = !!account
         const isConnecting = connecting === platform
+        const canConnect = (OAUTH_PLATFORMS as readonly string[]).includes(platform)
         const isDisconnecting = account && disconnectingId === account.id
 
         return (
@@ -131,10 +132,11 @@ export function PlatformGrid({
                 size="sm"
                 className="w-full"
                 loading={isConnecting}
+                disabled={!canConnect}
                 onClick={() => onConnect(platform)}
                 data-testid={`connect-${platform}`}
               >
-                Se connecter
+                {canConnect ? 'Se connecter' : 'Connexion indisponible'}
               </Button>
             )}
           </motion.div>

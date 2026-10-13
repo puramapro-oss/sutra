@@ -127,3 +127,19 @@ Aucune action manuelle indispensable pour ce déploiement ; secret SMARANA réso
 La branche S5 historique non validée n’est pas fusionnée : budget hybride, restauration de versions et journal cron-runs non livrés ; édition du script sans régénération de voix. Ces limites ne constituent pas des preuves de fonctionnalités livrées.
 
 POLICY_OK au démarrage. GitNexus impact service client CRITICAL signalé avant correction ; nouveau SQL non indexé. Graphe TRUNCATED et en retard : les diffs directs, tests et contrôles live constituent des preuves bornées ; aucune prétention d’exhaustivité. Detect-changes exécuté avant chaque commit, puis avant le commit documentaire final. Aucun reset/stash/clean, secret exposé, WIP étranger écrasé, processus étranger arrêté ou worktree supprimé.
+
+
+## 2026-10-13 — T01 reprise finale fournisseurs intégrée et testée
+
+Mandat courant : corrections locales et intégration seulement, aucun push/deploy/migration distante/publication/génération payante/rotation/fermeture. Branche `codex/sutra-final-providers-20261013`, base `48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4`. Livraison = commit contenant ce jalon. Les décisions et compteurs antérieurs sont historiques.
+
+- INTEGRE : deltas T04 8e62dde, T05 47e49ee, T02 312522a, T06 460acd3, T03 0e38a92, T08 5b37499 par chemins revus ; 187 entrées, aucun manque. T07 4993feb documentaire archivé, code déjà intégré. Commits protégés conservés.
+- CORRIGE : quatre défauts OAuth Z01–Z04 par propriétaire unique (contrat Zernio, profil autorisé, state/session/compte, tokens gérés par Zernio), cinq connecteurs non qualifiés désactivés ; adaptateur SunoAPI tiers authentifié avec soumission unique et contrat vérifié.
+- TESTE : contrats 537 PASS/7 SKIP ; médias 31 PASS + moteur ; PostgreSQL 12 + 254 assertions + 13 contrôles migration locale ; rollback unitaire 17 ; TypeScript/lint/build PASS (111 avertissements historiques) ; redteam 14 ; browser 210/164 audits axe et browser-redteam 210+7/165 audits axe ; legacy 1022/25 SKIP ; UI sociale 28 ; audit dépendances 0 haute/critique (5 modérées/2 faibles conservées). Aucun test requis rouge.
+- BLOQUE EXTERNE : RunPod 401 après normalisation, Shotstack 403 sur les quatre couples clé/environnement ; `ZERNIO_PROFILE_BINDINGS` absent puis consentements utilisateurs requis. Ancienne configuration Suno applicative incompatible : activation distante future uniquement.
+- NON TESTE : génération réelle, publication réelle, tokens sociaux/rotation/révocation réels, cinq connecteurs désactivés ; limites TikTok/Pinterest du rapport T06 non qualifiées pour activation. Aucune certification de release.
+- WIP : 359 fichiers tiers sauvegardés privés et identiques ; T02–T08 propres aux SHAs vérifiés, handoffs conservés et FERMABLE. T01 fermable après commit de ce jalon. Aucun terminal/service existant fermé.
+
+Preuves et commandes exactes : `qa/final-integration-20261013/README.md`, manifest source, matrice de clôture et reçus. Prochaine tâche : seules actions de compte documentées RunPod/Shotstack, attribution Zernio puis consentements ; aucune répétition des PASS inchangés.
+
+Complément utilisateur 23h55 : mise en service OVH SUTRA autorisée après commit/manifeste/gates de ce jalon, sauvegarde/rollback vérifiés et smokes gratuits ; le plafond local précédent est remplacé pour cette étape suivante. Aucune dépense, génération, publication ni rotation. Le déploiement n’est pas encore une preuve de ce commit.

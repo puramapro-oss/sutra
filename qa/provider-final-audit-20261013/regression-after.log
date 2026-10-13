@@ -1,0 +1,48 @@
+✔ fetchWithRetry: 500 x2 puis 200 -> succes (retry borne) (3411.815125ms)
+✔ fetchWithRetry: 404 jamais rejoue (retour immediat) (0.504875ms)
+✔ fetchWithRetry: 429 non rejoue (retour immediat, consommateur decide) (0.227042ms)
+✔ fetchWithRetry: erreur reseau apres retries -> echec enregistre (1038.847083ms)
+✔ fetchWithRetry: POST JAMAIS rejoue sans clé idempotence (anti double facturation) (1.341959ms)
+✔ fetchWithRetry: POST avec contrat fournisseur ET cle idempotence → reprise autorisee (1148.948833ms)
+✔ estimateCost: grille officielle LTX 2.3 (fast 1080p = 0.06 USD/s) (0.377708ms)
+✔ snapLtxDuration: durées ramenées aux valeurs admises par LTX 2.3 (0.111958ms)
+✔ ltxCompatibleFormat: le carré part en 16:9 (recadré au montage) (0.055125ms)
+✔ clampQualityToPlan: starter demandant 4k → 720p AVANT tout appel payant (0.123292ms)
+✔ resolveVoiceProviderId: jamais un alias brut vers l'API TTS (0.155708ms)
+✔ env: requireEnv message explicite (nom + .env.local), sans valeur (0.215375ms)
+✔ env: providerConfigStatus ne divulgue aucune valeur (0.964ms)
+✔ env: Shotstack diagnostic selects the configured environment without substituting credentials (0.470333ms)
+✔ env: isEnvSet ignore les valeurs vides (0.069ms)
+✔ env: inventaire providers couvre les fournisseurs attendus (0.096791ms)
+(node:80956) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:80956) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ Suno ambiguous submission never reflects provider payload or resubmits (1.957834ms)
+✔ Suno polling bounds and redacts malformed responses without resubmission (1.282417ms)
+✔ smart: missing durable context, insufficient plan, long scene and lost reference fail before spend (1.036667ms)
+✔ smart paid timeout never invokes WAN and restart reuses submission barrier (15.48875ms)
+✔ visual fallback never converts an uncertain paid outcome to stock or WAN (0.25175ms)
+✔ existing LTX intent or execution never becomes stock when credentials or plan change (0.388375ms)
+✔ a configured WAN cannot replace an explicit LTX execution (0.068167ms)
+✔ smart: source provenance includes job/cost/timeout/quota, excludes signed output URL (0.788375ms)
+✔ retake and extend wrappers use real editing endpoints, never seed/last-frame regeneration (0.597375ms)
+✔ music: no configured provider means explicit error, never empty success (0.135375ms)
+✔ music: failed primary submission never cascades to other paid providers (0.17125ms)
+✔ quality/cost selection: absent configuration excluded, invalid/too-long duration never underdelivered (0.189166ms)
+✔ RunPod: terminal FAILED retains job and never invokes retry/cancel (0.2495ms)
+✔ RunPod: terminal CANCELLED retains job and never invokes retry/cancel (0.084333ms)
+✔ RunPod: terminal TIMED_OUT retains job and never invokes retry/cancel (0.067958ms)
+✔ RunPod: network/unknown status/404/local timeout retain remote identity for explicit resumption (0.203583ms)
+✔ RunPod: uncertain submit is one request with explicit unknown outcome (0.14375ms)
+✔ WAN: success carries job/status/unknown GPU cost; download failure resumes that job (0.445875ms)
+✔ music: legacy URL API never silently substitutes another configured provider (0.223875ms)
+✔ voice/music: uncertain spend is permanent for the existing queue, with safe provenance (0.235667ms)
+✔ visual: storage failure after paid WAN/LTX success retains job, never generates a fallback (0.598125ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6035.4795

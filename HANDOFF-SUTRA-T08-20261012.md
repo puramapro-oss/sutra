@@ -60,3 +60,16 @@ Reproduction : commande `browser-redteam` ci-dessus. Preuve `qa/t08/integrated/e
 GitNexus : impact préalable `checkPath` LOW (1 dépendant direct, 0 flux). Index T08 final 12 775 nœuds/24 830 relations/369 flux, **TRUNCATED** (930 candidats, 519 callees, 4 walks omis). `detect-changes --scope staged` archivé : 51 chemins/55 symboles, risque **medium**, deux flux GET → Music/Script associés à la propriété locale `asset` du test (voir `context-asset.txt`). Le contexte mélange des propriétaires sans lien avec cet objet local ; aucune édition produit ni import du test par le produit dans le diff. Les copies de rapports ajoutées ensuite sont inertes. Revue directe des chemins effectuée, aucune exhaustivité inférée du graphe.
 
 Les preuves courantes sont sous `qa/t08/integrated/evidence/` et leurs sources détaillées sous `test-results/`. Les anciennes 25 PASS/21 FAIL S5 restent historiques, hors de tous ces compteurs. Le manifest courant relie les sources et rapports livrés. Prochaine action T01 : recevoir le delta QA, faire corriger T08-I01 par T07, intégrer ses SHA explicites et rejouer seulement les cas affectés ; maintenir la release bloquée jusqu'aux preuves manquantes.
+
+
+## 2026-10-13 — T08 reprise fournisseurs (delta QA)
+
+Base 48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4, branche codex/sutra-t08-provider-audit-20261013, worktree isole. Rapport : [qa/t08/providers-20261013/README.md](qa/t08/providers-20261013/README.md). Produit intact, verrous et WIP etrangers preserves.
+
+- VERIFIED : 6 contre-tests hors reseau, 1 PASS et 5 FAIL conserves (quatre assertions de contrat Zernio, une erreur Suno 2xx reflechie au navigateur). Defauts remis aux proprietaires T04/T06/T02, aucune correction produit T08.
+- VERIFIED : typegen, TypeScript et lint T08 exit 0, 111 avertissements herites. T01 480 contrats PASS/7 SKIP et schedule/composition/publication PASS reutilises, 752 fichiers sources/config identiques verifies par hash. Aucun build identique duplique.
+- VERIFIED : preuves partagees T04 master normalise, Mac/OVH en lecture seule : RunPod 401, Shotstack 403 quatre combinaisons, Suno legacy public 503 sans auth, Zernio 200/zero compte. Aucun appel fournisseur ou SSH T08.
+- BLOQUE : release, raccord OAuth/isolation profil, Suno erreur et contrat, acces fournisseurs. SSH T04 par alias existant reussi ; SSH avec seuls parametres master T01 refuse, distinction conservee. Aucun .env.local cree, aucun secret affiche, aucune generation/publication/deploy/migration/fusion.
+- Livraison locale : nouvelles preuves/tests et append documentaire uniquement. Push en attente de garde anti-preview pour cette nouvelle branche : vercel.json reserve a T05 sur son propre delta ; aucune modification de ce fichier par T08. L'autorisation de push precedente ne permet pas de declencher un deploiement interdit.
+
+Matrice du delta : 22 exigences, 8 PASS / 4 FAIL / 7 BLOQUE / 3 NON TESTE. Les preuves du 12 octobre restent historiques et ne sont pas rejouees. Prochaine action proprietaires : corriger les deux classes de defaut et rejouer uniquement redteam, qualifier les credentials et OAuth apres intervention humaine. SHA de livraison remis dans la coordination apres commit.

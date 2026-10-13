@@ -1,0 +1,19 @@
+{
+  "source_owner": "T08",
+  "source": "/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/provider-contract-redteam.test.mts",
+  "source_sha256": "db21c6315e3afd321eb22b88670fd417d0f9cec84032115b3426353c43c1963f",
+  "adaptation": "Import depth only: ../../../src -> ../../src; all assertions unchanged",
+  "command": [
+    "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+    "--experimental-test-module-mocks",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "test-results/t04-provider-audit/owner-redteam.test.mts"
+  ],
+  "exit_code": 1,
+  "network": "DENIED",
+  "secrets": "FIXTURES_ONLY",
+  "expected_interpretation": "Suno S01/S02 must PASS; OAuth Z01-Z04 remain FAIL for owner remediation"
+}

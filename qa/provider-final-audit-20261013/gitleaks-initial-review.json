@@ -1,0 +1,27 @@
+{
+  "status": "THREE_FALSE_POSITIVES_VERIFIED",
+  "findings": [
+    {
+      "file": "qa/provider-final-audit-20261013/tested-source.json",
+      "line": 9,
+      "type": "SHA256_OF_LOCAL_EVIDENCE_FILE",
+      "path": "scripts/test-api-contracts.mts",
+      "verified_by_recompute": true
+    },
+    {
+      "file": "qa/provider-final-audit-20261013/master-secret-scan.json",
+      "line": 13,
+      "type": "SHA256_OF_LOCAL_EVIDENCE_FILE",
+      "path": "scripts/test-api-contracts.mts",
+      "verified_by_recompute": true
+    },
+    {
+      "file": "qa/provider-final-audit-20261013/master-secret-scan.json",
+      "line": 47,
+      "type": "SHA256_OF_LOCAL_EVIDENCE_FILE",
+      "path": "qa/provider-final-audit-20261013/suno-alternative-auth-t01.json",
+      "verified_by_recompute": true
+    }
+  ],
+  "resolution": "Use explicit path/sha256 records in evidence instead of path-keyed digests; no rule disabled and no exclusion added."
+}

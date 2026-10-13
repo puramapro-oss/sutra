@@ -1,0 +1,17 @@
+{
+  "name": "deploy-unit",
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "deploy",
+    "-p",
+    "test_*.py"
+  ],
+  "exitCode": 0,
+  "elapsedSeconds": 0.13,
+  "fixtureOnly": true,
+  "networkGuard": "qa/t08/offline.cjs"
+}

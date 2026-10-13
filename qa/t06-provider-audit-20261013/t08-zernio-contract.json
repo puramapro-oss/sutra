@@ -1,0 +1,118 @@
+{
+  "retrievedAt": "2026-10-13T20:23:57.955Z",
+  "source": "https://docs.zernio.com/api/openapi",
+  "httpStatus": 200,
+  "sha256": "644937343ec0d486a772024d88d94e6cee55a9ce454379a24b79b64a41edb9c2",
+  "version": "1.273.0",
+  "servers": [
+    {
+      "url": "https://zernio.com/api",
+      "description": "Production"
+    },
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local"
+    }
+  ],
+  "pathsCount": 631,
+  "connect": {
+    "path": "/v1/connect/{platform}",
+    "method": "GET",
+    "parameters": [
+      {
+        "name": "platform",
+        "in": "path",
+        "required": true
+      },
+      {
+        "name": "profileId",
+        "in": "query",
+        "required": true
+      },
+      {
+        "name": "reconnectAccountId",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "expectedPlatformUserId",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "expectedUsername",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "forceReauth",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "redirect_url",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "scopes",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "headless",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "loginMethod",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "onboarding",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "signup",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "brandName",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "primaryColor",
+        "in": "query",
+        "required": false
+      },
+      {
+        "name": "language",
+        "in": "query",
+        "required": false
+      }
+    ],
+    "response": {
+      "type": "object",
+      "properties": {
+        "authUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to redirect your user to for OAuth authorization"
+        },
+        "state": {
+          "type": "string",
+          "description": "State parameter for security (handled automatically)"
+        }
+      }
+    }
+  },
+  "legacyPathsPresent": {
+    "/v1/oauth/url": false,
+    "/v1/oauth/exchange": false,
+    "/v1/oauth/refresh": false
+  }
+}

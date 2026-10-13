@@ -1,0 +1,439 @@
+{
+  "target": {
+    "id": "Function:src/lib/suno.ts:generateMusic",
+    "name": "generateMusic",
+    "type": "Function",
+    "filePath": "src/lib/suno.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 14,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 5,
+    "processes_affected": 6,
+    "modules_affected": 5
+  },
+  "byDepthCounts": {
+    "1": 5,
+    "2": 3,
+    "3": 6
+  },
+  "affected_processes": [
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/music/generate/route.ts",
+      "affected_process_count": 10,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "src/app/api/cron/video-worker/route.ts",
+      "affected_process_count": 5,
+      "total_hits": 9,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/video/export/route.ts",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/auto/generate/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/create/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/production/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Stripe",
+      "hits": 6,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_0",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_250",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Scripts",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Delete",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/music/generate/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/music/generate/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_315_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_116_post",
+            "label": "POST → BreakerKey",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_110_post",
+            "label": "POST → FetchWithRetry",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_280_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_122_post",
+            "label": "POST → MissingEnvError",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_135_post",
+            "label": "POST → RateLimitResponse",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_117_post",
+            "label": "POST → Abort",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_90_post",
+            "label": "POST → OptionalEnv",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_91_post",
+            "label": "POST → HttpErrorMessage",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_124_post",
+            "label": "POST → BalayerEntreesExpirees",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/fallbacks.ts:generateMusicWithProvenance",
+        "name": "generateMusicWithProvenance",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/production-pipeline.ts:defaultProviders.music@105:4",
+        "name": "music",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/sutra-auto.ts:generateAutoVideoAssets",
+        "name": "generateAutoVideoAssets",
+        "filePath": "src/lib/sutra-auto.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob",
+        "name": "executeCreateJob",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/auto-pipeline.ts:buildAutoProviders.assets@172:4",
+        "name": "assets",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/fallbacks.ts:generateMusicWithFallback",
+        "name": "generateMusicWithFallback",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/video-worker.ts:runVideoJob",
+        "name": "runVideoJob",
+        "filePath": "src/lib/video-worker.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_85_get",
+            "label": "GET → WithPipelineLease",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_40_get",
+            "label": "GET → Music",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_86_get",
+            "label": "GET → WithMediaOwner",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_41_get",
+            "label": "GET → Script",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/auto/generate/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/auto/generate/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_76_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_226_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_215_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/create/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_259_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_79_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_176_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/cron/video-worker/route.ts:GET",
+        "name": "GET",
+        "filePath": "src/app/api/cron/video-worker/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_274_get",
+            "label": "GET → CreateServiceClient",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_41_get",
+            "label": "GET → Script",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_85_get",
+            "label": "GET → WithPipelineLease",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_86_get",
+            "label": "GET → WithMediaOwner",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_40_get",
+            "label": "GET → Music",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/production/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/production/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_285_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_325_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_94_post",
+            "label": "POST → SanitizeScriptData",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/video/export/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/video/export/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_187_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_136_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_349_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_133_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/auto-pipeline.ts:executeAutoJob",
+        "name": "executeAutoJob",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      }
+    ]
+  }
+}
+
+  GitNexus Impact (1.6.12)

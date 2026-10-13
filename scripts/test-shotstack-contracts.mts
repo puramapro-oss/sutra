@@ -222,3 +222,78 @@ test('Shotstack: cle absente -> erreur explicite', async () => {
   )
 })
 
+// Two distinct credentials: never send a sandbox key to production or vice versa.
+test('Shotstack: environnement et cle restent lies au submit et au polling', async (t) => {
+  const params = {
+    clips: [{ url: 'https://cdn/clip.mp4', type: 'stock' as const, duration: 5 }],
+    voiceUrl: '', musicUrl: '', musicVolume: 0.3,
+    subtitles: [], transitions: 'fade', format: '16:9', quality: '1080p',
+  }
+  const originalFetch = globalThis.fetch
+  const names = ['SHOTSTACK_ENV', 'SHOTSTACK_API_KEY', 'SHOTSTACK_PRODUCTION_KEY']
+  const previous = names.map(name => process.env[name])
+  t.after(() => {
+    globalThis.fetch = originalFetch
+    names.forEach((name, index) => {
+      if (previous[index] === undefined) delete process.env[name]
+      else process.env[name] = previous[index]
+    })
+  })
+  for (const stage of ['stage', 'v1', undefined]) {
+    await t.test(`selection ${stage ?? 'stage par defaut'}`, async () => {
+      if (stage === undefined) delete process.env.SHOTSTACK_ENV
+      else process.env.SHOTSTACK_ENV = stage
+      process.env.SHOTSTACK_API_KEY = 'fixture-stage-only'
+      process.env.SHOTSTACK_PRODUCTION_KEY = 'fixture-production-only'
+      shotstackOk()
+      await assembleFinalVideo(params)
+      assert.equal(calls.length, 2)
+      for (const call of calls) {
+        assert.ok(call.url.startsWith(`https://api.shotstack.io/edit/${stage ?? 'stage'}/render`))
+        assert.equal(new Headers(call.init?.headers).get('x-api-key'),
+          stage === 'v1' ? 'fixture-production-only' : 'fixture-stage-only')
+        assert.equal(call.init?.redirect, 'error')
+        assert.ok(call.init?.signal instanceof AbortSignal)
+      }
+    })
+  }
+  await t.test('production fonctionne sans cle sandbox et reprend par GET uniquement', async () => {
+    process.env.SHOTSTACK_ENV = 'v1'
+    delete process.env.SHOTSTACK_API_KEY
+    process.env.SHOTSTACK_PRODUCTION_KEY = 'fixture-production-only'
+    queueResponses(() => okJson({ response: { status: 'done', url: 'https://cdn/out.mp4', duration: 5 } }))
+    await assembleFinalVideo({ ...params, renderJob: { id: 'existing-render' } })
+    assert.equal(calls.length, 1)
+    assert.equal(calls[0].url, 'https://api.shotstack.io/edit/v1/render/existing-render')
+    assert.equal(calls[0].init?.method ?? 'GET', 'GET')
+    assert.equal(new Headers(calls[0].init?.headers).get('x-api-key'), 'fixture-production-only')
+  })
+  for (const stage of ['stage', 'v1']) {
+    await t.test(`${stage}: cle propre absente, aucun secours vers l'autre cle`, async () => {
+      process.env.SHOTSTACK_ENV = stage
+      process.env.SHOTSTACK_API_KEY = 'fixture-stage-only'
+      process.env.SHOTSTACK_PRODUCTION_KEY = 'fixture-production-only'
+      const required = stage === 'v1' ? 'SHOTSTACK_PRODUCTION_KEY' : 'SHOTSTACK_API_KEY'
+      delete process.env[required]
+      let measured = 0
+      mockFetch(() => { throw new Error('HTTP interdit avant validation configuration') })
+      await assert.rejects(() => realAssemble(params, { measureAudio: async () => {
+        measured++; return { voice: null, music: null }
+      } }), (error: unknown) => error instanceof MissingEnvError && error.varName === required)
+      assert.equal(measured, 0)
+      assert.equal(calls.length, 0)
+    })
+  }
+  await t.test('environnement inconnu refuse avant toute mesure media', async () => {
+    process.env.SHOTSTACK_ENV = 'production'
+    process.env.SHOTSTACK_API_KEY = 'fixture-stage-only'
+    process.env.SHOTSTACK_PRODUCTION_KEY = 'fixture-production-only'
+    let measured = 0
+    mockFetch(() => { throw new Error('HTTP interdit avant validation configuration') })
+    await assert.rejects(() => realAssemble(params, { measureAudio: async () => {
+      measured++; return { voice: null, music: null }
+    } }), /SUTRA_SHOTSTACK_INVALID_ENV/)
+    assert.equal(measured, 0)
+    assert.equal(calls.length, 0)
+  })
+})

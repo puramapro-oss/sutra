@@ -8,7 +8,9 @@ const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
   'scripts/test-insee.mjs', 'scripts/test-editor-export.mts', 'scripts/test-export-integration.mts', 'scripts/test-integration.mts', 'scripts/test-ltx-tiers.mjs', 'scripts/test-karma-split.mjs',
-  'scripts/test-api-contracts.mts', 'scripts/test-env-contracts.mts',
+  'scripts/test-api-contracts.mts', 'scripts/test-env-contracts.mts', 'scripts/test-suno-contract.mts',
+  'qa/t03-provider-complement-20261013/music-recovery.test.mts',
+  'qa/t08/providers-20261013/provider-contract-redteam.test.mts',
   'scripts/test-local-engine.mts', 'scripts/test-shotstack-contracts.mts',
   'scripts/test-production-queue.mts', 'scripts/test-auto-export-queue.mts',
   'scripts/test-release-regressions.mts', 'scripts/test-video-contracts.mjs',
@@ -16,7 +18,7 @@ const nodeTests = [
   'scripts/test-social-publication.mts', 'scripts/test-auth-session.mts', 'scripts/test-public-origin.mts',
   'tooling/disposable-database.test.mjs',
   'scripts/test-pipeline-interruptions.mts', 'scripts/test-pipeline-submit.mts',
-  'scripts/test-release-oauth.mts', 'scripts/test-security-account.mts',
+  'scripts/test-release-oauth.mts', 'scripts/test-zernio-oauth-contracts.mts', 'scripts/test-security-account.mts', 'scripts/test-t02-oauth-boundaries.mts',
   'scripts/test-private-media.mts', 'scripts/test-security-media.mts', 'scripts/test-security-routes.mts', 'scripts/test-security-storage.mts',
   'scripts/test-t06-social-autonomy.mts', 'scripts/test-t06-social-routes.mts',
   'scripts/test-ltx-v2-contracts.mts', 'scripts/test-provider-safety.mts',

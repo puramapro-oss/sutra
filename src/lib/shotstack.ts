@@ -159,10 +159,12 @@ export async function assembleFinalVideo(params: AssembleParams, deps: { measure
   const contract = shotstackContract(params)
   const plan = compositionPlan(contract)
   params.signal?.throwIfAborted()
-  const apiKey = requireEnv('SHOTSTACK_API_KEY', 'montage final Shotstack')
+  // Bind the credential to the exact environment before resolving any media.
+  // Never try the other environment's key after an authentication failure.
+  const base = baseUrl()
+  const apiKey = requireEnv(base.endsWith('/v1') ? 'SHOTSTACK_PRODUCTION_KEY' : 'SHOTSTACK_API_KEY', 'montage final Shotstack')
   const audio = await (deps.measureAudio ?? measureCompositionAudio)(contract, params.signal)
   const timeline: Record<string, unknown> = {background:'#000000',tracks:buildTracks({ ...params, watermarkUrl: contract.watermarkUrl }, audio.music?.duration)}
-  const base = baseUrl()
   const body = {timeline,output}
   let id: unknown = params.renderJob?.id
   if (id === undefined) {

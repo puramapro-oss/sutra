@@ -9,11 +9,14 @@ process.env.NEXT_PUBLIC_SITE_URL = 'https://app.invalid'
 globalThis.fetch = async () => { throw new Error('UNEXPECTED_NETWORK') }
 
 let subscription = 'active', userId = 'alice', authUser = true, providerCalls = 0, providerFailure = false
+let claimsValid = true
+let issued: { userId: string; platform: string; state: string; binding: { profileId: string; sessionId: string } } | undefined
+let providerRequest: { platform: string; profileId: string; redirectUri: string } | undefined
 let targetError = false, targetExists = true, mutationError = false, mutationExists = true, mutations = 0
 const cookies = { getAll: () => [], get: () => undefined, set: () => {} }
 const sessionQuery = { select: () => sessionQuery, eq: () => sessionQuery,
   maybeSingle: async () => ({ data: { id: userId, subscription_status: subscription }, error: null }) }
-const sessionClient = () => ({ auth: { getUser: async () => ({ data: { user: authUser ? { id: userId, email: 'admin@test.invalid' } : null }, error: null }) }, from: () => sessionQuery })
+const sessionClient = () => ({ auth: { getUser: async () => ({ data: { user: authUser ? { id: userId, email: 'admin@test.invalid' } : null }, error: null }), getClaims: async () => ({ data: { claims: { sub: claimsValid ? userId : 'another-user', session_id: '11111111-1111-4111-8111-111111111111' } }, error: null }) }, from: () => sessionQuery })
 mock.module('@supabase/ssr', { namedExports: { createServerClient: sessionClient } })
 mock.module('next/headers', { namedExports: { cookies: async () => cookies } })
 const query = { select: () => query, eq: () => query, update: () => { mutations++; return query },
@@ -23,11 +26,12 @@ const query = { select: () => query, eq: () => query, update: () => { mutations+
 mock.module('../src/lib/supabase.ts', { namedExports: { createServiceClient: () => ({ from: () => query }) } })
 mock.module('../src/lib/utils.ts', { namedExports: { isSuperAdmin: (email: string) => email === 'admin@test.invalid' } })
 mock.module('../src/lib/zernio.ts', { namedExports: {
-  getOAuthUrl: async () => { providerCalls++; if (providerFailure) throw new Error('synthetic-sensitive-marker'); return { url: 'https://oauth.invalid/authorize', state: 'synthetic-state-0123456789' } },
-  exchangeOAuthCode: async () => { throw new Error('UNEXPECTED_EXCHANGE') },
+  getOAuthUrl: async (platform: string, profileId: string, redirectUri: string) => { providerCalls++; providerRequest = { platform, profileId, redirectUri }; if (providerFailure) throw new Error('synthetic-sensitive-marker'); return { url: 'https://oauth.invalid/authorize', state: 'synthetic-state-0123456789' } },
+  getConnectedAccount: async () => { throw new Error('UNEXPECTED_EXCHANGE') },
+  getAuthorizedProfileId: () => 'a'.repeat(24), OAUTH_PLATFORMS: ['youtube', 'instagram', 'x'],
 } })
 mock.module('../src/lib/social-oauth-state.ts', { namedExports: {
-  issueSocialOAuthState: async () => 'a'.repeat(64), socialOAuthCookieName: () => 'synthetic-state-cookie',
+  issueSocialOAuthState: async (userId: string, platform: string, state: string, binding: { profileId: string; sessionId: string }) => { issued = { userId, platform, state, binding }; return 'a'.repeat(64) }, socialOAuthCookieName: () => 'synthetic-state-cookie',
   consumeSocialOAuthState: async () => false, SOCIAL_OAUTH_TTL_SECONDS: 600,
 } })
 const { POST: connect } = await import('../src/app/api/social/connect/route.ts')
@@ -36,6 +40,8 @@ const { PATCH: changeUser } = await import('../src/app/api/admin/users/[id]/rout
 const { middleware } = await import('../src/middleware.ts')
 beforeEach(() => {
   subscription = 'active'; userId = crypto.randomUUID(); authUser = true; providerCalls = 0; providerFailure = false
+  claimsValid = true; issued = undefined; providerRequest = undefined
+  delete process.env.NEXT_PUBLIC_APP_URL
   targetError = false; targetExists = true; mutationError = false; mutationExists = true; mutations = 0
 })
 const connectRequest = () => new Request('https://app.invalid/api/social/connect', { method: 'POST', body: JSON.stringify({ platform: 'youtube' }) })
@@ -62,12 +68,38 @@ test('OAuth provider exception is not returned to the browser', async () => {
   const response = await connect(connectRequest())
   assert.equal(response.status, 500); assert.doesNotMatch(await response.text(), /synthetic-sensitive-marker/)
 })
+test('OAuth initiation binds its own state to user, profile and verified session on the canonical public origin', async () => {
+  process.env.NEXT_PUBLIC_APP_URL = 'https://canonical.invalid'
+  const response = await connect(connectRequest())
+  assert.equal(response.status, 200)
+  const body = await response.json()
+  assert.match(body.state, /^[a-f0-9]{64}$/); assert.notEqual(body.state, 'synthetic-state-0123456789')
+  assert.deepEqual(issued, { userId, platform: 'youtube', state: body.state,
+    binding: { profileId: 'a'.repeat(24), sessionId: '11111111-1111-4111-8111-111111111111' } })
+  const redirect = new URL(providerRequest!.redirectUri)
+  assert.equal(redirect.origin, 'https://canonical.invalid'); assert.equal(redirect.searchParams.get('state'), body.state)
+  assert.equal(redirect.searchParams.get('platform'), 'youtube'); assert.equal(providerRequest?.profileId, issued!.binding.profileId)
+  const cookie = response.headers.get('set-cookie')!
+  for (const attribute of [/HttpOnly/i, /Secure/i, /SameSite=lax/i, /Max-Age=600/i, /Path=\/api\/social/i]) assert.match(cookie, attribute)
+  assert.equal(response.headers.get('cache-control'), 'no-store')
+  const next = await (await connect(connectRequest())).json(); assert.notEqual(next.state, body.state)
+  const denied = await callback(new Request('https://internal.invalid/api/social/callback?error=denied'))
+  assert.equal(new URL(denied.headers.get('location')!).origin, 'https://canonical.invalid')
+})
+test('OAuth initiation rejects a mismatched verified session or client-chosen tenant before side effects', async () => {
+  claimsValid = false
+  assert.equal((await connect(connectRequest())).status, 401)
+  claimsValid = true
+  const forged = new Request('https://app.invalid/api/social/connect', { method: 'POST', body: JSON.stringify({ platform: 'youtube', profileId: 'b'.repeat(24) }) })
+  assert.equal((await connect(forged)).status, 400)
+  assert.equal(providerCalls, 0); assert.equal(issued, undefined)
+})
 test('OAuth callback never reflects untrusted provider errors into a redirect URL', async () => {
   const response = await callback(new Request('https://app.invalid/api/social/callback?error=synthetic-sensitive-marker'))
   assert.equal(response.headers.get('location'), 'https://app.invalid/settings/social?error=oauth_denied')
 })
 test('OAuth callback rejects missing one-use state before exchanging code', async () => {
-  const response = await callback(new Request('https://app.invalid/api/social/callback?code=test&platform=youtube&state=synthetic-state-0123456789'))
+  const response = await callback(new Request('https://app.invalid/api/social/callback?connected=youtube&profileId=aaaaaaaaaaaaaaaaaaaaaaaa&accountId=bbbbbbbbbbbbbbbbbbbbbbbb&platform=youtube&state=synthetic-state-0123456789'))
   assert.equal(new URL(response.headers.get('location')!).searchParams.get('error'), 'invalid_or_expired_state')
 })
 test('failed/missing target lookup cannot authorize a ban', async () => {
