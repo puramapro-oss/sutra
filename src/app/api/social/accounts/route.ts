@@ -34,23 +34,22 @@ export async function GET() {
     const { data, error } = await client
       .from('social_accounts')
       .select(
-        'id, platform, external_id, username, display_name, avatar_url, status, connected_at, updated_at, metadata, token_expires_at'
+        'id, platform, external_id, username, display_name, avatar_url, status, connected_at, updated_at, token_expires_at'
       )
       .eq('user_id', user.id)
       .order('connected_at', { ascending: false })
 
     if (error) {
       return NextResponse.json(
-        { error: 'Erreur récupération comptes', details: error.message },
+        { error: 'Erreur récupération comptes' },
         { status: 500 }
       )
     }
 
     return NextResponse.json({ accounts: data ?? [] })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
+  } catch {
     return NextResponse.json(
-      { error: 'Erreur interne', details: message },
+      { error: 'Erreur interne' },
       { status: 500 }
     )
   }

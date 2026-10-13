@@ -1,3 +1,17 @@
+# SUTRA T02 — complément sécurité fournisseurs, 2026-10-13
+
+**LOCAL_DELTA_VERIFIED / FOURNISSEURS BLOQUÉS.** Branche `codex/sutra-t02-provider-security-20261013`, base `48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4`. Trois fuites prouvées dans GET social/accounts (metadata et diagnostics) corrigées ; 12 régressions ajoutées au runner CI existant. Aucun autre produit modifié, aucun fichier réservé T01/T04/T05/T06/T08 écrasé.
+
+Commandes exactes et manifest des sources : `qa/t02-provider-security-20261013/README.md`. `node scripts/run-ci.mjs contracts` : 492 PASS, 0 FAIL, 7 SKIP ; schedule/composition/publication simulée PASS. `node qa/t02-final/run-free-gates.mjs quality` : TypeScript PASS, lint 0 erreur/111 avertissements existants, build webpack PASS (197 pages). Environnement fixtures sans secrets et réseau bloqué. Preuve avant correction : 3 FAIL/9 PASS. Aucune modification pertinente après ces gates ; ne pas les rejouer sans delta.
+
+Sondes T01/T04 depuis le maître réutilisées et figées sans secrets : Mac/OVH RunPod 401, Shotstack 4×403, Suno base 503 sans auth qualifiée ; Zernio GET 200 mais OAuth ancien incompatible. Mapping profil/organisation et minimisation des scopes à raccorder avant consentement. Correction Shotstack détenue par T05 ; aucune intégration dans ce lot. Aucun déploiement/merge/migration/publication/appel payant/modification distante de configuration. Push de code explicitement autorisé ; garde Vercel false ajoutée pour cette branche seulement, hors déclencheurs GitHub Actions.
+
+Prochaine tâche non vérifiée : coordinateur, reprendre les corrections de contrat OAuth/profil et livraison T05 ; utilisateur, rétablir clés RunPod/Shotstack et confirmer fournisseur Suno, puis consentir aux réseaux après qualification. SHA de ce commit et fichiers transmis dans `.coord/handoffs/SUTRA-20261012/T02-PROVIDER-SECURITY-20261013.md` du dépôt coordinateur.
+
+---
+
+Les sections suivantes sont historiques et ne valent pas autorisation de push/déploiement.
+
 # SUTRA — reprise apres verification finale, 2026-10-13
 
 **OVH OPERATIONNEL / RECETTE CONNECTEE EN ATTENTE.** Commit applicatif `f770e272d2d8e3bb3dde5b523fe7aa37f122399d` deploye sur https://sutra.purama.dev ; CI38330861913 : trois jobs SUCCESS. Deux defauts origine Auth/CSRF corriges, sept regressions. Public desktop/mobile affiche et verifie ; 28 controles origine, 10 GET,120 SQL PASS ; logs/base healthy, sauvegarde restauree precedemment et empreintes revalidees, snapshot rollback du precedent3e conserve. Aucun appel payant ni nouvelle migration.
