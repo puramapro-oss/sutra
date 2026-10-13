@@ -1,3 +1,13 @@
+# Reprise post-déploiement — 2026-10-13
+
+Contrôles manquants répartis après LOCKS/handoffs : T01 opérations/auth et deux auxiliaires bornés (médias, sécurité). Deux défauts live reproduits : callback Auth vers 0.0.0.0:3000 et POST same-origin rejeté. Correction limitée à une origine canonique validée dans le callback/middleware, sans confiance aux en-têtes proxy ; cookies et safeNextPath conservés. Sept nouvelles régressions, revue auxiliaire sans défaut. Aucun appel payant ni modification SQL.
+
+Étape en cours : gates locales, CI du correctif, candidat réseau coupé, promotion exacte avec snapshot du déploiement 3e5596e, puis contrôles publics ciblés. Base healthy ; six artefacts de sauvegarde aux SHA identiques, snapshot rollback présent. Preuves : qa/postdeploy-20261013/.
+
+Limite explicite : aucun compte QA SUTRA existant identifié. Créer un compte Auth déclencherait 57 triggers de schémas partagés ; ne pas le faire pour ce contrôle SUTRA seul. Adresse d'un compte de recette dédiée demandée à l'utilisateur (aucun mot de passe). Sans réponse : parcours connecté/création de projet/médias privés/SRT live restent non vérifiés ; preuves déterministes gratuites conservées.
+
+Les états plus anciens ci-dessous restent historiques.
+
 # BATON — SUTRA T01, OVH en production
 
 2026-10-13 : **DEPLOYE / CI ET SMOKES GRATUITS PASS**. Commit applicatif `3e5596ea287f36427f687d3f3882d35c3f7c407b`, poussé et déployé sur https://sutra.purama.dev. CI finale : https://github.com/puramapro-oss/sutra/actions/runs/38322846966 . Les derniers commits documentaires ne changent ni l’application ni l’image déployée.

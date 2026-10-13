@@ -1,3 +1,12 @@
+# Vérification post-déploiement — état prioritaire 2026-10-13
+
+- [x] LOCKS/handoffs, processus, 54 entrées worktrees, état local inspectés ; WIP étrangers préservés.
+- [x] 30 assertions médias et 56 assertions cron/OAuth/origine PASS ; 4 FAIL ramenés à deux défauts origine interne.
+- [x] Correction bornée origine canonique + 7 régressions ; pas de nouvel appel fournisseur ni migration.
+- [x] Santé DB/conteneur/logs et intégrité sauvegarde/rollback vérifiées.
+- [ ] CI/candidat exact puis promotion avec rollback et sondes publiques corrigées.
+- [ ] Recette authentifiée live : compte QA dédié requis, question utilisateur en attente.
+
 # SUTRA T01 — état final du 2026-10-13
 
 - [x] Secret SMARANA fourni par l’utilisateur ; CI 9b0c2c9 relancée.

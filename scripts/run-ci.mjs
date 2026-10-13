@@ -13,7 +13,7 @@ const nodeTests = [
   'scripts/test-production-queue.mts', 'scripts/test-auto-export-queue.mts',
   'scripts/test-release-regressions.mts', 'scripts/test-video-contracts.mjs',
   'scripts/test-opentimestamps.mjs', 'scripts/test-ltx-v2-media.mts',
-  'scripts/test-social-publication.mts', 'scripts/test-auth-session.mts',
+  'scripts/test-social-publication.mts', 'scripts/test-auth-session.mts', 'scripts/test-public-origin.mts',
   'tooling/disposable-database.test.mjs',
   'scripts/test-pipeline-interruptions.mts', 'scripts/test-pipeline-submit.mts',
   'scripts/test-release-oauth.mts', 'scripts/test-security-account.mts',

@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { safeNextPath, sessionCookieOptions } from '@/lib/auth-navigation';
 import { enforceAccountAccess } from '@/lib/account-access';
+import { publicOrigin } from '@/lib/public-origin';
 
 const PUBLIC_ROUTES = [
   "/",
@@ -88,7 +89,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method) && pathname.startsWith('/api/')) {
     const origin = request.headers.get('origin');
-    if (origin && origin !== request.nextUrl.origin) return NextResponse.json({ error: 'Origine refusee' }, { status: 403 });
+    if (origin && origin !== publicOrigin(request.url)) return NextResponse.json({ error: 'Origine refusee' }, { status: 403 });
     if (['/api/create', '/api/production', '/api/auto/generate', '/api/video/export'].includes(pathname)
       && request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
       return NextResponse.json({ error: 'JSON requis' }, { status: 415 });
@@ -150,7 +151,11 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   function redirect(url: URL) {
-    const response = NextResponse.redirect(url);
+    const target = new URL(publicOrigin(request.url));
+    target.pathname = url.pathname;
+    target.search = url.search;
+    target.hash = url.hash;
+    const response = NextResponse.redirect(target);
     supabaseResponse.cookies.getAll().forEach(cookie => response.cookies.set(cookie));
     return response;
   }
