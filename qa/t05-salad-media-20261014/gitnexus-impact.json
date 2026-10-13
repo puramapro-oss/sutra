@@ -1,0 +1,16 @@
+{
+  "repository": "sutra-t05-salad-media-20261014",
+  "base": "14617333bfb21efe1f2a1c91888d3322dde20f5b",
+  "analyze": "node /Users/matissdornier/purama/.gitnexus/run.cjs analyze --index-only --name sutra-t05-salad-media-20261014",
+  "query": "remote worker output media validation export",
+  "impactDirection": "upstream",
+  "results": [
+    { "target": "generateLocalVideo", "risk": "HIGH", "direct": 1, "impacted": 5, "processes": 0 },
+    { "target": "verifyVideoBytes", "risk": "CRITICAL", "direct": 4, "impacted": 14, "processes": 2 },
+    { "target": "mediaValidation", "risk": "LOW", "direct": 4, "impacted": 13, "processes": 1 },
+    { "target": "executeExportJob", "risk": "CRITICAL", "direct": 1, "impacted": 6, "processes": 5 }
+  ],
+  "productSymbolsModified": false,
+  "userWarnedBeforeAdditions": true,
+  "coverageLimit": "Process extraction truncated: 963 entry candidates dropped, 533 callees dropped, 3 walks budget-cut. Direct source and reproducible tests supplement graph; no exhaustive graph certification."
+}

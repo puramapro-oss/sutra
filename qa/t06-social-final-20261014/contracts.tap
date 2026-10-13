@@ -1,0 +1,176 @@
+TAP version 13
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# (node:27592) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:27592) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: tiktok
+ok 1 - T06-FINAL OAuth route + adapter + atomic state: tiktok
+  ---
+  duration_ms: 11.276459
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: youtube
+ok 2 - T06-FINAL OAuth route + adapter + atomic state: youtube
+  ---
+  duration_ms: 2.354625
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: instagram
+ok 3 - T06-FINAL OAuth route + adapter + atomic state: instagram
+  ---
+  duration_ms: 1.761041
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: facebook
+ok 4 - T06-FINAL OAuth route + adapter + atomic state: facebook
+  ---
+  duration_ms: 1.344708
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: x
+ok 5 - T06-FINAL OAuth route + adapter + atomic state: x
+  ---
+  duration_ms: 0.859416
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: linkedin
+ok 6 - T06-FINAL OAuth route + adapter + atomic state: linkedin
+  ---
+  duration_ms: 0.6375
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: pinterest
+ok 7 - T06-FINAL OAuth route + adapter + atomic state: pinterest
+  ---
+  duration_ms: 0.539791
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: reddit
+ok 8 - T06-FINAL OAuth route + adapter + atomic state: reddit
+  ---
+  duration_ms: 0.629417
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: threads
+ok 9 - T06-FINAL OAuth route + adapter + atomic state: threads
+  ---
+  duration_ms: 0.618375
+  type: 'test'
+  ...
+# Subtest: T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+ok 10 - T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+  ---
+  duration_ms: 0.771375
+  type: 'test'
+  ...
+# Subtest: T06-FINAL session rotation during hosted consent requires fresh state
+ok 11 - T06-FINAL session rotation during hosted consent requires fresh state
+  ---
+  duration_ms: 0.9315
+  type: 'test'
+  ...
+# Subtest: T06-FINAL expired hosted consent never reaches identity lookup
+ok 12 - T06-FINAL expired hosted consent never reaches identity lookup
+  ---
+  duration_ms: 0.443583
+  type: 'test'
+  ...
+# Subtest: T06-FINAL atomic duplicate callback invokes real identity adapter only once
+ok 13 - T06-FINAL atomic duplicate callback invokes real identity adapter only once
+  ---
+  duration_ms: 0.583042
+  type: 'test'
+  ...
+# Subtest: T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+ok 14 - T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+  ---
+  duration_ms: 0.77825
+  type: 'test'
+  ...
+# Subtest: T06-FINAL lost POST response uses identical persisted wire request, then GET only
+ok 15 - T06-FINAL lost POST response uses identical persisted wire request, then GET only
+  ---
+  duration_ms: 3.077333
+  type: 'test'
+  ...
+# Subtest: T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+ok 16 - T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+  ---
+  duration_ms: 1.435959
+  type: 'test'
+  ...
+# Subtest: T06-FINAL reconnect replaces local identity but requires explicit new account selection
+ok 17 - T06-FINAL reconnect replaces local identity but requires explicit new account selection
+  ---
+  duration_ms: 1.51975
+  type: 'test'
+  ...
+# Subtest: T06-FINAL separate productions on same account receive distinct keys and histories
+ok 18 - T06-FINAL separate productions on same account receive distinct keys and histories
+  ---
+  duration_ms: 0.949083
+  type: 'test'
+  ...
+# Subtest: T06-FINAL another session user cannot revoke the bound account
+ok 19 - T06-FINAL another session user cannot revoke the bound account
+  ---
+  duration_ms: 0.69025
+  type: 'test'
+  ...
+# Subtest: T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+ok 20 - T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+  ---
+  duration_ms: 1.423083
+  type: 'test'
+  ...
+# Subtest: T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+ok 21 - T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+  ---
+  duration_ms: 1.311792
+  type: 'test'
+  ...
+# Subtest: T06-FINAL wrong remote account cannot confirm or retry a known post
+ok 22 - T06-FINAL wrong remote account cannot confirm or retry a known post
+  ---
+  duration_ms: 0.760042
+  type: 'test'
+  ...
+# Subtest: T06-FINAL revoked during claim never reaches real POST adapter
+ok 23 - T06-FINAL revoked during claim never reaches real POST adapter
+  ---
+  duration_ms: 0.531792
+  type: 'test'
+  ...
+# Subtest: T06-FINAL unverified media and missing approval never reach real POST adapter
+ok 24 - T06-FINAL unverified media and missing approval never reach real POST adapter
+  ---
+  duration_ms: 0.593958
+  type: 'test'
+  ...
+# Subtest: T06-FINAL UI regression: a revoked account must expose Se connecter again
+not ok 25 - T06-FINAL UI regression: a revoked account must expose Se connecter again
+  ---
+  duration_ms: 12.9215
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-social-final-20261014/scripts/test-t06-social-final.mts:1:17833'
+  failureType: 'testCodeFailure'
+  error: 'Revoked row retained for history hides Se connecter; PlatformGrid incorrectly treats row existence as connected'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-final-20261014/scripts/test-t06-social-final.mts:327:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 24
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 886.420292

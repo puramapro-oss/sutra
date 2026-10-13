@@ -1,0 +1,36 @@
+/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/@supabase/ssr/src/createBrowserClient.ts:111
+    throw new Error(
+          ^
+
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at createBrowserClient (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/@supabase/ssr/src/createBrowserClient.ts:111:11)
+    at createClient (/Users/matissdornier/purama-worktrees/sutra-t05-salad-media-20261014/src/lib/supabase.ts:14:10)
+    at createSupabaseClient (/Users/matissdornier/purama-worktrees/sutra-t05-salad-media-20261014/src/lib/supabase.ts:44:25)
+    at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-salad-media-20261014/src/lib/supabase.ts:44:38)
+    at Module._compile (node:internal/modules/cjs/loader:1829:14)
+    at Object.transformer (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/tsx/dist/register-OY9cqBEN.cjs:9:3619)
+    at Module.load (node:internal/modules/cjs/loader:1552:32)
+    at Module._load (node:internal/modules/cjs/loader:1354:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1575:12)
+
+Node.js v26.0.0
+✖ scripts/test-t05-salad-media.mts (286.990167ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 291.605416
+
+✖ failing tests:
+
+test at scripts/test-t05-salad-media.mts:1:1
+✖ scripts/test-t05-salad-media.mts (286.990167ms)
+  'test failed'

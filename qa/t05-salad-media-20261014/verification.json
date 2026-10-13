@@ -1,0 +1,53 @@
+{
+  "base": "14617333bfb21efe1f2a1c91888d3322dde20f5b",
+  "applicationBase": "e3b17117256269e281304cd4ab83bc722a6f7894",
+  "scope": "new T05 tests, synthetic fixtures and evidence only; product read-only",
+  "inputSha256": {
+    "scripts/test-t05-salad-media.mts": "6c4212658b61fe5c493d35ee82fa480f324bb470d96a54c466ca2ec732e6cef0",
+    "qa/t05-salad-media-20261014/fixtures.mts": "76466313db0733cdcb5788d913ae31fc89f21c5c8531df5c6b11b6d4365ab116",
+    "qa/t05-salad-media-20261014/tsconfig.json": "2824136fc2b00b1e4b326118d0a24baed3c8c33fa565a7926f8181eb416a98cf",
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+  },
+  "unchangedProductAndDependencies": true,
+  "checks": [
+    {
+      "command": "T05_MEDIA_EVIDENCE=qa/t05-salad-media-20261014/measurements.json node --import tsx --test --test-reporter=tap scripts/test-t05-salad-media.mts",
+      "exitCode": 1,
+      "pass": 24,
+      "fail": 1,
+      "skip": 0,
+      "todo": 0,
+      "evidence": "tests.tap",
+      "defect": "T05-MEDIA-01"
+    },
+    {
+      "command": "./node_modules/.bin/tsc --noEmit --project qa/t05-salad-media-20261014/tsconfig.json",
+      "exitCode": 0,
+      "evidence": "typecheck.log"
+    },
+    {
+      "command": "./node_modules/.bin/eslint scripts/test-t05-salad-media.mts qa/t05-salad-media-20261014/fixtures.mts",
+      "exitCode": 0,
+      "evidence": "lint.log"
+    },
+    {
+      "command": "gitleaks dir --no-banner --no-color --redact scripts/test-t05-salad-media.mts",
+      "exitCode": 0,
+      "evidence": "secrets-test.log"
+    },
+    {
+      "command": "gitleaks dir --no-banner --no-color --redact qa/t05-salad-media-20261014",
+      "exitCode": 0,
+      "evidence": "secrets-proof.log"
+    }
+  ],
+  "limitations": [
+    "No deployed Salad adapter or GPU tested",
+    "Native 4K attestation is explicitly synthetic",
+    "No visual subtitle verification",
+    "No global gate/build replay",
+    "GitNexus process extraction truncated; no exhaustive graph certification"
+  ],
+  "integrationOwner": "T01",
+  "commit": "Recorded after commit in shared T05 handoff"
+}

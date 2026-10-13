@@ -1,0 +1,492 @@
+[
+  {
+    "target_uid": "Function:src/lib/zernio.ts:getOAuthUrl",
+    "result": {
+      "target": {
+        "id": "Function:src/lib/zernio.ts:getOAuthUrl",
+        "name": "getOAuthUrl",
+        "type": "Function",
+        "filePath": "src/lib/zernio.ts"
+      },
+      "direction": "upstream",
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": true,
+        "unusedAxes": []
+      },
+      "epistemic": "exact",
+      "summary": {
+        "direct": 1,
+        "processes_affected": 1,
+        "modules_affected": 1
+      },
+      "byDepthCounts": {
+        "1": 1
+      },
+      "affected_processes": [
+        {
+          "name": "POST",
+          "type": "Function",
+          "filePath": "src/app/api/social/connect/route.ts",
+          "affected_process_count": 10,
+          "total_hits": 10,
+          "earliest_broken_step": 1
+        }
+      ],
+      "affected_modules": [
+        {
+          "name": "Callback",
+          "hits": 1,
+          "impact": "direct"
+        }
+      ],
+      "byDepth": {
+        "1": [
+          {
+            "depth": 1,
+            "id": "Function:src/app/api/social/connect/route.ts:POST",
+            "name": "POST",
+            "filePath": "src/app/api/social/connect/route.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": [
+              {
+                "id": "proc_153_post",
+                "label": "POST → Error",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_160_post",
+                "label": "POST → RateLimitResponse",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_140_post",
+                "label": "POST → ValidState",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_295_post",
+                "label": "POST → CreateServiceClient",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_329_post",
+                "label": "POST → Denied",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_137_post",
+                "label": "POST → Headers",
+                "processType": "intra_community",
+                "step": 1
+              },
+              {
+                "id": "proc_149_post",
+                "label": "POST → BreakerKey",
+                "processType": "intra_community",
+                "step": 1
+              },
+              {
+                "id": "proc_150_post",
+                "label": "POST → Abort",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_156_post",
+                "label": "POST → BalayerEntreesExpirees",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_144_post",
+                "label": "POST → FetchWithRetry",
+                "processType": "intra_community",
+                "step": 1
+              }
+            ]
+          }
+        ]
+      },
+      "staleness": {
+        "status": "behind",
+        "commitsBehind": 3,
+        "hint": "⚠️ Index is 3 commits behind HEAD. Run analyze tool to update."
+      }
+    }
+  },
+  {
+    "target_uid": "Function:src/lib/social-oauth-state.ts:consumeSocialOAuthState",
+    "result": {
+      "target": {
+        "id": "Function:src/lib/social-oauth-state.ts:consumeSocialOAuthState",
+        "name": "consumeSocialOAuthState",
+        "type": "Function",
+        "filePath": "src/lib/social-oauth-state.ts"
+      },
+      "direction": "upstream",
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": true,
+        "unusedAxes": []
+      },
+      "epistemic": "exact",
+      "summary": {
+        "direct": 1,
+        "processes_affected": 1,
+        "modules_affected": 1
+      },
+      "byDepthCounts": {
+        "1": 1
+      },
+      "affected_processes": [
+        {
+          "name": "GET",
+          "type": "Function",
+          "filePath": "src/app/api/social/callback/route.ts",
+          "affected_process_count": 4,
+          "total_hits": 4,
+          "earliest_broken_step": 1
+        }
+      ],
+      "affected_modules": [
+        {
+          "name": "Callback",
+          "hits": 1,
+          "impact": "direct"
+        }
+      ],
+      "byDepth": {
+        "1": [
+          {
+            "depth": 1,
+            "id": "Function:src/app/api/social/callback/route.ts:GET",
+            "name": "GET",
+            "filePath": "src/app/api/social/callback/route.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": [
+              {
+                "id": "proc_96_get",
+                "label": "GET → ValidState",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_290_get",
+                "label": "GET → CreateServiceClient",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_327_get",
+                "label": "GET → Denied",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_95_get",
+                "label": "GET → Digest",
+                "processType": "cross_community",
+                "step": 1
+              }
+            ]
+          }
+        ]
+      },
+      "staleness": {
+        "status": "behind",
+        "commitsBehind": 3,
+        "hint": "⚠️ Index is 3 commits behind HEAD. Run analyze tool to update."
+      }
+    }
+  },
+  {
+    "target_uid": "Function:src/lib/social-account-revocation.ts:revokeSocialAccount",
+    "result": {
+      "target": {
+        "id": "Function:src/lib/social-account-revocation.ts:revokeSocialAccount",
+        "name": "revokeSocialAccount",
+        "type": "Function",
+        "filePath": "src/lib/social-account-revocation.ts"
+      },
+      "direction": "upstream",
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": true,
+        "unusedAxes": []
+      },
+      "epistemic": "exact",
+      "summary": {
+        "direct": 1,
+        "processes_affected": 0,
+        "modules_affected": 1
+      },
+      "byDepthCounts": {
+        "1": 1
+      },
+      "affected_processes": [],
+      "affected_modules": [
+        {
+          "name": "Stripe",
+          "hits": 1,
+          "impact": "direct"
+        }
+      ],
+      "byDepth": {
+        "1": [
+          {
+            "depth": 1,
+            "id": "Function:src/app/api/social/accounts/route.ts:DELETE",
+            "name": "DELETE",
+            "filePath": "src/app/api/social/accounts/route.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": []
+          }
+        ]
+      },
+      "staleness": {
+        "status": "behind",
+        "commitsBehind": 3,
+        "hint": "⚠️ Index is 3 commits behind HEAD. Run analyze tool to update."
+      }
+    }
+  },
+  {
+    "target_uid": "Function:src/lib/publication-journal.ts:runPublicationJournal",
+    "result": {
+      "target": {
+        "id": "Function:src/lib/publication-journal.ts:runPublicationJournal",
+        "name": "runPublicationJournal",
+        "type": "Function",
+        "filePath": "src/lib/publication-journal.ts"
+      },
+      "direction": "upstream",
+      "impactedCount": 7,
+      "risk": "HIGH",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": true,
+        "unusedAxes": []
+      },
+      "epistemic": "exact",
+      "summary": {
+        "direct": 2,
+        "processes_affected": 1,
+        "modules_affected": 4
+      },
+      "byDepthCounts": {
+        "1": 2,
+        "2": 4,
+        "3": 1
+      },
+      "affected_processes": [
+        {
+          "name": "GET",
+          "type": "Function",
+          "filePath": "src/app/api/cron/sutra-auto/route.ts",
+          "affected_process_count": 7,
+          "total_hits": 14,
+          "earliest_broken_step": 1
+        }
+      ],
+      "affected_modules": [
+        {
+          "name": "Integrated",
+          "hits": 3,
+          "impact": "direct"
+        },
+        {
+          "name": "Publish",
+          "hits": 2,
+          "impact": "direct"
+        },
+        {
+          "name": "Scripts",
+          "hits": 1,
+          "impact": "indirect"
+        },
+        {
+          "name": "Stripe",
+          "hits": 1,
+          "impact": "indirect"
+        }
+      ],
+      "byDepth": {
+        "1": [
+          {
+            "depth": 1,
+            "id": "Function:src/lib/auto-publication.ts:publishAutoVideoRecord",
+            "name": "publishAutoVideoRecord",
+            "filePath": "src/lib/auto-publication.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": [
+              {
+                "id": "proc_24_get",
+                "label": "GET → ContentWithTags",
+                "processType": "cross_community",
+                "step": 2
+              },
+              {
+                "id": "proc_16_get",
+                "label": "GET → CreateServiceClient",
+                "processType": "cross_community",
+                "step": 2
+              },
+              {
+                "id": "proc_17_get",
+                "label": "GET → Origin",
+                "processType": "cross_community",
+                "step": 2
+              },
+              {
+                "id": "proc_23_get",
+                "label": "GET → Signature",
+                "processType": "cross_community",
+                "step": 2
+              },
+              {
+                "id": "proc_25_get",
+                "label": "GET → ProviderPlatform",
+                "processType": "cross_community",
+                "step": 2
+              },
+              {
+                "id": "proc_37_get",
+                "label": "GET → PublicationOutcome",
+                "processType": "cross_community",
+                "step": 2
+              },
+              {
+                "id": "proc_38_get",
+                "label": "GET → PublicationHistoryId",
+                "processType": "cross_community",
+                "step": 2
+              }
+            ]
+          },
+          {
+            "depth": 1,
+            "id": "Function:src/lib/social-publication.ts:publishVideoRecord",
+            "name": "publishVideoRecord",
+            "filePath": "src/lib/social-publication.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": []
+          }
+        ],
+        "2": [
+          {
+            "depth": 2,
+            "id": "Function:src/app/api/auto/publish/route.ts:POST",
+            "name": "POST",
+            "filePath": "src/app/api/auto/publish/route.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": []
+          },
+          {
+            "depth": 2,
+            "id": "Function:src/app/api/cron/sutra-auto/route.ts:GET",
+            "name": "GET",
+            "filePath": "src/app/api/cron/sutra-auto/route.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": [
+              {
+                "id": "proc_24_get",
+                "label": "GET → ContentWithTags",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_16_get",
+                "label": "GET → CreateServiceClient",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_17_get",
+                "label": "GET → Origin",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_23_get",
+                "label": "GET → Signature",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_25_get",
+                "label": "GET → ProviderPlatform",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_37_get",
+                "label": "GET → PublicationOutcome",
+                "processType": "cross_community",
+                "step": 1
+              },
+              {
+                "id": "proc_38_get",
+                "label": "GET → PublicationHistoryId",
+                "processType": "cross_community",
+                "step": 1
+              }
+            ]
+          },
+          {
+            "depth": 2,
+            "id": "Function:src/app/api/social/publish/route.ts:POST",
+            "name": "POST",
+            "filePath": "src/app/api/social/publish/route.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": []
+          },
+          {
+            "depth": 2,
+            "id": "Function:src/lib/video-pipeline.ts:triggerAutopilot",
+            "name": "triggerAutopilot",
+            "filePath": "src/lib/video-pipeline.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": []
+          }
+        ],
+        "3": [
+          {
+            "depth": 3,
+            "id": "Function:src/lib/video-pipeline.ts:executeCreateJob",
+            "name": "executeCreateJob",
+            "filePath": "src/lib/video-pipeline.ts",
+            "relationType": "CALLS",
+            "confidence": 0.85,
+            "processes": []
+          }
+        ]
+      },
+      "staleness": {
+        "status": "behind",
+        "commitsBehind": 3,
+        "hint": "⚠️ Index is 3 commits behind HEAD. Run analyze tool to update."
+      }
+    }
+  }
+]

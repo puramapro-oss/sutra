@@ -1,0 +1,172 @@
+TAP version 13
+# Subtest: worker base64: real decoded dimensions/FPS, source buffer is not a ready receipt
+ok 1 - worker base64: real decoded dimensions/FPS, source buffer is not a ready receipt
+  ---
+  duration_ms: 1643.885875
+  type: 'test'
+  ...
+# Subtest: worker same-origin URL: actual download bytes decoded before return
+ok 2 - worker same-origin URL: actual download bytes decoded before return
+  ---
+  duration_ms: 43.938708
+  type: 'test'
+  ...
+# Subtest: worker expired output HTTP 403: no returned media or retry
+ok 3 - worker expired output HTTP 403: no returned media or retry
+  ---
+  duration_ms: 0.592208
+  type: 'test'
+  ...
+# Subtest: worker expired output HTTP 410: no returned media or retry
+ok 4 - worker expired output HTTP 410: no returned media or retry
+  ---
+  duration_ms: 0.25225
+  type: 'test'
+  ...
+# Subtest: worker corrupt last packet despite readable MP4 header fails full decode
+ok 5 - worker corrupt last packet despite readable MP4 header fails full decode
+  ---
+  duration_ms: 67.65325
+  type: 'test'
+  ...
+# Subtest: worker rejects measured native, not trusted request labels
+ok 6 - worker rejects measured native, not trusted request labels
+  ---
+  duration_ms: 21.818208
+  type: 'test'
+  ...
+# Subtest: worker rejects measured portrait, not trusted request labels
+ok 7 - worker rejects measured portrait, not trusted request labels
+  ---
+  duration_ms: 23.798791
+  type: 'test'
+  ...
+# Subtest: worker rejects measured fps16, not trusted request labels
+ok 8 - worker rejects measured fps16, not trusted request labels
+  ---
+  duration_ms: 22.31125
+  type: 'test'
+  ...
+# Subtest: worker rejects measured sar2, not trusted request labels
+ok 9 - worker rejects measured sar2, not trusted request labels
+  ---
+  duration_ms: 22.948125
+  type: 'test'
+  ...
+# Subtest: silent worker output is usable as a source, but required audio blocks durable export
+ok 10 - silent worker output is usable as a source, but required audio blocks durable export
+  ---
+  duration_ms: 66.770542
+  type: 'test'
+  ...
+# Subtest: source/native/enhanced and requested/final dimensions are independently measured; upscale is explicit
+ok 11 - source/native/enhanced and requested/final dimensions are independently measured; upscale is explicit
+  ---
+  duration_ms: 266.2515
+  type: 'test'
+  ...
+# Subtest: 4K dimensions alone remain origin-unknown; native label requires explicit lineage (synthetic assertion only)
+ok 12 - 4K dimensions alone remain origin-unknown; native label requires explicit lineage (synthetic assertion only)
+  ---
+  duration_ms: 252.714
+  type: 'test'
+  ...
+# Subtest: false native-4K claim cannot override a measured lower-resolution native output
+ok 13 - false native-4K claim cannot override a measured lower-resolution native output
+  ---
+  duration_ms: 128.89275
+  type: 'test'
+  ...
+# Subtest: missing declared native measurement cannot certify provenance
+ok 14 - missing declared native measurement cannot certify provenance
+  ---
+  duration_ms: 83.973375
+  type: 'test'
+  ...
+# Subtest: export voice mandatory but absent: zero assembly/persistence
+ok 15 - export voice mandatory but absent: zero assembly/persistence
+  ---
+  duration_ms: 0.429417
+  type: 'test'
+  ...
+# Subtest: export music mandatory but absent: zero assembly/persistence
+ok 16 - export music mandatory but absent: zero assembly/persistence
+  ---
+  duration_ms: 0.122375
+  type: 'test'
+  ...
+# Subtest: export optional sound: valid silent composed bytes can persist with fresh full measurements
+ok 17 - export optional sound: valid silent composed bytes can persist with fresh full measurements
+  ---
+  duration_ms: 130.290041
+  type: 'test'
+  ...
+# Subtest: export expected audio absent in final bytes: forged hasAudio receipt cannot reach persistence
+ok 18 - export expected audio absent in final bytes: forged hasAudio receipt cannot reach persistence
+  ---
+  duration_ms: 184.312208
+  type: 'test'
+  ...
+# Subtest: export A/V timestamps out of sync reject despite audio stream presence
+ok 19 - export A/V timestamps out of sync reject despite audio stream presence
+  ---
+  duration_ms: 93.299875
+  type: 'test'
+  ...
+# Subtest: export cached completion expired: fresh validation refuses ready, no new render
+ok 20 - export cached completion expired: fresh validation refuses ready, no new render
+  ---
+  duration_ms: 88.677917
+  type: 'test'
+  ...
+# Subtest: export cached completion corrupt: fresh validation refuses ready, no new render
+ok 21 - export cached completion corrupt: fresh validation refuses ready, no new render
+  ---
+  duration_ms: 110.382292
+  type: 'test'
+  ...
+# Subtest: failed assembly has no raw fallback and no automatic repeat
+ok 22 - failed assembly has no raw fallback and no automatic repeat
+  ---
+  duration_ms: 0.446
+  type: 'test'
+  ...
+# Subtest: completed raw source URL is refused even with a valid byte receipt
+ok 23 - completed raw source URL is refused even with a valid byte receipt
+  ---
+  duration_ms: 41.924542
+  type: 'test'
+  ...
+# Subtest: DEFECT T05-MEDIA-01: raw bytes behind a different URL must not persist as a subtitled final
+not ok 24 - DEFECT T05-MEDIA-01: raw bytes behind a different URL must not persist as a subtitled final
+  ---
+  duration_ms: 141.997292
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t05-salad-media-20261014/scripts/test-t05-salad-media.mts:1:11617'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection: raw source bytes were accepted as a subtitled final through an alias URL'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  operator: 'rejects'
+  stack: |-
+    async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-salad-media-20261014/scripts/test-t05-salad-media.mts:200:3)
+    async Test.run (node:internal/test_runner/test:1208:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+  ...
+# {"defect":"T05-MEDIA-01","persistCalls":1,"finalEqualsSourceSha256":true,"subtitlesClaim":"burned-in","subtitleProof":"render-contract","actualFixture":"solid blue frames, no text","requestedSubtitleCount":1}
+# Subtest: both compositors fail: no upload, no raw success (Shotstack dependency is only a throwing mock)
+ok 25 - both compositors fail: no upload, no raw success (Shotstack dependency is only a throwing mock)
+  ---
+  duration_ms: 0.67425
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 24
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3794.666292

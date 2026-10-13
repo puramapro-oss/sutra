@@ -1,0 +1,118 @@
+{
+  "generatedAt": "2026-10-13T23:54:39.550491+00:00",
+  "base": "14617333bfb21efe1f2a1c91888d3322dde20f5b",
+  "application": "e3b17117256269e281304cd4ab83bc722a6f7894",
+  "node": "v24.21.0",
+  "proof": "OFFLINE_FIXTURES_ONLY",
+  "secretsRead": false,
+  "liveCalls": 0,
+  "results": {
+    "contracts": {
+      "pass": 24,
+      "fail": 1,
+      "skip": 0,
+      "exitCode": 1,
+      "blocker": "UI revoked account hides connect action"
+    },
+    "targetedTypecheck": {
+      "exitCode": 0
+    },
+    "targetedLint": {
+      "exitCode": 0
+    },
+    "secretScan": {
+      "exitCode": 0,
+      "initialFindings": 2,
+      "initialFindingsDisposition": "verified source SHA256, manifest format clarified, no exclusions"
+    }
+  },
+  "sourceSha256": [
+    {
+      "file": "package.json",
+      "sha256": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e"
+    },
+    {
+      "file": "package-lock.json",
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+    },
+    {
+      "file": "scripts/test-t06-social-final.mts",
+      "sha256": "8261fd582a5e38cfad3aa6dc4b6e04ed7b746e4f2025da2f3689e4b9f30a8f32"
+    },
+    {
+      "file": "scripts/helpers/social-database.mts",
+      "sha256": "3158df888abe3076316b2cab60c4a4f9d80e2aac49dccc7c08fec7639c0b4bb0"
+    },
+    {
+      "file": "qa/t08/offline.cjs",
+      "sha256": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465"
+    },
+    {
+      "file": "tsconfig.json",
+      "sha256": "9945bb222ec3063c73dfb0e2225f7463621070d5307b3bd970c13da1382f66ce"
+    },
+    {
+      "file": "eslint.config.mjs",
+      "sha256": "f5be18dbcdbd78d3fc135f4be332906f1686ba407d16dde26cb8db3a2e0eb427"
+    },
+    {
+      "file": "qa/t06-social-final-20261014/tsconfig.json",
+      "sha256": "a5ec93bf79214ad8c0a697c56950ea396142bfbf6c741e6aca57cb0c7240133a"
+    },
+    {
+      "file": "src/app/api/social/connect/route.ts",
+      "sha256": "6a1ff71dbbbc83a549aca58941d627fead1022654b22774c2895e3799476b45d"
+    },
+    {
+      "file": "src/app/api/social/callback/route.ts",
+      "sha256": "d7706d3babdb0fd4b18230b2d1fada1e76e88a098b92301f1c8729aa15eac4a0"
+    },
+    {
+      "file": "src/app/api/social/accounts/route.ts",
+      "sha256": "867709a4a2f76d20e6664982c4b67cfb884e8977ba5ac91c47e9b48eb3665fcf"
+    },
+    {
+      "file": "src/lib/zernio.ts",
+      "sha256": "88bf6961c3824728f9722bcc7cb36f05e43417c35e54d7dabd57f65ee3133d4a"
+    },
+    {
+      "file": "src/lib/social-oauth-state.ts",
+      "sha256": "7a871ce809f5dcfb8d40941069f589ed1a39536f4c70d7143b8ef5713c77afa1"
+    },
+    {
+      "file": "src/lib/social-account-revocation.ts",
+      "sha256": "a9f1d54bdb62dd245fa0af7fe5e22aaa117c5c2d487483131fa3ef19ba0cd747"
+    },
+    {
+      "file": "src/lib/publication-journal.ts",
+      "sha256": "fbf499dabab09662d268b031ff6ee82b4f5843e9fc37154147efb00d65fa404f"
+    },
+    {
+      "file": "src/lib/social-publication.ts",
+      "sha256": "3a90b84133878123683c5507cac49f2c407f4f3dadeed785aee8567b606f4e65"
+    },
+    {
+      "file": "src/lib/auto-publication.ts",
+      "sha256": "748c772e557196c34c7fd148b5e474fa9552c4a2ab3414de1c586f1479e2a6a7"
+    },
+    {
+      "file": "src/lib/utils/api.ts",
+      "sha256": "04976ce28f53c6b48a89888fcf062082244f72851d9ee84f5f71ca35adedfab9"
+    },
+    {
+      "file": "src/components/settings/social/PlatformGrid.tsx",
+      "sha256": "d44089e21d712aef49d9c807e9c867fa9916bf9ac53c886cee02fad2f82a6af3"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/social/page.tsx",
+      "sha256": "3da2292134aa5008ed1225032182c87cbbec34a6daf841fb59459ea7eac8498f"
+    }
+  ],
+  "productChanges": [],
+  "commands": {
+    "contracts": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node --require ./qa/t08/offline.cjs --experimental-test-module-mocks --import tsx --test --test-reporter=tap scripts/test-t06-social-final.mts",
+    "targetedTypecheck": "./node_modules/.bin/tsc --noEmit -p qa/t06-social-final-20261014/tsconfig.json",
+    "targetedLint": "./node_modules/.bin/eslint scripts/test-t06-social-final.mts",
+    "secretScan": "gitleaks git --pre-commit --staged --redact=100 --no-banner --no-color"
+  }
+}
