@@ -93,6 +93,19 @@ export async function POST(req: Request) {
     } catch {
       return NextResponse.json({ error: 'Generation indisponible', status: 'write_unconfirmed' }, { status: 503 })
     }
+    // Only fixed, public mode errors may cross the HTTP boundary. Never return
+    // the provider message, which can contain an endpoint, prompt or credential.
+    const modeErrors: Record<string, string> = {
+      SUTRA_LOCAL_NOT_CONFIGURED: 'Moteur personnel non configure ; aucun repli API payant.',
+      SUTRA_LOCAL_FAILED: 'Moteur personnel indisponible ; aucun repli API payant.',
+      SUTRA_SALAD_NOT_CONFIGURED: 'GPU distant open source non configure ; aucun repli API payant.',
+      SUTRA_SALAD_DISABLED: 'GPU distant open source desactive ; aucun repli API payant.',
+      SUTRA_SALAD_UNAVAILABLE: 'GPU distant open source indisponible ; aucun repli API payant.',
+    }
+    const modeCode = message.split(':', 1)[0]
+    if (Object.hasOwn(modeErrors, modeCode)) {
+      return NextResponse.json({ error: modeErrors[modeCode], code: modeCode }, { status: 503 })
+    }
     return NextResponse.json({ error: 'Erreur lors de la generation de la video', code: 'SUTRA_GENERATION_FAILED' }, { status: submissionErrorStatus(message) })
   }
 }

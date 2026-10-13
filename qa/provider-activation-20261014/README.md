@@ -39,3 +39,9 @@ Connexion : https://sutra.purama.dev/login ; création : https://sutra.purama.de
 Le mode personnel est encore désactivé dans l’image actuelle : LOCAL_ENGINE_ENABLED=false, aucun worker distant configuré. Le Mac ne sert pas de GPU à OVH. Le routage propriétaire refuse tout repli payant. Le pipeline complet contient encore des fournisseurs pour script/voix/musique/assemblage ; un adaptateur vidéo open source seul ne démontre pas un pipeline entièrement open source. Les clients conservent le routage API ; auth valide ne prouve pas génération/rendu réussi.
 
 Aucune nouvelle action de clé RunPod ou Shotstack n’est nécessaire pour les GET validés. Aucun coût de génération n’a été engagé. Toute future génération réelle nécessite devis adapté et accord explicite.
+
+## Complément : session de recette publique réelle
+
+`python3 qa/provider-activation-20261014/run-authenticated.py` : **six GET authentifiés PASS** sur `/dashboard`, `/create`, `/production`, `/settings/social`, `/api/social/accounts` et `/api/points`. Identité existante vérifiée avant toute création de session. Session éphémère en mémoire, aucun email envoyé, puis révocation de cette seule session (`scope=local`) confirmée. Zéro génération, consentement, modification de projet ou publication. Preuve : `authenticated-smoke.json`.
+
+Le premier lancement du script seul a échoué avant toute session car l’image Next standalone n’expose pas les packages SDK comme imports Node séparés. Le lanceur assemble désormais les SDK installés du worktree en mémoire avant transfert par SSH stdin ; aucune dépendance installée ni fichier applicatif écrit sur OVH. ESLint et syntaxe Node PASS ; Python AST PASS. Cette correction porte sur la recette, pas sur le produit. Les GET HTML ne constituent pas une validation visuelle des écrans privés ni une création/génération/export de bout en bout.
