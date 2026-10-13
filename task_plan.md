@@ -283,3 +283,14 @@ Mandat courant : corrections locales et intégration seulement, aucun push/deplo
 Preuves et commandes exactes : `qa/final-integration-20261013/README.md`, manifest source, matrice de clôture et reçus. Prochaine tâche : seules actions de compte documentées RunPod/Shotstack, attribution Zernio puis consentements ; aucune répétition des PASS inchangés.
 
 Complément utilisateur 23h55 : mise en service OVH SUTRA autorisée après commit/manifeste/gates de ce jalon, sauvegarde/rollback vérifiés et smokes gratuits ; le plafond local précédent est remplacé pour cette étape suivante. Aucune dépense, génération, publication ni rotation. Le déploiement n’est pas encore une preuve de ce commit.
+
+
+## 2026-10-14 — T01 mise en service OVH finale (autorisation 23h55)
+
+VERIFIED : production `e3b17117256269e281304cd4ab83bc722a6f7894`, https://sutra.purama.dev ; CI 38475022601 trois jobs SUCCESS, artefacts finaux contrôlés. Candidat exact et ancien runtime isolés PASS, sauvegarde fraîche 140 tables restaurées et comparées. Table OAuth absente détectée puis migration existante additive testée deux fois sur copie, appliquée en production sans modification de données existantes. Seule SUNO_API_BASE_URL ajoutée depuis le maître, origines/clefs applicatives préservées.
+
+VERIFIED : smokes publics/internes, 58 contrôles cron/OAuth/auth, 30 médias, 28 origines, 16 schéma, 120 droits SQL, 36 GET Supabase, navigateur 1440/375 et captures examinées, DNS Cloudflare direct OVH/TLSv1.3 valides, logs/santé DB PASS. Aucun rollback nécessaire, aucune génération/depense/publication/rotation. Aucun test requis rouge. WIP tiers 359 fichiers identiques, T02–T08 propres et fermables ; aucun terminal fermé.
+
+BLOQUE EXTERNE : RunPod401, Shotstack403 ; attribution utilisateur/organisation Zernio absente puis consentements requis. NON TESTE : parcours connecté réel projet/pipeline/export (identité de recette requise), génération/publication et tokens sociaux réels. Ne pas qualifier ces fonctions en production sur la seule base des fixtures.
+
+Rapport faisant foi pour ce jalon : `qa/ovh-final-providers-20261014/README.md`. Le commit documentaire de ce jalon ne change pas l'image déployée. Prochaine tâche : seulement les actions de compte et d'identité précisées dans ce rapport ; ne pas rejouer les PASS inchangés. Rollback disponible : `python3 deploy/ovh.py rollback --source-ref e3b17117256269e281304cd4ab83bc722a6f7894` (conserve SQL/données).

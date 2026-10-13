@@ -1,28 +1,20 @@
-# Déploiement OVH SUTRA — état du 2026-10-13
+# Déploiement OVH SUTRA — état du 14 octobre 2026
 
-**Production active : `3e5596ea287f36427f687d3f3882d35c3f7c407b`**, https://sutra.purama.dev . CI 38322846966 verte. Image exacte `sha256:4c773d0275baf2260b341901775c7b0f47a64bea5c4c711a686ed4643393e6b3` ; runtime conservé opaquément. Handoff complet : `../HANDOFF-SUTRA-T01-20261012.md`.
+**Production active : `e3b17117256269e281304cd4ab83bc722a6f7894`**, https://sutra.purama.dev . CI [38475022601](https://github.com/puramapro-oss/sutra/actions/runs/38475022601) verte. Image exacte `sha256:b0750d6f7552940017a0fcd06422304cafdde0d49aead7bc6e11af98b7d65a16` ; healthy, zéro redémarrage. [Preuves et limites courantes](../qa/ovh-final-providers-20261014/README.md).
 
-Les huit migrations de la release sont appliquées ; restauration de 140 tables vérifiée avant les deux dernières corrections de droits. Sauvegarde privée : `/opt/purama/apps/sutra/backup-t01-coherent-qdule8xx`. Le bucket sutra-assets est privé ; aucun objet supprimé. 35 GET Supabase sans lignes, 120 assertions SQL et cinq GET internes + cinq HTTPS publics PASS. Aucun fournisseur payant appelé.
-
-Commandes de vérification/rollback depuis le worktree T01 :
+Sauvegarde `/opt/purama/apps/sutra/backup-t01-coherent-ci1vi7kq` restaurée (140 tables, comptes identiques). Migration OAuth existante additive testée deux fois sur copie puis appliquée ; aucun écrasement de données. Seule SUNO_API_BASE_URL manquante a été ajoutée depuis le maître ; configuration et secrets applicatifs conservés.
 
 ```sh
-python3 deploy/ovh.py smoke --source-ref 3e5596ea287f36427f687d3f3882d35c3f7c407b --public
-python3 deploy/ovh.py rollback --source-ref 3e5596ea287f36427f687d3f3882d35c3f7c407b
+python3 deploy/ovh.py smoke --source-ref e3b17117256269e281304cd4ab83bc722a6f7894 --public
+python3 deploy/ovh.py rollback --source-ref e3b17117256269e281304cd4ab83bc722a6f7894
 ```
 
-Le smoke contrôle 200 sur `/` et `/login`, 401 sur points/status vidéo/média sans session ; TLS vérifié normalement. Il exige le snapshot `/opt/purama/apps/sutra/rollback-3e5596ea287f36427f687d3f3882d35c3f7c407b` et rollback automatiquement en cas d’échec. La commande rollback restaure Compose/runtime et attend healthy. Un rollback réel de 3591818 a été effectué après 403 Supabase, avant correction puis déploiement final.
+Le rollback restaure l'image/runtime précédents `f770e272…`, attend healthy, conserve la table additive et les données courantes. Ancienne image/runtime vérifiés dans un conteneur isolé ; aucun rollback de production nécessaire lors de cette promotion. Ne pas restaurer un ancien dump au-dessus de nouvelles écritures. Auth sauvegardé comme ID référencés seulement, pas comme sauvegarde Supabase globale ; blobs non gelés transactionnellement.
 
-Le rollback applicatif conserve SQL/DNS et le bucket privé. Ne pas rouvrir les médias ni restaurer un ancien dump au-dessus de nouvelles écritures. Vercel, anciennes images et sauvegardes restent disponibles. Auth est sauvegardé seulement comme fixture d’ID référencés pour restauration SUTRA ; ce n’est pas une sauvegarde complète Supabase/Auth. Les blobs ne sont pas gelés transactionnellement.
+La procédure exécutée `qa/ovh-final-providers-20261014/promote.py` est une archive liée au SHA et au snapshot exclusif, **pas une commande à rejouer**. Pour une autre release, construire un nouveau candidat avec `python3 deploy/candidate.py --source-ref SHA40`, puis refaire les seuls contrôles touchés et les gates de promotion nécessaires. Ne pas utiliser aveuglément `ovh.py deploy` : le faux écart Upstash du helper partagé reste documenté ; cette promotion conserve les octets du runtime.
 
-Cloudflare : A 144.217.14.210 DNS only, TTL Auto. TLS Let’s Encrypt valide ; resolver `mytlschallenge` ajouté au seul routeur SUTRA. DNS et TLS détaillés dans `../qa/deployment-20261013/dns-tls-release.json`.
+Cloudflare DNS-only observé vers OVH, TLSv1.3 Let's Encrypt valide jusqu'au 10 janvier 2027. Aucun DNS modifié. API Cloudflare non vérifiée faute de credential dans le maître, sans impact sur le service public.
 
-Pour une prochaine release, construire un nouveau candidat exact :
+La route `/api/health` contacte des fournisseurs : ne jamais l'utiliser pour une vérification gratuite. Les smokes publics ne prouvent pas le parcours connecté ou une génération payante. RunPod401/Shotstack403 restent des blocages de compte ; Zernio attend l'attribution prouvée utilisateur/organisation et les consentements.
 
-```sh
-python3 deploy/candidate.py --source-ref SHA40
-```
-
-Ce candidat démarre sans réseau externe, vérifie cinq GET et FFmpeg puis s’arrête. Ne pas réutiliser aveuglément `ovh.py deploy` : le helper partagé signale actuellement un faux écart d’environnement sur deux clés Upstash. La release courante a promu l’image candidate vérifiée, avec CI verte, sauvegarde restaurée, runtime inchangé, snapshot exclusif, assertions SQL transactionnelles et rollback automatique. Procédure exécutée et preuve : `../qa/deployment-20261013/release-procedure.py.txt`, `deployment-release.json`. Ces archives opératoires sont liées au SHA et à la sauvegarde de cette release ; ne pas les relancer telles quelles. La reprise exige un rollback précédent réussi et un snapshot strictement identique au runtime courant, sans écrasement du snapshot.
-
-La route `/api/health` contacte des fournisseurs ; ne jamais l’utiliser pour une vérification gratuite. Aucun parcours authentifié ou fournisseur payant n’est revendiqué par les smokes publics.
+Historique précédent : `qa/deployment-20261013/`, `qa/postdeploy-20261013/`. Toutes les images/sauvegardes et les WIP tiers sont préservés.

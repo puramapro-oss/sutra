@@ -1,0 +1,32 @@
+{
+  "rawFindings": 3,
+  "realSecrets": 0,
+  "review": [
+    {
+      "file": "qa/ovh-final-providers-20261014/public-negative-results.json",
+      "line": 116,
+      "kind": "VERIFIED_SOURCE_SHA256",
+      "sourcePath": "src/lib/cron-auth.ts",
+      "realSecret": false
+    },
+    {
+      "file": "qa/ovh-final-providers-20261014/public-negative-results.json",
+      "line": 119,
+      "kind": "VERIFIED_SOURCE_SHA256",
+      "sourcePath": "src/lib/social-oauth-state.ts",
+      "realSecret": false
+    },
+    {
+      "file": "qa/ovh-final-providers-20261014/public-negative-results.json",
+      "line": 121,
+      "kind": "VERIFIED_SOURCE_SHA256",
+      "sourcePath": "src/lib/auth-navigation.ts",
+      "realSecret": false
+    }
+  ],
+  "opaqueMasterScan": "PASS",
+  "globalAllowlistAdded": false,
+  "finalRawFindings": 3,
+  "finalReport": "test-results/ovh-final-gitleaks-final.json",
+  "sourceHashesRechecked": true
+}
