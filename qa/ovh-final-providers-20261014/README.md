@@ -72,3 +72,8 @@ Il restaure Compose/runtime de `f770e272…`, attend healthy, conserve la table 
 Contrôle de clôture documentaire : `detect_changes(scope=staged)` exécuté avant commit, risque LOW, une section documentaire indexée touchée et aucun processus applicatif affecté. Le graphe partiel n'est pas une certification exhaustive ; revue Git directe : seuls documents et preuves opératoires changent après le commit déployé. Comparaison opaque aux secrets du maître : aucun match. Trois alertes Gitleaks sont des empreintes SHA-256 de sources vérifiées contre le commit déployé, sans exclusion globale ajoutée.
 
 Lint des deux nouveaux scripts de recette : quatre erreurs initiales limitées aux imports/sorties, corrigées sans changement applicatif. Sources initialement exécutées conservées dans `*.executed.txt` ; ESLint, syntaxe Node et six sources Python PASS. Seuls les deux probes modifiés ont été rejoués : médias 30 PASS, navigateur deux formats PASS ; nouvelles captures affichées et examinées. Preuves : `proof-lint-delta.json`, `proof-checks.json`, `visual-review.json`.
+
+
+## Mise à jour 14 octobre, autorisation 01h25–01h26
+
+Les blocages de clés RunPod/Shotstack et d’attribution Zernio ci-dessus sont historiques et levés pour les lectures authentifiées. Voir [le reçu d’activation](../provider-activation-20261014/README.md) : sauvegarde privée, configuration ciblée, même image, contrats GET et dix smokes PASS. Aucun rendu/génération/publication réalisé ; consentements toujours utilisateur. Les nouvelles missions Salad T02–T08 sont actives et ne sont pas couvertes par les anciens statuts de fermeture.

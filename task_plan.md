@@ -294,3 +294,10 @@ VERIFIED : smokes publics/internes, 58 contrôles cron/OAuth/auth, 30 médias, 2
 BLOQUE EXTERNE : RunPod401, Shotstack403 ; attribution utilisateur/organisation Zernio absente puis consentements requis. NON TESTE : parcours connecté réel projet/pipeline/export (identité de recette requise), génération/publication et tokens sociaux réels. Ne pas qualifier ces fonctions en production sur la seule base des fixtures.
 
 Rapport faisant foi pour ce jalon : `qa/ovh-final-providers-20261014/README.md`. Le commit documentaire de ce jalon ne change pas l'image déployée. Prochaine tâche : seulement les actions de compte et d'identité précisées dans ce rapport ; ne pas rejouer les PASS inchangés. Rollback disponible : `python3 deploy/ovh.py rollback --source-ref e3b17117256269e281304cd4ab83bc722a6f7894` (conserve SQL/données).
+
+
+## 2026-10-14 — T01 activation fournisseurs après autorisation 01h25–01h26
+
+VERIFIED : quatre variables RunPod/Shotstack synchronisées depuis le maître sans exposition, liaison Zernio univoque au profil existant possédé vérifiée avec identité serveur et organisation PURAMA autorisée. Backup privé exact, seul SUTRA recréé, image e3b1711 inchangée, dix smokes PASS. RunPod health et Shotstack templates stage/v1 HTTP200 + contrats conformes, Zernio propriété/liaison PASS et zéro compte social connecté. 17 tests activation/rollback et 50 contrats ciblés PASS, lint/syntaxe PASS. Les blocages de clés/identité précédents sont levés pour ces lectures ; génération réelle et consentements NON TESTÉS. Détail : qa/provider-activation-20261014/README.md.
+
+IN_PROGRESS distinct : mandat utilisateur 01h42, sept terminaux T02–T08 réactivés avec scopes distincts pour Salad ; ne pas reprendre les statuts FERMABLE du jalon précédent pour leur nouveau WIP. T04 seul adaptateur/raccord backend, T07 seule UI, autres lots tests. T01 conserve intégration et OVH/Zernio. Aucun GPU/provisioning/dépense/publication activé.

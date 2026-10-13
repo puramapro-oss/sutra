@@ -1,0 +1,168 @@
+{
+  "observedAt": "2026-10-13T23:42:02.239682+00:00",
+  "identity": {
+    "authIdentityUnique": true,
+    "confirmed": true,
+    "sutraProfileMatches": true,
+    "organization": "PURAMA (user confirmed)",
+    "existingProfileName": "Default",
+    "existingProfileUnique": true,
+    "currentOwnerOwnsProfile": true,
+    "plan": "enterprise",
+    "bindingCount": 1
+  },
+  "imageUnchanged": true,
+  "healthy": true,
+  "runtimeMode": "0o600",
+  "masterComparison": {
+    "RUNPOD_API_KEY": false,
+    "RUNPOD_ENDPOINT_ID": true,
+    "SHOTSTACK_API_KEY": false,
+    "SHOTSTACK_PRODUCTION_KEY": false
+  },
+  "originsPreserved": true,
+  "changedVariables": [
+    "RUNPOD_API_KEY",
+    "SHOTSTACK_API_KEY",
+    "SHOTSTACK_PRODUCTION_KEY",
+    "ZERNIO_PROFILE_BINDINGS"
+  ],
+  "zernioMasterMatchesRuntime": true,
+  "localMode": {
+    "enabled": false,
+    "urlPresent": false
+  },
+  "runtimeAllSelectedMatchMaster": true,
+  "otherRuntimeValuesPreserved": true,
+  "otherContainersUnchanged": true,
+  "backup": "/opt/purama/apps/sutra/rollback-provider-config-20261013T234159Z",
+  "backupMode": "0700/0600",
+  "backupBytesVerified": true,
+  "containerHealthy": true,
+  "restarts": 0,
+  "smoke": [
+    {
+      "surface": "internal",
+      "path": "/",
+      "http": 200,
+      "expected": 200
+    },
+    {
+      "surface": "internal",
+      "path": "/login",
+      "http": 200,
+      "expected": 200
+    },
+    {
+      "surface": "internal",
+      "path": "/api/points",
+      "http": 401,
+      "expected": 401
+    },
+    {
+      "surface": "internal",
+      "path": "/api/social/accounts",
+      "http": 401,
+      "expected": 401
+    },
+    {
+      "surface": "internal",
+      "path": "/api/video/status/00000000-0000-0000-0000-000000000000",
+      "http": 401,
+      "expected": 401
+    },
+    {
+      "surface": "public",
+      "path": "/",
+      "http": 200,
+      "expected": 200
+    },
+    {
+      "surface": "public",
+      "path": "/login",
+      "http": 200,
+      "expected": 200
+    },
+    {
+      "surface": "public",
+      "path": "/api/points",
+      "http": 401,
+      "expected": 401
+    },
+    {
+      "surface": "public",
+      "path": "/api/social/accounts",
+      "http": 401,
+      "expected": 401
+    },
+    {
+      "surface": "public",
+      "path": "/api/video/status/00000000-0000-0000-0000-000000000000",
+      "http": 401,
+      "expected": 401
+    }
+  ],
+  "providers": {
+    "observedAt": "2026-10-13T23:42:10.303Z",
+    "generationRequests": 0,
+    "runpod": {
+      "http": 200,
+      "contract": true,
+      "workers": {
+        "idle": 0,
+        "initializing": 0,
+        "ready": 0,
+        "running": 0,
+        "throttled": 0,
+        "unhealthy": 0
+      },
+      "permission": "endpoint GET health only; no submission tested",
+      "workerModelContract": "NOT_TESTED"
+    },
+    "shotstack": {
+      "stage": {
+        "http": 200,
+        "contract": true,
+        "templateCount": 0
+      },
+      "v1": {
+        "http": 200,
+        "contract": true,
+        "templateCount": 2
+      },
+      "selectedEnvironment": "stage"
+    },
+    "zernio": {
+      "http": 200,
+      "uniqueBoundProfile": true,
+      "ownerHttp": 200,
+      "ownershipVerified": true,
+      "bindingCount": 1,
+      "puramaBindingCount": 1,
+      "accountsHttp": 200,
+      "accountCount": 0,
+      "accountsScoped": true
+    },
+    "localEngine": {
+      "enabled": false,
+      "urlPresent": false,
+      "health": "NOT_CONFIGURED"
+    },
+    "pass": true
+  },
+  "logErrorCount": 0,
+  "rollback": "NOT_NEEDED",
+  "applicationCommit": "e3b17117256269e281304cd4ab83bc722a6f7894",
+  "masterSource": "~/.env.purama.master",
+  "masterMode": "0o600",
+  "trimmedBoundaryWhitespace": [
+    "RUNPOD_ENDPOINT_ID"
+  ],
+  "localConfigExisted": false,
+  "local": {
+    "selectedVariablesVerified": true,
+    "mode": "0o600",
+    "backup": "/Users/matissdornier/purama-worktrees/.sutra-config-backup-20261013T234159Z",
+    "otherBytesPreserved": true
+  }
+}

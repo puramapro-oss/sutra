@@ -1,0 +1,89 @@
+{
+  "observedAt": "2026-10-13T23:40:05.024106+00:00",
+  "identity": {
+    "authIdentityUnique": true,
+    "confirmed": true,
+    "sutraProfileMatches": true,
+    "organization": "PURAMA (user confirmed)",
+    "existingProfileName": "Default",
+    "existingProfileUnique": true,
+    "currentOwnerOwnsProfile": true,
+    "plan": "enterprise",
+    "bindingCount": 1
+  },
+  "imageUnchanged": true,
+  "healthy": true,
+  "runtimeMode": "0o600",
+  "masterComparison": {
+    "RUNPOD_API_KEY": false,
+    "RUNPOD_ENDPOINT_ID": true,
+    "SHOTSTACK_API_KEY": false,
+    "SHOTSTACK_PRODUCTION_KEY": false
+  },
+  "originsPreserved": true,
+  "changedVariables": [
+    "RUNPOD_API_KEY",
+    "SHOTSTACK_API_KEY",
+    "SHOTSTACK_PRODUCTION_KEY",
+    "ZERNIO_PROFILE_BINDINGS"
+  ],
+  "zernioMasterMatchesRuntime": true,
+  "localMode": {
+    "enabled": false,
+    "urlPresent": false
+  },
+  "candidateProviders": {
+    "observedAt": "2026-10-13T23:40:05.124Z",
+    "generationRequests": 0,
+    "runpod": {
+      "http": 200,
+      "contract": true,
+      "workers": {
+        "idle": 0,
+        "initializing": 0,
+        "ready": 0,
+        "running": 0,
+        "throttled": 0,
+        "unhealthy": 0
+      },
+      "permission": "endpoint GET health only; no submission tested",
+      "workerModelContract": "NOT_TESTED"
+    },
+    "shotstack": {
+      "stage": {
+        "http": 200,
+        "contract": true,
+        "templateCount": 0
+      },
+      "v1": {
+        "http": 200,
+        "contract": true,
+        "templateCount": 2
+      },
+      "selectedEnvironment": "stage"
+    },
+    "zernio": {
+      "http": 200,
+      "uniqueBoundProfile": true,
+      "ownerHttp": 200,
+      "ownershipVerified": true,
+      "bindingCount": 1,
+      "puramaBindingCount": 1,
+      "accountsHttp": 200,
+      "accountCount": 0,
+      "accountsScoped": true
+    },
+    "localEngine": {
+      "enabled": false,
+      "urlPresent": false,
+      "health": "NOT_CONFIGURED"
+    },
+    "pass": true
+  },
+  "masterSource": "~/.env.purama.master",
+  "masterMode": "0o600",
+  "trimmedBoundaryWhitespace": [
+    "RUNPOD_ENDPOINT_ID"
+  ],
+  "localConfigExisted": false
+}
