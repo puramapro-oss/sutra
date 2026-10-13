@@ -1,3 +1,18 @@
+# Complément T04 — audit final du 13 octobre 2026
+
+**CORRECTIFS LOCAUX VÉRIFIÉS ; FOURNISSEURS / OAUTH BLOQUÉS.** Branche `codex/sutra-t04-provider-audit-20261013`, base intégrée `48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4`. Le SHA de livraison et la liste exacte des chemins sont remis au coordinateur après commit dans `.coord/handoffs/SUTRA-20261012/T04-PROVIDER-AUDIT-COORDINATION-20261013.md` ; ne pas confondre avec le SHA historique ci-dessous.
+
+- [Rapport, provenance, limites et actions utilisateur](qa/provider-final-audit-20261013/README.md).
+- RunPod401 ; Shotstack403 pour les quatre couples clés/environnements ; Zernio200 avec zéro compte, OAuth actuel incompatible ; Suno historique503 sans authentification, API alternative maître authentifiée par T01 mais non consommée par SUTRA. Mac/OVH mêmes résultats, aucune génération.
+- Deux corrections de mon périmètre : Suno n'expose plus le corps fournisseur HTTP2xx ou les erreurs JSON (soumission et polling bornés) ; diagnostic Shotstack conforme à l'environnement stage/v1, configuration inconnue refusée. Le choix réel de clé rendu reste le correctif T05 `47e49ee94381ed1e8a378f22efd66676b68e032f`, à intégrer ensemble. Aucun fichier OAuth/pipeline/rendu appartenant aux autres terminaux modifié.
+- Tests finaux : 483 contrats PASS, 7 SKIP, zéro FAIL ; schedule/composition/publication PASS ; TypeScript/lint/build PASS (111 warnings lint existants, 197 pages). 37 ciblés PASS, sept tests de sûreté d'audit PASS. Contre-tests T08 sur le delta : Suno2 PASS, OAuth4 FAIL réels conservés. Logs et hashes du code testé dans le dossier du rapport.
+- Secrets fournisseurs uniquement du maître, valeurs jamais affichées, aucun `.env.local` créé. Six newline finaux normalisés en mémoire pour le diagnostic ; maître inchangé. OVH inspecté via alias SSH préexistant : ce transport n'est pas une preuve des credentials SSH maître, refusés séparément par T01. Réserve explicitée dans le rapport.
+- Impact GitNexus CRITICAL avant édition, graphe T01 stale6 ; index propre créé pour la revue finale, toujours TRUNCATED. Détection locale : 13 symboles/6 flux, HIGH ; revue directe et tests fournissent une preuve locale bornée. Garde Vercel pour cette seule branche ; push explicitement autorisé, aucun déploiement/fusion/migration/publication.
+
+Intégration coordinateur : reprendre uniquement le delta depuis la base ci-dessus ; conserver les ajouts concurrents dans BATON, task_plan et vercel.json. Les fichiers à recevoir et leurs hashes sont dans `qa/provider-final-audit-20261013/manifest.json`. Les quatre défauts OAuth restent chez T01/T02/T06 ; le contrat musical nécessite une décision de fournisseur avant remplacement. Aucun achat ni appel payant nécessaire à cette intégration locale.
+
+---
+
 # SUTRA T04 — reprise fournisseurs sur intégration, 12 octobre 2026
 
 **DELTA_T04_LOCAL_VERIFIE — release et fournisseurs réels non certifiés.** Ce document remplace le handoff S5 présent dans la base ; l'historique Git et l'ancien worktree le conservent. La réconciliation S5/PR3 est déjà livrée par T01 : elle n'est pas refaite.

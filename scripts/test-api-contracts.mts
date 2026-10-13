@@ -146,10 +146,15 @@ test('Suno: 401 au poll -> abandon immediat (pas de boucle 2 min)', async () => 
   )
 })
 
-test('Suno: reponse invalide (id absent) -> detail fournisseur remonte', async () => {
+test('Suno: reponse invalide (id absent) -> detail fournisseur expurge', async () => {
   setKey('SUNO_API_KEY', true)
   mockFetch(() => okJson({ error: 'quota exceeded' }))
-  await assertThrowsWith(() => generateMusic({ prompt: 'x', style: 'lo-fi', duration: 20 }), 'quota exceeded')
+  await assert.rejects(() => generateMusic({ prompt: 'x', style: 'lo-fi', duration: 20 }), (error: unknown) => {
+    assert.ok(error instanceof Error)
+    assert.equal(error.message, 'Suno: reponse invalide (id absent ou invalide)')
+    assert.ok(!error.message.includes('quota exceeded'))
+    return true
+  })
 })
 
 test('Suno: cle absente -> erreur explicite', async () => {

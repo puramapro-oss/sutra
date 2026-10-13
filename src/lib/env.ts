@@ -98,7 +98,14 @@ export const PROVIDERS: Record<ProviderId, ProviderSpec> = {
   anthropic: { label: 'Anthropic', env: ['ANTHROPIC_API_KEY'], cost: 'par-usage', probe: false, role: 'scripts IA' },
   ltx: { label: 'LTX Studio', env: ['LTX_API_KEY'], cost: 'par-usage', probe: false, role: 'vidéo IA primaire (payants)' },
   runpod: { label: 'RunPod/WAN', env: ['RUNPOD_API_KEY', 'RUNPOD_ENDPOINT_ID'], cost: 'par-usage', probe: false, role: 'vidéo IA plan gratuit + fallback' },
-  shotstack: { label: 'Shotstack', env: ['SHOTSTACK_API_KEY'], cost: 'par-usage', probe: false, role: 'montage final' },
+  shotstack: {
+    label: 'Shotstack',
+    get env() {
+      return optionalEnv('SHOTSTACK_ENV', 'stage').trim() === 'v1'
+        ? ['SHOTSTACK_PRODUCTION_KEY'] : ['SHOTSTACK_API_KEY']
+    },
+    cost: 'par-usage', probe: false, role: 'montage final',
+  },
   elevenlabs: { label: 'ElevenLabs', env: ['ELEVENLABS_API_KEY'], cost: 'par-usage', probe: false, role: 'voix TTS' },
   suno: { label: 'Suno', env: ['SUNO_API_KEY'], cost: 'par-usage', probe: false, role: 'musique primaire' },
   riffusion: { label: 'Riffusion', env: ['RIFFUSION_API_KEY'], cost: 'par-usage', probe: false, role: 'musique secondaire (facultatif)' },
@@ -122,17 +129,21 @@ export function providerConfigStatus(id: ProviderId): {
   label: string
   configured: boolean
   missing: string[]
+  invalid?: string[]
   cost: ProviderSpec['cost']
   probe: boolean
   role: string
 } {
   const spec = PROVIDERS[id]
   const missing = spec.env.filter((name) => !isEnvSet(name))
+  const invalid = id === 'shotstack' && !['stage', 'v1'].includes(optionalEnv('SHOTSTACK_ENV', 'stage').trim())
+    ? ['SHOTSTACK_ENV'] : []
   return {
     provider: id,
     label: spec.label,
-    configured: missing.length === 0,
+    configured: missing.length === 0 && invalid.length === 0,
     missing,
+    ...(invalid.length ? { invalid } : {}),
     cost: spec.cost,
     probe: spec.probe,
     role: spec.role,

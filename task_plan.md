@@ -207,3 +207,18 @@ Les instructions historiques ci-dessus restent des archives. Le dernier mandat a
 - [ ] Release : schéma distant/Docker/OVH/fournisseurs non qualifiés ; limites produit S5 et script/voix explicites dans la matrice.
 
 Statut : intégration locale livrée, release non certifiée. Ne pas rejouer les PASS inchangés. Handoff final : `HANDOFF-SUTRA-T01-20261012.md`.
+
+## 2026-10-13 — T04 audit fournisseurs, mandat borné
+
+- [x] Politiques/LOCKS/WIP/branche intégrée vérifiés ; POLICY_OK ; worktree T04 isolé depuis48f2d5e,589732c ancêtre.
+- [x] Source maître opaque, comparaison Mac/OVH, sondes GET gratuites avec preuves expurgées ; aucune copie de secret. Réserve SSH maître documentée.
+- [x] RunPod/Shotstack/Suno/Zernio et OAuth/permissions/state/expiration/révocation audités ; propriétaires respectés, aucune connexion.
+- [x] Corrections locales Suno et diagnostic Shotstack ; trois fichiers de tests fournisseurs ; garde anti-preview limitée.
+- [x] 483contratsPASS/7SKIP ; TS/lint/build197pagesPASS ; Suno contre-tests T08 désormais2PASS ; quatre OAuthFAIL conservés. Commandes/hashes : qa/provider-final-audit-20261013.
+- [ ] Action compte RunPod/Shotstack et format des six variables maître ; droits réels non qualifiés.
+- [ ] Décision fournisseur et nouvel adaptateur Suno ; raccord OAuth actuel avec profil/session/organisation/scopes, après décision des propriétaires.
+- [ ] Consentements des comptes sociaux choisis par l'utilisateur, seulement après correction OAuth.
+
+Handoff : HANDOFF-SUTRA-T04-20261012.md, complément du13octobre. Pas de merge/deploy/migration/publication/génération.
+
+- [x] T04 contrôle secrets opaque/Gitleaks, graphe isolé et revue staged HIGH bornée ; preuves et manifest archivés pour transmission du SHA après commit.

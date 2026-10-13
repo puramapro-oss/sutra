@@ -1,5 +1,6 @@
 import { fetchWithRetry, sleep, httpErrorMessage } from '@/lib/utils/api'
 import { requireEnv, optionalEnv } from '@/lib/env'
+import { boundedProviderJson } from '@/lib/provider-json'
 import type { MusicStyle } from '@/types'
 
 export async function generateMusic(params: {
@@ -28,8 +29,13 @@ export async function generateMusic(params: {
   if (!res.ok) {
     throw new Error(`Suno: ${await httpErrorMessage(res)}`)
   }
-  const data = (await res.json()) as { id?: string; error?: string }
-  if (!data.id) throw new Error(`Suno: ${data.error ?? 'reponse invalide (id absent)'}`)
+  const data = await boundedProviderJson(res).catch(() => {
+    throw new Error('Suno: reponse invalide (JSON)')
+  })
+  if (typeof data.id !== 'string' || !data.id.trim() || data.id.length > 256) {
+    // A 2xx response may contain private provider diagnostics. Never reflect it.
+    throw new Error('Suno: reponse invalide (id absent ou invalide)')
+  }
   return pollSunoJob(data.id, apiKey, baseUrl)
 }
 
@@ -53,13 +59,14 @@ async function pollSunoJob(
       await sleep(3000)
       continue
     }
-    const data = (await res.json()) as {
-      id?: string
-      status?: string
-      audio_url?: string
-    }
+    const data = await boundedProviderJson(res).catch(() => {
+      throw new Error('Suno: reponse invalide (JSON)')
+    })
     if (data.status === 'completed') {
-      if (!data.audio_url || !data.id) throw new Error('Suno: reponse invalide (audio_url absent)')
+      if (typeof data.audio_url !== 'string' || !data.audio_url.trim() ||
+          typeof data.id !== 'string' || !data.id.trim()) {
+        throw new Error('Suno: reponse invalide (audio_url ou id absent)')
+      }
       return { id: data.id, audio_url: data.audio_url }
     }
     if (data.status === 'failed') throw new Error('Suno: generation echouee')

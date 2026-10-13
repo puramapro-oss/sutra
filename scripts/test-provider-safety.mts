@@ -18,6 +18,7 @@ const { generateMusicWithFallback, generateMusicWithProvenance, generateVoiceWit
 const { submitVideoJob, pollVideoJob, RunpodJobError } = await import('../src/lib/runpod.ts')
 const { generateWanVideo } = await import('../src/lib/wan.ts')
 const { cheapestCapableEngines } = await import('../src/lib/provider-pricing.ts')
+const { generateMusic } = await import('../src/lib/suno.ts')
 let calls: Array<{ url: string; init?: RequestInit }> = []
 function mock(handler: (url: string, init?: RequestInit) => Response | Promise<Response> = () => { throw new Error('lost response') }) {
   calls = []
@@ -34,6 +35,63 @@ function execution(): LtxExecution {
   } }
 }
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
+
+test('Suno ambiguous submission never reflects provider payload or resubmits', async () => {
+  const before = process.env.SUNO_API_KEY
+  process.env.SUNO_API_KEY = 'synthetic-suno-key'
+  const marker = 'T04_SYNTHETIC_PRIVATE_PROVIDER_BODY'
+  try {
+    for (const response of [
+      () => json({ error: marker }),
+      () => new Response(marker, { status: 200 }),
+      () => json({ id: { error: marker } }),
+    ]) {
+      mock(response)
+      await assert.rejects(generateMusic({ prompt: 'fixture', style: 'ambient', duration: 10 }), (error: unknown) => {
+        assert.ok(error instanceof Error)
+        assert.match(error.message, /^Suno: reponse invalide \((JSON|id absent ou invalide)\)$/)
+        assert.doesNotMatch(error.message, new RegExp(marker))
+        return true
+      })
+      assert.equal(calls.length, 1, 'uncertain paid result must not retry or poll an invalid ID')
+      assert.equal(calls[0].init?.method, 'POST')
+    }
+  } finally {
+    if (before === undefined) delete process.env.SUNO_API_KEY; else process.env.SUNO_API_KEY = before
+  }
+})
+
+test('Suno polling bounds and redacts malformed responses without resubmission', async () => {
+  const before = process.env.SUNO_API_KEY
+  process.env.SUNO_API_KEY = 'synthetic-suno-key'
+  const marker = 'T04_SYNTHETIC_PRIVATE_POLL_BODY'
+  try {
+    for (const response of [
+      () => new Response(marker, { status: 200 }),
+      () => new Response(JSON.stringify({ diagnostic: marker.repeat(3000) }), { status: 200 }),
+      () => json({ status: 'completed', id: { diagnostic: marker }, audio_url: 'https://media.invalid/song.mp3' }),
+    ]) {
+      mock((_url, init) => init?.method === 'POST' ? json({ id: 'fixture-job' }) : response())
+      await assert.rejects(generateMusic({ prompt: 'fixture', style: 'ambient', duration: 10 }), (error: unknown) => {
+        assert.ok(error instanceof Error)
+        assert.match(error.message, /^Suno: reponse invalide /)
+        assert.doesNotMatch(error.message, new RegExp(marker))
+        return true
+      })
+      assert.equal(calls.length, 2)
+      assert.equal(calls.filter(call => call.init?.method === 'POST').length, 1)
+      assert.match(calls[1].url, /\/songs\/fixture-job$/)
+    }
+    mock((_url, init) => init?.method === 'POST' ? json({ id: 'fixture-job' }) :
+      json({ id: 'fixture-job', status: 'completed', audio_url: 'https://media.invalid/song.mp3' }))
+    assert.deepEqual(await generateMusic({ prompt: 'fixture', style: 'ambient', duration: 10 }), {
+      id: 'fixture-job', audio_url: 'https://media.invalid/song.mp3',
+    })
+    assert.equal(calls.length, 2)
+  } finally {
+    if (before === undefined) delete process.env.SUNO_API_KEY; else process.env.SUNO_API_KEY = before
+  }
+})
 
 test('smart: missing durable context, insufficient plan, long scene and lost reference fail before spend', async () => {
   mock()

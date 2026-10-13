@@ -1,0 +1,28 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 9 files, 13 symbols
+Affected processes: 6
+Risk level: high
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-13 — livraison T04 fournisseurs, sans déploiement → BATON.md
+  Section Complément T04 — audit final du 13 octobre 2026 → HANDOFF-SUTRA-T04-20261012.md
+  Const PROVIDERS → src/lib/env.ts
+  Property shotstack → src/lib/env.ts
+  Method env → src/lib/env.ts
+  Function providerConfigStatus → src/lib/env.ts
+  Property configured → src/lib/env.ts
+  Function generateMusic → src/lib/suno.ts
+  Function pollSunoJob → src/lib/suno.ts
+  Section SUTRA T01 — état final du 2026-10-13 → task_plan.md
+  Section 2026-10-12 — SUTRA T01 CHEF (périmètre courant) → task_plan.md
+  Section 2026-10-13 — T04 audit fournisseurs, mandat borné → task_plan.md
+
+Affected execution flows:
+  • POST → OptionalEnv (3 steps) — changed: generateMusic
+  • POST → HttpErrorMessage (3 steps) — changed: generateMusic
+  • POST → FetchWithRetry (3 steps) — changed: generateMusic
+  • POST → BreakerKey (5 steps) — changed: generateMusic
+  • POST → Abort (5 steps) — changed: generateMusic
+  • POST → MissingEnvError (4 steps) — changed: generateMusic

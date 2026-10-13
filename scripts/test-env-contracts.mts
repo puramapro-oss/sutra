@@ -175,6 +175,33 @@ test('env: providerConfigStatus ne divulgue aucune valeur', () => {
   assert.deepEqual(after.missing, ['PIXABAY_API_KEY'])
 })
 
+test('env: Shotstack diagnostic selects the configured environment without substituting credentials', () => {
+  const names = ['SHOTSTACK_ENV', 'SHOTSTACK_API_KEY', 'SHOTSTACK_PRODUCTION_KEY'] as const
+  const before = names.map(name => process.env[name])
+  try {
+    for (const name of names) delete process.env[name]
+    assert.deepEqual(providerConfigStatus('shotstack').missing, ['SHOTSTACK_API_KEY'])
+    process.env.SHOTSTACK_PRODUCTION_KEY = 'synthetic-production-secret'
+    assert.equal(providerConfigStatus('shotstack').configured, false)
+    process.env.SHOTSTACK_ENV = ' v1 '
+    assert.equal(providerConfigStatus('shotstack').configured, true)
+    assert.deepEqual(PROVIDERS.shotstack.env, ['SHOTSTACK_PRODUCTION_KEY'])
+    delete process.env.SHOTSTACK_PRODUCTION_KEY
+    process.env.SHOTSTACK_API_KEY = 'synthetic-stage-secret'
+    assert.deepEqual(providerConfigStatus('shotstack').missing, ['SHOTSTACK_PRODUCTION_KEY'])
+    assert.equal(providerConfigStatus('shotstack').configured, false)
+    process.env.SHOTSTACK_ENV = 'stage'
+    assert.equal(providerConfigStatus('shotstack').configured, true)
+    process.env.SHOTSTACK_ENV = 'invalid-environment'
+    const invalid = providerConfigStatus('shotstack')
+    assert.equal(invalid.configured, false)
+    assert.deepEqual(invalid.invalid, ['SHOTSTACK_ENV'])
+    assert.doesNotMatch(JSON.stringify(invalid), /synthetic-stage-secret|invalid-environment/)
+  } finally {
+    names.forEach((name, i) => { if (before[i] === undefined) delete process.env[name]; else process.env[name] = before[i] })
+  }
+})
+
 test('env: isEnvSet ignore les valeurs vides', () => {
   process.env.SUNO_API_KEY = '   '
   assert.equal(isEnvSet('SUNO_API_KEY'), false)
