@@ -1,3 +1,9 @@
+## 2026-10-13 — T03 complément fournisseurs (priorité de reprise)
+
+Branche `codex/sutra-t03-provider-complement-20261013`, base `48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4`. Complément T03 VERIFIED : 9 tests de reprise avec adaptateur Suno réel et HTTP/DB simulés, TypeScript ciblé et lint PASS. Aucun symbole produit ni secret modifié ; seule configuration locale changée : aperçu Vercel désactivé sur cette branche pour le push déjà autorisé. Prochain travail : les propriétaires T01/T04/T05/T06/T02/T08 traitent leurs blocages fournisseurs/OAuth ; ne pas les dupliquer. Aucun déploiement, fusion, migration, publication ou appel payant autorisé par cette livraison.
+
+Rapport, commandes, source/provenance et limites : [qa/t03-provider-complement-20261013/README.md](qa/t03-provider-complement-20261013/README.md). RunPod 401, Shotstack 403, Suno non qualifié, OAuth Zernio bloqué ; les 5 contre-tests rouges T08 restent explicitement ouverts. Les PASS historiques inchangés ne sont pas rejoués. GitNexus du worktree non enregistré : aucune certification de graphe/release.
+
 # SUTRA — reprise apres verification finale, 2026-10-13
 
 **OVH OPERATIONNEL / RECETTE CONNECTEE EN ATTENTE.** Commit applicatif `f770e272d2d8e3bb3dde5b523fe7aa37f122399d` deploye sur https://sutra.purama.dev ; CI38330861913 : trois jobs SUCCESS. Deux defauts origine Auth/CSRF corriges, sept regressions. Public desktop/mobile affiche et verifie ; 28 controles origine, 10 GET,120 SQL PASS ; logs/base healthy, sauvegarde restauree precedemment et empreintes revalidees, snapshot rollback du precedent3e conserve. Aucun appel payant ni nouvelle migration.
