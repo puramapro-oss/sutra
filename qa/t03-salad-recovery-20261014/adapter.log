@@ -1,0 +1,17 @@
+✔ actual client + worker: accepted POST response lost, interrupted process, reconstruction polls same ID only (30.483542ms)
+✔ client intent before-write interruption: no POST before confirmed reserve (1.286791ms)
+✔ client intent after-write interruption: no POST before confirmed reserve (1.114875ms)
+✔ client accepted-state receipt lost after commit: reconstructed client GETs durable remote ID (0.7345ms)
+✔ remote execution reserve committed but ACK lost: restart never computes an ambiguous existing claim (0.718459ms)
+✔ expired remote owner cannot checkpoint; fresh worker GET reports unknown and never starts compute (0.709917ms)
+✔ UNKNOWN holds execution slot after restart and deadline; different operation cannot start a second engine (0.865667ms)
+✔ concurrent reconstructed clients keep one remote submission even with racing reconciliation CAS (4.593791ms)
+✔ replayed operation with different input refuses before GET/POST and preserves original checkpoint (0.586875ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 398.106

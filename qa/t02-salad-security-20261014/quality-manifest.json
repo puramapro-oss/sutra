@@ -1,0 +1,25 @@
+{
+  "kind": "reuse-of-unchanged-targeted-checks",
+  "reason": "No linted/typechecked source or tsconfig changed after both successful checks. No duplicate global gate.",
+  "results": [
+    {
+      "command": "node node_modules/eslint/bin/eslint.js scripts/test-t02-salad-security.mts qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "exitCode": 0,
+      "log": "lint.log"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc -p qa/t02-salad-security-20261014/tsconfig.json",
+      "exitCode": 0,
+      "log": "types.log"
+    }
+  ],
+  "inputs": {
+    "scripts/test-t02-salad-security.mts": "714afe9e90f269e56358fb3876895f0f6edd829db6beca4e4830368ba9bf6eb8",
+    "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts": "ea0603538854430650ff87d8325dc8185cbdeb5810141d88081bc3666d00544d",
+    "qa/t02-salad-security-20261014/tsconfig.json": "5a29efcbead8c3a07fc16cff0b94e13c6d4e63cf283904614a26125dd5fb448a",
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+    "tsconfig.json": "9945bb222ec3063c73dfb0e2225f7463621070d5307b3bd970c13da1382f66ce",
+    "eslint.config.mjs": "f5be18dbcdbd78d3fc135f4be332906f1686ba407d16dde26cb8db3a2e0eb427"
+  },
+  "runnerSyntax": "python ast.parse PASS; runner also executed for both suites"
+}

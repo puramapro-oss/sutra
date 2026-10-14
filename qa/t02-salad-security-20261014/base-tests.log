@@ -1,0 +1,215 @@
+(node:38941) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38941) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T02-P01 production: forged owner email/id/org cannot select the personal engine (2.873292ms)
+✔ T02-P02 production: unauthenticated request rejected before JSON or queue access (0.368459ms)
+✔ T02-P03 customer cannot reach the worker even with attacker-like configured URL (0.132208ms)
+✔ T02-P04 invalid worker URL rejects credentials before fetch (0.37175ms)
+✔ T02-P04 invalid worker URL rejects query before fetch (0.129292ms)
+✔ T02-P04 invalid worker URL rejects fragment before fetch (0.100125ms)
+✔ T02-P04 invalid worker URL rejects protocol before fetch (0.060917ms)
+✔ T02-P05 foreign worker output is refused before second fetch (1.854084ms)
+✔ T02-P06 generation and result fetch explicitly forbid redirects (0.315292ms)
+✔ T02-P07 worker HTTP response body cannot leak through client error (0.297709ms)
+✔ T02-P08 transport error is expunged from owner route and generation log (0.113916ms)
+✔ T02-P09 concurrent worker outputs with identical filenames remain owner scoped (0.517208ms)
+✔ T02-P10 worker output without owner context cannot touch storage (0.070708ms)
+(node:38941) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+✔ T02-P11 historical adapter binds loopback only (no public exposure proven) (4.129625ms)
+✖ T02-S01 remote configuration must reject plaintext destination before health fetch (0.468958ms)
+✖ T02-S01 remote configuration must reject metadata destination before health fetch (0.159166ms)
+✖ T02-S02 remote generation/result requests require server authentication (0.319416ms)
+✖ T02-S03 remote adapter rejects unauthenticated POST / before ComfyUI (2.539125ms)
+✖ T02-S03 remote adapter rejects unauthenticated POST /upscale before ComfyUI (1.162667ms)
+✖ T02-S04 remote results reject unauthenticated arbitrary file lookup (1.140583ms)
+✖ T02-S05 remote adapter expunges synthetic upstream error on /health (1.117042ms)
+✖ T02-S05 remote adapter expunges synthetic upstream error on /files?filename=fixture.mp4 (0.990542ms)
+✖ T02-S05 remote adapter expunges synthetic upstream error on / (1.082125ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 14
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 308.369375
+
+✖ failing tests:
+
+test at scripts/test-t02-salad-security.mts:1:10400
+✖ T02-S01 remote configuration must reject plaintext destination before health fetch (0.468958ms)
+  AssertionError [ERR_ASSERTION]: Unsafe remote destination reached the mocked transport
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:231:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-salad-security.mts:1:10400
+✖ T02-S01 remote configuration must reject metadata destination before health fetch (0.159166ms)
+  AssertionError [ERR_ASSERTION]: Unsafe remote destination reached the mocked transport
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:231:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-salad-security.mts:1:10706
+✖ T02-S02 remote generation/result requests require server authentication (0.319416ms)
+  AssertionError [ERR_ASSERTION]: Worker call has no server authentication
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:241:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-salad-security.mts:1:11211
+✖ T02-S03 remote adapter rejects unauthenticated POST / before ComfyUI (2.539125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   status: 500,
+  +   upstreamCalls: 1
+  -   status: 401,
+  -   upstreamCalls: 0
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:249:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 500, upstreamCalls: 1 },
+    expected: { status: 401, upstreamCalls: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-salad-security.mts:1:11211
+✖ T02-S03 remote adapter rejects unauthenticated POST /upscale before ComfyUI (1.162667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   status: 500,
+  +   upstreamCalls: 1
+  -   status: 401,
+  -   upstreamCalls: 0
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:249:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { status: 500, upstreamCalls: 1 },
+    expected: { status: 401, upstreamCalls: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-salad-security.mts:1:11635
+✖ T02-S04 remote results reject unauthenticated arbitrary file lookup (1.140583ms)
+  AssertionError [ERR_ASSERTION]: Arbitrary ComfyUI result was returned without owner/job authentication
+
+  200 !== 401
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:256:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 401,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-salad-security.mts:1:12137
+✖ T02-S05 remote adapter expunges synthetic upstream error on /health (1.117042ms)
+  AssertionError [ERR_ASSERTION]: Raw upstream errors must stay out of responses and logs
+  + actual - expected
+
+    {
+      logLeak: false,
+  +   responseLeak: true
+  -   responseLeak: false
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:264:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { responseLeak: true, logLeak: false },
+    expected: { responseLeak: false, logLeak: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-salad-security.mts:1:12137
+✖ T02-S05 remote adapter expunges synthetic upstream error on /files?filename=fixture.mp4 (0.990542ms)
+  AssertionError [ERR_ASSERTION]: Raw upstream errors must stay out of responses and logs
+  + actual - expected
+
+    {
+      logLeak: false,
+  +   responseLeak: true
+  -   responseLeak: false
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:264:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { responseLeak: true, logLeak: false },
+    expected: { responseLeak: false, logLeak: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-salad-security.mts:1:12137
+✖ T02-S05 remote adapter expunges synthetic upstream error on / (1.082125ms)
+  AssertionError [ERR_ASSERTION]: Raw upstream errors must stay out of responses and logs
+  + actual - expected
+
+    {
+  +   logLeak: true,
+  +   responseLeak: true
+  -   logLeak: false,
+  -   responseLeak: false
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/scripts/test-t02-salad-security.mts:264:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: { responseLeak: true, logLeak: true },
+    expected: { responseLeak: false, logLeak: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

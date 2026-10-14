@@ -1,0 +1,47 @@
+{
+  "utc": "2026-10-13T23:57:18.024382+00:00",
+  "productRoot": "/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014",
+  "head": "14617333bfb21efe1f2a1c91888d3322dde20f5b",
+  "suite": "base",
+  "productHashesBefore": {
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+    "scripts/comfyui-engine-server.mjs": "3bd5d41a4f5b8d8ea5ed553ca2f8b72094fec98b33aa9d6921dfafc7083408f1",
+    "src/lib/local-engine.ts": "26bf9cf5edcb586fc0ffa7c4b201857de895a8ab0d24d6f5184f1ca04b870183",
+    "src/lib/private-media.ts": "188b0dd45cb819a7513b8667480248fda6136178410345e6b4074b30101f979c",
+    "src/lib/storage.ts": "c75659797a4536814a2ef971c1affa562d06e9e6fcc41fa8a393e8684cc9fa38",
+    "src/lib/media-probe.ts": "12250b8dcf3a52cf196e0f6d04765c2084a555f215a809f9b3f04792486b56f0",
+    "src/app/api/production/route.ts": "e700460c6e88adf2bf4be5b5e0161d4e9f37089b87feaf55aefc8d757d4c5251",
+    "src/lib/utils.ts": "45ddcb77f64ac84c958ea4181544c2a655207e3f1e37f620f22d8fb2887a61b7"
+  },
+  "productHashesAfter": {
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+    "scripts/comfyui-engine-server.mjs": "3bd5d41a4f5b8d8ea5ed553ca2f8b72094fec98b33aa9d6921dfafc7083408f1",
+    "src/lib/local-engine.ts": "26bf9cf5edcb586fc0ffa7c4b201857de895a8ab0d24d6f5184f1ca04b870183",
+    "src/lib/private-media.ts": "188b0dd45cb819a7513b8667480248fda6136178410345e6b4074b30101f979c",
+    "src/lib/storage.ts": "c75659797a4536814a2ef971c1affa562d06e9e6fcc41fa8a393e8684cc9fa38",
+    "src/lib/media-probe.ts": "12250b8dcf3a52cf196e0f6d04765c2084a555f215a809f9b3f04792486b56f0",
+    "src/app/api/production/route.ts": "e700460c6e88adf2bf4be5b5e0161d4e9f37089b87feaf55aefc8d757d4c5251",
+    "src/lib/utils.ts": "45ddcb77f64ac84c958ea4181544c2a655207e3f1e37f620f22d8fb2887a61b7"
+  },
+  "stableDuringRun": true,
+  "inheritedSecrets": false,
+  "liveProviderCalls": 0,
+  "mediaProbe": "mocked; not a media-validity proof",
+  "commands": [
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t02-salad-security.mts"
+      ],
+      "exitCode": 1,
+      "log": "base-tests.log"
+    }
+  ]
+}

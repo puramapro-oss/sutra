@@ -1,0 +1,42 @@
+(node:38940) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38940) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T02-C01 Salad disabled by default, no network or implicit credentials (1.116917ms)
+✔ T02-C02 Salad URL rejects http (2.05925ms)
+✔ T02-C02 Salad URL rejects metadata (0.178583ms)
+✔ T02-C02 Salad URL rejects loopback (0.132333ms)
+✔ T02-C02 Salad URL rejects ipv6 (0.106709ms)
+✔ T02-C02 Salad URL rejects numeric (0.107ms)
+✔ T02-C02 Salad URL rejects suffixSpoof (0.084125ms)
+✔ T02-C02 Salad URL rejects credentials (0.081875ms)
+✔ T02-C02 Salad URL rejects query (0.092958ms)
+✔ T02-C02 Salad URL rejects fragment (0.142125ms)
+✔ T02-C02 Salad URL rejects customPort (0.125208ms)
+✔ T02-C02 Salad URL rejects path (0.074125ms)
+✔ T02-C03 Gateway and worker credentials must differ (0.084834ms)
+✔ T02-C04 malformed credentials are rejected without reflecting their value (0.303417ms)
+✔ T02-C05 capability GET sends both credentials only as headers and forbids redirects (15.016333ms)
+✔ T02-C06 network errors never expose credentials to capability callers (0.300875ms)
+✔ T02-C07 foreign job scope/fingerprint rejected before accepting any result (3.261ms)
+✔ T02-C08 result download binds fixed job path, both auth headers, bytes hash and redirects (0.809916ms)
+✔ T02-C09 private bridge accepts loopback only, never a remote/metadata host (0.112916ms)
+✔ T02-C10 bridge refuses result URL https://evil.example/files without download (0.207625ms)
+✔ T02-C10 bridge refuses result URL http://127.0.0.1:7861/admin without download (0.11325ms)
+✔ T02-C10 bridge refuses result URL http://127.0.0.1:7861/files#fixture without download (0.124375ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /health (1.073167ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/capabilities (0.393708ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs (0.435375ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa (0.277917ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/media (0.152334ms)
+✔ T02-C12 credentials in query cannot substitute for worker authentication (0.242542ms)
+✔ T02-C13 worker storage errors are expunged, no signed URL or credential returned (0.275083ms)
+✔ T02-C14 replacing server credential invalidates old bearer for new worker instance (0.091209ms)
+✔ T02-C15 authenticated caller cannot use arbitrary bridge paths through worker wrapper (0.466542ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 155.328125
