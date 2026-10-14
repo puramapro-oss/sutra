@@ -38,7 +38,8 @@ export async function verifyVideoBytes(bytes: Uint8Array, expected: ExpectedVide
   const file = join(directory,'video.mp4')
   try {
     await writeFile(file, bytes, {mode:0o600,flag:'wx'})
-    const {stdout} = await exec('ffprobe', ['-v','error','-protocol_whitelist','file,pipe','-format_whitelist','mov','-show_streams','-show_format','-of','json',file], {timeout:15000,maxBuffer:1048576,encoding:'utf8'})
+    const {stdout, stderr: probeErrors} = await exec('ffprobe', ['-v','error','-protocol_whitelist','file,pipe','-format_whitelist','mov','-show_streams','-show_format','-of','json',file], {timeout:15000,maxBuffer:1048576,encoding:'utf8'})
+    if (probeErrors.trim()) throw new Error('SUTRA_MEDIA_INVALID_OR_UNDECODABLE')
     const info = JSON.parse(stdout) as {
       streams?: Array<{codec_type?:string;width?:number;height?:number;avg_frame_rate?:string;duration?:string;sample_aspect_ratio?:string;disposition?:{attached_pic?:number};side_data_list?:Array<{rotation?:number}>}>
       format?: {duration?:string}
@@ -56,7 +57,10 @@ export async function verifyVideoBytes(bytes: Uint8Array, expected: ExpectedVide
     if (video.sample_aspect_ratio && !['1:1','N/A'].includes(video.sample_aspect_ratio)) throw new Error('SUTRA_MEDIA_NON_SQUARE_PIXELS')
     if (video.side_data_list?.some(s=>s.rotation !== undefined && s.rotation % 360 !== 0)) throw new Error('SUTRA_MEDIA_UNEXPECTED_ROTATION')
     // Fully decode to catch corrupt frames, not just a plausible MP4 header.
-    await exec('ffmpeg', ['-v','error','-nostdin','-xerror','-err_detect','explode','-protocol_whitelist','file,pipe','-format_whitelist','mov','-threads','2','-i',file,'-map','0:v:0','-map','0:a?','-threads','2','-f','null','-'], {timeout:60000,maxBuffer:1048576,encoding:'utf8'})
+    const {stderr: decodeErrors} = await exec('ffmpeg', ['-v','error','-nostdin','-xerror','-err_detect','explode','-protocol_whitelist','file,pipe','-format_whitelist','mov','-threads','2','-i',file,'-map','0:v:0','-map','0:a?','-threads','2','-f','null','-'], {timeout:60000,maxBuffer:1048576,encoding:'utf8'})
+    // Some FFmpeg releases exit zero after reporting a corrupt final packet.
+    // At loglevel error any diagnostic invalidates the receipt; never expose it.
+    if (decodeErrors.trim()) throw new Error('SUTRA_MEDIA_INVALID_OR_UNDECODABLE')
     return {width:video.width,height:video.height,duration,fps,hasAudio}
   } catch (error) {
     if (error instanceof Error && error.message.startsWith('SUTRA_MEDIA_')) throw error

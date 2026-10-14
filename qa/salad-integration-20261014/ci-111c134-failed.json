@@ -1,0 +1,329 @@
+{
+  "conclusion": "failure",
+  "headSha": "111c1345ad5909c4619f6c7bd0718e50741e3cd9",
+  "jobs": [
+    {
+      "completedAt": "2026-10-14T01:02:22Z",
+      "conclusion": "failure",
+      "databaseId": 115621833705,
+      "name": "quality",
+      "startedAt": "2026-10-14T00:55:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-14T00:55:08Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-14T00:55:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:10Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 2,
+          "startedAt": "2026-10-14T00:55:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:39Z",
+          "conclusion": "success",
+          "name": "Run ./.github/actions/setup-sutra",
+          "number": 3,
+          "startedAt": "2026-10-14T00:55:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:57:12Z",
+          "conclusion": "success",
+          "name": "Run npm run check",
+          "number": 4,
+          "startedAt": "2026-10-14T00:55:39Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:57:42Z",
+          "conclusion": "success",
+          "name": "Run npx playwright install --with-deps chromium",
+          "number": 5,
+          "startedAt": "2026-10-14T00:57:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T01:02:19Z",
+          "conclusion": "failure",
+          "name": "Run node qa/t08/run.mjs browser-redteam",
+          "number": 6,
+          "startedAt": "2026-10-14T00:57:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T01:02:19Z",
+          "conclusion": "skipped",
+          "name": "Run node scripts/run-ci.mjs legacy",
+          "number": 7,
+          "startedAt": "2026-10-14T01:02:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T01:02:19Z",
+          "conclusion": "skipped",
+          "name": "Run python3 -m unittest discover -s deploy -p 'test_*.py'",
+          "number": 8,
+          "startedAt": "2026-10-14T01:02:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T01:02:20Z",
+          "conclusion": "success",
+          "name": "Audit production dependencies",
+          "number": 9,
+          "startedAt": "2026-10-14T01:02:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T01:02:21Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "number": 10,
+          "startedAt": "2026-10-14T01:02:20Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T01:02:21Z",
+          "conclusion": "success",
+          "name": "Post Run ./.github/actions/setup-sutra",
+          "number": 19,
+          "startedAt": "2026-10-14T01:02:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T01:02:21Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 20,
+          "startedAt": "2026-10-14T01:02:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T01:02:21Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 21,
+          "startedAt": "2026-10-14T01:02:21Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/puramapro-oss/sutra/actions/runs/38492833709/job/115621833705"
+    },
+    {
+      "completedAt": "2026-10-14T00:57:28Z",
+      "conclusion": "failure",
+      "databaseId": 115621834130,
+      "name": "contracts",
+      "startedAt": "2026-10-14T00:55:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-14T00:55:08Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-14T00:55:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:10Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 2,
+          "startedAt": "2026-10-14T00:55:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:37Z",
+          "conclusion": "success",
+          "name": "Run ./.github/actions/setup-sutra",
+          "number": 3,
+          "startedAt": "2026-10-14T00:55:10Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:56:00Z",
+          "conclusion": "success",
+          "name": "Run sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core",
+          "number": 4,
+          "startedAt": "2026-10-14T00:55:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:56:18Z",
+          "conclusion": "success",
+          "name": "Run npm run test:contracts",
+          "number": 5,
+          "startedAt": "2026-10-14T00:56:00Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:57:25Z",
+          "conclusion": "failure",
+          "name": "Run npm run test:media",
+          "number": 6,
+          "startedAt": "2026-10-14T00:56:18Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:57:25Z",
+          "conclusion": "skipped",
+          "name": "Run node qa/t08/run.mjs redteam",
+          "number": 7,
+          "startedAt": "2026-10-14T00:57:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:57:26Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "number": 8,
+          "startedAt": "2026-10-14T00:57:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:57:26Z",
+          "conclusion": "success",
+          "name": "Post Run ./.github/actions/setup-sutra",
+          "number": 15,
+          "startedAt": "2026-10-14T00:57:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:57:26Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 16,
+          "startedAt": "2026-10-14T00:57:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:57:26Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "startedAt": "2026-10-14T00:57:26Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/puramapro-oss/sutra/actions/runs/38492833709/job/115621834130"
+    },
+    {
+      "completedAt": "2026-10-14T00:56:00Z",
+      "conclusion": "success",
+      "databaseId": 115621834241,
+      "name": "disposable-database",
+      "startedAt": "2026-10-14T00:55:07Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-10-14T00:55:08Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-14T00:55:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:22Z",
+          "conclusion": "success",
+          "name": "Initialize containers",
+          "number": 2,
+          "startedAt": "2026-10-14T00:55:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:24Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 3,
+          "startedAt": "2026-10-14T00:55:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:46Z",
+          "conclusion": "success",
+          "name": "Run ./.github/actions/setup-sutra",
+          "number": 4,
+          "startedAt": "2026-10-14T00:55:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:47Z",
+          "conclusion": "success",
+          "name": "Run npm run test:migration-local",
+          "number": 5,
+          "startedAt": "2026-10-14T00:55:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:47Z",
+          "conclusion": "success",
+          "name": "Pipeline concurrency on disposable PostgreSQL",
+          "number": 6,
+          "startedAt": "2026-10-14T00:55:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:51Z",
+          "conclusion": "success",
+          "name": "Account and integrated migration permissions on a private cluster",
+          "number": 7,
+          "startedAt": "2026-10-14T00:55:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:52Z",
+          "conclusion": "success",
+          "name": "Salad isolated journal, concurrency and immutable artifacts",
+          "number": 8,
+          "startedAt": "2026-10-14T00:55:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:53Z",
+          "conclusion": "success",
+          "name": "Post Run ./.github/actions/setup-sutra",
+          "number": 14,
+          "startedAt": "2026-10-14T00:55:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:53Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "number": 15,
+          "startedAt": "2026-10-14T00:55:53Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:58Z",
+          "conclusion": "success",
+          "name": "Stop containers",
+          "number": 16,
+          "startedAt": "2026-10-14T00:55:53Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-14T00:55:58Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 17,
+          "startedAt": "2026-10-14T00:55:58Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/puramapro-oss/sutra/actions/runs/38492833709/job/115621834241"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/puramapro-oss/sutra/actions/runs/38492833709"
+}

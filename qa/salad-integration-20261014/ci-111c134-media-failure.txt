@@ -1,0 +1,49 @@
+✔ worker base64: real decoded dimensions/FPS, source buffer is not a ready receipt (2614.190197ms)
+✔ worker same-origin URL: actual download bytes decoded before return (96.723237ms)
+✔ worker expired output HTTP 403: no returned media or retry (1.580357ms)
+✔ worker expired output HTTP 410: no returned media or retry (0.672733ms)
+✖ worker corrupt last packet despite readable MP4 header fails full decode (96.770508ms)
+✔ worker rejects measured native, not trusted request labels (45.913155ms)
+✔ worker rejects measured portrait, not trusted request labels (45.237441ms)
+✔ worker rejects measured fps16, not trusted request labels (44.659676ms)
+✔ worker rejects measured sar2, not trusted request labels (44.374903ms)
+✔ silent worker output is usable as a source, but required audio blocks durable export (139.998041ms)
+✔ source/native/enhanced and requested/final dimensions are independently measured; upscale is explicit (643.933973ms)
+✔ 4K dimensions alone remain origin-unknown; native label requires explicit lineage (synthetic assertion only) (641.677891ms)
+✔ false native-4K claim cannot override a measured lower-resolution native output (308.270497ms)
+✔ missing declared native measurement cannot certify provenance (215.547318ms)
+✔ export voice mandatory but absent: zero assembly/persistence (0.977493ms)
+✔ export music mandatory but absent: zero assembly/persistence (0.236097ms)
+✔ export optional sound: valid silent composed bytes can persist with fresh full measurements (301.290141ms)
+✔ export expected audio absent in final bytes: forged hasAudio receipt cannot reach persistence (430.134097ms)
+✔ export A/V timestamps out of sync reject despite audio stream presence (224.388441ms)
+✔ export cached completion expired: fresh validation refuses ready, no new render (210.34003ms)
+✔ export cached completion corrupt: fresh validation refuses ready, no new render (259.132917ms)
+✔ failed assembly has no raw fallback and no automatic repeat (1.157669ms)
+✔ completed raw source URL is refused even with a valid byte receipt (98.084473ms)
+✔ DEFECT T05-MEDIA-01: raw bytes behind a different URL must not persist as a subtitled final (313.563907ms)
+✔ both compositors fail: no upload, no raw success (Shotstack dependency is only a throwing mock) (1.381643ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 24
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7337.546234
+
+✖ failing tests:
+
+test at scripts/test-t05-salad-media.mts:1:4545
+✖ worker corrupt last packet despite readable MP4 header fails full decode (96.770508ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t05-salad-media.mts:76:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_MEDIA_INVALID_OR_UNDECODABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

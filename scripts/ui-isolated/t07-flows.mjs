@@ -113,12 +113,19 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
   })
   fixture.videos = []
   await page.goto(base + '/production', { waitUntil: 'networkidle' })
-  await check('production shows an announced error and clears busy state after a failed request', async () => {
-    await page.route('**/api/production', async route => { await new Promise(done => setTimeout(done, 500)); await route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'Service temporairement indisponible' }) }) })
+  await check('production announces an uncertain outcome without raw diagnostics or automatic retry', async () => {
+    let submissions = 0
+    await page.route('**/api/production', async route => { submissions++; await new Promise(done => setTimeout(done, 500)); await route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'Service temporairement indisponible' }) }) })
     await page.getByTestId('production-idea').fill('Un voyage en montagne')
     await page.getByRole('navigation', { name: 'Étapes de production' }).getByRole('button').nth(1).click()
     await page.getByTestId('generate-script').click(); await expect(page.getByTestId('generate-script')).toHaveAttribute('aria-busy', 'true')
-    await expect(page.locator('main').getByRole('alert')).toContainText('Service temporairement indisponible'); await expect(page.getByTestId('generate-script')).toBeEnabled(); await auditAccessibility(page, 'production-error-320')
+    const alert = page.locator('main').getByRole('alert')
+    await expect(alert).toContainText('Résultat de la génération non confirmé')
+    await expect(alert).toContainText('La demande peut déjà avoir été prise en compte')
+    await expect(alert).not.toContainText('Service temporairement indisponible')
+    await expect(alert.getByRole('link', { name: 'Vérifier la bibliothèque' })).toHaveAttribute('href', '/library')
+    await expect(page.getByTestId('generate-script')).toBeEnabled(); await auditAccessibility(page, 'production-error-320')
+    assert.equal(submissions, 1, 'no automatic retry of an uncertain generation')
   })
   await page.unroute('**/api/production')
   await check('production waits for queued work before advancing and displays the completed result', async () => {

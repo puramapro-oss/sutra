@@ -44,3 +44,11 @@ Sept worktrees propres, SHA/handoffs vérifiés ; FERMABLE signifie préservé, 
 ## GitNexus avant commit
 
 `detect_changes(scope=staged)` complet : 203 fichiers, 702 symboles, 359 flux, CRITICAL. Tous les chemins modifiés correspondent à la livraison. Le graphe partagé associe aussi des flux étrangers via des propriétés génériques (`getAll`) : aucune certification exhaustive du graphe SUTRA revendiquée. Revue directe et gates ciblées complètes ci-dessus ; détail dans `detect-changes-review.json`.
+
+## Correction après CI Linux111c134
+
+CI initiale38492833709 : PostgreSQL PASS ; deux gates rouges conservées dans `ci-111c134-failed.json`, jamais promues. Validation vidéo corrigée : les diagnostics FFmpeg/ffprobe de niveau erreur invalident désormais le média même lorsque le binaire retourne zéro. Le contre-test T05 garde son vrai MP4 avec dernier paquet corrompu. L'assertion navigateur historique a été alignée sur le message sûr de résultat incertain, avec vérification d'une seule soumission et lien bibliothèque ; aucun assouplissement produit.
+
+`media-fix-local-gates.json` : contrats,59médias,TypeScript/lint/build tous PASS après correction ; secret local restauré à l'identique. Le résultat navigateur ciblé et la nouvelle CI sont consignés séparément avant promotion. Analyse d'impact HIGH exécutée avant les deux éditions ; graphe partagé non exhaustif.
+
+Navigateur complet corrigé : 210 contrôles, 165 audits accessibilité et 7 contrôles supplémentaires PASS ; aucune exception navigateur. Voir `browser-fix-local.json`, `browser-fix-results.json`, `browser-fix-extra.json`.
