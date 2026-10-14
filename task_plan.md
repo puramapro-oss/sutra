@@ -478,3 +478,7 @@ Sept livraisons e09 vérifiées/importées sans conflit : T02 56c0ca8, T03 47f68
 
 ## T01 candidat ferme — 2026-10-14T14:57:06.765664+00:00
 16 simulations migration PASS ; garde reelle a deux sessions PostgreSQL PASS (DDL concurrent bloque55P03), rollback exact, production intacte. Scan secrets staged : six UUID idempotence synthetiques T07 revus via exclusions exactes auteur, aucune fuite restante. Commit candidat + CI unique et ACK T08 requis avant migration/promotion.
+
+
+## T01 — correction du harnais CI ca847
+CI38585143336 : TypeScript/lint/build et PostgreSQL PASS ; contracts853PASS/17FAIL/7SKIP. Les17FAIL proviennent exclusivement des deux nouvelles fixtures T03 : URL db.fixture.invalid attendue, URL globale sutra-test.invalid fournie. Runner T01 sépare ce groupe avec sa configuration auteur ; assertions/source produit inchangées. Retest ciblé18PASS, lint/syntaxe PASS. Nouveau SHA/gate à suivre, aucune promotion et aucun PASS final présumé. Preuve qa/t01-consolidation-20261014/ci-fixture-correction.json.

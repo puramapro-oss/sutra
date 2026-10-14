@@ -7,7 +7,6 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
-  'scripts/test-t03-durable-reliability.mts', 'qa/t03-durable-reliability-20261014/submission.test.mts',
   'scripts/test-t06-social-validation.mts', 'qa/t04-provider-validation-20261014/probe.test.mjs',
   'scripts/test-t02-final-validation-media.mts',
   'qa/t02-final-validation-20261014/production-error.test.mts',
@@ -42,6 +41,9 @@ const nodeTests = [
 const profiles = {
   contracts: [
     ['contracts', ['--experimental-test-module-mocks', '--import', 'tsx', '--test', '--test-concurrency=2', ...nodeTests]],
+    ['durable-submission', ['--experimental-test-module-mocks', '--import', 'tsx', '--test',
+      'scripts/test-t03-durable-reliability.mts', 'qa/t03-durable-reliability-20261014/submission.test.mts'],
+    { NEXT_PUBLIC_SUPABASE_URL: 'https://db.fixture.invalid' }],
     ['schedule', ['scripts/test-auto-schedule.mjs']],
     ['composition', ['scripts/test-auto-composition.mjs']],
     ['publication', ['scripts/test-auto-publication.mjs']],
@@ -85,10 +87,10 @@ Object.assign(env, {
 const output = resolve(root, 'test-results/ci', profile)
 mkdirSync(output, { recursive: true })
 const results = []
-for (const [name, args] of profiles[profile]) {
+for (const [name, args, fixtureOverrides = {}] of profiles[profile]) {
   const start = Date.now()
   const result = spawnSync(process.execPath, args, {
-    cwd: root, env, encoding: 'utf8', timeout: 15 * 60_000, maxBuffer: 32 * 1024 * 1024,
+    cwd: root, env: { ...env, ...fixtureOverrides }, encoding: 'utf8', timeout: 15 * 60_000, maxBuffer: 32 * 1024 * 1024,
   })
   writeFileSync(resolve(output, `${name}.log`), `${result.stdout || ''}${result.stderr || ''}`)
   const pass = result.status === 0 && !result.error && !result.signal

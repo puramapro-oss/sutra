@@ -1,0 +1,1525 @@
+✔ connect 409: actionable safe feedback and retry enabled (1.949408ms)
+✔ connect 503: actionable safe feedback and retry enabled (0.696253ms)
+✔ connect 500: actionable safe feedback and retry enabled (0.480267ms)
+✔ connect success preserves authorized OAuth redirect (0.610964ms)
+(node:3752) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3752) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ production: unauthenticated request cannot read service data or submit work (4.954093ms)
+✔ production: expired session cannot proceed even if SDK retains user data (0.627198ms)
+✔ production: active session reaches a queued receipt without executing a worker (10.963621ms)
+✔ T02-FINAL-01: production must not return raw submission RPC diagnostics (0.888093ms)
+(node:3790) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3790) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T02-C01 Salad disabled by default, no network or implicit credentials (3.931086ms)
+✔ T02-C02 Salad URL rejects http (3.137875ms)
+✔ T02-C02 Salad URL rejects metadata (0.525926ms)
+✔ T02-C02 Salad URL rejects loopback (0.270999ms)
+✔ T02-C02 Salad URL rejects ipv6 (0.216287ms)
+✔ T02-C02 Salad URL rejects numeric (0.266964ms)
+✔ T02-C02 Salad URL rejects suffixSpoof (0.225892ms)
+✔ T02-C02 Salad URL rejects credentials (0.19833ms)
+✔ T02-C02 Salad URL rejects query (0.630303ms)
+✔ T02-C02 Salad URL rejects fragment (0.346184ms)
+✔ T02-C02 Salad URL rejects customPort (0.294876ms)
+✔ T02-C02 Salad URL rejects path (0.193442ms)
+✔ T02-C03 Gateway and worker credentials must differ (0.227314ms)
+✔ T02-C04 malformed credentials are rejected without reflecting their value (0.598815ms)
+✔ T02-C05 capability GET sends both credentials only as headers and forbids redirects (31.190633ms)
+✔ T02-C06 network errors never expose credentials to capability callers (0.756955ms)
+✔ T02-C07 foreign job scope/fingerprint rejected before accepting any result (2.742508ms)
+✔ T02-C08 result download binds fixed job path, both auth headers, bytes hash and redirects (3.067069ms)
+✔ T02-C09 private bridge accepts loopback only, never a remote/metadata host (0.305873ms)
+✔ T02-C10 bridge refuses result URL https://evil.example/files without download (0.646207ms)
+✔ T02-C10 bridge refuses result URL http://127.0.0.1:7861/admin without download (0.496751ms)
+✔ T02-C10 bridge refuses result URL http://127.0.0.1:7861/files#fixture without download (0.459966ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /health (3.68271ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/capabilities (1.38841ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs (1.123589ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa (0.758237ms)
+✔ T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/media (0.556682ms)
+✔ T02-C12 credentials in query cannot substitute for worker authentication (0.698236ms)
+✔ T02-C13 worker storage errors are expunged, no signed URL or credential returned (0.828743ms)
+✔ T02-C14 replacing server credential invalidates old bearer for new worker instance (0.35698ms)
+✔ T02-C15 authenticated caller cannot use arbitrary bridge paths through worker wrapper (0.982036ms)
+✖ submission exposes only exact allowed public code: 503 T03_SYNTHETIC_INTERNAL_DIAGNOSTIC (6.610748ms)
+✖ submission exposes only exact allowed public code: 403 SUTRA_QUOTA_EXHAUSTED (1.555883ms)
+✖ submission exposes only exact allowed public code: 409 SUTRA_IDEMPOTENCY_CONFLICT (1.507399ms)
+✖ submission exposes only exact allowed public code: 400 SUTRA_INVALID_REQUEST_ID (1.0707ms)
+✖ submission exposes only exact allowed public code: 503 SUTRA_QUOTA_EXHAUSTED: T03_SYNTHETIC_INTERNAL_DIAGNOSTIC (1.029306ms)
+✔ submission transport exception is redacted and never retried by the helper (1.118462ms)
+✔ default Suno production adapter: submit-network cannot cause a second paid submission (3.660707ms)
+✔ default Suno production adapter: submit-503 cannot cause a second paid submission (2.267329ms)
+✔ default Suno production adapter: poll-network cannot cause a second paid submission (6.619772ms)
+✔ default Suno production adapter: poll-403 cannot cause a second paid submission (1.151081ms)
+✔ default Suno production adapter: result-write cannot cause a second paid submission (1.532799ms)
+✔ default Suno production adapter: result-ack cannot cause a second paid submission (1.116248ms)
+✔ default Suno production adapter: stage-ack cannot cause a second paid submission (0.940573ms)
+✔ default Suno production adapter: success cannot cause a second paid submission (0.830546ms)
+✔ default Suno adapter: unconfirmed intent never reaches HTTP (0.315046ms)
+✔ actual client + worker: accepted POST response lost, interrupted process, reconstruction polls same ID only (49.41759ms)
+✔ client intent before-write interruption: no POST before confirmed reserve (2.396995ms)
+✔ client intent after-write interruption: no POST before confirmed reserve (3.840348ms)
+✔ client accepted-state receipt lost after commit: reconstructed client GETs durable remote ID (1.914215ms)
+✔ remote execution reserve committed but ACK lost: restart never computes an ambiguous existing claim (1.946845ms)
+✔ expired remote owner cannot checkpoint; fresh worker GET reports unknown and never starts compute (2.115389ms)
+✔ UNKNOWN holds execution slot after restart and deadline; different operation cannot start a second engine (2.687575ms)
+✔ concurrent reconstructed clients keep one remote submission even with racing reconciliation CAS (10.565219ms)
+✔ replayed operation with different input refuses before GET/POST and preserves original checkpoint (1.432206ms)
+✔ dotenv escaped boundary whitespace follows T01 normalization without modifying master (1.286516ms)
+✔ selected names only, comments/quotes, no inherited environment (0.630844ms)
+✔ duplicate or expandable selected variables fail closed without value in error (0.380235ms)
+✔ Suno configured variable precedence matches application; malformed preferred URL never falls back (0.151349ms)
+✔ only four expected read requests; correct environment key separation (0.183177ms)
+✔ reject generation/admin/cancel, foreign hosts, credential URLs and header injection before I/O (0.418243ms)
+✔ RunPod health validates read access with zero ready workers, not generation permission or credit (0.22469ms)
+✔ Shotstack empty templates valid, HTML or success=false invalid (0.149266ms)
+✔ Suno separates successful authentication from zero/positive credits; rejects malformed credit and HTTP200 API error (0.228116ms)
+✔ Suno API 429 means insufficient credits, distinct from HTTP429 and API405/430 rate limits (0.163437ms)
+✔ HTTP 401/403/404/429/500 remain distinct and do not prove bad key or trigger retry (18.279036ms)
+✔ GET only, redirects forbidden, expected header, bounded success body (2.574524ms)
+✔ malformed, oversized and redirect/transport errors are redacted with one attempt (0.92612ms)
+✔ deadline covers both headers and stalled response stream without retry (31.834797ms)
+(node:3876) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3876) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T08-Z01 current connect endpoint must replace undocumented /oauth/url (3.651332ms)
+✔ T08-Z02 initiation must carry owned profileId, redirect_url and posting scopes (1.200365ms)
+✔ T08-Z03 documented authUrl response must survive adapter parsing (0.486366ms)
+✔ T08-Z04 hosted callback must reach session verification without requiring an obsolete code (1.760302ms)
+✔ T08-S01 provider 2xx error payload must never reach the music API caller (5.961346ms)
+✔ T08-S02 provider 401 payload stays redacted at the same music API boundary (1.040604ms)
+✔ ElevenLabs generateVoice: succes (7.68354ms)
+✔ ElevenLabs generateVoice: 401 remonte explicitement (0.977037ms)
+✔ ElevenLabs generateVoice: 429 non rejoue, erreur explicite (0.521569ms)
+✔ ElevenLabs generateVoice: cle absente -> erreur SUTRA_ENV_MISSING explicite (0.223438ms)
+✔ ElevenLabs listVoices: 403 refuse + reponse invalide detectee (0.864628ms)
+[pexels] recherche videos: HTTP 404 — resultats vides
+✔ Suno: succes apres polling (3002.437711ms)
+✔ Suno: POST 500 = UNE SEULE tentative (pas de rejeu génératif payant) (0.814602ms)
+✔ Suno: 401 au poll -> abandon immediat (pas de boucle 2 min) (0.586948ms)
+✔ Suno: reponse invalide (id absent) -> detail fournisseur expurge (0.441408ms)
+✔ Suno: cle absente -> erreur explicite (0.247855ms)
+✔ RunPod submit: succes avec jobId (0.618585ms)
+✔ RunPod submit: 401 explicite (0.302237ms)
+✔ RunPod submit: reponse invalide (pas de job ID) (0.302748ms)
+✔ RunPod: endpoint absent -> erreur explicite (pas de crash import) (0.097908ms)
+✔ LTX: une reponse binaire V1 n'est plus acceptee comme succes V2 (7.093128ms)
+✔ LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx) (0.392874ms)
+✔ LTX: cle absente -> erreur explicite (0.24503ms)
+✔ Pexels searchVideos: succes + format portrait dans la requête (0.495039ms)
+✔ Pexels searchVideos: 404 -> liste vide (dégradation propre) (0.653609ms)
+✔ Pexels searchVideos: clé absente -> liste vide sans appel réseau (0.073812ms)
+✔ generateVoiceWithFallback: 500 ne soumet jamais une seconde synthese (0.330089ms)
+✔ generateVoiceWithFallback: erreur permanente preservee sans attente ni retry (0.237049ms)
+✔ many consumers share one session read, subscription and profile request (13.573999ms)
+✔ token refresh updates the token without reloading a loaded profile (16.81394ms)
+✔ a newer sign-in wins over an older getSession result (5.998292ms)
+✔ switching accounts clears the old profile and ignores its late response (16.236486ms)
+✔ sign-out cancels the in-flight profile and leaves no former user data (12.237434ms)
+✔ strict-mode cleanup and remount install a fresh working subscription (6.027196ms)
+✔ wrong-owner profile is rejected and a refetch can recover (11.37654ms)
+✔ simultaneous manual refreshes are deduplicated (7.631112ms)
+✔ the server snapshot never contains a client session (6.75741ms)
+✔ reject unsafe or looping return path null (0.434557ms)
+✔ reject unsafe or looping return path "" (0.093491ms)
+✔ reject unsafe or looping return path "https://evil.invalid" (0.062925ms)
+✔ reject unsafe or looping return path "//evil.invalid" (0.030055ms)
+✔ reject unsafe or looping return path "/\\evil.invalid" (0.080892ms)
+✔ reject unsafe or looping return path "/%2f%2fevil.invalid" (0.123177ms)
+✔ reject unsafe or looping return path "/%5cevil.invalid" (0.077618ms)
+✔ reject unsafe or looping return path "/login" (0.183868ms)
+✔ reject unsafe or looping return path "/api/delete" (0.086782ms)
+✔ reject unsafe or looping return path "/auth/callback" (0.042294ms)
+✔ reject unsafe or looping return path "/broken%zz" (0.063737ms)
+✔ reject unsafe or looping return path "/\n/evil.invalid" (0.035404ms)
+✔ preserve return path /create?mode=manual&format=9%3A16 (1.305334ms)
+✔ preserve return path /settings?tab=apparence#logo (0.082685ms)
+✔ preserve return path /reset-password (0.042374ms)
+✔ session-only choice removes expiry on every refresh without changing cookie safety flags (0.293294ms)
+✔ remember-me uses thirty days (0.074342ms)
+✔ cookie deletion remains deletion (0.044777ms)
+✔ existing sessions without a new choice keep their prior cookie options (0.055023ms)
+✔ raster image signatures determine storage type (1.014033ms)
+✔ image uploads reject SVG, MIME mismatch, empty and oversized files (6.890902ms)
+✔ literal internal navigation points to an existing page or declared redirect (28.184683ms)
+✓ export : interruption→reprise sans double rendu, re-reprise 100% en cache
+✓ auto : crash assets → plan conservé, chaque étape payée une fois au total
+✓ auto : échec montage tracé, aucune URL finale publiable
+✓ voix 7 Mo : checkpointée et jamais resynthétisée après interruption
+✓ voix 24 Mo : 3 morceaux checkpointés, jamais resynthétisée après interruption
+✔ EXPORT : crash pendant le rendu → reprise SANS re-rendu de l'acquis (4.772778ms)
+✔ AUTO : crash pendant les assets → plan conservé, assets/assemblage une seule fois (1.583795ms)
+✔ AUTO : échec de montage → aucun résultat final, erreur transmise au worker (0.731145ms)
+✔ VOIX >5 Mo : buffer checkpointé — interruption ne régénère PAS la voix (6.754555ms)
+✔ VOIX 24 Mo : morceaux checkpointés — interruption ne régénère PAS (69.70262ms)
+✔ editor retains original media identity when scenes are reordered (1.312255ms)
+✔ legacy track recovery fails closed on missing, ambiguous or different scene sources (2.058423ms)
+✔ voice gain reaches both renderers and changes the durable render identity (1.11135ms)
+✔ fetchWithRetry: 500 x2 puis 200 -> succes (retry borne) (3442.231045ms)
+✔ fetchWithRetry: 404 jamais rejoue (retour immediat) (0.981054ms)
+✔ fetchWithRetry: 429 non rejoue (retour immediat, consommateur decide) (0.321537ms)
+✔ fetchWithRetry: erreur reseau apres retries -> echec enregistre (1049.826429ms)
+✔ fetchWithRetry: POST JAMAIS rejoue sans clé idempotence (anti double facturation) (0.527507ms)
+✔ fetchWithRetry: POST avec contrat fournisseur ET cle idempotence → reprise autorisee (1354.883169ms)
+✔ estimateCost: grille officielle LTX 2.3 (fast 1080p = 0.06 USD/s) (0.387266ms)
+✔ snapLtxDuration: durées ramenées aux valeurs admises par LTX 2.3 (0.219021ms)
+✔ ltxCompatibleFormat: le carré part en 16:9 (recadré au montage) (0.186182ms)
+✔ clampQualityToPlan: starter demandant 4k → 720p AVANT tout appel payant (0.284811ms)
+✔ resolveVoiceProviderId: jamais un alias brut vers l'API TTS (0.184399ms)
+✔ env: requireEnv message explicite (nom + .env.local), sans valeur (0.190488ms)
+✔ env: providerConfigStatus ne divulgue aucune valeur (0.70055ms)
+✔ env: Shotstack diagnostic selects the configured environment without substituting credentials (0.394247ms)
+✔ env: isEnvSet ignore les valeurs vides (0.074582ms)
+✔ env: inventaire providers couvre les fournisseurs attendus (0.082125ms)
+✔ export resumes paid and saved steps but freshly validates immutable bytes (3.512443ms)
+✔ changed brief is rejected before any paid resubmission or publication (0.687399ms)
+✔ legacy checkpoints cannot return a different saved URL (0.713108ms)
+✔ validation failure is retryable without another render (0.511012ms)
+✔ SIRET format validator (0.601389ms)
+✔ SIREN format validator (0.130577ms)
+﹣ LIVE: INSEE_API_KEY configured (0.054813ms) # SKIP
+﹣ LIVE : SIRET INSEE Paris Club (47832593900021) → 200 avec denomination (0.058489ms) # SKIP
+﹣ LIVE : SIRET fictif (99999999999999) → header.statut=404 (0.067392ms) # SKIP
+﹣ LIVE : mauvaise clé → 401/403 (0.539596ms) # SKIP
+(node:4019) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4019) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ 202 receipt is polled until done; queued videoId cannot be mistaken for final media (2.699964ms)
+✔ failed, missing receipt, interrupted and still queued work never becomes UI success (4.736533ms)
+✔ job status is owner-filtered, uncached, and omits progress/provider errors (2.551329ms)
+✔ API middleware refuses cross-site mutations and non-JSON generation before side effects (3.000839ms)
+✔ provider JSON is bounded and object-only (0.463351ms)
+✔ production 202 exposes only the final result after done, never journal checkpoints (0.643744ms)
+✔ Split sur 9.99€ franchise 293B (0% TVA) (0.631986ms)
+✔ Split sur 100€ TTC avec TVA 20% (HT=83.33€) (0.167323ms)
+✔ Split sur amount 0 → tous à 0 (0.083947ms)
+✔ Fallback sans total_excluding_tax : HT = TTC - tax (0.07277ms)
+✔ Format total_taxes[] moderne Stripe 2025+ (0.109926ms)
+✔ Invariant : somme des splits == HT pour 100 invoices aléatoires (0.315868ms)
+﹣ DB : applique split sur invoice fake → archive + pool_balances + pool_transactions (0.068955ms) # SKIP
+✔ local: sans configuration, route proprietaire reservee sans repli payant (0.650403ms)
+✔ local: configuré → propriétaire OUI, client JAMAIS (0.12576ms)
+✔ local: faux MP4 base64 refuse apres inspection des octets (201.602693ms)
+✔ local: erreur HTTP → message explicite (serveur local à vérifier) (0.816635ms)
+✔ local: sonde santé — 200 ok, erreur réseau détaillée (0.527678ms)
+✔ super_admin → ltx-2-3-pro (tous plans) (0.60168ms)
+✔ enterprise + admin → ltx-2-3-pro (0.124198ms)
+✔ starter/creator/empire → ltx-2-3-fast (0.242326ms)
+✔ free → wan-2.2 direct (pas de LTX) (0.087702ms)
+✔ free sans email → wan-2.2 (0.065549ms)
+✔ super_admin override free plan (0.082034ms)
+﹣ DB : insert dans video_generations + lecture + cleanup (0.053671ms) # SKIP
+✔ V2: one POST, durable ID, processing/completed, safe output download and truthful cost (10.756638ms)
+✔ resume after worker restart and repeat submit reuse the same job without POST (1.265224ms)
+✔ simultaneous submissions use atomic claim; exactly one paid request (1.225143ms)
+✔ same operation with changed content rejects, including references/media metadata (0.71419ms)
+✔ uncertain paid outcome: lost network response; persistent barrier prevents retry/fallback (0.315157ms)
+✔ uncertain paid outcome: HTTP 500; persistent barrier prevents retry/fallback (0.501679ms)
+✔ uncertain paid outcome: HTTP 503; persistent barrier prevents retry/fallback (0.379955ms)
+✔ uncertain paid outcome: malformed 202; persistent barrier prevents retry/fallback (0.344531ms)
+✔ uncertain paid outcome: legacy binary HTTP 200; persistent barrier prevents retry/fallback (0.452725ms)
+✔ uncertain paid outcome: null body; persistent barrier prevents retry/fallback (0.419004ms)
+✔ malformed acceptance retains a valid paid job ID for GET-only reconciliation (1.900665ms)
+✔ submission HTTP 400: explicit status/quota, no automatic resubmission (0.526527ms)
+✔ submission HTTP 401: explicit status/quota, no automatic resubmission (0.302498ms)
+✔ submission HTTP 402: explicit status/quota, no automatic resubmission (0.275197ms)
+✔ submission HTTP 403: explicit status/quota, no automatic resubmission (0.254766ms)
+✔ submission HTTP 404: explicit status/quota, no automatic resubmission (0.376229ms)
+✔ submission HTTP 422: explicit status/quota, no automatic resubmission (0.29727ms)
+✔ submission HTTP 429: explicit status/quota, no automatic resubmission (0.265592ms)
+✔ journal failure before submission prevents spending (0.202466ms)
+✔ accepted but checkpoint lost: expose remote ID, never automatically reclaim submitting record (0.539256ms)
+✔ GET failures back off and recover without POST; Retry-After respected (0.486696ms)
+✔ local timeout retains remote job, and a later resume succeeds (0.486325ms)
+✔ local cancellation is explicit; no undocumented remote DELETE or webhook acceptance (0.365473ms)
+✔ remote failure is retained as terminal; no post/fallback on resume (0.395858ms)
+✔ 404 expiry is not proof of failure or permission to spend again (0.354126ms)
+✔ invalid polling contract rejected: {"id":"wrong","created_at":"2026-10-12T10:00:00.000Z","status":"completed"} (0.283249ms)
+✔ invalid polling contract rejected: {"id":"job-123","created_at":"2026-10-12T10:00:00.000Z","status":"cancelled"} (0.25759ms)
+✔ invalid polling contract rejected: {"id":"job-123","created_at":"2026-10-12T10:00:00.000Z","status":"completed","result":{}} (0.295507ms)
+✔ reject unsafe output URL output.test (0.386414ms)
+✔ reject unsafe output URL 127.0.0.1 (0.302627ms)
+✔ reject unsafe output URL localhost (0.525565ms)
+✔ reject unsafe output URL cdn.test (0.336059ms)
+✔ output download failure can be retried without generation (0.528499ms)
+✔ official operation text-to-video: HTTP route, output type and billing unit (0.380114ms)
+✔ official operation image-to-video: HTTP route, output type and billing unit (0.828022ms)
+✔ official operation retake: HTTP route, output type and billing unit (0.642912ms)
+✔ official operation extend: HTTP route, output type and billing unit (0.631865ms)
+✔ official operation video-to-video-reframe: HTTP route, output type and billing unit (0.603563ms)
+✔ official operation video-to-video-hdr: HTTP route, output type and billing unit (0.407546ms)
+✔ unsupported references/seed/callback/model/duration are rejected before any HTTP (0.856215ms)
+✔ source metadata and priced bounds: retake, extend frame limit, HDR, reframe (0.718116ms)
+✔ checkpoint adapter: concurrent submission persists one intent and preserves foreign slots (0.518785ms)
+✔ checkpoint adapter refuses spend on failed lease persistence (0.338562ms)
+✔ checkpoint adapter refuses spend when durable persistence is absent (0.233383ms)
+✔ separate journal wrappers for one scene serialize before the paid POST (13.810126ms)
+✔ journal coordination keeps scene scopes and current lease callbacks distinct (0.95257ms)
+✔ checkpoint adapter never overwrites a legacy job with a new POST (0.293124ms)
+✔ poll requires HTTP 200 even if another 2xx carries a plausible terminal body (0.426095ms)
+✔ Media refuse adresse privee/reservee 0.0.0.0 (1.576605ms)
+✔ Media refuse adresse privee/reservee 10.0.0.1 (0.277369ms)
+✔ Media refuse adresse privee/reservee 127.0.0.1 (0.110397ms)
+✔ Media refuse adresse privee/reservee 169.254.169.254 (0.138089ms)
+✔ Media refuse adresse privee/reservee 172.16.0.1 (0.159952ms)
+✔ Media refuse adresse privee/reservee 192.168.0.1 (0.140152ms)
+✔ Media refuse adresse privee/reservee 100.64.0.1 (0.101564ms)
+✔ Media refuse adresse privee/reservee 198.18.0.1 (0.076095ms)
+✔ Media refuse adresse privee/reservee 192.0.2.1 (0.09874ms)
+✔ Media refuse adresse privee/reservee 198.51.100.1 (0.137939ms)
+✔ Media refuse adresse privee/reservee 203.0.113.1 (0.089275ms)
+✔ Media refuse adresse privee/reservee 224.0.0.1 (0.056405ms)
+✔ Media refuse adresse privee/reservee 255.255.255.255 (0.043926ms)
+✔ Media refuse adresse privee/reservee ::1 (3.287222ms)
+✔ Media refuse adresse privee/reservee :: (0.083286ms)
+✔ Media refuse adresse privee/reservee ::ffff:127.0.0.1 (0.052299ms)
+✔ Media refuse adresse privee/reservee ::ffff:7f00:1 (0.082054ms)
+✔ Media refuse adresse privee/reservee fc00::1 (0.102355ms)
+✔ Media refuse adresse privee/reservee fe80::1 (0.057648ms)
+✔ Media refuse adresse privee/reservee 2001:db8::1 (0.065379ms)
+✔ Media refuse adresse privee/reservee 2002:7f00:1:: (0.068213ms)
+✔ Media refuse adresse privee/reservee 64:ff9b::7f00:1 (0.127543ms)
+✔ Media refuse adresse privee/reservee 3fff::1 (0.143767ms)
+✔ Media refuse adresse privee/reservee invalid (0.053431ms)
+✔ Media autorise les adresses publiques IPv4 et IPv6 (0.139271ms)
+✔ Media refuse protocoles, credentials, ports et IP obfusquees (0.422179ms)
+✔ Media epingle le DNS valide et ne transmet pas de credentials (3.103113ms)
+✔ Media refuse une reponse DNS melangeant IP publique et privee (0.412233ms)
+✔ Media revalide les redirections avant le second telechargement (0.492535ms)
+✔ Media suit une redirection publique bornee (0.742193ms)
+✔ Media bloque les boucles de redirection (0.575ms)
+✔ Media refuse MIME HTML (0.351211ms)
+✔ Media refuse faux MP4 (0.447087ms)
+✔ Media refuse taille declaree (0.230749ms)
+✔ Media refuse taille stream (0.329298ms)
+✔ Media refuse troncature (0.380646ms)
+✔ Media refuse compression (0.198761ms)
+✔ Media refuse HTTP 403 (0.247374ms)
+✔ Media timeout couvre aussi le corps de reponse (16.436849ms)
+✔ LTX V2 soumet 202, sauvegarde ID, poll GET et telecharge sans token (13.973955ms)
+✔ LTX image conserve references, camera et endpoint lors du polling (13.07859ms)
+✔ LTX reprise apres reponse de download perdue ne refait aucun POST (1.68574ms)
+✔ LTX le meme objet de reprise conserve aussi son identifiant apres succes (1.286086ms)
+✔ LTX reponse POST perdue bloque la deuxieme soumission (0.719459ms)
+✔ LTX erreur du checkpoint ID interdit polling et nouvelle soumission (0.875564ms)
+✔ LTX echec terminal reste terminal sans regeneration (0.745237ms)
+✔ LTX requete modifiee sous le meme checkpoint refusee avant reseau (0.835634ms)
+✔ LTX rejette une reponse incomplete {"status":"completed","result":{"video_url":"https://media.invalid/x"}} (0.497282ms)
+✔ LTX rejette une reponse incomplete {"id":"other","status":"completed"} (0.374767ms)
+✔ LTX rejette une reponse incomplete {"id":"job-1","created_at":"2026-10-12T10:00:00Z","completed_at":"2026-10-12T10:00:01Z","status":"unknown"} (0.48306ms)
+✔ LTX rejette une reponse incomplete {"id":"job-1","created_at":"2026-10-12T10:00:00Z","completed_at":"2026-10-12T10:00:01Z","status":"completed","result":{}} (0.489139ms)
+✔ LTX requete acceptee puis erreur ne declenche pas de fallback payant WAN (0.955165ms)
+✔ LTX circuit ouvert ne perd ni image de reference ni contrainte camera (0.341717ms)
+✔ Export cloud: fichier decode, dimensions/audio mesures, copie durable avant validation (200.81653ms)
+✔ Export cloud: fausse resolution refusee sans upload ni succes (42.878145ms)
+✔ Export cloud: fichier tronque refuse avant copie durable (40.408259ms)
+✔ Export cloud: echec stockage reste une erreur; la reprise reutilise les memes octets (180.091353ms)
+✔ PR3 legacy ID preserves original body fingerprint and resumes GET only (2.10865ms)
+✔ A pending proof serialized by 0.4.5 remains readable byte for byte (1.573199ms)
+✔ API surface expected (0.101403ms)
+✔ DetachedTimestampFile.fromHash stores the exact digest (0.4432ms)
+✔ serializeToBytes returns non-empty Uint8Array with magic header (0.137979ms)
+✔ Different payloads produce different SHA-256 (collision sanity) (0.085078ms)
+✔ Base64 encode/decode of proof bytes is lossless (0.111178ms)
+✔ Purama sha256 contract : hex 64 chars lowercase (0.189676ms)
+﹣ NETWORK : real stamp() → deserialize → fileDigest round-trip (0.05958ms) # SKIP
+✔ restart after durable script checkpoint preserves all nine independent outputs (2.695667ms)
+✔ restart after durable scenes checkpoint preserves all nine independent outputs (0.638987ms)
+✔ restart after durable images checkpoint preserves all nine independent outputs (0.642772ms)
+✔ restart after durable voice checkpoint preserves all nine independent outputs (1.589874ms)
+✔ restart after durable music checkpoint preserves all nine independent outputs (0.423401ms)
+✔ restart after durable subtitles checkpoint preserves all nine independent outputs (0.31065ms)
+✔ restart after durable composition checkpoint preserves all nine independent outputs (0.252092ms)
+✔ restart after durable export checkpoint preserves all nine independent outputs (0.437411ms)
+✔ restart after durable publication checkpoint preserves all nine independent outputs (0.402359ms)
+✔ paid call safety with intent-not-written (0.385863ms)
+✔ paid call safety with intent-ack-lost (0.095975ms)
+✔ paid call safety with result-not-written (0.058879ms)
+✔ paid call safety with result-ack-lost (0.03988ms)
+✔ 30 simultaneous requests in one executor share one provider operation (6.543276ms)
+✔ a durable remote id allows polling, never another submission (0.424743ms)
+✔ forged or non-finite final media proof cannot authorize ready (0.529271ms)
+✔ final proof requires literal validation flags and positive finite integer dimensions (0.338723ms)
+✔ request identity is stable across object key order, distinct across users and intents (6.502215ms)
+✔ submission uses one RPC for quota/video/job and returns original video on retry (3.253611ms)
+✔ missing/wrong receipts and RPC errors never authorize paid work (3.569439ms)
+(node:4208) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4208) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ private reference stays constant while authorized signatures renew (1.070229ms)
+✔ missing owner and cross-user access are refused before signing (0.489701ms)
+✔ worker authorities are isolated under concurrency (4.546186ms)
+✔ legacy ownership fails closed for ambiguous or missing inventory (1.119914ms)
+✔ route authenticates the owner and never caches redirects or failures (16.015583ms)
+✔ publication capability requires exact durable journal, owner and live profile (2.817712ms)
+✔ malformed references cannot escape their owner prefix (0.248256ms)
+✓ interruption : acquis avant crash checkpointé (script+musique+scène 0)
+✓ reprise : aucun acquis régénéré, chaque ressource payée une fois (scène tuée: 2 appels max)
+✓ étape video : reprise complète, scènes saines jamais régénérées
+✓ voix : reprise après crash upload sans resynthèse (1 seul débit ElevenLabs)
+✓ annulation : nouvelle requête repart de zéro, aucun résultat annulé réutilisé
+✔ INTERRUPTION : crash à la scène 1 — les résultats déjà payés sont checkpointés (2.939316ms)
+✔ REPRISE : seules les scènes manquantes sont générées — AUCUN double appel (4.743609ms)
+✔ étape VIDEO step-by-step : interruption scène 0 puis reprise complète (0.948394ms)
+✔ VOIX : buffer checkpointé — crash avant upload ne re-paie pas la synthèse (0.945199ms)
+✔ ANNULATION (niveau pipeline) : une tâche annulée ne rejoue pas depuis ses checkpoints (1.340077ms)
+(node:4247) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4247) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ Suno ambiguous submission never reflects provider payload or resubmits (9.78508ms)
+✔ Suno polling bounds and redacts malformed responses without resubmission (4.664285ms)
+✔ smart: missing durable context, insufficient plan, long scene and lost reference fail before spend (2.606673ms)
+✔ smart paid timeout never invokes WAN and restart reuses submission barrier (9.62689ms)
+✔ visual fallback never converts an uncertain paid outcome to stock or WAN (0.723524ms)
+✔ existing LTX intent or execution never becomes stock when credentials or plan change (1.074836ms)
+✔ a configured WAN cannot replace an explicit LTX execution (0.293203ms)
+✔ smart: source provenance includes job/cost/timeout/quota, excludes signed output URL (2.915139ms)
+✔ retake and extend wrappers use real editing endpoints, never seed/last-frame regeneration (1.670376ms)
+✔ music: no configured provider means explicit error, never empty success (0.348247ms)
+✔ music: failed primary submission never cascades to other paid providers (0.382088ms)
+✔ quality/cost selection: absent configuration excluded, invalid/too-long duration never underdelivered (0.460727ms)
+✔ RunPod: terminal FAILED retains job and never invokes retry/cancel (0.590864ms)
+✔ RunPod: terminal CANCELLED retains job and never invokes retry/cancel (0.223969ms)
+✔ RunPod: terminal TIMED_OUT retains job and never invokes retry/cancel (0.166682ms)
+✔ RunPod: network/unknown status/404/local timeout retain remote identity for explicit resumption (0.665667ms)
+✔ RunPod: uncertain submit is one request with explicit unknown outcome (0.439405ms)
+✔ WAN: success carries job/status/unknown GPU cost; download failure resumes that job (1.274067ms)
+✔ music: legacy URL API never silently substitutes another configured provider (0.441057ms)
+✔ voice/music: uncertain spend is permanent for the existing queue, with safe provenance (0.893141ms)
+✔ visual: storage failure after paid WAN/LTX success retains job, never generates a fallback (1.606409ms)
+(node:4265) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4265) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ public origin validates configuration, honors precedence and retains local development (1.10416ms)
+✔ OVH callback missing code uses canonical origin despite forwarded host (1.814074ms)
+✔ OVH callback failures use canonical origin and never expose errors (0.774872ms)
+✔ OVH callback success retains safe next and session cookies (0.868213ms)
+✔ OVH mutating APIs accept only canonical browser origin, retaining originless API support (5.623345ms)
+✔ OVH protected-page redirects preserve path, query and refreshed cookies (1.176349ms)
+✔ OVH authenticated and denied-role redirects use canonical origin (1.592919ms)
+✔ OAUTH: utilisateur, plateforme et navigateur doivent correspondre sans consommer le bon etat (3.821289ms)
+✔ OAUTH: expiration et rejeu concurrent refusés (0.851949ms)
+✔ OAUTH: erreur de base bloque initiation et consommation (0.623974ms)
+✔ OAUTH: profile reassignment or another login session cannot consume a pending state (0.236117ms)
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: secret unavailable
+[sutra:cron] refused: invalid authorization
+[sutra:cron] refused: invalid authorization
+(node:4296) [DEP0128] DeprecationWarning: Invalid 'main' field in '/home/runner/work/sutra/sutra/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ cron account-deletion: secret absent, dev et invalide refusent avant toute operation (20.168004ms)
+✔ cron ambassador-check: secret absent, dev et invalide refusent avant toute operation (22.471578ms)
+✔ cron asso-transfer: secret absent, dev et invalide refusent avant toute operation (39.872046ms)
+✔ cron auto-learn: secret absent, dev et invalide refusent avant toute operation (15.70527ms)
+✔ cron auto-plan: secret absent, dev et invalide refusent avant toute operation (13.658312ms)
+✔ cron auto-trends: secret absent, dev et invalide refusent avant toute operation (6.982301ms)
+✔ cron contest-judge: secret absent, dev et invalide refusent avant toute operation (58.018718ms)
+✔ cron contest-monthly: secret absent, dev et invalide refusent avant toute operation (13.560745ms)
+✔ cron contest-weekly: secret absent, dev et invalide refusent avant toute operation (13.26929ms)
+✔ cron email-sequences: secret absent, dev et invalide refusent avant toute operation (11.386452ms)
+✔ cron fiscal-palier: secret absent, dev et invalide refusent avant toute operation (6.549986ms)
+✔ cron karma-defi: secret absent, dev et invalide refusent avant toute operation (6.985125ms)
+✔ cron karma-lightning: secret absent, dev et invalide refusent avant toute operation (5.36237ms)
+✔ cron karma-split-distribute: secret absent, dev et invalide refusent avant toute operation (8.0064ms)
+✔ cron karma-tournoi: secret absent, dev et invalide refusent avant toute operation (6.026055ms)
+✔ cron smart-split: secret absent, dev et invalide refusent avant toute operation (6.372027ms)
+✔ cron streak-update: secret absent, dev et invalide refusent avant toute operation (5.875487ms)
+✔ cron sutra-auto: secret absent, dev et invalide refusent avant toute operation (3.725625ms)
+✔ cron upgrade-ots-proofs: secret absent, dev et invalide refusent avant toute operation (285.612024ms)
+✔ cron video-worker: secret absent, dev et invalide refusent avant toute operation (18.051302ms)
+✔ cron: secret valide accepte, secret lu a chaque appel (0.514608ms)
+✔ AUTO: musique sans voix declenche le montage et conserve le branding (1.599089ms)
+✔ AUTO: voix requise manquante bloque ready et efface toute URL finale (0.7004ms)
+✔ AUTO: musique requise manquante bloque la publication (10.762128ms)
+✔ AUTO: echec de montage transmis au worker, jamais checkpointé comme succes (0.806289ms)
+✔ EXPORT: resultat cloud non verifie ne peut pas atteindre la sauvegarde ready (2.066125ms)
+✔ AUTO: verification cloud echouee efface URL finale et conserve le rendu deja paye (1.121316ms)
+✔ AUTO: ancien checkpoint URL brute sans validation exige reconciliation (0.379303ms)
+✔ VOIX: crash entre morceaux de 24 MiB ne melange pas deux syntheses (42.238605ms)
+✔ VOIX: reponse fournisseur incertaine ne declenche pas de nouvelle synthese (0.50934ms)
+✔ PRODUCTION: une scene manquante interdit le montage raccourci (1.020784ms)
+✔ SHOTSTACK: apres interruption du polling, reprise par ID sans nouveau POST (3.785746ms)
+✔ SHOTSTACK: soumission sans ID confirme bloque un second rendu (0.163427ms)
+✔ EXPORT: echec de checkpoint apres rendu conserve ID distant pour la reprise (1.709656ms)
+✔ PLANNING: deux horaires proches et un passage tardif restent enumeres (14.518509ms)
+✔ QUEUE: erreurs RPC et finalisation sans ligne ne sont jamais des succes (5.425967ms)
+✔ QUEUE: cle dupliquee conserve statut et acquis; changement de payload refuse (2.662097ms)
+✔ PUBLICATION: video annulee refusee avant appel externe (1.115808ms)
+✔ PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publie rien (0.501899ms)
+✔ PUBLICATION: succes partiel reste partiel et comptes issus du serveur (3.210687ms)
+✔ PUBLICATION: deux requetes concurrentes ne soumettent qu une fois (1.455742ms)
+✔ PUBLICATION: echec reservation ne contacte pas le fournisseur (0.28454ms)
+✔ PUBLICATION: resultat non enregistre exige reconciliation et bloque le rejeu (0.900201ms)
+✔ PERSISTENCE: toute ecriture finale exige bail et accuse RPC strict (0.597914ms)
+✔ QUOTA: confirmation done est une lecture, jamais un second settlement (0.822384ms)
+✔ inspection binds real read-only bytes, embedded VAE and hardware; busy queue cannot be idle (50.21902ms)
+✔ inspection refuses Mac, writable weights, invalid local URL and raw hardware errors (4.301736ms)
+✔ disabled host performs no DB, binding, receipt, hardware or listen operation (265.372207ms)
+✔ HTTP listener authenticates before body/worker, bounds payload and routes exact request (44.832709ms)
+✔ HTTP listener redacts internal failure without returning raw diagnostic (5.35505ms)
+✔ inspection cannot declare ready when canonical Comfy nodes are missing (10.969876ms)
+✔ inspection refuses malformed node contracts and unavailable canonical weights (22.768356ms)
+(node:4366) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4366) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ default disabled: zero I/O and no secret/environment load (24.523902ms)
+✔ worker configuration needs no account key/gateway URL and drops those privileges (5.960535ms)
+✔ strict configuration: management API, credentials in URL, arbitrary host, query, redirect domain rejected (1.876027ms)
+✔ checkpoint namespaces cannot be interchanged (0.468589ms)
+✔ every worker route authenticates, unknown/cancel routes do not compute (3.826368ms)
+✔ ready requires matching real runtime measurements; Mac, cold, interruption, low VRAM never ready (18.632381ms)
+✔ canonical frame/grid and strict operation validation: no silent resizing or I2V/4K promise (0.904357ms)
+✔ submit records intent before POST; exact payload, cost provenance, success and GET-only resume (5.19006ms)
+✔ lost POST response after compute: UNKNOWN, then GET recovers same artifact without a second generation (2.013675ms)
+✔ remote 404 after lost submission is UNKNOWN forever, never resubmitted (1.863869ms)
+✔ no blind retry on 401/429/503, invalid JSON, body hang or redirect (4.380405ms)
+✔ request identity is scoped, stable and immutable across payload changes (1.304343ms)
+✔ expired quote, insufficient budget and unqualified profile never reserve or POST (2.234189ms)
+✔ worker rejects malformed/oversized input, wrong digest and direct unsupported profiles (3.51726ms)
+✔ simultaneous duplicate worker requests execute only once; another operation cannot steal global slot (3.587075ms)
+✔ unreadable occupied slot is interrupted and prevents compute (0.989477ms)
+✔ restart reads durable running/unknown slot; missing, invalid or failed reads never announce ready (5.700131ms)
+✔ interruption keeps exclusive slot and unknown remote status; duplicate never executes (1.083459ms)
+✔ lost durable CAS keeps claim, drain surfaces static fault; artifacts do not imply published success (0.687801ms)
+✔ client journal CAS failure does not send another POST on resume (1.628013ms)
+✔ restart GET on overdue running record reports unknown and does not clear the slot (1.717457ms)
+✔ durable artifact corruption is refused without regenerating (3.74859ms)
+✔ bounded HTTP bodies: oversized header, streaming overflow, invalid JSON and stalled body (44.071051ms)
+✔ private bridge cannot target Mac/network URLs and rejects foreign media before GET (73.579838ms)
+✔ real CPU-only fixture bytes: existing media-probe validates bridge and authenticated client download (271.593972ms)
+✔ bridge health HTTP 200 without explicit ok is not ready, raw errors are not returned (1.322761ms)
+✔ protocol confusion and mismatched remote records remain unknown (9.186394ms)
+✔ public DTO is owner-only, disabled by default and reveals no credentials or runtime manifest (1.212945ms)
+✔ preflight binds worker timeout and budget before any POST (0.753109ms)
+✔ application checkpoint acknowledgment precedes POST; lost reply survives reconstructed wrapper (2.042229ms)
+✔ same slot wrappers serialize one intent and fence stale CAS; missing/failed durable callback never submits (3.381335ms)
+✔ foreign provider checkpoint is never overwritten or interpreted as Salad (0.413796ms)
+✔ application rejects unsupported dimensions, references, native4k and missing context before I/O (0.841393ms)
+✔ application returns verified real CPU fixture from qualified worker and resumes without new POST (334.550092ms)
+✔ authenticated public handler never trusts body identity or reports a client GPU as ready (1.402541ms)
+✔ real smart routing: owner never contacts Mac/API when Salad disabled; customer remains API (3.402923ms)
+✔ owner without API credentials cannot fall back to stock; Salad never gets a fabricated fixed price (9.500249ms)
+(node:4386) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4386) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ verified active, free and paused users keep their Supabase identity (76.468974ms)
+✔ same valid session loses access on ban and recovers only after unban (0.508809ms)
+✔ missing and wrong-owner profiles cannot authorize a service-role handler (0.18511ms)
+✔ billing status changes cannot undo an administrative revocation (0.229127ms)
+✔ database errors and exceptions fail closed without leaking their message (0.519656ms)
+✔ anonymous requests cannot read profiles (0.371973ms)
+✔ client cannot mutate points or credit wallet: {"action":"earn","amount":1000000,"source":"forged"} (3.289436ms)
+✔ client cannot mutate points or credit wallet: {"action":"earn","amount":50,"source":"breathe_session"} (0.468218ms)
+✔ client cannot mutate points or credit wallet: {"action":"earn","amount":25000,"source":"daily_gift","user_id":"bob","role":"service_role"} (0.432724ms)
+✔ client cannot mutate points or credit wallet: {"action":"spend","amount":1,"source":"forged"} (0.395008ms)
+✔ malformed/replayed client requests cannot authorize point mutations (0.851147ms)
+✔ anonymous session cannot read or mutate points (0.464393ms)
+✔ banned session cannot read or mutate points (0.470942ms)
+✔ revoked session cannot read or mutate points (0.318933ms)
+✔ authentication failure is closed without leaking diagnostics or creating a service client (0.695702ms)
+✔ active user can still read only their own points and history (0.684866ms)
+✔ audio and raster images use the pinned transport and preserve the downloaded bytes (8.167964ms)
+✔ audio: mixed private/public DNS is rejected before any connection (2.30088ms)
+✔ audio: redirects into cloud metadata are rejected (1.156259ms)
+✔ audio: compressed bodies and streamed overflow are rejected (0.948995ms)
+✔ image: mixed private/public DNS is rejected before any connection (0.528309ms)
+✔ image: redirects into cloud metadata are rejected (0.480026ms)
+✔ image: compressed bodies and streamed overflow are rejected (0.836235ms)
+✔ audio: reject playlist, SVG or mismatched audio/mpeg (1.024229ms)
+✔ audio: reject playlist, SVG or mismatched audio/wav (0.658956ms)
+✔ image: reject playlist, SVG or mismatched image/svg+xml (0.399864ms)
+✔ image: reject playlist, SVG or mismatched image/png (0.486386ms)
+✔ DNS failure does not expose the requested host or signed URL (0.372874ms)
+✔ pre-cancelled downloads do not resolve DNS or connect (0.493477ms)
+✔ cancellation interrupts pending DNS without exposing the caller reason (0.358793ms)
+(node:4459) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4459) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ banned session fails in the actual OAuth and admin handlers before side effects (4.356359ms)
+✔ OAuth initiation is limited per authenticated user before contacting provider (8.637724ms)
+✔ OAuth provider exception is not returned to the browser (0.560327ms)
+✔ OAuth initiation binds its own state to user, profile and verified session on the canonical public origin (1.779742ms)
+✔ OAuth initiation rejects a mismatched verified session or client-chosen tenant before side effects (1.002196ms)
+✔ OAuth callback never reflects untrusted provider errors into a redirect URL (0.311081ms)
+✔ OAuth callback rejects missing one-use state before exchanging code (2.428153ms)
+✔ failed/missing target lookup cannot authorize a ban (0.944278ms)
+✔ ban, unban and plan changes require a confirmed database row (1.508121ms)
+✔ middleware blocks a banned dashboard session without a login redirect loop (1.966875ms)
+(node:4495) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4495) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ storage result: failed upload/delete/list never report success or expose provider details (1.442061ms)
+✔ storage exception: failed upload/delete/list never report success or expose provider details (0.218992ms)
+✔ uploads return stable owner references, never a public or expiring URL (0.752137ms)
+✔ Shotstack: 4K autorisee — preset demande, fichier encore non verifie (6.537608ms)
+✔ Shotstack: 1080p 16:9 exporte en 1920×1080 (3.835961ms)
+✔ Shotstack: horloge de montage — intro décale voix et sous-titres, durées par clip (1.649825ms)
+✔ Shotstack: une PHOTO devient un asset image, pas vidéo (1.274227ms)
+✔ Shotstack: transition fade demandée = fade appliquée (pas none) (1.180435ms)
+✔ Shotstack: 429 au submit -> erreur explicite (0.820711ms)
+✔ Shotstack: rendu failed -> erreur explicite (0.655611ms)
+✔ Shotstack: cle absente -> erreur explicite (0.252622ms)
+▶ Shotstack: environnement et cle restent lies au submit et au polling
+  ✔ selection stage (1.221217ms)
+  ✔ selection v1 (0.644595ms)
+  ✔ selection stage par defaut (0.636533ms)
+  ✔ production fonctionne sans cle sandbox et reprend par GET uniquement (0.419845ms)
+  ✔ stage: cle propre absente, aucun secours vers l'autre cle (0.256208ms)
+  ✔ v1: cle propre absente, aucun secours vers l'autre cle (0.155556ms)
+  ✔ environnement inconnu refuse avant toute mesure media (0.175115ms)
+✔ Shotstack: environnement et cle restent lies au submit et au polling (4.983817ms)
+✔ Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence (6.735718ms)
+✔ Zernio accepte 201 programme sans jamais annoncer publie (1.120465ms)
+✔ Zernio convertit x en twitter et transmet chaque caption propre (0.377711ms)
+✔ Zernio refuse une echeance passee au lieu de publier immediatement (0.543822ms)
+✔ Zernio refuse UUID local, plateforme indisponible et cle absente avant appel (0.488449ms)
+✔ Zernio succes pour un autre compte reste inconnu (0.195255ms)
+✔ Zernio resultat partiel conserve toutes les destinations demandees (0.234645ms)
+✔ Zernio ancienne reponse success=true sans preuve n'est pas acceptee (0.163637ms)
+✔ Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable (0.691706ms)
+✔ Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien (1.365906ms)
+✔ Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien (3.895772ms)
+✔ Publication: timeout laisse une reservation, reprise exacte apres le bail (3.217506ms)
+✔ Publication: succes partiel, GET puis retry du seul compte en echec (1.853804ms)
+✔ Publication: programmation puis reconciliation utilise GET sans POST supplementaire (0.771547ms)
+✔ Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation (1.266826ms)
+✔ Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee (0.463771ms)
+✔ Publication: historique secondaire reparable sans nouvelle publication (0.736414ms)
+✔ Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme (1.590946ms)
+✔ Publication: les trois routes historiques partagent le handler (80.881111ms)
+✔ Zernio reconciliation refuse les destinations supplementaires avant tout retry (0.966032ms)
+✔ Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible (1158.834038ms)
+✔ Zernio retry vise le post original une seule fois et ne recree jamais de post (1.397724ms)
+✔ Zernio revoke 404 est idempotent et erreur sensible jamais loggee (1.010328ms)
+✔ SunoAPI explicit V6 custom instrumental contract and authenticated task polling (27.04839ms)
+✔ SunoAPI config rejects unsupported/credentialed URLs before sending a key (1.094515ms)
+✔ SunoAPI explicit current URL wins over legacy alias without mutating it (1.00494ms)
+✔ SunoAPI bounds input before any submission (0.598445ms)
+✔ SunoAPI body-level rejection and uncertain transport never resubmit or reflect diagnostics (2.347521ms)
+✔ SunoAPI task mismatch, failed/unknown status and untrusted media fail closed (4.481869ms)
+✔ SunoAPI callback is acknowledgement only and has no body/storage/provider dependency (0.715723ms)
+(node:4574) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4574) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ private download: authorized owner signs once and fetches the signed object using pinned DNS (7.459603ms)
+✔ private download: missing context rejects before Storage, DNS or HTTPS (0.648181ms)
+✔ private download: Bob cannot download Alice media even with a valid owner context (0.356089ms)
+✔ private download: Storage error is constant and prevents all network activity (0.412003ms)
+✔ private download: invalid signed destination https://127.0.0.1/private cannot bypass SSRF checks (0.484513ms)
+✔ private download: invalid signed destination https://169.254.169.254/latest/meta-data/ cannot bypass SSRF checks (0.287325ms)
+✔ private download: invalid signed destination http://storage.example.test/clip cannot bypass SSRF checks (0.236157ms)
+✔ private download: signed hostname resolving privately is denied before HTTPS (0.243508ms)
+✔ private download: malicious Storage redirect cannot reach metadata (0.488419ms)
+✔ private download: expired signed URL preserves a safe error and never retries the signature (0.520618ms)
+✔ private download: transport rejection cannot expose the signed query or backend diagnostic (0.304541ms)
+(node:4593) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4593) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T02 account list omits private metadata/tokens and another user account (3.280432ms)
+✔ T02 account list redacts error diagnostics (0.438403ms)
+✔ T02 account list redacts throw diagnostics (0.445644ms)
+✔ T02 anonymous account list does not reach the privileged database (0.223728ms)
+✔ T02 callback without verified session never consumes or exchanges state (2.190654ms)
+✔ T02 callback rejects a different user without burning the owner state (1.523794ms)
+✔ T02 callback rejects a platform switch (0.501318ms)
+✔ T02 callback rejects a missing or forged browser secret (0.709613ms)
+✔ T02 callback rejects an expired state before token exchange (0.375368ms)
+✔ T02 concurrent callbacks verify only once and never store or expose tokens (0.721391ms)
+✔ T02 database outage during callback cannot authorize an exchange (0.342118ms)
+✔ T02 uncertain exchange is sanitized and consumed state cannot be replayed (0.576122ms)
+✔ T02 callback from another login session cannot consume the current state (0.314696ms)
+✔ T02 callback cannot change server profile or use an unrelated provider account without verification (0.292081ms)
+(node:4613) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4613) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+(node:4613) [DEP0128] DeprecationWarning: Invalid 'main' field in '/home/runner/work/sutra/sutra/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+Unknown operation tag:  73
+✔ calendar submit and lookup retain upstream binary parsing and pinned transport (8.137338ms)
+✔ invalid calendar origins are refused before DNS or transport (0.560578ms)
+✔ calendar redirect denied: http://127.0.0.1/private (0.752979ms)
+✔ calendar redirect denied: http://169.254.169.254/latest/meta-data (0.488939ms)
+✔ calendar redirect denied: https://evil.invalid/private (0.460115ms)
+✔ Esplora rejects redirects without requesting an internal destination (0.63472ms)
+✔ private or mixed DNS denies both adapters before connection (0.355317ms)
+✔ calendar responses reject compression, declared/streamed overflow and truncated bodies (1.200426ms)
+✔ raw DNS and parser diagnostics never escape the adapters (0.887032ms)
+✔ DNS and connection stalls have a bounded deadline (5.142898ms)
+Submitting to remote calendar https://a.pool.opentimestamps.org
+Submitting to remote calendar https://b.pool.opentimestamps.org
+Submitting to remote calendar https://a.pool.eternitywall.com
+Submitting to remote calendar https://ots.btc.catallaxy.com
+Calendar https://alice.btc.calendar.opentimestamps.org: SUTRA_OTS_HTTP_REJECTED
+✔ synchronous transport exceptions cannot leak request diagnostics (0.420807ms)
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+✔ Esplora validates block identifiers and response schema (0.993112ms)
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+✔ application stamp and pending verification use protected calendar adapters (5.313527ms)
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+Submitting to remote calendar https://a.pool.opentimestamps.org
+Submitting to remote calendar https://b.pool.opentimestamps.org
+Submitting to remote calendar https://a.pool.eternitywall.com
+Submitting to remote calendar https://ots.btc.catallaxy.com
+✔ actual OTS crypto accepts matching Merkle fixture and refuses mismatch; no Bitcoin node access (3.129042ms)
+✔ content digest mismatch refuses network before verification (0.316188ms)
+✔ all calendar failures cannot produce a successful empty stamp (0.950667ms)
+(node:4633) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4633) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ public proof: service-exception never exposes internal details (3.374344ms)
+✔ public proof: db-error never exposes internal details (0.556551ms)
+✔ public proof: verify-exception never exposes internal details (0.481599ms)
+✔ public proof: parse-error never exposes internal details (0.39671ms)
+✔ public proof: mismatch never exposes internal details (0.451242ms)
+✔ public proof: pending and verified responses keep the public proof contract (0.942165ms)
+✔ public proof: malformed IDs fail before querying, missing rows remain 404 (0.62185ms)
+(node:4653) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4653) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ media reference: expired session cannot sign even if the auth result retains a user (18.528564ms)
+✔ media reference: valid session belonging to another user cannot sign (0.727491ms)
+✔ media reference: revocation after a success prevents the next signature (2.706974ms)
+✔ media reference: profile outage never yields a signature or provider diagnostic (0.433135ms)
+(node:4671) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4671) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ delete: missing owner must fail before service-role access (1.895447ms)
+✔ delete: another user's object or folder is denied (0.508539ms)
+✔ delete: traversal and malformed paths cannot reach storage (0.494558ms)
+✔ list: missing owner must fail before service-role access (0.28435ms)
+✔ list: another user's object or folder is denied (0.239623ms)
+✔ list: traversal and malformed paths cannot reach storage (0.380756ms)
+✔ delete: owner can remove an exact owned key (0.412334ms)
+✔ list: owner can list their root and a folder, never a sibling prefix (0.421458ms)
+✔ delete: legacy objects require the existing exact ownership inventory (0.420917ms)
+✔ delete: unavailable legacy inventory fails closed without exposing errors (0.29754ms)
+✔ list: legacy inventory cannot authorize a shared prefix (0.172711ms)
+(node:4680) [DEP0128] DeprecationWarning: Invalid 'main' field in '/home/runner/work/sutra/sutra/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✖ legacy null final checkpoint in create is quarantined without replaying paid work (10.383435ms)
+✖ legacy null final checkpoint in export is quarantined without replaying paid work (1.439266ms)
+✖ legacy null final checkpoint in auto is quarantined without replaying paid work (1.457905ms)
+✖ legacy null final checkpoint in production is quarantined without replaying paid work (10.815398ms)
+✖ null music requires explicit skip, matching empty value: ["cinematic",{"status":"skipped","value":null}] (2.344586ms)
+✖ null music requires explicit skip, matching empty value: ["none",{"status":"complete","value":null}] (1.349621ms)
+✖ null music requires explicit skip, matching empty value: ["none",{"status":"skipped","value":"https://wrong.fixture.invalid/music.mp3"}] (4.0201ms)
+✖ null music requires explicit skip, matching empty value: ["none",{"status":"skipped"}] (0.98516ms)
+✖ explicit music none still resumes its acknowledged skipped result (3.196475ms)
+✖ new music-none execution persists its skip and null result without invoking a provider (2.284795ms)
+✖ lost finish ACK rejects contradictory skipped-music value undefined (4.573938ms)
+✖ lost finish ACK rejects contradictory skipped-music value https://unexpected.fixture.invalid/music.mp3 (10.365447ms)
+(node:4698) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4698) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+(node:4698) [DEP0128] DeprecationWarning: Invalid 'main' field in '/home/runner/work/sutra/sutra/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+✔ finish done rejects incompatible DB receipt failed (5.632049ms)
+✔ finish done rejects incompatible DB receipt queued (2.031813ms)
+✔ finish done rejects incompatible DB receipt reconciliation_required (1.010799ms)
+✔ finish queued still accepts SQL quarantine receipt (0.781321ms)
+✔ finish done lost ACK: reconcile persisted result with one GET, never repeat quota mutation (1.429752ms)
+✔ duplicate completion after lost ACK reads existing outcome; no second successful mutation (6.423776ms)
+✔ unconfirmed finish cannot promote processing to done (0.712608ms)
+✔ unconfirmed finish cannot promote queued to done (0.597935ms)
+✔ unconfirmed finish cannot promote cancelled to done (0.527467ms)
+✔ unconfirmed finish cannot promote failed to done (0.639236ms)
+✔ unconfirmed finish cannot promote reconciliation_required to done (0.453316ms)
+✔ unconfirmed finish with unreadable DB remains blocked (0.504954ms)
+✔ terminal status without result undefined cannot reconcile as successful media (0.490352ms)
+✔ terminal status without result null cannot reconcile as successful media (0.567328ms)
+✔ lost finish ACK for explicitly skipped production music accepts its durable null result (0.578816ms)
+✔ worker interrupted after final checkpoint: production resumes result without replaying effects (1.075987ms)
+✔ worker interrupted after final checkpoint: create resumes result without replaying effects (0.65428ms)
+✔ worker interrupted after final checkpoint: export resumes result without replaying effects (0.368147ms)
+✔ worker interrupted after final checkpoint: auto resumes result without replaying effects (0.420126ms)
+✔ cached result never bypasses owner guard (0.260554ms)
+✔ cached result never bypasses lease guard (0.120372ms)
+✔ cached result never bypasses expired guard (0.389799ms)
+✔ cached result never bypasses video guard (0.113351ms)
+✔ cached result never bypasses auto-video guard (0.135585ms)
+✔ cached result never bypasses kind guard (0.127282ms)
+✔ acquired scene survives event-after-visual: no generation replay and no lost visual (5.836718ms)
+✔ acquired scene survives scene-checkpoint: no generation replay and no lost visual (2.71738ms)
+✔ music fails after video acquired: preserve completed scene, no second paid music submission or ready (3.796602ms)
+✔ production music: required music absent cannot succeed or start downstream paid work (0.193573ms)
+✔ production all: required music absent cannot succeed or start downstream paid work (0.110667ms)
+✔ production explicit no-music remains a skipped checkpoint (0.108604ms)
+✔ checkpoint write is always required before final worker success (4.486385ms)
+✔ fresh DB checkpoint is still lease-fenced (0.439515ms)
+✔ AUTO voice received then storage fails: retry upload from checkpoint, synthesize exactly once (0.661251ms)
+✔ AUTO legacy uncertain voice remains quarantined, never synthesized again (0.088744ms)
+(node:4728) [DEP0128] DeprecationWarning: Invalid 'main' field in '/home/runner/work/sutra/sutra/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ remote timeout: acknowledged intent survives 12 restarts, no second POST or paid fallback (100.481649ms)
+✔ remote worker-disconnect: acknowledged intent survives 12 restarts, no second POST or paid fallback (32.322101ms)
+✔ remote accepted-202: acknowledged intent survives 12 restarts, no second POST or paid fallback (21.909137ms)
+✔ lease expires inside intent RPC: stale worker never submits; new owner may submit once (3.355888ms)
+✔ intent committed but acknowledgement lost: neither old nor replacement worker submits (2.235222ms)
+✔ replacement worker while remote POST is pending cannot resubmit; late owner cannot finalize (8.423544ms)
+✔ 24 concurrent claimants exercise queue RPC contract; only granted snapshot enters worker (5.256437ms)
+✔ unconfirmed intent receipt false prevents any submission (15.01088ms)
+✔ unconfirmed intent receipt null prevents any submission (0.914404ms)
+✔ unconfirmed intent receipt "true" prevents any submission (0.910388ms)
+✔ unconfirmed intent receipt {"message":"fixture unavailable","code":"fixture"} prevents any submission (1.048747ms)
+✔ persisted scene survives lost stage:scenes receipt; replay retains independent checkpoints (4.557085ms)
+✔ persisted scene survives lost stage:images receipt; replay retains independent checkpoints (4.255909ms)
+✔ persisted scene survives lost result receipt; replay retains independent checkpoints (2.896779ms)
+✔ event acknowledgement loss propagates; replay is idempotent and does not regenerate cached scene (2.373721ms)
+✔ heartbeat and snapshot ownership refusals stop the real executor before any external work (0.570143ms)
+(node:4747) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4747) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+(node:4747) [DEP0128] DeprecationWarning: Invalid 'main' field in '/home/runner/work/sutra/sutra/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+✔ create: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (6.156985ms)
+✔ create: id-before-commit never resubmits, and resumes only a durably known ID (2.529758ms)
+✔ create: id-after-commit never resubmits, and resumes only a durably known ID (1.587722ms)
+✔ create: result-before-commit never resubmits, and resumes only a durably known ID (1.018591ms)
+✔ create: legacy ambiguous intent without ID remains quarantined (0.54198ms)
+✔ create: corrupt durable ID cannot enable any provider call (0.597484ms)
+✔ production: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (0.975196ms)
+✔ production: id-before-commit never resubmits, and resumes only a durably known ID (0.359924ms)
+✔ production: id-after-commit never resubmits, and resumes only a durably known ID (0.215256ms)
+✔ production: result-before-commit never resubmits, and resumes only a durably known ID (7.212192ms)
+✔ production: legacy ambiguous intent without ID remains quarantined (0.241685ms)
+✔ production: corrupt durable ID cannot enable any provider call (0.278522ms)
+✔ auto: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (2.892095ms)
+✔ auto: id-before-commit never resubmits, and resumes only a durably known ID (0.266794ms)
+✔ auto: id-after-commit never resubmits, and resumes only a durably known ID (0.177879ms)
+✔ auto: result-before-commit never resubmits, and resumes only a durably known ID (0.97814ms)
+✔ auto: legacy ambiguous intent without ID remains quarantined (3.235886ms)
+✔ auto: corrupt durable ID cannot enable any provider call (0.101914ms)
+✔ duplicate Suno submission callbacks are coalesced; a competing task identity cannot replace the binding (0.421988ms)
+(node:4767) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4767) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ Pollinations helper preserves ratios and encoding, excludes public feed and unsupported options (1.296682ms)
+✔ production thumbnail uses the same Classic contract without provider, quota or worker calls (5.982672ms)
+✔ thumbnail retains authentication and format validation before constructing URL (1.256451ms)
+✔ Salad shutdown waits for an in-flight durable reservation and its execution (46.254931ms)
+✔ RunPod rejects missing/coerced job identity and malformed media (3.486886ms)
+✔ RunPod rejects numeric submission IDs without retry (2.389421ms)
+✔ voice refuses HTTP 200 JSON masquerading as MP3 without retry (0.751106ms)
+✔ Suno checkpoints accepted task before polling; ACK failure preserves ID and blocks GET (1.760433ms)
+✔ Suno resumes a durable task with GET only (1.131882ms)
+✔ bounded provider bodies reject empty, oversized, malformed and stalled streams (22.057031ms)
+✔ RunPod accepts only matching completed jobs and valid worker media envelopes (1.359466ms)
+✔ RunPod poll errors and deadlines retain job identity without resubmission (11.98283ms)
+✔ voice bounds empty and oversized audio; valid MP3 transport succeeds once (2.285858ms)
+✔ Suno awaits durable ACK before GET and returns unchanged legacy result shape (5.669407ms)
+✔ Suno recovery validates checkpoint before I/O and retains ID on timeout or malformed replies (22.870892ms)
+✔ T06: une production peut cibler deux comptes distincts sans reposter au premier (6.892458ms)
+✔ T06: compte manquant conserve le partiel puis reprend uniquement cette destination (1.357294ms)
+✔ T06: compte revoked refuse avant POST (0.322558ms)
+✔ T06: compte disconnected refuse avant POST (0.195536ms)
+✔ T06: compte expired refuse avant POST (0.225361ms)
+✔ T06: compte invalid-expiry refuse avant POST (0.237179ms)
+✔ T06: revocation apres reservation empeche le POST (0.911348ms)
+✔ T06: revocation locale precedente a la panne distante; historique conserve et aucune repetition aveugle (1.402773ms)
+✔ T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST (1.583326ms)
+✔ T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay (1.064862ms)
+✔ T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate (1.18999ms)
+✔ T06: replay refuse si revoked a change (3.6488ms)
+✔ T06: replay refuse si external-id a change (0.734581ms)
+✔ T06: replay refuse si media-hash a change (0.470572ms)
+✔ T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed (1.128758ms)
+✔ T06: panne de projection reparee depuis journal sans creation distante (0.510803ms)
+✔ T06: succes video ne valide pas un nouvel export url (0.465835ms)
+✔ T06: succes video ne valide pas un nouvel export sha256 (0.361116ms)
+✔ T06: succes auto ne valide pas un nouvel export url (0.981936ms)
+✔ T06: succes auto ne valide pas un nouvel export sha256 (0.94477ms)
+✔ T06: import PR3 multi-destination conserve le succes et les identifiants historiques (0.632177ms)
+✔ T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication (0.313454ms)
+✔ T06: autonomie refuse inactive (0.269247ms)
+✔ T06: autonomie refuse approval (0.158961ms)
+✔ T06: autonomie refuse not-due (0.160984ms)
+✔ T06: autonomie refuse invalid-date (0.3037ms)
+✔ T06: autonomie refuse no-proof (0.122866ms)
+✔ T06: approbation explicite autorise le media verifie meme avec mode automatique arrete (0.738537ms)
+✔ T06: autorisation retiree entre reservation et envoi ferme toute destination (0.410191ms)
+✔ T06: controle service isole utilisateur et production, sans nouvelle requete (0.60138ms)
+✔ T06: replay reautorise apres claim si revoked change (1.532579ms)
+✔ T06: replay reautorise apres claim si disconnected change (0.972431ms)
+✔ T06: replay reautorise apres claim si external-id change (1.391766ms)
+✔ T06: replay reautorise apres claim si media-hash change (1.141296ms)
+✔ T06: replay reautorise apres claim si profile-revoked change (1.395271ms)
+✔ T06: autonomie replay refuse une approbation retiree apres claim (1.074165ms)
+✔ T06: retry reautorise apres claim si revoked change (1.391215ms)
+✔ T06: retry reautorise apres claim si disconnected change (1.628444ms)
+✔ T06: retry reautorise apres claim si external-id change (1.704459ms)
+✔ T06: retry reautorise apres claim si media-hash change (1.608053ms)
+✔ T06: retry reautorise apres claim si profile-revoked change (1.609345ms)
+✔ T06: autonomie retry refuse une approbation retiree apres claim (1.331635ms)
+✔ T06: profil banned refuse la publication video service-role (0.472384ms)
+✔ T06: profil revoked refuse la publication video service-role (0.422269ms)
+✔ T06: profil missing refuse la publication video service-role (0.283579ms)
+✔ T06: profil unreadable refuse la publication video service-role (0.324721ms)
+✔ T06: profil banned refuse la publication auto service-role (0.421077ms)
+✔ T06: profil revoked refuse la publication auto service-role (1.55999ms)
+✔ T06: profil missing refuse la publication auto service-role (0.437562ms)
+✔ T06: profil unreadable refuse la publication auto service-role (0.385403ms)
+✔ T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET (1.642905ms)
+[zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+[zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+[zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+(node:4825) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4825) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T06-FINAL OAuth route + adapter + atomic state: tiktok (13.429618ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: youtube (2.30718ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: instagram (2.113658ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: facebook (1.670407ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: x (2.355414ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: linkedin (2.048319ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: pinterest (1.586931ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: reddit (1.648434ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: threads (1.429873ms)
+✔ T06-FINAL profile binding absent and caller-supplied organisation never reach provider (1.363503ms)
+✔ T06-FINAL session rotation during hosted consent requires fresh state (1.236891ms)
+✔ T06-FINAL expired hosted consent never reaches identity lookup (1.021866ms)
+✔ T06-FINAL atomic duplicate callback invokes real identity adapter only once (2.561886ms)
+✔ T06-FINAL forged remote profile is rejected after real state consumption, never persisted (1.344434ms)
+✔ T06-FINAL lost POST response uses identical persisted wire request, then GET only (7.473187ms)
+✔ T06-FINAL missing account preserves partial outcome; next consent sends only missing destination (4.437534ms)
+✔ T06-FINAL reconnect replaces local identity but requires explicit new account selection (4.956539ms)
+✔ T06-FINAL separate productions on same account receive distinct keys and histories (3.523501ms)
+✔ T06-FINAL another session user cannot revoke the bound account (2.35932ms)
+✔ T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay (4.551316ms)
+✔ T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled (5.522816ms)
+✔ T06-FINAL wrong remote account cannot confirm or retry a known post (3.355126ms)
+✔ T06-FINAL revoked during claim never reaches real POST adapter (2.327421ms)
+✔ T06-FINAL unverified media and missing approval never reach real POST adapter (1.901286ms)
+✔ T06-FINAL UI regression: a revoked account must expose Se connecter again (33.753567ms)
+✔ T06-DELTA denied consent consumes the bound state even without account identity (2.285678ms)
+✔ T06-DELTA a forged denial cannot consume another session state (1.354108ms)
+✔ T06-DELTA consent issued before revocation must not reconnect the revoked account (2.214621ms)
+✔ T06-DELTA revocation while identity lookup is in flight must win over callback (2.075651ms)
+✔ T06-DELTA X denial accepts the documented provider platform alias and consumes state (0.813901ms)
+✔ T06-DELTA unknown provider error remains generic and still consumes state (0.721582ms)
+✔ T06-DELTA fresh consent after completed revoke can reconnect without reviving old state (2.33954ms)
+✔ T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion (3.108153ms)
+✔ T06-DELTA two initial consent callbacks cannot overwrite the winning account (1.881687ms)
+✔ T06-DELTA account snapshot read error fails closed before state consumption or provider GET (1.33551ms)
+✔ T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish (1.731579ms)
+✔ T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke (3.321285ms)
+✔ T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke (2.345058ms)
+[sutra:cron] refused: invalid authorization
+(node:4844) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4844) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T06 routes: session absente ne modifie ni compte ni production (6.708239ms)
+✔ T06 routes: partiel ne peut pas etre remis a ready ou supprime (2.384027ms)
+✔ T06 routes: occurrence non publiee conserve son identite de deduplication (0.667881ms)
+✔ T06 routes: journal reserve avant projection interdit reset et suppression (0.967243ms)
+✔ T06 routes: transition concurrente preserve publishing et refuse un faux acquittement (0.818348ms)
+✔ T06 routes: panne revoke distante rend 202 avec etat local revoque (3.206401ms)
+✔ T06 routes: compte absent rend 404 et panne DB rend 503 sans revoke distant (1.111482ms)
+✔ T06 routes: cron desactive reconcilie en lecture seule sans travail de generation (1.340588ms)
+✔ T06 routes: cron sans autorisation ne lit ni ne soumet rien (1.234978ms)
+✔ T06 tenant: first refuses profile-changed (5.000135ms)
+✔ T06 tenant: first refuses binding-removed (0.743165ms)
+✔ T06 tenant: first refuses metadata-absent (0.650164ms)
+✔ T06 tenant: first refuses revocation-pending (0.553557ms)
+✔ T06 tenant: replay refuses profile-changed (2.918906ms)
+✔ T06 tenant: replay refuses binding-removed (1.490385ms)
+✔ T06 tenant: replay refuses metadata-absent (1.518968ms)
+✔ T06 tenant: replay refuses revocation-pending (1.404806ms)
+✔ T06 tenant: retry refuses profile-changed (1.998143ms)
+✔ T06 tenant: retry refuses binding-removed (4.341258ms)
+✔ T06 tenant: retry refuses metadata-absent (1.061536ms)
+✔ T06 tenant: retry refuses revocation-pending (1.108857ms)
+✔ T06 tenant: binding removed after durable claim prevents first POST (0.685186ms)
+✔ T06 tenant: automatic publication uses the same current profile authority (1.119904ms)
+✔ T06 tenant: read-only reconciliation preserves historical success after reassignment (1.812932ms)
+✔ T06 tenant: fresh consent in current profile permits one send and no duplicate (0.893361ms)
+✔ T06 CAS: real Supabase serializer preserves ownership and NULL predicates (6.258799ms)
+✔ T06 CAS: real Supabase serializer preserves ownership and JSONB predicates (1.074235ms)
+(node:4873) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4873) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T08 MODE-01: client cannot obtain owner dispatch through forged body or headers (9.271097ms)
+✔ T08 MODE-02: normal client API dispatch survives personal worker disabled or enabled (2.064233ms)
+✔ T08 MODE-03: disabled personal worker returns an actionable safe HTTP error without paid fallback (1.581092ms)
+✔ T08 MODE-04: legacy Mac/auto flags cannot activate Salad or paid fallback (2.706875ms)
+✔ T08 MODE-05: production all rejects a disabled personal GPU before any submission (1.814766ms)
+✔ T08 MODE-06: production all keeps explicit client API submission available (0.700009ms)
+(node:4902) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4902) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication (84.505742ms)
+✔ J02 bounded 12-click burst shares one queued job, project and provider intent; changed content conflicts (72.033092ms)
+✔ J03 quota or submission DB refusal has no orphan project or provider effects (31.156268ms)
+✔ J04 upload failure resumes stored voice and other resolved assets, without resynthesis (33.347563ms)
+✔ J05 ready-write DB failure cannot publish; resume reuses verified media and settles once (35.732261ms)
+✔ J06 created client project remains isolated across status, export and publication boundaries (30.521718ms)
+✔ J07 corrupt export validation preserves prior ready media and retry does not render again (30.117056ms)
+✔ J08 two destination partial publication reconciles existing posts, never republishes the successful target (26.337517ms)
+✔ J09 changed or missing final proof and revoked access block simulated publication (25.788623ms)
+✔ J10 lost remote render receipt stays uncertain across route retry without another submission (24.654575ms)
+✔ J11 bounded 12-click publication burst sends one verified media intent and repairs projections (28.398385ms)
+✔ J12 re-export after a scheduled intent cannot silently replace the scheduled verified media (30.560547ms)
+✔ J13 a past schedule cannot turn into immediate publication after successful export (30.373704ms)
+✔ WAN preserves landscape, portrait and square formats (0.954514ms)
+✔ Pexels uses the current video endpoint and keeps provenance (0.201875ms)
+✔ fallbacks preserve requested format (0.254175ms)
+✔ cost estimates include quality and duration (0.193443ms)
+✔ AI outputs are schema validated before use (0.252902ms)
+✔ stock search includes cached Pixabay and Pexels sources (0.210218ms)
+✔ Zernio profile binding is exact and server-owned, never the first/default profile (1.327689ms)
+✔ Zernio OAuth uses GET, mapped platform, posting-only consent and exact callback correlation (16.388385ms)
+✔ Zernio refuses unsupported platform, malformed profile and unsafe callback before HTTP (0.455159ms)
+✔ Zernio connect failures are bounded, generic and never retried (2.413983ms)
+✔ Zernio callback identity comes only from a scoped GET and contains no credentials (1.498387ms)
+✔ Zernio refuses forged, inactive, duplicate and mismatched account identities (1.261959ms)
+✔ Zernio account verification failures never leak provider diagnostics or retry (0.698697ms)
+▶ ffmpeg-concurrency
+  ✔ limite le nombre de jobs actifs au plafond configure et mes en file les suivants (20.838698ms)
+  ✔ appeler release() deux fois ne decremente pas deux fois le compteur actif (0.311011ms)
+✔ ffmpeg-concurrency (21.948687ms)
+[video-compositor] moteur FFmpeg local indisponible, secours Shotstack: Error
+[video-compositor] moteur FFmpeg local indisponible, secours Shotstack: Error
+[video-compositor] moteur FFmpeg local indisponible, secours Shotstack: Error
+▶ composeVideoWithFallback
+  ✔ moteur FFmpeg primaire : succes sans jamais appeler Shotstack (1.734484ms)
+  ✔ secours Shotstack si FFmpeg local indisponible (erreur non-validation) (0.897438ms)
+  ✔ erreur de validation (clip invalide) propagee directement, jamais de secours Shotstack couteux (0.412394ms)
+  ✔ preuve de bytes perimee refusee avant stockage, sans appel Shotstack (0.661561ms)
+  ✔ deux echecs moteur ou URL brute du secours ne livrent jamais un clip source (0.626298ms)
+✔ composeVideoWithFallback (5.209622ms)
+✔ accepts explicitly disposable loopback databases (1.203191ms)
+✔ rejects missing confirmation without leaking connection data (0.450211ms)
+✔ rejects remote host without leaking connection data (0.096406ms)
+✔ rejects hostname alias without leaking connection data (0.933753ms)
+✔ rejects shared database without leaking connection data (0.111869ms)
+✔ rejects missing port without leaking connection data (0.078989ms)
+✔ rejects host query override without leaking connection data (0.07975ms)
+✔ rejects socket query override without leaking connection data (0.063216ms)
+✔ rejects encoded database name without leaking connection data (0.117678ms)
+✔ rejects wrong protocol without leaking connection data (0.192401ms)
+✔ rejects invalid URL without leaking connection data (0.109215ms)
+ℹ tests 877
+ℹ suites 2
+ℹ pass 853
+ℹ fail 17
+ℹ cancelled 0
+ℹ skipped 7
+ℹ todo 0
+ℹ duration_ms 19368.519034
+
+✖ failing tests:
+
+test at qa/t03-durable-reliability-20261014/submission.test.mts:1:712
+✖ submission exposes only exact allowed public code: 503 T03_SYNTHETIC_INTERNAL_DIAGNOSTIC (6.610748ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  0 !== 1
+
+      at TestContext.<anonymous> (/home/runner/work/sutra/sutra/qa/t03-durable-reliability-20261014/submission.test.mts:27:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-durable-reliability-20261014/submission.test.mts:1:712
+✖ submission exposes only exact allowed public code: 403 SUTRA_QUOTA_EXHAUSTED (1.555883ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'SUTRA_SUBMISSION_UNCONFIRMED'
+  - 'SUTRA_QUOTA_EXHAUSTED'
+           ^
+
+      at Object.<anonymous> (/home/runner/work/sutra/sutra/qa/t03-durable-reliability-20261014/submission.test.mts:23:14)
+      at expectedException (node:assert:578:17)
+      at expectsError (node:assert:703:21)
+      at strict.rejects (node:assert:769:3)
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/qa/t03-durable-reliability-20261014/submission.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SUTRA_SUBMISSION_UNCONFIRMED',
+    expected: 'SUTRA_QUOTA_EXHAUSTED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-durable-reliability-20261014/submission.test.mts:1:712
+✖ submission exposes only exact allowed public code: 409 SUTRA_IDEMPOTENCY_CONFLICT (1.507399ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'SUTRA_SUBMISSION_UNCONFIRMED'
+  - 'SUTRA_IDEMPOTENCY_CONFLICT'
+           ^
+
+      at Object.<anonymous> (/home/runner/work/sutra/sutra/qa/t03-durable-reliability-20261014/submission.test.mts:23:14)
+      at expectedException (node:assert:578:17)
+      at expectsError (node:assert:703:21)
+      at strict.rejects (node:assert:769:3)
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/qa/t03-durable-reliability-20261014/submission.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SUTRA_SUBMISSION_UNCONFIRMED',
+    expected: 'SUTRA_IDEMPOTENCY_CONFLICT',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-durable-reliability-20261014/submission.test.mts:1:712
+✖ submission exposes only exact allowed public code: 400 SUTRA_INVALID_REQUEST_ID (1.0707ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'SUTRA_SUBMISSION_UNCONFIRMED'
+  - 'SUTRA_INVALID_REQUEST_ID'
+           ^
+
+      at Object.<anonymous> (/home/runner/work/sutra/sutra/qa/t03-durable-reliability-20261014/submission.test.mts:23:14)
+      at expectedException (node:assert:578:17)
+      at expectsError (node:assert:703:21)
+      at strict.rejects (node:assert:769:3)
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/qa/t03-durable-reliability-20261014/submission.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SUTRA_SUBMISSION_UNCONFIRMED',
+    expected: 'SUTRA_INVALID_REQUEST_ID',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-durable-reliability-20261014/submission.test.mts:1:712
+✖ submission exposes only exact allowed public code: 503 SUTRA_QUOTA_EXHAUSTED: T03_SYNTHETIC_INTERNAL_DIAGNOSTIC (1.029306ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  0 !== 1
+
+      at TestContext.<anonymous> (/home/runner/work/sutra/sutra/qa/t03-durable-reliability-20261014/submission.test.mts:27:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:1688
+✖ legacy null final checkpoint in create is quarantined without replaying paid work (10.383435ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /SUTRA_RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    "+ 'https://sutra-test.invalid'\n" +
+    "- 'https://db.fixture.invalid'\n" +
+    '           ^\n'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:39:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid'
+    - 'https://db.fixture.invalid'
+               ^
+
+        at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+        at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:39:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    expected: /SUTRA_RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:1688
+✖ legacy null final checkpoint in export is quarantined without replaying paid work (1.439266ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /SUTRA_RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    "+ 'https://sutra-test.invalid'\n" +
+    "- 'https://db.fixture.invalid'\n" +
+    '           ^\n'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:39:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid'
+    - 'https://db.fixture.invalid'
+               ^
+
+        at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+        at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:39:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /SUTRA_RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:1688
+✖ legacy null final checkpoint in auto is quarantined without replaying paid work (1.457905ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /SUTRA_RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    "+ 'https://sutra-test.invalid'\n" +
+    "- 'https://db.fixture.invalid'\n" +
+    '           ^\n'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:39:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid'
+    - 'https://db.fixture.invalid'
+               ^
+
+        at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+        at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:39:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /SUTRA_RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:1688
+✖ legacy null final checkpoint in production is quarantined without replaying paid work (10.815398ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /SUTRA_RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    "+ 'https://sutra-test.invalid'\n" +
+    "- 'https://db.fixture.invalid'\n" +
+    '           ^\n'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:39:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid'
+    - 'https://db.fixture.invalid'
+               ^
+
+        at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+        at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:39:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /SUTRA_RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:2247
+✖ null music requires explicit skip, matching empty value: ["cinematic",{"status":"skipped","value":null}] (2.344586ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /SUTRA_RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    "+ 'https://sutra-test.invalid'\n" +
+    "- 'https://db.fixture.invalid'\n" +
+    '           ^\n'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:54:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid'
+    - 'https://db.fixture.invalid'
+               ^
+
+        at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+        at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:54:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /SUTRA_RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:2247
+✖ null music requires explicit skip, matching empty value: ["none",{"status":"complete","value":null}] (1.349621ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /SUTRA_RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    "+ 'https://sutra-test.invalid'\n" +
+    "- 'https://db.fixture.invalid'\n" +
+    '           ^\n'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:54:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid'
+    - 'https://db.fixture.invalid'
+               ^
+
+        at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+        at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:54:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /SUTRA_RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:2247
+✖ null music requires explicit skip, matching empty value: ["none",{"status":"skipped","value":"https://wrong.fixture.invalid/music.mp3"}] (4.0201ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /SUTRA_RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    "+ 'https://sutra-test.invalid'\n" +
+    "- 'https://db.fixture.invalid'\n" +
+    '           ^\n'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:54:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid'
+    - 'https://db.fixture.invalid'
+               ^
+
+        at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+        at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:54:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /SUTRA_RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:2247
+✖ null music requires explicit skip, matching empty value: ["none",{"status":"skipped"}] (0.98516ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /SUTRA_RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:\n' +
+    '+ actual - expected\n' +
+    '\n' +
+    "+ 'https://sutra-test.invalid'\n" +
+    "- 'https://db.fixture.invalid'\n" +
+    '           ^\n'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:54:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid'
+    - 'https://db.fixture.invalid'
+               ^
+
+        at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+        at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:54:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /SUTRA_RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:2587
+✖ explicit music none still resumes its acknowledged skipped result (3.196475ms)
+  Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'https://sutra-test.invalid'
+  - 'https://db.fixture.invalid'
+             ^
+
+      at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+      at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:62:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/test-t03-durable-reliability.mts:1:2899
+✖ new music-none execution persists its skip and null result without invoking a provider (2.284795ms)
+  Error: SUTRA_JOB_LEASE_LOST: AssertionError: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'https://sutra-test.invalid'
+  - 'https://db.fixture.invalid'
+             ^
+
+      at heartbeat (/home/runner/work/sutra/sutra/src/lib/video-queue.ts:171:37)
+      at async <anonymous> (/home/runner/work/sutra/sutra/src/lib/video-worker.ts:31:5)
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:81:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at scripts/test-t03-durable-reliability.mts:1:4014
+✖ lost finish ACK rejects contradictory skipped-music value undefined (4.573938ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   '/rest/v1/rpc/finish_video_job',
+  -   '/rest/v1/video_jobs'
+  - ]
+
+      at TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:91:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ '/rest/v1/rpc/finish_video_job', '/rest/v1/video_jobs' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-durable-reliability.mts:1:4014
+✖ lost finish ACK rejects contradictory skipped-music value https://unexpected.fixture.invalid/music.mp3 (10.365447ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + []
+  - [
+  -   '/rest/v1/rpc/finish_video_job',
+  -   '/rest/v1/video_jobs'
+  - ]
+
+      at TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t03-durable-reliability.mts:91:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ '/rest/v1/rpc/finish_video_job', '/rest/v1/video_jobs' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
