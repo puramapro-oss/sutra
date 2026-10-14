@@ -73,6 +73,9 @@ Object.assign(env, {
   NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fixture-anon', NEXT_PUBLIC_APP_SCHEMA: 'sutra',
   SUPABASE_SERVICE_ROLE_KEY: 'fixture-service', STRIPE_SECRET_KEY: 'sk_test_isolated',
   RESEND_API_KEY: 're_isolated',
+  RUNPOD_API_KEY: 'fixture-only', RUNPOD_ENDPOINT_ID: 'fixture-endpoint',
+  ELEVENLABS_API_KEY: 'fixture-only', SUNO_API_KEY: 'fixture-only',
+  SUNO_API_BASE_URL: 'https://api.sunoapi.org/api/v1',
 })
 const output = resolve(root, 'test-results/ci', profile)
 mkdirSync(output, { recursive: true })

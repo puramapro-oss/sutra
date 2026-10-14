@@ -33,6 +33,7 @@ for (const boundary of ['submit-network', 'submit-503', 'poll-network', 'poll-40
       }
       assert.equal(url, 'https://api.sunoapi.org/api/v1/generate/record-info?taskId=fixture-song')
       assert.ok(!init?.method || init.method === 'GET')
+      assert.deepEqual(durable['music:suno'], { taskId: 'fixture-song' }, 'GET requires a durably acknowledged immutable task ID')
       polls++
       if (boundary === 'poll-network') throw new Error('FIXTURE_POLL_LOST')
       if (boundary === 'poll-403') return json({}, 403)
@@ -54,14 +55,21 @@ for (const boundary of ['submit-network', 'submit-503', 'poll-network', 'poll-40
     if (boundary === 'success') await run()
     else await assert.rejects(run)
     const callsBeforeRestart = { submissions, polls }
-    if (['result-ack', 'stage-ack', 'success'].includes(boundary)) {
+    if (['result-write', 'result-ack', 'stage-ack', 'success'].includes(boundary)) {
       assert.equal(await run(), 'https://media.fixture.invalid/music.mp3')
       assert.equal((durable['stage:music'] as { status: string }).status, 'complete')
+    } else if (['poll-network', 'poll-403'].includes(boundary)) {
+      await assert.rejects(run, error => {
+        assert.equal((error as { taskId?: string }).taskId, 'fixture-song')
+        return true
+      })
+      assert.equal(durable['stage:music'], undefined)
     } else {
       await assert.rejects(run, /SUTRA_RECONCILIATION_REQUIRED: music/)
       assert.equal(durable['stage:music'], undefined)
     }
-    assert.deepEqual({ submissions, polls }, callsBeforeRestart, 'restart does not call any provider')
+    assert.equal(polls, callsBeforeRestart.polls + (['poll-network', 'poll-403', 'result-write'].includes(boundary) ? 1 : 0),
+      'only an acknowledged task ID allows a read-only recovery request')
     assert.equal(submissions, 1)
   })
 }

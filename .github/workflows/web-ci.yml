@@ -133,3 +133,6 @@ jobs:
           PGUSER: fixture
           PGPASSWORD: fixture
           NODE_OPTIONS: --require=./qa/t08/offline.cjs
+          NEXT_PUBLIC_SUPABASE_URL: https://sutra-test.invalid
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: fixture-anon
+          SUPABASE_SERVICE_ROLE_KEY: fixture-service

@@ -13,7 +13,7 @@ import { socialFeedbackChecks } from '../final-delta-20261014/social-browser.mjs
 const require = createRequire(import.meta.url)
 const baseline = process.argv.includes('--baseline')
 const consentOnly = process.argv.includes('--consent-only')
-const output = resolve('qa/t07-frontend-fixes-20261014/evidence', consentOnly ? 'consent-before' : baseline ? 'before' : 'after')
+const output = resolve(process.env.SUTRA_T07_OUTPUT || 'qa/t07-frontend-fixes-20261014/evidence', consentOnly ? 'consent-before' : baseline ? 'before' : 'after')
 await mkdir(output, { recursive: true })
 const user = { id: '11111111-1111-4111-8111-111111111111', aud: 'authenticated', role: 'authenticated', email: 'studio-test@example.invalid', app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: { name: 'Studio Test' }, created_at: new Date().toISOString(), email_confirmed_at: new Date().toISOString() }
 const token = `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url')}.${Buffer.from(JSON.stringify({ sub: user.id, aud: 'authenticated', role: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600, iat: Math.floor(Date.now() / 1000), email: user.email })).toString('base64url')}.fixture-signature`
@@ -26,7 +26,8 @@ const videos = Array.from({ length: 13 }, (_, i) => ({
   duration: 30, format: '9:16', video_url: null, thumbnail_url: null,
 }))
 const requests = [], results = [], errors = [], violations = [], metrics = [], blocked = [], mockedConsents = [], unexpectedMutations = [], themeColors = []
-let dataMode = 'normal', child, childExit, browser
+let dataMode = 'normal', child, childExit, browser, diagnosticPage
+const authPaths = []
 const delayMs = 400
 const fixture = createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -37,6 +38,7 @@ const fixture = createServer(async (req, res) => {
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
   const url = new URL(req.url, 'http://fixture.invalid'), path = url.pathname
   const send = value => res.end(JSON.stringify(value))
+  if (path.startsWith('/auth/') || path === '/rest/v1/profiles') authPaths.push({ path, method: req.method })
   if (path === '/auth/v1/token') return send({ access_token: token, refresh_token: 'fixture-refresh', expires_in: 3600, expires_at: Math.floor(Date.now() / 1000) + 3600, token_type: 'bearer', user })
   if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405); return send({ error: 'fixture_read_only' }) }
   if (path === '/auth/v1/user') return send(user)
@@ -114,7 +116,7 @@ try {
     if (!['GET', 'HEAD'].includes(request.method())) return route.abort()
     return route.continue()
   })
-  const page = await context.newPage()
+  const page = await context.newPage(); diagnosticPage = page
   page.on('pageerror', e => errors.push(e.message))
   page.on('console', m => { if (m.type() === 'error' && /hydration|did not match|server rendered/i.test(m.text())) errors.push(m.text()) })
   await page.goto(`${base}/login?next=/library`)
@@ -152,7 +154,8 @@ try {
   await page.getByTestId('email-input').fill(user.email)
   await page.getByTestId('password-input').fill('fixture-password')
   await page.getByTestId('login-button').click()
-  await expect(page.getByTestId('load-more')).toBeVisible({ timeout: 30000 })
+  // Cold CI dev compilation is separate from the measured warm library interactions.
+  await expect(page.getByTestId('load-more')).toBeVisible({ timeout: 60000 })
   await page.evaluate(id => {
     localStorage.setItem('sutra_favorites', JSON.stringify([id]))
     localStorage.setItem('sutra_folders', JSON.stringify([{ id: 'later', name: 'Dossier deuxième page', videoIds: [id] }]))
@@ -289,6 +292,10 @@ try {
   await check('no unexpected mutation API reached', async () => assert.deepEqual(unexpectedMutations, []))
   await check('no JS or hydration errors', async () => assert.deepEqual(errors, []))
 } catch (error) {
+  if (diagnosticPage) {
+    results.push({ name: 'failure-diagnostic', path: new URL(diagnosticPage.url()).pathname, authPaths, visibleAlerts: await diagnosticPage.locator('[role=alert], [data-sonner-toast]').allTextContents() })
+    await diagnosticPage.screenshot({ path: resolve(output, 'failure.png'), fullPage: true })
+  }
   process.exitCode = 1; results.push({ name: 'harness', status: 'FAIL', message: error.message }); process.stderr.write(`${error.stack}\n`)
 } finally {
   if (browser) await browser.close()

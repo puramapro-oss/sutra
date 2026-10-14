@@ -10,7 +10,7 @@ export async function socialFeedbackChecks(page, base, output, check) {
       await page.setViewportSize({ width, height: 900 })
       await page.route('**/api/social/connect', route => route.fulfill({ status, json: { error: 'UNTRUSTED_PROVIDER_DIAGNOSTIC' } }))
       await page.goto(base + '/settings/social')
-      const button = page.getByRole('button', { name: 'Connecter', exact: true }).first()
+      const button = page.getByRole('button', { name: 'Se connecter', exact: true }).first()
       await expect(button).toBeVisible()
       await button.click()
       await expect(page.getByText(message, { exact: true })).toBeVisible()

@@ -194,3 +194,8 @@ Handoff HANDOFF-SUTRA-T03-ORCHESTRATION-FIXES-20261014.md et qa/t03-orchestratio
 
 ## T01 — nouveau candidat intégré, 14 octobre 2026
 Sept livraisons b7cf848 vérifiées et intégrées conjointement (voir qa/final-delta-20261014/import-t*.json et REQUIREMENTS.md). Aucun WIP importé ; correction409/503 intégration T01 :2FAIL avant/4PASS après. Campagne finale sur SHA candidat en attente ; ancien runtime d8691d8 conservé. Aucun SQL/env/cron/worker activé, Salad désactivé, zéro génération/publication. Ne pas annoncer prêt avant toutes gates critiques vertes.
+
+### T01 CI reconciliation 2026-10-14
+Candidate dd1eec5 first campaign FAIL contracts14 and PG fixture configuration; quality TS/lint/build PASS, browser pending. Four harness causes documented qa/final-delta-20261014/ci-reconciliation.json. Targeted66PASS/0FAIL. No product code change. Mac private PG init blocked by shmget IDs exhausted; do not stop foreign services, complete PG on CI. Production d8691d8 unchanged.
+
+T01 CI38505099582 : quality TS/lint/build + T08 browser-redteam PASS ; T07 fixture cold login FAIL (diagnostic ajoute), puis reproduction locale bibliotheque21PASS/social4FAIL cause selecteur Se connecter corrige. Aucun changement produit ; candidat suivant requis.

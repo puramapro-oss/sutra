@@ -154,7 +154,7 @@ test('VOIX: reponse fournisseur incertaine ne declenche pas de nouvelle synthese
 
 test('PRODUCTION: une scene manquante interdit le montage raccourci', async () => {
   let assemblies = 0
-  const providers = { ...productionProviders, script: async () => ({ ...plan, narration: 'voice', estimated_duration: 6,
+  const providers = { ...productionProviders, music: async () => 'https://media.invalid/music.mp3', script: async () => ({ ...plan, narration: 'voice', estimated_duration: 6,
     scenes: [{ visual_prompt: 'first', duration_seconds: 3 }, { visual_prompt: 'second', duration_seconds: 3 }] }) as never,
     visual: async (scene: { visual_prompt: string }) => scene.visual_prompt === 'first' ? { url: 'scene1', source: 'ai' as const, engine: 'wan-classic' as const } : null,
     assemble: async () => { assemblies++; return result } }
