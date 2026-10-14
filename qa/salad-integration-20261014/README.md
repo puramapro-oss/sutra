@@ -1,6 +1,6 @@
 # SUTRA — intégration Salad désactivée, 14 octobre 2026
 
-INTEGRE / TESTE LOCAL. Ce commit est le candidat ; le déploiement ne sera attesté que par les reçus CI/candidate/backup/deployment ultérieurs. Le GPU reste désactivé, aucune dépense, génération, publication ou rotation. Aucun calcul IA sur Mac.
+INTEGRE / TESTE / DEPLOYE OVH : `d8691d8ac6cf885f8e5522f361f45ebe229ec20d`. CI complète verte, candidat isolé, sauvegarde restaurée et contrôles après déploiement PASS ; reçus ci-final.json et deployment.json. Le GPU reste désactivé, aucune dépense, génération, publication ou rotation. Aucun calcul IA sur Mac.
 
 ## Résultat livré
 
@@ -52,3 +52,49 @@ CI initiale38492833709 : PostgreSQL PASS ; deux gates rouges conservées dans `c
 `media-fix-local-gates.json` : contrats,59médias,TypeScript/lint/build tous PASS après correction ; secret local restauré à l'identique. Le résultat navigateur ciblé et la nouvelle CI sont consignés séparément avant promotion. Analyse d'impact HIGH exécutée avant les deux éditions ; graphe partagé non exhaustif.
 
 Navigateur complet corrigé : 210 contrôles, 165 audits accessibilité et 7 contrôles supplémentaires PASS ; aucune exception navigateur. Voir `browser-fix-local.json`, `browser-fix-results.json`, `browser-fix-extra.json`.
+
+## Mise en service vérifiée — 14 octobre 2026, 01:47 UTC
+
+Code déployé et poussé : `d8691d8ac6cf885f8e5522f361f45ebe229ec20d`, branche `codex/sutra-final-providers-20261013`. URL : https://sutra.purama.dev. Le commit documentaire ultérieur ne change aucun des 873 fichiers du manifeste testé. [CI38494320084](https://github.com/puramapro-oss/sutra/actions/runs/38494320084) : trois jobs PASS. Premier essai quality interrompu par un timeout navigateur `networkidle` à15s ; un seul rejeu du job échoué, même SHA, PASS. Échec conservé dans ci-d8691d8-attempt1.json et ci-d8691d8-browser-timeout.json ; aucun test supprimé.
+
+- Contrats :666 PASS /7 SKIP ; médias59 PASS ; redteam14 PASS.
+- `node qa/t08/run.mjs browser-redteam` :210 contrôles,165 audits axe,7 contrôles supplémentaires PASS,0 exception navigateur.
+- `node scripts/run-ci.mjs legacy` :1022 PASS /25 SKIP /0 échec /0 flaky. Suites ignorées documentées dans ci-legacy-skips.json ; aucune assimilée à un PASS.
+- TypeScript, lint, build PASS. `python3 -m unittest discover -s deploy -p 'test_*.py'` :24 PASS. CI PostgreSQL jetable : migrations/permissions,12 tests concurrence pipeline et7 journal Salad PASS. Tests PostgreSQL18 locaux déjà verts réutilisés.
+- `npm audit --omit=dev --audit-level=high` : gate PASS,0 high/critical ;7 vulnérabilités restantes (2 low,5 moderate). Lint :111 avertissements hérités. Ces avertissements ne sont pas déclarés corrigés.
+- Promotion exacte : `python3 qa/salad-integration-20261014/promote.py --source-ref d8691d8ac6cf885f8e5522f361f45ebe229ec20d --ci-run 38494320084`. Candidat sans réseau, image précédente testée sans réseau, sauvegarde SUTRA141 tables restaurée avec comptes identiques. Sauvegarde applicative des blobs et trois tables sociales publiques ; auth de restauration limitée aux identités fixtures, pas sauvegarde intégrale de toute la plateforme. Répertoire privé et fichiers0600. Aucune migration distante.
+- Après promotion :8 GET internes/publics,7 GET authentifiés,58 refus cron/OAuth,30 contrôles médias négatifs PASS ;3 contrôles authentifiés bibliothèque/sous-titres CPU/export SRT PASS. Sessions de recette révoquées sans toucher la session utilisateur. Voir commandes exactes ci-dessous et reçus homonymes.
+- Navigateur public1440×1000 et375×812 : login/redirection/callback invalide, pas de débordement ni exception ; captures affichées et inspectées. Preuve publique uniquement, pas de preuve de consentement Google ou social réel.
+- Runtime : image exacte saine,0 redémarrage,0 ligne erreur/fatal/panic ; schéma/jobs présents,0 index SUTRA invalide,0 transaction longue, base hors récupération.71 autres conteneurs inchangés. Variables runtime identiques au snapshot protégé ; origine SUTRA préservée.
+- Depuis cette image : RunPod health endpoint200 + compteurs conformes (0 worker prêt au moment du contrôle), Shotstack stage/v1 templates200 + contrats conformes, Zernio profil unique possédé et binding vérifiés,0 compte connecté. Aucun appel de génération. Ne pas confondre accès authentifié et capacité à produire une vidéo.
+- DNS : A vers OVH, serveurs autoritaires Cloudflare ; proxy DNS-only déduit de la résolution directe, paramétrage du compte non certifié par API. TLS1.3 valide pour le domaine, certificat expirant le10 janvier2027. Preuve dns-tls.json, aucune modification DNS.
+
+Commandes gratuites après déploiement :
+
+```sh
+python3 qa/salad-integration-20261014/run-authenticated.py
+node qa/salad-integration-20261014/public-browser.executed.cjs.txt
+python3 qa/salad-integration-20261014/security-probe.executed.py.txt
+node --input-type=module < qa/salad-integration-20261014/media-smoke.executed.mjs.txt
+```
+
+`authenticated-free-media.executed.mjs.txt` a été bundlé avec esbuild puis envoyé par stdin à Node dans le seul conteneur SUTRA ; aucun secret/cookie/lien affiché. `qa/provider-activation-20261014/runtime-probe.mjs` a été exécuté de même dans le runtime, GET seulement ; wrapper exige code0 et `pass:true`. Reçus authenticated-free-media.json et provider-runtime.json. Export SRT réel testé ; rendu vidéo, création de projet avec génération, pipeline fournisseur et publication réels NON TESTES.
+
+Rollback disponible, non déclenché (contrôles verts) :
+
+```sh
+python3 deploy/ovh.py rollback --source-ref d8691d8ac6cf885f8e5522f361f45ebe229ec20d
+```
+
+## Parcours réellement disponibles et suites indispensables
+
+1. Se connecter sur https://sutra.purama.dev/login avec l'identité de recette confirmée ; consulter `/dashboard`, `/library`, `/create`, `/production`. Les pages protégées répondent avec la session vérifiée. Les tests pipeline sont simulés ; ne pas lancer de génération API sans devis/accord de dépense.
+2. Social : https://sutra.purama.dev/settings/social → choisir un réseau disponible → Se connecter → consentement externe → retour dans la même session sous10min. PURAMA réutilise le profil existant possédé, aucun doublon. Neuf connecteurs proposés : TikTok,YouTube,Instagram,Facebook,X,LinkedIn,Pinterest,Reddit,Threads ; Snapchat,Tumblr,Mastodon,Bluesky,Vimeo restent désactivés. [Guide officiel](https://docs.zernio.com/guides/connecting-accounts). Aucun compte connecté ni publication automatique.
+3. Personnel : GPU distant open source, uniquement propriétaire. Il est actuellement désactivé ; aucune génération locale Mac disponible/prouvée. Pour activer Salad, autoriser explicitement une ressource et un budget, puis renseigner la clé compte dans le maître sécurisé. Endpoint, token worker dédié, rôle DB limité, qualification réelle et devis/budget sont ensuite à établir sans deviner modèle/VRAM. [Développeurs Salad](https://salad.com/developers/), [prix officiels](https://salad.com/pricing/). Le temps GPU actif est payant, même en attente ;0,090USD/h est le tarif Lowest RTX3090 observé, pas un forfait garanti, ni un coût vidéo garanti. Script/voix/musique/assemblage API éventuels restent payants.
+4. Client : routage API conservé et testé en simulation. Utiliser une identité cliente autorisée pour ce parcours ; l'identité propriétaire personnelle ne bascule pas silencieusement vers l'API payante. Avant un test réel, chiffrer la requête exacte et obtenir l'accord de dépense. RunPod health ne valide ni modèle/WAN ni disponibilité GPU réelle ; Shotstack reste sélectionné stage.
+
+Aucun blocage de code reproductible restant dans les gates requises. Blocages d'activation externes : ressource/budget/qualification Salad, consentements sociaux et autorisation de test fournisseur payant. Les fonctions GPU et la chaîne vidéo complète ne sont pas déclarées prêtes.
+
+## Clôture documentaire
+
+Les873 fichiers du manifeste testé sont inchangés. `detect_changes --scope staged` a analysé41 fichiers de preuves/docs, aucun symbole indexé recouvrant les hunks ; ce résultat ne certifie pas un graphe exhaustif. Le contrôle de secrets a initialement signalé trois empreintes SHA256 publiques associées aux noms de fichiers auth. Chaque empreinte a été vérifiée contre le fichier source puis le reçu représenté en lignes path/sha256 ; aucune exclusion du scanner ni secret ajouté. Les gates produit ne sont pas rejouées pour ces seules preuves.

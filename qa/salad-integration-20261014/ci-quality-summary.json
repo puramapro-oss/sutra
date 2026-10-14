@@ -1,0 +1,77 @@
+{
+  "source": "d8691d8ac6cf885f8e5522f361f45ebe229ec20d",
+  "run": 38494320084,
+  "attempt": 2,
+  "status": "PASS",
+  "url": "https://github.com/puramapro-oss/sutra/actions/runs/38494320084",
+  "quality": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 15077
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "."
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 21308
+    },
+    {
+      "name": "build",
+      "command": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build",
+        "--webpack"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 75704
+    }
+  ],
+  "browser": {
+    "checks": 210,
+    "accessibilityAudits": 165,
+    "errors": 0,
+    "extraPassed": 7
+  },
+  "legacy": {
+    "startTime": "2026-10-14T01:33:55.570Z",
+    "duration": 494382.018,
+    "expected": 1022,
+    "skipped": 25,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "legacyErrors": 0,
+  "logSha256": "43fb2d0bde15077464a7ba5cfce404928b657a48dad141bda95f840d4e00858f",
+  "selectedCounters": [
+    "quality\tRun python3 -m unittest discover -s deploy -p 'test_*.py'\t2026-10-14T01:42:10.2794974Z Ran 24 tests in 0.050s",
+    "quality\tAudit production dependencies\t2026-10-14T01:42:11.2278591Z 7 vulnerabilities (2 low, 5 moderate)",
+    "disposable-database\tUNKNOWN STEP\t2026-10-14T01:12:03.2258602Z \u2139 tests 12",
+    "disposable-database\tUNKNOWN STEP\t2026-10-14T01:12:03.2259997Z \u2139 pass 12",
+    "disposable-database\tUNKNOWN STEP\t2026-10-14T01:12:03.2260522Z \u2139 fail 0",
+    "disposable-database\tUNKNOWN STEP\t2026-10-14T01:12:03.2261694Z \u2139 skipped 0",
+    "disposable-database\tUNKNOWN STEP\t2026-10-14T01:12:11.2998103Z \u2139 tests 7",
+    "disposable-database\tUNKNOWN STEP\t2026-10-14T01:12:11.2999320Z \u2139 pass 7",
+    "disposable-database\tUNKNOWN STEP\t2026-10-14T01:12:11.2999696Z \u2139 fail 0",
+    "disposable-database\tUNKNOWN STEP\t2026-10-14T01:12:11.3000473Z \u2139 skipped 0"
+  ],
+  "paidCalls": 0
+}

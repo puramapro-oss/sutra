@@ -1,0 +1,28 @@
+{
+  "observedAt": "2026-10-14T01:44:33.812Z",
+  "checks": [
+    {
+      "path": "/library",
+      "http": 200,
+      "contract": true
+    },
+    {
+      "path": "/api/subtitles",
+      "http": 200,
+      "contract": true,
+      "providerCalls": 0
+    },
+    {
+      "path": "/api/subtitles/export",
+      "http": 200,
+      "contract": true,
+      "exactContent": true,
+      "providerCalls": 0
+    }
+  ],
+  "generationRequests": 0,
+  "identityVerified": true,
+  "pass": true,
+  "testSessionRevoked": true,
+  "deployedSha": "d8691d8ac6cf885f8e5522f361f45ebe229ec20d"
+}
