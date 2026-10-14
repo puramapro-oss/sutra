@@ -1,3 +1,11 @@
+# SUTRA T01 — état courant : candidat testé3855665, production86d04c8
+
+**INTEGRE / TESTE CI ; promotion BLOQUEE par la validation indépendante finale T08 absente.** Dossier courant : [qa/t01-consolidation-20261014/README.md](qa/t01-consolidation-20261014/README.md), matrice53 exigences41PASS/0FAIL/2BLOQUE/10NONTESTE. CI38598361267 trois jobs SUCCESS sur `3855665fa79e3cc2171124d864a834214d6ac617` ; aucun déploiement ni migration de ce candidat. Production saine `86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164` sur https://sutra.purama.dev, dernière preuve16:41UTC. Sept livraisons/WIP préservés, aucun terminal fermé.
+
+Prochaine action : avis du T08 original sur ce SHA exact, puis préconditions/backup frais/rollback et promotion autorisée par T01. La CI verte ne remplace pas cet avis. Aucun nouvel audit général ; consentements personnels et génération/publication réelles restent non testés. Les sections suivantes sont historiques et ne remplacent pas ce statut.
+
+---
+
 # SUTRA — jalon intégration Salad désactivée, 2026-10-14
 
 Candidat intégré et gates locales PASS : `qa/salad-integration-20261014/README.md`. Sept lots T02–T08 vérifiés ; défauts modes, reprise durable production, média et reconnexion corrigés. Contrats666/7skip, médias59, PostgreSQL7, promotion24, TS/lint/build verts. Aucun GPU activé ni migration distante. Configuration RunPod/Shotstack et binding Zernio déjà vérifiés ; consentements sociaux et qualification GPU restent externes. Prochaine étape autorisée : commit exact, CI complète, candidat OVH isolé, sauvegarde/restauration puis promotion SUTRA seule. Aucun déploiement de ce candidat encore attesté. Les sections suivantes sont historiques.
@@ -204,3 +212,12 @@ PRÉSERVATION : T02–T08 chacun livré/propre/FERMABLE_LOT_SUTRA, aucun termina
 
 ## T01 — gate navigateur production, 2026-10-14T16:25:10.951798+00:00
 CIa10 reste FAIL légal en dev (cause exacte non prouvée) ; repro CPU4/délai6s15PASS. Les mêmes assertions sur un seul build production isolé : légal15PASS, parcours34PASS, privé9PASS,0FAIL,0erreur/externe/mutation imprévue. Trois sessions/états séparés ; aucun consentement personnel ni fournisseur. CI utilise ce mode et collecte un dossier neuf pour éviter preuves historiques prises pour résultats frais. Produit/SQL inchangés. Nouveau SHA/CI et ACK T08 toujours requis ; production86d inchangée. Preuve qa/t01-consolidation-20261014/production-browser-correction.json.
+
+
+## T01 — campagne finale exacte et promotion conditionnée, 2026-10-14T16:55:48.931637+00:00
+
+INTEGRE/TESTE : candidat3855665fa79e3cc2171124d864a834214d6ac617 ; CI38598361267 SUCCESS trois jobs. Contrats870PASS/7SKIP, médias120PASS ; PostgreSQL16/7/26 et259assertionsRLS ; TS/lint/buildPASS ; navigateur210+7,165axe0violation, bibliothèque25, légal15/parcours34/privé9 ; legacy1022PASS/25SKIP/0flaky. Simulations déploiement34/migration16/promotion7PASS, sans additionner les recouvrements. Audit0high/critical,2low/5moderate. Commandes et preuves qa/t01-consolidation-20261014/README.md et ci-3855665-tests.json.
+
+Sept lots propres/préservés,66fichiers manifeste identiques,7WIP étrangers inchangés. Matrice T01 provisoire41PASS/0FAIL/2BLOQUE/10NONTESTE ; avis indépendant final T08 absent. Blocage exact : utilisateur exige cette recette avant promotion ; T08 original non joignable via MacDevBridge -32603, aucun remplaçant/ACK présumé. Prochaine tâche unique : recevoir ACK T08 sur3855665, puis préconditions/backup frais et promotion autorisée, sans rejouer toute la CI.
+
+Production86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164 saine/inchangée au16:41UTC. Candidat exact image4d8f5358 construit/testé sans réseau et arrêté ; backup141tables restauré/comparé, migration3fonctions testée/copierollback, non appliquée. Cron infrastructure absente et exécuteurs maintenus inactifs, observateur lecture seule testé seulement. Aucun GPU/paid/publication/consentement personnel. Documentation ultérieure ne remplace pas le SHA testé. Tous terminaux préservés/non fermés.

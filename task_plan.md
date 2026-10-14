@@ -490,3 +490,12 @@ CI7be38587559187 reste FAIL : premier passage gate légale absente après login 
 
 ## T01 — gate navigateur production, 2026-10-14T16:25:10.951798+00:00
 CIa10 reste FAIL légal en dev (cause exacte non prouvée) ; repro CPU4/délai6s15PASS. Les mêmes assertions sur un seul build production isolé : légal15PASS, parcours34PASS, privé9PASS,0FAIL,0erreur/externe/mutation imprévue. Trois sessions/états séparés ; aucun consentement personnel ni fournisseur. CI utilise ce mode et collecte un dossier neuf pour éviter preuves historiques prises pour résultats frais. Produit/SQL inchangés. Nouveau SHA/CI et ACK T08 toujours requis ; production86d inchangée. Preuve qa/t01-consolidation-20261014/production-browser-correction.json.
+
+
+## T01 — campagne finale exacte et promotion conditionnée, 2026-10-14T16:55:48.931637+00:00
+
+INTEGRE/TESTE : candidat3855665fa79e3cc2171124d864a834214d6ac617 ; CI38598361267 SUCCESS trois jobs. Contrats870PASS/7SKIP, médias120PASS ; PostgreSQL16/7/26 et259assertionsRLS ; TS/lint/buildPASS ; navigateur210+7,165axe0violation, bibliothèque25, légal15/parcours34/privé9 ; legacy1022PASS/25SKIP/0flaky. Simulations déploiement34/migration16/promotion7PASS, sans additionner les recouvrements. Audit0high/critical,2low/5moderate. Commandes et preuves qa/t01-consolidation-20261014/README.md et ci-3855665-tests.json.
+
+Sept lots propres/préservés,66fichiers manifeste identiques,7WIP étrangers inchangés. Matrice T01 provisoire41PASS/0FAIL/2BLOQUE/10NONTESTE ; avis indépendant final T08 absent. Blocage exact : utilisateur exige cette recette avant promotion ; T08 original non joignable via MacDevBridge -32603, aucun remplaçant/ACK présumé. Prochaine tâche unique : recevoir ACK T08 sur3855665, puis préconditions/backup frais et promotion autorisée, sans rejouer toute la CI.
+
+Production86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164 saine/inchangée au16:41UTC. Candidat exact image4d8f5358 construit/testé sans réseau et arrêté ; backup141tables restauré/comparé, migration3fonctions testée/copierollback, non appliquée. Cron infrastructure absente et exécuteurs maintenus inactifs, observateur lecture seule testé seulement. Aucun GPU/paid/publication/consentement personnel. Documentation ultérieure ne remplace pas le SHA testé. Tous terminaux préservés/non fermés.
