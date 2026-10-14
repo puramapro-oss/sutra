@@ -6,7 +6,7 @@ import { visualChecks } from './visual-checks.mjs'
 import { privateDownloadChecks } from './private-download-checks.mjs'
 import { expect } from '@playwright/test'
 
-export async function journeyChecks({ page, context, base, fixture, output, check, details }) {
+export async function journeyChecks({ page, context, base, fixture, output, check, details, options = process.argv }) {
   await page.goto(base + '/login?next=/library')
   await page.getByTestId('cookie-refuse').click()
   await page.getByTestId('email-input').fill(fixture.user.email)
@@ -24,10 +24,10 @@ export async function journeyChecks({ page, context, base, fixture, output, chec
     await expect(page.getByTestId('empty-library')).toBeVisible()
     assert.equal(fixture.state.acceptances.length, 4)
   })
-  if (process.argv.includes('--private-download')) return privateDownloadChecks({ page, context, base, fixture, output, check, details })
-  if (process.argv.includes('--visual')) return visualChecks({ page, context, base, fixture, output, check, details })
-  if (process.argv.includes('--retry')) return retryChecks({ page, context, base, fixture, output, check })
-  if (process.argv.includes('--player')) {
+  if (options.includes('--private-download')) return privateDownloadChecks({ page, context, base, fixture, output, check, details })
+  if (options.includes('--visual')) return visualChecks({ page, context, base, fixture, output, check, details })
+  if (options.includes('--retry')) return retryChecks({ page, context, base, fixture, output, check })
+  if (options.includes('--player')) {
     const exportCalls = []
     await context.route('**/api/video/export', async route => {
       exportCalls.push(route.request().postDataJSON())

@@ -1,0 +1,56 @@
+{
+  "observedAt": "2026-10-14T16:25:10.951798+00:00",
+  "parent": "a10cbdabfeef2474e371b0af2f4ec5c2d2688f98",
+  "productChanged": false,
+  "previousCi": {
+    "run": 38594071593,
+    "conclusion": "failure",
+    "failure": "legal heading missing after successful login/RSC; historical exact cause unproven"
+  },
+  "diagnostic": {
+    "command": "node qa/t01-consolidation-20261014/legal-throttled-diagnostic.mjs",
+    "pass": 15,
+    "fail": 0,
+    "cpuRate": 4,
+    "rscDelayMs": 6000,
+    "notACiPass": true
+  },
+  "change": "One isolated production build shared by three separate browser contexts and reset synthetic database states. Original checks and timeouts unchanged. Local TLS bridge targets fixed loopback upstream; no HMR. CI artifact directory absent from committed historical evidence.",
+  "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node qa/t07-frontend-journey-20261014/run.mjs --production-suite",
+  "ciCommand": "node qa/t07-frontend-journey-20261014/run.mjs --production-suite",
+  "results": {
+    "legal": {
+      "pass": 15,
+      "fail": 0
+    },
+    "journey": {
+      "pass": 34,
+      "fail": 0
+    },
+    "privateDownload": {
+      "pass": 9,
+      "fail": 0
+    }
+  },
+  "counting": "Families contain shared login/no-error checks; do not sum as distinct coverage.",
+  "errors": 0,
+  "externalRequests": 0,
+  "unexpectedMutations": 0,
+  "assertionsRelaxed": false,
+  "personalConsent": false,
+  "paidGeneration": false,
+  "screenshotsInspected": [
+    "legal-375.png",
+    "download-1440.png"
+  ],
+  "gitnexus": "Impact journeyChecks and File run UNKNOWN in partial stale graph; direct imports bounded to QA/CI. Precommit analysis pending.",
+  "ci": "PENDING_NEW_EXACT_SHA",
+  "t08": "Independent ACK still absent; stable MacDevBridge thread_list also fails -32603. No substitute ACK.",
+  "production": "86d04c85 unchanged; no migration/promotion",
+  "gitnexusDetectChanges": {
+    "staged": "LOW21files2documentsections0flows; changed harness unindexed, direct diff reviewed",
+    "compareMain": "CRITICAL2627files2909symbols99flows historical branch; warning communicated",
+    "exhaustiveness": "UNKNOWN"
+  },
+  "secretScan": "Four fixture idempotency UUID false positives redacted to stable intent labels in receipt; no real secret read or present."
+}

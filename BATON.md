@@ -287,3 +287,7 @@ CI38585143336 : TypeScript/lint/build et PostgreSQL PASS ; contracts853PASS/17FA
 
 ## T01 — attentes navigateur et diagnostic CI, 2026-10-14T15:57:19.663492+00:00
 CI7be38587559187 reste FAIL : premier passage gate légale absente après login ; second passage attente networkidle dashboard expirée. Contre-preuve gratuite4PASS : requête de fond suspendue, dashboard fonctionnel mais networkidle expire. Deux goto (dashboard/éditeur) utilisent DOMContentLoaded et les assertions existantes inchangées ; délais inchangés. Diagnostics bornés sans en-têtes/cookies/query/body. Régression éditeur4PASS,10scansaxe/0violation,lintPASS. Cause exacte des échecs historiquesCI NON PROUVÉE, légal non corrigé présumé. Nouveau candidat/CI requis ; aucune promotion avant CI+ACKT08. WIP tiers7hashes inchangés. Preuve qa/t01-consolidation-20261014/navigation-correction.json.
+
+
+## T01 — gate navigateur production, 2026-10-14T16:25:10.951798+00:00
+CIa10 reste FAIL légal en dev (cause exacte non prouvée) ; repro CPU4/délai6s15PASS. Les mêmes assertions sur un seul build production isolé : légal15PASS, parcours34PASS, privé9PASS,0FAIL,0erreur/externe/mutation imprévue. Trois sessions/états séparés ; aucun consentement personnel ni fournisseur. CI utilise ce mode et collecte un dossier neuf pour éviter preuves historiques prises pour résultats frais. Produit/SQL inchangés. Nouveau SHA/CI et ACK T08 toujours requis ; production86d inchangée. Preuve qa/t01-consolidation-20261014/production-browser-correction.json.

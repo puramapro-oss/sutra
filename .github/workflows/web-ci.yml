@@ -55,10 +55,7 @@ jobs:
       - name: Library pagination and consent contrast regressions
         run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
       - name: Integrated legal consent and desktop/mobile journeys (synthetic identity)
-        run: |
-          node qa/t07-frontend-journey-20261014/run.mjs
-          node qa/t07-frontend-journey-20261014/run.mjs --journeys
-          node qa/t07-frontend-journey-20261014/run.mjs --journeys --private-download
+        run: node qa/t07-frontend-journey-20261014/run.mjs --production-suite
       - run: node scripts/run-ci.mjs legacy
       - run: python3 -m unittest discover -s deploy -p 'test_*.py'
       - run: python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'
@@ -86,9 +83,7 @@ jobs:
             test-results/legacy
             test-results/t08
             qa/t07-frontend-fixes-20261014/evidence/after
-            qa/t07-frontend-journey-20261014/after
-            qa/t07-frontend-journey-20261014/journey-after
-            qa/t07-frontend-journey-20261014/private-download-after
+            qa/t07-frontend-journey-20261014/production-suite
           if-no-files-found: warn
 
   disposable-database:

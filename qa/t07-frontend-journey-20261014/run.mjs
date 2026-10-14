@@ -12,17 +12,19 @@ import { journeyChecks } from './journey-checks.mjs'
 import { legalChecks } from './legal-checks.mjs'
 import { prepareTLS } from './tls-fixture.mjs'
 import { observeNavigation } from '../../scripts/ui-isolated/navigation-diagnostics.mjs'
+import { startProductionServer } from '../../scripts/ui-isolated/production-server.mjs'
 
+const productionSuite = process.argv.includes('--production-suite')
 const journeys = process.argv.includes('--journeys')
 const baseline = process.argv.includes('--baseline')
 const privateDownload = process.argv.includes('--private-download')
-const output = resolve('qa/t07-frontend-journey-20261014', privateDownload ? 'private-download-after' : process.argv.includes('--player') ? 'player-regression' : process.argv.includes('--visual-download') ? 'visual-download' : process.argv.includes('--visual') ? 'visual' : process.argv.includes('--retry') ? 'journey-retry' : journeys ? (process.argv.includes('--repro') ? 'journey-before' : 'journey-after') : baseline ? 'before' : 'after')
+const output = resolve('qa/t07-frontend-journey-20261014', productionSuite ? 'production-suite' : privateDownload ? 'private-download-after' : process.argv.includes('--player') ? 'player-regression' : process.argv.includes('--visual-download') ? 'visual-download' : process.argv.includes('--visual') ? 'visual' : process.argv.includes('--retry') ? 'journey-retry' : journeys ? (process.argv.includes('--repro') ? 'journey-before' : 'journey-after') : baseline ? 'before' : 'after')
 await mkdir(output, { recursive: true })
-const tls = privateDownload ? await prepareTLS() : null
+const tls = privateDownload || productionSuite ? await prepareTLS() : null
 const fixture = await startFixture(tls?.options)
 const probe = createServer(); probe.listen(0, '127.0.0.1'); await once(probe, 'listening')
 const port = probe.address().port; await new Promise(done => probe.close(done))
-const base = `${privateDownload ? 'https' : 'http'}://127.0.0.1:${port}`
+const base = `${tls ? 'https' : 'http'}://127.0.0.1:${port}`
 const log = await open(resolve(output, 'server.log'), 'w')
 const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: process.env.TMPDIR,
   NODE_OPTIONS: `--require=${resolve('qa/t08/offline.cjs')}`, NEXT_TELEMETRY_DISABLED: '1',
@@ -30,31 +32,26 @@ const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: process.en
   NEXT_PUBLIC_APP_SCHEMA: 'sutra', SUPABASE_SERVICE_ROLE_KEY: 'fixture-service',
   STRIPE_SECRET_KEY: 'sk_test_fixture', RESEND_API_KEY: 're_fixture', NEXT_PUBLIC_APP_URL: base }
 if (tls) env.NODE_EXTRA_CA_CERTS = tls.cert
-const results = [], errors = [], blocked = [], mutations = [], details = []
-let child, browser, page, navigationSnapshot
-async function check(name, run) {
-  try { await run(); results.push({ name, status: 'PASS' }); process.stdout.write(`PASS ${name}\n`) }
-  catch (error) { if (page) { await writeFile(resolve(output, `failure-${results.length}.txt`), await page.locator('body').innerText().catch(() => 'body unavailable')); } results.push({ name, status: 'FAIL', message: error.message }); process.exitCode = 1; process.stdout.write(`FAIL ${name}: ${error.message}\n`) }
-}
-try {
-  browser = await chromium.launch({ headless: true })
-  const tlsArgs = tls ? ['--experimental-https', '--experimental-https-key', tls.key, '--experimental-https-cert', tls.cert, '--experimental-https-ca', tls.cert] : []
-  child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(port), ...tlsArgs], { cwd: process.cwd(), env, detached: true, stdio: ['ignore', log.fd, log.fd] })
-  await writeFile(resolve(output, 'owned-server.json'), JSON.stringify({ pid: child.pid, base, cwd: process.cwd() }) + '\n')
-  let ready = false
-  for (let i = 0; i < 60; i++) {
-    try {
-      const ok = privateDownload ? await new Promise((done, fail) => {
-        const request = httpsGet(`${base}/login`, { rejectUnauthorized: false }, response => { response.resume(); done(response.statusCode === 200) })
-        request.setTimeout(3000, () => request.destroy(new Error('local TLS boot timeout'))); request.on('error', fail)
-      }) : (await fetch(`${base}/login`, { signal: AbortSignal.timeout(3000) })).ok
-      if (ok) { ready = true; break }
-    } catch { /* local boot */ }
-    if (child.exitCode !== null) break
-    await new Promise(done => setTimeout(done, 500))
+const initialState = structuredClone(fixture.state)
+let child, proxy, browser
+const summaries = []
+async function runScenario(options, scenarioOutput) {
+  Object.assign(fixture.state, structuredClone(initialState))
+  const output = scenarioOutput
+  const privateDownload = options.includes('--private-download')
+  await mkdir(output, { recursive: true })
+  const results = [], errors = [], blocked = [], mutations = [], details = []
+  let context, page, navigationSnapshot
+  async function check(name, run) {
+    try { await run(); results.push({ name, status: 'PASS' }); process.stdout.write(`PASS ${name}\n`) }
+    catch (error) {
+      if (page) await writeFile(resolve(output, `failure-${results.length}.txt`), await page.locator('body').innerText().catch(() => 'body unavailable'))
+      results.push({ name, status: 'FAIL', message: error.message }); process.exitCode = 1
+      process.stdout.write(`FAIL ${name}: ${error.message}\n`)
+    }
   }
-  assert.ok(ready, 'fixture app ready')
-  const context = await browser.newContext({ viewport: { width: 375, height: 812 }, reducedMotion: 'reduce', locale: 'fr-FR', ignoreHTTPSErrors: privateDownload })
+  try {
+  context = await browser.newContext({ viewport: { width: 375, height: 812 }, reducedMotion: 'reduce', locale: 'fr-FR', ignoreHTTPSErrors: Boolean(tls) })
   await context.route('**/*', async route => {
     const request = route.request(), url = new URL(request.url())
     if (url.origin === fixture.url) return route.continue()
@@ -77,20 +74,56 @@ try {
   page.setDefaultTimeout(15000)
   page.on('pageerror', e => errors.push(e.message))
   page.on('console', m => { if (m.type() === 'error' && /hydration|did not match|server rendered/i.test(m.text())) errors.push(m.text()) })
-  if (journeys) await journeyChecks({ page, context, base, fixture, output, check, details })
+  if (options.includes('--journeys')) await journeyChecks({ page, context, base, fixture, output, check, details, options })
   else await legalChecks({ page, context, base, fixture, output, baseline, check, details })
   await check('no unexpected mutation, uncaught error or hydration mismatch', async () => {
     assert.deepEqual(errors, []); assert.deepEqual(mutations, [])
   })
+  } catch (error) {
+    results.push({ name: 'harness', status: 'FAIL', message: error.stack }); process.exitCode = 1
+    process.stderr.write(error.stack + '\n')
+    if (page) await page.screenshot({ path: resolve(output, 'diagnostic.png'), fullPage: true }).catch(() => {})
+  } finally {
+    if (navigationSnapshot) await writeFile(resolve(output, 'navigation.json'), JSON.stringify(navigationSnapshot(), null, 2) + '\n')
+    await context?.close()
+    await writeFile(resolve(output, 'results.json'), JSON.stringify({ baseline, productionSuite, results, details, errors, blocked, mutations, writes: fixture.state.writes, acceptances: fixture.state.acceptances.map(({ user_id, doc_type, version }) => ({ user_id, doc_type, version })) }, null, 2) + '\n')
+    summaries.push({ options, output, pass: results.filter(r => r.status === 'PASS').length, fail: results.filter(r => r.status === 'FAIL').length })
+  }
+}
+try {
+  const tlsArgs = tls ? ['--experimental-https', '--experimental-https-key', tls.key, '--experimental-https-cert', tls.cert, '--experimental-https-ca', tls.cert] : []
+  if (productionSuite) ({ child, proxy } = await startProductionServer({ env, log, port, tls }))
+  else child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(port), ...tlsArgs], { cwd: process.cwd(), env, detached: true, stdio: ['ignore', log.fd, log.fd] })
+  await writeFile(resolve(output, 'owned-server.json'), JSON.stringify({ pid: child.pid, base, cwd: process.cwd() }) + '\n')
+  let ready = false
+  for (let i = 0; i < 60; i++) {
+    try {
+      const ok = tls ? await new Promise((done, fail) => {
+        const request = httpsGet(`${base}/login`, { rejectUnauthorized: false }, response => { response.resume(); done(response.statusCode === 200) })
+        request.setTimeout(3000, () => request.destroy(new Error('local TLS boot timeout'))); request.on('error', fail)
+      }) : (await fetch(`${base}/login`, { signal: AbortSignal.timeout(3000) })).ok
+      if (ok) { ready = true; break }
+    } catch { /* local boot */ }
+    if (child.exitCode !== null) break
+    await new Promise(done => setTimeout(done, 500))
+  }
+  assert.ok(ready, 'fixture app ready')
+  browser = await chromium.launch({ headless: true })
+  if (productionSuite) {
+    // Same compiled application; a fresh browser context and database state per scenario.
+    for (const [name, options] of [['legal', []], ['journey', ['--journeys']], ['private-download', ['--journeys', '--private-download']]]) {
+      await runScenario(options, resolve(output, name))
+    }
+  } else await runScenario(process.argv, output)
 } catch (error) {
-  results.push({ name: 'harness', status: 'FAIL', message: error.stack }); process.exitCode = 1
+  process.exitCode = 1
+  summaries.push({ name: 'server', fail: 1, message: error.stack })
   process.stderr.write(error.stack + '\n')
-  if (page) await page.screenshot({ path: resolve(output, 'diagnostic.png'), fullPage: true }).catch(() => {})
 } finally {
-  if (navigationSnapshot) await writeFile(resolve(output, 'navigation.json'), JSON.stringify(navigationSnapshot(), null, 2) + '\n')
   await browser?.close()
+  if (proxy) { proxy.closeAllConnections(); await new Promise(done => proxy.close(done)) }
   if (child && child.exitCode === null) { process.kill(-child.pid, 'SIGTERM'); await once(child, 'exit') }
   fixture.server.closeAllConnections(); await new Promise(done => fixture.server.close(done))
   await log.close()
-  await writeFile(resolve(output, 'results.json'), JSON.stringify({ baseline, results, details, errors, blocked, mutations, writes: fixture.state.writes, acceptances: fixture.state.acceptances.map(({ user_id, doc_type, version }) => ({ user_id, doc_type, version })) }, null, 2) + '\n')
+  if (productionSuite) await writeFile(resolve(output, 'summary.json'), JSON.stringify({ productionSuite, singleBuild: true, summaries }, null, 2) + '\n')
 }
