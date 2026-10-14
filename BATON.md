@@ -199,3 +199,5 @@ Sept livraisons b7cf848 vérifiées et intégrées conjointement (voir qa/final-
 Candidate dd1eec5 first campaign FAIL contracts14 and PG fixture configuration; quality TS/lint/build PASS, browser pending. Four harness causes documented qa/final-delta-20261014/ci-reconciliation.json. Targeted66PASS/0FAIL. No product code change. Mac private PG init blocked by shmget IDs exhausted; do not stop foreign services, complete PG on CI. Production d8691d8 unchanged.
 
 T01 CI38505099582 : quality TS/lint/build + T08 browser-redteam PASS ; T07 fixture cold login FAIL (diagnostic ajoute), puis reproduction locale bibliotheque21PASS/social4FAIL cause selecteur Se connecter corrige. Aucun changement produit ; candidat suivant requis.
+
+T01 CI38506801929 : contrats805 PASS/7 SKIP, PostgreSQL PASS, TS/lint/build/T08 navigateur PASS. T07 dev login toujours FAIL60s. Harnais T07 aligne sur bundle production avec memes fixtures et assertions :25 PASS local, zero changement applicatif. Nouvelle CI requise avant promotion ; production d8691d8 preservee. Voir qa/final-delta-20261014/ci-browser-production.json.

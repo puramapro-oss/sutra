@@ -51,7 +51,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: node qa/t08/run.mjs browser-redteam
       - name: Library pagination and consent contrast regressions
-        run: node qa/t07-frontend-fixes-20261014/browser.mjs
+        run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
       - run: node scripts/run-ci.mjs legacy
       - run: python3 -m unittest discover -s deploy -p 'test_*.py'
       - name: Exact candidate promotion and rollback simulations

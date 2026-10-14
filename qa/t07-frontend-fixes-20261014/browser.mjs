@@ -11,14 +11,12 @@ import { readConsentContrast } from './consent-contrast.mjs'
 import { socialFeedbackChecks } from '../final-delta-20261014/social-browser.mjs'
 
 const require = createRequire(import.meta.url)
-const baseline = process.argv.includes('--baseline')
-const consentOnly = process.argv.includes('--consent-only')
+const baseline = process.argv.includes('--baseline'), consentOnly = process.argv.includes('--consent-only'), production = process.argv.includes('--production')
 const output = resolve(process.env.SUTRA_T07_OUTPUT || 'qa/t07-frontend-fixes-20261014/evidence', consentOnly ? 'consent-before' : baseline ? 'before' : 'after')
 await mkdir(output, { recursive: true })
 const user = { id: '11111111-1111-4111-8111-111111111111', aud: 'authenticated', role: 'authenticated', email: 'studio-test@example.invalid', app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: { name: 'Studio Test' }, created_at: new Date().toISOString(), email_confirmed_at: new Date().toISOString() }
 const token = `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url')}.${Buffer.from(JSON.stringify({ sub: user.id, aud: 'authenticated', role: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600, iat: Math.floor(Date.now() / 1000), email: user.email })).toString('base64url')}.fixture-signature`
 const profile = { id: user.id, email: user.email, name: 'Studio Test', plan: 'creator', credits: 40, monthly_video_count: 0, is_admin: false, tutorial_completed: true, brand_kit: null }
-// Bootstrap reuses the existing T07 fixture contract; all traffic is loopback only.
 const videos = Array.from({ length: 13 }, (_, i) => ({
   id: `22222222-2222-4222-8222-${String(i + 1).padStart(12, '0')}`, user_id: user.id,
   title: i === 12 ? 'Favori de la seconde page' : `Vidéo témoin ${i + 1}`,
@@ -27,8 +25,7 @@ const videos = Array.from({ length: 13 }, (_, i) => ({
 }))
 const requests = [], results = [], errors = [], violations = [], metrics = [], blocked = [], mockedConsents = [], unexpectedMutations = [], themeColors = []
 let dataMode = 'normal', child, childExit, browser, diagnosticPage
-const authPaths = []
-const delayMs = 400
+const authPaths = [], delayMs = 400
 const fixture = createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Headers', '*')
@@ -86,7 +83,12 @@ async function layout(page, name) {
   violations.push({ name, violations: found }); assert.deepEqual(found, [], `axe ${name}`)
 }
 try {
-  child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', String(port)], { cwd: process.cwd(), env, detached: true, stdio: ['ignore', log.fd, log.fd] })
+  // As in T08, build and serve with the exact same isolated fixture environment.
+  if (production) {
+    const build = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'build', '--webpack'], { cwd: process.cwd(), env, stdio: ['ignore', log.fd, log.fd] })
+    const [code] = await once(build, 'exit'); assert.equal(code, 0, 'isolated production build')
+  }
+  child = spawn(process.execPath, ['node_modules/next/dist/bin/next', production ? 'start' : 'dev', ...(production ? [] : ['--webpack']), '--hostname', '127.0.0.1', '--port', String(port)], { cwd: process.cwd(), env, detached: true, stdio: ['ignore', log.fd, log.fd] })
   child.once('exit', (code, signal) => { childExit = { code, signal } })
   await writeFile(resolve(output, 'owned-server.json'), JSON.stringify({ pid: child.pid, base, cwd: process.cwd() }) + '\n')
   let ready = false
@@ -151,10 +153,8 @@ try {
   }
   await page.evaluate(() => document.documentElement.classList.remove('theme-light', 'theme-oled'))
   await page.setViewportSize({ width: 375, height: 812 })
-  await page.getByTestId('email-input').fill(user.email)
-  await page.getByTestId('password-input').fill('fixture-password')
+  await page.getByTestId('email-input').fill(user.email); await page.getByTestId('password-input').fill('fixture-password')
   await page.getByTestId('login-button').click()
-  // Cold CI dev compilation is separate from the measured warm library interactions.
   await expect(page.getByTestId('load-more')).toBeVisible({ timeout: 60000 })
   await page.evaluate(id => {
     localStorage.setItem('sutra_favorites', JSON.stringify([id]))
@@ -166,8 +166,6 @@ try {
     await expect(page.getByTestId('load-more')).toBeVisible()
   }
   await reset()
-  // Warm route; identical injected latency before/after. Frame-level React commit timing,
-  // no production-speed claim; no arbitrary request-settle time included in interaction metric.
   for (let i = 0; i < 3; i++) {
     for (const filter of ['favorites', 'all']) {
       const before = requests.length
@@ -185,9 +183,7 @@ try {
     }
   }
   await check('all/favorites toggles reuse identical server result without requests', async () => assert.equal(metrics.reduce((n, m) => n + m.requests, 0), 0))
-  // Explicit refusal removes the consent overlay before pagination interaction.
-  await page.getByTestId('cookie-refuse').click()
-  await expect(page.getByTestId('cookie-banner')).toHaveCount(0)
+  await page.getByTestId('cookie-refuse').click(); await expect(page.getByTestId('cookie-banner')).toHaveCount(0)
   for (const width of [375, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     for (const filter of ['favorites', 'folder']) {
@@ -302,6 +298,6 @@ try {
   if (child && child.exitCode === null) { process.kill(-child.pid, 'SIGTERM'); await once(child, 'exit') }
   await new Promise(done => fixture.close(done)); await log.close()
   await writeFile(resolve(output, 'results.json'), JSON.stringify({ observedAt: new Date().toISOString(), runtime: process.version,
-    baseline, delayMs, childExit, results, metrics, requests, errors, violations, mockedConsents, unexpectedMutations, themeColors, blockedExternalOrigins: [...new Set(blocked)],
-    proof: 'LOCAL_CHROMIUM_FIXTURES_ONLY; no secret/provider/publication/production build' }, null, 2) + '\n')
+    baseline, production, delayMs, childExit, results, metrics, requests, errors, violations, mockedConsents, unexpectedMutations, themeColors, blockedExternalOrigins: [...new Set(blocked)],
+    proof: 'LOCAL_CHROMIUM_FIXTURES_ONLY; no secret/provider/publication' }, null, 2) + '\n')
 }
