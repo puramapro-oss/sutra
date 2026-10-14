@@ -1,0 +1,21 @@
+{
+  "exists": true,
+  "authenticatedSelect": false,
+  "anonSelect": false,
+  "rls": true,
+  "policies": [
+    {
+      "name": "affirmations_select_all",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE",
+      "qual": "true"
+    },
+    {
+      "name": "t02_active_account",
+      "command": "ALL",
+      "permissive": "RESTRICTIVE",
+      "qual": "sutra.account_is_active()"
+    }
+  ],
+  "rows": 30
+}
