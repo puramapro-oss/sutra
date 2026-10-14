@@ -1,0 +1,86 @@
+{
+  "source": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+  "observedAt": "2026-10-14T04:32:09.296Z",
+  "results": [],
+  "generationRequests": 0,
+  "pass": false,
+  "failedGate": "1440:/dashboard",
+  "errorType": "AssertionError",
+  "network": [
+    {
+      "method": "GET",
+      "path": "/create",
+      "failed": true
+    },
+    {
+      "method": "GET",
+      "path": "/production",
+      "failed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/profiles",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/user_notifications",
+      "status": 200
+    },
+    {
+      "method": "HEAD",
+      "path": "/rest/v1/videos",
+      "status": 200
+    },
+    {
+      "method": "HEAD",
+      "path": "/rest/v1/videos",
+      "status": 200
+    },
+    {
+      "method": "HEAD",
+      "path": "/rest/v1/videos",
+      "failed": true
+    },
+    {
+      "method": "HEAD",
+      "path": "/rest/v1/videos",
+      "failed": true
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/affirmations",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v1/videos",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/batch",
+      "failed": true
+    },
+    {
+      "method": "GET",
+      "path": "/library",
+      "failed": true
+    },
+    {
+      "method": "GET",
+      "path": "/publish",
+      "failed": true
+    }
+  ],
+  "safeFailureLocation": [
+    "at /Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/final-delta-20261014/authenticated-browser.cjs:55:18"
+  ],
+  "diagnostic": {
+    "path": "/dashboard",
+    "dashboardReadError": false,
+    "loginVisible": false,
+    "greetingPresent": 1
+  },
+  "testSessionRevoked": true
+}

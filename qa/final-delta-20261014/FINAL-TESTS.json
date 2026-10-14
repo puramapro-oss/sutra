@@ -1,0 +1,123 @@
+{
+  "source": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+  "ci": "https://github.com/puramapro-oss/sutra/actions/runs/38508390596",
+  "status": "PASS",
+  "jobs": [
+    {
+      "name": "contracts",
+      "conclusion": "success",
+      "startedAt": "2026-10-14T03:51:21Z",
+      "completedAt": "2026-10-14T03:54:15Z"
+    },
+    {
+      "name": "disposable-database",
+      "conclusion": "success",
+      "startedAt": "2026-10-14T03:51:22Z",
+      "completedAt": "2026-10-14T03:52:32Z"
+    },
+    {
+      "name": "quality",
+      "conclusion": "success",
+      "startedAt": "2026-10-14T03:51:22Z",
+      "completedAt": "2026-10-14T04:12:50Z"
+    }
+  ],
+  "countsAreNotAdditive": true,
+  "checks": [
+    {
+      "command": "npm run check",
+      "status": "PASS",
+      "scope": [
+        "TypeScript",
+        "ESLint",
+        "Next production build"
+      ]
+    },
+    {
+      "command": "npm run test:contracts",
+      "status": "PASS",
+      "passed": 805,
+      "failed": 0,
+      "skipped": 7,
+      "note": "Offline provider/live exclusions; not production generation proof."
+    },
+    {
+      "command": "npm run test:media",
+      "status": "PASS",
+      "groups": {
+        "composition-delta": 12,
+        "salad-media": 25,
+        "compositor": 31,
+        "local-engine": 3
+      },
+      "note": "CPU synthetic media, no GPU generation. Groups are not added to owner proofs."
+    },
+    {
+      "command": "node qa/t08/run.mjs redteam",
+      "status": "PASS"
+    },
+    {
+      "command": "node qa/t08/run.mjs browser-redteam",
+      "status": "PASS",
+      "note": "Exact CI exit 0. Detailed count not re-attributed from previous candidate."
+    },
+    {
+      "command": "node qa/t07-frontend-fixes-20261014/browser.mjs --production",
+      "status": "PASS",
+      "passed": 25,
+      "failed": 0,
+      "note": "25 assertions include social feedback regressions; no separate total."
+    },
+    {
+      "command": "node scripts/run-ci.mjs legacy",
+      "status": "PASS",
+      "note": "Exact CI exit 0. Detailed count not re-attributed from previous candidate."
+    },
+    {
+      "command": "python3 -m unittest discover -s deploy -p 'test_*.py'",
+      "status": "PASS",
+      "passed": 24
+    },
+    {
+      "command": "CI Exact candidate promotion and rollback simulations (workflow inline test_salad_promotion with SOURCE=qa/final-delta-20261014)",
+      "status": "PASS",
+      "passed": 7,
+      "note": "Overlaps deployment unittest; do not add."
+    },
+    {
+      "command": "npm audit --omit=dev --audit-level=high",
+      "status": "PASS",
+      "vulnerabilities": {
+        "low": 2,
+        "moderate": 5,
+        "high": 0,
+        "critical": 0
+      }
+    },
+    {
+      "command": "npm run test:migration-local",
+      "status": "PASS",
+      "database": "disposable PostgreSQL16"
+    },
+    {
+      "command": "node --import tsx --test scripts/test-pipeline-postgres.mts",
+      "status": "PASS",
+      "passed": 12
+    },
+    {
+      "command": "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-security-rls.mjs",
+      "status": "PASS",
+      "assertions": 254
+    },
+    {
+      "command": "node --import tsx --test scripts/test-salad-persistence.mts",
+      "status": "PASS",
+      "passed": 7
+    },
+    {
+      "command": "node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts",
+      "status": "PASS",
+      "passed": 13
+    }
+  ]
+}

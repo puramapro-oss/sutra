@@ -1,0 +1,96 @@
+TAP version 13
+# Subtest: T08 load: 8 workers / 32 isolated checkpoint sequences, duplicate callers and restart
+ok 1 - T08 load: 8 workers / 32 isolated checkpoint sequences, duplicate callers and restart
+  ---
+  duration_ms: 73.845063
+  type: 'test'
+  ...
+# {"model":"memory checkpoints; no SQL/provider","workers":8,"sequences":32,"operations":288,"totalMs":72.57903500000003,"p95SequenceMs":24.14247899999998}
+# Subtest: T08 load: 32 publication journals / 64 destinations remain unique after contention and replay
+ok 2 - T08 load: 32 publication journals / 64 destinations remain unique after contention and replay
+  ---
+  duration_ms: 73.625276
+  type: 'test'
+  ...
+# {"model":"fake PostgREST CAS; no SQL/social network","workers":8,"journals":32,"submissions":64,"peak":8,"durationMs":73.34097400000002}
+# Subtest: secret guard rejects /virtual/.env before all instrumented I/O
+ok 3 - secret guard rejects /virtual/.env before all instrumented I/O
+  ---
+  duration_ms: 2.937922
+  type: 'test'
+  ...
+# Subtest: secret guard rejects /virtual/.env.local before all instrumented I/O
+ok 4 - secret guard rejects /virtual/.env.local before all instrumented I/O
+  ---
+  duration_ms: 1.458036
+  type: 'test'
+  ...
+# Subtest: secret guard rejects /virtual/.env.test before all instrumented I/O
+ok 5 - secret guard rejects /virtual/.env.test before all instrumented I/O
+  ---
+  duration_ms: 0.80783
+  type: 'test'
+  ...
+# Subtest: secret guard rejects file:///virtual/.env before all instrumented I/O
+ok 6 - secret guard rejects file:///virtual/.env before all instrumented I/O
+  ---
+  duration_ms: 0.841332
+  type: 'test'
+  ...
+# Subtest: secret guard rejects file:///virtual/%2Eenv before all instrumented I/O
+ok 7 - secret guard rejects file:///virtual/%2Eenv before all instrumented I/O
+  ---
+  duration_ms: 0.892558
+  type: 'test'
+  ...
+# Subtest: secret guard rejects file:///virtual/%2Eenv%2Elocal before all instrumented I/O
+ok 8 - secret guard rejects file:///virtual/%2Eenv%2Elocal before all instrumented I/O
+  ---
+  duration_ms: 0.845952
+  type: 'test'
+  ...
+# Subtest: ordinary source files remain readable
+ok 9 - ordinary source files remain readable
+  ---
+  duration_ms: 0.806668
+  type: 'test'
+  ...
+# Subtest: network guard rejects api.example.invalid before fetch and socket I/O
+ok 10 - network guard rejects api.example.invalid before fetch and socket I/O
+  ---
+  duration_ms: 1.00043
+  type: 'test'
+  ...
+# Subtest: network guard rejects 169.254.169.254 before fetch and socket I/O
+ok 11 - network guard rejects 169.254.169.254 before fetch and socket I/O
+  ---
+  duration_ms: 0.927985
+  type: 'test'
+  ...
+# Subtest: network guard rejects 10.0.0.1 before fetch and socket I/O
+ok 12 - network guard rejects 10.0.0.1 before fetch and socket I/O
+  ---
+  duration_ms: 0.88249
+  type: 'test'
+  ...
+# Subtest: network guard rejects 127.0.0.1.example.invalid before fetch and socket I/O
+ok 13 - network guard rejects 127.0.0.1.example.invalid before fetch and socket I/O
+  ---
+  duration_ms: 0.818461
+  type: 'test'
+  ...
+# Subtest: loopback fixture access remains allowed
+ok 14 - loopback fixture access remains allowed
+  ---
+  duration_ms: 0.869315
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 683.076554

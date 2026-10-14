@@ -1,0 +1,8 @@
+{
+  "tool": "GitNexus impact",
+  "target": "qa/final-delta-20261014/authenticated-browser.cjs",
+  "risk": "UNKNOWN",
+  "reason": "New standalone QA file is not indexed. Direct import/caller review resolves bounded scope: no product imports, CLI only; --affirmations restricts routes and adds live read/intro assertions; existing default assertions unchanged. No product function modified.",
+  "scope": "QA only",
+  "fixtureCorrection": "First focused attempt incorrectly expected all 30 rows; live component filters one of three categories. Updated test checks the actual category contract and nonempty typed rows; live HTTP200 was already observed. No product change."
+}

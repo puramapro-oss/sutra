@@ -1,0 +1,18 @@
+{
+  "source": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+  "precondition": "Exact CI 38508390596 success and promote.py completed",
+  "commands": [
+    "python3 qa/final-delta-20261014/security-probe.py",
+    "node qa/final-delta-20261014/public-browser.cjs",
+    "node qa/final-delta-20261014/media-smoke.mjs",
+    "python3 qa/final-delta-20261014/run-free-media.py",
+    "python3 qa/final-delta-20261014/run-runtime-providers.py",
+    "python3 qa/final-delta-20261014/dns-tls-final.py",
+    "node qa/final-delta-20261014/authenticated-browser.cjs",
+    "python3 qa/final-delta-20261014/runtime-final.py"
+  ],
+  "networkScope": "Public SUTRA, its Supabase storage/auth, GET-only RunPod endpoint health/Shotstack templates/Zernio ownership; no generation or publishing",
+  "mutations": "Ephemeral existing-user test sessions revoked; one tiny new owned storage fixture removed; no existing user objects touched",
+  "productionSqlDelta": [],
+  "automaticRollback": "promote.py restores previous image/config on failure after replacement; post-deploy critical product failure triggers deploy/ovh.py rollback"
+}

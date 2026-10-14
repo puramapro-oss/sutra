@@ -1,6 +1,6 @@
 # Candidat intégré T01 — 14 octobre 2026
 
-Base b7cf848, production avant promotion d8691d8. Sept deltas exacts, sans WIP ni merge aveugle. Les dépendances Suno T03/T04 sont intégrées ensemble. Aucun SQL ni environnement de production modifié. Détails de provenance dans import-t02..t08.json.
+Base b7cf848, production avant promotion d8691d8. Sept deltas exacts, sans WIP ni merge aveugle. Les dépendances Suno T03/T04 sont intégrées ensemble. Runtime conservé ; seul le SELECT authenticated sur les affirmations a ensuite été corrigé par la migration 6800a8d, avec sauvegarde et régressions ciblées. Détails de provenance dans import-t02..t08.json.
 
 | Lot | SHA livré | État |
 |---|---|---|
@@ -16,9 +16,9 @@ Livré : stockage lié au propriétaire, preuve publique expurgée, transport OT
 
 T01 : raccord CI (contrats et médias nouveaux, PostgreSQL concurrence/révocation, navigateur T07), messages sociaux409/503 reproduits2FAIL puis4PASS, messages locaux fixes sans contenu fournisseur. Browser couvre aussi375/1440. Aucun compte connecté ou contenu publié.
 
-Campagne finale : NON TESTÉE avant CI au SHA exact. Ne pas additionner les résultats propriétaires : recouvrements. GitNexus HIGH/CRITICAL signalé ; correspondance JSX/génériques et index tronqué = exhaustivité UNKNOWN, revue directe des deltas jointe aux impacts. Gitleaks et detect_changes requis avant commit.
+Campagne finale : PASS au SHA exact 86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164, CI38508390596 et promotion OVH prouvées. Voir FINAL-TESTS.json et FINAL-MATRIX.md. Ne pas additionner les résultats propriétaires : recouvrements. GitNexus HIGH/CRITICAL signalé ; correspondance JSX/génériques et index tronqué = exhaustivité UNKNOWN, revue directe des deltas jointe aux impacts. Gitleaks et detect_changes requis avant commit.
 
-Runtime conservé : RunPod/Shotstack credentials et Zernio owner PURAMA déjà validés au précédent jalon. À recontrôler après promotion. Pas de nouvelle migration. Rollback image/config et nouvelle sauvegarde restaurée exigés.
+Runtime conservé et vérifié après promotion : RunPod endpoint health200 avec contrat valide (zéro worker prêt), Shotstack stage/v1 templates200 avec schémas valides, Zernio owner/profil PURAMA et liaison unique vérifiés, zéro compte connecté. Sauvegarde/restauration et rollback image testés. Migration SQL limitée aux affirmations testée et appliquée séparément, sans donnée modifiée.
 
 BLOQUÉ externe : Salad désactivé, ressource/budget/image licenciée/qualification GPU manquants ; aucune génération GPU réelle prouvée. Zernio zéro compte connecté, consentement utilisateur requis. Cron/worker autonome OVH absent : reprise automatique et publication planifiée NON ACTIVES. Aucune activation susceptible de générer/publier dans cette recette.
 

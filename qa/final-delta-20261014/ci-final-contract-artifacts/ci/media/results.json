@@ -1,0 +1,64 @@
+[
+  {
+    "name": "composition-delta",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "scripts/test-t05-composition-fix.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 10945
+  },
+  {
+    "name": "salad-media",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "scripts/test-t05-salad-media.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 8054
+  },
+  {
+    "name": "local-engine",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "scripts/test-local-engine-e2e.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1325
+  },
+  {
+    "name": "compositor",
+    "command": [
+      "node",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--import",
+      "./scripts/helpers/local-media-fixture.mts",
+      "--test",
+      "--test-concurrency=1",
+      "src/lib/ffmpeg-compositor.test.ts",
+      "src/lib/ffmpeg-compositor-formats.test.ts",
+      "src/lib/media-validation.test.ts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 59456
+  }
+]

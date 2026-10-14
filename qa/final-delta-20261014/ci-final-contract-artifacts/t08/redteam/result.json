@@ -1,0 +1,17 @@
+{
+  "profile": "redteam",
+  "status": "PASS",
+  "exitCode": 0,
+  "signal": null,
+  "command": [
+    "/opt/hostedtoolcache/node/24.21.0/x64/bin/node",
+    "--test-reporter=tap",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "qa/t08/integrated/offline.test.mjs",
+    "qa/t08/integrated/load.test.mts"
+  ],
+  "durationMs": 722
+}

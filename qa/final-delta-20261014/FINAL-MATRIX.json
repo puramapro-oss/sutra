@@ -1,0 +1,398 @@
+{
+  "base": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "product": "d8691d8ac6cf885f8e5522f361f45ebe229ec20d",
+  "counts": {
+    "PASS": 36,
+    "FAIL": 0,
+    "BLOQUÉ": 1,
+    "NON TESTÉ": 10
+  },
+  "newIndependentScenarios": {
+    "pass": 13,
+    "fail": 0,
+    "skip": 0
+  },
+  "requirements": [
+    {
+      "id": "R01",
+      "requirement": "Session absente refusée avant travail",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01 : 401, zéro job ; identité vérifiée injectée",
+      "owner": "T08"
+    },
+    {
+      "id": "R02",
+      "requirement": "Connexion navigateur OAuth réelle complète",
+      "status": "NON TESTÉ",
+      "evidenceType": "Réel",
+      "evidence": "Identité/session de fixture ; aucun consentement/login fournisseur par T08",
+      "owner": "T01/utilisateur"
+    },
+    {
+      "id": "R03",
+      "requirement": "GET authentifiés et redirections de connexion existants",
+      "status": "PASS",
+      "evidenceType": "Runtime exact",
+      "evidence": "authenticated-smoke.json et public-browser-final.json ; login mot de passe et consentement OAuth non exécutés.",
+      "owner": "T01"
+    },
+    {
+      "id": "R04",
+      "requirement": "Création projet client avec quota autorisé",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01/J02/J03 ; réel create/queue/worker, reçu quota de fixture",
+      "owner": "T08"
+    },
+    {
+      "id": "R05",
+      "requirement": "Quota refusé ou DB indisponible avant soumission",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J03 : 403/503, aucun projet ni appel fournisseur",
+      "owner": "T08"
+    },
+    {
+      "id": "R06",
+      "requirement": "Budget/autorisation propriétaire Salad et client normal",
+      "status": "PASS",
+      "evidenceType": "T01 réutilisé + T08",
+      "evidence": "Six tests modes intégrés ; J06 503 SALAD_DISABLED avant job, chemin client J01",
+      "owner": "T01/T02/T03"
+    },
+    {
+      "id": "R07",
+      "requirement": "Coût réel, solde fournisseur et budget GPU consommé",
+      "status": "NON TESTÉ",
+      "evidenceType": "Réel",
+      "evidence": "Aucune ressource/génération facturée ; aucun montant inventé",
+      "owner": "T01/utilisateur"
+    },
+    {
+      "id": "R08",
+      "requirement": "Double clic création et conflit même clé/autre contenu",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J02 : 12 requêtes, 1 projet/job, 11 réponses 202, contenu changé 409",
+      "owner": "T08"
+    },
+    {
+      "id": "R09",
+      "requirement": "Statut queue vers polling frontend",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J02 : awaitGeneration réel -> GET status réel, no-store, même videoId",
+      "owner": "T08"
+    },
+    {
+      "id": "R10",
+      "requirement": "Génération simulée et checkpoints ordonnés",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01 : script, voix, musique, deux scènes, neuf étapes persistées",
+      "owner": "T08"
+    },
+    {
+      "id": "R11",
+      "requirement": "Timeout rendu puis reprise ID existant",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01 : 1 soumission + 1 polling ; aucune resynthèse",
+      "owner": "T08"
+    },
+    {
+      "id": "R12",
+      "requirement": "Perte reçu après soumission de rendu",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J10 : reconciliation required, aucune seconde soumission/settlement",
+      "owner": "T08"
+    },
+    {
+      "id": "R13",
+      "requirement": "Erreur partielle upload puis reprise",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J04 : un asset voix synthétisé, deux uploads, autres assets réutilisés",
+      "owner": "T08"
+    },
+    {
+      "id": "R14",
+      "requirement": "Échec DB après vérification finale",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J05 : pas de publication prématurée, reprise sans rendu/vérification supplémentaire",
+      "owner": "T08"
+    },
+    {
+      "id": "R15",
+      "requirement": "Reprise Suno après timeout avec taskId",
+      "status": "PASS",
+      "evidenceType": "Contrats intégrés simulés",
+      "evidence": "T03/T04 importés ensemble ; taskId durable avant polling, reprise GET seule. test-t03-suno-recovery et music-recovery inclus dans 805 contrats CI.",
+      "owner": "T04/T03"
+    },
+    {
+      "id": "R16",
+      "requirement": "Montage vers export et média vérifié",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01/J07 : édition scènes/sous-titres/volume, véritable contrat ; mesures média de fixture",
+      "owner": "T08"
+    },
+    {
+      "id": "R17",
+      "requirement": "Export rejoué et refus validation",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01 replay sans effets ; J07 ancien média conservé, revalidation sans second rendu",
+      "owner": "T08"
+    },
+    {
+      "id": "R18",
+      "requirement": "Qualité réelle image/audio/sous-titres exporté",
+      "status": "NON TESTÉ",
+      "evidenceType": "Réel continu",
+      "evidence": "Pas de fichier vidéo produit dans cette recette ; preuves FFmpeg T05 segmentées réutilisées",
+      "owner": "T05/T01"
+    },
+    {
+      "id": "R19",
+      "requirement": "Validation médias locale CPU intégrée",
+      "status": "PASS",
+      "evidenceType": "Médias CPU synthétiques intégrés",
+      "evidence": "npm run test:media PASS au SHA86d ; groupes 12/25/31/3, sans addition aux preuves propriétaires. SRT CPU réel : authenticated-free-media.json.",
+      "owner": "T05/T01"
+    },
+    {
+      "id": "R20",
+      "requirement": "Isolation utilisateur aux frontières projet/job/export/publication",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J06 : utilisateur étranger 404/409, zéro effet ; session fixture, pas preuve RLS",
+      "owner": "T08"
+    },
+    {
+      "id": "R21",
+      "requirement": "Preuve finale absente et accès révoqué",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J09 : codes explicites, aucun POST ; hors course OAuth",
+      "owner": "T08"
+    },
+    {
+      "id": "R22",
+      "requirement": "OAuth ancien consentement ou revoke concurrent",
+      "status": "PASS",
+      "evidenceType": "Contrats + PostgreSQL réel jetable",
+      "evidence": "T06 version/CAS et révocation ambiguë intégrés ; régressions routes/SQL CI PASS. Course via transport HTTP PostgREST réel NON TESTÉE.",
+      "owner": "T06"
+    },
+    {
+      "id": "R23",
+      "requirement": "Sécurité stockage/preuve publique",
+      "status": "PASS",
+      "evidenceType": "Contrats intégrés + média privé réel",
+      "evidence": "T02 owner/delete/list/proof intégrés CI ; authentification média réel 401/404, Range206 et hash identique : authenticated-free-media.json.",
+      "owner": "T02"
+    },
+    {
+      "id": "R24",
+      "requirement": "Planification future sans faux published",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01 : scheduled/202/success=false, vidéo ready ; confirmation GET seulement ensuite",
+      "owner": "T08"
+    },
+    {
+      "id": "R25",
+      "requirement": "Publication simulée et projections cohérentes",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01 : seul média final exporté, journal/calendrier/historique ; 1 POST",
+      "owner": "T08"
+    },
+    {
+      "id": "R26",
+      "requirement": "Publication double clic concurrente",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J11 : 12 demandes, 1 POST/journal ; projections réparées au replay",
+      "owner": "T08"
+    },
+    {
+      "id": "R27",
+      "requirement": "Échec partiel multi-réseaux",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J08 : retry Instagram seul ; YouTube publié non resoumis",
+      "owner": "T08"
+    },
+    {
+      "id": "R28",
+      "requirement": "Export modifié après planification",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J12 : SUTRA_MEDIA_CHANGED 409 ; intention média initiale conservée",
+      "owner": "T08"
+    },
+    {
+      "id": "R29",
+      "requirement": "Date passée ne déclenche aucune publication immédiate",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J13 : refus SUTRA_ZERNIO_SCHEDULE_MUST_BE_FUTURE",
+      "owner": "T08"
+    },
+    {
+      "id": "R30",
+      "requirement": "Ordonnanceur autonome/cron OVH et reprise sans requête",
+      "status": "BLOQUÉ",
+      "evidenceType": "Constat T01",
+      "evidence": "Handoff T01 02h25 UTC : aucun cron/worker autonome ; activation hors périmètre",
+      "owner": "T01"
+    },
+    {
+      "id": "R31",
+      "requirement": "SSRF/IDOR/CSRF/XSS, gardes déjà intégrées",
+      "status": "PASS",
+      "evidenceType": "Sécurité bornée CI et runtime",
+      "evidence": "CI redteam et contrats PASS ; 58 refus runtime cron/OAuth PASS. Aucun audit exhaustif ni OAuth consenti réel.",
+      "owner": "T02/T01"
+    },
+    {
+      "id": "R32",
+      "requirement": "Redirections dépendance OTS et sécurité exhaustive",
+      "status": "NON TESTÉ",
+      "evidenceType": "Exigence composée, couverture limitée",
+      "evidence": "Transport OTS corrigé et régressions intégrées PASS ; 0 high/critical, 2 low/5 moderate npm. Sécurité exhaustive non prouvable ; graphe GitNexus tronqué. Aucun défaut reproductible OTS restant identifié.",
+      "owner": "T02"
+    },
+    {
+      "id": "R33",
+      "requirement": "Transactions/RLS PostgreSQL multi-session existantes",
+      "status": "PASS",
+      "evidenceType": "PostgreSQL réel jetable",
+      "evidence": "CI86d : pipeline12, Salad7, finish T03/CAS T06 13, RLS254 assertions ; migration et backup restore PASS. Ne pas additionner aux lots.",
+      "owner": "T01/T03"
+    },
+    {
+      "id": "R34",
+      "requirement": "Parcours continu sur DB réelle avec rendu et publication",
+      "status": "NON TESTÉ",
+      "evidenceType": "Réel",
+      "evidence": "Les preuves DB, médias et navigateur sont segmentées ; port DB du parcours simulé",
+      "owner": "T01"
+    },
+    {
+      "id": "R35",
+      "requirement": "Observabilité états/progrès/erreurs récupérables",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J01/J02/J05/J10 : états, checkpoints, last_error et polling vérifiés",
+      "owner": "T08"
+    },
+    {
+      "id": "R36",
+      "requirement": "Alertes bout en bout et diagnostics exploitation",
+      "status": "NON TESTÉ",
+      "evidenceType": "Réel",
+      "evidence": "Aucune injection panne production ni alerte/monitoring live déclenché",
+      "owner": "T01"
+    },
+    {
+      "id": "R37",
+      "requirement": "Charge concurrente bornée isolée",
+      "status": "PASS",
+      "evidenceType": "T08 / simulé",
+      "evidence": "J02/J11 : 12 requêtes chacun, aucun réseau ; ne mesure pas débit Postgres/HTTP",
+      "owner": "T08"
+    },
+    {
+      "id": "R38",
+      "requirement": "Performance réelle/SLA et charge distante",
+      "status": "NON TESTÉ",
+      "evidenceType": "Réel",
+      "evidence": "459 ms pour fixtures ne constitue pas une mesure de performance applicative",
+      "owner": "T01"
+    },
+    {
+      "id": "R39",
+      "requirement": "Navigateur/accessibilité de la base, contrôles déjà passés",
+      "status": "PASS",
+      "evidenceType": "Navigateur CI + runtime borné",
+      "evidence": "T08 browser-redteam et T07 production25 PASS sur86d ; 2 vues publiques et 10 rendus connectés live. Interactions connectées bloquées par consentement légal, pas une recette visuelle exhaustive.",
+      "owner": "T07/T01"
+    },
+    {
+      "id": "R40",
+      "requirement": "Pagination/filtre UI et contraste bouton consentement",
+      "status": "PASS",
+      "evidenceType": "Navigateur fixture intégré",
+      "evidence": "T07 correctifs pagination/filtres/contraste intégrés. 25 assertions navigateur production incluent 4 retours sociaux ; aucun double comptage.",
+      "owner": "T07"
+    },
+    {
+      "id": "R41",
+      "requirement": "Clavier/lecteur écran et parcours visuel complet T08",
+      "status": "NON TESTÉ",
+      "evidenceType": "Navigateur manuel",
+      "evidence": "Pas de nouvelle session navigateur T08 ; ne pas confondre tests routes et E2E UI",
+      "owner": "T07/T01"
+    },
+    {
+      "id": "R42",
+      "requirement": "Absence secrets/requête payante/génération Mac/publication réelle",
+      "status": "PASS",
+      "evidenceType": "T08 / borné",
+      "evidence": "Allowlist runner, fixtures-only, preload offline ; aucune lecture maître/env ni effet distant",
+      "owner": "T08"
+    },
+    {
+      "id": "R43",
+      "requirement": "RunPod/Shotstack accès non génératif existant",
+      "status": "PASS",
+      "evidenceType": "Authentification runtime non générative",
+      "evidence": "provider-runtime.json : RunPod endpoint health200/contrat valide, Shotstack stage/v1 templates200/contrats. Zéro génération ; RunPod zéro worker prêt.",
+      "owner": "T01"
+    },
+    {
+      "id": "R44",
+      "requirement": "GPU Salad/RunPod, modèle 24Go, rendu facturé",
+      "status": "NON TESTÉ",
+      "evidenceType": "Réel",
+      "evidence": "Salad désactivé, aucun worker GPU lancé, aucun calcul IA Mac",
+      "owner": "T01/utilisateur"
+    },
+    {
+      "id": "R45",
+      "requirement": "Publication réelle et consentements sociaux",
+      "status": "NON TESTÉ",
+      "evidenceType": "Réel",
+      "evidence": "Zernio profil possédé mais aucun compte connecté au reçu T01 ; aucun compte connecté par T08",
+      "owner": "T01/utilisateur"
+    },
+    {
+      "id": "R46",
+      "requirement": "TS/lint delta T08 et gates produit inchangées",
+      "status": "PASS",
+      "evidenceType": "CI exacte intégrée",
+      "evidence": "npm run check (TypeScript, lint, build) PASS sur86d ; anciens diagnostics branche T03 résolus avec port T04.",
+      "owner": "T08/T01"
+    },
+    {
+      "id": "R47",
+      "requirement": "Régressions des nouveaux correctifs T02–T07 intégrés",
+      "status": "PASS",
+      "evidenceType": "Intégration exacte + CI",
+      "evidence": "Sept SHA vérifiés, conflits attribués et deltas importés ; CI38508390596 trois jobs PASS, promotion86d et smokes PASS.",
+      "owner": "T01/T08"
+    }
+  ],
+  "sourceMatrix": "qa/t08-integration-journey-20261014/matrix.json (unchanged)",
+  "integrationSource": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+  "sqlMigrationCommit": "6800a8de49080157b487eec1119d2fb49c194afe",
+  "observedAt": "2026-10-14T04:44:30.633799+00:00",
+  "countsAreNotTestTotals": true
+}

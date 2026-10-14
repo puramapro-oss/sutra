@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "network": "none",
+  "image": "sha256:e3af7bb4083450d3c8f0ecd723d9ef824721f3df9470df1be7c26f9e9d43f13c",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/login",
+      "status": 200
+    },
+    {
+      "path": "/api/points",
+      "status": 401
+    },
+    {
+      "path": "/api/video/status/00000000-0000-0000-0000-000000000000",
+      "status": 401
+    }
+  ]
+}

@@ -201,3 +201,16 @@ Candidate dd1eec5 first campaign FAIL contracts14 and PG fixture configuration; 
 T01 CI38505099582 : quality TS/lint/build + T08 browser-redteam PASS ; T07 fixture cold login FAIL (diagnostic ajoute), puis reproduction locale bibliotheque21PASS/social4FAIL cause selecteur Se connecter corrige. Aucun changement produit ; candidat suivant requis.
 
 T01 CI38506801929 : contrats805 PASS/7 SKIP, PostgreSQL PASS, TS/lint/build/T08 navigateur PASS. T07 dev login toujours FAIL60s. Harnais T07 aligne sur bundle production avec memes fixtures et assertions :25 PASS local, zero changement applicatif. Nouvelle CI requise avant promotion ; production d8691d8 preservee. Voir qa/final-delta-20261014/ci-browser-production.json.
+
+
+## T01 — clôture finale OVH, 14 octobre 2026 04:41 UTC
+
+DÉPLOYÉ / TESTÉ : code86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164, CI38508390596 trois jobs verts. Sept deltas exacts baseb7cf848 intégrés, aucun fichier disputé restant ; SHA et préservation dans qa/final-delta-20261014/terminal-preservation-final.json. Contrats805PASS/7SKIP, médias CPU, PostgreSQL/RLS/concurrence, TypeScript/lint/build, navigateurs, sécurité et24 tests déploiement PASS. Commandes exactes FINAL-TESTS.json ; ne pas additionner aux lots.
+
+OVH : sauvegarde141 tables restaurée/comparée, candidat exact et rollback image isolés PASS, promotion SUTRA seule. Smokes gratuits, média privé (hash/Range/owner), sous-titres et SRT CPU réels PASS. 10 rendus connectés1440/375 PASS ; consentement légal utilisateur en attente, aucune acceptation automatique. RunPod endpoint/Shotstack stage-v1/Zernio owner+PURAMA vérifiés sans génération ; zéro worker RunPod prêt et zéro compte social connecté. DNS/TLS PASS, Cloudflare DNS-only inféré ; API NON TESTÉE.
+
+CORRECTION LIVE : affirmations403 reproduit, privilège SELECT authenticated absent. Migration6800a8de49080157b487eec1119d2fb49c194afe testée8 contrôles sur copie, backup ACL/table et rollback protégés, appliquée04:31UTC sans données/politiques/droits anonymes ou écritures modifiés. Deux vues navigateur corrigées. Image applicative reste86d04c8. Logs : détecteur brut FAIL conservé, trois warnings malformation Server Action puis une sonde dédiée404 ; quatre warnings classés et zéro erreur non classée, origine initiale inconnue. Healthy0restart, base saine, runtime0600inchangé,71 autres conteneurs identiques.
+
+BLOQUÉ/NON TESTÉ : consentement légal puis social utilisateur ; Salad désactivé sans ressource/budget/qualification GPU ; cron/worker OVH autonome absent ; génération/rendu/export vidéo/publication réels non exécutés. Aucun achat/GPU Mac/rotation/publication. Les HTTP200 ne prouvent aucune génération. Actions et matrice bornée dans qa/final-delta-20261014/README.md et FINAL-MATRIX.md. Aucun test applicatif requis encore rouge ; échecs historiques et limites conservés.
+
+PRÉSERVATION : T02–T08 chacun livré/propre/FERMABLE_LOT_SUTRA, aucun terminal fermé ; autres missions exclues. WIP AGENTS/skills étrangers conservés hors commit, cinq références historiques présentes. T01 clôture par commit documentaire séparé ; seuls blocages externes ci-dessus restent. Ne pas rejouer les PASS sans delta. Rollback : python3 deploy/ovh.py rollback --source-ref 86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164 ; rollback SQL privé séparé, jamais restaurer une vieille base au-dessus de nouvelles écritures.
