@@ -1,0 +1,47 @@
+(node:81336) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:81336) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+(node:81336) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t03-orchestration-fixes-20261014/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+✔ finish done rejects incompatible DB receipt failed (3.228208ms)
+✔ finish done rejects incompatible DB receipt queued (0.522708ms)
+✔ finish done rejects incompatible DB receipt reconciliation_required (0.356084ms)
+✔ finish queued still accepts SQL quarantine receipt (0.322708ms)
+✔ finish done lost ACK: reconcile persisted result with one GET, never repeat quota mutation (0.769833ms)
+✔ duplicate completion after lost ACK reads existing outcome; no second successful mutation (2.628167ms)
+✔ unconfirmed finish cannot promote processing to done (0.2885ms)
+✔ unconfirmed finish cannot promote queued to done (0.234583ms)
+✔ unconfirmed finish cannot promote cancelled to done (0.20175ms)
+✔ unconfirmed finish cannot promote failed to done (0.214166ms)
+✔ unconfirmed finish cannot promote reconciliation_required to done (0.184709ms)
+✔ unconfirmed finish with unreadable DB remains blocked (0.184208ms)
+✔ terminal status without result undefined cannot reconcile as successful media (0.199792ms)
+✔ terminal status without result null cannot reconcile as successful media (0.209334ms)
+✔ lost finish ACK for explicitly skipped production music accepts its durable null result (0.22525ms)
+✔ worker interrupted after final checkpoint: production resumes result without replaying effects (0.422375ms)
+✔ worker interrupted after final checkpoint: create resumes result without replaying effects (0.172625ms)
+✔ worker interrupted after final checkpoint: export resumes result without replaying effects (0.131583ms)
+✔ worker interrupted after final checkpoint: auto resumes result without replaying effects (0.125ms)
+✔ cached result never bypasses owner guard (0.095334ms)
+✔ cached result never bypasses lease guard (0.057291ms)
+✔ cached result never bypasses expired guard (0.1435ms)
+✔ cached result never bypasses video guard (0.060208ms)
+✔ cached result never bypasses auto-video guard (0.04925ms)
+✔ cached result never bypasses kind guard (0.050291ms)
+✔ acquired scene survives event-after-visual: no generation replay and no lost visual (2.383959ms)
+✔ acquired scene survives scene-checkpoint: no generation replay and no lost visual (1.0045ms)
+✔ music fails after video acquired: preserve completed scene, no second paid music submission or ready (1.143875ms)
+✔ production music: required music absent cannot succeed or start downstream paid work (0.080083ms)
+✔ production all: required music absent cannot succeed or start downstream paid work (0.060125ms)
+✔ production explicit no-music remains a skipped checkpoint (0.063666ms)
+✔ checkpoint write is always required before final worker success (2.257458ms)
+✔ fresh DB checkpoint is still lease-fenced (0.161917ms)
+✔ AUTO voice received then storage fails: retry upload from checkpoint, synthesize exactly once (0.31525ms)
+✔ AUTO legacy uncertain voice remains quarantined, never synthesized again (0.03425ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 658.104709

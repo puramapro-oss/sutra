@@ -1,0 +1,61 @@
+TAP version 13
+# (node:62566) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:62566) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06-DELTA X denial accepts the documented provider platform alias and consumes state
+not ok 1 - T06-DELTA X denial accepts the documented provider platform alias and consumes state
+  ---
+  duration_ms: 7.939584
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-social-recovery-20261014/scripts/test-t06-social-final.mts:1:21588'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid/settings/social?error=invalid_platform'
+    - 'https://sutra-test.invalid/settings/social?error=oauth_denied'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'https://sutra-test.invalid/settings/social?error=oauth_denied'
+  actual: 'https://sutra-test.invalid/settings/social?error=invalid_platform'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-recovery-20261014/scripts/test-t06-social-final.mts:401:10)
+    async Test.run (node:internal/test_runner/test:1208:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  ...
+# Subtest: T06-DELTA unknown provider error remains generic and still consumes state
+not ok 2 - T06-DELTA unknown provider error remains generic and still consumes state
+  ---
+  duration_ms: 1.328084
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-social-recovery-20261014/scripts/test-t06-social-final.mts:1:22150'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid/settings/social?error=oauth_denied'
+    - 'https://sutra-test.invalid/settings/social?error=oauth_failed'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'https://sutra-test.invalid/settings/social?error=oauth_failed'
+  actual: 'https://sutra-test.invalid/settings/social?error=oauth_denied'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-recovery-20261014/scripts/test-t06-social-final.mts:408:10)
+    async Test.run (node:internal/test_runner/test:1208:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 424.314916

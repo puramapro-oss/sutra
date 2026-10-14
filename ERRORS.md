@@ -44,3 +44,41 @@
 - tsc + commit après chaque fichier
 - Ordre croissant de taille
 - Dernière mesure réelle wc -l, jamais d'estimation
+
+
+## 2026-10-14 — T07 frontend, défauts vérifiés corrigés localement
+
+- Pagination disparue sous favoris/dossier sans correspondance page1 : reproduit375/1440, bouton sorti de la condition des résultats filtrés ; PASS clavier/page2.
+- Six GET identiques all/favorites : normalisation du filtre serveur ; zéro GET, pages/requête en cours préservées ; médiane452→27,5ms dans le banc retardé400ms.
+- hasMore/totalCount périmés après échec remplacement : remis à zéro, reprise append conservée ; rouge intermédiaire puis PASS.
+- Cookies contraste accepter3,95 et lien light4,23 : couleurs existantes corrigées, min4,85 pour lien et5,89 bouton, six combinaisons thème/largeur PASS.
+- Banc : POST consentement synthétique initialement interdit (aucun vrai POST), puis mock explicite ; lint max-lines corrigé par helper de contraste. Tous échecs conservés dans qa/t07-frontend-fixes-20261014, campagne finale21 PASS/0 FAIL,13axe+6contraste.
+
+Aucune preuve génération/publication réelle ni garantie exhaustive ; remise locale T01, voir handoff dédié.
+
+
+## 2026-10-14 — T02 SECURITY-FIXES (base b7cf848)
+
+CORRIGÉ ET VÉRIFIÉ localement : T02-STORAGE (absence owner delete/list, aucun appelant produit identifié), T02-PROOF (diagnostics internes publics), T02-OTS-REDIRECT (transport request suit URL interne), T02-OTS-EMPTY (calendriers tous échoués mais stamp résolu sans attestation). Reproductions et corrections : qa/t02-security-fixes-20261014/README.md ;55 PASS /1 SKIP, TypeScript/lint verts.
+
+RESTE DOCUMENTÉ :7 alertes npm transitives sans mise à jour majeure sûre ; chemin réseau OTS mitigé. Aucun nouveau blocage externe empêchant la livraison locale. Activation GPU/consentements/live et intégration T01 restent distincts de cette preuve.
+
+
+
+## T06 SOCIAL-RECOVERY — 2026-10-14, correctifs locaux verifies
+
+CORRIGE : refus OAuth non consomme ; callback/state obsolete pouvant reactiver un compte revoque ; alias twitter sur erreur X ; erreur inconnue qualifiee de refus ; absence de barriere durable entre DELETE et reconnexion ; timeout/503 levant cette barriere trop tot (revue T01). Reproductions avant/apres et tests exacts : qa/t06-social-recovery-20261014/README.md ; handoff HANDOFF-SUTRA-T06-SOCIAL-RECOVERY-20261014.md. 162 tests distincts PASS apres adaptation explicite de deux fixtures historiques et chargement types Next QA, sans suppression d'assertion de securite.
+
+LIMITE : revoke distant inconnu bloque jusqu'a reconciliation T01, pas de retry automatique. PLANIFICATION OVH NON ACTIVE selon T01 ; PostgREST/consentements/token refresh/publication reels NON TESTES. UI page social perd le corps409/503 avant toast : transmis T07, pas de modification parallele. Aucune garantie absolue ni preuve production nouvelle.
+
+
+## 2026-10-14 — correctifs démontrés T04, base b7cf848
+
+- SALAD-DRAIN : drain ignorait une admission suspendue dans reserve ; Set des admissions avant await, attendre admissions puis calculs.
+- SALAD-NODES : queue vide ne prouvait pas les onze classes/entrées/sorties/poids du bridge ; GET object_info privé avant probe matériel.
+- RUNPOD-IDENTITY : coercition ID et sorties malformées ; ID string strict/identique, états et URL/base64 validés, aucune resoumission.
+- VOICE-BODY/BODY-DEADLINE : HTTP200 JSON accepté MP3, corps bloqué non borné ; type/tailles/non-vide/deadline intégrant lecture, diagnostics fixes.
+- SUNO-RECOVERY : ID invisible jusqu’au résultat ; port optionnel durable onSubmitted await avant GET, reprise current.taskId GET seule, erreur conservant ID ; checkpoints consommateurs T03.
+- IMAGES-CLASSIC : absence nofeed/options non garanties ; thumbnail1920×1080 dépassait plafond ; helper existant réutilisé/ratios+feed contrôlés après ACK T01.
+
+Preuves avant/après et 91PASS ciblés : qa/t04-provider-fixes-20261014/README.md. Aucun FAIL résiduel du périmètre testé ; limites réelles et NON TESTÉ conservés dans le handoff, aucune garantie zéro bug.

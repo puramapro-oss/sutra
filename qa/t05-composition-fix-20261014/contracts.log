@@ -1,0 +1,52 @@
+✓ export : interruption→reprise sans double rendu, re-reprise 100% en cache
+✓ auto : crash assets → plan conservé, chaque étape payée une fois au total
+✓ auto : échec montage tracé, aucune URL finale publiable
+✓ voix 7 Mo : checkpointée et jamais resynthétisée après interruption
+✓ voix 24 Mo : 3 morceaux checkpointés, jamais resynthétisée après interruption
+✔ EXPORT : crash pendant le rendu → reprise SANS re-rendu de l'acquis (2.429833ms)
+✔ AUTO : crash pendant les assets → plan conservé, assets/assemblage une seule fois (1.405916ms)
+✔ AUTO : échec de montage → aucun résultat final, erreur transmise au worker (0.382625ms)
+✔ VOIX >5 Mo : buffer checkpointé — interruption ne régénère PAS la voix (3.843208ms)
+✔ VOIX 24 Mo : morceaux checkpointés — interruption ne régénère PAS (42.369375ms)
+✔ editor retains original media identity when scenes are reordered (1.1595ms)
+✔ legacy track recovery fails closed on missing, ambiguous or different scene sources (0.285041ms)
+✔ voice gain reaches both renderers and changes the durable render identity (0.642667ms)
+✔ export resumes paid and saved steps but freshly validates immutable bytes (2.522167ms)
+✔ changed brief is rejected before any paid resubmission or publication (0.38025ms)
+✔ legacy checkpoints cannot return a different saved URL (0.287958ms)
+✔ validation failure is retryable without another render (0.273708ms)
+✔ Shotstack: 4K autorisee — preset demande, fichier encore non verifie (3.296792ms)
+✔ Shotstack: 1080p 16:9 exporte en 1920×1080 (0.534ms)
+✔ Shotstack: horloge de montage — intro décale voix et sous-titres, durées par clip (0.79175ms)
+✔ Shotstack: une PHOTO devient un asset image, pas vidéo (0.482875ms)
+✔ Shotstack: transition fade demandée = fade appliquée (pas none) (0.459041ms)
+✔ Shotstack: 429 au submit -> erreur explicite (0.411208ms)
+✔ Shotstack: rendu failed -> erreur explicite (0.315875ms)
+✔ Shotstack: cle absente -> erreur explicite (0.119334ms)
+▶ Shotstack: environnement et cle restent lies au submit et au polling
+  ✔ selection stage (0.373ms)
+  ✔ selection v1 (0.238917ms)
+  ✔ selection stage par defaut (0.208083ms)
+  ✔ production fonctionne sans cle sandbox et reprend par GET uniquement (0.114291ms)
+  ✔ stage: cle propre absente, aucun secours vers l'autre cle (0.092584ms)
+  ✔ v1: cle propre absente, aucun secours vers l'autre cle (0.044584ms)
+  ✔ environnement inconnu refuse avant toute mesure media (0.060459ms)
+✔ Shotstack: environnement et cle restent lies au submit et au polling (1.66175ms)
+[video-compositor] moteur FFmpeg local indisponible, secours Shotstack: Error
+[video-compositor] moteur FFmpeg local indisponible, secours Shotstack: Error
+[video-compositor] moteur FFmpeg local indisponible, secours Shotstack: Error
+▶ composeVideoWithFallback
+  ✔ moteur FFmpeg primaire : succes sans jamais appeler Shotstack (1.059625ms)
+  ✔ secours Shotstack si FFmpeg local indisponible (erreur non-validation) (0.609041ms)
+  ✔ erreur de validation (clip invalide) propagee directement, jamais de secours Shotstack couteux (0.194584ms)
+  ✔ preuve de bytes perimee refusee avant stockage, sans appel Shotstack (0.356333ms)
+  ✔ deux echecs moteur ou URL brute du secours ne livrent jamais un clip source (0.303334ms)
+✔ composeVideoWithFallback (2.933166ms)
+ℹ tests 33
+ℹ suites 1
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1278.881125

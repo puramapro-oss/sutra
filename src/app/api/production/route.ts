@@ -16,6 +16,7 @@ import type { Plan, Profile } from '@/types'
 import { shouldUseLocalEngine } from '@/lib/local-engine'
 import { saladApplicationConfig } from '@/lib/salad/application'
 import { requireActive } from '@/lib/salad/config'
+import { getPollinationsUrl } from '@/lib/storyboard'
 
 // Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
 export const maxDuration = 300
@@ -71,7 +72,7 @@ export async function POST(req: Request) {
       const scriptData = sanitizeScriptData(previousData.script)
       const thumbnailPrompt = scriptData?.thumbnail_prompt ?? `cinematic thumbnail for ${idea}`
       return NextResponse.json({
-        data: { url: `https://image.pollinations.ai/prompt/${encodeURIComponent(thumbnailPrompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true` },
+        data: { url: getPollinationsUrl(thumbnailPrompt, format ?? '16:9') },
       })
     }
 

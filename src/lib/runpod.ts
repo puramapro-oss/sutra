@@ -1,6 +1,7 @@
 import { fetchWithRetry, sleep } from '@/lib/utils/api'
 import { requireEnv, optionalEnv, isEnvSet } from '@/lib/env'
 import { isSuperAdmin } from '@/lib/utils'
+import { providerRecord } from '@/lib/provider-response'
 
 export type RunpodFormat = '9:16' | '16:9' | '1:1'
 
@@ -55,16 +56,38 @@ function getBaseUrl(userEmail?: string | null): string {
   return `https://api.runpod.ai/v2/${endpointId}`
 }
 
+/** This is the SUTRA worker output contract, not a RunPod-wide model guarantee. */
+function runpodMedia(raw: unknown, provenance: RunpodProvenance): string {
+  let value = raw
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const item = value as Record<string, unknown>
+    value = item.type === 's3_url' ? item.data : item.type === 'base64' && typeof item.data === 'string'
+      ? `data:video/mp4;base64,${item.data}` : null
+  }
+  if (typeof value === 'string') {
+    if (value.startsWith('data:video/mp4;base64,')) {
+      const payload = value.slice('data:video/mp4;base64,'.length)
+      if (payload.length % 4 === 0 && /^[A-Za-z0-9+/]+={0,2}$/.test(payload)) return value
+    }
+    try {
+      const url = new URL(value)
+      if (value.length <= 8192 && url.protocol === 'https:' && !url.username && !url.password && !url.hash) return value
+    } catch { /* reject malformed worker output, never coerce it to base64 */ }
+  }
+  throw new RunpodJobError('OUTPUT_INVALID', provenance)
+}
+
 export async function submitVideoJob(
   req: VideoGenRequest,
   userEmail?: string | null
 ): Promise<{ jobId: string; baseUrl: string; provenance: RunpodProvenance }> {
   const apiKey = requireEnv('RUNPOD_API_KEY', 'generation video WAN/RunPod')
   const baseUrl = getBaseUrl(userEmail)
+  const signal = AbortSignal.timeout(30_000)
 
   let res: Response
   try { res = await fetchWithRetry(`${baseUrl}/run`, {
-    method: 'POST', cache: 'no-store', redirect: 'error',
+    method: 'POST', cache: 'no-store', redirect: 'error', signal, timeoutMs: 30_000,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${apiKey}`,
@@ -87,8 +110,8 @@ export async function submitVideoJob(
   const retry = Number(res.headers.get('retry-after'))
   if (res.headers.has('retry-after') && Number.isFinite(retry) && retry >= 0) provenance.quota.retryAfterSeconds = retry
   if (!res.ok) throw new RunpodJobError(`HTTP ${res.status}`, provenance)
-  const data = await res.json().catch(() => null) as { id?: string; status?: string } | null
-  if (!data?.id || !/^[A-Za-z0-9_-]{1,200}$/.test(data.id)) throw new RunpodJobError('pas de job ID / SUBMISSION_UNKNOWN', provenance)
+  const data = await providerRecord(res, signal).catch(() => null)
+  if (typeof data?.id !== 'string' || !/^[A-Za-z0-9_-]{1,200}$/.test(data.id)) throw new RunpodJobError('pas de job ID / SUBMISSION_UNKNOWN', provenance)
   provenance.id = data.id
   if (data.status === 'IN_QUEUE' || data.status === 'IN_PROGRESS') provenance.remoteStatus = data.status
   return { jobId: data.id, baseUrl, provenance }
@@ -108,10 +131,11 @@ export async function pollVideoJob(
 
   while (Date.now() - start < timeoutMs) {
     let res: Response
+    const signal = AbortSignal.timeout(Math.max(1, Math.min(15_000, timeoutMs - (Date.now() - start))))
     try { res = await fetch(`${pollUrl}/status/${encodeURIComponent(jobId)}`, {
       cache: 'no-store', redirect: 'error',
       headers: { Authorization: `Bearer ${apiKey}` },
-      signal: AbortSignal.timeout(Math.max(1, Math.min(15_000, timeoutMs - (Date.now() - start)))),
+      signal,
     }) } catch { throw new RunpodJobError('POLL_NETWORK_UNKNOWN', provenance) }
     provenance.lastHttpStatus = res.status
     if (!res.ok) {
@@ -127,34 +151,22 @@ export async function pollVideoJob(
       await sleep(pause)
       continue
     }
-    const data = (await res.json().catch(() => null)) as null | {
-      id?: string
-      status?: string
-      error?: string
-      output?: string | {
-        images?: Array<string | { type?: string; data?: string }>
-        video_url?: string
-      }
-    }
+    // Output may include inline base64; explicit local cap, not a provider quota.
+    const data = await providerRecord(res, signal, 64 * 1024 * 1024).catch(() => null)
 
-    if (!data || (data.id && data.id !== jobId) || !['IN_QUEUE', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED', 'TIMED_OUT'].includes(data.status ?? '')) throw new RunpodJobError('INVALID_POLL_RESPONSE', provenance)
+    if (!data || data.id !== jobId || typeof data.status !== 'string' || !['IN_QUEUE', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED', 'TIMED_OUT'].includes(data.status)) throw new RunpodJobError('INVALID_POLL_RESPONSE', provenance)
     provenance.remoteStatus = data.status as RunpodRemoteStatus
     if (data.status === 'COMPLETED') {
       const output = data.output
-      let raw: string | { type?: string; data?: string } | undefined
+      let raw: unknown
       if (typeof output === 'string') {
         raw = output
-      } else if (output) {
-        const first = output.images?.[0]
-        if (typeof first === 'string') raw = first
-        else raw = first ?? (output.video_url ? output.video_url : undefined)
+      } else if (output && typeof output === 'object' && !Array.isArray(output)) {
+        const record = output as Record<string, unknown>
+        raw = Array.isArray(record.images) ? record.images[0] : record.video_url
       }
       if (!raw) throw new RunpodJobError('OUTPUT_MISSING', provenance)
-      if (typeof raw === 'string') return raw
-      if (!raw.data) throw new RunpodJobError('OUTPUT_MISSING', provenance)
-      return raw.type === 's3_url'
-        ? raw.data
-        : `data:video/mp4;base64,${raw.data}`
+      return runpodMedia(raw, provenance)
     }
 
     if (['FAILED', 'CANCELLED', 'TIMED_OUT'].includes(data.status!)) throw new RunpodJobError(`REMOTE_${data.status}`, provenance)

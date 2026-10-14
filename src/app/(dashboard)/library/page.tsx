@@ -151,27 +151,15 @@ export default function LibraryPage() {
                 onToggleFavorite={toggleFavorite}
               />
             )}
-
-            {hasMore && (
-              <div className="flex justify-center pt-4">
-                <Button
-                  data-testid="load-more"
-                  variant="secondary"
-                  size="md"
-                  loading={loadingMore}
-                  onClick={loadMore}
-                >
-                  {loadingMore ? 'Chargement...' : 'Charger plus'}
-                </Button>
-              </div>
-            )}
           </>
         ) : !error ? (
           <EmptyState
             icon={Film}
-            title="Aucune video trouvee"
+            title={hasMore ? 'Aucun résultat parmi les vidéos chargées' : 'Aucune video trouvee'}
             description={
-              search || filter !== 'all' || activeFolder
+              hasMore
+                ? 'Charge la suite pour rechercher dans les vidéos restantes.'
+                : search || filter !== 'all' || activeFolder
                 ? 'Aucune video ne correspond a tes filtres. Essaie de modifier ta recherche.'
                 : "Tu n’as pas encore de vidéo. Crée ta première !"
             }
@@ -190,6 +178,19 @@ export default function LibraryPage() {
             data-testid="empty-library"
           />
         ) : null}
+        {hasMore && (
+          <div className="flex justify-center pt-4">
+            <Button
+              data-testid="load-more"
+              variant="secondary"
+              size="md"
+              loading={loadingMore}
+              onClick={loadMore}
+            >
+              {loadingMore ? 'Chargement...' : 'Charger plus'}
+            </Button>
+          </div>
+        )}
         </LoadingTimeout>
       </motion.div>
 

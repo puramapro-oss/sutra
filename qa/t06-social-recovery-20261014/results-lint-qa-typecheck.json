@@ -1,0 +1,31 @@
+[
+  {
+    "name": "lint-qa",
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings=0",
+      "qa/t06-social-recovery-20261014/run.mjs",
+      "qa/t06-social-recovery-20261014/run-postgres.mjs",
+      "qa/t06-social-recovery-20261014/test-postgres.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 804
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--project",
+      "qa/t06-social-recovery-20261014/tsconfig.json"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1546
+  }
+]

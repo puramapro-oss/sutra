@@ -1,0 +1,71 @@
+✔ inspection binds real read-only bytes, embedded VAE and hardware; busy queue cannot be idle (19.744ms)
+✔ inspection refuses Mac, writable weights, invalid local URL and raw hardware errors (6.961917ms)
+✔ disabled host performs no DB, binding, receipt, hardware or listen operation (150.250041ms)
+✔ HTTP listener authenticates before body/worker, bounds payload and routes exact request (26.539167ms)
+✔ HTTP listener redacts internal failure without returning raw diagnostic (3.116458ms)
+✖ inspection cannot declare ready when canonical Comfy nodes are missing (5.360042ms)
+(node:62398) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62398) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ default disabled: zero I/O and no secret/environment load (26.588958ms)
+✔ worker configuration needs no account key/gateway URL and drops those privileges (4.042417ms)
+✔ strict configuration: management API, credentials in URL, arbitrary host, query, redirect domain rejected (0.735208ms)
+✔ checkpoint namespaces cannot be interchanged (0.138834ms)
+✔ every worker route authenticates, unknown/cancel routes do not compute (1.153458ms)
+✔ ready requires matching real runtime measurements; Mac, cold, interruption, low VRAM never ready (5.857458ms)
+✔ canonical frame/grid and strict operation validation: no silent resizing or I2V/4K promise (0.277125ms)
+✔ submit records intent before POST; exact payload, cost provenance, success and GET-only resume (1.957166ms)
+✔ lost POST response after compute: UNKNOWN, then GET recovers same artifact without a second generation (0.61475ms)
+✔ remote 404 after lost submission is UNKNOWN forever, never resubmitted (0.490042ms)
+✔ no blind retry on 401/429/503, invalid JSON, body hang or redirect (1.267625ms)
+✔ request identity is scoped, stable and immutable across payload changes (0.407083ms)
+✔ expired quote, insufficient budget and unqualified profile never reserve or POST (0.518875ms)
+✔ worker rejects malformed/oversized input, wrong digest and direct unsupported profiles (0.570666ms)
+✔ simultaneous duplicate worker requests execute only once; another operation cannot steal global slot (0.937833ms)
+✔ unreadable occupied slot is interrupted and prevents compute (0.289917ms)
+✔ restart reads durable running/unknown slot; missing, invalid or failed reads never announce ready (1.55775ms)
+✔ interruption keeps exclusive slot and unknown remote status; duplicate never executes (0.301541ms)
+✔ lost durable CAS keeps claim, drain surfaces static fault; artifacts do not imply published success (0.222417ms)
+✔ client journal CAS failure does not send another POST on resume (0.470417ms)
+✔ restart GET on overdue running record reports unknown and does not clear the slot (0.455958ms)
+✔ durable artifact corruption is refused without regenerating (0.382584ms)
+✔ bounded HTTP bodies: oversized header, streaming overflow, invalid JSON and stalled body (41.34175ms)
+✔ private bridge cannot target Mac/network URLs and rejects foreign media before GET (47.795458ms)
+✔ real CPU-only fixture bytes: existing media-probe validates bridge and authenticated client download (131.151875ms)
+✔ bridge health HTTP 200 without explicit ok is not ready, raw errors are not returned (0.457084ms)
+✔ protocol confusion and mismatched remote records remain unknown (2.743833ms)
+✔ public DTO is owner-only, disabled by default and reveals no credentials or runtime manifest (0.473958ms)
+✔ preflight binds worker timeout and budget before any POST (0.27ms)
+✔ application checkpoint acknowledgment precedes POST; lost reply survives reconstructed wrapper (0.667583ms)
+✔ same slot wrappers serialize one intent and fence stale CAS; missing/failed durable callback never submits (0.924667ms)
+✔ foreign provider checkpoint is never overwritten or interpreted as Salad (0.114625ms)
+✔ application rejects unsupported dimensions, references, native4k and missing context before I/O (0.225125ms)
+✔ application returns verified real CPU fixture from qualified worker and resumes without new POST (145.577625ms)
+✔ authenticated public handler never trusts body identity or reports a client GPU as ready (0.637208ms)
+✔ real smart routing: owner never contacts Mac/API when Salad disabled; customer remains API (1.390875ms)
+✔ owner without API credentials cannot fall back to stock; Salad never gets a fabricated fixed price (14.978958ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 42
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 755.090458
+
+✖ failing tests:
+
+test at scripts/test-salad-host.mts:1:6283
+✖ inspection cannot declare ready when canonical Comfy nodes are missing (5.360042ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-salad-host.mts:136:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SALAD_INSPECTION_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

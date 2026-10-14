@@ -12,6 +12,22 @@ import type { createSaladWorker } from '../src/lib/salad/worker.ts'
 
 // CPU/files/loopback only. Hardware calls are fixture data; never run nvidia/torch.
 const digest = sha256('synthetic model')
+
+// Minimal Comfy /object_info fixtures for the canonical bridge, never real hardware proof.
+const comfyFixture: Record<string, { input: { required: Record<string, unknown[]> }; output: string[]; output_node?: boolean }> = {
+  CLIPLoader: { input: { required: { clip_name: [['t5xxl_ltxv_official.safetensors']], type: [['ltxv']], device: [['default']] } }, output: ['CLIP'] },
+  CheckpointLoaderSimple: { input: { required: { ckpt_name: [['ltxv-13b-0.9.8-distilled-fp8.safetensors']] } }, output: ['MODEL', 'CLIP', 'VAE'] },
+  CLIPTextEncode: { input: { required: { text: ['STRING'], clip: ['CLIP'] } }, output: ['CONDITIONING'] },
+  EmptyLTXVLatentVideo: { input: { required: { width: ['INT'], height: ['INT'], length: ['INT'], batch_size: ['INT'] } }, output: ['LATENT'] },
+  LTXVConditioning: { input: { required: { positive: ['CONDITIONING'], negative: ['CONDITIONING'], frame_rate: ['FLOAT'] } }, output: ['CONDITIONING', 'CONDITIONING'] },
+  LTXVScheduler: { input: { required: { steps: ['INT'], max_shift: ['FLOAT'], base_shift: ['FLOAT'], stretch: ['BOOLEAN'], terminal: ['FLOAT'] } }, output: ['SIGMAS'] },
+  KSamplerSelect: { input: { required: { sampler_name: [['euler']] } }, output: ['SAMPLER'] },
+  SamplerCustom: { input: { required: { model: ['MODEL'], add_noise: ['BOOLEAN'], noise_seed: ['INT'], cfg: ['FLOAT'], positive: ['CONDITIONING'], negative: ['CONDITIONING'], sampler: ['SAMPLER'], sigmas: ['SIGMAS'], latent_image: ['LATENT'] } }, output: ['LATENT', 'LATENT'] },
+  VAEDecode: { input: { required: { samples: ['LATENT'], vae: ['VAE'] } }, output: ['IMAGE'] },
+  CreateVideo: { input: { required: { images: ['IMAGE'], fps: ['FLOAT'] } }, output: ['VIDEO'] },
+  SaveVideo: { input: { required: { video: ['VIDEO'], filename_prefix: ['STRING'], format: [['auto', 'mp4']] } }, output: [], output_node: true },
+}
+
 async function inspectionFixture() {
   const directory = await mkdtemp(join(tmpdir(), 'sutra-salad-inspection-'))
   const model = join(directory, 'models/checkpoints/ltxv-13b-0.9.8-distilled-fp8.safetensors')
@@ -26,8 +42,13 @@ async function inspectionFixture() {
   let busy = false, probes = 0
   const io: InspectionIO = { platform: 'linux', architecture: 'x64',
     async fetcher(url, init) {
-      assert.equal(String(url), 'http://127.0.0.1:7860/queue')
       assert.equal(init?.redirect, 'error')
+      const path = new URL(String(url)).pathname
+      if (path.startsWith('/object_info/')) {
+        const name = path.slice('/object_info/'.length)
+        assert.ok(comfyFixture[name]); return Response.json({ [name]: comfyFixture[name] })
+      }
+      assert.equal(String(url), 'http://127.0.0.1:7860/queue')
       return Response.json({ queue_running: busy ? [['fixture']] : [], queue_pending: [] })
     },
     async probe() { probes++; return { gpu: 'NVIDIA GeForce RTX 3090', vramMiB: 24576, freeVramMiB: 20000, cuda: '12.8' } },
@@ -121,4 +142,43 @@ test('HTTP listener redacts internal failure without returning raw diagnostic', 
     assert.equal(response.status, 503)
     assert.deepEqual(await response.json(), { error: 'SALAD_SAFE_FAILURE' })
   } finally { await new Promise<void>(resolve => { server.close(() => resolve()); server.closeAllConnections() }) }
+})
+
+
+test('inspection cannot declare ready when canonical Comfy nodes are missing', async () => {
+  const fixture = await inspectionFixture()
+  const original = fixture.io.fetcher
+  const inspect = await prepareSaladInspection(fixture.receipt, 'http://127.0.0.1:7860', {
+    ...fixture.io, async fetcher(url, init) {
+      if (String(url).includes('/object_info/')) return Response.json({}, { status: 404 })
+      return original(url, init)
+    },
+  })
+  await assert.rejects(inspect(), /SALAD_INSPECTION_UNAVAILABLE/)
+  assert.equal(fixture.probes(), 0, 'dependency rejection precedes hardware probing')
+})
+
+
+test('inspection refuses malformed node contracts and unavailable canonical weights', async () => {
+  const fixture = await inspectionFixture()
+  for (const node of [null, {}, { ...comfyFixture.SaveVideo, output_node: false },
+    { ...comfyFixture.SaveVideo, input: { required: { video: ['VIDEO'], filename_prefix: ['STRING'], format: [['gif']] } } }]) {
+    const inspect = await prepareSaladInspection(fixture.receipt, 'http://127.0.0.1:7860', {
+      ...fixture.io, async fetcher(url, init) {
+        if (String(url).endsWith('/SaveVideo')) return Response.json({ SaveVideo: node })
+        return fixture.io.fetcher(url, init)
+      },
+    })
+    await assert.rejects(inspect(), /SALAD_INSPECTION_UNAVAILABLE/)
+  }
+  const inspect = await prepareSaladInspection(fixture.receipt, 'http://127.0.0.1:7860', {
+    ...fixture.io, async fetcher(url, init) {
+      if (String(url).endsWith('/CheckpointLoaderSimple')) return Response.json({ CheckpointLoaderSimple: {
+        ...comfyFixture.CheckpointLoaderSimple, input: { required: { ckpt_name: [['another-model']] } },
+      } })
+      return fixture.io.fetcher(url, init)
+    },
+  })
+  await assert.rejects(inspect(), /SALAD_INSPECTION_UNAVAILABLE/)
+  assert.equal(fixture.probes(), 0)
 })

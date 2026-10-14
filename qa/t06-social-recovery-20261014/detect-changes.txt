@@ -1,0 +1,30 @@
+Changes: 64 files, 93 symbols
+Affected processes: 7
+Risk level: high
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-14 — T01 clôture intégration et OVH, d8691d8 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section Stratégie confirmée → ERRORS.md
+  Section T06 — OAuth social et publication, delta du 14 octobre 2026 → qa/t06-social-recovery-20261014/README.md
+  Section Défauts reproduits et corrections → qa/t06-social-recovery-20261014/README.md
+  Section Validation ciblée et provenance → qa/t06-social-recovery-20261014/README.md
+  Section GitNexus et frontières de preuve → qa/t06-social-recovery-20261014/README.md
+  Section Réconciliation d'une révocation non confirmée → qa/t06-social-recovery-20261014/README.md
+  Section Parcours Matiss, après intégration T01 → qa/t06-social-recovery-20261014/README.md
+  Const root → qa/t06-social-recovery-20261014/run-postgres.mjs
+  Const bin → qa/t06-social-recovery-20261014/run-postgres.mjs
+  Const data → qa/t06-social-recovery-20261014/run-postgres.mjs
+  Const directory → qa/t06-social-recovery-20261014/run-postgres.mjs
+  Const server → qa/t06-social-recovery-20261014/run-postgres.mjs
+... and 78 more
+
+Affected execution flows:
+  • GET → ProviderId (3 steps) — changed: GET
+  • POST → ProviderId (3 steps) — changed: POST
+  • POST → BalayerEntreesExpirees (4 steps) — changed: POST
+  • POST → RateLimitResponse (3 steps) — changed: POST
+  • POST → Blocked (4 steps) — changed: POST
+  • GET → Denied (4 steps) — changed: GET
+  • POST → Denied (4 steps) — changed: POST

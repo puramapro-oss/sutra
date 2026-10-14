@@ -1,0 +1,55 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos",
+    "name": "useLibraryVideos",
+    "kind": "Function",
+    "filePath": "src/hooks/useLibraryVideos.ts",
+    "startLine": 9,
+    "endLine": 88
+  },
+  "epistemic": "exact",
+  "incoming": {
+    "calls": [
+      {
+        "uid": "Function:src/app/(dashboard)/library/page.tsx:LibraryPage",
+        "name": "LibraryPage",
+        "filePath": "src/app/(dashboard)/library/page.tsx"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.fetchVideos@17:2",
+        "name": "fetchVideos",
+        "filePath": "src/hooks/useLibraryVideos.ts"
+      }
+    ],
+    "uses": [
+      {
+        "uid": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.handleDelete@71:2",
+        "name": "handleDelete",
+        "filePath": "src/hooks/useLibraryVideos.ts"
+      },
+      {
+        "uid": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.loadMore@67:2",
+        "name": "loadMore",
+        "filePath": "src/hooks/useLibraryVideos.ts"
+      },
+      {
+        "uid": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.refetch@85:2",
+        "name": "refetch",
+        "filePath": "src/hooks/useLibraryVideos.ts"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "proc_11_librarypage",
+      "name": "LibraryPage → FetchVideos",
+      "step_index": 2,
+      "step_count": 3
+    }
+  ]
+}

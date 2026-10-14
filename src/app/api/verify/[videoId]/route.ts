@@ -67,7 +67,7 @@ export async function GET(
 
     if (error) {
       return NextResponse.json(
-        { error: 'db_error', detail: error.message },
+        { error: 'db_error' },
         { status: 500 },
       )
     }
@@ -122,7 +122,6 @@ export async function GET(
           ...base,
           status: 'sha_mismatch',
           message: 'Le contenu ne correspond pas à la preuve stockée.',
-          detail: verify.detail,
         },
         { status: 409 },
       )
@@ -133,15 +132,13 @@ export async function GET(
         ...base,
         status: 'failed',
         message: 'Impossible de vérifier la preuve.',
-        detail: verify.detail ?? verify.reason,
       },
       { status: 500 },
     )
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       {
         error: 'internal',
-        detail: err instanceof Error ? err.message : String(err),
       },
       { status: 500 },
     )

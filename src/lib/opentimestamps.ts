@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto'
 import OpenTimestamps from 'javascript-opentimestamps'
+import './ots-transport'
 
 // ---------------------------------------------------------------------------
 // OpenTimestamps — Horodatage blockchain Bitcoin natif (remplace OriginStamp).
@@ -88,6 +89,10 @@ export async function stampMp4(data: Buffer | Uint8Array): Promise<StampResult> 
     digest,
   )
   await OpenTimestamps.stamp(detachedFile)
+  // Upstream soft-fails calendar errors: a resolved promise can still be empty.
+  if (!(detachedFile.timestamp as { getAttestations(): Set<unknown> }).getAttestations().size) {
+    throw new Error('SUTRA_OTS_STAMP_FAILED')
+  }
   const proofBytes = detachedFile.serializeToBytes()
   return {
     sha256Hex: hex,
@@ -126,7 +131,7 @@ export async function attemptUpgrade(
       new OpenTimestamps.Ops.OpSHA256(),
       digest,
     )
-    const result = await OpenTimestamps.verify(detachedProof, detachedOriginal)
+    const result = await OpenTimestamps.verify(detachedProof, detachedOriginal, { ignoreBitcoinNode: true })
 
     if (result.bitcoin) {
       return {
@@ -178,7 +183,7 @@ export async function verifyProof(
       new OpenTimestamps.Ops.OpSHA256(),
       digest,
     )
-    const result = await OpenTimestamps.verify(detachedProof, detachedOriginal)
+    const result = await OpenTimestamps.verify(detachedProof, detachedOriginal, { ignoreBitcoinNode: true })
 
     if (result.bitcoin) {
       return {

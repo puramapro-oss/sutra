@@ -30,6 +30,7 @@ export function createSaladWorker(rawConfig: unknown, ports: WorkerPorts) {
   const config = saladWorkerConfig(rawConfig)
   if (ports.journal.kind !== 'exclusive-execution') throw new SaladError('SALAD_EXCLUSIVE_JOURNAL_REQUIRED')
   const pending = new Set<Promise<void>>()
+  const admissions = new Set<Promise<Response>>()
   let persistenceFault = false
   let draining = false
   function authenticated(request: Request): boolean {
@@ -128,7 +129,15 @@ export function createSaladWorker(rawConfig: unknown, ports: WorkerPorts) {
         const caps = await capabilities()
         return json({ protocol: PROTOCOL, state: caps.state }, caps.state === 'ready' || caps.state === 'busy' ? 200 : 503)
       }
-      if (request.method === 'POST' && url.pathname === '/v1/jobs') return await submit(request)
+      if (request.method === 'POST' && url.pathname === '/v1/jobs') {
+        if (draining) return json({ error: 'SALAD_DRAINING' }, 503)
+        // Register synchronously before the first await. reserve() may still be in
+        // flight when shutdown begins; it can create a paid execution afterwards.
+        const admission = submit(request)
+        admissions.add(admission)
+        try { return await admission }
+        finally { admissions.delete(admission) }
+      }
       const match = /^\/v1\/jobs\/([a-f0-9]{64})(\/media)?$/.exec(url.pathname)
       if (request.method !== 'GET' || !match) return json({ error: 'SALAD_UNSUPPORTED_ROUTE' }, 405)
       const stored = await ports.journal.load(match[1])
@@ -146,6 +155,7 @@ export function createSaladWorker(rawConfig: unknown, ports: WorkerPorts) {
   }
   async function drain(): Promise<void> {
     draining = true
+    await Promise.allSettled(admissions)
     await Promise.all(pending)
     if (persistenceFault) throw new SaladError('SALAD_PERSISTENCE_UNCERTAIN')
   }

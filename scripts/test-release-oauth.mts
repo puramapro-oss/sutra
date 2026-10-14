@@ -11,7 +11,12 @@ const binding = { profileId: 'a'.repeat(24), sessionId: '11111111-1111-4111-8111
 function oauthDatabase() {
   const rows = new Map<string, Record<string, string>>()
   let failed = false
-  const client = { from: (table: string) => {
+  const client = { schema: () => client, from: (table: string) => {
+    if (table === 'social_accounts') {
+      const accountQuery = { select: () => accountQuery, eq: () => accountQuery,
+        maybeSingle: async () => ({ data: null, error: null }) }
+      return accountQuery
+    }
     assert.equal(table, 'social_oauth_states')
     const filters: Record<string, string> = {}
     let earliest = ''

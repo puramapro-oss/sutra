@@ -1,0 +1,75 @@
+✔ A pending proof serialized by 0.4.5 remains readable byte for byte (1.227833ms)
+✔ API surface expected (0.066917ms)
+✔ DetachedTimestampFile.fromHash stores the exact digest (0.271542ms)
+✔ serializeToBytes returns non-empty Uint8Array with magic header (0.082667ms)
+✔ Different payloads produce different SHA-256 (collision sanity) (0.060875ms)
+✔ Base64 encode/decode of proof bytes is lossless (0.07375ms)
+✔ Purama sha256 contract : hex 64 chars lowercase (0.107125ms)
+﹣ NETWORK : real stamp() → deserialize → fileDigest round-trip (0.033792ms) # SKIP
+(node:66580) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:66580) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+(node:66580) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+✖ calendar submit and lookup retain upstream binary parsing and pinned transport (4.568875ms)
+✔ invalid calendar origins are refused before DNS or transport (2.605292ms)
+✔ calendar redirect denied: http://127.0.0.1/private (0.393292ms)
+✔ calendar redirect denied: http://169.254.169.254/latest/meta-data (0.204167ms)
+✔ calendar redirect denied: https://evil.invalid/private (0.207041ms)
+✔ Esplora rejects redirects without requesting an internal destination (0.21275ms)
+✔ private or mixed DNS denies both adapters before connection (0.255083ms)
+✔ calendar responses reject compression, declared/streamed overflow and truncated bodies (0.813917ms)
+✔ raw DNS and parser diagnostics never escape the adapters (0.372875ms)
+✔ DNS and connection stalls have a bounded deadline (3.700458ms)
+Submitting to remote calendar https://a.pool.opentimestamps.org
+Submitting to remote calendar https://b.pool.opentimestamps.org
+Submitting to remote calendar https://a.pool.eternitywall.com
+Submitting to remote calendar https://ots.btc.catallaxy.com
+Calendar https://alice.btc.calendar.opentimestamps.org: SUTRA_OTS_HTTP_REJECTED
+✔ Esplora validates block identifiers and response schema (0.334375ms)
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+✔ application stamp and pending verification use protected calendar adapters (2.267084ms)
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+Unknown operation tag:  00
+✔ actual OTS crypto accepts matching Merkle fixture and refuses mismatch; no Bitcoin node access (1.0935ms)
+✖ content digest mismatch refuses network before verification (0.39725ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 19
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 333.672792
+
+✖ failing tests:
+
+test at scripts/test-t02-security-fixes-ots.mts:1:2661
+✖ calendar submit and lookup retain upstream binary parsing and pinned transport (4.568875ms)
+  Error: SUTRA_OTS_INVALID_RESPONSE
+      at parseTimestamp (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/ots-transport.ts:79:17)
+      at RemoteCalendar.import_calendar.default.RemoteCalendar.submit (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/ots-transport.ts:83:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-ots.mts:67:33)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at scripts/test-t02-security-fixes-ots.mts:1:8616
+✖ content digest mismatch refuses network before verification (0.39725ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'parse_error'
+  - 'sha_mismatch'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-ots.mts:178:32)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'parse_error',
+    expected: 'sha_mismatch',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

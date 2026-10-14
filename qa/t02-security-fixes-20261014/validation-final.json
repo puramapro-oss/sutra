@@ -1,0 +1,39 @@
+{
+  "utc": "2026-10-14T02:47:29.650067+00:00",
+  "base": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "scope": "T02 reserved files only; local commit, no remote mutation",
+  "tests": {
+    "pass": 55,
+    "fail": 0,
+    "skipped": 1,
+    "newPass": 38,
+    "regressionPass": 17
+  },
+  "typescript": "PASS scoped; quality-manifest.json",
+  "eslint": "PASS product/tests and QA diagnostic",
+  "gitnexus": {
+    "command": "node /Users/matissdornier/purama/.gitnexus/run.cjs detect-changes --scope staged --repo sutra-t02-security-fixes-20261014",
+    "exitCode": 0,
+    "risk": "MEDIUM",
+    "symbols": 16,
+    "processes": 5,
+    "scopeReview": "expected proof/OTS/storage; no foreign product edits",
+    "limitation": "base graph truncated; new helper reviewed directly and tested, not indexed"
+  },
+  "scanner": {
+    "command": "gitleaks stdin --redact --no-banner --no-color --report-format json --report-path qa/t02-security-fixes-20261014/gitleaks.json",
+    "input": "git diff --cached --no-ext-diff",
+    "exitCode": 0,
+    "findings": 0,
+    "initialFalsePositives": 3,
+    "resolution": "source account-access.ts SHA256 equality verified; manifest representation changed, no exclusion"
+  },
+  "sourceHashReview": {
+    "manifest": "quality-manifest.json",
+    "matched": 12
+  },
+  "normalization": "log trailing whitespace only; results preserved",
+  "noGlobalGateReplay": true,
+  "realSecretsRead": false,
+  "providerCalls": 0
+}

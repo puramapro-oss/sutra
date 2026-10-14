@@ -331,3 +331,65 @@ VERIFIED OVH :873 empreintes du manifeste identiques, candidat sans réseau, sau
 BLOQUE EXTERNE : Salad reste désactivé, ressource/budget/qualification container amd64-CUDA/modèle24Go non autorisés/prouvés ;sept variables de préparation absentes du maître. Aucun mode local Mac disponible. NON TESTE : GPU réel, génération/rendu vidéo/export vidéo/pipeline complet/publication et consentements sociaux. Export SRT déterministe réel seul validé. Mode API client conservé/testé en simulation, pas de fallback payant propriétaire. Actions utilisateur : consentir aux réseaux souhaités depuis /settings/social ;autoriser ressource/budget Salad et renseigner clé sécurisée si activation voulue ;autoriser tout test fournisseur payant après devis exact.
 
 PRESERVATION : T02–T08 SHA/handoffs propres inchangés et FERMABLE_PRESERVED_NOT_CLOSED ;359 fichiers WIP étrangers et7 fichiers GitNexus générés identiques aux sauvegardes privées. Aucun terminal/service fermé hors sondes temporaires propres. Dossier faisant foi : qa/salad-integration-20261014/README.md et FINAL-MATRIX.md. Prochaine reprise : seulement ces actions externes, ne pas rejouer les gates inchangées. Rollback disponible : `python3 deploy/ovh.py rollback --source-ref d8691d8ac6cf885f8e5522f361f45ebe229ec20d`. Les preuves documentaires ultérieures ne modifient pas le code déployé.
+
+
+## T05 composition — delta local 2026-10-14
+
+Base T01 b7cf848d07fca2734db36a2e30d045ca312a3162 (code d8691d8). Branche codex/sutra-t05-composition-fix-20261014. Trois defauts reproduits puis corriges dans composition-contract.ts/ffmpeg-filters.ts : canevas ASS 4K, cue sous une image, exigences heritees d Object.
+
+VERIFIED LOCAL : `node qa/t05-composition-fix-20261014/run-targeted.mjs delta contracts media worker auto typecheck lint` — 78 tests PASS, 0 FAIL/SKIP, controle auto/typecheck cible/lint PASS. Hashes exacts de fichiers/dependances et mesures avant/apres : qa/t05-composition-fix-20261014/verification.json et README.md. GitNexus impact avant edit, detection avant commit ; couverture flux tronquee declaree. Handoff HANDOFF-SUTRA-T05-COMPOSITION-FIX-20261014.md.
+
+Prochaine etape : T01 integre le commit local apres revue et execute sa campagne unique ; aucun build/global/deploiement repete ici. Aucun blocage du lot local ; fournisseurs live/IA native 4K NON TESTES. WIP et proprietes externes preserves.
+
+
+## 2026-10-14 — T08 recette indépendante integration-journey
+
+VERIFIED LOCAL : base b7cf848d07fca2734db36a2e30d045ca312a3162 / produit d8691d8 ; branche codex/sutra-t08-integration-journey-20261014. Commande `/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node qa/t08-integration-journey-20261014/run.mjs` : 13/13 nouveaux parcours transversaux PASS, TS/lint cibles PASS ; ports session/DB/media/transport simules, 12 requetes concurrentes bornees creation et publication. Produit intact. Sources/commandes/resultats dans qa/t08-integration-journey-20261014, empreintes figees. Aucun secret/provider/GPU/calcul IA Mac/publication/push/merge/deploy/migration/gate globale rejouee.
+
+MATRICE : 47 exigences =31 PASS/4 FAIL signalements proprietaires/3 BLOQUE/9 NON TESTE. Les nouveaux correctifs T02/T03/T04/T06/T07 ne sont pas integres ; ne pas conclure certification globale a partir des treize PASS. Prochaine tache : SHA candidat T01 puis recette des seuls deltas selon SMOKE-T01.md. Absence cron/worker OVH constatee par T01 ; GPU et publication reels NON TESTES. Ne pas rejouer les PASS inchanges. Handoff HANDOFF-SUTRA-T08-INTEGRATION-JOURNEY-20261014.md et miroir coordinateur.
+
+
+## 2026-10-14 — T07 frontend/performance, delta local depuis b7cf848
+
+VERIFIED LOCAL : bibliothèque favorites/dossiers paginés, zéro GET sur bascule locale all/favorites, conservation page/requête en cours, remise à zéro pagination après échec nouveau filtre ; deux contrastes cookies corrigés sans changer le consentement. Trois fichiers UI/hook réservés seulement. Chromium21 PASS,13axe+6contrastes ; tsc et lint ciblé PASS. Mesure même fixture400ms :6→0GET, médiane452→27,5ms. Sources/commandes/empreintes : qa/t07-frontend-fixes-20261014/validation.json et README.md. Base T01 b7cf848d07fca2734db36a2e30d045ca312a3162/code d8691d8 ;870/873 fichiers du manifeste intégré inchangés, autres parcours réutilisés sans gate globale répétée.
+
+NEXT : remise du commit local contenant HANDOFF-SUTRA-T07-FRONTEND-FIXES-20261014.md à T01 pour intégration/recette du candidat. Aucun push/fusion/deploy ni backend/config/secret/fournisseur. NON TESTÉ réel : GPU, génération/rendu vidéo, consentement/publication ; limites externes précédentes maintenues. Graphe GitNexus tronqué, routes JSX UNKNOWN vérifiées directement ; impacts hook LOW, analyse précommit archivée.
+
+
+## 2026-10-14 — T02 sécurité, delta depuis b7cf848
+
+Branche codex/sutra-t02-security-fixes-20261014 ; base T01 b7cf848, code intégré d8691d8 vérifié. Quatre défauts bornés corrigés : storage delete/list sans owner (helpers sans appelant produit), diagnostics publics de preuve, transport OTS suivant redirections internes, estampillage vide annoncé réussi. OTS conserve parseur et vérification cryptographique ; transport protégé attribué explicitement par T01. OAuth T06, worker T04 et package/lock T01 intacts.
+
+VERIFIED LOCAL :55 PASS /0 FAIL /1 SKIP réseau, TypeScript/lint ciblés PASS ;38 nouveaux tests et17 régressions. Commandes exactes, SHA/empreintes, FAIL avant correction et limites : qa/t02-security-fixes-20261014/README.md et manifestes.47 chemins inchangés attestés ; gates historiques T01 réutilisées, aucune globale rejouée. npm conserve2 low/5 moderate,0 high/critical, transport request mitigé côté app.
+
+NON TESTÉ : fournisseur/Bitcoin/calendrier réel, GPU/génération/publication, DB distante, build global après delta. Prochain propriétaire T01 : intégrer le commit local, ajouter quatre scripts tests à la gate contrats et valider candidat unique. Aucun secret, production, SSH, push, fusion ou IA Mac. Handoff HANDOFF-SUTRA-T02-SECURITY-FIXES-20261014.md.
+
+
+
+## 2026-10-14 — T06 SOCIAL-RECOVERY, delta local depuis b7cf848
+
+LOCAL_DELTA_PASS : branche codex/sutra-t06-social-recovery-20261014, commit porteur du handoff HANDOFF-SUTRA-T06-SOCIAL-RECOVERY-20261014.md. Refus OAuth consomme etat/session lies ; revision compte+CAS protege revoke/callback/reconnexion ; alias X et erreurs expurgees ; timeout/503 DELETE garde barriere durable, aucune repetition distante automatique. 162 tests distincts PASS (149 contrats/routes resolus,6 consommateurs publication,7 PostgreSQL18 prive), TypeScript et lint cibles PASS. Reproductions FAIL puis corrections PASS conservees dans qa/t06-social-recovery-20261014. Aucun build/global gate inchange rejoue, ordonnancement IANA/DST reutilise avec empreintes identiques.
+
+LIVRAISON T01 : base b7cf848 / produit integre d8691d8 reverifies, fichiers reserves et ACK fixtures securite. Integration/CI uniques a T01, aucun push/fusion/deploiement/secret reel/appel fournisseur/publication/IA Mac. PostgreSQL prive arrete/conserve. NON TESTE : PostgREST HTTP reel, consentements/rotation/revocation/publication reels. BLOQUE : cron/worker OVH autonome non actif selon T01. UI masque diagnostic API409/503 : defaut transmis T07, page non modifiee. Consentements utilisateur seuls a effectuer apres integration ; ancienne tentative OAuth a recommencer. Voir handoff et README pour parcours et limites.
+
+
+## 2026-10-14 — T04 fournisseurs et worker, delta isolé
+
+Base T01 b7cf848d07fca2734db36a2e30d045ca312a3162, branche codex/sutra-t04-provider-fixes-20261014. Reproductions puis corrections : drainage Salad pendant réservation ; readiness ComfyUI incomplète ; ID/sorties RunPod malformés ; JSON accepté comme MP3 ; taskId Suno sans ACK/reprise durable ; délais de corps HTTP ; URLs Pollinations sans exclusion feed et thumbnail hors plafond (extension ACK T01). Aucun fichier tiers modifié hors attribution.
+
+PASS : 12 contrats T04 +44 Salad +32 fournisseurs +3 images =91 tests ciblés sans skip, TypeScript ciblé, lint0 erreur/2 warnings antérieurs. Commandes exactes, base/empreintes, reproductions et limites : qa/t04-provider-fixes-20261014/README.md et proof.json. Aucun rejeu des gates/builds inchangés. GitNexus impacts Suno CRITICAL/voix HIGH annoncés ; graphe tronqué, exhaustivité UNKNOWN.
+
+BLOQUÉ : qualification image Linux/amd64+modèles/GPU/VRAM et autorisation/budget premier essai Salad ; intégration conjointe T03/T04 par T01. NON TESTÉ : génération facturée, live fournisseurs du delta, production/publication/UI réelle, annulation distante RunPod. Aucun secret lu, appel fournisseur, GPU, téléchargement de modèle, push/merge/deploy. Checklist exacte src/lib/salad/container/README.md. Prochaine tâche : réception SHA T04/T03 par T01 puis seule campagne intégrée autorisée ; ne pas répéter ces PASS inchangés.
+
+
+## 2026-10-14 — T03 corrections orchestration/persistance (base b7cf848)
+
+VERIFIED LOCAL : 86 tests cibles PASS/0 SKIP (35 orchestration,19 port Suno,21 Salad/production,5 auto/export,6 PostgreSQL reel jetable). Reproduction base exacte :15 FAIL orchestration +12 FAIL Suno, puis corrections. Recu fin DB strict et GET apres ACK perdu, reprise du resultat final sous lease, visuel acquis durable, musique obligatoire, voix Auto depuis morceaux, ID Suno immutable trois parcours. Lint cible PASS. Aucun ancien gate/build global rejoue.
+
+DEPENDANCE T04 : port SunoJobPort/SunoJobState et generateMusic(params,job) livre par T04, integration conjointe T01 obligatoire. Typecheck branche seule FAIL8 diagnostics dependance; lecture compilateur du port T04 PASS0 diagnostic avec empreintes, qualifiee provisoire WIP tant que son commit absent. Aucun fichier adaptateur copie/modifie. GitNexus impacts avant edit, CRITICAL annonce, detect-changes avant commit ; graphe tronque, exhaustivite UNKNOWN.
+
+Handoff HANDOFF-SUTRA-T03-ORCHESTRATION-FIXES-20261014.md et qa/t03-orchestration-fixes-20261014/README.md ; branche codex/sutra-t03-orchestration-fixes-20261014, SHA final miroir .coord/handoffs/SUTRA-20261012/T03-ORCHESTRATION-FIXES-20261014.md. NON TESTE : fournisseur/GPU/generation payants, production/publication, candidat integre T01. Aucun secret, push, fusion, migration distante, deploiement ni ordonnanceur. Prochaine action : T01 integre ensemble T03/T04 puis campagne unique du candidat ; ne pas rejouer ces preuves inchangees.
+
+
+## T01 — nouveau candidat intégré, 14 octobre 2026
+Sept livraisons b7cf848 vérifiées et intégrées conjointement (voir qa/final-delta-20261014/import-t*.json et REQUIREMENTS.md). Aucun WIP importé ; correction409/503 intégration T01 :2FAIL avant/4PASS après. Campagne finale sur SHA candidat en attente ; ancien runtime d8691d8 conservé. Aucun SQL/env/cron/worker activé, Salad désactivé, zéro génération/publication. Ne pas annoncer prêt avant toutes gates critiques vertes.

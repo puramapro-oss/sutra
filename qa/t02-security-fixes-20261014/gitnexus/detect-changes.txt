@@ -1,0 +1,28 @@
+Changes: 32 files, 16 symbols
+Affected processes: 5
+Risk level: medium
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-14 — T01 clôture intégration et OVH, d8691d8 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section Stratégie confirmée → ERRORS.md
+  Function GET → src/app/api/verify/[videoId]/route.ts
+  Function stampMp4 → src/lib/opentimestamps.ts
+  Property sha256Hex → src/lib/opentimestamps.ts
+  Property proofBase64 → src/lib/opentimestamps.ts
+  Function attemptUpgrade → src/lib/opentimestamps.ts
+  Property proofBase64 → src/lib/opentimestamps.ts
+  Function verifyProof → src/lib/opentimestamps.ts
+  Property bitcoinBlockHeight → src/lib/opentimestamps.ts
+  Function deleteFromStorage → src/lib/storage.ts
+  Function listStorageFiles → src/lib/storage.ts
+  Section 2026-10-13 — T05 complément fournisseur livré localement → task_plan.md
+... and 1 more
+
+Affected execution flows:
+  • GET → FinitePositive (5 steps) — changed: attemptUpgrade
+  • GET → AssertMediaProbeAvailable (4 steps) — changed: attemptUpgrade
+  • GET → DigestFromHex (3 steps) — changed: attemptUpgrade
+  • GET → Deserialize (3 steps) — changed: attemptUpgrade
+  • GET → FromHash (3 steps) — changed: attemptUpgrade

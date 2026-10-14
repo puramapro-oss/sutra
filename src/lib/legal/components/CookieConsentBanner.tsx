@@ -34,7 +34,7 @@ export default function CookieConsentBanner({ appName, politiqueHref = '/politiq
         <p className="text-sm text-foreground">
           {appName} utilise des cookies strictement nécessaires au fonctionnement du service, et — avec votre accord —
           des cookies de mesure d&apos;audience et de personnalisation. Voir notre{' '}
-          <a href={politiqueHref} className="underline text-primary-on-dark">
+          <a href={politiqueHref} className="underline text-primary">
             politique de confidentialité
           </a>
           .
@@ -62,7 +62,7 @@ export default function CookieConsentBanner({ appName, politiqueHref = '/politiq
             type="button"
             data-testid="cookie-accept"
             onClick={acceptAll}
-            className="min-h-11 rounded-pill bg-primary px-5 text-sm font-medium text-white"
+            className="min-h-11 rounded-pill bg-violet-600 px-5 text-sm font-medium text-white"
           >
             Tout accepter
           </button>

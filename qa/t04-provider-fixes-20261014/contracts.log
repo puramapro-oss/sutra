@@ -1,0 +1,20 @@
+✔ Salad shutdown waits for an in-flight durable reservation and its execution (33.616125ms)
+✔ RunPod rejects missing/coerced job identity and malformed media (1.090208ms)
+✔ RunPod rejects numeric submission IDs without retry (0.435708ms)
+✔ voice refuses HTTP 200 JSON masquerading as MP3 without retry (0.267709ms)
+✔ Suno checkpoints accepted task before polling; ACK failure preserves ID and blocks GET (0.618125ms)
+✔ Suno resumes a durable task with GET only (0.296292ms)
+✔ bounded provider bodies reject empty, oversized, malformed and stalled streams (11.606042ms)
+✔ RunPod accepts only matching completed jobs and valid worker media envelopes (0.453708ms)
+✔ RunPod poll errors and deadlines retain job identity without resubmission (10.826334ms)
+✔ voice bounds empty and oversized audio; valid MP3 transport succeeds once (0.603375ms)
+✔ Suno awaits durable ACK before GET and returns unchanged legacy result shape (6.112125ms)
+✔ Suno recovery validates checkpoint before I/O and retains ID on timeout or malformed replies (21.517917ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 334.091625

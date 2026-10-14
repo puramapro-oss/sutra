@@ -62,16 +62,16 @@ test('T06: revocation apres reservation empeche le POST', async () => {
   const result = await h.invoke()
   assert.equal(h.counts().posts, 0); assert.match(result.results[0].error!, /REVOKED/)
 })
-test('T06: revocation locale precedente a la panne distante; historique conserve et reprise possible', async () => {
+test('T06: revocation locale precedente a la panne distante; historique conserve et aucune repetition aveugle', async () => {
   const h = harness(); await h.invoke()
   const history = structuredClone(h.db.tables.social_posts); let calls = 0
   const disconnect = async () => { calls++; assert.equal(h.db.accounts[0].status, 'revoked'); return false }
   assert.deepEqual(await revokeSocialAccount('u', 'local-y', h.db.client, disconnect), { success: false, status: 'revoked', remoteStatus: 'unconfirmed' })
   const retried = await revokeSocialAccount('u', 'local-y', h.db.client, async () => { calls++; return true })
-  assert.equal(retried.success, true); assert.equal(calls, 2)
+  assert.equal(retried.success, false); assert.equal(retried.remoteStatus, 'unconfirmed'); assert.equal(calls, 1)
   assert.deepEqual(h.db.tables.social_posts, history); assert.equal(h.db.accounts.length, 2)
   await assert.rejects(() => revokeSocialAccount('other', 'local-y', h.db.client, disconnect), /NOT_FOUND/)
-  assert.equal(calls, 2)
+  assert.equal(calls, 1)
 })
 test('T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST', async () => {
   const h = harness(); h.db.config.publish_platforms = ['youtube']

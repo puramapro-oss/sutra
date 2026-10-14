@@ -1,6 +1,7 @@
 import test, { beforeEach, mock } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
+import { isDeepStrictEqual } from 'node:util'
 
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://sutra-test.invalid'
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'fixture-anon'
@@ -19,9 +20,10 @@ let states: Row[] = [], accounts: Row[] = []
 const browser = new Map<string, string>()
 
 // Relational fixture exercises the real route + real atomic state consumer.
-const database = { from(table: string) {
+const database = { schema: () => database, from(table: string) {
   const filters: Array<(row: Row) => boolean> = []
   let columns = '', deleting = false
+  let mutation: Row | undefined
   const rows = () => table === 'social_oauth_states' ? states : accounts
   const read = () => {
     reads++
@@ -29,14 +31,20 @@ const database = { from(table: string) {
     if (dbFailure === 'error') return { data: null, error: { message: sensitive } }
     const matching = rows().filter(row => filters.every(filter => filter(row)))
     if (deleting) states = states.filter(row => !matching.includes(row))
+    if (mutation) { for (const row of matching) { Object.assign(row, mutation); writes++ } }
     const selected = columns.split(',').map(column => column.trim())
     return { data: matching.map(row => Object.fromEntries(selected.map(column => [column, row[column]]))), error: null }
   }
   const query = {
     select(value: string) { columns = value; return query },
-    eq(key: string, value: unknown) { filters.push(row => row[key] === value); return query },
+    eq(key: string, value: unknown) {
+      filters.push(row => isDeepStrictEqual(row[key], key === 'metadata' && typeof value === 'string' ? JSON.parse(value) : value))
+      return query
+    },
+    is(key: string, value: unknown) { filters.push(row => (row[key] ?? null) === value); return query },
     gt(key: string, value: string) { filters.push(row => String(row[key]) > value); return query },
     delete() { deleting = true; return query },
+    update(row: Row) { mutation = row; return query },
     async insert(row: Row) { states.push({ ...row }); return { error: null } },
     async upsert(row: Row) { writes++; accounts.push({ ...row }); return { error: null } },
     async maybeSingle() { const result = read(); return { ...result, data: result.data?.[0] ?? null } },
@@ -80,6 +88,7 @@ const state = 'synthetic-provider-state-0123456789'
 async function begin() {
   const secret = await issueSocialOAuthState('alice', 'youtube', state, binding)
   browser.set(socialOAuthCookieName(state), secret)
+  reads = 0 // assertions below count callback reads, after issuing its account-bound state
 }
 function request(platform = 'youtube') {
   return new Request(`https://sutra-test.invalid/api/social/callback?connected=${platform}&profileId=${profileId}&accountId=${'b'.repeat(24)}&state=${state}&platform=${platform}`)
@@ -147,7 +156,9 @@ test('T02 concurrent callbacks verify only once and never store or expose tokens
   assert.equal(exchanges, 1); assert.equal(writes, 1); assert.equal(states.length, 0)
   assert.equal(browser.get(socialOAuthCookieName(state)), '')
   assert.doesNotMatch(JSON.stringify(locations), /synthetic-access-token|synthetic-refresh-token/)
-  assert.equal(accounts.at(-1)?.access_token, null); assert.equal(accounts.at(-1)?.refresh_token, null)
+  assert.equal(accounts.find(row => row.user_id === 'alice')?.access_token, null)
+  assert.equal(accounts.find(row => row.user_id === 'alice')?.refresh_token, null)
+  assert.equal(accounts.find(row => row.user_id === 'bob')?.access_token, 'synthetic-access-token')
 })
 test('T02 database outage during callback cannot authorize an exchange', async () => {
   await begin(); dbFailure = 'error'

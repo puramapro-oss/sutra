@@ -279,7 +279,7 @@ test('voice/music: uncertain spend is permanent for the existing queue, with saf
     })
     assert.equal(calls.length, 1)
   }
-  mock(() => new Response(new Uint8Array([1, 2])))
+  mock(() => new Response(new Uint8Array([1, 2]), { headers: { 'Content-Type': 'audio/mpeg' } }))
   const voice = await generateVoiceWithProvenance('p', 'voice-id')
   assert.equal(voice.provider, 'elevenlabs'); assert.equal(voice.remoteStatus, 'completed'); assert.equal(voice.cost.actual, null)
 })

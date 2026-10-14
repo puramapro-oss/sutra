@@ -3,6 +3,7 @@ import { pipelineSteps, checkpointStage, assertFinalMedia, requireTracks, persis
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { createServiceClient } from '@/lib/supabase'
 import { generateMusic } from '@/lib/suno'
+import { musicCheckpointed } from '@/lib/music-checkpoint'
 import { generateScript } from '@/lib/claude'
 import {
   generateVisualWithFallback,
@@ -164,13 +165,15 @@ export async function executeCreateJob(
     const userChoseStock = sel && !sel.fallbackToAI && sel.url
     const sceneDuration = Math.max(1, scene.duration_seconds || 5)
     const track = { userId, videoId, duration: sceneDuration, job: durableLtxJob(done, `scene:${idx}:ltx`, hooks.onStepResolved) }
-    const generateVisual = async (strict: boolean) => {
+    // Preserve the provider result before logging or the separate scene receipt.
+    // Legacy intent/remote-ID keys remain authoritative for uncertain submissions.
+    const generateVisual = (strict: boolean) => step(`scene:${idx}:visual`, async () => {
       if (done[`scene:${idx}:started`] && !(done[`scene:${idx}:ltx`] as LtxJobState | undefined)?.id) {
         throw new Error(`SUTRA_RECONCILIATION_REQUIRED: scene ${idx + 1}`)
       }
       await save(`scene:${idx}:started`, true)
       return generateVisualWithFallback(scene.visual_prompt, quality, userEmail, genPlan, format, strict, track)
-    }
+    })
     await hooks.heartbeat?.()
 
     if (input.mediaMode === 'stock') {
@@ -214,7 +217,7 @@ export async function executeCreateJob(
       qualityCap: quality, mediaFormat, idea: input.topic, template: null, format, voice: input.voiceId,
       musicStyle: script.music_style, tone: null, previousData: { script }, brandKit: null, requestKey: videoId,
     }, { steps: done }, hooks) as Promise<{ url: string }>,
-    step('music', async () => (await generateMusic({ prompt: script.music_prompt, style: script.music_style as Parameters<typeof generateMusic>[0]['style'], duration: script.estimated_duration, instrumental: true })).audio_url, true).then(async (url) => {
+    musicCheckpointed(done, hooks, step, 'music', async job => (await generateMusic({ prompt: script.music_prompt, style: script.music_style as Parameters<typeof generateMusic>[0]['style'], duration: script.estimated_duration, instrumental: true }, job)).audio_url).then(async (url) => {
       if (script.music_style && !url) throw new Error('SUTRA_REQUIRED_MUSIC_MISSING')
       await logApiCall(userId, 'suno', 'generateMusic', url ? 'success' : 'skipped')
       return url

@@ -2,7 +2,8 @@ import { assembleFinalVideo } from './final-composition'
 import { pipelineSteps, checkpointStage, assertFinalMedia, requireTracks } from '@/lib/pipeline-state'
 import { createHash } from 'node:crypto'
 import { durableLtxJob, type LtxJobPersistence, type LtxJobState } from '@/lib/ltx'
-import { generateMusic } from '@/lib/suno'
+import { generateMusic, type SunoJobPort } from '@/lib/suno'
+import { musicCheckpointed } from '@/lib/music-checkpoint'
 import { generateScript } from '@/lib/claude'
 import {
   generateVoiceWithFallback,
@@ -68,7 +69,7 @@ export interface ProductionProviders {
   /** Résout UNE scène (stock ou IA) — le checkpoint la court-circuite. */
   visual: (scene: ScriptData['scenes'][number], duration: number, job?: LtxJobPersistence) => Promise<VisualResult | null>
   voice: (narration: string, voiceId: string) => Promise<ArrayBuffer>
-  music: (prompt: string, style: string, duration: number) => Promise<string | null>
+  music: (prompt: string, style: string, duration: number, job?: SunoJobPort) => Promise<string | null>
   assemble: typeof assembleFinalVideo
   upload: (path: string, buffer: Buffer, contentType: string) => Promise<string>
 }
@@ -108,7 +109,7 @@ function defaultProviders(input: ProductionJobInput): ProductionProviders {
         { userId: input.userId, videoId: personal ? input.requestKey : undefined, duration, job })
     },
     voice: (text, voiceId) => generateVoiceWithFallback(text, voiceId),
-    music: async (prompt, style, duration) => style === 'none' ? null : (await generateMusic({ prompt, style: style as Parameters<typeof generateMusic>[0]['style'], duration, instrumental: true })).audio_url,
+    music: async (prompt, style, duration, job) => style === 'none' ? null : (await generateMusic({ prompt, style: style as Parameters<typeof generateMusic>[0]['style'], duration, instrumental: true }, job)).audio_url,
     assemble: (args) => assembleFinalVideo(args),
     upload: (path, buffer, contentType) => uploadToStorage(path, buffer, contentType),
   }
@@ -167,8 +168,9 @@ export async function executeProductionStep(
   }
 
   if (input.step === 'music') {
-    const music = await step('music', () =>
-      providers.music(`${input.musicStyle ?? 'cinematic'} background music for ${input.idea}`, input.musicStyle ?? 'cinematic', 120), true)
+    const music = await musicCheckpointed(done, hooks, step, 'music', job =>
+      providers.music(`${input.musicStyle ?? 'cinematic'} background music for ${input.idea}`, input.musicStyle ?? 'cinematic', 120, job))
+    requireTracks(null, music, { voice: false, music: input.musicStyle !== 'none' })
     await checkpointStage(done, hooks, 'music', music, music ? 'complete' : 'skipped')
     return music
   }
@@ -183,8 +185,9 @@ export async function executeProductionStep(
       providers.script({ topic: input.idea, style: input.tone ?? 'professionnel', format: input.format ?? '16:9', durationHint: config.durationHint }), true)
     if (!script.scenes.length || script.scenes.length > MAX_SCENES) throw new Error('Nombre de scenes hors limites — aucune scene ne sera supprimee silencieusement')
     await checkpointStage(done, hooks, 'script', script)
-    const music = await step('music', () =>
-      providers.music(`${input.musicStyle ?? 'cinematic'} background music for ${input.idea}`, input.musicStyle ?? 'cinematic', script.estimated_duration), true)
+    const music = await musicCheckpointed(done, hooks, step, 'music', job =>
+      providers.music(`${input.musicStyle ?? 'cinematic'} background music for ${input.idea}`, input.musicStyle ?? 'cinematic', script.estimated_duration, job))
+    requireTracks(null, music, { voice: false, music: input.musicStyle !== 'none' })
     const clips: AssembleClip[] = []
     for (let i = 0; i < Math.min(script.scenes.length, MAX_SCENES); i++) {
       const scene = script.scenes[i]
@@ -231,11 +234,11 @@ async function resolveVoiceUrl(
 /** Retourne la voix en base64 : depuis le checkpoint (bloc ou morceaux
  *  reassemblés) SANS rappeler le fournisseur, sinon synthétise UNE fois puis
  *  persiste tout (bloc unique ou découpe). */
-async function voiceB64Checkpointed(
+export async function voiceB64Checkpointed(
   done: Record<string, unknown>,
   hooks: ProductionJobHooks,
   step: Stepper,
-  providers: ProductionProviders,
+  providers: Pick<ProductionProviders, 'voice'>,
   narration: string,
   voice: string | null
 ): Promise<string | null> {

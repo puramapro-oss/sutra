@@ -7,6 +7,12 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
+  'qa/final-delta-20261014/social-feedback.test.mts',
+  'scripts/test-t03-orchestration-fixes.mts', 'scripts/test-t03-suno-recovery.mts',
+  'scripts/test-t04-provider-fixes.mts', 'scripts/test-t04-pollinations.mts',
+  'scripts/test-t02-security-fixes-storage.mts', 'scripts/test-t02-security-fixes-proof.mts',
+  'scripts/test-t02-security-fixes-session-media.mts', 'scripts/test-t02-security-fixes-ots.mts',
+  'scripts/test-t08-integration-journey.mts',
   'scripts/test-salad-worker.mts', 'scripts/test-salad-host.mts', 'scripts/test-t03-salad-recovery.mts',
   'qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts',
   'qa/t03-salad-recovery-20261014/adapter-recovery.test.mts',
@@ -37,6 +43,7 @@ const profiles = {
     ['publication', ['scripts/test-auto-publication.mjs']],
   ],
   media: [
+    ['composition-delta', ['--import', 'tsx', '--test', 'scripts/test-t05-composition-fix.mts']],
     ['salad-media', ['--import', 'tsx', '--test', 'scripts/test-t05-salad-media.mts']],
     ['local-engine', ['--import', 'tsx', '--test', 'scripts/test-local-engine-e2e.mts']],
     ['compositor', ['--experimental-test-module-mocks', '--import', 'tsx', '--import', './scripts/helpers/local-media-fixture.mts', '--test', '--test-concurrency=1', 'src/lib/ffmpeg-compositor.test.ts', 'src/lib/ffmpeg-compositor-formats.test.ts', 'src/lib/media-validation.test.ts']],

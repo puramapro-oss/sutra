@@ -14,6 +14,9 @@ import { generateVideoSmart, durableLtxJob, type LtxJobState } from '@/lib/ltx'
 import { generateMusic } from '@/lib/suno'
 import { generateVoice } from '@/lib/elevenlabs'
 import { uploadToStorage } from '@/lib/storage'
+import { pipelineSteps } from '@/lib/pipeline-state'
+import { musicCheckpointed } from '@/lib/music-checkpoint'
+import { voiceB64Checkpointed } from '@/lib/production-pipeline'
 import type { Plan } from '@/types'
 
 // Re-export types from dedicated modules
@@ -198,6 +201,7 @@ export async function generateAutoVideoAssets(params: {
   progress?: {
     steps: Record<string, unknown>
     onStepResolved?: (key: string, value: unknown) => Promise<void>
+    heartbeat?: () => Promise<void>
   }
 }): Promise<{
   video_raw_url: string
@@ -210,6 +214,8 @@ export async function generateAutoVideoAssets(params: {
     throw new Error('Voix demandee: script et identifiant vocal requis avant generation')
   }
   const done = params.progress?.steps ?? {}
+  const hooks = params.progress ?? {}
+  const step = pipelineSteps(done, hooks)
   const save = async (key: string, value: unknown) => {
     await params.progress?.onStepResolved?.(key, value)
     done[key] = value
@@ -241,13 +247,14 @@ export async function generateAutoVideoAssets(params: {
   // Chaque piste demandée doit être obtenue et checkpointée séparément.
   let audio_music_url: string | null = null
   if (config.default_music_genre && config.default_music_genre !== 'none') {
-    audio_music_url = await asset('asset:music', async () => {
+    audio_music_url = await musicCheckpointed(done, hooks, step, 'asset:music', async job => {
       const music = await generateMusic({
         prompt: plan.music_prompt,
         style: config.default_music_genre as never,
         duration: config.default_duration,
         instrumental: true,
-      })
+      }, job)
+      if (!music.audio_url?.trim()) throw new Error('SUTRA_REQUIRED_MUSIC_MISSING')
       return music.audio_url
     })
   }
@@ -255,14 +262,21 @@ export async function generateAutoVideoAssets(params: {
   // 3. Voix (ElevenLabs) si activee + script present
   let audio_voice_url: string | null = null
   if (config.default_voice_enabled && plan.script && config.default_voice_id) {
-    audio_voice_url = await asset('asset:voice', async () => {
-      const voiceBuffer = await generateVoice({
-        text: plan.script!,
-        voice_id: config.default_voice_id!,
-      })
+    // Older jobs stored only an intent, with no recoverable bytes. Keep them
+    // quarantined; a new worker cannot infer whether synthesis was charged.
+    if (!done['asset:voice'] && done['asset:voice:started'] && !done.voice_submission_started) {
+      throw new Error('SUTRA_RECONCILIATION_REQUIRED: asset:voice')
+    }
+    audio_voice_url = await step('asset:voice', async () => {
+      // Reuse the production manifest/chunks and paid intent. Storage can retry
+      // from the durable bytes without another ElevenLabs synthesis.
+      const b64 = await voiceB64Checkpointed(done, hooks, step, {
+        voice: (text) => generateVoice({ text, voice_id: config.default_voice_id! }),
+      }, plan.script!, config.default_voice_id)
+      if (!b64) throw new Error('SUTRA_VOICE_EMPTY_RESULT')
       return uploadToStorage(
         `auto/${videoId}/voice.mp3`,
-        voiceBuffer,
+        Buffer.from(b64, 'base64'),
         'audio/mpeg'
       )
     })

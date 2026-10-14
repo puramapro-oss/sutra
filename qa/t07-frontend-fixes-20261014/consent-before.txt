@@ -1,0 +1,22 @@
+FAIL first visit: cookie acceptance text meets contrast and keyboard focus: axe login-first-visit
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     impact: 'serious',
++     nodes: [
++       {
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element has insufficient color contrast of 3.95 (foreground color: #ffffff, background color: #a855f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1',
++         html: '<button type="button" data-testid="cookie-accept" class="min-h-11 rounded-pill bg-primary px-5 text-sm font-medium text-white">Tout accepter</button>',
++         target: [
++           '.bg-primary'
++         ]
++       }
++     ]
++   }
++ ]
+- []
+
+PASS no JS or hydration errors

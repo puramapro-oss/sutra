@@ -90,20 +90,19 @@ export function buildWatermarkTextFilter(text: string, margin = 24, textFilePath
 }
 
 /**
- * `original_size` est OBLIGATOIRE pour un rendu previsible : sans lui,
- * libass deduit sa propre resolution de reference pour un SRT brut (brut =
- * sans script ASS explicite) de maniere non garantie, donc FontSize ne
- * produit pas la meme taille relative a 720p qu'a 4K. FontSize est calcule
- * proportionnellement a la hauteur reelle de sortie (~1/27e, convention
- * sous-titrage courante) au lieu d'une valeur fixe illisible en 4K ou trop
- * grande en 720p.
+ * PlayRes fixe le canevas ASS aux pixels de sortie : original_size corrige
+ * le ratio, mais ne remplace pas ce canevas. Sans PlayRes, libass remet a
+ * l'echelle une police deja calculee en pixels et la grossit deux fois en 4K.
+ * Police, contour et marge gardent les memes proportions a chaque qualite.
  */
 export function buildSubtitlesFilter(srtPath: string, outputWidth: number, outputHeight: number): string {
   const escaped = srtPath.replace(/\\/g, '\\\\').replace(/:/g, '\\:')
   const fontSize = Math.max(12, Math.round(outputHeight / 27))
+  const margin = Math.round(outputHeight / 12)
+  const outline = Math.max(1, Math.round(outputHeight / 360))
   return (
     `subtitles=${escaped}:original_size=${outputWidth}x${outputHeight}:` +
-    `force_style='FontSize=${fontSize},PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'`
+    `force_style='PlayResX=${outputWidth},PlayResY=${outputHeight},FontSize=${fontSize},PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=${outline},Alignment=2,MarginV=${margin}'`
   )
 }
 

@@ -45,11 +45,13 @@ export function makeId(): string {
 }
 
 export function getPollinationsUrl(prompt: string, format: VideoFormat): string {
+  // Classic preview: best effort, logo, <=768² pixels and 45s/IP rate limit.
+  // nofeed excludes the public feed; the provider still receives the URL prompt.
   const dims =
     format === '9:16'
       ? 'width=432&height=768'
       : format === '1:1'
         ? 'width=600&height=600'
         : 'width=768&height=432'
-  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?${dims}&model=flux&enhance=true&nologo=true`
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?${dims}&nofeed=true`
 }

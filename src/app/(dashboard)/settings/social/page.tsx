@@ -118,7 +118,17 @@ export default function SocialAccountsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ platform }),
       })
-      if (!res.ok) throw new Error('connect_failed')
+      if (!res.ok) {
+        // These statuses are SUTRA's safe contract; never display provider error bodies.
+        const message = res.status === 409
+          ? 'Déconnexion en cours de vérification. Réessayez plus tard ; si le blocage persiste, contactez votre administrateur.'
+          : res.status === 503
+            ? 'Profil social non attribué. Contactez votre administrateur.'
+            : `Connexion ${PLATFORM_INFO[platform].label} indisponible`
+        toast.error(message)
+        setConnecting(null)
+        return
+      }
       const data = await res.json()
       if (data?.oauthUrl) {
         window.location.href = data.oauthUrl

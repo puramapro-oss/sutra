@@ -73,7 +73,7 @@ const setKey = (name: string, on: boolean) => {
 
 test('ElevenLabs generateVoice: succes', async () => {
   setKey('ELEVENLABS_API_KEY', true)
-  mockFetch(() => new Response(new ArrayBuffer(8), { status: 200 }))
+  mockFetch(() => new Response(new ArrayBuffer(8), { status: 200, headers: { 'Content-Type': 'audio/mpeg' } }))
   const buf = await generateVoice({ text: 'salut', voice_id: 'v1' })
   assert.equal(buf.byteLength, 8)
   assert.equal(calls[0].url, 'https://api.elevenlabs.io/v1/text-to-speech/v1')
@@ -130,7 +130,7 @@ test('Suno: POST 500 = UNE SEULE tentative (pas de rejeu génératif payant)', a
     attempts += 1
     return jsonResponse(500, { error: 'boom' })
   })
-  await assertThrowsWith(() => generateMusic({ prompt: 'x', style: 'lo-fi', duration: 20 }), 'Echec apres 1')
+  await assertThrowsWith(() => generateMusic({ prompt: 'x', style: 'lo-fi', duration: 20 }), 'soumission incertaine')
   assert.equal(attempts, 1, 'un POST de génération ne doit jamais être rejoué sans idempotence')
 })
 

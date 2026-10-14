@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-14T02:39:28.885851+00:00",
+  "sourceAndHarnessHashes": "PASS",
+  "checkedHashes": 809,
+  "targetedChecks": [
+    "journey 13/13",
+    "typecheck exit 0",
+    "lint exit 0, max warnings 0"
+  ],
+  "unchangedPassingChecksRerun": false,
+  "gitnexus": {
+    "impactBeforeFixtureCorrection": "UNKNOWN: new symbol was not yet indexed; only new QA code edited",
+    "impactAfterIndex": {
+      "target": "journeyDatabase",
+      "risk": "LOW",
+      "directCallers": 1,
+      "processesAffected": 0
+    },
+    "detectChangesStaged": {
+      "risk": "HIGH",
+      "files": 22,
+      "symbols": 55,
+      "flows": 10
+    },
+    "review": "HIGH warning delivered. rpc/ok/failure fixture name associations include unrelated product routes. No source import of fixture, no staged src/config/SQL changes; mock injection only in isolated test process. context rpc is lower-bound (3 unresolved receiver sites). Not exhaustive graph certification."
+  },
+  "gitleaks": {
+    "command": "/opt/homebrew/bin/gitleaks git --pre-commit --staged --redact --no-banner --report-format json --report-path qa/t08-integration-journey-20261014/gitleaks.json",
+    "exitCode": 0,
+    "findings": 0
+  },
+  "t01": "02h40 UTC explicitly requests bounded tests delivery now; future integrated candidate retest by T01 then T08 as needed. T05 delivered 942d9e557945c7ad12405775aaa25a4ba94ae2d9 but not integrated at last HEAD check."
+}

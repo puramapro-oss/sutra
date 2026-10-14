@@ -91,6 +91,11 @@ class Transport {
     const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), {
       status, headers: { 'content-type': 'application/json' },
     })
+    if (url.origin === 'https://supabase.fixture.invalid' && url.pathname === '/rest/v1/video_jobs' && method === 'GET') {
+      assert.equal(url.searchParams.get('id'), `eq.${JOB}`)
+      this.trace.push('finish:reconcile:GET')
+      return json(this.snapshot())
+    }
     if (url.href === 'https://queue-fixture.salad.cloud/v1/capabilities' && method === 'GET') {
       return json({ protocol: PROTOCOL, provider: 'salad', state: 'ready', qualification, quote,
         operations: ['text-to-video'], audio: false, native4k: false, maxConcurrent: 1,

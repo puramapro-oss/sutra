@@ -1,0 +1,15 @@
+Changes: 28 files, 6 symbols
+Affected processes: 2
+Risk level: medium
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-14 — T01 clôture intégration et OVH, d8691d8 → BATON.md
+  Function compositionPlan → src/lib/composition-contract.ts
+  Function buildSubtitlesFilter → src/lib/ffmpeg-filters.ts
+  Section 2026-10-13 — T05 complément fournisseur livré localement → task_plan.md
+  Section 2026-10-14 — T01 clôture intégration et OVH, d8691d8 → task_plan.md
+
+Affected execution flows:
+  • ComposeVideo → FfmpegCompositorError (4 steps) — changed: compositionPlan
+  • ComposeVideo → GetResolution (3 steps) — changed: compositionPlan

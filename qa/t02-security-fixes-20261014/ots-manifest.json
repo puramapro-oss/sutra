@@ -1,0 +1,75 @@
+{
+  "utc": "2026-10-14T02:37:50.992488+00:00",
+  "phase": "ots",
+  "base": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "inheritedSecrets": false,
+  "providerCalls": 0,
+  "commands": [
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t02-security-fixes-ots.mts",
+        "scripts/test-opentimestamps.mjs"
+      ],
+      "exitCode": 0,
+      "log": "ots.log"
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "scripts/test-t02-security-fixes-storage.mts",
+      "sha256": "fa4694c6c7fa64bf699515e8838d7bbbd52bfb70ae190fe3966ec28fd2125fc1"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-proof.mts",
+      "sha256": "ecc85aef721ded4bfe4b1b44df66798c872cccb454fc016eb68f607f6ffbad97"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-session-media.mts",
+      "sha256": "ec08289720ca359882ed5ff9822934ec0c4dca790ac3f0578bebd0d9eabe1900"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-ots.mts",
+      "sha256": "7f31336b5921941e824d59b59a2096c0e8f7e8f24170abd688226d1ca1dbc494"
+    },
+    {
+      "path": "src/lib/ots-transport.ts",
+      "sha256": "825c9b72c8505e8f73dacfb472460deef8f6ff662c70ce9478717f8759a87852"
+    },
+    {
+      "path": "src/lib/opentimestamps.ts",
+      "sha256": "e5f38f371d8854978d96b23b027c429fa908c4a547f8950e10bdf0632d0c7ab5"
+    },
+    {
+      "path": "src/lib/storage.ts",
+      "sha256": "019ca6891dae95c24a78ecee0d581120dc156189903538621a6e4732a280b903"
+    },
+    {
+      "path": "src/lib/private-media.ts",
+      "sha256": "188b0dd45cb819a7513b8667480248fda6136178410345e6b4074b30101f979c"
+    },
+    {
+      "path": "src/lib/account-access.ts",
+      "sha256": "7c53d3a9deef87ede391b6058dcde6238f571adce640482d6b25913b4034f111"
+    },
+    {
+      "path": "src/app/api/media/[reference]/route.ts",
+      "sha256": "7b65590e1bcb72c1e7ddedc2a5f2c60bea770e207fb20bfefd663bbfbaa9b53a"
+    },
+    {
+      "path": "src/app/api/verify/[videoId]/route.ts",
+      "sha256": "fc2959bcfd43df16e49b6bcd704f31cbb32ebb5b8e03115f38dfcd23b9ea3d33"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+    }
+  ]
+}

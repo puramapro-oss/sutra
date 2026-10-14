@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false
+  },
+  "include": [
+    "../../scripts/test-t06-social-final.mts",
+    "../../scripts/test-release-oauth.mts",
+    "../../scripts/test-t02-oauth-boundaries.mts",
+    "../../scripts/test-t06-social-autonomy.mts",
+    "../../scripts/test-social-publication.mts",
+    "../../scripts/test-t06-social-routes.mts",
+    "../../scripts/test-security-routes.mts",
+    "../../scripts/test-release-regressions.mts",
+    "./test-postgres.mts"
+  ],
+  "exclude": [
+    "../../node_modules",
+    "../../mobile"
+  ],
+  "files": [
+    "../../node_modules/next/types/global.d.ts"
+  ]
+}

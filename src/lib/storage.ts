@@ -1,5 +1,5 @@
 import { createServiceClient } from '@/lib/supabase'
-import { ownedMediaPath, durableMediaUrl } from './private-media'
+import { ownedMediaPath, durableMediaUrl, mediaOwner, assertMediaOwner } from './private-media'
 
 export async function uploadToStorage(
   path: string,
@@ -27,7 +27,12 @@ export async function uploadToStorage(
 
 export async function deleteFromStorage(path: string): Promise<void> {
   try {
+    const owner = mediaOwner()
+    // The input is an exact object key, including its owner prefix. Reuse the
+    // upload validator to reject traversal without changing that key.
+    ownedMediaPath(path, owner)
     const supabase = createServiceClient()
+    await assertMediaOwner(path, owner, supabase)
     const { error } = await supabase.storage.from('sutra-assets').remove([path])
     if (error) throw new Error('SUTRA_STORAGE_DELETE_FAILED')
   } catch {
@@ -39,6 +44,11 @@ export async function listStorageFiles(
   prefix: string
 ): Promise<Array<{ name: string; created_at: string }>> {
   try {
+    const owner = mediaOwner()
+    ownedMediaPath(prefix, owner)
+    // A legacy object's ownership cannot authorize listing a shared folder.
+    const root = `owners/${owner}`
+    if (prefix !== root && !prefix.startsWith(`${root}/`)) throw new Error('SUTRA_STORAGE_LIST_FAILED')
     const supabase = createServiceClient()
     const { data, error } = await supabase.storage
       .from('sutra-assets')

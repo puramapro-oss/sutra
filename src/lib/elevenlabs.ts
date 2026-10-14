@@ -1,5 +1,6 @@
 import { fetchWithRetry, httpErrorMessage } from '@/lib/utils/api'
 import { requireEnv } from '@/lib/env'
+import { providerBytes } from '@/lib/provider-response'
 
 // Clé lue à l'appel (jamais au top-level) : erreur explicite si absente
 // au lieu d'un crash à l'import, et aucun secret dans les messages.
@@ -12,11 +13,13 @@ export async function generateVoice(params: {
   similarity_boost?: number
 }): Promise<ArrayBuffer> {
   const apiKey = requireEnv('ELEVENLABS_API_KEY', 'synthese vocale ElevenLabs')
+  const signal = AbortSignal.timeout(30_000)
 
   const res = await fetchWithRetry(
     `https://api.elevenlabs.io/v1/text-to-speech/${params.voice_id}`,
     {
       method: 'POST',
+      redirect: 'error', cache: 'no-store', signal, timeoutMs: 30_000,
       headers: {
         'Content-Type': 'application/json',
         'xi-api-key': apiKey,
@@ -35,7 +38,14 @@ export async function generateVoice(params: {
   if (!res.ok) {
     throw new Error(`ElevenLabs TTS: ${await httpErrorMessage(res)}`)
   }
-  return res.arrayBuffer()
+  if (res.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'audio/mpeg') {
+    void res.body?.cancel().catch(() => {})
+    throw new Error('ElevenLabs INVALID_AUDIO')
+  }
+  // MP3 is the documented default. This local transport cap is not a provider quota.
+  const bytes = await providerBytes(res, signal, 32 * 1024 * 1024)
+    .catch(() => { throw new Error('ElevenLabs INVALID_AUDIO') })
+  return Uint8Array.from(bytes).buffer
 }
 
 export async function cloneVoice(params: {

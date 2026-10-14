@@ -4,7 +4,7 @@
 
 ## Frontières et fichiers à empaqueter
 
-Le futur conteneur Linux/amd64 doit embarquer Node 24, les dépendances verrouillées nécessaires (`tsx`, `pg`, `zod` et imports transitifs du bridge), `src/lib/salad/**`, `src/lib/salad-persistence.ts` livré par T01, le bridge existant `scripts/comfyui-engine-server.mjs` et ses dépendances canoniques. L’entrée distante est `src/lib/salad/serve.mts`, exécutée par Node avec le loader `tsx`. Son absence de configuration activée est testée : arrêt normal, aucune connexion ni écoute. `host.ts` importé seul n’écoute jamais.
+Le futur conteneur Linux/amd64 doit embarquer Node 24, les dépendances verrouillées nécessaires (`tsx`, `pg`, `zod` et imports transitifs du bridge), `src/lib/salad/**`, `src/lib/salad-persistence.ts` livré par T01, le bridge existant `scripts/comfyui-engine-server.mjs` et ses dépendances canoniques. L’entrée distante est `src/lib/salad/serve.mts`, exécutée par Node avec le loader `tsx`. `tsx` est actuellement une dépendance de développement : `npm ci --omit=dev` seul ne produit donc pas ce runtime. Le packaging devra conserver explicitement ce loader verrouillé, sans installation dynamique au démarrage. Son absence de configuration activée est testée : arrêt normal, aucune connexion ni écoute. `host.ts` importé seul n’écoute jamais.
 
 Le host ne lance ni ComfyUI ni un autre moteur. L’image qualifiée doit avoir un seul superviseur, un seul ComfyUI et le bridge canonique, avec Python/PyTorch/CUDA identiques entre ComfyUI et le probe `python3`. `ffmpeg` et `ffprobe` sont nécessaires au contrôle des artefacts. Aucun moteur Mac, moteur de secours, téléchargement ou installation dynamique n’est intégré. Seul le port HTTP du host est exposable ; ComfyUI et le bridge restent sur deux ports loopback `http://127.0.0.1:<port>/`. Le port host, explicite entre 1024 et 65535, écoute IPv6 `::` pour le Container Gateway. Ne jamais exposer le bridge brut.
 
@@ -27,7 +27,7 @@ Toutes les valeurs opérationnelles futures viennent de la source canonique priv
 | `SALAD_MAX_ESTIMATED_COMPUTE_USD` | oui | non | Budget positif ; refuse estimation au-dessus du plafond |
 | `SALAD_WORKER_DATABASE_URL` | non | oui | PostgreSQL externe dédié, TLS vérifié, aucun paramètre URL modifiant SSL |
 | `SALAD_DEPLOYMENT_RECEIPT_PATH` | non | oui | Fichier reçu indépendant, en lecture seule, au plus 8192 octets |
-| `SALAD_COMFY_URL` | non | oui | Loopback privé explicite, interrogation GET `/queue` uniquement par l’inspection |
+| `SALAD_COMFY_URL` | non | oui | Loopback privé explicite, GET `/queue` et `/object_info/:node` par l’inspection |
 | `SALAD_BRIDGE_URL` | non | oui | Loopback privé explicite, protocole canonique existant |
 | `SALAD_WORKER_PORT` | non | oui | Entier 1024–65535, port exposé du host uniquement |
 
@@ -46,6 +46,8 @@ Le reçu indépendant contient exactement `image` (digest final approuvé) et `c
 
 Le VAE est celui intégré au checkpoint, sortie 2 de `CheckpointLoaderSimple` utilisée par le workflow natif canonique. Le SHA VAE attendu égale donc le SHA du checkpoint. Aucun alias/symlink vers des poids non inspectés, aucun `extra_model_paths`, aucune mutation de modèles après l’inspection. L’image et les poids doivent rester en lecture seule. Le host reste froid jusqu’à la fin du calcul des SHA ; prévoir une startup probe/grâce suffisante. Chaque contrôle de disponibilité relit le slot durable, la file ComfyUI et les VRAM/GPU/CUDA mesurés (`nvidia-smi`, PyTorch), puis le health du bridge. Ces probes matériels n’ont pas été exécutés sur le Mac.
 
+Avant les probes matériels, l’inspection vérifie aussi les interfaces des onze classes utilisées par le workflow canonique via les GET privés `/object_info/:node` : entrées attendues, indices/types de sortie, choix modèle/encodeur/sampler et `SaveVideo.output_node`. Un nœud absent, une réponse malformée ou les poids indisponibles rendent le worker indisponible. Les douze GET (file + classes) partagent un budget réseau de cinq secondes et des corps bornés ; aucun POST `/prompt` ni chargement de modèle. Cela vérifie des prérequis installés, pas la compatibilité GPU ni toutes les variantes/versionnements de ComfyUI. La version ComfyUI et le workflow doivent encore être épinglés et exécutés dans l’image de qualification.
+
 Une RTX3090 24Go n’est pas déclarée compatible par sa seule capacité mémoire : il reste à prouver les profils, OOM, vitesse et environnement réel de l’image. Le prix historique 0,09 USD/h n’est ni un abonnement ni un forfait garanti. Aucun taux par défaut dans le code. L’estimation est taux approuvé × timeout / 3600000, hors attente facturée, stockage et réseau ; coût réellement facturé et quota restent `null` tant que non fournis par une preuve de facturation. Un timeout ne termine pas le GPU distant : cette estimation et son seuil ne sont pas un plafond garanti de facture; le slot reste bloqué et une intervention opérateur peut être nécessaire.
 
 ## HTTP, interruption et exploitation future
@@ -54,9 +56,18 @@ Routes **SUTRA**, et non routes de l’API de gestion Salad : GET `/health`, GET
 
 POST crée l’intention durable applicative avant le réseau, puis un slot global atomique PostgreSQL avant toute génération. ID stable, empreinte de la requête, CAS révisionnel, aucune réutilisation d’un checkpoint d’un autre fournisseur. Une interruption, un timeout ou un acquittement perdu conserve l’intention et le slot UNKNOWN ; reprise exclusivement par GET, même après 404. Aucun retry POST, annulation automatique, TTL de libération ou fallback API/stock. La lecture `readActive()` du slot est obligatoire pour readiness après redémarrage ; absente/en erreur/incohérente => `interrupted`. Un slot running encore frais donne `busy`; expiré/unknown donne `interrupted`.
 
-SIGTERM/INT ferme l’écoute et attend les calculs déjà engagés, sans les relancer. SIGKILL/éviction conserve le slot dans PostgreSQL externe ; il faut réconcilier et prouver l’arrêt du précédent exécutant avant une décision manuelle. Le verrou protège les workers utilisant le même port durable, pas un processus GPU arbitraire lancé hors contrat : l’image ne doit héberger aucun moteur concurrent. Artefact immuable externe, taille+SHA-256+profil média vérifiés avant succès ; échec d’import applicatif impose la reprise du même job.
+SIGTERM/INT ferme l’écoute, refuse les nouvelles soumissions, puis attend les admissions déjà engagées (y compris une réservation PostgreSQL encore en vol) et leurs calculs avant de fermer la persistance. Aucun calcul relancé. SIGKILL/éviction conserve le slot dans PostgreSQL externe ; il faut réconcilier et prouver l’arrêt du précédent exécutant avant une décision manuelle. Le verrou protège les workers utilisant le même port durable, pas un processus GPU arbitraire lancé hors contrat : l’image ne doit héberger aucun moteur concurrent. Artefact immuable externe, taille+SHA-256+profil média vérifiés avant succès ; échec d’import applicatif impose la reprise du même job.
 
 Le raccord open source concerne **la vidéo seulement**. Script, voix, musique et composition du pipeline SUTRA peuvent encore appeler des API payantes. T01 conserve le preflight création, l’intégration et toute activation. Aucun utilisateur ni compte social à connecter pour la livraison désactivée.
+
+## Avant le premier essai GPU réel — responsabilité T01
+
+1. Obtenir l’autorisation explicite ressource/budget et un devis daté, incluant cold start, stockage et trafic ; aucun tarif GPU présumé.
+2. Construire et épingler une image Linux/amd64 avec versions exactes ComfyUI/Python/PyTorch/CUDA, Node 24 et dépendances verrouillées, ffmpeg/ffprobe, seul bridge canonique ; vérifier licences et SHA des deux poids ci-dessus. Aucun Dockerfile/image qualifié n’est livré ici.
+3. Préparer le journal PostgreSQL externe T01, les cinq fonctions et le rôle worker dédié avec TLS, le stockage d’artefacts et l’accès réseau. Aucun SQL distant exécuté dans ce lot.
+4. Préparer le Gateway protégé, les deux authentifications serveur, les probes et la grâce de démarrage ; renseigner uniquement la source privée canonique et monter le reçu indépendant en lecture seule.
+5. Sur le GPU autorisé seulement, mesurer modèle/image/GPU/VRAM/CUDA, profils vidéo et qualité, durée, mémoire/OOM, cold start, perte de réponse, arrêt et éviction. Conserver la preuve et son SHA ; les tests synthétiques ne doivent jamais alimenter le manifeste opérationnel.
+6. T01 intègre puis active uniquement le profil réellement qualifié, avec plafond d’estimation et procédure opérateur de réconciliation. Les autorisations de dépense, qualification et activation restent distinctes.
 
 ## Sources officielles consultées
 
@@ -68,3 +79,4 @@ Le raccord open source concerne **la vidéo seulement**. Script, voix, musique e
 - [Cold starts](https://docs.salad.com/container-engine/how-to-guides/cold-starts-and-iterating-quickly)
 - [Prix à l’usage Salad](https://salad.com/pricing/)
 - [Modèles officiels Lightricks LTX-Video](https://github.com/Lightricks/LTX-Video)
+- [Routes ComfyUI et introspection des nœuds](https://docs.comfy.org/development/comfyui-server/comms_routes)

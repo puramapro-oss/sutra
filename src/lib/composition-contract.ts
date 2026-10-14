@@ -54,7 +54,7 @@ export function compositionPlan(input: CompositionContract) {
     logo: Boolean(input.watermarkUrl?.trim() || input.watermarkText?.trim()),
   }
   for (const [key, requirement] of Object.entries(input.requirements ?? {})) {
-    if (!(key in present) || !['required', 'optional', 'disabled'].includes(requirement)) reject('Exigence media inconnue')
+    if (!Object.hasOwn(present, key) || !['required', 'optional', 'disabled'].includes(requirement)) reject('Exigence media inconnue')
     if (requirement === 'required' && !present[key as keyof typeof present]) reject(`Brief : ${key} obligatoire mais absent`)
     const supplied = key === 'music' ? Boolean(input.musicUrl?.trim()) : key === 'voice' ? Boolean(input.voiceUrl?.trim()) : present[key as keyof typeof present]
     if (requirement === 'disabled' && supplied) reject(`Brief : ${key} desactive mais fourni`)
@@ -63,6 +63,8 @@ export function compositionPlan(input: CompositionContract) {
   const subtitles = (input.subtitles ?? []).map(s => {
     if (!s.text.trim() || !Number.isFinite(s.start) || !Number.isFinite(s.end) ||
         s.start < 0 || s.end <= s.start || s.end > body + 0.001 || s.start < previousEnd) reject('Sous-titres invalides, superposes ou hors du corps du montage')
+    // A positive interval can still lie entirely between two output frames.
+    if (s.end - s.start < 1 / 30 - 1e-9) reject('Sous-titre trop court : minimum une image a 30 FPS')
     previousEnd = s.end
     // Strip control characters and markup: text must remain literal in both renderers.
     const text = s.text.replace(/[\u0000-\u001f]/g, ' ').replace(/[<>{}]/g, '')

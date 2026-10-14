@@ -1,0 +1,35 @@
+
+  GitNexus Analyzer (1.6.12)
+
+  GitNexus Analyzer (1.6.12)
+Warning: npm 11.x can crash while installing gitnexus via npx (npm/arborist "node.target is null"). Prefer: pnpm --allow-build=@ladybugdb/core --allow-build=gitnexus --allow-build=tree-sitter dlx gitnexus@latest analyze or npm install -g gitnexus@latest. See https://github.com/abhigyanpatwari/GitNexus/issues/1939
+[2K
+  Skipped 5 large files (>512KB, likely generated/vendored)
+[2K
+  - graphify-out/graph.html
+[2K
+  - graphify-out/graph.json
+[2K
+  - qa/integration-20261012/evidence/legacy-first-results.json
+[2K
+  - qa/release-20261012/evidence/legacy-playwright-results.json
+[2K
+  - qa/t07-reprise/evidence/legacy/results.json
+[2K
+  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+{"level":40,"time":1791944914015,"name":"gitnexus","msg":"[scope-resolution] 822 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean \"unused\" — it means the definition anchor is in a different language. Affected: compose (typescript), directory (typescript), output (typescript), profiles (typescript), show (typescript), user (typescript), value (typescript), CI (javascript), NEXT_PUBLIC_APP_SCHEMA (javascript), NEXT_PUBLIC_APP_URL (javascript), …"}
+{"level":40,"time":1791944914149,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":1103,"entryPointsUnexplored":0,"walksCutByBudget":4,"tracesDepthCapped":0,"calleesDropped":652,"processesDropped":0},"msg":"[processes] 368 flows reported, but whole flows are MISSING: 1103 of 1303 candidate entry point(s) never ranked in, 0 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 652 callee(s) skipped at maxBranching, 4 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}
+[2K
+Incremental: changed=0, added=7, deleted=0 (skipping wipe + 1855 unchanged file rows preserved)
+[2K
+FTS disabled for this index. To enable keyword search, run gitnexus analyze without --skip-fts and with GITNEXUS_SKIP_FTS unset.
+{"level":30,"time":1791944916131,"name":"gitnexus","msg":"name-fallback resolution: 41 call sites (13 distinct caller-file/name pairs), 2 refused as impossible (guessed/refused by language: javascript 37/2, typescript 4/0)"}
+[2K
+Parse cache: pruned 3 stale chunk entries
+
+  Repository indexed successfully (5.3s)
+
+  16,258 nodes | 31,583 edges | 358 clusters | 368 flows
+  /Users/matissdornier/purama-worktrees/sutra-t08-integration-journey-20261014
+
+  FTS disabled for this index. To enable keyword search, run gitnexus analyze without --skip-fts and with GITNEXUS_SKIP_FTS unset.

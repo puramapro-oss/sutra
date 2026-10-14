@@ -1,0 +1,51 @@
+[zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+[zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+(node:68965) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68965) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke (9.629833ms)
+✖ T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke (1.540166ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 480.180583
+
+✖ failing tests:
+
+test at scripts/test-t06-social-final.mts:1:25863
+✖ T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke (9.629833ms)
+  AssertionError [ERR_ASSERTION]: Unknown DELETE outcome cannot authorize a replacement consent
+
+  200 !== 409
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-recovery-20261014/scripts/test-t06-social-final.mts:506:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 409,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-final.mts:1:25863
+✖ T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke (1.540166ms)
+  AssertionError [ERR_ASSERTION]: Unknown DELETE outcome cannot authorize a replacement consent
+
+  200 !== 409
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-recovery-20261014/scripts/test-t06-social-final.mts:506:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 409,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { SaladError } from './contracts'
 import { boundedJson, type Fetcher } from './http'
 import type { RuntimeInspection } from './worker'
+import { verifyComfyWorkflow } from './workflow-contract'
 
 const exec = promisify(execFile)
 // Independently approved deployment receipt, mounted read-only. Never generated from
@@ -79,6 +80,7 @@ export async function prepareSaladInspection(receiptPath: string, comfyUrl: stri
         const response = await io.fetcher(`${url.origin}/queue`, { signal, redirect: 'error' })
         if (!response.ok) { await response.body?.cancel(); throw new Error() }
         const queue = queueSchema.parse(await boundedJson(response, signal))
+        await verifyComfyWorkflow(url.origin, io.fetcher, signal)
         const hardware = await io.probe()
         if (!hardware.gpu || !Number.isInteger(hardware.vramMiB) || hardware.vramMiB <= 0
           || !Number.isFinite(hardware.freeVramMiB) || hardware.freeVramMiB < 0

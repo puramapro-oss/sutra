@@ -1,0 +1,61 @@
+{
+  "target": {
+    "id": "Function:src/lib/social-oauth-state.ts:boundDigest",
+    "name": "boundDigest",
+    "type": "Function",
+    "filePath": "src/lib/social-oauth-state.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 4,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 2,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 2
+  },
+  "affected_processes": [
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/social/connect/route.ts",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "src/app/api/social/callback/route.ts",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Cluster_338",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Callback",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Connect",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ]
+}

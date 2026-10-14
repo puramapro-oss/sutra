@@ -1,0 +1,97 @@
+TAP version 13
+# (node:62113) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:62113) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T02 account list omits private metadata/tokens and another user account
+ok 1 - T02 account list omits private metadata/tokens and another user account
+  ---
+  duration_ms: 2.661042
+  type: 'test'
+  ...
+# Subtest: T02 account list redacts error diagnostics
+ok 2 - T02 account list redacts error diagnostics
+  ---
+  duration_ms: 0.259334
+  type: 'test'
+  ...
+# Subtest: T02 account list redacts throw diagnostics
+ok 3 - T02 account list redacts throw diagnostics
+  ---
+  duration_ms: 0.258958
+  type: 'test'
+  ...
+# Subtest: T02 anonymous account list does not reach the privileged database
+ok 4 - T02 anonymous account list does not reach the privileged database
+  ---
+  duration_ms: 0.112041
+  type: 'test'
+  ...
+# Subtest: T02 callback without verified session never consumes or exchanges state
+ok 5 - T02 callback without verified session never consumes or exchanges state
+  ---
+  duration_ms: 1.765292
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a different user without burning the owner state
+ok 6 - T02 callback rejects a different user without burning the owner state
+  ---
+  duration_ms: 0.894792
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a platform switch
+ok 7 - T02 callback rejects a platform switch
+  ---
+  duration_ms: 0.226083
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a missing or forged browser secret
+ok 8 - T02 callback rejects a missing or forged browser secret
+  ---
+  duration_ms: 0.309833
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects an expired state before token exchange
+ok 9 - T02 callback rejects an expired state before token exchange
+  ---
+  duration_ms: 0.164125
+  type: 'test'
+  ...
+# Subtest: T02 concurrent callbacks verify only once and never store or expose tokens
+ok 10 - T02 concurrent callbacks verify only once and never store or expose tokens
+  ---
+  duration_ms: 0.348875
+  type: 'test'
+  ...
+# Subtest: T02 database outage during callback cannot authorize an exchange
+ok 11 - T02 database outage during callback cannot authorize an exchange
+  ---
+  duration_ms: 0.174833
+  type: 'test'
+  ...
+# Subtest: T02 uncertain exchange is sanitized and consumed state cannot be replayed
+ok 12 - T02 uncertain exchange is sanitized and consumed state cannot be replayed
+  ---
+  duration_ms: 0.245958
+  type: 'test'
+  ...
+# Subtest: T02 callback from another login session cannot consume the current state
+ok 13 - T02 callback from another login session cannot consume the current state
+  ---
+  duration_ms: 0.131875
+  type: 'test'
+  ...
+# Subtest: T02 callback cannot change server profile or use an unrelated provider account without verification
+ok 14 - T02 callback cannot change server profile or use an unrelated provider account without verification
+  ---
+  duration_ms: 0.12025
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 209.736875

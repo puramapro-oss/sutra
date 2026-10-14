@@ -14,6 +14,9 @@ export function useLibraryVideos(userId: string | undefined, filter: FilterId, s
   const [totalCount, setTotalCount] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const pending = useRef<AbortController | null>(null)
+  // Favorites are filtered locally, like folders. Switching all/favorites must
+  // preserve the loaded pages and an in-flight request for the same query.
+  const statusFilter = filter === 'favorites' ? 'all' : filter
 
   const fetchVideos = useCallback(async (offset: number, append: boolean) => {
     // State updates are asynchronous: the ref also blocks two clicks in the same frame.
@@ -36,7 +39,7 @@ export function useLibraryVideos(userId: string | undefined, filter: FilterId, s
     setLoadingMore(append)
     try {
       let query = supabase.from('videos').select('*', { count: 'exact' }).eq('user_id', userId)
-      if (filter !== 'all' && filter !== 'favorites') query = query.eq('status', filter)
+      if (statusFilter !== 'all') query = query.eq('status', statusFilter)
       if (search.trim()) query = query.ilike('title', `%${search.trim()}%`)
       query = query.order(sort === 'title' ? 'title' : 'created_at', { ascending: sort === 'oldest' || sort === 'title' })
       const { data, count, error: queryError } = await query.range(offset, offset + PAGE_SIZE - 1).abortSignal(controller.signal)
@@ -49,7 +52,11 @@ export function useLibraryVideos(userId: string | undefined, filter: FilterId, s
     } catch {
       if (!controller.signal.aborted && pending.current === controller) {
         setError(append ? 'Impossible de charger la suite des vidéos. Réessaie.' : 'Impossible de charger la bibliothèque. Réessaie.')
-        if (!append) setVideos([])
+        if (!append) {
+          setVideos([])
+          setTotalCount(0)
+          setHasMore(false)
+        }
       }
     } finally {
       if (pending.current === controller) {
@@ -58,7 +65,7 @@ export function useLibraryVideos(userId: string | undefined, filter: FilterId, s
         setLoadingMore(false)
       }
     }
-  }, [userId, filter, search, sort])
+  }, [userId, statusFilter, search, sort])
 
   useEffect(() => {
     void fetchVideos(0, false)

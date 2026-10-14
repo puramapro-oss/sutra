@@ -65,6 +65,9 @@ export async function POST(req: Request) {
     })
     return response
   } catch (error) {
+    if (error instanceof Error && error.message === 'SUTRA_SOCIAL_REVOCATION_PENDING') {
+      return NextResponse.json({ error: 'Déconnexion en cours de vérification. Réessayez plus tard ; si le blocage persiste, contactez votre administrateur.' }, { status: 409 })
+    }
     if (error instanceof Error && error.message === 'SUTRA_ZERNIO_PROFILE_BINDING_REQUIRED') {
       return NextResponse.json({ error: 'Profil social non attribué. Contactez votre administrateur.' }, { status: 503 })
     }

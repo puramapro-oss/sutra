@@ -34,6 +34,10 @@ mock.module('../src/lib/social-oauth-state.ts', { namedExports: {
   issueSocialOAuthState: async (userId: string, platform: string, state: string, binding: { profileId: string; sessionId: string }) => { issued = { userId, platform, state, binding }; return 'a'.repeat(64) }, socialOAuthCookieName: () => 'synthetic-state-cookie',
   consumeSocialOAuthState: async () => false, SOCIAL_OAUTH_TTL_SECONDS: 600,
 } })
+mock.module('../src/lib/social-oauth-account.ts', { namedExports: {
+  readSocialOAuthAccount: async () => null,
+  updateSocialOAuthAccount: async () => { throw new Error('UNEXPECTED_ACCOUNT_WRITE') },
+} })
 const { POST: connect } = await import('../src/app/api/social/connect/route.ts')
 const { GET: callback } = await import('../src/app/api/social/callback/route.ts')
 const { PATCH: changeUser } = await import('../src/app/api/admin/users/[id]/route.ts')
@@ -96,7 +100,9 @@ test('OAuth initiation rejects a mismatched verified session or client-chosen te
 })
 test('OAuth callback never reflects untrusted provider errors into a redirect URL', async () => {
   const response = await callback(new Request('https://app.invalid/api/social/callback?error=synthetic-sensitive-marker'))
-  assert.equal(response.headers.get('location'), 'https://app.invalid/settings/social?error=oauth_denied')
+  assert.equal(response.headers.get('location'), 'https://app.invalid/settings/social?error=missing_params')
+  assert.doesNotMatch(response.headers.get('location')!, /synthetic-sensitive-marker/)
+  assert.equal(providerCalls, 0); assert.equal(mutations, 0)
 })
 test('OAuth callback rejects missing one-use state before exchanging code', async () => {
   const response = await callback(new Request('https://app.invalid/api/social/callback?connected=youtube&profileId=aaaaaaaaaaaaaaaaaaaaaaaa&accountId=bbbbbbbbbbbbbbbbbbbbbbbb&platform=youtube&state=synthetic-state-0123456789'))

@@ -29,7 +29,7 @@ let lastPost: Record<string, unknown> | undefined
 let wireViolations: string[] = []
 
 // Reuse the canonical publication fixture; bridge only OAuth's atomic state table
-// and public.social_accounts' real (user_id, platform) unique upsert contract.
+// and public.social_accounts' real (user_id, platform) unique insert contract.
 const database = {
   schema: () => database,
   from(table: string): object {
@@ -38,13 +38,16 @@ const database = {
       const builder = client.from(table)
       if (table !== 'social_accounts') return builder
       return new Proxy(builder, { get(target, key) {
-        if (key !== 'upsert') return Reflect.get(target, key)
-        return async (row: Row, options: { onConflict: string }) => {
-          assert.equal(options.onConflict, 'user_id,platform')
-          const old = db.accounts.find(a => a.user_id === row.user_id && a.platform === row.platform)
-          if (old) Object.assign(old, row)
-          else db.accounts.push({ ...row, id: db.accounts.length ? '44444444-4444-4444-8444-444444444444' : localId } as typeof db.accounts[number])
-          return { error: null }
+        if (key !== 'insert') return Reflect.get(target, key)
+        return (row: Row) => {
+          const query = { select: () => query, maybeSingle: async () => {
+            const old = db.accounts.find(a => a.user_id === row.user_id && a.platform === row.platform)
+            if (old) return { data: null, error: { code: '23505' } }
+            const created = { ...row, id: db.accounts.length ? '44444444-4444-4444-8444-444444444444' : localId }
+            db.accounts.push(created as typeof db.accounts[number])
+            return { data: { id: created.id }, error: null }
+          } }
+          return query
         }
       } })
     }
@@ -103,7 +106,7 @@ beforeEach(() => {
     calls.push(call)
     assert.equal(call.headers.get('authorization'), 'Bearer fixture-zernio')
     if (call.method === 'GET' && url.pathname.startsWith('/api/v1/connect/')) {
-      assert.equal(states.length, 1, 'Persist local state before provider URL acquisition')
+      assert.ok(states.length >= 1, 'Persist local state before provider URL acquisition')
       assert.equal(url.searchParams.get('profileId'), profile)
       assert.equal(url.searchParams.get('scopes'), 'posting')
       assert.equal(init?.redirect, 'error'); assert.ok(init?.signal)
@@ -147,10 +150,12 @@ beforeEach(() => {
 afterEach(() => { assert.deepEqual(wireViolations, [], 'No swallowed transport assertion') })
 
 async function begin(platform: SocialPlatform = 'youtube', extra = {}) {
+  const previousStates = states.length
   const response = await connect(new Request('https://sutra-test.invalid/api/social/connect', {
     method: 'POST', body: JSON.stringify({ platform, ...extra }),
   }))
   if (response.status !== 200) return { response, callbackUrl: new URL('https://sutra-test.invalid/unused'), state: '' }
+  assert.equal(states.length, previousStates + 1, 'Each new consent must persist its own bound state')
   assert.equal(response.headers.get('cache-control'), 'no-store')
   const body = await response.json() as { state: string; oauthUrl: string }
   assert.match(body.state, /^[a-f0-9]{64}$/)
@@ -183,7 +188,9 @@ for (const platform of OAUTH_PLATFORMS) test(`T06-FINAL OAuth route + adapter + 
   const row = db.accounts[0] as unknown as Row
   assert.equal(row.status, 'connected'); assert.equal(row.external_id, accountId)
   assert.equal(row.access_token, null); assert.equal(row.refresh_token, null); assert.equal(row.token_expires_at, null)
-  assert.deepEqual(row.metadata, { zernio_profile_id: profile, credential_owner: 'zernio' })
+  const metadata = row.metadata as Row
+  assert.equal(metadata.zernio_profile_id, profile); assert.equal(metadata.credential_owner, 'zernio')
+  assert.match(String(metadata.sutra_oauth_revision), /^[a-f0-9-]{36}$/)
   assert.doesNotMatch(JSON.stringify(db.accounts), /must-not-store/)
 })
 
@@ -325,4 +332,183 @@ test('T06-FINAL UI regression: a revoked account must expose Se connecter again'
     disconnectingId: null, onConnect: () => {}, onDisconnectClick: () => {},
   }))
   assert.ok(html.includes('data-testid="connect-youtube"'), 'Revoked row retained for history hides Se connecter; PlatformGrid incorrectly treats row existence as connected')
+})
+
+
+test('T06-DELTA denied consent consumes the bound state even without account identity', async () => {
+  const started = await begin()
+  const denied = new URL(started.callbackUrl)
+  denied.searchParams.set('error', 'access_denied')
+  for (const key of ['connected', 'accountId', 'profileId']) denied.searchParams.delete(key)
+  assert.equal((await callback(new Request(denied))).headers.get('location'), 'https://sutra-test.invalid/settings/social?error=oauth_denied')
+  assert.equal(states.length, 0, 'A denied callback must terminate its one-use state')
+  assert.ok([...browser.values()].every(value => value === ''))
+  remoteAccounts = [{ _id: accountId, platform: 'youtube', profileId: profile, isActive: true, username: 'fixture' }]
+  assert.equal((await callback(new Request(started.callbackUrl))).headers.get('location'), 'https://sutra-test.invalid/settings/social?error=invalid_or_expired_state')
+  assert.equal(db.accounts.length, 0)
+  assert.equal(calls.filter(c => c.url.pathname === '/api/v1/accounts').length, 0)
+})
+
+test('T06-DELTA a forged denial cannot consume another session state', async () => {
+  const started = await begin()
+  started.callbackUrl.searchParams.set('error', 'access_denied')
+  sessionId = '77777777-7777-4777-8777-777777777777'
+  assert.equal((await callback(new Request(started.callbackUrl))).headers.get('location'), 'https://sutra-test.invalid/settings/social?error=invalid_or_expired_state')
+  assert.equal(states.length, 1)
+  assert.equal(db.accounts.length, 0)
+})
+
+
+test('T06-DELTA consent issued before revocation must not reconnect the revoked account', async () => {
+  await consent()
+  const pending = await begin()
+  assert.equal((await revoke(revokeRequest())).status, 200)
+  assert.equal(db.accounts[0].status, 'revoked')
+  const response = await callback(new Request(pending.callbackUrl))
+  assert.ok(!response.headers.get('location')?.includes('connected=youtube'), 'Old consent must not undo a later revocation')
+  assert.equal(db.accounts[0].status, 'revoked')
+})
+
+test('T06-DELTA revocation while identity lookup is in flight must win over callback', async () => {
+  await consent()
+  const pending = await begin()
+  const transport = globalThis.fetch
+  let release!: () => void
+  let reached!: () => void
+  const hold = new Promise<void>(resolve => { release = resolve })
+  const waiting = new Promise<void>(resolve => { reached = resolve })
+  globalThis.fetch = async (input, init) => {
+    const response = await transport(input, init)
+    const url = new URL(typeof input === 'string' || input instanceof URL ? input : input.url)
+    if (url.pathname === '/api/v1/accounts') { reached(); await hold }
+    return response
+  }
+  const returning = callback(new Request(pending.callbackUrl))
+  await waiting
+  try {
+    assert.equal((await revoke(revokeRequest())).status, 200)
+    assert.equal(db.accounts[0].status, 'revoked')
+  } finally { release() }
+  const response = await returning
+  assert.ok(!response.headers.get('location')?.includes('connected=youtube'), 'Provider lookup started before revocation cannot restore publication permission')
+  assert.equal(db.accounts[0].status, 'revoked')
+})
+
+
+test('T06-DELTA X denial accepts the documented provider platform alias and consumes state', async () => {
+  const started = await begin('x')
+  const denied = new URL(started.callbackUrl)
+  denied.searchParams.set('platform', 'twitter'); denied.searchParams.set('error', 'oauth_denied')
+  for (const key of ['connected', 'accountId', 'profileId']) denied.searchParams.delete(key)
+  assert.equal((await callback(new Request(denied))).headers.get('location'), 'https://sutra-test.invalid/settings/social?error=oauth_denied')
+  assert.equal(states.length, 0); assert.equal(db.accounts.length, 0)
+})
+
+test('T06-DELTA unknown provider error remains generic and still consumes state', async () => {
+  const started = await begin()
+  started.callbackUrl.searchParams.set('error', 'future_error_private_diagnostic')
+  assert.equal((await callback(new Request(started.callbackUrl))).headers.get('location'), 'https://sutra-test.invalid/settings/social?error=oauth_failed')
+  assert.equal(states.length, 0); assert.equal(db.accounts.length, 0)
+})
+
+
+test('T06-DELTA fresh consent after completed revoke can reconnect without reviving old state', async () => {
+  await consent()
+  const old = await begin()
+  await revoke(revokeRequest())
+  await consent('youtube', secondAccount)
+  assert.equal(db.accounts[0].external_id, secondAccount)
+  assert.equal(db.accounts[0].status, 'connected')
+  const response = await callback(new Request(old.callbackUrl))
+  assert.match(response.headers.get('location')!, /invalid_or_expired_state$/)
+  assert.equal(db.accounts[0].external_id, secondAccount)
+})
+
+test('T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion', async () => {
+  await consent()
+  const transport = globalThis.fetch
+  let release!: () => void
+  let reached!: () => void
+  const hold = new Promise<void>(resolve => { release = resolve })
+  const waiting = new Promise<void>(resolve => { reached = resolve })
+  globalThis.fetch = async (input, init) => {
+    const response = await transport(input, init)
+    if (init?.method === 'DELETE') { reached(); await hold }
+    return response
+  }
+  const first = revoke(revokeRequest())
+  await waiting
+  try {
+    const second = await revoke(revokeRequest())
+    assert.equal(second.status, 202)
+    assert.equal(calls.filter(c => c.method === 'DELETE').length, 1)
+    const blocked = await begin()
+    assert.equal(blocked.response.status, 409)
+    assert.match((await blocked.response.json() as { error: string }).error, /[Dd]éconnexion/)
+    assert.equal(states.length, 0)
+    assert.equal(calls.filter(c => c.url.pathname.startsWith('/api/v1/connect')).length, 1)
+  } finally { release(); await first }
+  assert.equal((db.accounts[0] as unknown as Row).metadata && ((db.accounts[0] as unknown as Row).metadata as Row).sutra_revocation_pending, false)
+  await consent()
+})
+
+test('T06-DELTA two initial consent callbacks cannot overwrite the winning account', async () => {
+  const a = await begin(), b = await begin()
+  b.callbackUrl.searchParams.set('accountId', secondAccount)
+  remoteAccounts = [accountId, secondAccount].map(_id => ({ _id, platform: 'youtube', profileId: profile, isActive: true, username: 'synthetic' }))
+  const responses = await Promise.all([callback(new Request(a.callbackUrl)), callback(new Request(b.callbackUrl))])
+  assert.equal(responses.filter(r => r.headers.get('location')?.includes('connected=youtube')).length, 1)
+  assert.equal(db.accounts.length, 1)
+  const winner = db.accounts[0].external_id
+  await callback(new Request(a.callbackUrl)); await callback(new Request(b.callbackUrl))
+  assert.equal(db.accounts[0].external_id, winner)
+})
+
+test('T06-DELTA account snapshot read error fails closed before state consumption or provider GET', async () => {
+  const started = await begin()
+  db.settings.failRead = true
+  const response = await callback(new Request(started.callbackUrl))
+  assert.match(response.headers.get('location')!, /oauth_failed$/)
+  assert.equal(states.length, 1); assert.equal(db.accounts.length, 0)
+  assert.equal(calls.length, 1)
+})
+
+test('T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish', async () => {
+  await consent()
+  const account = db.accounts[0] as unknown as Row
+  account.status = 'revoked'
+  account.metadata = { ...(account.metadata as Row), sutra_revocation_pending: true }
+  assert.equal((await begin()).response.status, 409)
+  assert.equal((await revoke(revokeRequest())).status, 202)
+  assert.equal((await publish()).success, false)
+  assert.equal(calls.filter(c => c.method === 'DELETE' || c.method === 'POST').length, 0)
+})
+
+for (const failure of ['timeout', '503'] as const) test(`T06-DELTA unconfirmed DELETE ${failure} keeps the reconnect fence against a late remote revoke`, async () => {
+  await consent()
+  const transport = globalThis.fetch
+  let lateRemoteRevoke!: () => void
+  let remotelyRevoked = false
+  globalThis.fetch = async (input, init) => {
+    if (init?.method === 'DELETE') {
+      lateRemoteRevoke = () => { remotelyRevoked = true }
+      if (failure === 'timeout') {
+        // The remote operation may still finish after the caller loses its response.
+        throw new DOMException('synthetic-timeout', 'TimeoutError')
+      }
+      deleteStatus = 503
+    }
+    return transport(input, init)
+  }
+  assert.equal((await revoke(revokeRequest())).status, 202)
+  assert.equal(remotelyRevoked, false)
+  const before = calls.length
+  assert.equal((await begin()).response.status, 409, 'Unknown DELETE outcome cannot authorize a replacement consent')
+  assert.equal((await revoke(revokeRequest())).status, 202)
+  assert.equal(calls.length, before, 'No new connect or blind DELETE while remote result is unknown')
+  assert.equal(((db.accounts[0] as unknown as Row).metadata as Row).sutra_revocation_pending, true)
+  lateRemoteRevoke()
+  assert.equal((await begin()).response.status, 409, 'A local guess about a late completion cannot release the durable fence')
+  assert.equal((await publish()).success, false)
+  assert.equal(posts.length, 0)
 })

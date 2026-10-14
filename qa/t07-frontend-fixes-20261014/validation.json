@@ -1,0 +1,104 @@
+{
+  "observedAt": "2026-10-14T02:38:24.349065+00:00",
+  "base": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "integratedCode": "d8691d8ac6cf885f8e5522f361f45ebe229ec20d",
+  "branch": "codex/sutra-t07-frontend-fixes-20261014",
+  "node": "v24.21.0",
+  "sourceManifestComparison": {
+    "path": "qa/salad-integration-20261014/tested-source-manifest.json",
+    "total": 873,
+    "unchanged": 870,
+    "changed": [
+      "src/app/(dashboard)/library/page.tsx",
+      "src/hooks/useLibraryVideos.ts",
+      "src/lib/legal/components/CookieConsentBanner.tsx"
+    ]
+  },
+  "commands": [
+    {
+      "command": "node qa/t07-frontend-fixes-20261014/browser.mjs",
+      "status": "PASS",
+      "exitCode": 0,
+      "checks": 21,
+      "axeFullAudits": 13,
+      "axeThemeAudits": 6
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js 'src/app/(dashboard)/library/page.tsx' src/hooks/useLibraryVideos.ts src/lib/legal/components/CookieConsentBanner.tsx qa/t07-frontend-fixes-20261014/browser.mjs qa/t07-frontend-fixes-20261014/consent-contrast.mjs",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "measurement": {
+    "condition": "Same Chromium fixture, warm Next webpack dev, 375px, 400ms injected GET latency, 3 all/favorites round trips; no production latency claim",
+    "before": {
+      "getCount": 6,
+      "medianReadyMs": 452.0
+    },
+    "after": {
+      "getCount": 0,
+      "medianReadyMs": 27.5
+    }
+  },
+  "files": [
+    {
+      "path": "src/app/(dashboard)/library/page.tsx",
+      "sha256": "ed6f4b11b93146e3a6c6c6ca36373eb686ab5f4a1823e5ccdef3d2c98e7d17fd"
+    },
+    {
+      "path": "src/hooks/useLibraryVideos.ts",
+      "sha256": "4a9abe9d28e0e6efabecb685b6b622efe862c033b0e070df5b0ba4e0ae42e9a9"
+    },
+    {
+      "path": "src/lib/legal/components/CookieConsentBanner.tsx",
+      "sha256": "bf5a766586c0f029ec712957918cfe6f3acd69a55b5d3bbb77753ea10d7b17ca"
+    },
+    {
+      "path": "qa/t07-frontend-fixes-20261014/browser.mjs",
+      "sha256": "0cdd0e61ae7bc050b4b605d700f09d12e6370243b014809b05ec4ba7b48b48d4"
+    },
+    {
+      "path": "qa/t07-frontend-fixes-20261014/consent-contrast.mjs",
+      "sha256": "757f77d94a43d842042fee3c0169a830c75f1ee9516856e27a9e65a4b86e5ac3"
+    }
+  ],
+  "network": "Loopback only; no unexpected mutation, no external origin, cookie POST mocked in browser",
+  "secrets": "No master or .env read/copied; synthetic fixture-only environment and offline guard",
+  "visualReview": [
+    "375-favorites-pending.png",
+    "1440-folder-pending.png",
+    "consent-1440-light.png",
+    "consent-375.png"
+  ],
+  "limits": [
+    "Chromium fixtures only; no real social consent, generation, GPU, video rendering or publication",
+    "Global build/CI not repeated: reuse unchanged integrated proofs; T01 validates merged candidate",
+    "GitNexus flow coverage truncated; JSX entry points UNKNOWN, direct source review supplied"
+  ],
+  "precommit": {
+    "gitleaks": {
+      "status": "PASS",
+      "command": "gitleaks git --pre-commit --staged --redact --no-banner --no-color --report-format json --report-path qa/t07-frontend-fixes-20261014/secrets.json",
+      "exitCode": 0,
+      "findings": 0
+    },
+    "gitnexus": {
+      "status": "EXECUTED_BOUNDED",
+      "tool": "detect_changes",
+      "scope": "staged",
+      "risk": "medium",
+      "changedSymbols": 12,
+      "affectedProcesses": [
+        "LibraryPage → FetchVideos",
+        "LibraryPage → LoadFavorites",
+        "LibraryPage → LoadFolders"
+      ],
+      "review": "All product symbols inside the three owned files; docs sections overlap append hunks. New test files are not indexed in base graph. No out-of-scope flow observed; coverage is truncated, not exhaustive."
+    }
+  }
+}

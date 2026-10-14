@@ -1,0 +1,14 @@
+✔ lost finish response plus 12 duplicate completions: one completed debit, read reconciliation only (89.068292ms)
+✔ expired lease after final checkpoint: new owner finishes; old owner cannot alter result or budget (8.93275ms)
+✔ cancel races finish: exactly one quota settlement, cancellation can never reconcile as done (31.547333ms)
+✔ quota settlement DB failure rolls back done, retains result; restoring ledger allows safe finish (15.115458ms)
+✔ explicitly skipped music reconciles its committed null result after a lost ACK (5.588458ms)
+✔ failed outcome with lost ACK and duplicate callbacks releases exactly one reservation (12.512917ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 574.724959

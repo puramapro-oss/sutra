@@ -1,0 +1,112 @@
+{
+  "target": {
+    "id": "Function:src/lib/salad/worker.ts:createSaladWorker",
+    "name": "createSaladWorker",
+    "type": "Function",
+    "filePath": "src/lib/salad/worker.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 8,
+  "risk": "MEDIUM",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 5,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 5,
+    "2": 3
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Salad",
+      "hits": 4,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-persistence.mts",
+        "name": "test-salad-persistence.mts",
+        "filePath": "scripts/test-salad-persistence.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-worker.mts",
+        "name": "test-salad-worker.mts",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-salad-worker.mts:fixture",
+        "name": "fixture",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-salad-worker.mts:fn@301:106.restart@307:2",
+        "name": "restart",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/salad/host.ts:startSaladHost",
+        "name": "startSaladHost",
+        "filePath": "src/lib/salad/host.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:scripts/test-salad-host.mts",
+        "name": "test-salad-host.mts",
+        "filePath": "scripts/test-salad-host.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/serve.mts",
+        "name": "serve.mts",
+        "filePath": "src/lib/salad/serve.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:scripts/test-salad-worker.mts:fn@301:106.capability@312:2",
+        "name": "capability",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      }
+    ]
+  }
+}

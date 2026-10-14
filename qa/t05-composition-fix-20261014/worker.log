@@ -1,0 +1,33 @@
+✔ worker base64: real decoded dimensions/FPS, source buffer is not a ready receipt (2093.983417ms)
+✔ worker same-origin URL: actual download bytes decoded before return (92.776875ms)
+✔ worker expired output HTTP 403: no returned media or retry (0.55925ms)
+✔ worker expired output HTTP 410: no returned media or retry (0.256458ms)
+✔ worker corrupt last packet despite readable MP4 header fails full decode (132.77825ms)
+✔ worker rejects measured native, not trusted request labels (39.7275ms)
+✔ worker rejects measured portrait, not trusted request labels (39.578209ms)
+✔ worker rejects measured fps16, not trusted request labels (39.90275ms)
+✔ worker rejects measured sar2, not trusted request labels (40.457875ms)
+✔ silent worker output is usable as a source, but required audio blocks durable export (129.182666ms)
+✔ source/native/enhanced and requested/final dimensions are independently measured; upscale is explicit (474.6825ms)
+✔ 4K dimensions alone remain origin-unknown; native label requires explicit lineage (synthetic assertion only) (405.538459ms)
+✔ false native-4K claim cannot override a measured lower-resolution native output (229.959792ms)
+✔ missing declared native measurement cannot certify provenance (136.316208ms)
+✔ export voice mandatory but absent: zero assembly/persistence (0.309709ms)
+✔ export music mandatory but absent: zero assembly/persistence (0.065792ms)
+✔ export optional sound: valid silent composed bytes can persist with fresh full measurements (288.240375ms)
+✔ export expected audio absent in final bytes: forged hasAudio receipt cannot reach persistence (398.201792ms)
+✔ export A/V timestamps out of sync reject despite audio stream presence (200.626375ms)
+✔ export cached completion expired: fresh validation refuses ready, no new render (188.861041ms)
+✔ export cached completion corrupt: fresh validation refuses ready, no new render (234.203625ms)
+✔ failed assembly has no raw fallback and no automatic repeat (0.423792ms)
+✔ completed raw source URL is refused even with a valid byte receipt (88.913ms)
+✔ DEFECT T05-MEDIA-01: raw bytes behind a different URL must not persist as a subtitled final (277.298375ms)
+✔ both compositors fail: no upload, no raw success (Shotstack dependency is only a throwing mock) (0.406708ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5901.679542

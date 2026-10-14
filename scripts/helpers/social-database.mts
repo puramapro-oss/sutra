@@ -55,7 +55,7 @@ export function socialDatabase() {
         if (typeof value === 'string' && (value.startsWith('{') || value.startsWith('['))) return isDeepStrictEqual(JSON.parse(JSON.stringify(row[key])), JSON.parse(value))
         return isDeepStrictEqual(row[key], value)
       }); return builder },
-      is: (key: string, value: unknown) => { filters.push(row => row[key] === value); return builder },
+      is: (key: string, value: unknown) => { filters.push(row => (row[key] ?? null) === value); return builder },
       in: (key: string, values: unknown[]) => { filters.push(row => values.includes(row[key])); return builder },
       lte: (key: string, value: string) => { filters.push(row => typeof row[key] === 'string' && row[key] <= value); return builder },
       update: (value: Row) => { mutation = value; return builder },

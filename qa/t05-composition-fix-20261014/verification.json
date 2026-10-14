@@ -1,0 +1,48 @@
+{
+  "base": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "integratedCode": "d8691d8ac6cf885f8e5522f361f45ebe229ec20d",
+  "node": "v26.0.0",
+  "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+  "sha256": {
+    "src/lib/composition-contract.ts": "091ce0573a52bc94cbe5d036fa01ecdf2bd69d6f40fff57bc8e8963c4853b1af",
+    "src/lib/ffmpeg-filters.ts": "cbc3188c5d759f8802653531e2e4e9822ae3f8c8cd6627af387f6201d9a6c846",
+    "scripts/test-t05-composition-fix.mts": "aec764b0eb7fa1ab4239f36aacbc749fcdf31b19d66b3ae5b23a2c982824903c",
+    "qa/t05-composition-fix-20261014/run-targeted.mjs": "23a53d127613b3150dbf9f243f30e5fefb1b5a69493985b54770584f149cbaa8",
+    "qa/t05-composition-fix-20261014/cpu-bin/ffmpeg": "df45af050adf69bf627ad5e7f7df8a65ccbb68b5b241f10e4541e56a69573e8b",
+    "qa/t05-composition-fix-20261014/tsconfig.json": "360a5fb2348ad121836d5bfb3d2e64c737333cb8b837a467ec8a1ee1797d6265",
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+  },
+  "secrets": "No real secret or env file read; synthetic configuration in targeted runner; offline preload reused",
+  "tests": {
+    "delta": {
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    "contracts": {
+      "pass": 33,
+      "fail": 0,
+      "skip": 0
+    },
+    "media": {
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    },
+    "worker": {
+      "pass": 25,
+      "fail": 0,
+      "skip": 0
+    },
+    "auto": "PASS",
+    "typecheck": "PASS targeted TS dependency closure",
+    "lint": "PASS modified TS/MTS/runner",
+    "gitleaks": "PASS staged diff redacted, no leaks"
+  },
+  "productSymbols": [
+    "compositionPlan",
+    "buildSubtitlesFilter"
+  ],
+  "network": "Blocked except mocked and loopback transport; no live provider request",
+  "compute": "FFmpeg libx264 synthetic CPU only; wrapper rejects hardware encoders; no AI model"
+}

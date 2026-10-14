@@ -1,0 +1,36 @@
+Changes: 390 files, 69 symbols
+Affected processes: 333
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-14 — T01 clôture intégration et OVH, d8691d8 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section Stratégie confirmée → ERRORS.md
+  Section Déploiement OVH SUTRA — état du 14 octobre 2026 → deploy/README.md
+  Section Exigences du candidat final — suivi T01 → qa/final-delta-20261014/REQUIREMENTS.md
+  Variable ROOT → qa/final-delta-20261014/promote.py
+  Variable PROOF → qa/final-delta-20261014/promote.py
+  Function main → qa/final-delta-20261014/promote.py
+  Variable here → qa/final-delta-20261014/run-authenticated.py
+  Variable bundle → qa/final-delta-20261014/run-authenticated.py
+  Variable remote → qa/final-delta-20261014/run-authenticated.py
+  Variable p → qa/final-delta-20261014/run-authenticated.py
+  Function socialDatabase → scripts/helpers/social-database.mts
+  Function from → scripts/helpers/social-database.mts
+... and 54 more
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: main, main, main
+  • CommunityScreen → ApiFetch (3 steps) — changed: main, main, main
+  • AdminContestPage → FetchData (3 steps) — changed: main, main, main
+  • AdminUsersPage → FetchUsers (3 steps) — changed: main, main, main
+  • CommunityPage → FetchBuddy (3 steps) — changed: main, main, main
+  • CommunityPage → FetchCircles (3 steps) — changed: main, main, main
+  • CommunityPage → FetchWall (3 steps) — changed: main, main, main
+  • JeuCreatifPage → Load (3 steps) — changed: main, main, main
+  • LightningPage → Load (3 steps) — changed: main, main, main
+  • MissionsPage → Load (3 steps) — changed: main, main, main
+... and 323 more
+
+  GitNexus Detect Changes (1.6.12)

@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+    "--import",
+    "tsx",
+    "--test",
+    "/Users/matissdornier/purama-worktrees/sutra-t03-orchestration-fixes-20261014/qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts"
+  ],
+  "exit_code": 0,
+  "environment": "disposable private loopback PostgreSQL; external sockets and secrets denied",
+  "source_sha256": {
+    "src/lib/video-queue.ts": "de9ca43304aa8dcba8ff7a9ef8390305ad667d2dc48991101dbdc30aeef743aa",
+    "migrations/v10_durable_jobs_quota.sql": "a112552d0479dc7e54c50231fddb43c8675da639ebaeecc786b3382cad00a73d",
+    "migrations/v11_pipeline_checkpoints.sql": "704bcad695215f7892aea0cc3ae34591864a17353100417ae2a8f9ff42e9b6fc",
+    "qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts": "1ba0db1300bee00f4ede3d15ab168ea75ed27fe23d17e585d5cc3acea19e881e"
+  }
+}

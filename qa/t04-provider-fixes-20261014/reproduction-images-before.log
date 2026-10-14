@@ -1,0 +1,54 @@
+(node:78310) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:78310) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ Pollinations helper preserves ratios and encoding, excludes public feed and unsupported options (1.308583ms)
+✖ production thumbnail uses the same Classic contract without provider, quota or worker calls (2.969625ms)
+✔ thumbnail retains authentication and format validation before constructing URL (0.580583ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 1
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 228.939833
+
+✖ failing tests:
+
+test at scripts/test-t04-pollinations.mts:1:2472
+✖ Pollinations helper preserves ratios and encoding, excludes public feed and unsupported options (1.308583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  null !== 'true'
+
+      at check (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-pollinations.mts:37:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-pollinations.mts:44:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'true',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-pollinations.mts:1:2665
+✖ production thumbnail uses the same Classic contract without provider, quota or worker calls (2.969625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  null !== 'true'
+
+      at check (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-pollinations.mts:37:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-pollinations.mts:53:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'true',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

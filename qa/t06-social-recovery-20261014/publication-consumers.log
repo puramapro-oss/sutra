@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: PUBLICATION: video annulee refusee avant appel externe
+ok 1 - PUBLICATION: video annulee refusee avant appel externe
+  ---
+  duration_ms: 1.590583
+  type: 'test'
+  ...
+# Subtest: PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publie rien
+ok 2 - PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publie rien
+  ---
+  duration_ms: 0.291833
+  type: 'test'
+  ...
+# Subtest: PUBLICATION: succes partiel reste partiel et comptes issus du serveur
+ok 3 - PUBLICATION: succes partiel reste partiel et comptes issus du serveur
+  ---
+  duration_ms: 2.022333
+  type: 'test'
+  ...
+# Subtest: PUBLICATION: deux requetes concurrentes ne soumettent qu une fois
+ok 4 - PUBLICATION: deux requetes concurrentes ne soumettent qu une fois
+  ---
+  duration_ms: 0.595666
+  type: 'test'
+  ...
+# Subtest: PUBLICATION: echec reservation ne contacte pas le fournisseur
+ok 5 - PUBLICATION: echec reservation ne contacte pas le fournisseur
+  ---
+  duration_ms: 0.122667
+  type: 'test'
+  ...
+# Subtest: PUBLICATION: resultat non enregistre exige reconciliation et bloque le rejeu
+ok 6 - PUBLICATION: resultat non enregistre exige reconciliation et bloque le rejeu
+  ---
+  duration_ms: 0.458583
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 444.078875

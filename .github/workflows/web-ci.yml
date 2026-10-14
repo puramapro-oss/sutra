@@ -50,8 +50,21 @@ jobs:
       - run: npm run check
       - run: npx playwright install --with-deps chromium
       - run: node qa/t08/run.mjs browser-redteam
+      - name: Library pagination and consent contrast regressions
+        run: node qa/t07-frontend-fixes-20261014/browser.mjs
       - run: node scripts/run-ci.mjs legacy
       - run: python3 -m unittest discover -s deploy -p 'test_*.py'
+      - name: Exact candidate promotion and rollback simulations
+        run: |
+          python3 - <<'PY'
+          import sys, unittest
+          from pathlib import Path
+          sys.path.insert(0, 'deploy')
+          import test_salad_promotion as tests
+          tests.SOURCE = Path('qa/final-delta-20261014').resolve()
+          result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(tests))
+          raise SystemExit(not result.wasSuccessful())
+          PY
       - name: Audit production dependencies
         if: always()
         run: npm audit --omit=dev --audit-level=high
@@ -64,6 +77,7 @@ jobs:
             test-results/ui-isolated
             test-results/legacy
             test-results/t08
+            qa/t07-frontend-fixes-20261014/evidence/after
           if-no-files-found: warn
 
   disposable-database:
@@ -110,3 +124,12 @@ jobs:
           PGPORT: '5432'
           PGUSER: fixture
           PGPASSWORD: fixture
+      - name: Lost completion acknowledgement and OAuth revocation races
+        run: node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          PGHOST: 127.0.0.1
+          PGPORT: '5432'
+          PGUSER: fixture
+          PGPASSWORD: fixture
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs

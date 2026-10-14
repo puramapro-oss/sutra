@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/opt/homebrew/bin/gitleaks",
+    "stdin",
+    "--redact",
+    "--no-banner",
+    "--report-format",
+    "json",
+    "--report-path",
+    "qa/t03-orchestration-fixes-20261014/gitleaks.json"
+  ],
+  "scope": "all explicitly staged T03 sources and evidence logs",
+  "exit_code": 0,
+  "bytes_scanned": 197182
+}

@@ -211,11 +211,25 @@ export async function checkpoint(
 export async function finishJob(
   jobId: string, worker: string, status: 'done' | 'failed' | 'queued' | 'reconciliation_required', lastError?: string,
 ): Promise<string> {
-  const { data, error } = await createServiceClient().rpc('finish_video_job', {
+  const service = createServiceClient()
+  const { data, error } = await service.rpc('finish_video_job', {
     p_job_id: jobId, p_worker: worker, p_status: status, p_error: lastError ?? null,
   })
-  if (error || !['done', 'failed', 'queued', 'reconciliation_required'].includes(data)) {
-    throw new Error(`SUTRA_JOB_FINISH_UNCONFIRMED: ${error?.message ?? 'no receipt'}`)
+  // SQL may quarantine a retry, but may never acknowledge a different outcome
+  // as success. Callers return the media only after this receipt is confirmed.
+  if (!error && (data === status || (status === 'queued' && data === 'reconciliation_required'))) return data
+  // A lost HTTP acknowledgement can follow a committed finish + quota settlement.
+  // Reconcile only terminal outcomes, with a read; never repeat a mutation here
+  // and never infer completion from an expired lease or a transient queue state.
+  if ((error || !['done', 'failed', 'queued', 'reconciliation_required'].includes(data))
+      && (status === 'done' || status === 'failed')) {
+    const { data: row, error: readError } = await service.from('video_jobs')
+      .select('id,status,locked_by,progress,kind,payload').eq('id', jobId).maybeSingle()
+    const skippedMusic = row?.kind === 'production' && row.payload?.input?.step === 'music'
+      && row.payload.input.musicStyle === 'none' && row.progress?.result === null
+      && row.progress.steps?.['stage:music']?.status === 'skipped'
+    if (!readError && row?.id === jobId && row.status === status && row.locked_by === null
+        && (status === 'failed' || skippedMusic || (row.progress?.result !== undefined && row.progress.result !== null))) return status
   }
-  return data
+  throw new Error('SUTRA_JOB_FINISH_UNCONFIRMED')
 }

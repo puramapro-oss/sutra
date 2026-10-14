@@ -1,0 +1,314 @@
+{
+  "target": {
+    "name": "pollVideoJob",
+    "type": "",
+    "filePath": "src/lib/runpod.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 96,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "CRITICAL",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 64,
+    "processes_affected": 24,
+    "modules_affected": 18
+  },
+  "byDepthCounts": {
+    "1": 64,
+    "2": 23,
+    "3": 9
+  },
+  "affected_processes": [
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "src/app/api/cron/sutra-auto/route.ts",
+      "affected_process_count": 7,
+      "total_hits": 19,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "src/app/api/cron/video-worker/route.ts",
+      "affected_process_count": 6,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "PartenaireDashboard",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/partenaire/page.tsx",
+      "affected_process_count": 3,
+      "total_hits": 7,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "VideosPage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/auto/videos/page.tsx",
+      "affected_process_count": 3,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "CreatePage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/create/page.tsx",
+      "affected_process_count": 4,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "PartnerCoachPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 3,
+      "total_hits": 4,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/video/export/route.ts",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "AdminWithdrawalsPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "ProductionPage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/production/page.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/create/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "AmbassadorDashboardPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "CanalRegistrationPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "LoginPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "ResetPasswordPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "WalletPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 2,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "AutoPage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/auto/page.tsx",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "composeVideo",
+      "type": "Function",
+      "filePath": "src/lib/ffmpeg-compositor.ts",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "AdminApiUsagePage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "AdminDashboard → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "AdminFinancesPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "AdminUsersPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "DashboardPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "PartenariatPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "WalletCard → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 12,
+      "impact": "direct"
+    },
+    {
+      "name": "Hooks",
+      "hits": 8,
+      "impact": "direct"
+    },
+    {
+      "name": "Salad",
+      "hits": 6,
+      "impact": "direct"
+    },
+    {
+      "name": "Production",
+      "hits": 5,
+      "impact": "direct"
+    },
+    {
+      "name": "Library",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_333",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_334",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Publish",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Status",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_322",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Create",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Integrated",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "T03-salad-recovery-20261014",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "(tabs)",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Ambassadeur",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_6",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_9",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Landing",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ]
+}
+
+  GitNexus Impact (1.6.12)
