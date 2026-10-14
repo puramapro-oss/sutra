@@ -1,0 +1,173 @@
+{
+  "observedAt": "2026-10-14T13:58:12.735Z",
+  "source": "~/.env.purama.master",
+  "permissionsRestricted": true,
+  "variables": [
+    {
+      "name": "RUNPOD_API_KEY",
+      "present": true,
+      "source": "master"
+    },
+    {
+      "name": "RUNPOD_ENDPOINT_ID",
+      "present": true,
+      "source": "master"
+    },
+    {
+      "name": "SHOTSTACK_API_KEY",
+      "present": true,
+      "source": "master"
+    },
+    {
+      "name": "SHOTSTACK_PRODUCTION_KEY",
+      "present": true,
+      "source": "master"
+    },
+    {
+      "name": "SHOTSTACK_ENV",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SUNO_API_KEY",
+      "present": true,
+      "source": "master"
+    },
+    {
+      "name": "SUNO_API_BASE_URL",
+      "present": true,
+      "source": "master"
+    },
+    {
+      "name": "SUNO_BASE_URL",
+      "present": true,
+      "source": "master"
+    },
+    {
+      "name": "LTX_API_KEY",
+      "present": true,
+      "source": "master"
+    },
+    {
+      "name": "SALAD_ENABLED",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_API_KEY",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_GATEWAY_URL",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_WORKER_TOKEN",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_WORKER_DATABASE_URL",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_QUALIFICATION_JSON",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_QUOTE_JSON",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_MAX_ESTIMATED_COMPUTE_USD",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_REQUEST_TIMEOUT_MS",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_GENERATION_TIMEOUT_MS",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_DEPLOYMENT_RECEIPT_PATH",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_COMFY_URL",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_BRIDGE_URL",
+      "present": false,
+      "source": "absent"
+    },
+    {
+      "name": "SALAD_WORKER_PORT",
+      "present": false,
+      "source": "absent"
+    }
+  ],
+  "selectedSunoVariable": "SUNO_API_BASE_URL",
+  "shotstackSelectionValid": true,
+  "saladEnabledInMaster": false,
+  "results": {
+    "runpod": {
+      "status": "PASS",
+      "http": 200,
+      "authentication": "ENDPOINT_HEALTH_READ_CONFIRMED",
+      "contract": true,
+      "readyWorkers": 0,
+      "credits": "NON_TESTE",
+      "generation": "NON_TESTE"
+    },
+    "shotstack-stage": {
+      "status": "PASS",
+      "http": 200,
+      "authentication": "TEMPLATES_READ_CONFIRMED",
+      "contract": true,
+      "templateCount": 0,
+      "credits": "NON_TESTE",
+      "generation": "NON_TESTE"
+    },
+    "shotstack-v1": {
+      "status": "PASS",
+      "http": 200,
+      "authentication": "TEMPLATES_READ_CONFIRMED",
+      "contract": true,
+      "templateCount": 2,
+      "credits": "NON_TESTE",
+      "generation": "NON_TESTE"
+    },
+    "suno": {
+      "status": "PASS",
+      "http": 200,
+      "authentication": "CREDIT_READ_CONFIRMED",
+      "contract": true,
+      "creditsAvailable": true,
+      "generation": "NON_TESTE"
+    }
+  },
+  "ltx": {
+    "status": "NON_TESTE",
+    "reason": "NO_DOCUMENTED_FREE_ACCOUNT_READ_OR_EXISTING_JOB_ID"
+  },
+  "salad": {
+    "status": "NON_TESTE",
+    "reason": "NO_LIVE_PROBE_BEFORE_IMAGE_AND_GPU_QUALIFICATION"
+  },
+  "requests": 4,
+  "mutations": 0,
+  "retries": 0
+}

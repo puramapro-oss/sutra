@@ -1,6 +1,6 @@
 import { assembleFinalVideo } from './final-composition'
 import { createServiceClient } from '@/lib/supabase'
-import { checkpoint, heartbeat, type VideoJob } from '@/lib/video-queue'
+import { checkpoint, heartbeat, hasCompletedJobResult, type VideoJob } from '@/lib/video-queue'
 import { withPipelineLease, pipelineLog } from '@/lib/pipeline-state'
 import { executeProductionStep, persistProductionResult, type ProductionJobInput } from '@/lib/production-pipeline'
 import { executeCreateJob, type CreateJobInput } from '@/lib/video-pipeline'
@@ -32,7 +32,10 @@ export async function runVideoJob(job: VideoJob, worker: string): Promise<unknow
     // Written only after the pipeline and all authoritative persistence succeed.
     // The process can stop between this checkpoint and finish_job; reuse it under
     // the new lease instead of replaying providers, publication or business writes.
-    if (Object.hasOwn(job.progress, 'result') && job.progress.result !== undefined) return job.progress.result
+    if (Object.hasOwn(job.progress, 'result')) {
+      if (!hasCompletedJobResult(job)) throw new Error('SUTRA_RECONCILIATION_REQUIRED: invalid final result checkpoint')
+      return job.progress.result
+    }
     const service = createServiceClient()
     let result: unknown
     if (job.kind === 'production') {
@@ -55,6 +58,9 @@ export async function runVideoJob(job: VideoJob, worker: string): Promise<unknow
       result = await executeAutoJob(params, { steps }, hooks,
         buildAutoProviders(job.user_id, params.videoRowId, params.config, params.userEmail, params.planTier, service))
     } else throw new Error('SUTRA_INVALID_JOB_KIND')
+    if (!hasCompletedJobResult({ ...job, progress: { steps, result } })) {
+      throw new Error('SUTRA_RECONCILIATION_REQUIRED: invalid final result')
+    }
     await checkpoint(job.id, worker, { result })
     return result
   }))

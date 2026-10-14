@@ -8,6 +8,8 @@ process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://sutra-test.invalid'
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon'
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service'
 process.env.ZERNIO_API_KEY = 'test-only'
+const user = '11111111-1111-4111-8111-111111111111'
+process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ [user]: 'a'.repeat(24) })
 globalThis.fetch = async () => { throw new Error('UNEXPECTED_NETWORK') }
 const { publishVideoRecord, savePublicationHistory } = await import('../src/lib/social-publication.ts')
 const { publishAutoVideoRecord } = await import('../src/lib/auto-publication.ts')
@@ -18,7 +20,7 @@ const results = (request: PublishRequest, status: PublishResult['status'] = 'pub
   platform, accountId: request.accountIds[platform], status, success: status === 'published', postId,
 }))
 function harness() {
-  const db = socialDatabase(); let now = Date.now(), posts = 0, replays = 0, gets = 0, retries = 0
+  const db = socialDatabase(user); let now = Date.now(), posts = 0, replays = 0, gets = 0, retries = 0
   const gateway: PublicationGateway = {
     now: () => now,
     publish: async request => { posts++; return results(request) },
@@ -26,7 +28,7 @@ function harness() {
     reconcile: async (_id, request) => { gets++; return results(request) },
     retry: async (_id, request) => { retries++; return results(request) },
   }
-  const invoke = (extra = {}) => publishVideoRecord('u', { ...input, ...extra }, db.client, gateway.publish, gateway.reconcile, gateway)
+  const invoke = (extra = {}) => publishVideoRecord(user, { ...input, ...extra }, db.client, gateway.publish, gateway.reconcile, gateway)
   return { db, gateway, invoke, advance: (ms: number) => { now += ms }, counts: () => ({ posts, replays, gets, retries }) }
 }
 
@@ -66,8 +68,8 @@ test('T06: revocation locale precedente a la panne distante; historique conserve
   const h = harness(); await h.invoke()
   const history = structuredClone(h.db.tables.social_posts); let calls = 0
   const disconnect = async () => { calls++; assert.equal(h.db.accounts[0].status, 'revoked'); return false }
-  assert.deepEqual(await revokeSocialAccount('u', 'local-y', h.db.client, disconnect), { success: false, status: 'revoked', remoteStatus: 'unconfirmed' })
-  const retried = await revokeSocialAccount('u', 'local-y', h.db.client, async () => { calls++; return true })
+  assert.deepEqual(await revokeSocialAccount(user, 'local-y', h.db.client, disconnect), { success: false, status: 'revoked', remoteStatus: 'unconfirmed' })
+  const retried = await revokeSocialAccount(user, 'local-y', h.db.client, async () => { calls++; return true })
   assert.equal(retried.success, false); assert.equal(retried.remoteStatus, 'unconfirmed'); assert.equal(calls, 1)
   assert.deepEqual(h.db.tables.social_posts, history); assert.equal(h.db.accounts.length, 2)
   await assert.rejects(() => revokeSocialAccount('other', 'local-y', h.db.client, disconnect), /NOT_FOUND/)
@@ -76,9 +78,9 @@ test('T06: revocation locale precedente a la panne distante; historique conserve
 test('T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST', async () => {
   const h = harness(); h.db.config.publish_platforms = ['youtube']
   h.gateway.publish = async request => results(request, 'publishing')
-  await publishAutoVideoRecord('u', 'v', false, h.db.client, undefined, h.gateway)
+  await publishAutoVideoRecord(user, 'v', false, h.db.client, undefined, h.gateway)
   h.db.config.is_active = false; h.db.accounts[0].status = 'revoked'
-  const result = await publishAutoVideoRecord('u', 'v', false, h.db.client, undefined, h.gateway, true)
+  const result = await publishAutoVideoRecord(user, 'v', false, h.db.client, undefined, h.gateway, true)
   assert.equal(result.status, 'published'); assert.equal(h.counts().gets, 1)
   assert.equal(h.counts().retries, 0); assert.equal(h.counts().replays, 0)
 })
@@ -128,7 +130,7 @@ test('T06: panne de projection reparee depuis journal sans creation distante', a
 })
 for (const kind of ['video', 'auto']) for (const change of ['url', 'sha256']) test(`T06: succes ${kind} ne valide pas un nouvel export ${change}`, async () => {
   const h = harness()
-  const invoke = () => kind === 'video' ? h.invoke() : publishAutoVideoRecord('u', 'v', false, h.db.client, undefined, h.gateway)
+  const invoke = () => kind === 'video' ? h.invoke() : publishAutoVideoRecord(user, 'v', false, h.db.client, undefined, h.gateway)
   await invoke()
   const before = h.counts().posts
   if (kind === 'video') {
@@ -151,7 +153,7 @@ test('T06: import PR3 multi-destination conserve le succes et les identifiants h
       caption: 'legacy', hashtags: [], platforms: ['youtube', 'instagram'], accountIds: { youtube: accountId, instagram: secondAccount } as PublishRequest['accountIds'], idempotencyKey: 'legacy' } }
   operation.results = results(operation.request).map(r => r.platform === 'instagram' ? { ...r, status: 'publishing', success: false } : r)
   h.db.video.publish_data = { sutraPublications: [operation] }
-  await savePublicationHistory('u', 'v', [operation], h.db.client)
+  await savePublicationHistory(user, 'v', [operation], h.db.client)
   const ids = h.db.tables.social_posts.map(r => r.id)
   const hash = createHash('sha256').update('legacy:youtube').digest('hex')
   assert.equal(ids[0], `${hash.slice(0, 8)}-${hash.slice(8, 12)}-4${hash.slice(13, 16)}-8${hash.slice(17, 20)}-${hash.slice(20, 32)}`)
@@ -166,7 +168,7 @@ test('T06: ancien partiel PR2 sans identite compte reste intact, sans inference 
   const h = harness(); h.db.auto.status = 'partially_published'
   h.db.auto.published_platforms = [{ platform: 'youtube', status: 'published', success: true, postId }, { platform: 'instagram', status: 'failed', success: false }]
   const before = structuredClone(h.db.auto)
-  const outcome = await publishAutoVideoRecord('u', 'v', true, h.db.client, undefined, h.gateway)
+  const outcome = await publishAutoVideoRecord(user, 'v', true, h.db.client, undefined, h.gateway)
   assert.ok('reconciliationRequired' in outcome)
   assert.equal(outcome.reconciliationRequired, 'SUTRA_LEGACY_ACCOUNT_EVIDENCE_REQUIRED')
   assert.deepEqual(h.db.auto, before); assert.equal(h.counts().posts, 0)
@@ -178,18 +180,18 @@ for (const reason of ['inactive', 'approval', 'not-due', 'invalid-date', 'no-pro
   if (reason === 'not-due') h.db.auto.scheduled_for = '2099-01-01T00:00:00Z'
   if (reason === 'invalid-date') h.db.auto.scheduled_for = null
   if (reason === 'no-proof') h.db.tables.video_jobs.length = 0
-  await assert.rejects(() => publishAutoVideoRecord('u', 'v', false, h.db.client, undefined, h.gateway), /AUTHORIZED|VERIFICATION/)
+  await assert.rejects(() => publishAutoVideoRecord(user, 'v', false, h.db.client, undefined, h.gateway), /AUTHORIZED|VERIFICATION/)
   assert.equal(h.counts().posts, 0)
 })
 test('T06: approbation explicite autorise le media verifie meme avec mode automatique arrete', async () => {
   const h = harness(); h.db.config.is_active = false; h.db.auto.status = 'pending_approval'
-  const outcome = await publishAutoVideoRecord('u', 'v', true, h.db.client, undefined, h.gateway)
+  const outcome = await publishAutoVideoRecord(user, 'v', true, h.db.client, undefined, h.gateway)
   assert.equal(outcome.success, true); assert.equal(h.counts().posts, 2)
 })
 test('T06: autorisation retiree entre reservation et envoi ferme toute destination', async () => {
   const h = harness(); h.db.config.publish_platforms = ['youtube']
   h.db.settings.hook = (table, mutation) => { if (table === 'social_publication_journals' && mutation?.operations?.length) h.db.config.is_active = false }
-  const outcome = await publishAutoVideoRecord('u', 'v', false, h.db.client, undefined, h.gateway)
+  const outcome = await publishAutoVideoRecord(user, 'v', false, h.db.client, undefined, h.gateway)
   assert.equal(outcome.success, false); assert.equal(h.counts().posts, 0)
 })
 test('T06: controle service isole utilisateur et production, sans nouvelle requete', async () => {
@@ -238,7 +240,7 @@ for (const path of ['replay', 'retry'] as const) {
     const h = harness(); h.db.config.publish_platforms = ['youtube']
     h.gateway.publish = path === 'replay' ? async () => { throw new Error('lost') } : async request => results(request, 'failed')
     h.gateway.reconcile = async (_id, request) => results(request, 'failed')
-    const invoke = () => publishAutoVideoRecord('u', 'v', path === 'retry', h.db.client, undefined, h.gateway)
+    const invoke = () => publishAutoVideoRecord(user, 'v', path === 'retry', h.db.client, undefined, h.gateway)
     await invoke(); h.advance(120001)
     h.db.settings.hook = (table, mutation) => {
       if (table === 'social_publication_journals' && mutation?.operations?.[0].claimedAt) h.db.config.publish_platforms = []
@@ -256,7 +258,7 @@ for (const kind of ['video', 'auto']) for (const reason of ['banned', 'revoked',
     if (reason === 'revoked') h.db.profile.access_revoked_at = new Date().toISOString()
     if (reason === 'missing') h.db.tables.profiles.length = 0
     if (reason === 'unreadable') h.db.settings.failProfileRead = true
-    await assert.rejects(() => kind === 'video' ? h.invoke() : publishAutoVideoRecord('u', 'v', false, h.db.client, undefined, h.gateway), /ACCESS_DENIED|ACCESS_UNAVAILABLE/)
+    await assert.rejects(() => kind === 'video' ? h.invoke() : publishAutoVideoRecord(user, 'v', false, h.db.client, undefined, h.gateway), /ACCESS_DENIED|ACCESS_UNAVAILABLE/)
     assert.equal(h.counts().posts + h.counts().replays + h.counts().retries, 0)
   })
 }

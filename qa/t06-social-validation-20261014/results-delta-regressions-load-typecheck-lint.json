@@ -1,0 +1,92 @@
+[
+  {
+    "name": "delta",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "scripts/test-t06-social-validation.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 350
+  },
+  {
+    "name": "regressions",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "scripts/test-t06-social-final.mts",
+      "scripts/test-t06-social-autonomy.mts",
+      "scripts/test-social-publication.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1407
+  },
+  {
+    "name": "load",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=T08 load: 32 publication",
+      "qa/t08/integrated/load.test.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 323
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--project",
+      "qa/t06-social-validation-20261014/tsconfig.json"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1208
+  },
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings=0",
+      "src/lib/publication-journal.ts",
+      "scripts/helpers/social-database.mts",
+      "scripts/test-t06-social-autonomy.mts",
+      "scripts/test-social-publication.mts",
+      "scripts/test-t06-social-validation.mts",
+      "qa/t08/integrated/load.test.mts",
+      "qa/t06-social-validation-20261014/run.mjs"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1177
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "observerUnit": {
+    "command": "python3 -m unittest discover -s deploy -p 'test_scheduler_observer.py' -v",
+    "pass": 10,
+    "fail": 0
+  },
+  "promotionSimulation": {
+    "command": "python3 - <<'PY'\nimport sys, unittest\nfrom pathlib import Path\nsys.path.insert(0, 'deploy')\nimport test_salad_promotion as tests\ntests.SOURCE = Path('qa/t01-consolidation-20261014').resolve()\nresult = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(tests))\nraise SystemExit(not result.wasSuccessful())\nPY",
+    "pass": 7,
+    "fail": 0
+  },
+  "liveObserver": {
+    "direct": "PASS",
+    "wrongSource": "REJECTED_BEFORE_DB",
+    "systemd": "PASS",
+    "persistentTimer": "NOT_ACTIVATED"
+  }
+}

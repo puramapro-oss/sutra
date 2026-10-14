@@ -1,0 +1,87 @@
+{
+  "base": "e09fdaeafbf1ec8554a7b689fe3c44dd696d0140",
+  "recordedAt": "2026-10-14T13:57:19.179553+00:00",
+  "note": "Recorded after the initial executions; source hashes match the subsequent quality manifest. No unchanged test rerun.",
+  "commands": [
+    {
+      "name": "media",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t02-final-validation-media.mts"
+      ],
+      "exitCode": 0,
+      "log": "media.log",
+      "logSha256": "82bafb9af585beee5e214c5d9c9004b84e194f2479dc5033ec94f4f719f94d36",
+      "logModifiedAt": "2026-10-14T13:51:52.545595+00:00",
+      "rawLogSha256": "82bafb9af585beee5e214c5d9c9004b84e194f2479dc5033ec94f4f719f94d36"
+    },
+    {
+      "name": "production-error",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--import",
+        "tsx",
+        "--test",
+        "qa/t02-final-validation-20261014/production-error.test.mts"
+      ],
+      "exitCode": 1,
+      "log": "production-error.log",
+      "logSha256": "facf2a47518134b27151b5acc51b0c9331a2455801ee6c7cd387778ed9a30b40",
+      "logModifiedAt": "2026-10-14T13:51:53.207068+00:00",
+      "rawLogSha256": "85f9c96974dcf9955d3606162cc730f338e8e02bcd494b74503e0bcdc6eade4f"
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "scripts/test-t02-final-validation-media.mts",
+      "sha256": "06a02b032c776c8bce344f4faf104ea70a34467611ca714a8d981ec89cb20dac"
+    },
+    {
+      "path": "qa/t02-final-validation-20261014/production-error.test.mts",
+      "sha256": "dd5d96a9a58ae91ba2563cc57455b1eb0402322bd36e8d925b4bd2d9c00c1c34"
+    },
+    {
+      "path": "src/lib/account-access.ts",
+      "sha256": "7c53d3a9deef87ede391b6058dcde6238f571adce640482d6b25913b4034f111"
+    },
+    {
+      "path": "src/lib/private-media.ts",
+      "sha256": "188b0dd45cb819a7513b8667480248fda6136178410345e6b4074b30101f979c"
+    },
+    {
+      "path": "src/lib/media-download.ts",
+      "sha256": "9c4e3b8b5dcbfe700c11e6415acd8e6da4059988f89ff5d7af1a71433f559b66"
+    },
+    {
+      "path": "src/lib/pipeline-submit.ts",
+      "sha256": "aef2059cbb589392bb9ba5dc663fa9aa8b41e16a7208e399d9a92bac678368e5"
+    },
+    {
+      "path": "src/app/api/production/route.ts",
+      "sha256": "d0ba06cb35edda7ad8af1aa3670fe7eac83e13ea21489a207e5a0c3608fb987f"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+    }
+  ],
+  "inheritedSecrets": false,
+  "realProviderCalls": 0,
+  "results": {
+    "passed": 14,
+    "failed": 1,
+    "skipped": 0
+  },
+  "logNormalization": "Trailing whitespace and empty final lines normalized for git diff --check; original log hashes retained. No test result changed."
+}

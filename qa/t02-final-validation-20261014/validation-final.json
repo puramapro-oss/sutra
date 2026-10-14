@@ -1,0 +1,68 @@
+{
+  "recordedAt": "2026-10-14T14:02:37.806750+00:00",
+  "base": "e09fdaeafbf1ec8554a7b689fe3c44dd696d0140",
+  "branch": "codex/sutra-t02-final-validation-20261014",
+  "results": {
+    "tests": {
+      "passed": 14,
+      "failed": 1,
+      "skipped": 0
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "diffCheck": "PASS",
+    "sourceHashesStillMatch": true,
+    "productDelta": "NONE",
+    "stateDocsAppendOnly": true
+  },
+  "defect": {
+    "id": "T02-FINAL-01",
+    "status": "FAIL",
+    "owner": "T03",
+    "coordinator": "T01",
+    "t01Acknowledgement": "2026-10-14T13:57:52.823326+00:00",
+    "reservation": "ACK-T03-SUBMISSION-REDACTION",
+    "correctionReceived": false
+  },
+  "gitnexus": {
+    "indexExitCode": 0,
+    "impactedHelperRisk": "CRITICAL",
+    "impactedHelperDirectCallers": 5,
+    "stagedRisk": "LOW",
+    "stagedSymbols": 72,
+    "stagedAffectedProcesses": 0,
+    "mainComparisonRisk": "CRITICAL",
+    "mainComparisonFiles": 2257,
+    "mainComparisonSymbols": 5006,
+    "mainComparisonProcesses": 231,
+    "mainComparisonScope": "whole T01 branch versus main, not this T02 delta",
+    "graphExhaustiveness": "UNKNOWN",
+    "symbolListing": "CLI displays only15 of72 even with limit200; exact Git file scope checked separately"
+  },
+  "unchangedGates": "Reused CI38508390596 and affirmations SQL evidence, no repeated global suite/build",
+  "secretScan": {
+    "status": "PASS",
+    "command": "gitleaks stdin --redact=100 --no-banner --no-color --report-format json",
+    "scope": "staged patch",
+    "findings": 0,
+    "note": "Final rerun includes evidence logs and this metadata; report stored separately."
+  },
+  "secretsUsed": false,
+  "realProviderCalls": 0,
+  "productionChanged": false,
+  "pushOrMerge": false,
+  "notTested": [
+    "production",
+    "remote DB",
+    "real OAuth and multi-organization runtime",
+    "real providers and GPU/Salad",
+    "generation/publication",
+    "new global build/browser"
+  ],
+  "limitations": [
+    "T02-FINAL-01 correction belongs exclusively to T03",
+    "signed URLs previously issued retain TTL300s",
+    "npm audit retains2low/5moderate",
+    "partial graph"
+  ]
+}

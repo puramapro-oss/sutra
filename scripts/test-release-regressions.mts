@@ -231,8 +231,10 @@ test('QUEUE: cle dupliquee conserve statut et acquis; changement de payload refu
 })
 
 import { socialDatabase, accountId as verifiedAccount, postId as publicationPostId } from './helpers/social-database.mts'
+const publicationUser = '11111111-1111-4111-8111-111111111111'
 function publicationDatabase(status = 'ready', failClaim = false, failSave = false, verified = true) {
-  const db = socialDatabase()
+  process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ [publicationUser]: 'a'.repeat(24) })
+  const db = socialDatabase(publicationUser)
   db.auto.status = status; db.settings.failClaim = failClaim; db.settings.failFinal = failSave
   db.accounts.splice(1)
   if (!verified) db.tables.video_jobs.length = 0
@@ -242,18 +244,18 @@ function publicationDatabase(status = 'ready', failClaim = false, failSave = fal
 test('PUBLICATION: video annulee refusee avant appel externe', async () => {
   let calls = 0
   const db = publicationDatabase('cancelled')
-  await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, async () => { calls++; return [] }))
+  await assert.rejects(() => publishAutoVideoRecord(publicationUser, 'v', true, db.client, async () => { calls++; return [] }))
   assert.equal(calls, 0)
 })
 test('PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publie rien', async () => {
   let calls = 0; const db = publicationDatabase('ready', false, false, false)
-  await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, async () => { calls++; return [] }), /MEDIA_VERIFICATION_REQUIRED/)
+  await assert.rejects(() => publishAutoVideoRecord(publicationUser, 'v', true, db.client, async () => { calls++; return [] }), /MEDIA_VERIFICATION_REQUIRED/)
   assert.equal(calls, 0)
 })
 
 test('PUBLICATION: succes partiel reste partiel et comptes issus du serveur', async () => {
   const db = publicationDatabase()
-  const actual = await publishAutoVideoRecord('u', 'v', true, db.client, async params => {
+  const actual = await publishAutoVideoRecord(publicationUser, 'v', true, db.client, async params => {
     assert.equal(params.config.zernio_connected_platforms[0].account_id, verifiedAccount)
     return [{ platform: 'youtube' as const, success: true, status: 'published' as const, postId: publicationPostId }]
   })
@@ -265,7 +267,7 @@ test('PUBLICATION: deux requetes concurrentes ne soumettent qu une fois', async 
   const db = publicationDatabase()
   let calls = 0
   const publish = async () => { calls++; return [{ platform: 'youtube' as const, success: true, status: 'published' as const, postId: publicationPostId }] }
-  const outcomes = await Promise.allSettled([publishAutoVideoRecord('u', 'v', true, db.client, publish), publishAutoVideoRecord('u', 'v', true, db.client, publish)])
+  const outcomes = await Promise.allSettled([publishAutoVideoRecord(publicationUser, 'v', true, db.client, publish), publishAutoVideoRecord(publicationUser, 'v', true, db.client, publish)])
   assert.equal(calls, 1)
   assert.ok(outcomes.some(value => value.status === 'fulfilled'))
 })
@@ -273,7 +275,7 @@ test('PUBLICATION: deux requetes concurrentes ne soumettent qu une fois', async 
 test('PUBLICATION: echec reservation ne contacte pas le fournisseur', async () => {
   const db = publicationDatabase('ready', true)
   let calls = 0
-  await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, async () => { calls++; return [] }), /CLAIM_FAILED/)
+  await assert.rejects(() => publishAutoVideoRecord(publicationUser, 'v', true, db.client, async () => { calls++; return [] }), /CLAIM_FAILED/)
   assert.equal(calls, 0)
 })
 
@@ -281,10 +283,10 @@ test('PUBLICATION: resultat non enregistre exige reconciliation et bloque le rej
   const db = publicationDatabase('ready', false, true)
   let calls = 0
   const publish = async () => { calls++; return [{ platform: 'youtube' as const, success: true, status: 'published' as const, postId: publicationPostId }] }
-  await assert.rejects(() => publishAutoVideoRecord('u', 'v', true, db.client, publish), /RECONCILIATION_REQUIRED/)
+  await assert.rejects(() => publishAutoVideoRecord(publicationUser, 'v', true, db.client, publish), /RECONCILIATION_REQUIRED/)
   assert.equal(db.tables.social_publication_journals[0].operations[0].phase, 'submitting')
   db.settings.failFinal = false
-  await publishAutoVideoRecord('u', 'v', true, db.client, publish)
+  await publishAutoVideoRecord(publicationUser, 'v', true, db.client, publish)
   assert.equal(calls, 1)
 })
 

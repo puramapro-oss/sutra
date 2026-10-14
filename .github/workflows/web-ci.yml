@@ -35,6 +35,8 @@ jobs:
           path: |
             test-results/ci
             test-results/t08
+            qa/t05-real-export-20261014/exports
+            qa/t05-real-export-20261014/measurements.json
           if-no-files-found: warn
 
   quality:
@@ -52,8 +54,14 @@ jobs:
       - run: node qa/t08/run.mjs browser-redteam
       - name: Library pagination and consent contrast regressions
         run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
+      - name: Integrated legal consent and desktop/mobile journeys (synthetic identity)
+        run: |
+          node qa/t07-frontend-journey-20261014/run.mjs
+          node qa/t07-frontend-journey-20261014/run.mjs --journeys
+          node qa/t07-frontend-journey-20261014/run.mjs --journeys --private-download
       - run: node scripts/run-ci.mjs legacy
       - run: python3 -m unittest discover -s deploy -p 'test_*.py'
+      - run: python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'
       - name: Exact candidate promotion and rollback simulations
         run: |
           python3 - <<'PY'
@@ -61,7 +69,7 @@ jobs:
           from pathlib import Path
           sys.path.insert(0, 'deploy')
           import test_salad_promotion as tests
-          tests.SOURCE = Path('qa/final-delta-20261014').resolve()
+          tests.SOURCE = Path('qa/t01-consolidation-20261014').resolve()
           result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(tests))
           raise SystemExit(not result.wasSuccessful())
           PY
@@ -78,6 +86,9 @@ jobs:
             test-results/legacy
             test-results/t08
             qa/t07-frontend-fixes-20261014/evidence/after
+            qa/t07-frontend-journey-20261014/after
+            qa/t07-frontend-journey-20261014/journey-after
+            qa/t07-frontend-journey-20261014/private-download-after
           if-no-files-found: warn
 
   disposable-database:
@@ -125,7 +136,7 @@ jobs:
           PGUSER: fixture
           PGPASSWORD: fixture
       - name: Lost completion acknowledgement and OAuth revocation races
-        run: node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts
+        run: node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t03-durable-reliability-20261014/postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts
         env:
           SUTRA_DISPOSABLE_DB: '1'
           PGHOST: 127.0.0.1

@@ -1,0 +1,190 @@
+{
+  "base": "e09fdaeafbf1ec8554a7b689fe3c44dd696d0140",
+  "branch": "codex/sutra-t06-social-validation-20261014",
+  "utc": "2026-10-14T14:21:47.808981+00:00",
+  "runtime": "Node 24.21.0 existing local T08 runtime, no install",
+  "status": "PASS_OWNED_DELTA",
+  "distinctTests": 146,
+  "failed": 0,
+  "skipped": 0,
+  "checks": [
+    {
+      "name": "delta",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-reporter=tap",
+        "scripts/test-t06-social-validation.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 629,
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "regressions",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-reporter=tap",
+        "scripts/test-t06-social-final.mts",
+        "scripts/test-t06-social-autonomy.mts",
+        "scripts/test-social-publication.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1306,
+      "counts": {
+        "tests": 112,
+        "pass": 112,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "load",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern=T08 load: 32 publication",
+        "qa/t08/integrated/load.test.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 235,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "routes",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-reporter=tap",
+        "scripts/test-t06-social-routes.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 337,
+      "counts": {
+        "tests": 9,
+        "pass": 9,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "consumers",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-reporter=tap",
+        "--test-name-pattern=^PUBLICATION",
+        "scripts/test-release-regressions.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 414,
+      "counts": {
+        "tests": 6,
+        "pass": 6,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--project",
+        "qa/t06-social-validation-20261014/tsconfig.json"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1691,
+      "counts": {}
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "node_modules/eslint/bin/eslint.js",
+        "--max-warnings=0",
+        "src/lib/publication-journal.ts",
+        "scripts/helpers/social-database.mts",
+        "scripts/test-t06-social-autonomy.mts",
+        "scripts/test-social-publication.mts",
+        "scripts/test-release-regressions.mts",
+        "scripts/test-t06-social-validation.mts",
+        "qa/t08/integrated/load.test.mts",
+        "qa/t06-social-validation-20261014/run.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1643,
+      "counts": {}
+    }
+  ],
+  "externalIntegrationDependency": {
+    "owner": "T08/T01",
+    "files": [
+      "scripts/test-t08-integration-journey.mts",
+      "qa/t08-integration-journey-20261014/database.mts"
+    ],
+    "status": "FAIL_FIXTURE_PENDING_OWNER_INTEGRATION",
+    "targetedPass": 4,
+    "targetedFail": 4,
+    "evidence": "journey.log",
+    "reason": "Legacy user=u cannot satisfy strict current Zernio profile binding. Author adaptation reserved T08; no owner WIP copied."
+  },
+  "secrets": "No real secret or env file read/copied. All child values synthetic from run.mjs; external network denied."
+}

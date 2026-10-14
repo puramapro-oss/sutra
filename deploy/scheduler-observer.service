@@ -1,0 +1,19 @@
+[Unit]
+Description=SUTRA read-only queue observer (no generation or publication)
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/purama/apps/sutra/ops/scheduler_observer.py --expected-source 86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164
+TimeoutStartSec=40
+User=root
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateNetwork=yes
+RestrictAddressFamilies=AF_UNIX
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=purama-sutra-observer

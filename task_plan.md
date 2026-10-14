@@ -413,3 +413,68 @@ CORRECTION LIVE : affirmations403 reproduit, privilège SELECT authenticated abs
 BLOQUÉ/NON TESTÉ : consentement légal puis social utilisateur ; Salad désactivé sans ressource/budget/qualification GPU ; cron/worker OVH autonome absent ; génération/rendu/export vidéo/publication réels non exécutés. Aucun achat/GPU Mac/rotation/publication. Les HTTP200 ne prouvent aucune génération. Actions et matrice bornée dans qa/final-delta-20261014/README.md et FINAL-MATRIX.md. Aucun test applicatif requis encore rouge ; échecs historiques et limites conservés.
 
 PRÉSERVATION : T02–T08 chacun livré/propre/FERMABLE_LOT_SUTRA, aucun terminal fermé ; autres missions exclues. WIP AGENTS/skills étrangers conservés hors commit, cinq références historiques présentes. T01 clôture par commit documentaire séparé ; seuls blocages externes ci-dessus restent. Ne pas rejouer les PASS sans delta. Rollback : python3 deploy/ovh.py rollback --source-ref 86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164 ; rollback SQL privé séparé, jamais restaurer une vieille base au-dessus de nouvelles écritures.
+
+
+## 2026-10-14 — T05 preuve export reel (base T01 e09fdae)
+
+Branche `codex/sutra-t05-real-export-20261014`. Corrections `942d9e5` deja integrees, quatre blobs identiques. Produit inchangé. 37 MP4 CPU synthetiques conserves, trois formats + 4K, 25 controles negatifs ; audio/horloges/pixels/decodage/hashes verifies. Commandes : `node qa/t05-real-export-20261014/run-targeted.mjs exports` (48 PASS, 1 attente de test incorrecte), puis `node qa/t05-real-export-20261014/run-targeted.mjs followup typecheck lint` (4 PASS, typecheck/lint PASS). 49 scenarios distincts couverts apres retest borne. Aucun replay global. Preuves : `qa/t05-real-export-20261014/README.md` et `verified-manifest.json`. Livraison commit local, SHA dans handoff partage T01. Aucun defaut produit nouveau, blocage externe local aucun ; fournisseurs/stockage distant/routes/browser/IA native 4K NON TESTES. Aucun secret, GPU, depense, push, fusion ou deploiement.
+
+
+## 2026-10-14 — T02 FINAL-VALIDATION, base finale T01 e09fdae
+
+Lot local `codex/sutra-t02-final-validation-20261014` : anciens correctifs a01c7a2 intégrés, neuf fichiers identiques. Nouveau delta tests/preuves seulement :14 PASS /1 FAIL /0 SKIP, TypeScript/lint ciblés PASS.11 contrats composés propriétaire→signature→téléchargement PASS ; sessions absente/expirée401 et succès production202 PASS.
+
+FAIL T02-FINAL-01 : diagnostic RPC brut exposé par /api/production503. Cause pipeline-submit.ts:37 → production/route.ts:151 ; correction BLOQUÉ ownership T03/T01, test rouge conservé et relais canonique T02-FINAL-VALIDATION-20261014.md remis. Aucun fichier produit tiers modifié ; ACK T01 reçu13:57:52UTC et correctif attribué exclusivement T03 ; livraison T03 non reçue. Impact helper CRITICAL, cinq appelants directs, graphe tronqué UNKNOWN.
+
+Preuves CI38508390596 sur86d04c8 réutilisées après identité sources/config/dépendances : contrats805PASS/7SKIP, RLS254assertions et check global PASS ; migration affirmations distincte8contrôlesPASS. Aucun PASS inchangé rejoué. Audit dépendances historique2low/5moderate/0high/critical, pas d'avis « aucun risque ». Détails/commandes exactes qa/t02-final-validation-20261014/README.md, manifestes et HANDOFF-SUTRA-T02-FINAL-VALIDATION-20261014.md.
+
+NON TESTÉ : production/DB distante, OAuth réel, GPU/Salad/fournisseur/génération/publication, navigateur/build nouveau. Aucun secret, réseau fournisseur, IA Mac, push/merge/deploy. Prochaine tâche unique : T03/T01 corrige le défaut puis rejoue le test rouge et consommateurs concernés ; aucune reprise d'audit sans delta.
+
+
+## 2026-10-14 — T04 validation fournisseurs, base intégrée e09fdae
+
+VERIFIED LOCAL : nouveau harnais de lecture gratuite,14 tests hors ligne PASS/0FAIL/0SKIP et lint PASS. Deux défauts du harnais reproduits puis corrigés (normalisation dotenv, code Suno429). Aucun nouveau défaut produit démontré ni adaptateur modifié. Quatre GET authentifiés HTTP200 à13:58:12UTC : RunPod health (0worker prêt), Shotstack templates stage/v1, SunoAPI crédit (disponible). Aucune génération prouvée. Master utilisé sans valeur affichée/copied, aucun .env.local créé.
+
+MAINTAINED :36 empreintes du précédent lot T04 identiques ; zéro delta applicatif/deps/config depuis CI86d04c85.91 tests T04 et CI805PASS/7SKIP, TS/lint/build réutilisés, non rejoués/non additionnés. Graphes GitNexus tronqués, exhaustivité UNKNOWN.
+
+BLOQUÉ : activation Salad sans14 variables nommées dans dossier, image épinglée et qualification GPU réelle. NON TESTÉ : auth/crédit LTX, droits de génération/crédits RunPod/Shotstack, tout job/rendu/cancel/facture réel. Worker/bridge/persistance existants restent désactivés ; pas de provisioning ni IA Mac. Prochaine action : T01 réception du commit local puis essai unique seulement après choix fournisseur/budget et qualification appropriée. Aucun push/merge/deploy/SSH. Handoff HANDOFF-SUTRA-T04-PROVIDER-VALIDATION-20261014.md ; commandes, preuves et sources qa/t04-provider-validation-20261014/README.md.
+
+
+## T03 — fiabilité durable, 14 octobre 2026 (base e09fdae)
+
+PASS LOCAL : 73 tests ciblés /0 FAIL /0 SKIP (12 worker/finish,13 submission dont4 auteur T02,13 PostgreSQL privé,35 régressions orchestration), TypeScript et lint ciblés exit0. Résultat final null/skip contradictoire refusé ; erreur SQL/transport expurgée sans retry ni changement quotas/statuts. Trois fichiers produit réservés seulement : video-worker.ts, video-queue.ts, pipeline-submit.ts. Ancien lot T03 et port Suno T04 vérifiés intégrés, ancien blocage types résolu.
+
+FAIL SQL canonique reproduit / PASS proposition locale : fin sans résultat, écrasement de checkpoint acquis, claim ciblé épuisé ; SQL proposé à T01 exclusivement, aucune migration produit/distance. Processus fixture interrompu puis repris, concurrence12 clients, ACK perdu, annulation, erreur SQL, pistes obligatoires et9 checkpoints testés avec fournisseurs simulés. T01 réserve migration et fixtures historiques à adapter. BLOQUÉ pour clôture intégrée : import et recette T01/SQL ; NON TESTÉ réel : GPU/fournisseur/génération/publication/production. Aucun secret/push/fusion/deploy/IA Mac.
+
+Branche codex/sutra-t03-durable-reliability-20261014 ; handoff HANDOFF-SUTRA-T03-DURABLE-RELIABILITY-20261014.md, preuves/commandes/empreintes qa/t03-durable-reliability-20261014/README.md. GitNexus CRITICAL annoncé, impacts et detect_changes exécutés ; graphe tronqué et flux finaux hors périmètre : exhaustivité UNKNOWN, revue directe du diff. Ne rejouer aucun PASS inchangé ; prochain owner T01 intégration du commit local et proposition SQL.
+
+
+## T06 SOCIAL-VALIDATION — 2026-10-14T14:26:53.327919+00:00
+
+VERIFIED LOCAL sur base T01 e09fdaeafbf1ec8554a7b689fe3c44dd696d0140, branche codex/sutra-t06-social-validation-20261014. T06-VALIDATION-01 reproduit 14 FAIL/4 PASS : journal autorisant encore un compte apres suppression/reaffectation du binding ou provenance absente/revocation pending. Correction unique produit publication-journal.ts, controle avant et apres claim, rapprochement GET preserve. Apres :18 PASS.
+
+Gate ciblee : SUTRA_QA_NODE_BINARY=/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node node qa/t06-social-validation-20261014/run.mjs — 146 tests distincts PASS,0 FAIL,0 SKIP ; TypeScript/lint PASS. Commandes exactes results.json, verification.json. IANA/DST/recurrences maintenus par empreintes identiques dans reused-proof.json, aucun build global repete.
+
+DEPENDANCE EXTERNE T08 : quatre FAIL de fixture user=u dans son parcours historique ; ses deux fichiers reserves par T08 doivent etre livres puis integres avec ce lot par T01. Nos fixtures load/release adaptees avec ACK T08/T01 et assertions preservees. T01 seul bindings/config/production/integration. Consentement legal/social utilisateur requis ; publication, refresh/revocation reels, nouveau candidat integre NON TESTES.
+
+Handoff HANDOFF-SUTRA-T06-SOCIAL-VALIDATION-20261014.md, preuves qa/t06-social-validation-20261014/README.md ; SHA final communique dans miroir .coord/handoffs/SUTRA-20261012/T06-SOCIAL-VALIDATION-20261014.md. Ne pas relancer ces PASS sans delta. Aucun secret lu/copie, reseau fournisseur, publication, paid, GPU/IA Mac, push, fusion ou deploiement.
+
+
+## T08 — clôture ciblée indépendante, 14 octobre 2026
+
+Base intégrée T01 e09fdaeafbf1ec8554a7b689fe3c44dd696d0140, branche codex/sutra-t08-closure-20261014. Les quatre anciens FAIL sont clos après retest : Suno19, OAuth38+9, stockage/preuve18, bibliothèque/cookies navigateur25 PASS. Parcours indépendant13 PASS, OTS16 PASS. Nouveau diagnostic RPC HTTP503 reproduit3 PASS/1 FAIL. Total distinct frais141 PASS/1 FAIL/0 SKIP, sans additionner le rejeu13 après adaptation UUID/binding/provenance de fixtures T08 (assertions inchangées). TypeScript/lint ciblés/syntaxe Python PASS ;37 MP4 CPU T05 hash/taille vérifiés sans réencodage.
+
+Matrice53 exigences :37 PASS/5 FAIL/2 BLOQUÉ/9 NON TESTÉ ; 47 historiques35/1/2/9. Les cinq FAIL actuels sont documentés avec repro/attendu/observé/propriétaire (T03, T06, T07 ; SQL T01), pas cinq nouveaux tests rouges T08. Verdict e09 : non prête aux essais utilisateur complets. Nouveau candidat exact T01 encore attendu ; réception T03 47f6896 n'est pas une intégration commitée. Ordonnanceur autonome inactif ; consentements personnels et budget/qualification GPU distincts. Génération GPU/publication réelle, DB→rendu→publication continu et alertes/SLA/lecteur écran complets NON TESTÉS.
+
+Preuves/commandes exactes : qa/t08-closure-20261014/README.md, quality-final.json, MATRIX.md, DEFECTS.md, SMOKE-T01.md ; handoff HANDOFF-SUTRA-T08-CLOSURE-20261014.md. Prochaine tâche unique : recevoir SHA T01 gelé, retester corrections et frontières affectées seulement. Aucun produit modifié, secret lu, fournisseur appelé, GPU/IA Mac, publication, push/merge/migration distante/déploiement ni build/gate globale rejoué. Ne pas relancer les PASS inchangés.
+
+
+## T07 — FRONTEND-JOURNEY, 2026-10-14
+
+VERIFIED LOCAL sur base T01 e09fdaeafbf1ec8554a7b689fe3c44dd696d0140 : correctifs précédents654ae42 identiques réutilisés. Consentement canonique/modal/focus/contraste/deadline, états vidéo honnêtes/commandes inactives et téléchargement privé vérifié SHA corrigés après reproduction. Trois fichiers produit réservés, aucun backend/config tiers.61 assertions distinctes PASS/0FAIL final, TS/lint ciblé exit0 ; échecs historiques et corrections du banc conservés. Mesure consentement : >12s avant,10895ms après, même réponse suspendue. Commandes, empreintes, captures affichées et limites : qa/t07-frontend-journey-20261014/README.md et verification.json. Handoff HANDOFF-SUTRA-T07-FRONTEND-JOURNEY-20261014.md, SHA final miroir T07-FRONTEND-JOURNEY-20261014.md. GitNexus partiel : LOW lecteur/UNKNOWN JSX, aucune exhaustivité. Intégration T01 seulement ; Safari/gros fichiers/CORS réel/live NON TESTÉS. Aucun secret, fournisseur, paid, IA/GPU Mac, publication, push, fusion ou production. Prochaine action : réception T01 et gate intégrée unique, pas de répétition des PASS inchangés.
+
+## T01 consolidation 2026-10-14T14:46:51.540819+00:00
+Sept livraisons e09 vérifiées/importées sans conflit : T02 56c0ca8, T03 47f6896+bfe5a0a, T04 64d2cf8, T05 2da10b3, T06 74655b1, T07 a01c44d, T08 5bd8128. Corrections produit+fixtures cohérentes ; migration93b96256 testée16+19PG,259RLS et rollback sur copieOVH.8simulations migration PASS. Campagne unique du candidat commit à suivre, aucune promotion avant CI+ACK. WIP tiers préservé. Preuves qa/t01-consolidation-20261014.
+
+## T01 candidat ferme — 2026-10-14T14:57:06.765664+00:00
+16 simulations migration PASS ; garde reelle a deux sessions PostgreSQL PASS (DDL concurrent bloque55P03), rollback exact, production intacte. Scan secrets staged : six UUID idempotence synthetiques T07 revus via exclusions exactes auteur, aucune fuite restante. Commit candidat + CI unique et ACK T08 requis avant migration/promotion.

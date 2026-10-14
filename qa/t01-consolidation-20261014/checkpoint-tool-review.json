@@ -1,0 +1,18 @@
+{
+  "observedAt": "2026-10-14T14:57:06.765664+00:00",
+  "independentReview": "postdeploy_security; not T08 ACK",
+  "issuesCorrected": [
+    "rollback bytes reused after validation",
+    "definition guard under three pg_proc row locks",
+    "timeout and client interrupt or ambiguous transport remain UNKNOWN",
+    "complete backup artifact and schema sets required",
+    "local interruption captured without secret output"
+  ],
+  "simulations": {
+    "command": "python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'",
+    "pass": 16,
+    "fail": 0
+  },
+  "restoredConcurrency": "checkpoint-concurrency.json",
+  "productionChanged": false
+}

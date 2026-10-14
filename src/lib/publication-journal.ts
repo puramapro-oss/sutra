@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto'
 import { createServiceClient } from '@/lib/supabase'
 import { publicationMediaUrl } from './private-media'
-import { buildPublishPayload, publishToPlatforms, getPublicationResults, replayPublication, retryPublication,
+import { buildPublishPayload, publishToPlatforms, getPublicationResults, replayPublication, retryPublication, getAuthorizedProfileId,
   type PublishRequest, type PublishResult, type SocialPlatform } from '@/lib/zernio'
 
 export interface PublicationOperation {
@@ -89,7 +89,7 @@ export async function runPublicationJournal(options: {
     revision++
   }
   const accountsQuery = () => service.schema('public').from('social_accounts')
-    .select('id,platform,external_id,status,token_expires_at').eq('user_id', options.userId)
+    .select('id,platform,external_id,status,token_expires_at,metadata').eq('user_id', options.userId)
   const { data: accounts, error: accountsError } = await accountsQuery()
   if (accountsError) throw new Error('SUTRA_SOCIAL_ACCOUNTS_READ_FAILED')
   const connected = (a: { status: string; token_expires_at?: string | null }) => a.status === 'connected'
@@ -106,10 +106,16 @@ export async function runPublicationJournal(options: {
       || profile.data.access_revoked_at) throw new Error('SUTRA_ACCOUNT_ACCESS_DENIED')
     const current = await accountsQuery()
     if (current.error) throw new Error('SUTRA_SOCIAL_ACCOUNTS_READ_FAILED')
+    // A stored connection cannot outlive its server-side tenant binding. Check
+    // again after every claim; read-only reconciliation keeps historical access.
+    const authorizedProfile = getAuthorizedProfileId(options.userId)
     for (const platform of operation.request.platforms) {
       const matches = (current.data ?? []).filter(a => a.id === operation.accountRows[platform]
         && a.platform === platform && a.external_id === operation.request.accountIds[platform] && connected(a))
       if (matches.length !== 1) throw new Error('SUTRA_ACCOUNT_REVOKED_OR_DISCONNECTED')
+      if (matches[0].metadata?.sutra_revocation_pending === true) throw new Error('SUTRA_ACCOUNT_REVOKED_OR_DISCONNECTED')
+      if (matches[0].metadata?.credential_owner !== 'zernio'
+        || matches[0].metadata?.zernio_profile_id !== authorizedProfile) throw new Error('SUTRA_SOCIAL_PROFILE_RECONNECTION_REQUIRED')
     }
   }
   const normalize = (operation: PublicationOperation, results: PublishResult[]) => operation.request.platforms.map(platform => {

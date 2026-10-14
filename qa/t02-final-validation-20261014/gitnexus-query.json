@@ -1,0 +1,179 @@
+{
+  "processes": [
+    {
+      "id": "proc_115_get",
+      "summary": "GET → Signature",
+      "priority": 0.088,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_22_get",
+      "summary": "GET → Signature",
+      "priority": 0.088,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/private-media.ts:signature",
+      "name": "signature",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 75,
+      "endLine": 79,
+      "module": "[reference]",
+      "process_id": "proc_115_get",
+      "step_index": 3
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:src/lib/private-media.ts:resolveMediaUrl",
+      "name": "resolveMediaUrl",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 62,
+      "endLine": 65,
+      "module": "[reference]"
+    },
+    {
+      "id": "File:src/lib/private-media.ts",
+      "name": "private-media.ts",
+      "filePath": "src/lib/private-media.ts"
+    },
+    {
+      "id": "Function:src/lib/media-download.ts:resolvePublic",
+      "name": "resolvePublic",
+      "filePath": "src/lib/media-download.ts",
+      "startLine": 46,
+      "endLine": 62,
+      "module": "Cluster_360"
+    },
+    {
+      "id": "Function:src/lib/media-download.ts:downloadMediaBytes",
+      "name": "downloadMediaBytes",
+      "filePath": "src/lib/media-download.ts",
+      "startLine": 102,
+      "endLine": 162,
+      "module": "Cluster_360"
+    },
+    {
+      "id": "File:src/lib/media-download.ts",
+      "name": "media-download.ts",
+      "filePath": "src/lib/media-download.ts"
+    },
+    {
+      "id": "Function:src/lib/salad/engine.ts:createComfyBridge",
+      "name": "createComfyBridge",
+      "filePath": "src/lib/salad/engine.ts",
+      "startLine": 9,
+      "endLine": 46,
+      "module": "Salad"
+    },
+    {
+      "id": "Function:src/lib/salad/engine.ts:createComfyBridge.generate@23:2",
+      "name": "generate",
+      "filePath": "src/lib/salad/engine.ts",
+      "startLine": 24,
+      "endLine": 44,
+      "module": "Salad"
+    },
+    {
+      "id": "File:src/lib/salad/engine.ts",
+      "name": "engine.ts",
+      "filePath": "src/lib/salad/engine.ts"
+    },
+    {
+      "id": "Function:qa/postdeploy-20261013/media/free-runtime-probes.mjs:publicMediaChecks",
+      "name": "publicMediaChecks",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "startLine": 28,
+      "endLine": 48,
+      "module": "Media"
+    },
+    {
+      "id": "Function:qa/postdeploy-20261013/media/free-runtime-probes.mjs:ownedMediaChecks",
+      "name": "ownedMediaChecks",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "startLine": 74,
+      "endLine": 99,
+      "module": "Media"
+    },
+    {
+      "id": "File:qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "name": "free-runtime-probes.mjs",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs"
+    },
+    {
+      "id": "Function:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts:fn@81:92.client@84:2",
+      "name": "client",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "startLine": 85,
+      "endLine": 96,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts:fn@121:98.client@130:2",
+      "name": "client",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "startLine": 131,
+      "endLine": 137,
+      "module": "Scripts"
+    },
+    {
+      "id": "File:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "name": "test-t02-salad-security-contract.mts",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts"
+    },
+    {
+      "id": "Property:scripts/test-security-media.mts:Reply.redirect",
+      "name": "redirect",
+      "filePath": "scripts/test-security-media.mts",
+      "startLine": 12,
+      "endLine": 12
+    },
+    {
+      "id": "Function:scripts/test-security-media.mts:transport",
+      "name": "transport",
+      "filePath": "scripts/test-security-media.mts",
+      "startLine": 13,
+      "endLine": 32,
+      "module": "Scripts"
+    },
+    {
+      "id": "File:scripts/test-security-media.mts",
+      "name": "test-security-media.mts",
+      "filePath": "scripts/test-security-media.mts"
+    },
+    {
+      "id": "Const:scripts/test-private-media.mts:media",
+      "name": "media",
+      "filePath": "scripts/test-private-media.mts",
+      "startLine": 32,
+      "endLine": 32
+    },
+    {
+      "id": "Const:scripts/test-private-media.mts:url",
+      "name": "url",
+      "filePath": "scripts/test-private-media.mts",
+      "startLine": 34,
+      "endLine": 34
+    },
+    {
+      "id": "File:scripts/test-private-media.mts",
+      "name": "test-private-media.mts",
+      "filePath": "scripts/test-private-media.mts"
+    }
+  ],
+  "timing": {
+    "vector": 3.9,
+    "bm25": 144,
+    "merge": 0.1,
+    "symbol_lookup": 13.1,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 158.1
+  }
+}

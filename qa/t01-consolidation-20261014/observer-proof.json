@@ -1,0 +1,43 @@
+{
+  "observedAt": "2026-10-14T13:52:18.075358+00:00",
+  "scriptSha256": "221b2d66f0b5c40c07cec7bb3e2130e2896ebe1ee60639f28bd3a651caae4968",
+  "checks": [
+    {
+      "expectedExit": 0,
+      "exit": 0,
+      "receipt": {
+        "counts": {
+          "autoActive": 0,
+          "autoPublication": 0,
+          "expired": 0,
+          "processing": 0,
+          "queued": 0,
+          "uncertain": 0
+        },
+        "dispatchEnabled": false,
+        "generationCalls": 0,
+        "healthy": true,
+        "mode": "observe-only",
+        "publicationCalls": 0,
+        "source": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+        "status": "PASS"
+      }
+    },
+    {
+      "expectedExit": 1,
+      "exit": 1,
+      "receipt": {
+        "mode": "observe-only",
+        "status": "UNAVAILABLE",
+        "dispatchEnabled": false
+      }
+    }
+  ],
+  "remoteFilesWritten": false,
+  "providerCalls": 0,
+  "unitTests": {
+    "command": "python3 -m unittest discover -s deploy -p 'test_scheduler_observer.py' -v",
+    "pass": 10,
+    "fail": 0
+  }
+}

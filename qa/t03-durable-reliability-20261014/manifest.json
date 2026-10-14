@@ -1,0 +1,60 @@
+{
+  "base": "e09fdaeafbf1ec8554a7b689fe3c44dd696d0140",
+  "branch": "codex/sutra-t03-durable-reliability-20261014",
+  "results": {
+    "new": 12,
+    "affected": 35,
+    "submission": 13,
+    "postgres_proposal_only": 13,
+    "total_pass": 73,
+    "fail": 0,
+    "skip": 0,
+    "typecheck": "PASS",
+    "lint": "PASS"
+  },
+  "proof_input_hashes_verified": {
+    "after-new": [
+      "src/lib/video-worker.ts",
+      "src/lib/video-queue.ts",
+      "scripts/test-t03-durable-reliability.mts"
+    ],
+    "after-affected": [
+      "src/lib/video-worker.ts",
+      "src/lib/video-queue.ts"
+    ],
+    "after-submission": [
+      "src/lib/pipeline-submit.ts",
+      "qa/t03-durable-reliability-20261014/submission.test.mts",
+      "qa/t03-durable-reliability-20261014/production-error.test.mts"
+    ],
+    "after-postgres": null,
+    "after-typecheck": null,
+    "after-lint": null
+  },
+  "source_sha256": {
+    "src/lib/video-worker.ts": "a2308a91b06b3c243e4ff4fd00e291c735e097d5f4f4d66f213b2e6ea4b1964c",
+    "src/lib/video-queue.ts": "59e9990f05ff6e9d5b3de9484166eb7c3c9715a31ec2c46e42e8a2737e6cc894",
+    "src/lib/pipeline-submit.ts": "c1cc7887e43f084217aaecfef56d3c814b0f06402adbd057e2425b6e4cc43258",
+    "src/lib/pipeline-state.ts": "18f7e2b9cff27ffc0edb9a5c84c9274104597061a0e52f667ce42cf01bdc08f1",
+    "scripts/test-t03-durable-reliability.mts": "7db02b0804debd6e49e9607fd4a9ddddd118535ee5766a958a9ea48074791522",
+    "scripts/test-t03-orchestration-fixes.mts": "a0430fb88e5d5911a239c5f67d59efdb4c5784fc57eb10de1c7ac6a37de9d63b",
+    "scripts/test-pipeline-submit.mts": "62f5fd7cd0a11535ad655686a8a1a773f207ca7e40b064ac0d8f19c1dbaf042f",
+    "qa/t03-salad-recovery-20261014/offline.cjs": "a94c8a76296e1372c49c8928e76f537b50cd64775469a0840b2513464e68d7f1",
+    "qa/t08/offline.cjs": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+    "package.json": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e",
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+    "qa/t03-durable-reliability-20261014/postgres.mjs": "ee03e802b581fc0493d8aa5be22026afc8c5a65a1d20b36193a6c0cc53e34d5e",
+    "qa/t03-durable-reliability-20261014/postgres.test.mts": "ae37a8de6b4cfbe53287c86ea687408edfabccfa4aabf243529a5cdd094ef396",
+    "qa/t03-durable-reliability-20261014/production-error.test.mts": "dd5d96a9a58ae91ba2563cc57455b1eb0402322bd36e8d925b4bd2d9c00c1c34",
+    "qa/t03-durable-reliability-20261014/proposal-durable-recovery.sql": "eacf44653cce3fde1e86b56a3d22ac6a805bf2fab5e483df69914db34b9ff984",
+    "qa/t03-durable-reliability-20261014/restart-worker.mts": "7b4b161bbec47d19aa9ba387c7b62869bdaa8b81cdafd0e37c8bc216070663fc",
+    "qa/t03-durable-reliability-20261014/submission.test.mts": "1b0c8a1defc754ddd66b708bfa0fe336df1b05b5071b1c27c3e63fd5f20e67a0",
+    "qa/t03-durable-reliability-20261014/tsconfig.json": "d1f3279c76803fd13ffe9d57c0fff680f33d2f3a9c1e2d298d9d4e2f07f41989",
+    "qa/t03-durable-reliability-20261014/verify.py": "16f9f08a28d2f1efaaf0c0acca5d11415373c2857c79ce5e9ba141e600303147"
+  },
+  "t02_test_byte_identical": true,
+  "sql_status": "proposal only; integrated canonical SQL still fails six cases",
+  "gitnexus_exhaustiveness": "UNKNOWN: truncated and unrelated final flows",
+  "production_status": "NON_TESTE",
+  "scope": "three product files; owned tests/proof/docs only"
+}

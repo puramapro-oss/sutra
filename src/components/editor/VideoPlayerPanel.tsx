@@ -1,12 +1,13 @@
-import { RefObject } from 'react'
+import { RefObject, useEffect, useRef, useState } from 'react'
 import { Play, Pause, Film, Volume2, VolumeX } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/Card'
 import { cn } from '@/lib/utils'
 import { formatTime } from '@/lib/editor-utils'
 import { SPEED_OPTIONS } from '@/types/editor'
+import type { Video } from '@/types'
 
 interface VideoPlayerPanelProps {
-  video: { video_url?: string | null }
+  video: Pick<Video, 'video_url' | 'status' | 'shotstack_json'>
   videoRef: RefObject<HTMLVideoElement | null>
   isPlaying: boolean
   isMuted: boolean
@@ -42,6 +43,57 @@ export function VideoPlayerPanel({
   onSeek,
   setIsPlaying,
 }: VideoPlayerPanelProps) {
+  const downloadController = useRef<AbortController | null>(null)
+  const [downloading, setDownloading] = useState(false)
+  const [downloadError, setDownloadError] = useState<string | null>(null)
+  useEffect(() => () => downloadController.current?.abort(), [video.video_url])
+  const hasMedia = Boolean(video.video_url)
+  // Presentation of the persisted server receipt only; this grants no publication rights.
+  const proof = video.shotstack_json?.sutraVerification as { url?: unknown; sha256?: unknown } | undefined
+  const verified = ['ready', 'published'].includes(video.status) && hasMedia &&
+    proof?.url === video.video_url && typeof proof?.sha256 === 'string' && /^[a-f\d]{64}$/.test(proof.sha256)
+  const downloadUrl = verified && /^https?:\/\//.test(video.video_url!) ? video.video_url : null
+  async function handleDownload() {
+    if (!downloadUrl || downloadController.current) return
+    const controller = new AbortController()
+    downloadController.current = controller
+    setDownloading(true)
+    setDownloadError(null)
+    const timeout = setTimeout(() => controller.abort(), 30000)
+    try {
+      const response = await fetch(downloadUrl, { signal: controller.signal, credentials: 'same-origin' })
+      if (!response.ok) throw new Error('download failed')
+      const blob = await response.blob()
+      if (!blob.size || !blob.type.startsWith('video/')) throw new Error('invalid media')
+      const digest = await crypto.subtle.digest('SHA-256', await blob.arrayBuffer())
+      const sha256 = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('')
+      if (sha256 !== proof?.sha256 || controller.signal.aborted) throw new Error('invalid receipt')
+      const url = URL.createObjectURL(blob)
+      try {
+        const link = document.createElement('a')
+        link.href = url
+        link.download = 'sutra-video.mp4'
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+      } finally {
+        URL.revokeObjectURL(url)
+      }
+    } catch {
+      setDownloadError('Téléchargement indisponible ou fichier non validé. Réessaie dans un instant.')
+    } finally {
+      clearTimeout(timeout)
+      downloadController.current = null
+      setDownloading(false)
+    }
+  }
+  const unavailable = video.status === 'generating'
+    ? 'La video est en cours de generation'
+    : video.status === 'failed'
+      ? 'La génération a échoué. Aucun fichier final disponible.'
+      : video.status === 'draft'
+        ? 'Ce brouillon ne contient pas encore de vidéo.'
+        : 'Le fichier final est indisponible. Vérifie la bibliothèque ou contacte le support.'
   return (
     <Card>
       <CardContent className="p-0 overflow-hidden">
@@ -61,7 +113,7 @@ export function VideoPlayerPanel({
               <div className="text-center">
                 <Film className="h-12 w-12 text-white/20 mx-auto mb-3" />
                 <p className="text-sm text-white/70">Apercu non disponible</p>
-                <p className="text-xs text-white/70 mt-1">La video est en cours de generation</p>
+                <p role="status" className="text-xs text-white/70 mt-1">{unavailable}</p>
               </div>
             </div>
           )}
@@ -85,6 +137,7 @@ export function VideoPlayerPanel({
         <div className="px-4 py-3 border-t border-white/[0.06] flex items-center gap-4 flex-wrap">
           {/* Play/Pause */}
           <button
+            disabled={!hasMedia}
             onClick={onTogglePlay}
             data-testid="editor-play-pause"
             aria-label={isPlaying ? "Mettre en pause" : "Lire la vidéo"}
@@ -100,6 +153,7 @@ export function VideoPlayerPanel({
 
           {/* Seek bar */}
           <input
+            disabled={!hasMedia}
             type="range"
             min={0}
             max={duration || 100}
@@ -113,6 +167,7 @@ export function VideoPlayerPanel({
           {/* Volume */}
           <div className="flex items-center gap-2">
             <button
+              disabled={!hasMedia}
               onClick={onToggleMute}
               data-testid="editor-mute"
               aria-label={isMuted ? "Activer le son" : "Couper le son"}
@@ -121,6 +176,7 @@ export function VideoPlayerPanel({
               {isMuted || volume === 0 ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
             </button>
             <input
+              disabled={!hasMedia}
               type="range"
               min={0}
               max={1}
@@ -137,6 +193,7 @@ export function VideoPlayerPanel({
           <div className="flex items-center gap-1">
             {SPEED_OPTIONS.map((s) => (
               <button
+                disabled={!hasMedia}
                 key={s}
                 onClick={() => onSpeedChange(s)}
                 data-testid={`editor-speed-${s}`}
@@ -152,6 +209,17 @@ export function VideoPlayerPanel({
             ))}
           </div>
         </div>
+        {hasMedia && (
+          <div className="px-4 pb-4 text-sm text-white/70">
+            {downloadUrl ? (
+              <button type="button" onClick={handleDownload} disabled={downloading} aria-busy={downloading} data-testid="editor-download"
+                className="inline-flex min-h-11 items-center rounded-lg underline underline-offset-4 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-400">
+                {downloading ? 'Téléchargement…' : 'Télécharger le fichier'}
+              </button>
+            ) : <p role="status">Résultat non validé : téléchargement indisponible. Vérifie la bibliothèque ou contacte le support.</p>}
+          </div>
+            )}
+            {downloadError && <p role="alert" className="mt-2">{downloadError}</p>}
       </CardContent>
     </Card>
   )

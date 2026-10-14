@@ -7,6 +7,10 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
+  'scripts/test-t03-durable-reliability.mts', 'qa/t03-durable-reliability-20261014/submission.test.mts',
+  'scripts/test-t06-social-validation.mts', 'qa/t04-provider-validation-20261014/probe.test.mjs',
+  'scripts/test-t02-final-validation-media.mts',
+  'qa/t02-final-validation-20261014/production-error.test.mts',
   'qa/final-delta-20261014/social-feedback.test.mts',
   'scripts/test-t03-orchestration-fixes.mts', 'scripts/test-t03-suno-recovery.mts',
   'scripts/test-t04-provider-fixes.mts', 'scripts/test-t04-pollinations.mts',
@@ -43,6 +47,7 @@ const profiles = {
     ['publication', ['scripts/test-auto-publication.mjs']],
   ],
   media: [
+    ['retained-real-exports', ['--import', 'tsx', '--test', 'scripts/test-t05-real-export.mts']],
     ['composition-delta', ['--import', 'tsx', '--test', 'scripts/test-t05-composition-fix.mts']],
     ['salad-media', ['--import', 'tsx', '--test', 'scripts/test-t05-salad-media.mts']],
     ['local-engine', ['--import', 'tsx', '--test', 'scripts/test-local-engine-e2e.mts']],

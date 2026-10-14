@@ -5,6 +5,8 @@ import { socialDatabase, postId } from '../../../scripts/helpers/social-database
 import { publishVideoRecord } from '../../../src/lib/social-publication.ts'
 import type { PublicationGateway } from '../../../src/lib/publication-journal.ts'
 
+const user = '11111111-1111-4111-8111-111111111111'
+process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ [user]: 'a'.repeat(24) })
 globalThis.fetch = async () => { throw new Error('T08_UNEXPECTED_NETWORK') }
 const stages: PipelineStage[] = ['script', 'scenes', 'images', 'voice', 'music', 'subtitles', 'composition', 'export', 'publication']
 
@@ -50,7 +52,7 @@ test('T08 load: 32 publication journals / 64 destinations remain unique after co
   await Promise.all(Array.from({ length: 8 }, async () => {
     for (let sequence = 0; sequence < 4; sequence++) {
       // Each fixture is a separate DB model. This does not assert shared-DB RLS.
-      const db = socialDatabase()
+      const db = socialDatabase(user)
       const gateway: PublicationGateway = {
         now: () => Date.now(),
         publish: async request => {
@@ -62,7 +64,7 @@ test('T08 load: 32 publication journals / 64 destinations remain unique after co
         retry: async () => { throw new Error('UNEXPECTED_RETRY') },
         reconcile: async () => { throw new Error('UNEXPECTED_RECONCILE') },
       }
-      const invoke = () => publishVideoRecord('u', { videoId: 'v', platforms: ['youtube', 'instagram'] }, db.client, gateway.publish, gateway.reconcile, gateway)
+      const invoke = () => publishVideoRecord(user, { videoId: 'v', platforms: ['youtube', 'instagram'] }, db.client, gateway.publish, gateway.reconcile, gateway)
       // A losing CAS is a reconciliation refusal, never a successful publication.
       const outcomes = await Promise.allSettled([invoke(), invoke()])
       for (const outcome of outcomes) if (outcome.status === 'rejected') assert.match(String(outcome.reason), /^Error: SUTRA_RECONCILIATION_REQUIRED: journal concurrent ou non enregistre$/)

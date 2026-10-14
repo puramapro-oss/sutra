@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "incremental": false },
+  "files": ["../../node_modules/next/types/global.d.ts"],
+  "include": ["../../scripts/test-t02-final-validation*.mts", "./*.test.mts", "../../src/types/*.d.ts"],
+  "exclude": ["../../node_modules"]
+}

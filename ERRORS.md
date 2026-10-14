@@ -82,3 +82,23 @@ LIMITE : revoke distant inconnu bloque jusqu'a reconciliation T01, pas de retry 
 - IMAGES-CLASSIC : absence nofeed/options non garanties ; thumbnail1920×1080 dépassait plafond ; helper existant réutilisé/ratios+feed contrôlés après ACK T01.
 
 Preuves avant/après et 91PASS ciblés : qa/t04-provider-fixes-20261014/README.md. Aucun FAIL résiduel du périmètre testé ; limites réelles et NON TESTÉ conservés dans le handoff, aucune garantie zéro bug.
+
+
+## T03 durable — 2026-10-14, base e09fdae
+
+- CORRIGÉ LOCAL : résultat null invalide accepté en reprise et skip musique contradictoire accepté après ACK fin perdu ;10 FAIL avant/12 PASS après (un cas positif ajouté), invariant commun worker/queue.
+- CORRIGÉ LOCAL T02-FINAL-01 : erreur RPC/transport exposée ; allowlist exacte des codes publics,13 tests PASS sans modifier routes ni fichier T02.
+- FAIL CANONIQUE / PROPOSITION LOCALE PASS : done sans résultat, remplacement checkpoint final/stage/scène/résultat payé/identité, claim ciblé épuisé restant processing.6 FAIL avant/13 PASS avec SQL proposé en fixture. T01 seul intègre migration/fixtures et valide ACL ; ne pas annoncer corrigé en production.
+- LIMITE OUTILLAGE : GitNexus SQL UNKNOWN, analyse finale tronquée et flux hors SUTRA mal associés. Diff exact revu ; exhaustivité non certifiée. Erreur initiale du harnais p_initial null pour create conservée, corrigée par fixture valide, exclue des défauts produit.
+- Détails/reproduction/commandes : qa/t03-durable-reliability-20261014/README.md. Aucun nouveau blocage du port Suno : dépendance intégrée confirmée.
+
+
+## T06-VALIDATION-01 — 2026-10-14 — CORRIGE LOCAL
+Le journal ne confrontait pas le compte stocke au binding Zernio actuel, sa provenance et sa revocation pending. Reproduction14 FAIL ; correction18 PASS,146 regressions/contrats distincts PASS, TS/lint PASS. Un seul fichier produit modifie : src/lib/publication-journal.ts. Preuves qa/t06-social-validation-20261014/README.md.
+
+FAIL EXTERNE DE FIXTURE : parcours T08 historique4 PASS/4 FAIL user=u apres durcissement UUID ; adaptation reservee par T08, integration conjointe T01 et retest du candidat requis. Aucun fichier hors ACK modifie. Absence de consentement personnel distincte d'un defaut logiciel ; publication/rotation/revocation reelles NON TESTEES.
+
+
+## T07 — FRONTEND-JOURNEY, 2026-10-14
+
+CORRIGÉ/VÉRIFIÉ local : mentions404, consentement sans modal/focus et contrastes3thèmes, requête légale pendante, vidéo failed annoncée en génération, commandes sans fichier, téléchargement natif silencieux après307 privé.61 assertions finales PASS ; reproductions et FAIL de banc préservés : qa/t07-frontend-journey-20261014/README.md. Deadline10s consentement et30s téléchargement, contrôle SHA des octets avant remise. Aucun défaut backend repris en parallèle. Limites : mémoire des gros médias/CORS réel/Safari et production NON TESTÉS ; erreur visible sans rendu de secours. Handoff T07 dédié, réception T01 attendue.

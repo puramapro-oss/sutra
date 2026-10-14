@@ -5,9 +5,22 @@ import { randomUUID } from 'node:crypto'
 import { socialDatabase, type Row } from '../../scripts/helpers/social-database.mts'
 import type { VideoJob } from '../../src/lib/video-queue.ts'
 
+export const journeyUserId = '11111111-1111-4111-8111-111111111111'
+export const journeyProfileId = 'a'.repeat(24)
+
 export function journeyDatabase() {
   const social = socialDatabase()
   const tables = social.tables as unknown as Record<string, Row[]>
+  // A valid synthetic identity/provenance, including on the pre-T06 helper.
+  // Keep every table scoped to the same fixture principal; do not mock the guard.
+  const originalUserId = social.profile.id
+  for (const rows of Object.values(tables)) for (const row of rows) {
+    if (row.user_id === originalUserId) row.user_id = journeyUserId
+  }
+  social.profile.id = journeyUserId
+  for (const account of tables.social_accounts) {
+    account.metadata = { zernio_profile_id: journeyProfileId, credential_owner: 'zernio' }
+  }
   tables.videos.length = 0
   tables.video_jobs.length = 0
   tables.social_autopilot_config = []

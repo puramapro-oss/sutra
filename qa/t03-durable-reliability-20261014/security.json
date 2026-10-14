@@ -1,0 +1,48 @@
+{
+  "command": [
+    "gitleaks",
+    "stdin",
+    "--redact=100",
+    "--no-banner",
+    "--no-color"
+  ],
+  "input": "git diff --cached --no-ext-diff --unified=0 e09fdae; all 57 owned files",
+  "exit_code": 0,
+  "files": 57,
+  "scope_check": "PASS",
+  "env_file_staged": false,
+  "log_format_normalization": {
+    "after-pg-init.log": {
+      "raw_sha256": "42ce139b819e9bd1e722254f55667bb3ecf1aef442f210358dfdc8ee7dbb3511",
+      "normalization": "trailing spaces and blank EOF lines only"
+    },
+    "before-pg-init.log": {
+      "raw_sha256": "adb7b38b1856b57201b0697ae3e506e18c1721d1ec2fb75b0e2d3c44c62cfa5d",
+      "normalization": "trailing spaces and blank EOF lines only"
+    },
+    "gitnexus-final-index.log": {
+      "raw_sha256": "a8ad3f913c3f78acd41845bd7d610521146bf29ff8a6c1018a900693eec5d35c",
+      "normalization": "trailing spaces and blank EOF lines only"
+    },
+    "gitnexus-index.log": {
+      "raw_sha256": "39c1b3712989a4ed35d5063f70526fd942404eabbd3c12a44243e19dcd81a195",
+      "normalization": "trailing spaces and blank EOF lines only"
+    },
+    "before-postgres.log": {
+      "raw_sha256": "c9b9d9dca5d61a1bc43bc55f1d2cadd87fa840c7a75db2d750d75a43fda055ca",
+      "normalization": "trailing spaces and blank EOF lines only"
+    },
+    "before-submission.log": {
+      "raw_sha256": "e93ad9fff67b080b0628ad0e5a6998757b7eb78e9122cf70b61e866c38b9d73a",
+      "normalization": "trailing spaces and blank EOF lines only"
+    }
+  },
+  "initial_raw_log_diff_check": "FAIL whitespace only; normalized without altering results",
+  "diff_check": "PASS after log whitespace normalization",
+  "graph_scope": "UNKNOWN; exact scoped diff reviewed",
+  "documentation_followup_gitnexus": {
+    "exit_code": 0,
+    "files": 9,
+    "result": "no indexed symbols overlap; documentation and raw-log formatting only"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "reviewer": "existing /root/postdeploy_security",
+  "scope": [
+    "deploy/scheduler_observer.py",
+    "deploy/scheduler-observer.service",
+    "deploy/scheduler-observer.timer",
+    "deploy/test_scheduler_observer.py",
+    "qa/t01-consolidation-20261014/observer-proof.json"
+  ],
+  "result": "NO_REPRODUCIBLE_DEFECT_IN_REVIEWED_FILES",
+  "testsRerun": false,
+  "limits": [
+    "Not an ACK of original T08 owner",
+    "PrivateNetwork does not restrict Docker container networking; command allowlist and read-only SQL provide containment",
+    "No persistent unit installation/rollback reviewed"
+  ],
+  "sourceHashes": {
+    "deploy/scheduler_observer.py": "221b2d66f0b5c40c07cec7bb3e2130e2896ebe1ee60639f28bd3a651caae4968",
+    "deploy/scheduler-observer.service": "010ef38301a50123ef29f76511e5d658234e6188e8b4eaac71512d288bf71c47",
+    "deploy/scheduler-observer.timer": "fc54da786fc113d69e27a3b8f5a9b8cf8b5398cac0170ed1c52649b635b9cc14",
+    "deploy/test_scheduler_observer.py": "4689d26cc3f9efa4d993dc47dbf126b2b996501e9afce21f0d13893f9769996a"
+  },
+  "observedAt": "2026-10-14T14:02:47.080815+00:00"
+}

@@ -23,3 +23,11 @@ Aucun ordonnanceur autonome SUTRA trouvé dans cron/systemd/pg_cron ; les premie
 Cloudflare DNS-only inféré des réponses DNS vers OVH, TLSv1.3 Let's Encrypt valide jusqu'au 10 janvier 2027 lors du dernier contrôle. API Cloudflare non vérifiée faute de credential, aucun DNS modifié. Contrôle après promotion effectué : quatre résolveurs concordants et TLS valide.
 
 La route `/api/health` contacte des fournisseurs : ne pas l'utiliser pour une vérification gratuite. Authentification fournisseur, contrat simulé et génération effective sont trois preuves distinctes. Salad nécessite encore ressource, budget et qualification GPU autorisés ; les consentements sociaux appartiennent à l'utilisateur.
+
+## Consolidation du 14 octobre, candidat en cours
+
+La production reste `86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164`. La nouvelle consolidation est documentée dans [sa matrice](../qa/t01-consolidation-20261014/RECONCILIATION.md) ; les défauts T03/T07 bloquent encore la promotion. La sauvegarde fraîche restaurée isolément comporte141 tables et des comptes identiques ; reçus privés expurgés dans [backup-restore.json](../qa/t01-consolidation-20261014/backup-restore.json).
+
+`deploy/scheduler_observer.py` prépare une observation strictement en lecture seule de l'application et des six compteurs de file. Dix tests locaux, le runtime OVH et une unité systemd transitoire durcie sont PASS. Le service et le timer fournis ne sont pas installés de manière persistante. Leur SHA attendu est épinglé à la production observée ; toute promotion nécessite un nouvel épinglage vérifié. Ils ne traitent aucun job, n'appellent aucun fournisseur et ne remplacent pas un ordonnanceur. Aucun `CRON_SECRET` n'est lu. Un écart de SHA est refusé avant accès DB ; état non disponible expurgé, délai borné.
+
+La promotion de ce candidat utilisera `qa/t01-consolidation-20261014/promote.py`, avec ses propres reçus, son manifeste versionné et sa CI exacte verte. Ce chemin conserve les preuves historiques et la configuration applicative existante. Aucune activation de génération/publication planifiée n'est incluse.

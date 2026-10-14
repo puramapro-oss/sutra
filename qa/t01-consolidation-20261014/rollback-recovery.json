@@ -1,0 +1,25 @@
+{
+  "operation": "restore function definitions on isolated database",
+  "productionChanged": false,
+  "exit": 0,
+  "sqlstates": [],
+  "definitionsRestoredExactly": true,
+  "configBefore": [
+    {
+      "name": "checkpoint_video_job_v2",
+      "config": [
+        "search_path=sutra, pg_temp"
+      ]
+    },
+    {
+      "name": "claim_video_job_by_key",
+      "config": null
+    },
+    {
+      "name": "finish_video_job",
+      "config": [
+        "search_path=sutra, pg_temp"
+      ]
+    }
+  ]
+}

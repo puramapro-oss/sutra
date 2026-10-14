@@ -1,0 +1,243 @@
+{
+  "processes": [
+    {
+      "id": "proc_112_post",
+      "summary": "POST → Blocked",
+      "priority": 0.069,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_113_post",
+      "summary": "POST → BreakerKey",
+      "priority": 0.069,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_19_get",
+      "summary": "GET → Blocked",
+      "priority": 0.069,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_20_get",
+      "summary": "GET → BreakerKey",
+      "priority": 0.069,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_123_post",
+      "summary": "POST → Failure",
+      "priority": 0.058,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_124_post",
+      "summary": "POST → Ok",
+      "priority": 0.058,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_148_post",
+      "summary": "POST → Failure",
+      "priority": 0.058,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_149_post",
+      "summary": "POST → Ok",
+      "priority": 0.058,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/utils/api.ts:isHostHealthy",
+      "name": "isHostHealthy",
+      "filePath": "src/lib/utils/api.ts",
+      "startLine": 30,
+      "endLine": 39,
+      "module": "Cluster_384",
+      "process_id": "proc_112_post",
+      "step_index": 4
+    },
+    {
+      "id": "Function:qa/t08-integration-journey-20261014/database.mts:journeyDatabase.rpc@21:2",
+      "name": "rpc",
+      "filePath": "qa/t08-integration-journey-20261014/database.mts",
+      "startLine": 22,
+      "endLine": 78,
+      "module": "T08-integration-journey-20261014",
+      "process_id": "proc_123_post",
+      "step_index": 3
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:scripts/test-pipeline-interruptions.mts:fn@50:69.run@52:2",
+      "name": "run",
+      "filePath": "scripts/test-pipeline-interruptions.mts",
+      "startLine": 53,
+      "endLine": 59,
+      "module": "Scripts"
+    },
+    {
+      "id": "Const:scripts/test-pipeline-interruptions.mts:fn@50:69.run@52:12.step@53:4",
+      "name": "step",
+      "filePath": "scripts/test-pipeline-interruptions.mts",
+      "startLine": 54,
+      "endLine": 54
+    },
+    {
+      "id": "Function:scripts/test-pipeline-interruptions.mts:fn@50:69.run@52:12.onStepResolved@53:68",
+      "name": "onStepResolved",
+      "filePath": "scripts/test-pipeline-interruptions.mts",
+      "startLine": 54,
+      "endLine": 54
+    },
+    {
+      "id": "Function:src/lib/ltx-v2.ts:createLtxClient.submit@94:2",
+      "name": "submit",
+      "filePath": "src/lib/ltx-v2.ts",
+      "startLine": 95,
+      "endLine": 150,
+      "module": "Cluster_7"
+    },
+    {
+      "id": "Function:src/lib/ltx-v2.ts:createLtxClient.wait@192:2",
+      "name": "wait",
+      "filePath": "src/lib/ltx-v2.ts",
+      "startLine": 193,
+      "endLine": 216,
+      "module": "Cluster_7"
+    },
+    {
+      "id": "File:src/lib/ltx-v2.ts",
+      "name": "ltx-v2.ts",
+      "filePath": "src/lib/ltx-v2.ts"
+    },
+    {
+      "id": "Function:scripts/test-t03-orchestration-fixes.mts:fn@162:84.run@166:4",
+      "name": "run",
+      "filePath": "scripts/test-t03-orchestration-fixes.mts",
+      "startLine": 167,
+      "endLine": 176
+    },
+    {
+      "id": "Function:scripts/test-t03-orchestration-fixes.mts:fn@186:109.run@191:2",
+      "name": "run",
+      "filePath": "scripts/test-t03-orchestration-fixes.mts",
+      "startLine": 192,
+      "endLine": 195
+    },
+    {
+      "id": "File:scripts/test-t03-orchestration-fixes.mts",
+      "name": "test-t03-orchestration-fixes.mts",
+      "filePath": "scripts/test-t03-orchestration-fixes.mts"
+    },
+    {
+      "id": "Function:src/lib/salad/checkpoint.ts:saladCheckpoint",
+      "name": "saladCheckpoint",
+      "filePath": "src/lib/salad/checkpoint.ts",
+      "startLine": 10,
+      "endLine": 54,
+      "module": "Salad"
+    },
+    {
+      "id": "Function:src/lib/salad/checkpoint.ts:saladCheckpoint.current@11:2",
+      "name": "current",
+      "filePath": "src/lib/salad/checkpoint.ts",
+      "startLine": 12,
+      "endLine": 20,
+      "module": "Salad"
+    },
+    {
+      "id": "Function:src/lib/salad/checkpoint.ts:saladCheckpoint.persist@25:2",
+      "name": "persist",
+      "filePath": "src/lib/salad/checkpoint.ts",
+      "startLine": 26,
+      "endLine": 32,
+      "module": "Salad"
+    },
+    {
+      "id": "Const:scripts/test-migration-local.mjs:migrationSql",
+      "name": "migrationSql",
+      "filePath": "scripts/test-migration-local.mjs",
+      "startLine": 38,
+      "endLine": 41
+    },
+    {
+      "id": "Const:scripts/test-migration-local.mjs:results",
+      "name": "results",
+      "filePath": "scripts/test-migration-local.mjs",
+      "startLine": 126,
+      "endLine": 129
+    },
+    {
+      "id": "Const:scripts/test-migration-local.mjs:r",
+      "name": "r",
+      "filePath": "scripts/test-migration-local.mjs",
+      "startLine": 161,
+      "endLine": 161
+    },
+    {
+      "id": "Const:qa/t08/integrated/load.test.mts:fn@10:94.fn@14:46.durable@16:6",
+      "name": "durable",
+      "filePath": "qa/t08/integrated/load.test.mts",
+      "startLine": 17,
+      "endLine": 17
+    },
+    {
+      "id": "Const:qa/t08/integrated/load.test.mts:fn@10:94.fn@14:46.run@19:18.step@20:8",
+      "name": "step",
+      "filePath": "qa/t08/integrated/load.test.mts",
+      "startLine": 21,
+      "endLine": 21
+    },
+    {
+      "id": "File:qa/t08/integrated/load.test.mts",
+      "name": "load.test.mts",
+      "filePath": "qa/t08/integrated/load.test.mts"
+    },
+    {
+      "id": "Function:src/lib/ltx-workflow.ts:durableLtxJob",
+      "name": "durableLtxJob",
+      "filePath": "src/lib/ltx-workflow.ts",
+      "startLine": 33,
+      "endLine": 50,
+      "module": "Scripts"
+    },
+    {
+      "id": "Method:src/lib/ltx-workflow.ts:durableLtxJob.save@43:4#1",
+      "name": "save",
+      "filePath": "src/lib/ltx-workflow.ts",
+      "startLine": 44,
+      "endLine": 48,
+      "module": "Cluster_8"
+    }
+  ],
+  "timing": {
+    "vector": 2.7,
+    "bm25": 201.6,
+    "merge": 0.1,
+    "symbol_lookup": 13,
+    "ranking": 0,
+    "formatting": 0.1,
+    "wall": 215.4
+  }
+}

@@ -3,7 +3,7 @@
 import test, { beforeEach, afterEach, mock } from 'node:test'
 import assert from 'node:assert/strict'
 import { AsyncLocalStorage } from 'node:async_hooks'
-import { journeyDatabase } from '../qa/t08-integration-journey-20261014/database.mts'
+import { journeyDatabase, journeyUserId, journeyProfileId } from '../qa/t08-integration-journey-20261014/database.mts'
 import { simulatedValidation } from './helpers/media-validation-fixture.ts'
 import { compositionPlan, type CompositionContract } from '../src/lib/composition-contract.ts'
 import type { AssembleResult } from '../src/lib/shotstack.ts'
@@ -14,7 +14,7 @@ import { awaitGeneration } from '../src/lib/generation-client.ts'
 type Session = { id: string; email: string } | null
 type Body = Record<string, unknown>
 const session = new AsyncLocalStorage<Session>()
-const client = { id: 'u', email: 'client@fixture.invalid' }
+const client = { id: journeyUserId, email: 'client@fixture.invalid' }
 let db = journeyDatabase()
 const counts = { script: 0, voice: 0, music: 0, visual: 0, render: 0, renderPoll: 0, verify: 0, validate: 0, upload: 0, external: 0 }
 const failures = { renderTimeout: false, validation: false, voiceUpload: false }
@@ -130,6 +130,7 @@ beforeEach(() => {
   http.length = 0; remote.clear(); publicationState = 'scheduled'; renderGate = undefined
   process.env.SALAD_ENABLED = 'false'; process.env.LOCAL_ENGINE_ENABLED = 'false'
   process.env.ZERNIO_API_KEY = 'fixture-only'
+  process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ [journeyUserId]: journeyProfileId })
 })
 afterEach(() => assert.equal(counts.external, 0, 'zero unexpected network attempts'))
 

@@ -153,6 +153,22 @@ try {
   const beforeClientPrivileges = await sql(clientPrivileges)
   await sql(featurePermissions); await sql(featurePermissions)
   assert.equal(await sql(clientPrivileges), beforeClientPrivileges); checks++
+  const checkpointIntegrity = await readFile(new URL('../migrations/20261014_durable_checkpoint_integrity.sql', import.meta.url), 'utf8')
+  const rpcPrivileges = `SELECT p.proname,r.rolname,has_function_privilege(r.rolname,p.oid,'EXECUTE'),p.prosecdef
+    FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace CROSS JOIN pg_roles r
+    WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key')
+    AND r.rolname IN ('anon','authenticated','service_role') ORDER BY p.proname,r.rolname;`
+  const beforeRpcPrivileges = await sql(rpcPrivileges)
+  await sql(checkpointIntegrity); await sql(checkpointIntegrity)
+  assert.equal(await sql(rpcPrivileges), beforeRpcPrivileges); checks++
+  assert.equal(await sql(clientPrivileges), beforeClientPrivileges); checks++
+  for (const role of ['anon', 'authenticated']) {
+    // The legacy claim RPC is invoker-only: effective table permissions must
+    // reject even an empty-key claim, despite its historical PUBLIC execute ACL.
+    await assert.rejects(sql(`SET ROLE ${role}; SELECT * FROM sutra.claim_video_job_by_key('fixture-absent','fixture-worker',30);`),
+      error => /permission denied/.test(error.stderr)); checks++
+  }
+  assert.equal(await sql("SET ROLE service_role; SELECT count(*) FROM sutra.claim_video_job_by_key('fixture-absent','fixture-worker',30);"), '0'); checks++
   const featureServiceTables = ['achievements', 'buddies', 'buddy_checkins', 'circle_members', 'contest_results', 'daily_gifts', 'email_sequences', 'gratitude_entries', 'lottery_draws', 'lottery_tickets', 'lottery_winners', 'love_circles', 'love_reactions', 'love_wall_posts', 'point_purchases', 'point_shop_items', 'point_transactions', 'pool_balances', 'pool_transactions', 'purama_points', 'share_conversions', 'social_shares', 'user_achievements', 'user_coupons', 'user_feedback']
   for (const table of featureServiceTables) {
     assert.ok(featureTables.includes(table))

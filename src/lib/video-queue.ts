@@ -34,6 +34,17 @@ export interface VideoJob {
   idempotency_key: string
 }
 
+/** A null result is legitimate only for explicitly disabled production music. */
+export function hasCompletedJobResult(job: Pick<VideoJob, 'kind' | 'payload' | 'progress'>): boolean {
+  if (job.progress.result === undefined) return false
+  if (job.progress.result !== null) return true
+  const input = job.payload.input as { step?: unknown; musicStyle?: unknown } | undefined
+  const steps = job.progress.steps as Record<string, { status?: unknown; value?: unknown }> | undefined
+  const music = steps?.['stage:music']
+  return job.kind === 'production' && input?.step === 'music' && input.musicStyle === 'none'
+    && music?.status === 'skipped' && music.value === null
+}
+
 /**
  * Réservation ATOMIQUE d'une place de génération pour le mois courant.
  * @throws Error explicite si le RPC est indisponible (fail-closed : aucune
@@ -225,11 +236,8 @@ export async function finishJob(
       && (status === 'done' || status === 'failed')) {
     const { data: row, error: readError } = await service.from('video_jobs')
       .select('id,status,locked_by,progress,kind,payload').eq('id', jobId).maybeSingle()
-    const skippedMusic = row?.kind === 'production' && row.payload?.input?.step === 'music'
-      && row.payload.input.musicStyle === 'none' && row.progress?.result === null
-      && row.progress.steps?.['stage:music']?.status === 'skipped'
     if (!readError && row?.id === jobId && row.status === status && row.locked_by === null
-        && (status === 'failed' || skippedMusic || (row.progress?.result !== undefined && row.progress.result !== null))) return status
+        && (status === 'failed' || (row.progress && row.payload && hasCompletedJobResult(row)))) return status
   }
   throw new Error('SUTRA_JOB_FINISH_UNCONFIRMED')
 }

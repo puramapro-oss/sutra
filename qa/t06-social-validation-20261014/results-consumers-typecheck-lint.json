@@ -1,0 +1,55 @@
+[
+  {
+    "name": "consumers",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^PUBLICATION",
+      "scripts/test-release-regressions.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 809
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--project",
+      "qa/t06-social-validation-20261014/tsconfig.json"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1366
+  },
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings=0",
+      "src/lib/publication-journal.ts",
+      "scripts/helpers/social-database.mts",
+      "scripts/test-t06-social-autonomy.mts",
+      "scripts/test-social-publication.mts",
+      "scripts/test-release-regressions.mts",
+      "scripts/test-t06-social-validation.mts",
+      "qa/t08/integrated/load.test.mts",
+      "qa/t06-social-validation-20261014/run.mjs"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1224
+  }
+]

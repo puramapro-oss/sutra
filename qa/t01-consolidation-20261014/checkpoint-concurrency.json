@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "productionChanged": false,
+  "sessions": 2,
+  "concurrentDdlBlocked": true,
+  "sqlstate": "55P03",
+  "guardedMigration": true,
+  "rollbackExact": true,
+  "productionUnchanged": true,
+  "limitation": "Three existing function rows only; not a global schema or role lock.",
+  "observedAt": "2026-10-14T14:56:13.924945+00:00",
+  "command": "python3 qa/t01-consolidation-20261014/verify-checkpoint-concurrency.py"
+}

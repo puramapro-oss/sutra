@@ -27,16 +27,26 @@ export async function submitVideoJob(profile: Profile, params: {
   initialVideo?: Record<string, unknown>
 }): Promise<VideoJob> {
   const limit = isAdmin(profile.email) ? 0 : (PLAN_LIMITS[profile.plan as Plan] ?? PLAN_LIMITS.free).videos
-  const { data, error } = await createServiceClient().rpc('submit_video_job', {
-    p_user_id: profile.id, p_kind: params.kind, p_video_id: params.videoId,
-    p_payload: { input: params.input }, p_key: params.key, p_request_hash: params.fingerprint,
-    p_limit: limit, p_initial: params.initialVideo ?? null,
-  })
-  const job = (Array.isArray(data) ? data[0] : data) as VideoJob | null
-  if (error || !job?.id || job.user_id !== profile.id || job.kind !== params.kind || job.idempotency_key !== params.key) {
-    throw new Error(`SUTRA_SUBMISSION_UNCONFIRMED: ${error?.message ?? 'invalid receipt'}`)
+  try {
+    const { data, error } = await createServiceClient().rpc('submit_video_job', {
+      p_user_id: profile.id, p_kind: params.kind, p_video_id: params.videoId,
+      p_payload: { input: params.input }, p_key: params.key, p_request_hash: params.fingerprint,
+      p_limit: limit, p_initial: params.initialVideo ?? null,
+    })
+    if (error) throw error
+    const job = (Array.isArray(data) ? data[0] : data) as VideoJob | null
+    if (!job?.id || job.user_id !== profile.id || job.kind !== params.kind || job.idempotency_key !== params.key) {
+      throw new Error('SUTRA_SUBMISSION_UNCONFIRMED')
+    }
+    return job
+  } catch (error) {
+    // All consumers may expose this message. Never append an internal RPC or
+    // transport diagnostic, and never retry an unconfirmed submission here.
+    const code = error && typeof error === 'object' && 'message' in error ? error.message : null
+    throw new Error(typeof code === 'string' && [
+      'SUTRA_QUOTA_EXHAUSTED', 'SUTRA_IDEMPOTENCY_CONFLICT', 'SUTRA_INVALID_REQUEST_ID',
+    ].includes(code) ? code : 'SUTRA_SUBMISSION_UNCONFIRMED')
   }
-  return job
 }
 
 export function submissionErrorStatus(message: string): number {
