@@ -1,0 +1,133 @@
+{
+  "observedAt": "2026-10-13T23:50:57.797Z",
+  "runtime": "v26.0.0",
+  "results": [
+    "320px /create: modes, keyboard, budget, unknown readiness, axe and layout",
+    "320px /production: modes, keyboard, budget, unknown readiness, axe and layout",
+    "320px manual quality wording and keyboard navigation",
+    "375px /create: modes, keyboard, budget, unknown readiness, axe and layout",
+    "375px /production: modes, keyboard, budget, unknown readiness, axe and layout",
+    "375px manual quality wording and keyboard navigation",
+    "768px /create: modes, keyboard, budget, unknown readiness, axe and layout",
+    "768px /production: modes, keyboard, budget, unknown readiness, axe and layout",
+    "768px manual quality wording and keyboard navigation",
+    "1280px /create: modes, keyboard, budget, unknown readiness, axe and layout",
+    "1280px /production: modes, keyboard, budget, unknown readiness, axe and layout",
+    "1280px manual quality wording and keyboard navigation",
+    "1440px /create: modes, keyboard, budget, unknown readiness, axe and layout",
+    "1440px /production: modes, keyboard, budget, unknown readiness, axe and layout",
+    "1440px manual quality wording and keyboard navigation",
+    "FAIL axe /create-waiting\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     impact: 'serious',\n+     targets: [\n+       [\n+         '.mt-0\\\\.5'\n+       ],\n+       [\n+         '.space-y-3 > .duration-300.py-3.bg-white\\\\/\\\\[0\\\\.03\\\\]:nth-child(1) > .flex-1.text-white\\\\/30.text-sm'\n+       ],\n+       [\n+         '.text-\\\\[11px\\\\]'\n+       ],\n+       [\n+         '.space-y-2 > .duration-300.py-3.bg-white\\\\/\\\\[0\\\\.03\\\\]:nth-child(1) > .flex-1.text-white\\\\/30.text-sm'\n+       ],\n+       [\n+         '.duration-300.py-3.bg-white\\\\/\\\\[0\\\\.03\\\\]:nth-child(2) > .flex-1.text-white\\\\/30.text-sm'\n+       ],\n+       [\n+         '.space-y-2 > .duration-300.py-3.bg-white\\\\/\\\\[0\\\\.03\\\\]:nth-child(3) > .flex-1.text-white\\\\/30.text-sm'\n+       ],\n+       [\n+         '.space-y-3 > .duration-300.py-3.bg-white\\\\/\\\\[0\\\\.03\\\\]:nth-child(3) > .flex-1.text-white\\\\/30.text-sm'\n+       ],\n+       [\n+         '.duration-300.py-3.bg-white\\\\/\\\\[0\\\\.03\\\\]:nth-child(4) > .flex-1.text-white\\\\/30.text-sm'\n+       ],\n+       [\n+         '.duration-300.py-3.bg-white\\\\/\\\\[0\\\\.03\\\\]:nth-child(5) > .flex-1.text-white\\\\/30.text-sm'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+  ],
+  "errors": [],
+  "violations": [
+    {
+      "name": "/create-320",
+      "violations": []
+    },
+    {
+      "name": "/production-320",
+      "violations": []
+    },
+    {
+      "name": "manual-320",
+      "violations": []
+    },
+    {
+      "name": "/create-375",
+      "violations": []
+    },
+    {
+      "name": "/production-375",
+      "violations": []
+    },
+    {
+      "name": "manual-375",
+      "violations": []
+    },
+    {
+      "name": "/create-768",
+      "violations": []
+    },
+    {
+      "name": "/production-768",
+      "violations": []
+    },
+    {
+      "name": "manual-768",
+      "violations": []
+    },
+    {
+      "name": "/create-1280",
+      "violations": []
+    },
+    {
+      "name": "/production-1280",
+      "violations": []
+    },
+    {
+      "name": "manual-1280",
+      "violations": []
+    },
+    {
+      "name": "/create-1440",
+      "violations": []
+    },
+    {
+      "name": "/production-1440",
+      "violations": []
+    },
+    {
+      "name": "manual-1440",
+      "violations": []
+    },
+    {
+      "name": "/create-waiting",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "targets": [
+            [
+              ".mt-0\\.5"
+            ],
+            [
+              ".space-y-3 > .duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(1) > .flex-1.text-white\\/30.text-sm"
+            ],
+            [
+              ".text-\\[11px\\]"
+            ],
+            [
+              ".space-y-2 > .duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(1) > .flex-1.text-white\\/30.text-sm"
+            ],
+            [
+              ".duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(2) > .flex-1.text-white\\/30.text-sm"
+            ],
+            [
+              ".space-y-2 > .duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(3) > .flex-1.text-white\\/30.text-sm"
+            ],
+            [
+              ".space-y-3 > .duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(3) > .flex-1.text-white\\/30.text-sm"
+            ],
+            [
+              ".duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(4) > .flex-1.text-white\\/30.text-sm"
+            ],
+            [
+              ".duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(5) > .flex-1.text-white\\/30.text-sm"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "intercepted": [
+    {
+      "path": "/api/create",
+      "method": "POST",
+      "mode": "waiting",
+      "modeField": "auto"
+    }
+  ],
+  "blockedExternalOrigins": [],
+  "proof": "LOCAL_CHROMIUM_FIXTURES_ONLY; all six generation requests intercepted; no paid route executed; no production build repeated"
+}

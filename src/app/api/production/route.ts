@@ -13,6 +13,9 @@ import { clampQualityToPlan } from '@/lib/ltx-utils'
 import { type AssembleClip } from '@/lib/shotstack'
 import { productionSchema, sanitizeScriptData } from '@/lib/production-schema'
 import type { Plan, Profile } from '@/types'
+import { shouldUseLocalEngine } from '@/lib/local-engine'
+import { saladApplicationConfig } from '@/lib/salad/application'
+import { requireActive } from '@/lib/salad/config'
 
 // Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
 export const maxDuration = 300
@@ -81,6 +84,19 @@ export async function POST(req: Request) {
     const serviceClient = createServiceClient()
     const { data: profile } = await serviceClient.from('profiles').select('*').eq('id', user.id).single()
     if (!profile) return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
+
+    // Reject an unavailable personal video mode before quota reservation or
+    // any earlier paid script/voice phase in the all-steps pipeline.
+    if ((step === 'all' || step === 'video') && shouldUseLocalEngine(user.email ?? null)) {
+      try {
+        requireActive(saladApplicationConfig().config)
+      } catch {
+        return NextResponse.json({
+          error: 'Moteur GPU distant open source indisponible ; aucun repli API payant.',
+          code: 'SALAD_UNAVAILABLE',
+        }, { status: 503 })
+      }
+    }
 
     const userPlan = (profile as Profile).plan ?? 'free'
     // Plafond qualité par plan appliqué AVANT tout appel payant (audit #16).

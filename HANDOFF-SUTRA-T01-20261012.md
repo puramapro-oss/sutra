@@ -1,3 +1,7 @@
+# SUTRA — jalon intégration Salad désactivée, 2026-10-14
+
+Candidat intégré et gates locales PASS : `qa/salad-integration-20261014/README.md`. Sept lots T02–T08 vérifiés ; défauts modes, reprise durable production, média et reconnexion corrigés. Contrats666/7skip, médias59, PostgreSQL7, promotion24, TS/lint/build verts. Aucun GPU activé ni migration distante. Configuration RunPod/Shotstack et binding Zernio déjà vérifiés ; consentements sociaux et qualification GPU restent externes. Prochaine étape autorisée : commit exact, CI complète, candidat OVH isolé, sauvegarde/restauration puis promotion SUTRA seule. Aucun déploiement de ce candidat encore attesté. Les sections suivantes sont historiques.
+
 # SUTRA T01 — verification finale post-deploiement, 2026-10-13
 
 **OVH OPERATIONNEL / RECETTE CONNECTEE NON VERIFIEE.** Application `f770e272d2d8e3bb3dde5b523fe7aa37f122399d`, URL https://sutra.purama.dev . CI exacte [38330861913](https://github.com/puramapro-oss/sutra/actions/runs/38330861913) : trois jobs SUCCESS. Image `sha256:956b477deb4b7049914db5f51d934cf15fb0c3ea5fe289d6029c23b4c599e417`, promue le 2026-10-13 a 01:29 UTC. Le commit documentaire de ce rapport ne change pas l'image applicative.

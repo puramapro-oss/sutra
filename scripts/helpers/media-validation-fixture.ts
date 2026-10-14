@@ -13,7 +13,8 @@ export function simulatedValidation(contract: CompositionContract) {
     audio: plan.audioRequired ? [{ codec: 'aac', channels: 2, sampleRate: 48000, bitrate: 192000, start: 0, duration: plan.total }] : [],
     subtitleStreams: 0,
   }
-  return mediaValidation(contract, final, contract.clips.map(clip => ({ source: structuredClone(final),
-    native: clip.lineage?.nativeUrl ? structuredClone(final) : null,
-    enhanced: clip.lineage?.enhancedUrl ? structuredClone(final) : null, generation: clip.lineage?.generation ?? null })))
+  const source = { ...structuredClone(final), sha256: '1'.repeat(64) }
+  return mediaValidation(contract, final, contract.clips.map(clip => ({ source: structuredClone(source),
+    native: clip.lineage?.nativeUrl ? structuredClone(source) : null,
+    enhanced: clip.lineage?.enhancedUrl ? structuredClone(source) : null, generation: clip.lineage?.generation ?? null })))
 }

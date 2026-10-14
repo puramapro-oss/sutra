@@ -58,6 +58,7 @@ export default function SocialAccountsPage() {
   const [disconnectingId, setDisconnectingId] = useState<string | null>(null)
   const [savingAutopilot, setSavingAutopilot] = useState(false)
   const [confirmDisconnect, setConfirmDisconnect] = useState<SocialAccount | null>(null)
+  const [disconnectNotice, setDisconnectNotice] = useState<string | null>(null)
 
   const fetchAccounts = useCallback(async () => {
     try {
@@ -134,6 +135,7 @@ export default function SocialAccountsPage() {
     async (account: SocialAccount) => {
       setDisconnectingId(account.id)
       setConfirmDisconnect(null)
+      setDisconnectNotice(null)
       try {
         const res = await fetch('/api/social/accounts', {
           method: 'DELETE',
@@ -141,7 +143,12 @@ export default function SocialAccountsPage() {
           body: JSON.stringify({ accountId: account.id }),
         })
         if (!res.ok) throw new Error('disconnect_failed')
-        toast.success(`${PLATFORM_INFO[account.platform].label} deconnecte`)
+        const result = await res.json()
+        if (res.status === 200 && result.success === true && result.remoteStatus === 'revoked') {
+          toast.success(`${PLATFORM_INFO[account.platform].label} deconnecte`)
+        } else {
+          setDisconnectNotice('Révocation distante non confirmée. Vérifie les autorisations dans ton réseau social avant de reconnecter ce compte. Aucune nouvelle tentative automatique ne sera lancée.')
+        }
         await fetchAccounts()
       } catch {
         toast.error('Impossible de deconnecter ce compte')
@@ -172,12 +179,16 @@ export default function SocialAccountsPage() {
 
   const accountsByPlatform = accounts.reduce<Partial<Record<SocialPlatform, SocialAccount>>>(
     (acc, a) => {
-      acc[a.platform] = a
+      // Keep the historical row visible, but never let it mask a live connection.
+      if (acc[a.platform]?.status !== 'connected') acc[a.platform] = a
       return acc
     },
     {}
   )
-  const connectedCount = Object.keys(accountsByPlatform).length
+  const connectedAccountsByPlatform = Object.fromEntries(
+    Object.entries(accountsByPlatform).filter(([, account]) => account.status === 'connected')
+  )
+  const connectedCount = Object.keys(connectedAccountsByPlatform).length
   const progressPct = Math.round((connectedCount / TOTAL_PLATFORMS) * 100)
 
   const updateAutopilot = <K extends keyof AutopilotConfig>(
@@ -208,6 +219,8 @@ export default function SocialAccountsPage() {
           progressPct={progressPct}
         />
 
+        {disconnectNotice && <p role="alert" className="mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200">{disconnectNotice}</p>}
+
         <PlatformGrid
           loading={loading}
           accountsByPlatform={accountsByPlatform}
@@ -219,7 +232,7 @@ export default function SocialAccountsPage() {
 
         <AutopilotSection
           config={autopilotConfig}
-          accountsByPlatform={accountsByPlatform}
+          accountsByPlatform={connectedAccountsByPlatform}
           connectedCount={connectedCount}
           savingAutopilot={savingAutopilot}
           onUpdateConfig={updateAutopilot}

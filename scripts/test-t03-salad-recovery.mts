@@ -3,6 +3,24 @@ import assert from 'node:assert/strict'
 import { test, type TestContext } from 'node:test'
 import type { VideoJob } from '../src/lib/video-queue'
 import type { ProductionJobInput } from '../src/lib/production-pipeline'
+import { MODEL, PROTOCOL } from '../src/lib/salad/contracts'
+
+// Synthetic configuration only; no credentials, GPU or external transport.
+process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://supabase.fixture.invalid'
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'fixture-anon'
+process.env.SUPABASE_SERVICE_ROLE_KEY = 'fixture-service'
+const now = Date.now()
+const qualification = { id: 'queue-fixture', evidenceSha256: 'a'.repeat(64), verifiedAt: now - 1000,
+  image: `fixture/worker@sha256:${'b'.repeat(64)}`, architecture: 'linux/amd64', cuda: '12.0',
+  gpu: 'FIXTURE-NO-GPU', vramMiB: 24000, requiredFreeVramMiB: 20000, model: MODEL,
+  modelSha256: 'c'.repeat(64), encoderSha256: 'd'.repeat(64), vaeSha256: 'e'.repeat(64),
+  profiles: [{ width: 1280, height: 736, num_frames: 81, fps: 16 }] }
+const quote = { currency: 'USD', hourlyRate: 1, observedAt: now - 1000, expiresAt: now + 3600000,
+  source: 'salad-approved-quote', evidenceSha256: 'f'.repeat(64) }
+Object.assign(process.env, { SALAD_ENABLED: 'true', SALAD_GATEWAY_URL: 'https://queue-fixture.salad.cloud',
+  SALAD_API_KEY: 'fixture-gateway-'.repeat(3), SALAD_WORKER_TOKEN: 'fixture-worker-'.repeat(3),
+  SALAD_QUALIFICATION_JSON: JSON.stringify(qualification), SALAD_QUOTE_JSON: JSON.stringify(quote),
+  SALAD_REQUEST_TIMEOUT_MS: '1000', SALAD_GENERATION_TIMEOUT_MS: '10000', SALAD_MAX_ESTIMATED_COMPUTE_USD: '1' })
 
 const { runVideoJob } = await import('../src/lib/video-worker')
 const { checkpoint, claimJobByKey, finishJob } = await import('../src/lib/video-queue')
@@ -51,6 +69,7 @@ class Transport {
   now = 0
   expires = 600
   submissions = 0
+  polls = 0
   forbidden: string[] = []
   trace: string[] = []
   faults: Fault[] = []
@@ -72,12 +91,25 @@ class Transport {
     const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), {
       status, headers: { 'content-type': 'application/json' },
     })
-    if (url.href === 'https://worker.fixture.invalid/generate' && method === 'POST') {
+    if (url.href === 'https://queue-fixture.salad.cloud/v1/capabilities' && method === 'GET') {
+      return json({ protocol: PROTOCOL, provider: 'salad', state: 'ready', qualification, quote,
+        operations: ['text-to-video'], audio: false, native4k: false, maxConcurrent: 1,
+        quotaRemaining: null, generationTimeoutMs: 10000 })
+    }
+    if (url.origin === 'https://queue-fixture.salad.cloud' && url.pathname.startsWith('/v1/jobs/') && method === 'GET') {
+      this.polls++
+      const state = this.steps()['scene:0:ltx'] as { id: string; salad: { status: string } }
+      assert.equal(url.pathname, `/v1/jobs/${state.id}`)
+      return json({ ...state.salad, status: 'unknown' })
+    }
+    if (url.href === 'https://queue-fixture.salad.cloud/v1/jobs' && method === 'POST') {
       this.submissions++
       this.trace.push('remote:POST')
       assert.equal(this.steps()['scene:0:started'], true, 'intent must be acknowledged before POST')
-      assert.equal(body.prompt, 'A still landscape')
-      assert.equal(body.num_frames, 80)
+      const state = this.steps()['scene:0:ltx'] as { id: string; salad: { status: string } }
+      assert.equal(state.id, body.id, 'durable Salad identity acknowledged before POST')
+      assert.equal(state.salad.status, 'submitting')
+      assert.deepEqual(body.input, { prompt: 'A still landscape', profile: qualification.profiles[0] })
       assert.equal(init?.redirect, 'error')
       assert.ok(init?.signal, 'remote request must carry a timeout signal')
       return this.remote()
@@ -154,17 +186,20 @@ for (const interruption of ['timeout', 'worker-disconnect', 'accepted-202'] as c
       if (interruption === 'accepted-202') return new Response(JSON.stringify({ job_id: 'remote-fixture', status: 'queued' }), { status: 202 })
       throw interruption === 'timeout' ? new DOMException('fixture', 'TimeoutError') : new TypeError('fixture connection reset')
     }
-    await assert.rejects(runVideoJob(h.snapshot(), WORKER), /SUTRA_LOCAL_FAILED/)
+    await assert.rejects(runVideoJob(h.snapshot(), WORKER), /SALAD_RECONCILIATION_REQUIRED/)
     assert.equal(h.submissions, 1)
     assert.equal(h.steps()['scene:0:started'], true)
     assert.equal(h.steps()['scene:0'], undefined)
-    assert.deepEqual(h.row.provider_job_ids, {}) // Synchronous base cannot reconcile a Salad ID.
+    const intent = clone(h.steps()['scene:0:ltx']) as { id: string }
+    assert.match(intent.id, /^[a-f0-9]{64}$/)
     for (let i = 0; i < 12; i++) {
       h.expire()
       const worker = `restart-${i}`
-      await assert.rejects(runVideoJob(await h.claim(worker), worker), /SUTRA_RECONCILIATION_REQUIRED/)
+      await assert.rejects(runVideoJob(await h.claim(worker), worker), /SALAD_RECONCILIATION_REQUIRED/)
+      assert.equal((h.steps()['scene:0:ltx'] as { id: string }).id, intent.id)
     }
     assert.equal(h.submissions, 1)
+    assert.equal(h.polls, 12)
     assert.equal(await finishJob(JOB, 'restart-11', 'queued', 'SUTRA_RECONCILIATION_REQUIRED'), 'reconciliation_required')
     assert.equal(await claimJobByKey(h.row.idempotency_key, 'another-worker'), null)
     assert.equal(h.row.progress.result, undefined)
@@ -177,7 +212,7 @@ test('lease expires inside intent RPC: stale worker never submits; new owner may
   await assert.rejects(runVideoJob(h.snapshot(), WORKER), /SUTRA_CHECKPOINT_FAILED/)
   assert.equal(h.submissions, 0)
   assert.equal(h.steps()['scene:0:started'], undefined)
-  await assert.rejects(runVideoJob(await h.claim('new-owner'), 'new-owner'), /SUTRA_LOCAL_FAILED/)
+  await assert.rejects(runVideoJob(await h.claim('new-owner'), 'new-owner'), /SALAD_RECONCILIATION_REQUIRED/)
   assert.equal(h.submissions, 1)
 })
 
@@ -195,11 +230,11 @@ test('replacement worker while remote POST is pending cannot resubmit; late owne
   const entered = deferred<void>()
   const release = deferred<void>()
   h.remote = async () => { entered.resolve(); await release.promise; throw new TypeError('worker interrupted') }
-  const first = assert.rejects(runVideoJob(h.snapshot(), WORKER), /SUTRA_LOCAL_FAILED/)
+  const first = assert.rejects(runVideoJob(h.snapshot(), WORKER), /SALAD_SAFE_FAILURE/)
   await entered.promise
   h.expire()
   const claimed = await h.claim('replacement')
-  await assert.rejects(runVideoJob(claimed, 'replacement'), /SUTRA_RECONCILIATION_REQUIRED/)
+  await assert.rejects(runVideoJob(claimed, 'replacement'), /SALAD_RECONCILIATION_REQUIRED/)
   const beforeLateOwner = h.snapshot()
   release.resolve()
   await first
@@ -215,7 +250,7 @@ test('24 concurrent claimants exercise queue RPC contract; only granted snapshot
   const claims = await Promise.all(Array.from({ length: 24 }, (_, i) => claimJobByKey(h.row.idempotency_key, `worker-${i}`)))
   const granted = claims.filter((row): row is VideoJob => row !== null)
   assert.equal(granted.length, 1, 'transport fixture grants one lease; actual SQL proof is separate')
-  await assert.rejects(runVideoJob(granted[0], granted[0].locked_by!), /SUTRA_LOCAL_FAILED/)
+  await assert.rejects(runVideoJob(granted[0], granted[0].locked_by!), /SALAD_RECONCILIATION_REQUIRED/)
   assert.equal(h.submissions, 1)
 })
 

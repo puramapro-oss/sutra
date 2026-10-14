@@ -1,0 +1,55 @@
+{
+  "observedAt": "2026-10-14T00:49:16.057429+00:00",
+  "base": "35e11bf5d7e59688f263c0ab1c37983b7443381c",
+  "results": [
+    {
+      "profile": "contracts",
+      "status": "PASS",
+      "groups": 4
+    },
+    {
+      "profile": "media",
+      "status": "PASS",
+      "groups": 3
+    },
+    {
+      "profile": "quality",
+      "status": "PASS",
+      "groups": 3
+    },
+    {
+      "command": "python3 -B -m unittest discover -s deploy -p test_*.py",
+      "status": "PASS",
+      "tests": 24
+    },
+    {
+      "command": "node qa/salad-integration-20261014/run-postgres.mjs",
+      "status": "PASS",
+      "tests": 7,
+      "database": "real isolated PostgreSQL 18; no production DDL"
+    },
+    {
+      "command": "node qa/t07-modes-20261014/browser.mjs --capabilities-only --visual-only",
+      "status": "PASS",
+      "checks": 4,
+      "axeAudits": 3,
+      "violations": 0,
+      "generationRequests": 0
+    }
+  ],
+  "contracts": {
+    "pass": 666,
+    "fail": 0,
+    "skip": 7
+  },
+  "media": {
+    "pass": 59,
+    "fail": 0,
+    "skip": 0
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 111
+  },
+  "initialFailures": "initial-gates-failures.json; fixed before final gates"
+}

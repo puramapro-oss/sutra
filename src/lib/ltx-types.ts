@@ -8,7 +8,7 @@ export type CameraMotion =
   | 'dolly_in' | 'dolly_out' | 'dolly_left' | 'dolly_right'
   | 'jib_up' | 'jib_down' | 'static' | 'focus_shift'
 
-export type VideoEngine = 'ltx-pro' | 'ltx-fast' | 'wan-classic'
+export type VideoEngine = 'ltx-pro' | 'ltx-fast' | 'wan-classic' | 'salad'
 
 export interface LtxTextToVideoRequest {
   prompt: string
@@ -36,9 +36,9 @@ export interface LtxImageToVideoRequest {
 
 export interface LtxResult {
   videoBuffer: ArrayBuffer
-  provenance?: Omit<import('./ltx-v2').LtxJob, 'output'> | import('./runpod').RunpodProvenance
+  provenance?: Omit<import('./ltx-v2').LtxJob, 'output'> | import('./runpod').RunpodProvenance | import('./salad/contracts').Job
   engine: VideoEngine
-  model: LtxModel | 'wan-2.2' | 'local-m4max'
+  model: LtxModel | 'wan-2.2' | 'local-m4max' | typeof import('./salad/contracts').MODEL
   duration: number
   resolution: string
 }

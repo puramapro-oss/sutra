@@ -10,6 +10,9 @@ import { resolveVoiceProviderId } from '@/lib/constants'
 import { completeQuotaForFinishedJob, claimJobByKey, finishJob } from '@/lib/video-queue'
 import { type CreateJobInput } from '@/lib/video-pipeline'
 import type { Plan, Profile } from '@/types'
+import { shouldUseLocalEngine } from '@/lib/local-engine'
+import { saladApplicationConfig } from '@/lib/salad/application'
+import { requireActive } from '@/lib/salad/config'
 
 // Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
 // Le pipeline est enregistré en tâche DURABLE avant exécution : si la requête
@@ -39,6 +42,12 @@ export async function POST(req: Request) {
     const quality = clampQualityToPlan(requestedQuality, userPlan, user.email)
     const genPlan: Plan = engine === 'wan-classic' ? 'free' : userPlan
     const voiceId = resolveVoiceProviderId(voice_id ?? voice)
+
+    // Refuse an impossible personal AI request before quota reservation and the
+    // script/voice/music API phases. Stock-only creation needs no GPU worker.
+    if (mediaMode !== 'stock' && shouldUseLocalEngine(user.email ?? null)) {
+      requireActive(saladApplicationConfig().config)
+    }
 
     const videoId = randomUUID()
 
@@ -101,6 +110,18 @@ export async function POST(req: Request) {
       SUTRA_SALAD_NOT_CONFIGURED: 'GPU distant open source non configure ; aucun repli API payant.',
       SUTRA_SALAD_DISABLED: 'GPU distant open source desactive ; aucun repli API payant.',
       SUTRA_SALAD_UNAVAILABLE: 'GPU distant open source indisponible ; aucun repli API payant.',
+      SALAD_DISABLED: 'Moteur GPU distant open source desactive ; aucun repli API payant.',
+      SALAD_INVALID_CONFIG: 'Moteur GPU distant open source non configure ; aucun repli API payant.',
+      SALAD_NOT_QUALIFIED: 'Moteur GPU distant open source non qualifie pour cette demande.',
+      SALAD_UNSUPPORTED_PROFILE: 'Format, qualite ou duree non qualifies sur le GPU distant.',
+      SALAD_UNSUPPORTED_OPERATION: 'Operation non prise en charge par le GPU distant.',
+      SALAD_CAPABILITIES_UNREACHABLE: 'Moteur GPU distant open source indisponible ; aucun repli API payant.',
+      SALAD_CAPABILITIES_HTTP: 'Moteur GPU distant open source indisponible ; aucun repli API payant.',
+      SALAD_STALE_QUOTE: 'Devis GPU expire ; nouvelle validation du budget necessaire.',
+      SALAD_ESTIMATE_EXCEEDS_BUDGET: 'Estimation GPU superieure au budget autorise.',
+      SALAD_ENGINE_BUSY: 'GPU distant occupe ; aucune nouvelle generation lancee.',
+      SALAD_RECONCILIATION_REQUIRED: 'Generation distante a reconcilier ; reprendre cette meme tache.',
+      SALAD_UPLOAD_FAILED_RESUME_SAME_JOB: 'Resultat distant a recuperer ; reprendre cette meme tache.',
     }
     const modeCode = message.split(':', 1)[0]
     if (Object.hasOwn(modeErrors, modeCode)) {

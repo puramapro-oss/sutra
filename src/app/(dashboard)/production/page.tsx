@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import StepProgressBar from '@/components/production/StepProgressBar'
 import IdeaStep from '@/components/production/IdeaStep'
+import { ExecutionModeNotice, GenerationErrorNotice } from '@/components/create/ExecutionModeNotice'
 import ScriptStep from '@/components/production/ScriptStep'
 import StepGenerateCard from '@/components/production/StepGenerateCard'
 import VoiceStep from '@/components/production/VoiceStep'
@@ -87,6 +88,9 @@ export default function ProductionPage() {
           Pipeline complet : de l&apos;idee a la video finale, etape par etape.
         </p>
       </div>
+
+      <ExecutionModeNotice isGenerating={isGenerating} />
+      {error && <GenerationErrorNotice error={error} />}
 
       {/* Step Progress Bar */}
       <StepProgressBar
@@ -204,18 +208,6 @@ export default function ProductionPage() {
           )}
         </motion.div>
       </AnimatePresence>
-
-      {/* Error */}
-      {error && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          role="alert"
-          className="rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-sm text-red-400"
-        >
-          {error}
-        </motion.div>
-      )}
 
       {/* Navigation + Generate All */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-4">

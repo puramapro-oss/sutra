@@ -1,0 +1,34 @@
+Changes: 203 files, 702 symbols
+Affected processes: 359
+Risk level: critical
+
+Changed symbols:
+  Section SUTRA — reprise apres verification finale, 2026-10-13 → BATON.md
+  Section SUTRA T01 — verification finale post-deploiement, 2026-10-13 → HANDOFF-SUTRA-T01-20261012.md
+  Section HANDOFF SUTRA T04 — Salad, 14 octobre 2026 → HANDOFF-SUTRA-T04-SALAD-20261014.md
+  Section Résultat → HANDOFF-SUTRA-T04-SALAD-20261014.md
+  Section Interfaces à intégrer par T01 → HANDOFF-SUTRA-T04-SALAD-20261014.md
+  Section Vérification → HANDOFF-SUTRA-T04-SALAD-20261014.md
+  Section Ownership et activation restante → HANDOFF-SUTRA-T04-SALAD-20261014.md
+  Section Fichiers exacts → HANDOFF-SUTRA-T04-SALAD-20261014.md
+  Section Livraison T07 UI — 14 octobre 2026 → HANDOFF-SUTRA-T07-MODES-20261014.md
+  Section T08 → T01 — QA modes finale, 14 octobre 2026 → HANDOFF-SUTRA-T08-FINAL-MODES-20261014.md
+  Const report → qa/salad-integration-20261014/authenticated-smoke.mjs
+  Property checks → qa/salad-integration-20261014/authenticated-smoke.mjs
+  Property generationRequests → qa/salad-integration-20261014/authenticated-smoke.mjs
+  Property observedAt → qa/salad-integration-20261014/authenticated-smoke.mjs
+  Const sessionToken → qa/salad-integration-20261014/authenticated-smoke.mjs
+... and 687 more
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: getAll, getAll, getAll
+  • CommunityScreen → ApiFetch (3 steps) — changed: getAll, getAll, getAll
+  • AdminContestPage → FetchData (3 steps) — changed: getAll, getAll, getAll
+  • AdminUsersPage → FetchUsers (3 steps) — changed: getAll, getAll, getAll
+  • CommunityPage → FetchBuddy (3 steps) — changed: getAll, getAll, getAll
+  • CommunityPage → FetchCircles (3 steps) — changed: getAll, getAll, getAll
+  • CommunityPage → FetchWall (3 steps) — changed: getAll, getAll, getAll
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: getAll, getAll, getAll
+  • JeuCreatifPage → Load (3 steps) — changed: getAll, getAll, getAll
+  • LightningPage → Load (3 steps) — changed: getAll, getAll, getAll
+... and 349 more

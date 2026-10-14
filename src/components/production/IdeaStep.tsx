@@ -115,7 +115,7 @@ export default function IdeaStep({
               >
                 <span className="text-lg">{eng.icon}</span>
                 <span className="text-sm font-semibold">{eng.label}</span>
-                <span className="text-[11px] text-white/65">{eng.description}</span>
+                <span className="text-[11px] text-white/65">{eng.id === 'wan-classic' ? 'WAN 2.2 — selon le mode et les quotas' : eng.description}</span>
                 {!available && <span className="text-[10px] text-violet-400">Plan {eng.minPlan}+</span>}
               </button>
             )

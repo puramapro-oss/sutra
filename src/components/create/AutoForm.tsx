@@ -5,6 +5,7 @@ import { Sparkles } from 'lucide-react'
 import { NICHES, VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constants'
 import { NICHE_LABELS } from '@/lib/create-utils'
 import { FORMAT_OPTIONS, QUALITY_OPTIONS, STYLE_OPTIONS } from '@/lib/create-constants'
+import { OutputQualityNotice } from './ExecutionModeNotice'
 import { cn } from '@/lib/utils'
 import { MediaModeCards, type MediaMode } from '@/components/create/MediaModeCards'
 import { OptionSection, OptionCard } from '@/components/create/CreateHelpers'
@@ -129,7 +130,7 @@ export default function AutoForm({
                 disabled={!available}
                 data-testid={`quality-${opt.id}`}
               >
-                <span className="text-sm font-semibold">{opt.label}</span>
+                <span className="text-sm font-semibold">{opt.id === '4k' ? '4K (sortie)' : opt.label}</span>
                 {!available && (
                   <span className="text-[10px] text-violet-400">
                     Plan {opt.minPlan}+
@@ -139,6 +140,7 @@ export default function AutoForm({
             )
           })}
         </div>
+        <OutputQualityNotice />
       </OptionSection>
 
       {/* Video Engine */}
@@ -156,7 +158,7 @@ export default function AutoForm({
               >
                 <span className="text-lg">{eng.icon}</span>
                 <span className="text-sm font-semibold">{eng.label}</span>
-                <span className="text-[11px] text-white/65">{eng.description}</span>
+                <span className="text-[11px] text-white/65">{eng.id === 'wan-classic' ? 'WAN 2.2 — selon le mode et les quotas' : eng.description}</span>
                 {!available && (
                   <span className="text-[10px] text-violet-400">
                     Plan {eng.minPlan}+

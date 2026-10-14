@@ -1,0 +1,70 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "target": {
+    "id": "Function:src/components/settings/social/PlatformGrid.tsx:PlatformGrid",
+    "name": "PlatformGrid",
+    "type": "Function",
+    "filePath": "src/components/settings/social/PlatformGrid.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [
+    {
+      "name": "SocialAccountsPage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/settings/social/page.tsx",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Social",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/app/(dashboard)/settings/social/page.tsx:SocialAccountsPage",
+        "name": "SocialAccountsPage",
+        "filePath": "src/app/(dashboard)/settings/social/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_279_socialaccountspage",
+            "label": "SocialAccountsPage → Error",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_200_socialaccountspage",
+            "label": "SocialAccountsPage → Cn",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

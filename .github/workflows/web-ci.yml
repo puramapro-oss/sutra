@@ -102,3 +102,11 @@ jobs:
           PGPASSWORD: fixture
       - name: Account and integrated migration permissions on a private cluster
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-security-rls.mjs
+      - name: Salad isolated journal, concurrency and immutable artifacts
+        run: node --import tsx --test scripts/test-salad-persistence.mts
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          PGHOST: 127.0.0.1
+          PGPORT: '5432'
+          PGUSER: fixture
+          PGPASSWORD: fixture

@@ -64,6 +64,15 @@ export function mediaValidation(contract: CompositionContract, final: MediaProbe
       (contract.clips[index].lineage?.nativeUrl && !s.native) || (contract.clips[index].lineage?.enhancedUrl && !s.enhanced))) {
     throw new FfmpegCompositorError('Preuve media incomplete : mesures source/native/amelioree absentes ou sans image', 'final-validation')
   }
+  // URLs can alias identical bytes. A changed URL is never evidence of composition.
+  // Preserve a legitimate single-clip export when no transformation was requested.
+  const transformationRequired = contract.clips.length > 1 || plan.subtitles.length > 0 ||
+    plan.audioRequired || plan.intro > 0 || plan.outro > 0 ||
+    Boolean(contract.watermarkUrl?.trim() || contract.watermarkText?.trim())
+  if (transformationRequired && sources.some(s => [s.source, s.native, s.enhanced]
+    .some(raw => raw !== null && raw.sha256 === final.sha256))) {
+    throw new FfmpegCompositorError('Video brute inchangee : transformation demandee non prouvee', 'final-validation')
+  }
   const size = (m: MediaProbe | null) => m?.video ? Math.min(m.video.width, m.video.height) : 0
   const target = Math.min(plan.width, plan.height)
   const upscaled = sources.some(s => size(s.source) < target || (s.native !== null && size(s.native) < target) || s.generation?.kind === 'upscaled')

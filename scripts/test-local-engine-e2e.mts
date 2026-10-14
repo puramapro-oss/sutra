@@ -29,9 +29,11 @@ const OWNER = 'matiss.frasne@gmail.com' // super-admin de référence (utils.ts)
 
 // --- garde anti-appel-externe -------------------------------------------------
 const touchedHosts = new Set<string>()
+let fetchCallCount = 0
 const realFetch = globalThis.fetch
 ;(globalThis as Record<string, unknown>).fetch = (url: string | URL, init?: RequestInit) => {
   const host = new URL(String(url)).host
+  fetchCallCount++
   touchedHosts.add(host)
   if (!host.startsWith('127.0.0.1')) {
     throw new Error(`APPEL EXTERNE INTERDIT en mode test : ${host} — un repli payant a été tenté`)
@@ -43,6 +45,7 @@ const assertNoExternalCall = () => {
 }
 
 const { generateVideoSmart } = await import('../src/lib/ltx.ts')
+const { generateLocalVideo } = await import('../src/lib/local-engine.ts')
 const { getWanDimensions } = await import('../src/lib/wan.ts')
 
 // --- stub autonome : démarré ici, arrêté à la fin ------------------------------
@@ -77,20 +80,18 @@ interface FfprobeResult {
   format: { duration: string }
 }
 
-test('parcours local COMPLET : génération → fichier réel → mesures ffprobe', async () => {
+test('utilitaire legacy CPU : fichier réel → mesures ffprobe (hors routage propriétaire)', async () => {
   process.env.LOCAL_ENGINE_ENABLED = 'true'
   process.env.LOCAL_VIDEO_API_URL = STUB
   process.env.LOCAL_ENGINE_MODE = 'strict'
 
-  // Propriétaire, plan empire : SANS le moteur local ce serait du LTX payant.
-  // La garde anti-externe prouve que le routage est resté 100 % local.
+  // Preuve historique du contrat de l'utilitaire conservée. Le routage applicatif
+  // propriétaire est désormais Salad ; ce stub CPU ne le certifie pas.
   const t0 = Date.now()
-  const result = await generateVideoSmart(
-    'un phare dans la tempete, cinematic',
-    'empire',
-    OWNER,
-    { format: '16:9', quality: '720p', duration: 6 }
-  )
+  const dims = getWanDimensions('720p', '16:9')
+  const result = await generateLocalVideo({
+    prompt: 'un phare dans la tempete, cinematic', ...dims, duration: 6,
+  })
   const wallMs = Date.now() - t0
 
   assert.equal(result.model, 'local-m4max', 'la génération vient du moteur local')
@@ -137,23 +138,26 @@ test('parcours local COMPLET : génération → fichier réel → mesures ffprob
     const fps = video!.r_frame_rate ? Number(video!.r_frame_rate.split('/')[0]) / Number(video!.r_frame_rate.split('/')[1] || 1) : NaN
     console.log(`✓ fichier local mesuré : natif ${video!.width}×${video!.height} @ ${fps.toFixed(0)} fps → final identique (aucun crop/montage dans ce parcours mono-clip), ${duration.toFixed(2)}s, h264+aac, A/V Δ=${Math.abs(vDur - aDur).toFixed(3)}s`)
     console.log(`  temps de calcul (parcours complet POST+ffmpeg+téléchargement) : ${wallMs} ms`)
-    console.log('  génération IA réelle : NON — fichier de TEST produit par ffmpeg (stub), le moteur d\'inférence M4 Max reste à brancher/benchmarker')
+    console.log('  génération IA réelle : NON — fichier de TEST produit par ffmpeg (stub), aucune qualification d\'inférence locale ou distante')
     assertNoExternalCall()
   } finally {
     rmSync(outDir, { recursive: true, force: true })
   }
 })
 
-test('mode STRICT : moteur local éteint → erreur explicite, ZÉRO appel externe', async () => {
+test('propriétaire Salad désactivé : legacy configuré ignoré, aucun fallback ni appel', async () => {
   process.env.LOCAL_ENGINE_ENABLED = 'true'
-  process.env.LOCAL_VIDEO_API_URL = 'http://127.0.0.1:7899' // rien n'écoute ici
+  process.env.LOCAL_VIDEO_API_URL = STUB
+  process.env.SALAD_ENABLED = 'false'
+  const callsBefore = fetchCallCount
   process.env.LOCAL_ENGINE_MODE = 'strict'
 
   await assert.rejects(
     () => generateVideoSmart('test', 'empire', OWNER, { format: '16:9', quality: '720p', duration: 6 }),
-    /SUTRA_LOCAL_FAILED/
+    /SALAD_DISABLED/
   )
-  // La preuve anti-frais : échouer n'a déclenché AUCUN hôte externe.
+  assert.equal(fetchCallCount, callsBefore)
+  // La reprise durable Salad et le média réel sont couverts par test-salad-worker.mts.
   assertNoExternalCall()
 })
 

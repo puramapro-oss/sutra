@@ -19,6 +19,7 @@ import { PLAN_LIMITS, NICHES, VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constant
 import { MANUAL_STEPS } from '@/lib/create-utils'
 import { cn } from '@/lib/utils'
 import { ModeToggle } from '@/components/create/ModeToggle'
+import { ExecutionModeNotice, GenerationErrorNotice } from '@/components/create/ExecutionModeNotice'
 import { PipelineProgress } from '@/components/create/PipelineProgress'
 import { MediaModeCards, type MediaMode } from '@/components/create/MediaModeCards'
 import { SceneStockPicker, type StockResult } from '@/components/create/StockPicker'
@@ -132,9 +133,12 @@ export default function CreatePage() {
           Creer une video
         </h1>
         <p className="text-sm text-white/50 mt-1">
-          Genere une video complete en quelques minutes grace a l&apos;IA.
+          Prépare ta vidéo. Le délai de génération dépend du mode et des ressources disponibles.
         </p>
       </div>
+
+      <ExecutionModeNotice isGenerating={isGenerating} />
+      {error && <GenerationErrorNotice error={error} />}
 
       {/* Mode Toggle */}
       <div className="flex justify-center">
@@ -205,16 +209,6 @@ export default function CreatePage() {
             </motion.div>
           )}
 
-          {/* Error */}
-          {error && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-sm text-red-400"
-            >
-              {error}
-            </motion.div>
-          )}
         </div>
       ) : (
         /* Creation form */

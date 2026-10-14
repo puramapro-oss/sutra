@@ -7,6 +7,8 @@ import { searchVideos } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
 import { isEnvSet } from '@/lib/env'
 import { selectEngine } from './ltx-utils'
+import { shouldUseLocalEngine } from './local-engine'
+import { SaladError } from './salad/contracts'
 import type { LtxResult } from './ltx-types'
 import { LtxJobError, type LtxExecution } from './ltx-v2'
 import { RunpodJobError } from './runpod'
@@ -48,7 +50,7 @@ export async function generateVisualWithFallback(
     : isEnvSet('LTX_API_KEY')
   // Stock is eligible only BEFORE any paid call, when explicitly permitted by
   // strictAi=false and the selected provider is known to be unconfigured.
-  if (configured || strictAi || track.job?.current || track.execution) {
+  if (shouldUseLocalEngine(userEmail) || configured || strictAi || track.job?.current || track.execution) {
     const result = await generateVideoSmart(prompt, plan, userEmail, {
       quality, format, duration: track.duration, userId: track.userId,
       videoId: track.videoId, job: track.job, jobId: track.jobId, operationKey: track.operationKey, execution: track.execution,
@@ -60,6 +62,7 @@ export async function generateVisualWithFallback(
     } catch {
       // A storage failure happens AFTER a paid generation. Keep its identity;
       // never let a generic queue retry start a new WAN generation.
+      if (result.provenance?.provider === 'salad') throw new SaladError('SALAD_UPLOAD_FAILED_RESUME_SAME_JOB')
       if (result.provenance?.provider === 'runpod') throw new RunpodJobError('UPLOAD_FAILED_RESUME_SAME_JOB', result.provenance)
       if (result.provenance?.provider === 'ltx') throw new LtxJobError('LTX_UPLOAD_FAILED_RESUME_SAME_JOB', result.provenance)
       throw new ProviderOperationError(result.engine, 300_000)

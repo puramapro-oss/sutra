@@ -12,12 +12,14 @@ export interface LtxJobState {
   status?: 'pending' | 'processing' | 'completed' | 'failed'
   v2?: import('./ltx-v2').LtxJob
   requestId?: string
+  salad?: import('./salad/contracts').Job
 }
 export interface LtxJobPersistence {
   current?: LtxJobState
   save: (state: LtxJobState) => Promise<void>
   /** Shared identity for wrappers of one scene in the same lease-owned steps. */
   readonly serializationKey?: object
+  readonly operationKey?: string
 }
 export class LtxJobError extends Error {
   constructor(message: string, readonly jobId?: string) { super(message); this.name = 'LtxJobError' }
@@ -36,6 +38,7 @@ export function durableLtxJob(steps: Record<string, unknown>, key: string,
   if (!serializationKey) { serializationKey = {}; scopes.set(key, serializationKey) }
   return {
     serializationKey,
+    operationKey: key,
     get current() { return steps[key] as LtxJobState | undefined },
     set current(state) { steps[key] = state },
     async save(state) {

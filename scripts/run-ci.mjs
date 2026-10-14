@@ -7,6 +7,10 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
+  'scripts/test-salad-worker.mts', 'scripts/test-salad-host.mts', 'scripts/test-t03-salad-recovery.mts',
+  'qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts',
+  'qa/t03-salad-recovery-20261014/adapter-recovery.test.mts',
+  'scripts/test-t06-social-final.mts', 'scripts/test-t08-final-modes.mts',
   'scripts/test-insee.mjs', 'scripts/test-editor-export.mts', 'scripts/test-export-integration.mts', 'scripts/test-integration.mts', 'scripts/test-ltx-tiers.mjs', 'scripts/test-karma-split.mjs',
   'scripts/test-api-contracts.mts', 'scripts/test-env-contracts.mts', 'scripts/test-suno-contract.mts',
   'qa/t03-provider-complement-20261013/music-recovery.test.mts',
@@ -33,6 +37,7 @@ const profiles = {
     ['publication', ['scripts/test-auto-publication.mjs']],
   ],
   media: [
+    ['salad-media', ['--import', 'tsx', '--test', 'scripts/test-t05-salad-media.mts']],
     ['local-engine', ['--import', 'tsx', '--test', 'scripts/test-local-engine-e2e.mts']],
     ['compositor', ['--experimental-test-module-mocks', '--import', 'tsx', '--import', './scripts/helpers/local-media-fixture.mts', '--test', '--test-concurrency=1', 'src/lib/ffmpeg-compositor.test.ts', 'src/lib/ffmpeg-compositor-formats.test.ts', 'src/lib/media-validation.test.ts']],
   ],
@@ -54,6 +59,7 @@ if (readdirSync(root).some(name => name.startsWith('.env') && name !== '.env.exa
 const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot'].flatMap(key =>
   process.env[key] ? [[key, process.env[key]]] : []))
 Object.assign(env, {
+  T02_SALAD_TARGET: root, T03_SALAD_SOURCE: root,
   NODE_OPTIONS: `--require=${resolve(root, 'qa/t08/offline.cjs')}`,
   CI: '1', SUTRA_UI_PRODUCTION: '1', NEXT_TELEMETRY_DISABLED: '1', OTS_NETWORK: '0', LTX_TRACK_DB: '0',
   NEXT_PUBLIC_SUPABASE_URL: 'https://sutra-test.invalid',

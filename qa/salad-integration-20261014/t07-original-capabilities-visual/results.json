@@ -1,0 +1,50 @@
+{
+  "observedAt": "2026-10-14T00:14:34.548Z",
+  "runtime": "v26.0.0",
+  "childExit": {
+    "code": 0,
+    "signal": null
+  },
+  "results": [
+    "capabilities client: safe public state, one GET, no generation or authority fields",
+    "capabilities ready: safe public state, one GET, no generation or authority fields",
+    "capabilities busy: safe public state, one GET, no generation or authority fields",
+    "no JS or hydration errors; no live generation, purchase or publication"
+  ],
+  "errors": [],
+  "violations": [
+    {
+      "name": "capabilities-client",
+      "violations": []
+    },
+    {
+      "name": "capabilities-ready",
+      "violations": []
+    },
+    {
+      "name": "capabilities-busy",
+      "violations": []
+    }
+  ],
+  "intercepted": [],
+  "socialRequests": [],
+  "capabilitiesRequests": [
+    {
+      "method": "GET",
+      "path": "/api/video/capabilities",
+      "search": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/video/capabilities",
+      "search": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/video/capabilities",
+      "search": ""
+    }
+  ],
+  "blockedExternalOrigins": [],
+  "proof": "LOCAL_CHROMIUM_FIXTURES_ONLY; 0 generation requests intercepted; no paid route executed; no production build repeated"
+}

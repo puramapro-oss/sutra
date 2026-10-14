@@ -1,0 +1,14 @@
+PASS capabilities client: safe public state, one GET, no generation or authority fields
+PASS capabilities disabled: safe public state, one GET, no generation or authority fields
+PASS capabilities unavailable: safe public state, one GET, no generation or authority fields
+PASS capabilities unknown: safe public state, one GET, no generation or authority fields
+PASS capabilities cold: safe public state, one GET, no generation or authority fields
+PASS capabilities ready: safe public state, one GET, no generation or authority fields
+PASS capabilities busy: safe public state, one GET, no generation or authority fields
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:53351/create
+Call log:
+[2m  - navigating to "http://127.0.0.1:53351/create", waiting until "domcontentloaded"[22m
+
+    at /Users/matissdornier/purama-worktrees/sutra-t07-modes-ux-20261014/qa/t07-modes-20261014/browser.mjs:216:20
+    at check (/Users/matissdornier/purama-worktrees/sutra-t07-modes-ux-20261014/qa/t07-modes-20261014/browser.mjs:59:41)
+    at /Users/matissdornier/purama-worktrees/sutra-t07-modes-ux-20261014/qa/t07-modes-20261014/browser.mjs:213:13

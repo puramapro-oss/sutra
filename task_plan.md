@@ -1,3 +1,7 @@
+# SUTRA — jalon intégration Salad désactivée, 2026-10-14
+
+Candidat intégré et gates locales PASS : `qa/salad-integration-20261014/README.md`. Sept lots T02–T08 vérifiés ; défauts modes, reprise durable production, média et reconnexion corrigés. Contrats666/7skip, médias59, PostgreSQL7, promotion24, TS/lint/build verts. Aucun GPU activé ni migration distante. Configuration RunPod/Shotstack et binding Zernio déjà vérifiés ; consentements sociaux et qualification GPU restent externes. Prochaine étape autorisée : commit exact, CI complète, candidat OVH isolé, sauvegarde/restauration puis promotion SUTRA seule. Aucun déploiement de ce candidat encore attesté. Les sections suivantes sont historiques.
+
 # Verification finale post-deploiement — etat prioritaire 2026-10-13
 
 - [x] LOCKS/handoffs/processus/branches/WIP inspectes ; deux auxiliaires libres affectes uniquement aux preuves manquantes.

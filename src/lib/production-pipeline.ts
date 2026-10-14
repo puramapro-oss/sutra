@@ -13,6 +13,7 @@ import { searchVideos, type MediaFormat } from '@/lib/pexels'
 import { uploadToStorage } from '@/lib/storage'
 import { generateSubtitlesFromScript, actualQualityFor, durableRenderJob, verifyAndStoreRenderedVideo, type AssembleClip } from '@/lib/shotstack'
 import { resolveVoiceProviderId } from '@/lib/constants'
+import { shouldUseLocalEngine } from './local-engine'
 import { TEMPLATE_CONFIGS, sanitizeScriptData, MAX_SCENES } from '@/lib/production-schema'
 import type { Plan, Profile, ScriptData } from '@/types'
 
@@ -100,7 +101,11 @@ function defaultProviders(input: ProductionJobInput): ProductionProviders {
           stockMeta: { id: best.id, author: best.author, authorUrl: best.authorUrl, sourcePage: best.sourcePage, width: best.width, height: best.height },
         } satisfies VisualResult
       }
-      return generateVisualWithFallback(scene.visual_prompt, input.qualityCap, input.userEmail, input.genPlan, input.mediaFormat, false, { userId: input.userId, duration, job })
+      // Production has no video row until assembly. Its persisted request key is
+      // the personal engine's stable scope; never use it as an API video-row ID.
+      const personal = shouldUseLocalEngine(input.userEmail) && (!job?.current || Boolean(job.current.salad))
+      return generateVisualWithFallback(scene.visual_prompt, input.qualityCap, input.userEmail, input.genPlan, input.mediaFormat, false,
+        { userId: input.userId, videoId: personal ? input.requestKey : undefined, duration, job })
     },
     voice: (text, voiceId) => generateVoiceWithFallback(text, voiceId),
     music: async (prompt, style, duration) => style === 'none' ? null : (await generateMusic({ prompt, style: style as Parameters<typeof generateMusic>[0]['style'], duration, instrumental: true })).audio_url,

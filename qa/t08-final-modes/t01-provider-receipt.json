@@ -1,0 +1,79 @@
+{
+  "observedAt": "2026-10-13T23:42:02.239682+00:00",
+  "applicationCommit": "e3b17117256269e281304cd4ab83bc722a6f7894",
+  "masterSource": "~/.env.purama.master",
+  "masterMode": "0o600",
+  "runtimeMode": "0o600",
+  "runtimeAllSelectedMatchMaster": true,
+  "originsPreserved": true,
+  "otherRuntimeValuesPreserved": true,
+  "otherContainersUnchanged": true,
+  "containerHealthy": true,
+  "imageUnchanged": true,
+  "changedVariables": [
+    "RUNPOD_API_KEY",
+    "SHOTSTACK_API_KEY",
+    "SHOTSTACK_PRODUCTION_KEY",
+    "ZERNIO_PROFILE_BINDINGS"
+  ],
+  "source": {
+    "path": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/provider-activation-20261014/activate.json",
+    "sha256": "25f6df2af698a235f71af0f2353e08202684ecb709214f14557f4a7eefb44a88",
+    "owner": "T01",
+    "state": "committed T01 evidence, exact bytes verified; no independent HTTP calls",
+    "commit": "57e40428124850cbd1463538e7d9673069ceed64"
+  },
+  "local": {
+    "selectedVariablesVerified": true,
+    "mode": "0o600",
+    "otherBytesPreserved": true
+  },
+  "providers": {
+    "observedAt": "2026-10-13T23:42:10.303Z",
+    "generationRequests": 0,
+    "runpod": {
+      "http": 200,
+      "contract": true,
+      "workers": {
+        "idle": 0,
+        "initializing": 0,
+        "ready": 0,
+        "running": 0,
+        "throttled": 0,
+        "unhealthy": 0
+      },
+      "permission": "endpoint GET health only; no submission tested",
+      "workerModelContract": "NOT_TESTED"
+    },
+    "shotstack": {
+      "stage": {
+        "http": 200,
+        "contract": true,
+        "templateCount": 0
+      },
+      "v1": {
+        "http": 200,
+        "contract": true,
+        "templateCount": 2
+      },
+      "selectedEnvironment": "stage"
+    },
+    "zernio": {
+      "http": 200,
+      "uniqueBoundProfile": true,
+      "ownerHttp": 200,
+      "ownershipVerified": true,
+      "bindingCount": 1,
+      "puramaBindingCount": 1,
+      "accountsHttp": 200,
+      "accountCount": 0,
+      "accountsScoped": true
+    },
+    "localEngine": {
+      "enabled": false,
+      "urlPresent": false,
+      "health": "NOT_CONFIGURED"
+    },
+    "pass": true
+  }
+}

@@ -43,6 +43,7 @@ class Store {
     return {
       kind: this.kind,
       load: async (id: string) => copy(this.rows.get(id) ?? null),
+      readActive: async () => copy([...this.rows.values()].find(j => !['succeeded', 'rejected'].includes(j.status)) ?? null),
       reserve: async (job: Job) => {
         if (epoch !== this.epoch) throw new Error('FIXTURE_LEASE_EXPIRED')
         const fault = this.reserveFault
@@ -141,7 +142,7 @@ for (const fault of ['before', 'after'] as const) {
   test(`client intent ${fault}-write interruption: no POST before confirmed reserve`, async t => {
     const h = setup(t)
     h.app.reserveFault = fault
-    await assert.rejects(h.client().submit('scope-t03', 'scene-0', input, 1), /FIXTURE_/)
+    await assert.rejects(h.client().submit('scope-t03', 'scene-0', input, 1), { message: 'SALAD_SAFE_FAILURE' })
     assert.equal(h.counts().posts, 0)
     if (fault === 'after') {
       for (let i = 0; i < 6; i++) assert.equal((await h.client().submit('scope-t03', 'scene-0', input, 1)).status, 'unknown')
@@ -195,10 +196,9 @@ test('UNKNOWN holds execution slot after restart and deadline; different operati
   await h.interrupt()
   h.expire()
   h.replaceWorker()
-  const blocked = await h.client().submit('scope-t03', 'scene-1', input, 1)
-  assert.equal(blocked.status, 'unknown')
-  assert.equal(blocked.lastHttpStatus, 409)
-  assert.deepEqual(h.counts(), { compute: 1, posts: 2, polls: 0 })
+  assert.equal((await h.client().capabilities()).state, 'interrupted')
+  await assert.rejects(h.client().submit('scope-t03', 'scene-1', input, 1), /SALAD_NOT_QUALIFIED/)
+  assert.deepEqual(h.counts(), { compute: 1, posts: 1, polls: 0 })
   assert.equal(h.remote.rows.size, 1)
 })
 

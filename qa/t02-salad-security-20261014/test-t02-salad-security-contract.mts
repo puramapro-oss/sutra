@@ -46,7 +46,8 @@ function journal(kind = 'submission-intent') {
 }
 function capabilityResponse(active: ReturnType<typeof config>) {
   return Response.json({ protocol: PROTOCOL, provider: 'salad', state: 'ready', qualification: active.qualification,
-    operations: ['text-to-video'], audio: false, native4k: false, maxConcurrent: 1, quotaRemaining: null, quote: active.quote })
+    operations: ['text-to-video'], audio: false, native4k: false, maxConcurrent: 1, quotaRemaining: null, quote: active.quote,
+    generationTimeoutMs: active.generationTimeoutMs })
 }
 const guardedFetch: typeof fetch = async () => { throw new Error('T02_UNEXPECTED_NETWORK_ATTEMPT') }
 globalThis.fetch = guardedFetch

@@ -2,8 +2,8 @@
 // No configuration, worker failure, legacy auto mode: fail closed, no paid fallback.
 // Script, music, voice and final assembly need their own complete local workflow.
 import { isSuperAdmin } from '@/lib/utils'
-import { logVideoGeneration } from './ltx-helpers'
-import { getWanDimensions } from './wan'
+import { generateSaladVideo } from './salad/application'
+import type { LtxJobPersistence } from './ltx-workflow'
 import { assertMediaProbeAvailable, verifyVideoBytes } from './media-probe'
 import type { LtxResult } from './ltx-types'
 import type { Plan } from '@/types'
@@ -102,23 +102,8 @@ export async function probeLocalEngine(): Promise<{ok:boolean;detail?:string}> {
 export async function tryLocalRoute(params: {
   prompt:string; plan:Plan; quality:string; format?:string; duration?:number;
   userEmail?:string|null; userId?:string; videoId?:string
+  job?:LtxJobPersistence; operationKey?:string; imageUri?:string; lastFrameUri?:string; cameraMotion?:string
 }): Promise<LtxResult|null> {
   if (!shouldUseLocalEngine(params.userEmail ?? null)) return null
-  // A missing/disabled worker is NOT permission to call a paid provider.
-  if (!isLocalEngineConfigured()) throw new Error('SUTRA_LOCAL_NOT_CONFIGURED: aucun repli payant autorise')
-  const format=params.format ?? '16:9'
-  const quality=params.quality.trim().toLowerCase()==='uhd'?'4k':params.quality.trim().toLowerCase()
-  if (!['9:16','16:9','1:1'].includes(format) || !['720p','1080p','4k'].includes(quality)) throw new Error('SUTRA_LOCAL_UNSUPPORTED_FORMAT_OR_QUALITY')
-  const dims=getWanDimensions(quality as '720p'|'1080p'|'4k',format as '9:16'|'16:9'|'1:1')
-  const start=Date.now()
-  const track={userId:params.userId??null,videoId:params.videoId??null,plan:params.plan,engineRequested:'wan-classic' as const,modelRequested:'wan-2.2' as const,engineUsed:'local' as const,modelUsed:'local-m4max',fallbackTriggered:false}
-  let result:LtxResult
-  try { result=await generateLocalVideo({prompt:params.prompt,width:dims.width,height:dims.height,duration:params.duration??6}) }
-  catch {
-    await logVideoGeneration({...track,fallbackReason:'local_strict_failure',durationMs:Date.now()-start,success:false,errorMessage:'SUTRA_LOCAL_FAILED'}).catch(()=>{})
-    throw new Error('SUTRA_LOCAL_FAILED: moteur local indisponible ou fichier invalide; aucun repli payant autorise')
-  }
-  // Observability must not invalidate a completed render and cause regeneration.
-  await logVideoGeneration({...track,fallbackReason:null,durationMs:Date.now()-start,success:true,errorMessage:null}).catch(()=>{})
-  return result
+  return generateSaladVideo(params)
 }

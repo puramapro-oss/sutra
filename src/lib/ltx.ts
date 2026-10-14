@@ -1,7 +1,8 @@
 import { ltxV2, LtxJobError, type LtxExecution, type LtxJob } from './ltx-v2'
 import { validateLtxRequest, type LtxEndpoint, type LtxRequest } from './ltx-v2-contract'
 import { executionForCheckpoint, type LtxJobPersistence, resumeLegacyLtx } from './ltx-checkpoint'
-import { tryLocalRoute } from './local-engine'
+import { shouldUseLocalEngine, tryLocalRoute } from './local-engine'
+import { SaladError, sha256 } from './salad/contracts'
 export { durableLtxJob } from './ltx-workflow'
 export type { LtxJobState, LtxJobPersistence } from './ltx-workflow'
 export { LtxJobError } from './ltx-v2'
@@ -48,11 +49,13 @@ async function callLtxApi<E extends LtxEndpoint>(endpoint: E, body: LtxRequest<E
 }
 
 export async function textToVideo(params: LtxTextToVideoRequest, execution?: LtxExecution | LtxJobPersistence): Promise<ArrayBuffer> {
+  if (execution && 'save' in execution && execution.current?.salad) throw new SaladError('SALAD_CHECKPOINT_PROVIDER_CONFLICT')
   if (execution && 'save' in execution && execution.current && !execution.current.v2) return resumeLegacyLtx('/text-to-video', { prompt: params.prompt, model: params.model, duration: params.duration, resolution: params.resolution, fps: params.fps ?? 24, generate_audio: params.generate_audio ?? false, ...(params.camera_motion && { camera_motion: params.camera_motion }), ...(params.seed !== undefined && { seed: params.seed }) }, execution)
   return (await callLtxApi('text-to-video', params as LtxRequest<'text-to-video'>, execution && 'save' in execution ? executionForCheckpoint(execution) : execution)).videoBuffer
 }
 
 export async function imageToVideo(params: LtxImageToVideoRequest, execution?: LtxExecution | LtxJobPersistence): Promise<ArrayBuffer> {
+  if (execution && 'save' in execution && execution.current?.salad) throw new SaladError('SALAD_CHECKPOINT_PROVIDER_CONFLICT')
   if (execution && 'save' in execution && execution.current && !execution.current.v2) return resumeLegacyLtx('/image-to-video', { image_uri: params.image_uri, prompt: params.prompt, model: params.model, duration: params.duration, resolution: params.resolution, fps: params.fps ?? 24, generate_audio: params.generate_audio ?? false, ...(params.last_frame_uri && { last_frame_uri: params.last_frame_uri }), ...(params.camera_motion && { camera_motion: params.camera_motion }) }, execution)
   return (await callLtxApi('image-to-video', params as LtxRequest<'image-to-video'>, execution && 'save' in execution ? executionForCheckpoint(execution) : execution)).videoBuffer
 }
@@ -101,8 +104,16 @@ export async function generateVideoSmart(
   if (!['720p', '1080p', '4k'].includes(requestedQuality)) throw new Error('PROVIDER_UNSUPPORTED_QUALITY')
   const quality = clampQualityToPlan(requestedQuality, plan, userEmail)
   if (quality !== requestedQuality) throw new Error('PROVIDER_QUALITY_EXCEEDS_PLAN')
-  if (!options.job?.current && !options.execution) {
-    const local = await tryLocalRoute({ prompt, plan, quality, userEmail, format: options.format, duration: options.duration, userId: options.userId, videoId: options.videoId })
+  if (options.job?.current?.salad && (!shouldUseLocalEngine(userEmail) || options.execution)) throw new SaladError('SALAD_CHECKPOINT_PROVIDER_CONFLICT')
+  if (shouldUseLocalEngine(userEmail) && options.execution) {
+    // An explicit API context may reconcile a pre-existing job, never bypass
+    // the personal engine choice to create a new paid API operation.
+    try {
+      if (!await options.execution.store.load(sha256(options.execution.operationKey))) throw new Error()
+    } catch { throw new SaladError('SALAD_CHECKPOINT_PROVIDER_CONFLICT') }
+  }
+  if ((!options.job?.current || options.job.current.salad) && !options.execution) {
+    const local = await tryLocalRoute({ prompt, plan, quality, userEmail, format: options.format, duration: options.duration, userId: options.userId, videoId: options.videoId, job: options.job, operationKey: options.operationKey, imageUri: options.imageUri, lastFrameUri: options.lastFrameUri, cameraMotion: options.cameraMotion })
     if (local) return local
   }
   const requestedFormat = options.format ?? '16:9'

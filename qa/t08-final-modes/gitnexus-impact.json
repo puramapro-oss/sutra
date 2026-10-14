@@ -1,0 +1,188 @@
+{
+  "target": {
+    "id": "Function:src/lib/pipeline-submit.ts:submissionErrorStatus",
+    "name": "submissionErrorStatus",
+    "type": "Function",
+    "filePath": "src/lib/pipeline-submit.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 4,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 4,
+    "processes_affected": 4,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 4
+  },
+  "affected_processes": [
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/video/export/route.ts",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/auto/generate/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/create/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/production/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Stripe",
+      "hits": 4,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/auto/generate/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/auto/generate/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_76_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_210_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_221_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/create/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_171_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_254_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_79_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/production/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/production/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_280_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_94_post",
+            "label": "POST → SanitizeScriptData",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_317_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/video/export/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/video/export/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_341_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_136_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_133_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_182_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

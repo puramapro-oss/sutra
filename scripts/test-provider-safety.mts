@@ -153,6 +153,7 @@ test('smart: source provenance includes job/cost/timeout/quota, excludes signed 
   mock((url, init) => init?.method === 'POST' ? json({ id: 'job-smart', created_at: T }, 202) : url.startsWith('https://api.ltx.io') ? json({ id: 'job-smart', created_at: T, completed_at: T, status: 'completed', result: { video_url: 'https://output.test/v.mp4?signature=redacted' } }) : new Response(new Uint8Array([1])))
   const result = await generateVideoSmart('p', 'creator', null, { execution: execution(), duration: 5 })
   assert.equal(result.engine, 'ltx-fast'); assert.equal(result.duration, 6)
+  assert.ok(result.provenance?.provider === 'ltx')
   assert.equal(result.provenance?.id, 'job-smart')
   assert.equal(result.provenance?.remoteStatus, 'completed')
   assert.equal(result.provenance?.cost.estimated, 0.36)

@@ -2,6 +2,7 @@ import { VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constants'
 import { FORMAT_OPTIONS, QUALITY_OPTIONS } from '@/lib/create-constants'
 import { cn } from '@/lib/utils'
 import { OptionSection, OptionCard } from '../CreateHelpers'
+import { OutputQualityNotice } from '../ExecutionModeNotice'
 import type { Plan, VideoFormat, VideoQuality } from '@/types'
 import type { VideoEngine } from '@/lib/ltx'
 
@@ -50,12 +51,13 @@ export default function ManualFormStep4({
             const available = isQualityAvailable(opt.minPlan)
             return (
               <OptionCard key={opt.id} selected={quality === opt.id} onClick={() => available && setQuality(opt.id)} disabled={!available}>
-                <span className="text-sm font-semibold">{opt.label}</span>
+                <span className="text-sm font-semibold">{opt.id === '4k' ? '4K (sortie)' : opt.label}</span>
                 {!available && <span className="text-[10px] text-violet-400">Plan {opt.minPlan}+</span>}
               </OptionCard>
             )
           })}
         </div>
+        <OutputQualityNotice />
       </OptionSection>
       <OptionSection title="Moteur video">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

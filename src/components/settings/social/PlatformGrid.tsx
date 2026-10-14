@@ -52,7 +52,7 @@ export function PlatformGrid({
 }: PlatformGridProps) {
   if (loading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {Array.from({ length: 8 }).map((_, i) => (
           <Skeleton key={i} className="h-52 rounded-2xl" />
         ))}
@@ -61,11 +61,11 @@ export function PlatformGrid({
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {PLATFORMS_ORDER.map((platform, i) => {
         const info = PLATFORM_INFO[platform]
         const account = accountsByPlatform[platform]
-        const isConnected = !!account
+        const isConnected = account?.status === 'connected'
         const isConnecting = connecting === platform
         const canConnect = (OAUTH_PLATFORMS as readonly string[]).includes(platform)
         const isDisconnecting = account && disconnectingId === account.id
@@ -77,7 +77,7 @@ export function PlatformGrid({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.03, duration: 0.35 }}
             className={cn(
-              'relative overflow-hidden rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5 flex flex-col',
+              'relative min-w-0 overflow-hidden rounded-2xl bg-white/[0.02] border border-white/[0.06] p-5 flex flex-col',
               'hover:bg-white/[0.04] hover:border-white/[0.12] transition-all duration-300'
             )}
             style={{ boxShadow: isConnected ? `0 0 0 1px ${info.color}40` : undefined }}
@@ -89,7 +89,7 @@ export function PlatformGrid({
               aria-hidden
             />
 
-            <div className="flex items-start justify-between mb-3">
+            <div className="flex flex-wrap gap-2 items-start justify-between mb-3">
               <div
                 className={cn(
                   'w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center text-2xl shadow-lg',
@@ -107,7 +107,13 @@ export function PlatformGrid({
             </div>
 
             <h3 className="text-base font-semibold text-white mb-1">{info.label}</h3>
-            <p className="text-xs text-white/50 line-clamp-2 mb-4 flex-1">{info.description}</p>
+            <p className="text-xs text-white/70 line-clamp-2 mb-4 flex-1">{info.description}</p>
+
+            {account && !isConnected && (
+              <p className="mb-3 text-xs text-amber-200 break-words">
+                Connexion à renouveler. Ancien compte : @{account.username || account.display_name || 'compte'}.
+              </p>
+            )}
 
             {isConnected && account ? (
               <div className="space-y-2">
@@ -130,13 +136,13 @@ export function PlatformGrid({
               <Button
                 variant="primary"
                 size="sm"
-                className="w-full"
+                className="w-full whitespace-normal h-auto min-h-9"
                 loading={isConnecting}
                 disabled={!canConnect}
                 onClick={() => onConnect(platform)}
                 data-testid={`connect-${platform}`}
               >
-                {canConnect ? 'Se connecter' : 'Connexion indisponible'}
+                {canConnect ? account ? 'Se reconnecter' : 'Se connecter' : 'Connexion indisponible'}
               </Button>
             )}
           </motion.div>

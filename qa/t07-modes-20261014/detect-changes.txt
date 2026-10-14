@@ -1,0 +1,22 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 6 files, 10 symbols
+Affected processes: 3
+Risk level: medium
+
+Changed symbols:
+  Function CreatePage → src/app/(dashboard)/create/page.tsx
+  Function ProductionPage → src/app/(dashboard)/production/page.tsx
+  Function AutoForm → src/components/create/AutoForm.tsx
+  Const statusColor → src/components/create/PipelineProgress.tsx
+  Property pending → src/components/create/PipelineProgress.tsx
+  Function PipelineProgress → src/components/create/PipelineProgress.tsx
+  Function renderSteps → src/components/create/PipelineProgress.tsx
+  Function StepRow → src/components/create/PipelineProgress.tsx
+  Function ManualFormStep4 → src/components/create/wizard/ManualFormStep4.tsx
+  Function IdeaStep → src/components/production/IdeaStep.tsx
+
+Affected execution flows:
+  • CreatePage → GetPipelineSteps (3 steps) — changed: CreatePage
+  • CreatePage → Cn (4 steps) — changed: CreatePage
+  • ProductionPage → Cn (3 steps) — changed: ProductionPage

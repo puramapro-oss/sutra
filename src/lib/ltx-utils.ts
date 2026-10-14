@@ -129,7 +129,7 @@ export function getLtxHealth(): { healthy: boolean; failures: number; lastFailur
 
 export type VideoQuality = '720p' | '1080p' | '4k'
 
-const RATES_PER_SECOND: Record<VideoEngine, Record<VideoQuality, number>> = {
+const RATES_PER_SECOND: Record<Exclude<VideoEngine, 'salad'>, Record<VideoQuality, number>> = {
   'ltx-pro': { '720p': 0.04, '1080p': 0.08, '4k': 0.32 },
   'ltx-fast': { '720p': 0.03, '1080p': 0.06, '4k': 0.24 },
   // WAN : estimation basse en « seconde de vidéo » ; RunPod facture en fait le
@@ -148,6 +148,7 @@ export function estimateCost(
   durationSeconds: number,
   quality: VideoQuality = '1080p',
 ): number {
+  if (engine === 'salad') throw new Error('SALAD_DYNAMIC_QUOTE_REQUIRED')
   const safeDuration = Math.max(0, durationSeconds)
   const rate = RATES_PER_SECOND[engine][quality] ?? RATES_PER_SECOND[engine]['1080p']
   return Number((rate * safeDuration).toFixed(4))

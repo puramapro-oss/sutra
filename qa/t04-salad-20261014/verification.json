@@ -1,0 +1,120 @@
+{
+  "recorded_at": "2026-10-14T00:28:19.115811+00:00",
+  "branch": "codex/sutra-t04-salad-20261014",
+  "base": "14617333bfb21efe1f2a1c91888d3322dde20f5b",
+  "target_commit": "The local commit containing this file; exact SHA in shared T04 handoff.",
+  "scope_sha256": {
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+    "package.json": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e",
+    "qa/t04-salad-20261014/run.py": "3e6ef31d9ed460426ee047263c039c9715db42a006158150a199281f9785e6d5",
+    "qa/t04-salad-20261014/tsconfig.json": "7ca17984c2cedf91dfd2f0e98b323684bf1fb5ffd18ac197465bf4c5350677e9",
+    "qa/t08/offline.cjs": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+    "scripts/comfyui-engine-server.mjs": "3bd5d41a4f5b8d8ea5ed553ca2f8b72094fec98b33aa9d6921dfafc7083408f1",
+    "scripts/test-local-engine-e2e.mts": "05baa661ba6f11cb79f247da905e1909b615ba57de128ec05f75a240a705c985",
+    "scripts/test-provider-safety.mts": "79cc80b4a29bd80799038e41aaa5385ed81cdd51f25b219096cefb0d7edb4a33",
+    "scripts/test-salad-host.mts": "c1037c12e0e77a0160866cf1f241cc34397997d92fd91f18677b126eb3adef42",
+    "scripts/test-salad-worker.mts": "6a174109a58621ac7936edcfead0ae4b0f241b122c48a68f7a3b3009b04d70a5",
+    "src/app/api/video/capabilities/route.ts": "ff9c057c590930e9ec05f889bdbbb4dc9207f6a687f2dedbb0193a62d96913ca",
+    "src/lib/fallbacks.ts": "bd55384b002896bb728889d9912a8342a36334f5e5749fff98c82e709c1768f6",
+    "src/lib/local-engine.ts": "3735031abb5eea0e6f273c4b29d5558a1420afce3105f985b65c01368c2ebadc",
+    "src/lib/ltx-types.ts": "67cdf84251932a6d8bb5b927da80ea12e98411bfb911fd097a0a19b85f6f4aa7",
+    "src/lib/ltx-utils.ts": "cfff5d6f9ffdadf12a616d3c7da95efd5b0851cbd8055a9e71cb67007016cbc9",
+    "src/lib/ltx-workflow.ts": "25014d4f5bd66af115ecc1578a3daaeeb10609013fcce7ab4737aa63a7bcb72d",
+    "src/lib/ltx.ts": "1124d3f79eb90bc22c90af37c3d6cd73f93fdf8eab5e0443447be0e51c55e4bc",
+    "src/lib/media-probe.ts": "12250b8dcf3a52cf196e0f6d04765c2084a555f215a809f9b3f04792486b56f0",
+    "src/lib/salad/application.ts": "f6a8b7dd40efd22c3bc7b3c19cf137980066e1490204fb9b7e345ea615a86261",
+    "src/lib/salad/checkpoint.ts": "bf64c2c1db1bb1c2f00e15c0806192dadb178b84c4efd76a0e0f07fdb94640cd",
+    "src/lib/salad/client.ts": "6ad7f910855200e9080415e89861750fac4fe11ac0a5d0381eb46b92cda9ec46",
+    "src/lib/salad/config.ts": "e3d03ede3241d98a5851c2fb0d6f883af52e7134bedec821977b8916aa7c97ec",
+    "src/lib/salad/contracts.ts": "ff890267317cdfdc65c57ebf0b0d89372b04aee34efb258be9984be8a4a6d2c9",
+    "src/lib/salad/engine.ts": "b9dbc655f35ceb78e4793d21489027705d696820b2c53d5394dba3277ce22c15",
+    "src/lib/salad/host.ts": "6317af812f23abb5f52bfbfb38572455be5799173f3075db1a5d2cb1d584b961",
+    "src/lib/salad/http.ts": "86a5677bce713d915e8bcd082272b697f7b63a996327d7a2ddd35098b082352f",
+    "src/lib/salad/inspection.ts": "bb623f15b93ed1b47094fef0f51d0e9a5bce260a994aefae2705dfc68486c358",
+    "src/lib/salad/serve.mts": "adc47a3ebd9f1d858bba4f81ab172acac87489c2ed4590a25259fb1bb69db243",
+    "src/lib/salad/worker.ts": "c0a2799e3d377dedc204e4db66b9611b6ff4684e32b0dc9df75f6dfd8d2d7112",
+    "tsconfig.json": "9945bb222ec3063c73dfb0e2225f7463621070d5307b3bd970c13da1382f66ce"
+  },
+  "checks": {
+    "contracts": {
+      "command": "python3 qa/t04-salad-20261014/run.py contracts",
+      "exit_code": 0,
+      "pass": 42,
+      "fail": 0,
+      "skip": 0,
+      "reuse": false,
+      "log_sha256": "43cca9cb32cb6923a49b16b25a821a46b92d0b610596e051794a2bb5e7bf7cbd",
+      "log_timestamp_utc": "2026-10-14T00:22:53.539675+00:00"
+    },
+    "legacy-e2e": {
+      "command": "python3 qa/t04-salad-20261014/run.py legacy-e2e",
+      "exit_code": 0,
+      "pass": 3,
+      "fail": 0,
+      "skip": 0,
+      "reuse": "No later delta affects legacy CPU utility or disabled-owner/client route assertions.",
+      "log_sha256": "f65b9ef201db850c8dbfc8a67be2097ad8f2afbb9b8617527936f90eb70d302f",
+      "log_timestamp_utc": "2026-10-14T00:17:15.593374+00:00"
+    },
+    "routing-regression": {
+      "command": "python3 qa/t04-salad-20261014/run.py routing-regression",
+      "exit_code": 0,
+      "pass": 9,
+      "fail": 0,
+      "skip": 0,
+      "reuse": "Only remote-worker durable readiness changed since this pass; selected API/disabled-owner paths unchanged.",
+      "log_sha256": "cc71da89a08dd195db38550190b58c71c278803dafc120bb154f8666ebefeccd",
+      "log_timestamp_utc": "2026-10-14T00:18:34.535754+00:00"
+    },
+    "typecheck": {
+      "command": "python3 qa/t04-salad-20261014/run.py typecheck",
+      "exit_code": 0,
+      "reuse": false,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_timestamp_utc": "2026-10-14T00:22:54.411863+00:00"
+    },
+    "lint": {
+      "command": "python3 qa/t04-salad-20261014/run.py lint",
+      "exit_code": 0,
+      "reuse": false,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_timestamp_utc": "2026-10-14T00:22:55.722179+00:00"
+    }
+  },
+  "gitnexus": {
+    "index": "gitnexus-final-index.log",
+    "detect_changes": "gitnexus-detect-changes.log",
+    "changed_files_at_detection": 37,
+    "reported_changed_symbols": 445,
+    "reported_risk": "low",
+    "reported_flows": 0,
+    "exhaustive_certification": "UNKNOWN: truncated index; absence of a flow is not absence of runtime impact",
+    "entry_points_dropped": 1027,
+    "callees_dropped": 545,
+    "walks_cut": 3
+  },
+  "security": {
+    "command": "gitleaks stdin --redact --no-banner --no-color < staged-diff (in-memory pipe)",
+    "result_file": "security-scan.log"
+  },
+  "bounds": {
+    "provider_calls": 0,
+    "gpu_calls": 0,
+    "secret_files_read": 0,
+    "env_files_written": 0,
+    "global_gates_replayed": 0,
+    "paid_generations": 0,
+    "remote_writes": 0,
+    "deployment": false,
+    "push": false,
+    "merge": false
+  },
+  "not_proven": [
+    "GPU/model/image qualification",
+    "worker Linux active runtime",
+    "real provider authentication",
+    "T01 integrated candidate and PostgreSQL port",
+    "billing actuals and quotas",
+    "production readiness"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "plugins": [],
+    "types": [
+      "node",
+      "next"
+    ]
+  },
+  "include": [
+    "../../src/lib/salad/**/*.ts",
+    "../../scripts/test-salad-worker.mts",
+    "../../src/lib/local-engine.ts",
+    "../../src/lib/ltx.ts",
+    "../../src/lib/ltx-types.ts",
+    "../../src/lib/ltx-workflow.ts",
+    "../../src/app/api/video/capabilities/route.ts",
+    "../../src/lib/ltx-utils.ts",
+    "../../src/lib/fallbacks.ts",
+    "../../scripts/test-local-engine-e2e.mts",
+    "../../src/lib/salad/**/*.mts",
+    "../../scripts/test-salad-host.mts"
+  ],
+  "exclude": [
+    "../../node_modules"
+  ]
+}
