@@ -1,6 +1,7 @@
 // Browser contract tests with a local fake Supabase service. No real accounts or providers.
 import assert from 'node:assert/strict'
 import { runT07Flows } from './ui-isolated/t07-flows.mjs'
+import { observeNavigation } from './ui-isolated/navigation-diagnostics.mjs'
 import { runT07Runtime } from './ui-isolated/t07-runtime.mjs'
 import { createServer } from 'node:http'
 import { spawn } from 'node:child_process'
@@ -81,6 +82,7 @@ const log = await open(resolve(output, 'server.log'), 'w')
 const env = { ...process.env, NEXT_TELEMETRY_DISABLED: '1', NEXT_PUBLIC_SUPABASE_URL: fixtureURL, NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fixture-anon', NEXT_PUBLIC_APP_SCHEMA: 'sutra', SUPABASE_SERVICE_ROLE_KEY: 'fixture-service', STRIPE_SECRET_KEY: 'sk_test_isolated', RESEND_API_KEY: 're_isolated', VERCEL: '' }
 let child, browser
 const results = [], browserErrors = [], accessibility = []
+const navigationDiagnostics = []
 const editorOnly = process.argv.includes('--editor-only')
 const profileOnly = process.argv.includes('--profile-only')
 const widths = editorOnly || profileOnly ? [] : [320, 375, 768, 1280, 1440]
@@ -122,6 +124,7 @@ try {
       } catch { /* about:blank has no storage origin. */ }
     }, { consent })
     ctx.on('page', page => {
+      navigationDiagnostics.push(observeNavigation(page))
       page.on('pageerror', error => browserErrors.push({ url: page.url().replace(base, ''), message: error.message }))
       page.on('console', message => { if (message.type() === 'error' && /hydration|did not match|server rendered/i.test(message.text())) browserErrors.push({ url: page.url().replace(base, ''), message: message.text() }) })
     })
@@ -275,7 +278,8 @@ try {
     assert.ok(cookies.length); assert.ok(cookies.every(cookie => cookie.expires > Date.now() / 1000 + 29 * 86400))
   })
   await check('desktop navigation and modal remain usable with a collapsed sidebar', async () => {
-    await page.setViewportSize({ width: 1280, height: 900 }); await page.goto(base + '/dashboard', { waitUntil: 'networkidle' })
+    // Readiness is established by the UI assertions below, not background network silence.
+    await page.setViewportSize({ width: 1280, height: 900 }); await page.goto(base + '/dashboard', { waitUntil: 'domcontentloaded' })
     await expect(page.getByTestId('quick-action-create')).toBeInViewport(); await page.getByTestId('sidebar-toggle').click()
     await expect(page.getByTestId('sidebar-production')).toHaveAccessibleName('Production')
     await page.getByTestId('search-trigger').click(); await expect(page.getByTestId('search-modal')).toBeVisible()
@@ -312,5 +316,6 @@ try {
   await writeFile(resolve(output, 'failure.json'), JSON.stringify({ error: String(error), completed: results, browserErrors, accessibility }, null, 2))
   throw error
 } finally {
+  await writeFile(resolve(output, 'navigation.json'), JSON.stringify(navigationDiagnostics.map(snapshot => snapshot()), null, 2) + '\n')
   await browser?.close(); child?.kill('SIGTERM'); fake.closeAllConnections(); await new Promise(done => fake.close(done)); await log.close()
 }

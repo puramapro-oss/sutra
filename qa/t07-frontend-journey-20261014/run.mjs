@@ -11,6 +11,7 @@ import { startFixture } from './fixture.mjs'
 import { journeyChecks } from './journey-checks.mjs'
 import { legalChecks } from './legal-checks.mjs'
 import { prepareTLS } from './tls-fixture.mjs'
+import { observeNavigation } from '../../scripts/ui-isolated/navigation-diagnostics.mjs'
 
 const journeys = process.argv.includes('--journeys')
 const baseline = process.argv.includes('--baseline')
@@ -30,7 +31,7 @@ const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: process.en
   STRIPE_SECRET_KEY: 'sk_test_fixture', RESEND_API_KEY: 're_fixture', NEXT_PUBLIC_APP_URL: base }
 if (tls) env.NODE_EXTRA_CA_CERTS = tls.cert
 const results = [], errors = [], blocked = [], mutations = [], details = []
-let child, browser, page
+let child, browser, page, navigationSnapshot
 async function check(name, run) {
   try { await run(); results.push({ name, status: 'PASS' }); process.stdout.write(`PASS ${name}\n`) }
   catch (error) { if (page) { await writeFile(resolve(output, `failure-${results.length}.txt`), await page.locator('body').innerText().catch(() => 'body unavailable')); } results.push({ name, status: 'FAIL', message: error.message }); process.exitCode = 1; process.stdout.write(`FAIL ${name}: ${error.message}\n`) }
@@ -72,6 +73,7 @@ try {
     return route.continue()
   })
   page = await context.newPage()
+  navigationSnapshot = observeNavigation(page)
   page.setDefaultTimeout(15000)
   page.on('pageerror', e => errors.push(e.message))
   page.on('console', m => { if (m.type() === 'error' && /hydration|did not match|server rendered/i.test(m.text())) errors.push(m.text()) })
@@ -85,6 +87,7 @@ try {
   process.stderr.write(error.stack + '\n')
   if (page) await page.screenshot({ path: resolve(output, 'diagnostic.png'), fullPage: true }).catch(() => {})
 } finally {
+  if (navigationSnapshot) await writeFile(resolve(output, 'navigation.json'), JSON.stringify(navigationSnapshot(), null, 2) + '\n')
   await browser?.close()
   if (child && child.exitCode === null) { process.kill(-child.pid, 'SIGTERM'); await once(child, 'exit') }
   fixture.server.closeAllConnections(); await new Promise(done => fixture.server.close(done))

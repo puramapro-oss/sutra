@@ -164,7 +164,8 @@ async function runEditorFlow({ page, base, check, auditAccessibility, screenshot
       await route.fulfill({ status: 202, contentType: 'application/json', body: JSON.stringify({ jobId: 'export-fixture', status: 'queued' }) })
     })
     await page.setViewportSize({ width: 1280, height: 900 })
-    await page.goto(base + '/editor/' + editorId, { waitUntil: 'networkidle' })
+    // The title assertion below proves readiness even when background requests remain active.
+    await page.goto(base + '/editor/' + editorId, { waitUntil: 'domcontentloaded' })
     try { await expect(page.getByTestId('editor-title')).toHaveText('Montage local') } catch (error) {
       await screenshot(page, 'editor-load-failure')
       process.stderr.write(JSON.stringify({ url: page.url(), body: await page.locator('body').innerText(), requests: requests.slice(-15) }) + '\n')

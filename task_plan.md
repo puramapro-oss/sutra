@@ -482,3 +482,7 @@ Sept livraisons e09 vérifiées/importées sans conflit : T02 56c0ca8, T03 47f68
 
 ## T01 — correction du harnais CI ca847
 CI38585143336 : TypeScript/lint/build et PostgreSQL PASS ; contracts853PASS/17FAIL/7SKIP. Les17FAIL proviennent exclusivement des deux nouvelles fixtures T03 : URL db.fixture.invalid attendue, URL globale sutra-test.invalid fournie. Runner T01 sépare ce groupe avec sa configuration auteur ; assertions/source produit inchangées. Retest ciblé18PASS, lint/syntaxe PASS. Nouveau SHA/gate à suivre, aucune promotion et aucun PASS final présumé. Preuve qa/t01-consolidation-20261014/ci-fixture-correction.json.
+
+
+## T01 — attentes navigateur et diagnostic CI, 2026-10-14T15:57:19.663492+00:00
+CI7be38587559187 reste FAIL : premier passage gate légale absente après login ; second passage attente networkidle dashboard expirée. Contre-preuve gratuite4PASS : requête de fond suspendue, dashboard fonctionnel mais networkidle expire. Deux goto (dashboard/éditeur) utilisent DOMContentLoaded et les assertions existantes inchangées ; délais inchangés. Diagnostics bornés sans en-têtes/cookies/query/body. Régression éditeur4PASS,10scansaxe/0violation,lintPASS. Cause exacte des échecs historiquesCI NON PROUVÉE, légal non corrigé présumé. Nouveau candidat/CI requis ; aucune promotion avant CI+ACKT08. WIP tiers7hashes inchangés. Preuve qa/t01-consolidation-20261014/navigation-correction.json.
