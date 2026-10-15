@@ -115,29 +115,63 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
   await page.goto(base + '/production', { waitUntil: 'networkidle' })
   await check('production announces an uncertain outcome without raw diagnostics or automatic retry', async () => {
     let submissions = 0
-    await page.route('**/api/production', async route => { submissions++; await new Promise(done => setTimeout(done, 500)); await route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'Service temporairement indisponible' }) }) })
+    let originalRequest, reconciliations = 0
+    await page.route('**/api/production', async route => {
+      assert.equal(route.request().method(), 'POST')
+      submissions++; originalRequest = route.request().postDataJSON()
+      await new Promise(done => setTimeout(done, 500))
+      await route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'Service temporairement indisponible' }) })
+    })
+    await page.route('**/api/production?*', async route => {
+      reconciliations++
+      assert.equal(route.request().method(), 'GET')
+      const query = new URL(route.request().url()).searchParams
+      assert.equal(query.get('requestId'), originalRequest.requestId)
+      assert.equal(query.get('targetStep'), originalRequest.step)
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({
+        jobId: '44444444-4444-4444-8444-444444444444', status: 'done',
+        data: { title: 'Film retrouvé', scenes: [{ voiceover: 'Résultat original retrouvé', visual_prompt: 'Montagne', duration_seconds: 5 }] },
+      }) })
+    })
     await page.getByTestId('production-idea').fill('Un voyage en montagne')
     await page.getByRole('navigation', { name: 'Étapes de production' }).getByRole('button').nth(1).click()
     await page.getByTestId('generate-script').click(); await expect(page.getByTestId('generate-script')).toHaveAttribute('aria-busy', 'true')
     const alert = page.locator('main').getByRole('alert')
-    await expect(alert).toContainText('Résultat de la génération non confirmé')
-    await expect(alert).toContainText('La demande peut déjà avoir été prise en compte')
+    await expect(page.getByTestId('production-request-status').getByRole('status')).toContainText('État non confirmé. La tâche peut continuer sur le serveur.')
+    await expect(alert).toContainText('Reprends la même demande ou annule-la')
     await expect(alert).not.toContainText('Service temporairement indisponible')
-    await expect(alert.getByRole('link', { name: 'Vérifier la bibliothèque' })).toHaveAttribute('href', '/library')
-    await expect(page.getByTestId('generate-script')).toBeEnabled(); await auditAccessibility(page, 'production-error-320')
+    await expect(page.getByTestId('generate-script')).toBeDisabled()
+    await expect(page.getByTestId('production-resume')).toBeEnabled()
+    await expect(page.getByTestId('production-cancel')).toBeEnabled()
+    await auditAccessibility(page, 'production-error-320')
     assert.equal(submissions, 1, 'no automatic retry of an uncertain generation')
+    assert.equal(reconciliations, 0, 'no implicit reconciliation before user action')
+    const receipt = await page.evaluate(id => JSON.parse(sessionStorage.getItem(`sutra:production-intent:v1:${id}`)), user.id)
+    assert.equal(receipt.requestId, originalRequest.requestId)
+    assert.deepEqual(JSON.parse(receipt.body), originalRequest)
+    await page.getByTestId('production-resume').click()
+    await expect(page.locator('main pre')).toContainText('Résultat original retrouvé')
+    await expect(page.getByRole('button', { name: 'Regenerer le script', exact: true })).toBeEnabled()
+    await expect(page.getByTestId('production-resume')).toHaveCount(0)
+    await expect(page.getByTestId('production-cancel')).toHaveCount(0)
+    await expect(page.getByRole('navigation', { name: 'Étapes de production' }).locator('[aria-current=step]')).toHaveAccessibleName(/^2\./)
+    assert.equal(submissions, 1, 'reconciliation must not submit a second generation')
+    assert.equal(reconciliations, 1)
+    assert.equal(await page.evaluate(id => sessionStorage.getItem(`sutra:production-intent:v1:${id}`), user.id), null)
   })
   await page.unroute('**/api/production')
+  await page.unroute('**/api/production?*')
   await check('production waits for queued work before advancing and displays the completed result', async () => {
     let polls = 0
-    await page.route('**/api/production', route => route.fulfill({ status: 202, contentType: 'application/json', body: JSON.stringify({ jobId: 'production-fixture', status: 'queued' }) }))
-    await page.route('**/api/video/status/production-fixture', route => {
+    const jobId = '55555555-5555-4555-8555-555555555555'
+    await page.route('**/api/production', route => route.fulfill({ status: 202, contentType: 'application/json', body: JSON.stringify({ jobId, status: 'queued' }) }))
+    await page.route(`**/api/video/status/${jobId}`, route => {
       polls++
       return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(polls === 1
-        ? { jobId: 'production-fixture', status: 'processing' }
-        : { jobId: 'production-fixture', status: 'done', data: { title: 'Film local', scenes: [{ voiceover: 'Résultat de la file locale', visual_prompt: 'Montagne', duration_seconds: 5 }] } }) })
+        ? { jobId, status: 'processing' }
+        : { jobId, status: 'done', data: { title: 'Film local', scenes: [{ voiceover: 'Résultat de la file locale', visual_prompt: 'Montagne', duration_seconds: 5 }] } }) })
     })
-    await page.getByTestId('generate-script').click()
+    await page.getByRole('button', { name: 'Regenerer le script', exact: true }).click()
     await expect(page.getByTestId('generate-script')).toHaveAttribute('aria-busy', 'true')
     await expect.poll(() => polls, { timeout: 10_000 }).toBeGreaterThan(0)
     await expect(page.getByRole('navigation', { name: 'Étapes de production' }).locator('[aria-current=step]')).toHaveAccessibleName(/^2\./)
@@ -146,7 +180,7 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
     await expect(page.locator('main pre')).toContainText('Résultat de la file locale')
     assert.equal(polls, 2)
     await page.unroute('**/api/production')
-    await page.unroute('**/api/video/status/production-fixture')
+    await page.unroute(`**/api/video/status/${jobId}`)
   })
   await runEditorFlow({ page, base, check, auditAccessibility, screenshot, fixture, requests, user })
   await page.goto(base + '/settings', { waitUntil: 'networkidle' })

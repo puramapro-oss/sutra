@@ -27,3 +27,9 @@ GitNexus impact routes HTTP UNKNOWN, consommateurs et tests directs bornent la r
 ## Revue avant gel18:50UTC
 
 Typecheck intégré, lint ciblé et7tests T07 PASS. detect_changes exécuté : CRITICAL avec graphe partiel et associations étrangères; dix fichiers produit revus directement, aucune certification exhaustive du graphe. Gitleaks diff brut2alertes sur métadonnées Git de PNG (empreintes exactes auteur), scan des245fichiers texte réels PASS; aucune règle désactivée. Les journaux de preuves historiques gardent leur contenu exact, y compris espaces finaux. Campagne exacte CI/T08 encore attendue.
+
+## Réconciliation CI navigateur après f29bce5
+
+CI38788915903 : contrats et DB SUCCESS, quality FAIL uniquement sur ancien contrat t07-flows ligne123. TypeScript/lint/build avaient passé, étapes navigateur suivantes non exécutées. Preuve rouge conservée. Le harnais est aligné sur le reçu durable : nouvelle production verrouillée pendant état incertain; UUID et corps conservés; reprise explicite GET; résultat original sans second POST ni changement de navigation; jobId fixture conforme UUID. Aucun produit changé ni test désactivé. Retest dans archive isolée sans secrets, réseau externe bloqué, dépendances existantes de même lockfile. Une première tentative dans le worktree a été refusée par la garde de fichiers environnement : aucun test exécuté par cette tentative.
+
+Contre-épreuve optimisée 2026-10-15T19:15:43.930631+00:00 : `node qa/t08/run.mjs browser-redteam` PASS, 217 contrôles annoncés, aucune erreur masquée. Premier rouge local après résultat conservé (ancien sélecteur generate-script remplacé par contrôle accessible existant Regenerer le script). Lint du seul harnais PASS. 1093 empreintes manifeste conformes, sept WIP étrangers inchangés. Aucun fichier produit changé. CI exacte et T08 restent requis avant migration/promotion.
