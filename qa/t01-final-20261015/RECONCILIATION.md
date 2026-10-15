@@ -57,3 +57,12 @@ Les NON TESTÉS R02/R07/R32/R34/R36/R38/R41/R43/R44/R45/R62/R63 et la qualificat
 provider-runtime.json : RunPod health200/contrat valide/0worker; Shotstack stage etv1 templates200/contrats valides; Suno tiers sunoapi.org credit200/credit disponible sans montant expose; Zernio profil unique/ownership200/0compte connecte. Conteneur86d04c8 inchange avant/apres;0requete de generation. Ces preuves ne valident aucun rendu.
 
 Harnais navigateur final libere :20scenarios Chromium/WebKit, une build, sorties neuves;13tests du classificateur/controles HTML natifs PASS. La campagne applicative reste a executer sur le commit exact.
+
+## CI48eb91a : deux incompatibilités de tests corrigées
+
+Contrats :961 tests,952PASS/2FAIL/7SKIP avant correction (rouge conservé ci-contract-red.txt et artefact GitHub38669067659). Les7SKIP préexistants concernent quatre tests INSEE live, deux écritures DB live de modules historiques et OpenTimestamps réseau ; aucun skip ajouté, aucune validation live revendiquée.
+
+- Voix : la validation T03 détecte le checkpoint incomplet avant l’ancien diagnostic de morceau manquant. Assertion remplacée par le code exact SUTRA_RECONCILIATION_REQUIRED:SUTRA_VOICE_CHECKPOINT_CORRUPT ; une seule synthèse et zéro upload toujours exigés.
+- Suno : le réveil du timer10ms peut permettre un deuxième GET du même job. La fixture réutilisait un corps Response déjà consommé et imposait un unique GET sans contrat fournisseur correspondant. Cas PENDING isolé avec une réponse fraîche par GET, même taskId, GET seulement, aucun onSubmitted, erreur de délai exacte, retrySubmission/fallbackAllowed false et terminaison avant l’intervalle normal3s (borne test1s). Les quatre réponses malformées/refus/flux bloqué restent à un seul GET ; checkpoint invalide et signal annulé restent à zéro I/O. Aucun code fournisseur modifié.
+
+Vérification ciblée : `node --import tsx --test --test-concurrency=1 scripts/test-release-regressions.mts scripts/test-t04-provider-fixes.mts` avec environnement fixture canonique et garde réseau offline.cjs :58PASS/0FAIL/0SKIP. ESLint des deux fichiers et diff-check PASS. GitNexus impact fichiers UNKNOWN/index6commits ancien, usage direct runner CI vérifié. Rejeu CI du prochain SHA obligatoire, pas de promotion de48eb91a.

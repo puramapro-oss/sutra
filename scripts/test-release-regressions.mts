@@ -138,7 +138,8 @@ test('VOIX: crash entre morceaux de 24 MiB ne melange pas deux syntheses', async
   await assert.rejects(() => executeProductionStep(productionInput, { steps: {} }, {
     onStepResolved: async (key, value) => { if (key === 'voice_b64:1') throw new Error('DB offline'); durable[key] = structuredClone(value) },
   }, providers), /DB offline/)
-  await assert.rejects(() => executeProductionStep(productionInput, { steps: structuredClone(durable) }, {}, providers), /morceau 1 manquant/)
+  await assert.rejects(() => executeProductionStep(productionInput, { steps: structuredClone(durable) }, {}, providers),
+    /^Error: SUTRA_RECONCILIATION_REQUIRED: SUTRA_VOICE_CHECKPOINT_CORRUPT$/)
   assert.equal(voices, 1)
   assert.equal(uploads, 0)
 })

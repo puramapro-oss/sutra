@@ -1,0 +1,56 @@
+CI source48eb91a0f12edf47e1e64b70c0a3a88b8c5169b6; run38669067659
+﹣ LIVE: INSEE_API_KEY configured (0.129957ms) # SKIP
+﹣ LIVE : SIRET INSEE Paris Club (47832593900021) → 200 avec denomination (0.773338ms) # SKIP
+﹣ LIVE : SIRET fictif (99999999999999) → header.statut=404 (0.113101ms) # SKIP
+﹣ LIVE : mauvaise clé → 401/403 (0.109986ms) # SKIP
+﹣ DB : applique split sur invoice fake → archive + pool_balances + pool_transactions (0.116896ms) # SKIP
+﹣ DB : insert dans video_generations + lecture + cleanup (0.087572ms) # SKIP
+﹣ NETWORK : real stamp() → deserialize → fileDigest round-trip (0.093071ms) # SKIP
+ℹ tests 961
+ℹ suites 2
+ℹ pass 952
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 7
+ℹ todo 0
+ℹ duration_ms 27117.023001
+
+✖ failing tests:
+
+test at scripts/test-release-regressions.mts:1:9204
+✖ VOIX: crash entre morceaux de 24 MiB ne melange pas deux syntheses (44.337728ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /morceau 1 manquant/. Input:
+
+  'Error: SUTRA_RECONCILIATION_REQUIRED: SUTRA_VOICE_CHECKPOINT_CORRUPT'
+
+      at async TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-release-regressions.mts:141:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_RECONCILIATION_REQUIRED: SUTRA_VOICE_CHECKPOINT_CORRUPT
+        at corrupt (/home/runner/work/sutra/sutra/src/lib/production-pipeline.ts:248:25)
+        at voiceB64Checkpointed (/home/runner/work/sutra/sutra/src/lib/production-pipeline.ts:263:92)
+        at <anonymous> (/home/runner/work/sutra/sutra/src/lib/production-pipeline.ts:232:23)
+        at <anonymous> (/home/runner/work/sutra/sutra/src/lib/pipeline-state.ts:28:28),
+    expected: /morceau 1 manquant/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:11415
+✖ Suno recovery validates checkpoint before I/O and retains ID on timeout or malformed replies (16.517552ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  2 !== 1
+
+      at TestContext.<anonymous> (/home/runner/work/sutra/sutra/scripts/test-t04-provider-fixes.mts:274:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

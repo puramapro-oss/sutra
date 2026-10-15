@@ -259,8 +259,7 @@ test('Suno awaits durable ACK before GET and returns unchanged legacy result sha
 test('Suno recovery validates checkpoint before I/O and retains ID on timeout or malformed replies', async () => {
   const keeper = setInterval(() => {}, 1000)
   try {
-    for (const response of [Response.json({ code: 200, data: { taskId: 'task-fixture', status: 'PENDING' } }),
-      Response.json({ code: 200, data: { taskId: 'different', status: 'SUCCESS' } }),
+    for (const response of [Response.json({ code: 200, data: { taskId: 'different', status: 'SUCCESS' } }),
       Response.json({ code: 200, data: { taskId: 'task-fixture', status: 'UNRECOGNIZED' } }),
       new Response('PRIVATE_PROVIDER_DIAGNOSTIC', { status: 401 }), new Response(new ReadableStream())]) {
       const spy = mock.method(globalThis, 'fetch', async (_url: string | URL | Request, init?: RequestInit) => { assert.notEqual(init?.method, 'POST'); return response })
@@ -283,4 +282,29 @@ test('Suno recovery validates checkpoint before I/O and retains ID on timeout or
       assert.equal(spy.mock.callCount(), 0)
     } finally { spy.mock.restore() }
   } finally { clearInterval(keeper) }
+})
+
+test('Suno pending recovery stops at its deadline without resubmission or fallback', async () => {
+  const keeper = setInterval(() => {}, 1000)
+  const started = performance.now()
+  const spy = mock.method(globalThis, 'fetch', async (url: string | URL | Request, init?: RequestInit) => {
+    assert.equal(init?.method ?? 'GET', 'GET')
+    assert.equal(new URL(String(url)).searchParams.get('taskId'), 'task-fixture')
+    // Each GET receives a fresh body, as on the wire. A timer may wake just before
+    // the deadline and permit another GET; this must never become another POST.
+    return Response.json({ code: 200, data: { taskId: 'task-fixture', status: 'PENDING' } })
+  })
+  try {
+    await assert.rejects(generateMusic(musicParams, { current: { taskId: 'task-fixture' }, timeoutMs: 10,
+      async onSubmitted() { assert.fail('new submission') } }), (error: unknown) => {
+      assert.ok(error instanceof SunoJobError)
+      assert.equal(error.taskId, 'task-fixture')
+      assert.equal(error.retrySubmission, false)
+      assert.equal(error.fallbackAllowed, false)
+      assert.match(error.message, /^Suno: (timeout|attente interrompue), reconciliation requise$/)
+      return true
+    })
+    assert.ok(spy.mock.callCount() >= 1, 'resume must read the existing provider job')
+    assert.ok(performance.now() - started < 1000, '10ms deadline must terminate well before a normal poll interval')
+  } finally { spy.mock.restore(); clearInterval(keeper) }
 })

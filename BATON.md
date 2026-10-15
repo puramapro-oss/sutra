@@ -311,3 +311,7 @@ SQL canonique : migration cumulative6fonctions durables, droits clients bornés 
 T07 : neuf correctifs frontend livrés ; harnais final Chromium/WebKit à un build, contrôles négatifs des exceptions requis avant recette. Aucun serveur/GPU payant/publication réelle. TypeScript/lint/build/contrats/médias/PG/navigateur de ce nouveau candidat sont EN ATTENTE de sa CI exacte ; les PASS auteurs/historiques ne remplacent pas cette gate. Revue T08 exacte requise avant promotion autorisée.
 
 Limites : Salad désactivé, clé master malformée et organisation/projet non prouvés ; GPU/conteneur réel non qualifiés. Consentements personnels inchangés. Cron exécutants absents/inactifs volontairement ; observateur lecture seule testé, pas activé. /create n'expose pas l'annulation durable serveur, reset local ne prouve pas un arrêt fournisseur. Aucun terminal fermé. Prochaine tâche : commit/manifeste, CI exacte, recette T08, puis seulement promotion avec backup frais/rollback et contrôles post-déploiement.
+
+### T01 2026-10-15T02:13:21.817596+00:00 — correction contrats CI
+
+Candidat48eb91a non promouvable :2FAIL contrats, PG PASS, qualité/navigateur encore en cours. Deux fixtures réconciliées sans code produit :58PASS/0FAIL/0SKIP et lint ciblé PASS. Détails qa/t01-final-20261015/RECONCILIATION.md, rouge conservé. Manifeste mis à jour. Nouveau SHA/CI exacte et ACK T08 requis ; production86d04c8 inchangée.
