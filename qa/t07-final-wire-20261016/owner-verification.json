@@ -1,0 +1,135 @@
+{
+  "candidate": "99dd4c16b7b15bb7f38cd4f73529d5dea4497005",
+  "qa_addendum_source": "5e005ffc59c1947436e2e5e0f3a095c87a5f4009",
+  "imported_evidence": [
+    "qa/t07-final-wire-20261016/audit-before-owner-browser.log",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/cancel-inflight-1440.png",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/cancel-inflight-375.png",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/cancel-recovered-1440.png",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/cancel-recovered-375.png",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/database.json",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/fail-1.png",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/fail-2.png",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/fail-3.png",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/fail-4.png",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/results.json",
+    "qa/t07-final-wire-20261016/audit-before-owner-browser/server.log",
+    "qa/t07-final-wire-20261016/audit-before-owner-execution.json",
+    "qa/t07-final-wire-20261016/audit-before-owner-pg-init.log",
+    "qa/t07-final-wire-20261016/audit-before-owner-pg-start.log",
+    "qa/t07-final-wire-20261016/audit-before-owner-pg-stop.log",
+    "qa/t07-final-wire-20261016/audit-before-owner-settlement.log",
+    "qa/t07-final-wire-20261016/audit-delta-lint.log",
+    "qa/t07-final-wire-20261016/impact-delta-audit-exact.log",
+    "qa/t07-final-wire-20261016/impact-delta-audit.log",
+    "qa/t07-final-wire-20261016/impact-delta-check-exact.log",
+    "qa/t07-final-wire-20261016/impact-delta-check.log",
+    "qa/t07-final-wire-20261016/impact-delta-run-exact.log",
+    "qa/t07-final-wire-20261016/impact-delta-run.log",
+    "qa/t07-final-wire-20261016/impact-delta-wire.log"
+  ],
+  "campaigns": {
+    "owner-ui-": {
+      "PASS": 5,
+      "FAIL": 0,
+      "source_hashes_verified": 20,
+      "candidate_product_files_verified": 30,
+      "mismatches": [],
+      "database_restarts": [
+        {
+          "before": "2026-10-15T22:45:58.723Z",
+          "after": "2026-10-15T22:46:10.576Z",
+          "status": 0,
+          "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+          "stderr": ""
+        },
+        {
+          "before": "2026-10-15T22:46:10.576Z",
+          "after": "2026-10-15T22:46:15.219Z",
+          "status": 0,
+          "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+          "stderr": ""
+        }
+      ],
+      "jobs": 4,
+      "activity_events": 4,
+      "quota": [
+        {
+          "reserved": 0,
+          "completed": 0,
+          "released": 4
+        }
+      ],
+      "cleanup_cancellations": 0,
+      "provider_calls": 0,
+      "publication_calls": 0
+    },
+    "owner-audit-": {
+      "PASS": 3,
+      "FAIL": 0,
+      "source_hashes_verified": 20,
+      "candidate_product_files_verified": 30,
+      "mismatches": [],
+      "database_restarts": [
+        {
+          "before": "2026-10-15T22:45:58.723Z",
+          "after": "2026-10-15T22:45:59.612Z",
+          "status": 0,
+          "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+          "stderr": ""
+        }
+      ],
+      "jobs": 1,
+      "activity_events": 1,
+      "quota": [
+        {
+          "reserved": 0,
+          "completed": 0,
+          "released": 1
+        }
+      ],
+      "cleanup_cancellations": 0,
+      "provider_calls": 0,
+      "publication_calls": 0
+    }
+  },
+  "qa_addendum_sources_identical": {
+    "qa/t07-final-wire-20261016/checks.mjs": true,
+    "qa/t07-final-wire-20261016/run.mjs": true,
+    "qa/t07-final-wire-20261016/settle.mjs": true,
+    "qa/t07-final-wire-20261016/browser.mjs": true,
+    "qa/t07-final-wire-20261016/wire.mjs": true,
+    "qa/t07-final-wire-20261016/audit.mjs": true
+  },
+  "owner_atomic_audit_evidence": {
+    "path": "qa/t01-cancel-audit-20261016/after-postgres.json",
+    "source_hashes": {
+      "migrations/v10_durable_jobs_quota.sql": true,
+      "migrations/v11_pipeline_checkpoints.sql": true,
+      "src/data/setup-schema.ts": true,
+      "migrations/sutra_auto.sql": true,
+      "migrations/20261006_auto_occurrence_integrity.sql": true,
+      "qa/t01-final-20261015/durable-postgres.test.mts": true,
+      "migrations/20261014_durable_checkpoint_integrity.sql": true,
+      "src/lib/pipeline-state.ts": true,
+      "migrations/20261015_final_durable_integrity.sql": true
+    },
+    "evidence": {
+      "command": [
+        "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "--import",
+        "tsx",
+        "--test",
+        "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/durable-postgres.test.mts"
+      ],
+      "exit_code": 0,
+      "environment": "private disposable loopback PostgreSQL; no ambient credentials; external sockets and secrets denied",
+      "proposal_applied_only_to_fixture": true
+    }
+  },
+  "viewed_screenshots": [
+    "owner-ui-browser/cancel-recovered-375.png",
+    "owner-ui-browser/cancel-inflight-1440.png"
+  ],
+  "proof_boundary": "Local Chromium real UI, real imported handlers, private PostgreSQL. Auth/Supabase transport and provider worker are simulated; no full HTTP Next/PostgREST/RLS or live provider/runtime guarantee."
+}

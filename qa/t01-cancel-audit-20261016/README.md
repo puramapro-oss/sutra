@@ -6,3 +6,5 @@ Only cancel_video_job changes product behavior. Existing row lock serializes can
 
 ## API/SQL fixture regression
 CI38819302007 PostgreSQL FAIL: activity_logs missing from minimal T03 fixture. Exact local reproduction0PASS14FAIL (includes failed teardown hook), corrected fixture13PASS0FAIL0SKIP. Commands node qa/t01-cancel-audit-20261016/api-run.mjs before / after. One canonical setupSchema table added; no product or assertions weakened. ESLint PASS. GitNexus exact before callback UNKNOWN; source diff bounded. CI remaining jobs cancelled to avoid obsolete build; next exact SHA required. T07 fixture-only addendum5e005ff imported from immutable commit; original failures retained.
+
+Remaining fixtures: CI38819672945 red preserved. Private remaining-run.mjs before19PASS11FAIL0SKIP inclhook; table-only28PASS1FAIL; final29PASS0FAIL0SKIP. Canonical audit table and expectation of unique receipt plus all old progress; no product delta. Diagnostic stdout corrected; full lint0errors111warnings. GitNexus exact callbacks UNKNOWN, direct bounded review. T07 proof57a79f2 exact import,8PASS at99dd with equivalence. Next exact CI required.

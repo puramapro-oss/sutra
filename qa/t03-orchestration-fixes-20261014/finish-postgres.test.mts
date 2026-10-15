@@ -4,6 +4,7 @@ import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import pg from 'pg'
+import { setupSchema } from '../../src/data/setup-schema'
 const host = process.env.PGHOST
 const port = Number(process.env.PGPORT)
 if (host !== '127.0.0.1' || !Number.isInteger(port) || port < 1 || process.env.SUTRA_DISPOSABLE_DB !== '1') throw new Error('Disposable loopback DB required')
@@ -21,6 +22,9 @@ before(async () => {
   await admin.query(`CREATE DATABASE ${database}`); await admin.end()
   pool = new pg.Pool({ ...connection, max: 12, options: '-c search_path=sutra,public' })
   await query(`CREATE SCHEMA sutra; CREATE TABLE sutra.videos(id uuid PRIMARY KEY,user_id uuid,status text,created_at timestamptz DEFAULT now());`)
+  const auditTable = setupSchema.match(/CREATE TABLE IF NOT EXISTS sutra\.activity_logs \([\s\S]*?\n\);/)?.[0]
+  assert.ok(auditTable, 'canonical activity log table is required')
+  await query(auditTable)
   for (const name of ['v10_durable_jobs_quota.sql', 'v11_pipeline_checkpoints.sql', '20261014_durable_checkpoint_integrity.sql', '20261015_final_durable_integrity.sql']) {
     await query(readFileSync(new URL(`../../migrations/${name}`, import.meta.url), 'utf8'))
   }

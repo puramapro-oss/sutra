@@ -1,3 +1,56 @@
+# Candidat final unique a70b913 — preuves réutilisables après contrôle exact
+
+T01 a remplacé99dd par **a70b913ae31f7ce670aba595eab194851b5673eb** le15octobre22:49UTC : uniquement QA/docs, notamment sa fixture API/SQL et notre addendum5e005ff déjà intégré. **Vérification indépendante PASS : aucun delta produit/SQL/dépendances,30/30blobs produit identiques,20/20hashes par reçu exécuté et6/6sources QA identiques au nouveau SHA.** Détail : `qa/t07-final-wire-20261016/owner-final-a70-equivalence.json`.
+
+Les campagnes physiques ont été exécutées sur99dd (5PASS Chromium,3PASS API/SQL) ; leur équivalence source exacte àa70 est prouvée, sans prétendre avoir relancé le navigateur sura70. T01 demande explicitement la réutilisation, pas une campagne identique. Aucun nouveau comportement à contre-tester. **FAIL actuel de ce lot :0.** CI exacte/ACK global restent à T01/T08, distincts du PASS local.
+
+Pour intégrer cette livraison : les quatre sources QA et preuves avant sont **déjà dansa70**. Prendre seulement nouveaux `owner-*`, logs de graphe/sécurité, captures après et ajouts documentaires ; préserver vos BATON/task_plan/handoff. La branche de livraison conserve son parent99dd, aucun merge/rebase ni écrasement de votre candidat effectué. Le SHA local est transmis dans le miroir de coordination après commit.
+
+Gates finales : syntaxe6PASS/lint cibléPASS ; gitleaks indexé0finding et diffcheck hors logs brutsPASS. GitNexus index actualisé, `detect-changes --scope staged` LOW/aucun flux affecté ; comparaisonmain HIGH/13flux (historique global5013fichiers), avertissement communiqué. Impacts préalables QA CRITICAL/homonymes archivés ; graphe tronqué1351points/834callees/43walks, revue directe des4sources QA obligatoire et réalisée. Aucune certification exhaustive.
+
+---
+
+# T07 — retest du candidat final T01 99dd4c1
+
+**Candidat testé : `99dd4c16b7b15bb7f38cd4f73529d5dea4497005`. Branche de livraison : `codex/sutra-t07-audit-retest-99dd-20261016`.** Parent exact T01, aucun changement produit/backend/SQL. Les quatre sources QA de l'addendum `5e005ffc59c1947436e2e5e0f3a095c87a5f4009` sont appliquées ; le lot initial `6dec16c` est déjà intégré par T01. Ne pas réimporter les anciens correctifs frontend.
+
+**PASS : 5 contrôles Chromium375/1440 + 3 contrôles API/SQL. FAIL actuel : aucun dans ces deux campagnes. AUDIT_GAP est corrigé par T01 et contre-testé ici.** Les FAIL historiques ci-dessous sont conservés, sans les présenter comme actuels. Ceci n'est pas un ACK global de CI ou de production.
+
+## Commandes et preuves exactes
+
+```sh
+node qa/t07-final-wire-20261016/run.mjs owner-ui- --cancel-only --candidate=99dd4c16b7b15bb7f38cd4f73529d5dea4497005
+node qa/t07-final-wire-20261016/run.mjs owner-audit- --audit --candidate=99dd4c16b7b15bb7f38cd4f73529d5dea4497005
+```
+
+Les préfixes ci-dessus sont déjà utilisés : en choisir de nouveaux si une nouvelle régression justifie un rejeu. `owner-ui-execution.json` / `owner-audit-execution.json` : exit0,20/20 empreintes sources conformes chacun,30/30 fichiers produit/dépendances conformes au SHA99dd, aucun mismatch. `owner-verification.json` rassemble les contrôles ; `owner-integration-delta.json` borne le delta depuis f360. Les quatre sources QA modifiées sont `run.mjs`, `wire.mjs`, `browser.mjs`, `audit.mjs` ; aucun nouveau moteur.
+
+| Frontière | Verdict et constat |
+|---|---|
+| UI mobile375/bureau1440 | PASS5/0FAIL : double clic, ACK submit/cancel perdus, erreur GET visible puis reprise sans nouvelle soumission ; fournisseur déjà lancé simulé et fin tardive refusée. Quatre consentements réels dans la fixture légale, zéro erreur JS/hydratation, mutation inattendue ou sortie externe. |
+| Base/quotas/audit depuis UI | PASS :4jobs cancelled,4événements uniques liés au même acteur/job et au reçu progress.effects, reserved0/released4 ; aucune annulation de nettoyage nécessaire. Deux reçus fournisseurs synthétiques conservés. |
+| API et redémarrage | PASS3/0FAIL : HTTP200 annulation initiale, événement video_cancelled et metadata bornée exacts ; vrai restart PostgreSQL puis cancel répété200/cancelled=false, GET cancelled, même événement et même quota reserved0/released1. |
+| Reprise de base | PASS :2redémarrages dans la campagne UI,1dans audit ; pg_postmaster_start_time différent, commande exit0, aucune erreur/timeout. Il ne s'agit pas d'un redémarrage du worker de production. |
+| Atomicité en cas d'échec d'audit | Preuve propriétaire T01 réutilisée : `qa/t01-cancel-audit-20261016/after-postgres.json`,24PASS et empreintes toutes conformes au présent candidat. Tests SQL de rollback et annulations concurrentes ;25tests transition du propriétaire distincts, sans somme avec nos parcours. |
+| Ordonnanceur configuré depuis UI | PASS12 antérieur f360 conservé pour les frontières invariantes : quatre fréquences, IANA/DST, sauvegarde/erreur/reprise, CAS, double clic, deux ticks cron canonique/une occurrence et pause.29sources et13invariants T03 identiques ; seules migration cancel et fixture de notifications ont changé. L'annulation affectée est rejouée ci-dessus, pas la suite planning inchangée. |
+| Messages UX | PASS ciblé : confirmation du serveur, état inconnu/reprise, limite explicite sur arrêt fournisseur/remboursement ; captures `owner-ui-browser/cancel-recovered-375.png` et `cancel-inflight-1440.png` affichées. Aucun arrêt fournisseur réel promis. |
+
+Avant correctif T01, les **mêmes nouvelles assertions audit UI** donnaient1PASS/4FAIL sur f360 (`audit-before-owner-*`, preuves importées exactement depuis5e005ff). Après :5PASS/0FAIL. Le diagnostic API initial était1PASS/1FAIL AUDIT_GAP (`audit-final-*`, conservé dans6dec16c) ; nouveau contrat enrichi :3PASS/0FAIL. Les suites se recouvrent : ne pas additionner leurs comptes comme des garanties indépendantes.
+
+La cause et la correction sont backend propriétaire : `cancel_video_job` ne créait pas d'activité ; T01 ajoute l'événement et le reçu dans la même transaction que l'état/quota. T07 a adapté la fixture à la table canonique `activity_logs`, puis vérifié la correction. Aucune activité synthétique ajoutée par le frontend, aucun événement historique inventé.
+
+## Limites et livraison
+
+**BLOQUÉ côté produit/runtime :** dispatch autonome réelR30 toujours OFF ; annulation UI `/create`R74 et cascade globale d'un projet absentes du contrat reçu. Notre preuve concerne `/production` et la configuration de l'ordonnanceur ; pause n'annule pas les jobs déjà créés. Ces fonctions restantes doivent être attribuées par T01, sans deuxième moteur ni activation T07. La CI globale exacte relève de T01/T08 ; ses rouges ou son éventuel nouveau SHA QA ne sont pas certifiés par ce lot.
+
+**NON TESTÉ :** routage HTTP Next complet et PostgREST/RLS distant (handlers réels relayés, session/transport simulés), arrêt/remboursement fournisseur réel, worker/cron déployé après crash, fermeture de navigateur/multiappareil, Safari natif/appareil physique/lecteur d'écran et audit déployé. Mocks gratuits pour tous les fournisseurs. Aucun secret, appel payant, publication, GPU, push, fusion, migration distante ou déploiement.
+
+Pas de lenteur nouvelle démontrée dans ce retest ; mesures de sauvegarde du planning conservées plus bas, aucune optimisation ni amélioration revendiquée. Syntaxe6PASS/lint cibléPASS dans `owner-local-checks.json`. GitNexus et sécurité finaux sont consignés dans les fichiers `gitnexus-owner-*` / `owner-gitleaks.*` ; la limite de graphe partiel/homonymes demeure.
+
+---
+
+# Historique conservé — candidat f360 avant correction audit T01
+
 # T07 — interface, annulation et ordonnanceur sur candidat T01
 
 Base testée **f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5**, branche `codex/sutra-t07-final-wire-20261016`, worktree `sutra-t07-final-two-20261015`. Livrable QA/docs uniquement. Aucun fichier produit, moteur, SQL canonique ou configuration modifié. Les corrections T07 `4c856ae` puis `03de132` sont intégrées par consolidation T01 : les trois blobs produit finaux correspondent exactement, sans présumer une relation d'ancêtre Git.

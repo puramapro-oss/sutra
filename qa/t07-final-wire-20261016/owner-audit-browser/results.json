@@ -1,0 +1,44 @@
+{
+  "baseCommit": "99dd4c16b7b15bb7f38cd4f73529d5dea4497005",
+  "scope": "canonical production handler + canonical cancellation SQL; minimal canonical activity table; no deployed audit certification",
+  "results": [
+    {
+      "name": "canonical cancellation and quota",
+      "status": "PASS",
+      "job": {
+        "id": "ddb32880-a9dd-4b38-9a31-995a718ce02c",
+        "status": "cancelled",
+        "created_at": "2026-10-15T22:45:59.480Z",
+        "updated_at": "2026-10-15T22:45:59.484Z"
+      },
+      "quota": {
+        "reserved": 0,
+        "released": 1
+      }
+    },
+    {
+      "name": "durable cancellation activity event",
+      "status": "PASS",
+      "events": [
+        {
+          "id": "af88b1a2-c80f-4558-8373-687fadfa00a6",
+          "user_id": "11111111-1111-4111-8111-111111111111",
+          "type": "video_cancelled",
+          "description": "Annulation de la tâche vidéo",
+          "metadata": {
+            "kind": "production",
+            "job_id": "ddb32880-a9dd-4b38-9a31-995a718ce02c",
+            "previous_status": "queued",
+            "provider_submitted": false
+          },
+          "created_at": "2026-10-15T22:45:59.483Z"
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "name": "restart and repeated API cancellation preserve one audit receipt and one quota release",
+      "status": "PASS"
+    }
+  ]
+}

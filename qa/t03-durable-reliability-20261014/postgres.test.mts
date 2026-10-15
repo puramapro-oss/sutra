@@ -32,6 +32,7 @@ before(async () => {
     CREATE TABLE sutra.sutra_auto_themes(id uuid PRIMARY KEY,user_id uuid,times_used int DEFAULT 0,last_used_at timestamptz);
     CREATE TABLE sutra.sutra_auto_memory(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid,memory_type text,content text,importance numeric,related_video_id uuid);`)
   await query(table(setupSchema, 'videos'))
+  await query(table(setupSchema, 'activity_logs'))
   await query(table(source('migrations/sutra_auto.sql'), 'sutra_auto_videos'))
   await query(source('migrations/20261006_auto_occurrence_integrity.sql'))
   await query(source('migrations/v10_durable_jobs_quota.sql'))

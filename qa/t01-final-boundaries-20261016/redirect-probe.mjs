@@ -25,4 +25,4 @@ try {for(const engine of ['chromium','webkit']) {
  await new Promise(done=>setTimeout(done,100));receipts.push({engine,clock,events,before,after:await page.evaluate(()=>window.result)});await context.close();
  }}finally{await browser.close()}
 }}finally{for(const server of [app,fixture.server]){server.closeAllConnections();await new Promise(done=>server.close(done))};await writeFile(new URL('./redirect-probe.json',import.meta.url),JSON.stringify(receipts,null,2)+'\n')}
-console.log(JSON.stringify(receipts,null,2))
+process.stdout.write(JSON.stringify(receipts,null,2)+'\n')

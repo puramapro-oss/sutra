@@ -1,0 +1,283 @@
+{
+  "jobs": [
+    {
+      "id": "b1a33731-a066-482d-8122-904b1a9a564e",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-0929b297-1802-4c4a-9b94-62a15b3d02bc",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T22:46:10.227Z",
+      "updated_at": "2026-10-15T22:46:10.339Z"
+    },
+    {
+      "id": "18bbd64e-1ab9-4b2d-bbae-acd956e81b42",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-0ff16a69-bd04-4508-8dad-585d6ae5e974",
+      "provider_job_ids": {
+        "fixture": "synthetic-remote-already-submitted"
+      },
+      "created_at": "2026-10-15T22:46:13.332Z",
+      "updated_at": "2026-10-15T22:46:13.461Z"
+    },
+    {
+      "id": "91e18955-4da2-4328-8fc0-0abfd0b1607c",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-1116ffb1-b4ad-4283-8ef1-cce81f641dde",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T22:46:14.871Z",
+      "updated_at": "2026-10-15T22:46:14.986Z"
+    },
+    {
+      "id": "3a567a34-75fa-4fcb-a04d-abaabbb80e71",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-86cdcc13-861c-4a90-a780-be1270059c09",
+      "provider_job_ids": {
+        "fixture": "synthetic-remote-already-submitted"
+      },
+      "created_at": "2026-10-15T22:46:17.986Z",
+      "updated_at": "2026-10-15T22:46:18.115Z"
+    }
+  ],
+  "beforeCleanup": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 4
+    }
+  ],
+  "counters": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 4
+    }
+  ],
+  "cleanupCancellations": 0,
+  "activityLogs": [
+    {
+      "id": "455c8091-2029-40d9-98b3-ad76e0a1b4bf",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "production",
+        "job_id": "b1a33731-a066-482d-8122-904b1a9a564e",
+        "previous_status": "queued",
+        "provider_submitted": false
+      },
+      "created_at": "2026-10-15T22:46:10.337Z"
+    },
+    {
+      "id": "58972ab2-79c8-4e9a-aaf5-79c9762ba2ef",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "production",
+        "job_id": "18bbd64e-1ab9-4b2d-bbae-acd956e81b42",
+        "previous_status": "processing",
+        "provider_submitted": true
+      },
+      "created_at": "2026-10-15T22:46:13.460Z"
+    },
+    {
+      "id": "21819e32-7322-4dff-8b36-680bd6042110",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "production",
+        "job_id": "91e18955-4da2-4328-8fc0-0abfd0b1607c",
+        "previous_status": "queued",
+        "provider_submitted": false
+      },
+      "created_at": "2026-10-15T22:46:14.985Z"
+    },
+    {
+      "id": "333ec7a6-b078-4f23-8433-64eb9f0acfc3",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "production",
+        "job_id": "3a567a34-75fa-4fcb-a04d-abaabbb80e71",
+        "previous_status": "processing",
+        "provider_submitted": true
+      },
+      "created_at": "2026-10-15T22:46:18.114Z"
+    }
+  ],
+  "evidence": {
+    "requests": [
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "0929b297-1802-4c4a-9b94-62a15b3d02bc"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "0929b297-1802-4c4a-9b94-62a15b3d02bc",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "0ff16a69-bd04-4508-8dad-585d6ae5e974"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "0ff16a69-bd04-4508-8dad-585d6ae5e974",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "1116ffb1-b4ad-4283-8ef1-cce81f641dde"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "1116ffb1-b4ad-4283-8ef1-cce81f641dde",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "86cdcc13-861c-4a90-a780-be1270059c09"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "86cdcc13-861c-4a90-a780-be1270059c09",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      }
+    ],
+    "rpc": [
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "claim_video_job_by_key",
+      "checkpoint_video_job_v2",
+      "cancel_video_job",
+      "finish_video_job",
+      "claim_video_job_by_key",
+      "finish_video_job",
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "claim_video_job_by_key",
+      "checkpoint_video_job_v2",
+      "cancel_video_job",
+      "finish_video_job",
+      "claim_video_job_by_key",
+      "finish_video_job"
+    ],
+    "workerCalls": 2,
+    "providerCalls": 0,
+    "publicationCalls": 0,
+    "restartedPools": 2,
+    "restarts": [
+      {
+        "before": "2026-10-15T22:45:58.723Z",
+        "after": "2026-10-15T22:46:10.576Z",
+        "status": 0,
+        "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+        "stderr": ""
+      },
+      {
+        "before": "2026-10-15T22:46:10.576Z",
+        "after": "2026-10-15T22:46:15.219Z",
+        "status": 0,
+        "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+        "stderr": ""
+      }
+    ]
+  }
+}

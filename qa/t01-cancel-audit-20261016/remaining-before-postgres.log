@@ -1,0 +1,353 @@
+✔ cumulative canonical migration upgrades v11 directly and replays without changing live jobs or budgets (117.561458ms)
+✖ 12 simultaneous deliveries of one logical request create one job and one reservation, conflicting intent is refused (16.76625ms)
+✖ distinct concurrent submissions contend on one budget; initial video SQL failure rolls back its reservation (14.412ms)
+✖ SQL write failure at each of ten stage boundaries never advances memory; restart preserves all acknowledged stages (60.689583ms)
+✖ intent SQL failure prevents submission; lost result ACK is recovered from SQL after worker restart (11.533667ms)
+✖ music timeout after acquired video keeps budget and outputs; restart cannot submit again before reconciliation (7.955709ms)
+✖ missing cancellation ledger is SQL failure, never success; repair plus 12 cancellations settle once (20.066084ms)
+✖ prior-month cancellation releases only the original reservation while another current-month job remains reserved (10.702542ms)
+✖ invalidated terminal output cannot become ready or done and cannot erase acquired checkpoints (17.726583ms)
+✖ expired owner cannot acknowledge or overwrite results; restarted owner settles disabled music once (19.425666ms)
+✖ /Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts (1.01375ms)
+✔ SQL done rejects legacy null result and retains reservation; only explicit music skip succeeds (235.896708ms)
+✔ duplicate final result is idempotent; conflicting result cannot replace the completed output (15.880291ms)
+✔ conflicting concurrent results elect one durable winner without overwriting it (6.8915ms)
+✔ completed stages and scenes survive conflicting late delivery, while provider journal can advance (10.433208ms)
+✔ paid outputs and remote identities are immutable before aggregate stage completion (58.690916ms)
+✔ targeted exhausted claim quarantines atomically and retains uncertain work and budget (13.235875ms)
+✔ canonical SQL CHECKs accept orchestrator states; rejected state rolls back business write (5.47875ms)
+✔ canonical auto ready and pending_approval require final proof, complete stages and requested tracks (6.918125ms)
+✔ separate worker process exits after durable remote ID; replacement polls once and replay does nothing (348.598334ms)
+✔ worker restart after provider ACK lost reconciles persisted ID once, preserves all independent stages (17.101875ms)
+✔ provider response without durable ID never resubmits after restart; completed video survives music failure (3.604708ms)
+✔ SQL checkpoint rollback before paid intent prevents any provider call and allows a safe retry (3.486ms)
+✖ cancellation during remote execution fences late results and releases reservation exactly once (2.88825ms)
+✔ lost finish response plus 12 duplicate completions: one completed debit, read reconciliation only (178.256875ms)
+✔ expired lease after final checkpoint: new owner finishes; old owner cannot alter result or budget (10.62725ms)
+✔ cancel races finish: exactly one quota settlement, cancellation can never reconcile as done (43.944083ms)
+✔ quota settlement DB failure rolls back done, retains result; restoring ledger allows safe finish (10.106167ms)
+✔ explicitly skipped music reconciles its committed null result after a lost ACK (5.559916ms)
+✔ failed outcome with lost ACK and duplicate callbacks releases exactly one reservation (11.948958ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 19
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2218.792334
+
+✖ failing tests:
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:1104
+✖ 12 simultaneous deliveries of one logical request create one job and one reservation, conflicting intent is refused (16.76625ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:52:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:1700
+✖ distinct concurrent submissions contend on one budget; initial video SQL failure rolls back its reservation (14.412ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:52:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:2718
+✖ SQL write failure at each of ten stage boundaries never advances memory; restart preserves all acknowledged stages (60.689583ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:52:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:4769
+✖ intent SQL failure prevents submission; lost result ACK is recovered from SQL after worker restart (11.533667ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:52:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:5911
+✖ music timeout after acquired video keeps budget and outputs; restart cannot submit again before reconciliation (7.955709ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:52:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:7216
+✖ missing cancellation ledger is SQL failure, never success; repair plus 12 cancellations settle once (20.066084ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Promise.all (index 0)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:205:22)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:8102
+✖ prior-month cancellation releases only the original reservation while another current-month job remains reserved (10.702542ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:217:17)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:8908
+✖ invalidated terminal output cannot become ready or done and cannot erase acquired checkpoints (17.726583ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:52:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:10052
+✖ expired owner cannot acknowledge or overwrite results; restarted owner settles disabled music once (19.425666ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:52:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:11:547
+✖ /Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts (1.01375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 0
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-closure-20261015/postgres.test.mts:61:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async after (node:internal/test_runner/test:1159:9)
+      at async Test.run (node:internal/test_runner/test:1227:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-durable-reliability-20261014/postgres.test.mts:5:14158
+✖ cancellation during remote execution fences late results and releases reservation exactly once (2.88825ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Promise.all (index 0)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-reliability-20261014/postgres.test.mts:264:21)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }

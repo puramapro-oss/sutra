@@ -32,6 +32,7 @@ before(async () => {
     CREATE TABLE sutra.sutra_auto_themes(id uuid PRIMARY KEY,user_id uuid,times_used int DEFAULT 0,last_used_at timestamptz);
     CREATE TABLE sutra.sutra_auto_memory(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid,memory_type text,content text,importance numeric,related_video_id uuid);`)
   await query(table(setupSchema, 'videos'))
+  await query(table(setupSchema, 'activity_logs'))
   await query(table(source('migrations/sutra_auto.sql'), 'sutra_auto_videos'))
   for (const path of ['migrations/20261006_auto_occurrence_integrity.sql', 'migrations/v10_durable_jobs_quota.sql',
     'migrations/v11_pipeline_checkpoints.sql', canonical]) await query(source(path))
@@ -205,7 +206,11 @@ test('missing cancellation ledger is SQL failure, never success; repair plus 12 
   const deliveries = await Promise.all(Array.from({ length: 12 }, () => query('SELECT cancel_video_job($1) AS ok', [j.key])))
   assert.equal(deliveries.filter(r => r.rows[0].ok).length, 1)
   assert.equal((await snapshot(j.id)).status, 'cancelled')
-  assert.deepEqual((await snapshot(j.id)).progress, before.progress)
+  const cancelled = await snapshot(j.id)
+  const events = (await query("SELECT id FROM activity_logs WHERE user_id=$1 AND type='video_cancelled' AND metadata->>'job_id'=$2", [j.user, j.id])).rows
+  assert.equal(events.length, 1, 'concurrent cancellations persist one canonical audit')
+  assert.deepEqual(cancelled.progress, { ...before.progress,
+    effects: { ...before.progress.effects, 'activity_logs:cancelled': events[0].id } })
   assert.deepEqual(await counters(j.user), [{ reserved: 0, completed: 0, released: 1 }])
 })
 
