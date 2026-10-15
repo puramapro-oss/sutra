@@ -1,0 +1,401 @@
+TAP version 13
+# (node:75878) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:75878) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: users: deny anonymous before privileged I/O
+ok 1 - users: deny anonymous before privileged I/O
+  ---
+  duration_ms: 2.151667
+  type: 'test'
+  ...
+# Subtest: users: deny member before privileged I/O
+ok 2 - users: deny member before privileged I/O
+  ---
+  duration_ms: 0.298666
+  type: 'test'
+  ...
+# Subtest: users: deny expired before privileged I/O
+ok 3 - users: deny expired before privileged I/O
+  ---
+  duration_ms: 0.32
+  type: 'test'
+  ...
+# Subtest: users: deny revoked before privileged I/O
+ok 4 - users: deny revoked before privileged I/O
+  ---
+  duration_ms: 0.285417
+  type: 'test'
+  ...
+# Subtest: users: never return auth diagnostics
+not ok 5 - users: never return auth diagnostics
+  ---
+  duration_ms: 1.551708
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:4829'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"Erreur recuperation utilisateurs","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"Erreur recuperation utilisateurs","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:77:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: users: never return service diagnostics
+not ok 6 - users: never return service diagnostics
+  ---
+  duration_ms: 0.38925
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:4829'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"Erreur recuperation utilisateurs","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"Erreur recuperation utilisateurs","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:77:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: users: keep authorized success
+ok 7 - users: keep authorized success
+  ---
+  duration_ms: 0.189958
+  type: 'test'
+  ...
+# Subtest: user: deny anonymous before privileged I/O
+ok 8 - user: deny anonymous before privileged I/O
+  ---
+  duration_ms: 0.173125
+  type: 'test'
+  ...
+# Subtest: user: deny member before privileged I/O
+ok 9 - user: deny member before privileged I/O
+  ---
+  duration_ms: 0.134125
+  type: 'test'
+  ...
+# Subtest: user: deny expired before privileged I/O
+ok 10 - user: deny expired before privileged I/O
+  ---
+  duration_ms: 0.167708
+  type: 'test'
+  ...
+# Subtest: user: deny revoked before privileged I/O
+ok 11 - user: deny revoked before privileged I/O
+  ---
+  duration_ms: 0.10475
+  type: 'test'
+  ...
+# Subtest: user: never return auth diagnostics
+not ok 12 - user: never return auth diagnostics
+  ---
+  duration_ms: 0.207125
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:4829'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:77:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: user: never return service diagnostics
+not ok 13 - user: never return service diagnostics
+  ---
+  duration_ms: 0.14925
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:4829'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:77:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: user: keep authorized success
+ok 14 - user: keep authorized success
+  ---
+  duration_ms: 0.10225
+  type: 'test'
+  ...
+# Subtest: stats: deny anonymous before privileged I/O
+ok 15 - stats: deny anonymous before privileged I/O
+  ---
+  duration_ms: 0.331
+  type: 'test'
+  ...
+# Subtest: stats: deny member before privileged I/O
+ok 16 - stats: deny member before privileged I/O
+  ---
+  duration_ms: 0.131
+  type: 'test'
+  ...
+# Subtest: stats: deny expired before privileged I/O
+ok 17 - stats: deny expired before privileged I/O
+  ---
+  duration_ms: 0.089
+  type: 'test'
+  ...
+# Subtest: stats: deny revoked before privileged I/O
+ok 18 - stats: deny revoked before privileged I/O
+  ---
+  duration_ms: 0.086917
+  type: 'test'
+  ...
+# Subtest: stats: never return auth diagnostics
+not ok 19 - stats: never return auth diagnostics
+  ---
+  duration_ms: 0.183625
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:4829'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"Erreur recuperation stats admin","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"Erreur recuperation stats admin","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:77:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: stats: never return service diagnostics
+not ok 20 - stats: never return service diagnostics
+  ---
+  duration_ms: 0.153416
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:4829'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"Erreur recuperation stats admin","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"Erreur recuperation stats admin","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:77:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: stats: keep authorized success
+ok 21 - stats: keep authorized success
+  ---
+  duration_ms: 0.077208
+  type: 'test'
+  ...
+# Subtest: config: deny anonymous before privileged I/O
+ok 22 - config: deny anonymous before privileged I/O
+  ---
+  duration_ms: 0.1755
+  type: 'test'
+  ...
+# Subtest: config: deny member before privileged I/O
+ok 23 - config: deny member before privileged I/O
+  ---
+  duration_ms: 0.081625
+  type: 'test'
+  ...
+# Subtest: config: deny expired before privileged I/O
+ok 24 - config: deny expired before privileged I/O
+  ---
+  duration_ms: 0.069
+  type: 'test'
+  ...
+# Subtest: config: deny revoked before privileged I/O
+ok 25 - config: deny revoked before privileged I/O
+  ---
+  duration_ms: 0.078667
+  type: 'test'
+  ...
+# Subtest: config: never return auth diagnostics
+not ok 26 - config: never return auth diagnostics
+  ---
+  duration_ms: 0.15125
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:4829'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"Erreur sauvegarde config","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"Erreur sauvegarde config","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:77:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: config: never return service diagnostics
+not ok 27 - config: never return service diagnostics
+  ---
+  duration_ms: 0.174292
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:4829'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"Erreur sauvegarde config","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"Erreur sauvegarde config","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:77:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: config: keep authorized success
+ok 28 - config: keep authorized success
+  ---
+  duration_ms: 0.832125
+  type: 'test'
+  ...
+# Subtest: health: deny anonymous before privileged I/O
+ok 29 - health: deny anonymous before privileged I/O
+  ---
+  duration_ms: 0.143917
+  type: 'test'
+  ...
+# Subtest: health: deny member before privileged I/O
+ok 30 - health: deny member before privileged I/O
+  ---
+  duration_ms: 0.060083
+  type: 'test'
+  ...
+# Subtest: health: deny expired before privileged I/O
+ok 31 - health: deny expired before privileged I/O
+  ---
+  duration_ms: 0.056625
+  type: 'test'
+  ...
+# Subtest: health: deny revoked before privileged I/O
+ok 32 - health: deny revoked before privileged I/O
+  ---
+  duration_ms: 0.054083
+  type: 'test'
+  ...
+# Subtest: health: failed probe never returns exception text
+not ok 33 - health: failed probe never returns exception text
+  ---
+  duration_ms: 0.374667
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:5170'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"ok":true,"generatedAt":"2026-10-15T20:17:01.021Z","env":"test","config":[],"connectivity":[{"provider":"coverr","status":"error","reason":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC","latencyMs":0}],"nonVerifiable":[],"circuitBreakers":[],"notes":["Sondes = endpoints gratuits uniquement (aucune generation, aucun cout).","Les fournisseurs generatifs (LTX, RunPod, Shotstack, ElevenLabs, Suno, Anthropic...) ne sont PAS appelles ici."]}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"ok":true,"generatedAt":"2026-10-15T20:17:01.021Z","env":"test","config":[],"connectivity":[{"provider":"coverr","status":"error","reason":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC","latencyMs":0}],"nonVerifiable":[],"circuitBreakers":[],"notes":["Sondes = endpoints gratuits uniquement (aucune generation, aucun cout).","Les fournisseurs generatifs (LTX, RunPod, Shotstack, ElevenLabs, Suno, Anthropic...) ne sont PAS appelles ici."]}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:88:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: health: timeout remains a public bounded reason
+ok 34 - health: timeout remains a public bounded reason
+  ---
+  duration_ms: 0.115334
+  type: 'test'
+  ...
+# Subtest: webhook: absent signature and secret deny before dispatch
+ok 35 - webhook: absent signature and secret deny before dispatch
+  ---
+  duration_ms: 0.305708
+  type: 'test'
+  ...
+# Subtest: webhook: wrong signature, stale timestamp and tampered payload deny
+ok 36 - webhook: wrong signature, stale timestamp and tampered payload deny
+  ---
+  duration_ms: 0.647209
+  type: 'test'
+  ...
+# Subtest: webhook: verified event dispatch succeeds
+ok 37 - webhook: verified event dispatch succeeds
+  ---
+  duration_ms: 0.17025
+  type: 'test'
+  ...
+# Subtest: webhook: dispatch failure is retryable without exposing private diagnostics
+not ok 38 - webhook: dispatch failure is retryable without exposing private diagnostics
+  ---
+  duration_ms: 0.187125
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:1:6968'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input was expected to not match the regular expression /T02_SYNTHETIC_PRIVATE_DIAGNOSTIC/. Input:
+
+    '{"error":"Erreur webhook","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '{"error":"Erreur webhook","details":"T02_SYNTHETIC_PRIVATE_DIAGNOSTIC"}'
+  operator: 'doesNotMatch'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-sha-security-20261015/admin-webhook.test.mts:126:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 28
+# fail 10
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 293.217

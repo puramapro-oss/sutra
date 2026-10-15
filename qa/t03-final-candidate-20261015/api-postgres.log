@@ -1,0 +1,81 @@
+(node:89093) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:89093) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ lost submission ACK is reconciled by GET, then cancelled without a second logical job (158.512958ms)
+✖ a still-uncommitted submission remains absent; false cancel is not evidence of cancellation (1.914917ms)
+✔ lost cancel ACK after commit stays 503 until the durable receipt is read (6.234291ms)
+✔ malformed cancel ACK after commit stays 503 until the durable receipt is read (4.36125ms)
+✔ SQL cancellation failure rolls back quota release and job state; the same intent can cancel later (7.935208ms)
+✔ an SQL read error is 503 without a mutation; user binding prevents observing another owner (9.142208ms)
+✔ cancellation wins between a persisted checkpoint and finish: no success, no reacquisition (16.943125ms)
+✔ finish wins before cancellation; disabled music null is a valid reusable terminal receipt (6.708416ms)
+✔ 12 concurrent HTTP deliveries share one worker, checkpoint and reservation (22.870333ms)
+✖ 12 cancellations after lease expiry release once and fence the obsolete worker checkpoint (3.773417ms)
+✔ an uncertain remote intention stays quarantined on HTTP redelivery and keeps acquired output (5.840958ms)
+✔ lost finish ACK is recovered from a valid SQL receipt without a second quota mutation (3.670416ms)
+✔ SQL failure during finish never returns success or consumes quota despite the acquired checkpoint (4.89275ms)
+T03_FINAL_SETTLEMENT {"reserved":0,"consumed":3,"released":9,"teardownCancellations":3,"providerCalls":0}
+ℹ tests 13
+ℹ suites 0
+ℹ pass 11
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1000.386625
+
+✖ failing tests:
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:836
+✖ a still-uncommitted submission remains absent; false cancel is not evidence of cancellation (1.914917ms)
+  error: SUTRA_INVALID_SUBMISSION
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg/lib/client.js:631:17
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-final-candidate-20261015/api-postgres.test.mts:163:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 184,
+    severity: 'ERROR',
+    code: 'P0001',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: 'PL/pgSQL function submit_video_job(uuid,text,uuid,jsonb,text,text,integer,jsonb) line 6 at RAISE',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'pl_exec.c',
+    line: '3923',
+    routine: 'exec_stmt_raise'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:5845
+✖ 12 cancellations after lease expiry release once and fence the obsolete worker checkpoint (3.773417ms)
+  error: column "lease_expires_at" of relation "video_jobs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-final-candidate-20261015/api-postgres.test.mts:249:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 141,
+    severity: 'ERROR',
+    code: '42703',
+    detail: undefined,
+    hint: undefined,
+    position: '23',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'analyze.c',
+    line: '2597',
+    routine: 'transformUpdateTargetList'
+  }

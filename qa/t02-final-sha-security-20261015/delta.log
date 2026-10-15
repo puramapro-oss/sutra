@@ -1,0 +1,439 @@
+TAP version 13
+# (node:74357) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:74357) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: GET rejects anonymous before privileged access
+ok 1 - GET rejects anonymous before privileged access
+  ---
+  duration_ms: 2.398792
+  type: 'test'
+  ...
+# Subtest: GET rejects expired before privileged access
+ok 2 - GET rejects expired before privileged access
+  ---
+  duration_ms: 0.220667
+  type: 'test'
+  ...
+# Subtest: GET rejects revoked before privileged access
+ok 3 - GET rejects revoked before privileged access
+  ---
+  duration_ms: 0.339042
+  type: 'test'
+  ...
+# Subtest: GET redacts Error at auth
+ok 4 - GET redacts Error at auth
+  ---
+  duration_ms: 0.740375
+  type: 'test'
+  ...
+# Subtest: GET redacts object at auth
+ok 5 - GET redacts object at auth
+  ---
+  duration_ms: 0.211041
+  type: 'test'
+  ...
+# Subtest: GET redacts Error at service
+ok 6 - GET redacts Error at service
+  ---
+  duration_ms: 0.211209
+  type: 'test'
+  ...
+# Subtest: GET redacts object at service
+ok 7 - GET redacts object at service
+  ---
+  duration_ms: 0.158792
+  type: 'test'
+  ...
+# Subtest: GET redacts Error at read
+ok 8 - GET redacts Error at read
+  ---
+  duration_ms: 0.172416
+  type: 'test'
+  ...
+# Subtest: GET redacts object at read
+ok 9 - GET redacts object at read
+  ---
+  duration_ms: 0.143958
+  type: 'test'
+  ...
+# Subtest: PATCH rejects anonymous before privileged access
+ok 10 - PATCH rejects anonymous before privileged access
+  ---
+  duration_ms: 0.562083
+  type: 'test'
+  ...
+# Subtest: PATCH rejects expired before privileged access
+ok 11 - PATCH rejects expired before privileged access
+  ---
+  duration_ms: 0.138416
+  type: 'test'
+  ...
+# Subtest: PATCH rejects revoked before privileged access
+ok 12 - PATCH rejects revoked before privileged access
+  ---
+  duration_ms: 0.127042
+  type: 'test'
+  ...
+# Subtest: PATCH redacts Error at auth
+ok 13 - PATCH redacts Error at auth
+  ---
+  duration_ms: 0.143083
+  type: 'test'
+  ...
+# Subtest: PATCH redacts object at auth
+ok 14 - PATCH redacts object at auth
+  ---
+  duration_ms: 0.140625
+  type: 'test'
+  ...
+# Subtest: PATCH redacts Error at service
+ok 15 - PATCH redacts Error at service
+  ---
+  duration_ms: 0.162083
+  type: 'test'
+  ...
+# Subtest: PATCH redacts object at service
+ok 16 - PATCH redacts object at service
+  ---
+  duration_ms: 0.124875
+  type: 'test'
+  ...
+# Subtest: PATCH redacts Error at write
+ok 17 - PATCH redacts Error at write
+  ---
+  duration_ms: 0.1695
+  type: 'test'
+  ...
+# Subtest: PATCH redacts object at write
+ok 18 - PATCH redacts object at write
+  ---
+  duration_ms: 0.124292
+  type: 'test'
+  ...
+# Subtest: two identities read only their own configuration
+ok 19 - two identities read only their own configuration
+  ---
+  duration_ms: 0.137125
+  type: 'test'
+  ...
+# Subtest: lazy configuration creation retains defaults and hides insertion diagnostics
+ok 20 - lazy configuration creation retains defaults and hides insertion diagnostics
+  ---
+  duration_ms: 0.153958
+  type: 'test'
+  ...
+# Subtest: patch uses authenticated owner and accepted fields only
+ok 21 - patch uses authenticated owner and accepted fields only
+  ---
+  duration_ms: 0.14575
+  type: 'test'
+  ...
+# Subtest: unknown fields cannot trigger a write
+ok 22 - unknown fields cannot trigger a write
+  ---
+  duration_ms: 0.088458
+  type: 'test'
+  ...
+# (node:74358) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:74358) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: lookup denies anonymous before privileged read
+ok 23 - lookup denies anonymous before privileged read
+  ---
+  duration_ms: 2.104417
+  type: 'test'
+  ...
+# Subtest: lookup denies expired before privileged read
+ok 24 - lookup denies expired before privileged read
+  ---
+  duration_ms: 0.225084
+  type: 'test'
+  ...
+# Subtest: lookup denies revoked before privileged read
+ok 25 - lookup denies revoked before privileged read
+  ---
+  duration_ms: 0.434292
+  type: 'test'
+  ...
+# Subtest: lookup rejects invalid or ambiguous identity:
+ok 26 - lookup rejects invalid or ambiguous identity:
+  ---
+  duration_ms: 1.232625
+  type: 'test'
+  ...
+# Subtest: lookup rejects invalid or ambiguous identity: targetStep=script
+ok 27 - lookup rejects invalid or ambiguous identity: targetStep=script
+  ---
+  duration_ms: 0.475125
+  type: 'test'
+  ...
+# Subtest: lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009
+ok 28 - lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009
+  ---
+  duration_ms: 0.3765
+  type: 'test'
+  ...
+# Subtest: lookup rejects invalid or ambiguous identity: requestId=bad&targetStep=script
+ok 29 - lookup rejects invalid or ambiguous identity: requestId=bad&targetStep=script
+  ---
+  duration_ms: 0.273459
+  type: 'test'
+  ...
+# Subtest: lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=cancel
+ok 30 - lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=cancel
+  ---
+  duration_ms: 0.222125
+  type: 'test'
+  ...
+# Subtest: lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=thumbnail
+ok 31 - lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=thumbnail
+  ---
+  duration_ms: 0.223458
+  type: 'test'
+  ...
+# Subtest: lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=script&targetStep=video
+ok 32 - lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=script&targetStep=video
+  ---
+  duration_ms: 0.238292
+  type: 'test'
+  ...
+# Subtest: lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&requestId=12000000-0000-4000-8000-000000000009&targetStep=script
+ok 33 - lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&requestId=12000000-0000-4000-8000-000000000009&targetStep=script
+  ---
+  duration_ms: 0.169208
+  type: 'test'
+  ...
+# Subtest: lookup scopes script to authenticated owner and production kind
+ok 34 - lookup scopes script to authenticated owner and production kind
+  ---
+  duration_ms: 1.284292
+  type: 'test'
+  ...
+# Subtest: lookup scopes video to authenticated owner and production kind
+ok 35 - lookup scopes video to authenticated owner and production kind
+  ---
+  duration_ms: 0.417208
+  type: 'test'
+  ...
+# Subtest: lookup scopes voice to authenticated owner and production kind
+ok 36 - lookup scopes voice to authenticated owner and production kind
+  ---
+  duration_ms: 0.327208
+  type: 'test'
+  ...
+# Subtest: lookup scopes music to authenticated owner and production kind
+ok 37 - lookup scopes music to authenticated owner and production kind
+  ---
+  duration_ms: 0.446959
+  type: 'test'
+  ...
+# Subtest: lookup scopes assembly to authenticated owner and production kind
+ok 38 - lookup scopes assembly to authenticated owner and production kind
+  ---
+  duration_ms: 0.3645
+  type: 'test'
+  ...
+# Subtest: lookup scopes all to authenticated owner and production kind
+ok 39 - lookup scopes all to authenticated owner and production kind
+  ---
+  duration_ms: 1.909583
+  type: 'test'
+  ...
+# Subtest: lookup returns stored queued without resubmitting
+ok 40 - lookup returns stored queued without resubmitting
+  ---
+  duration_ms: 0.165792
+  type: 'test'
+  ...
+# Subtest: lookup returns stored processing without resubmitting
+ok 41 - lookup returns stored processing without resubmitting
+  ---
+  duration_ms: 0.121583
+  type: 'test'
+  ...
+# Subtest: lookup returns stored cancelled without resubmitting
+ok 42 - lookup returns stored cancelled without resubmitting
+  ---
+  duration_ms: 0.125083
+  type: 'test'
+  ...
+# Subtest: lookup returns stored failed without resubmitting
+ok 43 - lookup returns stored failed without resubmitting
+  ---
+  duration_ms: 0.11675
+  type: 'test'
+  ...
+# Subtest: lookup returns stored uncertain without resubmitting
+ok 44 - lookup returns stored uncertain without resubmitting
+  ---
+  duration_ms: 0.113
+  type: 'test'
+  ...
+# Subtest: lookup returns stored done without resubmitting
+ok 45 - lookup returns stored done without resubmitting
+  ---
+  duration_ms: 0.118083
+  type: 'test'
+  ...
+# Subtest: a missing row remains 404, never falsely cancelled or created
+ok 46 - a missing row remains 404, never falsely cancelled or created
+  ---
+  duration_ms: 0.123458
+  type: 'test'
+  ...
+# Subtest: lookup redacts session failure
+ok 47 - lookup redacts session failure
+  ---
+  duration_ms: 0.105584
+  type: 'test'
+  ...
+# Subtest: lookup redacts service failure
+ok 48 - lookup redacts service failure
+  ---
+  duration_ms: 0.113292
+  type: 'test'
+  ...
+# Subtest: lookup redacts throw failure
+ok 49 - lookup redacts throw failure
+  ---
+  duration_ms: 0.111666
+  type: 'test'
+  ...
+# Subtest: lookup redacts database failure
+ok 50 - lookup redacts database failure
+  ---
+  duration_ms: 0.118167
+  type: 'test'
+  ...
+# Subtest: lost submit ACK then unconfirmed cancel can observe terminal completion without a new POST
+ok 51 - lost submit ACK then unconfirmed cancel can observe terminal completion without a new POST
+  ---
+  duration_ms: 0.200417
+  type: 'test'
+  ...
+# (node:74362) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:74362) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: production denies anonymous before privileged reads and RPCs
+ok 52 - production denies anonymous before privileged reads and RPCs
+  ---
+  duration_ms: 2.61075
+  type: 'test'
+  ...
+# Subtest: production denies expired before privileged reads and RPCs
+ok 53 - production denies expired before privileged reads and RPCs
+  ---
+  duration_ms: 0.324625
+  type: 'test'
+  ...
+# Subtest: production denies revoked before privileged reads and RPCs
+ok 54 - production denies revoked before privileged reads and RPCs
+  ---
+  duration_ms: 0.322542
+  type: 'test'
+  ...
+# Subtest: two users with the same client intent get distinct user-scoped jobs and server-derived plans
+ok 55 - two users with the same client intent get distinct user-scoped jobs and server-derived plans
+  ---
+  duration_ms: 7.213375
+  type: 'test'
+  ...
+# Subtest: client cannot inject another user or an elevated plan
+ok 56 - client cannot inject another user or an elevated plan
+  ---
+  duration_ms: 0.329709
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at submit_video_job
+ok 57 - diagnostic redaction at submit_video_job
+  ---
+  duration_ms: 0.298709
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at submit_video_job:throw
+ok 58 - diagnostic redaction at submit_video_job:throw
+  ---
+  duration_ms: 0.216125
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at claim_video_job_by_key
+ok 59 - diagnostic redaction at claim_video_job_by_key
+  ---
+  duration_ms: 0.204125
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at claim_video_job_by_key:throw
+ok 60 - diagnostic redaction at claim_video_job_by_key:throw
+  ---
+  duration_ms: 0.224458
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at profile
+ok 61 - diagnostic redaction at profile
+  ---
+  duration_ms: 0.175
+  type: 'test'
+  ...
+# Subtest: exact public submission code remains 403: SUTRA_QUOTA_EXHAUSTED
+ok 62 - exact public submission code remains 403: SUTRA_QUOTA_EXHAUSTED
+  ---
+  duration_ms: 0.227667
+  type: 'test'
+  ...
+# Subtest: embedded public code cannot expose a claim diagnostic: SUTRA_QUOTA_EXHAUSTED
+ok 63 - embedded public code cannot expose a claim diagnostic: SUTRA_QUOTA_EXHAUSTED
+  ---
+  duration_ms: 0.205583
+  type: 'test'
+  ...
+# Subtest: exact public submission code remains 409: SUTRA_IDEMPOTENCY_CONFLICT
+ok 64 - exact public submission code remains 409: SUTRA_IDEMPOTENCY_CONFLICT
+  ---
+  duration_ms: 0.14925
+  type: 'test'
+  ...
+# Subtest: embedded public code cannot expose a claim diagnostic: SUTRA_IDEMPOTENCY_CONFLICT
+ok 65 - embedded public code cannot expose a claim diagnostic: SUTRA_IDEMPOTENCY_CONFLICT
+  ---
+  duration_ms: 0.159666
+  type: 'test'
+  ...
+# Subtest: exact public submission code remains 400: SUTRA_INVALID_REQUEST_ID
+ok 66 - exact public submission code remains 400: SUTRA_INVALID_REQUEST_ID
+  ---
+  duration_ms: 0.125334
+  type: 'test'
+  ...
+# Subtest: embedded public code cannot expose a claim diagnostic: SUTRA_INVALID_REQUEST_ID
+ok 67 - embedded public code cannot expose a claim diagnostic: SUTRA_INVALID_REQUEST_ID
+  ---
+  duration_ms: 0.122125
+  type: 'test'
+  ...
+# Subtest: worker diagnostic is redacted both from the response and the durable last_error
+ok 68 - worker diagnostic is redacted both from the response and the durable last_error
+  ---
+  duration_ms: 0.188209
+  type: 'test'
+  ...
+# Subtest: unconfirmed durable error write stays fail-closed
+ok 69 - unconfirmed durable error write stays fail-closed
+  ---
+  duration_ms: 0.153417
+  type: 'test'
+  ...
+# Subtest: non-Error throw cannot escape diagnostic values
+ok 70 - non-Error throw cannot escape diagnostic values
+  ---
+  duration_ms: 0.138542
+  type: 'test'
+  ...
+1..70
+# tests 70
+# suites 0
+# pass 70
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 533.580042

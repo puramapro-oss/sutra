@@ -1,0 +1,46 @@
+{
+  "baseCommit": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: saved autopilot comes from its authoritative GET and survives reload",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: saved autopilot comes from its authoritative GET and survives reload",
+      "status": "PASS"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "reload-375",
+      "reloadReads": 2,
+      "production": false
+    },
+    {
+      "name": "reload-1440",
+      "reloadReads": 2,
+      "production": false
+    },
+    {
+      "name": "autopilot-read-contract",
+      "reads": 8,
+      "writes": 0,
+      "realAccountsConnected": 0,
+      "publications": 0
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

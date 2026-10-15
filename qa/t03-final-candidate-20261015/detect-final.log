@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 54 files, 84 symbols
+Affected processes: 453
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 2026-10-15T19:55:14.965312+00:00 — contre-epreuve corrigee → BATON.md
+  Const config → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Property host → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Property port → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Property user → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const database → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const acquisitions → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const pool → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const rpcCalls → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const teardownCancellations → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const user → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const workerCalls → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const readFailure → qa/t03-final-candidate-20261015/api-postgres.test.mts
+  Const ackFault → qa/t03-final-candidate-20261015/api-postgres.test.mts
+... and 69 more
+
+Affected execution flows:
+  • CommunityScreen → ApiFetch (3 steps) — changed: query, query, query
+  • AdminContestPage → FetchData (3 steps) — changed: query, query, query
+  • AdminUsersPage → FetchUsers (3 steps) — changed: query, query, query
+  • AutoPage → RequestClientJson (3 steps) — changed: query, query, query
+  • CommunityPage → FetchBuddy (3 steps) — changed: query, query, query
+  • CommunityPage → FetchCircles (3 steps) — changed: query, query, query
+  • CommunityPage → FetchWall (3 steps) — changed: query, query, query
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: query, query, query
+  • JeuCreatifPage → Load (3 steps) — changed: query, query, query
+  • LightningPage → Load (3 steps) — changed: query, query, query
+... and 443 more

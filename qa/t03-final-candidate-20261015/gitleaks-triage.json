@@ -1,0 +1,88 @@
+{
+  "observed_at": "2026-10-15T20:34:21.521114+00:00",
+  "result": "PASS_AFTER_TRIAGE",
+  "source_reconstruction": [
+    {
+      "receipt": "api-postgres.json",
+      "field": "source_sha256",
+      "kind": "SHA256 of synthetic local test source",
+      "reconstructed_exactly": true
+    },
+    {
+      "receipt": "replay-two-api-postgres.json",
+      "field": "source_sha256",
+      "kind": "SHA256 of synthetic local test source",
+      "reconstructed_exactly": true
+    },
+    {
+      "receipt": "integration-proof.json",
+      "field": "final_source_sha256",
+      "kind": "SHA256 of synthetic local test source",
+      "reconstructed_exactly": true
+    }
+  ],
+  "scans": [
+    {
+      "report": "gitleaks-redacted.json",
+      "raw_exit_code": 1,
+      "input_sha256": "cbec76b77f904cfa15ef08fb6eb56f2a72095c777cfa06db9ca4bd4b54735112",
+      "findings": [
+        {
+          "rule": "generic-api-key",
+          "diff_LF_line": 150,
+          "receipt": "api-postgres.json",
+          "classification": "FALSE_POSITIVE_SOURCE_HASH",
+          "reconstructed_exactly": true
+        },
+        {
+          "rule": "generic-api-key",
+          "diff_LF_line": 654,
+          "receipt": "integration-proof.json",
+          "classification": "FALSE_POSITIVE_SOURCE_HASH",
+          "reconstructed_exactly": true
+        },
+        {
+          "rule": "generic-api-key",
+          "diff_LF_line": 2543,
+          "receipt": "replay-two-api-postgres.json",
+          "classification": "FALSE_POSITIVE_SOURCE_HASH",
+          "reconstructed_exactly": true
+        }
+      ]
+    },
+    {
+      "report": "gitleaks-full-redacted.json",
+      "raw_exit_code": 1,
+      "input_sha256": "6b10edc50cdb2e485d02ed8a8d4da6d3b3bfe5868af7e3c739b9ca9640912a10",
+      "findings": [
+        {
+          "rule": "generic-api-key",
+          "diff_LF_line": 150,
+          "receipt": "api-postgres.json",
+          "classification": "FALSE_POSITIVE_SOURCE_HASH",
+          "reconstructed_exactly": true
+        },
+        {
+          "rule": "generic-api-key",
+          "diff_LF_line": 1058,
+          "receipt": "integration-proof.json",
+          "classification": "FALSE_POSITIVE_SOURCE_HASH",
+          "reconstructed_exactly": true
+        },
+        {
+          "rule": "generic-api-key",
+          "diff_LF_line": 3007,
+          "receipt": "replay-two-api-postgres.json",
+          "classification": "FALSE_POSITIVE_SOURCE_HASH",
+          "reconstructed_exactly": true
+        }
+      ]
+    }
+  ],
+  "code_scan": {
+    "report": "gitleaks-code-redacted.json",
+    "exit_code": 0,
+    "findings": 0
+  },
+  "limits": "Raw full scans remain exit 1. All three alerts are reproducible source hashes, not credentials. No secret or environment file was read. Does not certify production or untouched files."
+}

@@ -27,8 +27,7 @@ export async function POST(req: Request) {
     await dispatchStripeEvent(event)
 
     return NextResponse.json({ received: true }, { status: 200 })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur webhook', details: message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Erreur webhook' }, { status: 500 })
   }
 }

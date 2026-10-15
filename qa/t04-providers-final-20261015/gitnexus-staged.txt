@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 49 files, 93 symbols
+Affected processes: 354
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 2026-10-15T19:55:14.965312+00:00 — contre-epreuve corrigee → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T07 — FRONTEND-JOURNEY, 2026-10-14 → ERRORS.md
+  Const scopeNames → qa/t04-final-providers-20261015/salad-read.mjs
+  Function scope → qa/t04-final-providers-20261015/salad-read.mjs
+  Property reason → qa/t04-final-providers-20261015/salad-read.mjs
+  Function json → qa/t04-providers-final-20261015/contracts.test.mts
+  Const photo → qa/t04-providers-final-20261015/contracts.test.mts
+  Property height → qa/t04-providers-final-20261015/contracts.test.mts
+  Property id → qa/t04-providers-final-20261015/contracts.test.mts
+  Property url → qa/t04-providers-final-20261015/contracts.test.mts
+  Property width → qa/t04-providers-final-20261015/contracts.test.mts
+  Property photographer → qa/t04-providers-final-20261015/contracts.test.mts
+  Property src → qa/t04-providers-final-20261015/contracts.test.mts
+... and 78 more
+
+Affected execution flows:
+  • POST → RequestClientJson (6 steps) — changed: cloneVoice, scope, scope, scope, scope
+  • KarmaHub → Refresh (4 steps) — changed: scope, scope, scope, scope
+  • CommunityScreen → ApiFetch (3 steps) — changed: scope, scope, scope
+  • AdminContestPage → FetchData (3 steps) — changed: scope, scope, scope
+  • AdminUsersPage → FetchUsers (3 steps) — changed: scope, scope, scope
+  • CommunityPage → FetchBuddy (3 steps) — changed: scope, scope, scope
+  • CommunityPage → FetchCircles (3 steps) — changed: scope, scope, scope
+  • CommunityPage → FetchWall (3 steps) — changed: scope, scope, scope
+  • JeuCreatifPage → Load (3 steps) — changed: scope, scope, scope
+  • LightningPage → Load (3 steps) — changed: scope, scope, scope
+... and 344 more

@@ -50,6 +50,19 @@ const PLATFORMS_ORDER: SocialPlatform[] = [
 
 const TOTAL_PLATFORMS = PLATFORMS_ORDER.length
 
+// A failed or malformed read is unknown; never replace saved preferences with defaults.
+function isAutopilotConfig(value: unknown): value is AutopilotConfig {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false
+  const config = value as Record<string, unknown>
+  return ['enabled', 'auto_caption', 'auto_hashtags', 'include_cta'].every(key => typeof config[key] === 'boolean')
+    && Array.isArray(config.default_platforms)
+    && config.default_platforms.every(platform => typeof platform === 'string' && PLATFORMS_ORDER.includes(platform as SocialPlatform))
+    && typeof config.caption_style === 'string'
+    && ['engaging', 'professional', 'casual', 'educational', 'humorous'].includes(config.caption_style)
+    && typeof config.max_hashtags === 'number' && Number.isInteger(config.max_hashtags)
+    && config.max_hashtags >= 0 && config.max_hashtags <= 30
+}
+
 export default function SocialAccountsPage() {
   useAuth()
   const [accounts, setAccounts] = useState<SocialAccount[]>([])
@@ -71,23 +84,23 @@ export default function SocialAccountsPage() {
     setLoadError(null)
     const timeout = setTimeout(() => controller.abort(), 10_000)
     try {
-      const res = await fetch('/api/social/accounts', { cache: 'no-store', signal: controller.signal })
-      if (!res.ok) throw new Error('fetch_failed')
-      const data = await res.json()
-      if (!Array.isArray(data?.accounts)) throw new Error('invalid_accounts')
+      const [accountsResponse, autopilotResponse] = await Promise.all([
+        fetch('/api/social/accounts', { cache: 'no-store', signal: controller.signal }),
+        fetch('/api/social/autopilot', { cache: 'no-store', signal: controller.signal }),
+      ])
+      if (!accountsResponse.ok || !autopilotResponse.ok) throw new Error('fetch_failed')
+      const [data, autopilot] = await Promise.all([accountsResponse.json(), autopilotResponse.json()])
+      if (!Array.isArray(data?.accounts) || !isAutopilotConfig(autopilot?.config)) throw new Error('invalid_social_state')
       if (accountsRequest.current !== controller || controller.signal.aborted) return
       setAccounts(data.accounts)
-      if (data?.autopilot) {
-        setAutopilotConfig({ ...DEFAULT_AUTOPILOT, ...data.autopilot })
-      } else {
-        setAutopilotConfig(DEFAULT_AUTOPILOT)
-      }
+      setAutopilotConfig(autopilot.config)
     } catch {
       if (accountsRequest.current === controller) {
-        setLoadError('Impossible de vérifier tes comptes sociaux. Leur état est indisponible. Réessaie dans un instant.')
+        setLoadError('Impossible de vérifier tes comptes et réglages sociaux. Leur état est indisponible. Réessaie dans un instant.')
       }
     } finally {
       clearTimeout(timeout)
+      controller.abort()
       if (accountsRequest.current === controller) {
         accountsRequest.current = null
         setLoading(false)

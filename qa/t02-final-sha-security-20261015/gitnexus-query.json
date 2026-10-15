@@ -1,0 +1,209 @@
+
+  GitNexus Query (1.6.12)
+{
+  "processes": [
+    {
+      "id": "proc_162_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.104,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_254_get",
+      "summary": "GET → CreateServiceClient",
+      "priority": 0.104,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_265_get",
+      "summary": "GET → Blocked",
+      "priority": 0.104,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_105_post",
+      "summary": "POST → IsValidSiretFormat",
+      "priority": 0.098,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_14_post",
+      "summary": "POST → FetchSiretFromInsee",
+      "priority": 0.098,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/app/api/cron/karma-split-distribute/route.ts:GET",
+      "name": "GET",
+      "filePath": "src/app/api/cron/karma-split-distribute/route.ts",
+      "startLine": 32,
+      "endLine": 294,
+      "module": "Stripe",
+      "process_id": "proc_162_get",
+      "step_index": 1
+    },
+    {
+      "id": "Function:src/app/api/verify-siret/route.ts:POST",
+      "name": "POST",
+      "filePath": "src/app/api/verify-siret/route.ts",
+      "startLine": 62,
+      "endLine": 117,
+      "module": "Verify-siret",
+      "process_id": "proc_105_post",
+      "step_index": 1
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Const:src/app/api/verify-siret/route.ts:RATE_LIMIT_MAX",
+      "name": "RATE_LIMIT_MAX",
+      "filePath": "src/app/api/verify-siret/route.ts",
+      "startLine": 27,
+      "endLine": 27
+    },
+    {
+      "id": "Const:src/app/api/verify-siret/route.ts:RATE_LIMIT_WINDOW_SEC",
+      "name": "RATE_LIMIT_WINDOW_SEC",
+      "filePath": "src/app/api/verify-siret/route.ts",
+      "startLine": 28,
+      "endLine": 28
+    },
+    {
+      "id": "Const:src/app/api/cron/karma-split-distribute/route.ts:DISTRIBUTION_RATE",
+      "name": "DISTRIBUTION_RATE",
+      "filePath": "src/app/api/cron/karma-split-distribute/route.ts",
+      "startLine": 16,
+      "endLine": 16
+    },
+    {
+      "id": "File:src/app/api/cron/karma-split-distribute/route.ts",
+      "name": "route.ts",
+      "filePath": "src/app/api/cron/karma-split-distribute/route.ts"
+    },
+    {
+      "id": "Const:mobile/lib/constants.ts:PLAN_LIMITS",
+      "name": "PLAN_LIMITS",
+      "filePath": "mobile/lib/constants.ts",
+      "startLine": 20,
+      "endLine": 36
+    },
+    {
+      "id": "Property:mobile/lib/constants.ts:PLAN_LIMITS.admin",
+      "name": "admin",
+      "filePath": "mobile/lib/constants.ts",
+      "startLine": 35,
+      "endLine": 35
+    },
+    {
+      "id": "File:mobile/lib/constants.ts",
+      "name": "constants.ts",
+      "filePath": "mobile/lib/constants.ts"
+    },
+    {
+      "id": "Function:src/lib/stripe/webhook-invoices.ts:handleInvoicePaid",
+      "name": "handleInvoicePaid",
+      "filePath": "src/lib/stripe/webhook-invoices.ts",
+      "startLine": 12,
+      "endLine": 117,
+      "module": "Stripe"
+    },
+    {
+      "id": "Function:src/lib/stripe/webhook-invoices.ts:handleInvoicePaymentFailed",
+      "name": "handleInvoicePaymentFailed",
+      "filePath": "src/lib/stripe/webhook-invoices.ts",
+      "startLine": 123,
+      "endLine": 154,
+      "module": "Stripe"
+    },
+    {
+      "id": "File:src/lib/stripe/webhook-invoices.ts",
+      "name": "webhook-invoices.ts",
+      "filePath": "src/lib/stripe/webhook-invoices.ts"
+    },
+    {
+      "id": "Variable:qa/final-delta-20261014/security-probe.py:cron_routes",
+      "name": "cron_routes",
+      "filePath": "qa/final-delta-20261014/security-probe.py",
+      "startLine": 59,
+      "endLine": 59
+    },
+    {
+      "id": "Variable:qa/final-delta-20261014/security-probe.py:report",
+      "name": "report",
+      "filePath": "qa/final-delta-20261014/security-probe.py",
+      "startLine": 105,
+      "endLine": 118
+    },
+    {
+      "id": "File:qa/final-delta-20261014/security-probe.py",
+      "name": "security-probe.py",
+      "filePath": "qa/final-delta-20261014/security-probe.py"
+    },
+    {
+      "id": "Variable:qa/ovh-final-providers-20261014/security-probe.py:cron_routes",
+      "name": "cron_routes",
+      "filePath": "qa/ovh-final-providers-20261014/security-probe.py",
+      "startLine": 59,
+      "endLine": 59
+    },
+    {
+      "id": "Variable:qa/ovh-final-providers-20261014/security-probe.py:report",
+      "name": "report",
+      "filePath": "qa/ovh-final-providers-20261014/security-probe.py",
+      "startLine": 105,
+      "endLine": 118
+    },
+    {
+      "id": "File:qa/ovh-final-providers-20261014/security-probe.py",
+      "name": "security-probe.py",
+      "filePath": "qa/ovh-final-providers-20261014/security-probe.py"
+    },
+    {
+      "id": "Variable:qa/postdeploy-20261013/security/probe.py:cron_routes",
+      "name": "cron_routes",
+      "filePath": "qa/postdeploy-20261013/security/probe.py",
+      "startLine": 59,
+      "endLine": 59
+    },
+    {
+      "id": "Variable:qa/postdeploy-20261013/security/probe.py:report",
+      "name": "report",
+      "filePath": "qa/postdeploy-20261013/security/probe.py",
+      "startLine": 105,
+      "endLine": 118
+    },
+    {
+      "id": "File:qa/postdeploy-20261013/security/probe.py",
+      "name": "probe.py",
+      "filePath": "qa/postdeploy-20261013/security/probe.py"
+    },
+    {
+      "id": "Property:src/lib/ltx-utils.ts:getMaxQuality.admin@76:36",
+      "name": "admin",
+      "filePath": "src/lib/ltx-utils.ts",
+      "startLine": 77,
+      "endLine": 77
+    }
+  ],
+  "timing": {
+    "vector": 3.3,
+    "bm25": 168.1,
+    "merge": 0.1,
+    "symbol_lookup": 12.5,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 181.6
+  }
+}

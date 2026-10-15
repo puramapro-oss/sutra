@@ -185,8 +185,8 @@ export async function executeCreateJob(
       if (results[0]) {
         return { url: results[0].url, type: 'stock', kind: 'video', duration: Math.max(sceneDuration, Math.min(results[0].duration || sceneDuration, 60)) }
       }
-      const ai = await generateVisual(false)
-      return clipFromVisual(ai, sceneDuration)
+      // Stock-only intent never authorizes an implicit paid visual generation.
+      throw new Error('SUTRA_STOCK_MEDIA_UNAVAILABLE')
     }
     if (input.mediaMode === 'mixed') {
       if (userChoseStock) {

@@ -1,0 +1,39 @@
+⚠ Self-signed certificates are currently an experimental feature, use with caution.
+▲ Next.js 16.3.8 (webpack)
+- Local:         https://127.0.0.1:65238
+- Network:       https://127.0.0.1:65238
+✓ Ready in 390ms
+✓ Running next.config.ts took 131ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+(node:74702) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+○ Compiling /login ...
+ GET /login 200 in 1073ms (next.js: 767ms, proxy.ts: 22ms, application-code: 284ms)
+ GET /login?next=/library 200 in 26ms (next.js: 1.3ms, proxy.ts: 3ms, application-code: 22ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 1754ms (next.js: 1680ms, proxy.ts: 20ms, application-code: 53ms)
+ GET /library 200 in 79ms (next.js: 3ms, proxy.ts: 12ms, application-code: 64ms)
+ GET /library 200 in 79ms (next.js: 16ms, proxy.ts: 13ms, application-code: 50ms)
+ POST /api/legal/accept 200 in 720ms (next.js: 385ms, proxy.ts: 3ms, application-code: 332ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.8ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.8ms, proxy.ts: 1.8ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 259ms (next.js: 0.8ms, proxy.ts: 2ms, application-code: 256ms)
+ GET /auto/schedules 200 in 564ms (next.js: 310ms, proxy.ts: 4ms, application-code: 250ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /auto/schedules 200 in 26ms (next.js: 1.3ms, proxy.ts: 6ms, application-code: 19ms)
+ GET /auto/schedules 200 in 47ms (next.js: 3ms, proxy.ts: 31ms, application-code: 12ms)
+⨯ Error: The destination stream closed early.
+    at ignore-listed frames {
+  digest: '1640516038'
+}
+ GET /auto/schedules 200 in 297ms (next.js: 1.0ms, proxy.ts: 16ms, application-code: 280ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /auto/schedules 200 in 22ms (next.js: 0.8ms, proxy.ts: 5ms, application-code: 16ms)
+[?25h

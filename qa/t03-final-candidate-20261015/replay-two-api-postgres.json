@@ -1,0 +1,37 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+    "--experimental-test-module-mocks",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-timeout=15000",
+    "--test-concurrency=1",
+    "--test-name-pattern=still-uncommitted|12 cancellations",
+    "qa/t03-final-candidate-20261015/api-postgres.test.mts"
+  ],
+  "exit_code": 0,
+  "environment": "private disposable loopback PostgreSQL; no ambient credentials; external sockets and secret files denied",
+  "canonical_migration_only_in_new_fixture": true,
+  "network_provider_calls": 0,
+  "source_sha256": {
+    "qa/t03-final-candidate-20261015/api-postgres.test.mts": "d020104cde0bdb960324884b23d4e6c207a09d94f94bdac1ecaa0c82acd03113",
+    "qa/t03-final-candidate-20261015/run.mjs": "d768ab3603fd1573080fc4c33bba1c89bf0bbf58a6e117e132c3e71ebeddf056",
+    "qa/t03-final-candidate-20261015/settle.mjs": "1bc14e461f7deccee7a6a60b30bb990a3882e48bb84aeb267302e0a422b9ed56",
+    "src/app/api/production/route.ts": "9e0d5b5bc953f35327a3648867333ee1a16a10ef97b0a0a02a5989fdd891d5a1",
+    "src/lib/pipeline-submit.ts": "c1cc7887e43f084217aaecfef56d3c814b0f06402adbd057e2425b6e4cc43258",
+    "src/lib/production-intent-client.ts": "e6e8945578c5d8fc744c91be8bec892f6e7db18f2835d218a578c7b6c75284d0",
+    "qa/t08/offline.cjs": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+    "migrations/v10_durable_jobs_quota.sql": "a112552d0479dc7e54c50231fddb43c8675da639ebaeecc786b3382cad00a73d",
+    "migrations/v11_pipeline_checkpoints.sql": "704bcad695215f7892aea0cc3ae34591864a17353100417ae2a8f9ff42e9b6fc",
+    "migrations/20261014_durable_checkpoint_integrity.sql": "93b96256c604baaa857efe8064519ad552ccaaff2305628c139294f34579882c",
+    "migrations/20261015_final_durable_integrity.sql": "e8befa9e9fa602d80c483245bc71d07831fe56aad9ee05ed83dc2261a1d7805c",
+    "src/lib/video-queue.ts": "23a432fd7228bd77f16fc9bf85cbc253ef34880fbf94ca9927418f16a0ae6d3f",
+    "src/lib/pipeline-state.ts": "be88e636733523e9e0499febe000b02882966b39d618b42f5fceb4fdce3d0e35",
+    "src/lib/production-pipeline.ts": "78efb9c0a85301ed8ad2596f927c759946ddee683c8e8a23c42fcd778eb7b931",
+    "src/data/setup-schema.ts": "ab74eb544e1ae8f01911c27f30a2fce00b14428b09de51a5dbbf95db124ff48d",
+    "migrations/sutra_auto.sql": "c49dcf28c9fd58ec7d2e84b33e15c0e29f35b4a54cb158ea71dd35faf8663c1c",
+    "migrations/20261006_auto_occurrence_integrity.sql": "0ce30341243c9a87add6c6ef8a07c02a82b34aef64c9010cd00b6b8b29d6b6b5",
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+  }
+}

@@ -33,7 +33,7 @@ const CAPTION_STYLE = z.enum([
 
 const upsertSchema = z.object({
   enabled: z.boolean(),
-  default_platforms: z.array(PLATFORM_ENUM).default([]),
+  default_platforms: z.array(PLATFORM_ENUM).default([]).transform((platforms) => [...new Set(platforms)]),
   auto_caption: z.boolean().default(true),
   auto_hashtags: z.boolean().default(true),
   caption_style: CAPTION_STYLE.default('engaging'),
@@ -87,7 +87,7 @@ export async function GET() {
 
     if (error) {
       return NextResponse.json(
-        { error: 'Erreur récupération config', details: error.message },
+        { error: 'Erreur récupération config' },
         { status: 500 }
       )
     }
@@ -107,7 +107,7 @@ export async function GET() {
 
       if (insertError) {
         return NextResponse.json(
-          { error: 'Erreur création config', details: insertError.message },
+          { error: 'Erreur création config' },
           { status: 500 }
         )
       }
@@ -115,10 +115,9 @@ export async function GET() {
     }
 
     return NextResponse.json({ config: data })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
+  } catch {
     return NextResponse.json(
-      { error: 'Erreur interne', details: message },
+      { error: 'Erreur interne' },
       { status: 500 }
     )
   }
@@ -163,16 +162,15 @@ export async function POST(req: Request) {
 
     if (error) {
       return NextResponse.json(
-        { error: 'Erreur enregistrement', details: error.message },
+        { error: 'Erreur enregistrement' },
         { status: 500 }
       )
     }
 
     return NextResponse.json({ config: data })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
+  } catch {
     return NextResponse.json(
-      { error: 'Erreur interne', details: message },
+      { error: 'Erreur interne' },
       { status: 500 }
     )
   }

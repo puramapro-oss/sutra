@@ -1,0 +1,2009 @@
+{
+  "baseCommit": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: edit IANA/frequency/time preserves identity and theme associations",
+      "status": "PASS"
+    },
+    {
+      "name": "375: pause error is visible and retry changes only intended schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "375: resume lost acknowledgement reconciles once, reload preserves state",
+      "status": "PASS"
+    },
+    {
+      "name": "375: keyboard, labels, overflow and relevant axe rules",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n1 !== 0\n"
+    },
+    {
+      "name": "375: invalid zone and missing days block requests with readable error",
+      "status": "PASS"
+    },
+    {
+      "name": "375: monthly edit retains explicit cadence and deletion lost ACK survives reload",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: edit IANA/frequency/time preserves identity and theme associations",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: pause error is visible and retry changes only intended schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: resume lost acknowledgement reconciles once, reload preserves state",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: keyboard, labels, overflow and relevant axe rules",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n1 !== 0\n"
+    },
+    {
+      "name": "1440: invalid zone and missing days block requests with readable error",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: monthly edit retains explicit cadence and deletion lost ACK survives reload",
+      "status": "PASS"
+    },
+    {
+      "name": "concurrent modification to same schedule refuses overwrite",
+      "status": "PASS"
+    },
+    {
+      "name": "successful HTTP with wrong configuration never reports save success",
+      "status": "PASS"
+    },
+    {
+      "name": "failed or malformed initial load cannot expose destructive controls",
+      "status": "PASS"
+    },
+    {
+      "name": "slow GET has bounded loader and safe explicit recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "edit-375",
+      "interactionMs": 372.00254100000166,
+      "writes": 1,
+      "fixtureDelayMs": 120
+    },
+    {
+      "name": "axe-375",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#5b5a60",
+                    "bgColor": "#090811",
+                    "contrastRatio": 2.91,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-vue\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-vue\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.91 (foreground color: #5b5a60, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-vue\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto\">",
+              "target": [
+                "a[data-testid=\"auto-tab-vue\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.91 (foreground color: #5b5a60, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#5b5a60",
+                    "bgColor": "#090811",
+                    "contrastRatio": 2.91,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-themes\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/themes\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-themes\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.91 (foreground color: #5b5a60, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-themes\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/themes\">",
+              "target": [
+                "a[data-testid=\"auto-tab-themes\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.91 (foreground color: #5b5a60, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#69696e",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 3.71,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.71 (foreground color: #69696e, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-sm text-white/60\">2 planning(s) configure(s)</p>",
+              "target": [
+                ".justify-between.flex-wrap.gap-3 > p"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.71 (foreground color: #69696e, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7159ae",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 3.61,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<label for=\"_r_0_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 -top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded text-violet-400\">Nom</label>",
+                      "target": [
+                        "label[for=\"_r_0_\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.61 (foreground color: #7159ae, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label for=\"_r_0_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 -top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded text-violet-400\">Nom</label>",
+              "target": [
+                "label[for=\"_r_0_\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.61 (foreground color: #7159ae, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0b0a13",
+                    "contrastRatio": 3.76,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.76 (foreground color: #6c6c71, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label class=\"text-sm font-medium text-white/60 mb-2 block\">Frequence</label>",
+              "target": [
+                "div:nth-child(2) > .mb-2.block"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #6c6c71, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0b0a13",
+                    "contrastRatio": 3.76,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.76 (foreground color: #6c6c71, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label class=\"text-sm font-medium text-white/60 mb-2 block\">Jours</label>",
+              "target": [
+                "div:nth-child(3) > .mb-2.block"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #6c6c71, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#727176",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 4.18,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<label for=\"_r_1_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 -top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded text-white/65\">Fuseau horaire IANA</label>",
+                      "target": [
+                        "label[for=\"_r_1_\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.18 (foreground color: #727176, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label for=\"_r_1_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 -top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded text-white/65\">Fuseau horaire IANA</label>",
+              "target": [
+                "label[for=\"_r_1_\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.18 (foreground color: #727176, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0b0a13",
+                    "contrastRatio": 3.76,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.76 (foreground color: #6c6c71, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label for=\"schedule-time\" class=\"text-sm font-medium text-white/60 mb-2 block\">Heure (Europe/Paris)</label>",
+              "target": [
+                "label[for=\"schedule-time\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #6c6c71, background color: #0b0a13, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#727176",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 4.18,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 4.18 (foreground color: #727176, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-center text-xs text-white/65 italic\">“Ne juge pas chaque jour par ta recolte, mais par les graines que tu plantes.” — Robert Louis Stevenson</p>",
+              "target": [
+                ".text-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.18 (foreground color: #727176, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-memoire\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/memory\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-memoire\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-memoire\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/memory\">",
+              "target": [
+                "a[data-testid=\"auto-tab-memoire\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-videos\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/videos\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-videos\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-videos\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/videos\">",
+              "target": [
+                "a[data-testid=\"auto-tab-videos\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-reglages\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/settings\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-reglages\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-reglages\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/settings\">",
+              "target": [
+                "a[data-testid=\"auto-tab-reglages\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"relative inline-flex...\" data-testid=\"schedule-add\" tabindex=\"0\" style=\"transform: none;\">",
+                      "target": [
+                        "button[data-testid=\"schedule-add\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"inline-flex items-center justify-center gap-[inherit]\">",
+              "target": [
+                "button[data-testid=\"schedule-add\"] > .gap-\\[inherit\\].inline-flex.justify-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"relative inline-flex...\" data-testid=\"schedule-save\" tabindex=\"0\">",
+                      "target": [
+                        "button[data-testid=\"schedule-save\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"inline-flex items-center justify-center gap-[inherit]\">Creer le planning</span>",
+              "target": [
+                "button[data-testid=\"schedule-save\"] > .gap-\\[inherit\\].inline-flex.justify-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "edit-1440",
+      "interactionMs": 363.92170799999803,
+      "writes": 1,
+      "fixtureDelayMs": 120
+    },
+    {
+      "name": "axe-1440",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#68686d",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 3.65,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.65 (foreground color: #68686d, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-sm text-white/70 mt-1\">Prépare tes plannings et leurs règles de validation. Leur exécution dépend du service serveur.</p>",
+              "target": [
+                ".mt-1"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.65 (foreground color: #68686d, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#4e4e54",
+                    "bgColor": "#090811",
+                    "contrastRatio": 2.41,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-vue\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-vue\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-vue\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto\">",
+              "target": [
+                "a[data-testid=\"auto-tab-vue\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#786ba2",
+                    "bgColor": "#150e29",
+                    "contrastRatio": 3.92,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-plannings\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-violet-500/20 border-violet-500/40 text-violet-300\" href=\"/auto/schedules\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-plannings\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.92 (foreground color: #786ba2, background color: #150e29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-plannings\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-violet-500/20 border-violet-500/40 text-violet-300\" href=\"/auto/schedules\">",
+              "target": [
+                "a[data-testid=\"auto-tab-plannings\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.92 (foreground color: #786ba2, background color: #150e29, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#4e4e54",
+                    "bgColor": "#090811",
+                    "contrastRatio": 2.41,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-themes\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/themes\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-themes\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-themes\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/themes\">",
+              "target": [
+                "a[data-testid=\"auto-tab-themes\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#4e4e54",
+                    "bgColor": "#090811",
+                    "contrastRatio": 2.41,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-memoire\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/memory\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-memoire\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-memoire\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/memory\">",
+              "target": [
+                "a[data-testid=\"auto-tab-memoire\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#4e4e54",
+                    "bgColor": "#090811",
+                    "contrastRatio": 2.41,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-videos\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/videos\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-videos\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-videos\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/videos\">",
+              "target": [
+                "a[data-testid=\"auto-tab-videos\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#4e4e54",
+                    "bgColor": "#090811",
+                    "contrastRatio": 2.41,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-reglages\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/settings\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-reglages\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-reglages\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/settings\">",
+              "target": [
+                "a[data-testid=\"auto-tab-reglages\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.41 (foreground color: #4e4e54, background color: #090811, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#68686d",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 3.65,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.65 (foreground color: #68686d, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-sm text-white/70\">Un planning actif autorise les prochaines occurrences. Le moteur serveur n’est pas vérifiable ici. Mettre en pause ou supprimer un planning n’annule pas une production déjà créée.</p>",
+              "target": [
+                ".space-y-4 > p:nth-child(2)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.65 (foreground color: #68686d, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#5a5a5f",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 2.95,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.95 (foreground color: #5a5a5f, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-sm text-white/60\">2 planning(s) configure(s)</p>",
+              "target": [
+                ".justify-between.flex-wrap.gap-3 > p"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.95 (foreground color: #5a5a5f, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#604c96",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 2.86,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<label for=\"_r_0_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 -top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded text-violet-400\">Nom</label>",
+                      "target": [
+                        "label[for=\"_r_0_\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.86 (foreground color: #604c96, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label for=\"_r_0_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 -top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded text-violet-400\">Nom</label>",
+              "target": [
+                "label[for=\"_r_0_\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.86 (foreground color: #604c96, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#5d5c62",
+                    "bgColor": "#0a0912",
+                    "contrastRatio": 2.99,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.99 (foreground color: #5d5c62, background color: #0a0912, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label class=\"text-sm font-medium text-white/60 mb-2 block\">Frequence</label>",
+              "target": [
+                "div:nth-child(2) > .mb-2.block"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.99 (foreground color: #5d5c62, background color: #0a0912, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-pressed=\"false\" data-testid=\"schedule-freq-daily\" class=\"px-3 py-2 rounded-xl text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70 hover:text-white\">Quotidien</button>",
+                      "target": [
+                        "button[data-testid=\"schedule-freq-daily\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-pressed=\"false\" data-testid=\"schedule-freq-daily\" class=\"px-3 py-2 rounded-xl text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70 hover:text-white\">Quotidien</button>",
+              "target": [
+                "button[data-testid=\"schedule-freq-daily\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7a6da3",
+                    "bgColor": "#19112c",
+                    "contrastRatio": 3.92,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-pressed=\"true\" data-testid=\"schedule-freq-weekly\" class=\"px-3 py-2 rounded-xl text-xs font-medium border transition-all bg-violet-500/20 border-violet-500/40 text-violet-300\">Hebdomadaire</button>",
+                      "target": [
+                        "button[data-testid=\"schedule-freq-weekly\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.92 (foreground color: #7a6da3, background color: #19112c, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-pressed=\"true\" data-testid=\"schedule-freq-weekly\" class=\"px-3 py-2 rounded-xl text-xs font-medium border transition-all bg-violet-500/20 border-violet-500/40 text-violet-300\">Hebdomadaire</button>",
+              "target": [
+                "button[data-testid=\"schedule-freq-weekly\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.92 (foreground color: #7a6da3, background color: #19112c, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-pressed=\"false\" data-testid=\"schedule-freq-biweekly\" class=\"px-3 py-2 rounded-xl text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70 hover:text-white\">Toutes les 2 semaines</button>",
+                      "target": [
+                        "button[data-testid=\"schedule-freq-biweekly\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-pressed=\"false\" data-testid=\"schedule-freq-biweekly\" class=\"px-3 py-2 rounded-xl text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70 hover:text-white\">Toutes les 2 semaines</button>",
+              "target": [
+                "button[data-testid=\"schedule-freq-biweekly\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-pressed=\"false\" data-testid=\"schedule-freq-monthly\" class=\"px-3 py-2 rounded-xl text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70 hover:text-white\">1er jour choisi du mois</button>",
+                      "target": [
+                        "button[data-testid=\"schedule-freq-monthly\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-pressed=\"false\" data-testid=\"schedule-freq-monthly\" class=\"px-3 py-2 rounded-xl text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70 hover:text-white\">1er jour choisi du mois</button>",
+              "target": [
+                "button[data-testid=\"schedule-freq-monthly\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#5d5c62",
+                    "bgColor": "#0a0912",
+                    "contrastRatio": 2.99,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.99 (foreground color: #5d5c62, background color: #0a0912, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label class=\"text-sm font-medium text-white/60 mb-2 block\">Jours</label>",
+              "target": [
+                "div:nth-child(3) > .mb-2.block"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.99 (foreground color: #5d5c62, background color: #0a0912, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#7a6da3",
+                    "bgColor": "#19112c",
+                    "contrastRatio": 3.92,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-label=\"Lundi\" aria-pressed=\"true\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-violet-500/20 border-violet-500/40 text-violet-300\">MO</button>",
+                      "target": [
+                        "button[aria-label=\"Lundi\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.92 (foreground color: #7a6da3, background color: #19112c, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-label=\"Lundi\" aria-pressed=\"true\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-violet-500/20 border-violet-500/40 text-violet-300\">MO</button>",
+              "target": [
+                "button[aria-label=\"Lundi\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.92 (foreground color: #7a6da3, background color: #19112c, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-label=\"Mardi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">TU</button>",
+                      "target": [
+                        "button[aria-label=\"Mardi\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-label=\"Mardi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">TU</button>",
+              "target": [
+                "button[aria-label=\"Mardi\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-label=\"Mercredi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">WE</button>",
+                      "target": [
+                        "button[aria-label=\"Mercredi\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-label=\"Mercredi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">WE</button>",
+              "target": [
+                "button[aria-label=\"Mercredi\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-label=\"Jeudi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">TH</button>",
+                      "target": [
+                        "button[aria-label=\"Jeudi\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-label=\"Jeudi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">TH</button>",
+              "target": [
+                "button[aria-label=\"Jeudi\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-label=\"Vendredi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">FR</button>",
+                      "target": [
+                        "button[aria-label=\"Vendredi\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-label=\"Vendredi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">FR</button>",
+              "target": [
+                "button[aria-label=\"Vendredi\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-label=\"Samedi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">SA</button>",
+                      "target": [
+                        "button[aria-label=\"Samedi\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-label=\"Samedi\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">SA</button>",
+              "target": [
+                "button[aria-label=\"Samedi\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6c6c71",
+                    "bgColor": "#0d0c15",
+                    "contrastRatio": 3.72,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button aria-label=\"Dimanche\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">SU</button>",
+                      "target": [
+                        "button[aria-label=\"Dimanche\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<button aria-label=\"Dimanche\" aria-pressed=\"false\" class=\"px-2 py-2 rounded-lg text-xs font-medium border transition-all bg-white/[0.02] border-white/[0.06] text-white/70\">SU</button>",
+              "target": [
+                "button[aria-label=\"Dimanche\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6c6c71, background color: #0d0c15, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#616166",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 3.29,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<label for=\"_r_1_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 -top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded text-white/65\">Fuseau horaire IANA</label>",
+                      "target": [
+                        "label[for=\"_r_1_\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.29 (foreground color: #616166, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label for=\"_r_1_\" class=\"absolute transition-all duration-200 pointer-events-none z-10 -top-2.5 left-4 text-xs px-1 bg-[#06050e] rounded text-white/65\">Fuseau horaire IANA</label>",
+              "target": [
+                "label[for=\"_r_1_\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.29 (foreground color: #616166, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6b6a6f",
+                    "bgColor": "#0a0912",
+                    "contrastRatio": 3.69,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.69 (foreground color: #6b6a6f, background color: #0a0912, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p id=\"schedule-dst\" class=\"text-xs text-white/70\">Heure locale du fuseau choisi. Si cette heure n’existe pas au passage à l’heure d’été, le moteur utilise la première minute valide suivante. Au retour à l’heure d’hiver, une seule occurrence est prévue.</p>",
+              "target": [
+                "#schedule-dst"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.69 (foreground color: #6b6a6f, background color: #0a0912, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6b6a6f",
+                    "bgColor": "#0a0912",
+                    "contrastRatio": 3.69,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.69 (foreground color: #6b6a6f, background color: #0a0912, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-xs text-white/70\">Toutes les 2 semaines suit les semaines alternées du moteur, indépendamment de la date de création. Mensuel : première occurrence de chaque jour sélectionné dans le mois.</p>",
+              "target": [
+                "p:nth-child(6)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.69 (foreground color: #6b6a6f, background color: #0a0912, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#5d5c62",
+                    "bgColor": "#0a0912",
+                    "contrastRatio": 2.99,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]\">",
+                      "target": [
+                        ".space-y-4 > .rounded-2xl.bg-white\\/\\[0\\.03\\].backdrop-blur-xl"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 2.99 (foreground color: #5d5c62, background color: #0a0912, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<label for=\"schedule-time\" class=\"text-sm font-medium text-white/60 mb-2 block\">Heure (Europe/Paris)</label>",
+              "target": [
+                "label[for=\"schedule-time\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.99 (foreground color: #5d5c62, background color: #0a0912, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6b6a6f",
+                    "bgColor": "#0a0912",
+                    "contrastRatio": 3.69,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] cursor-pointer\" data-testid=\"schedule-11111111-1111-4111-8111-111111111111\" style=\"transition: transform 0.15s ease-out;\">",
+                      "target": [
+                        ".cursor-pointer.rounded-2xl.bg-white\\/\\[0\\.03\\]:nth-child(1)"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.69 (foreground color: #6b6a6f, background color: #0a0912, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-xs text-white/70\">Toutes les 2 semaines - MO - 02:30 (America/New_York)</p>",
+              "target": [
+                ".cursor-pointer.rounded-2xl.bg-white\\/\\[0\\.03\\]:nth-child(1) > div > .px-6.py-4.justify-between > .min-w-0.gap-3 > .break-words.min-w-0 > p:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.69 (foreground color: #6b6a6f, background color: #0a0912, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#6b6a6f",
+                    "bgColor": "#0a0912",
+                    "contrastRatio": 3.69,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.06] cursor-pointer\" data-testid=\"schedule-22222222-2222-4222-8222-222222222222\" style=\"transition: transform 0.15s ease-out;\">",
+                      "target": [
+                        ".cursor-pointer.rounded-2xl.bg-white\\/\\[0\\.03\\]:nth-child(2)"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.69 (foreground color: #6b6a6f, background color: #0a0912, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-xs text-white/70\">Hebdomadaire - MO - 10:00 (Europe/Paris)</p>",
+              "target": [
+                ".cursor-pointer.rounded-2xl.bg-white\\/\\[0\\.03\\]:nth-child(2) > div > .px-6.py-4.justify-between > .min-w-0.gap-3 > .break-words.min-w-0 > p:nth-child(3)"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.69 (foreground color: #6b6a6f, background color: #0a0912, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#616166",
+                    "bgColor": "#06050e",
+                    "contrastRatio": 3.29,
+                    "fontSize": "9.0pt (12px)",
+                    "fontWeight": "normal",
+                    "messageKey": null,
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element has insufficient color contrast of 3.29 (foreground color: #616166, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"text-center text-xs text-white/65 italic\">“L'obstacle est le chemin.” — Proverbe zen</p>",
+              "target": [
+                ".text-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.29 (foreground color: #616166, background color: #06050e, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"relative inline-flex...\" data-testid=\"schedule-add\" tabindex=\"0\" style=\"transform: none;\">",
+                      "target": [
+                        "button[data-testid=\"schedule-add\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"inline-flex items-center justify-center gap-[inherit]\">",
+              "target": [
+                "button[data-testid=\"schedule-add\"] > .gap-\\[inherit\\].inline-flex.justify-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"relative inline-flex...\" data-testid=\"schedule-save\" tabindex=\"0\">",
+                      "target": [
+                        "button[data-testid=\"schedule-save\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"inline-flex items-center justify-center gap-[inherit]\">Creer le planning</span>",
+              "target": [
+                "button[data-testid=\"schedule-save\"] > .gap-\\[inherit\\].inline-flex.justify-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "load-timeout",
+      "ms": 11479.049000000003
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

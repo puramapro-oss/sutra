@@ -54,8 +54,7 @@ export async function GET(req: Request) {
       limit,
       total_pages: Math.ceil((count ?? 0) / limit),
     })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur recuperation utilisateurs', details: message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Erreur recuperation utilisateurs' }, { status: 500 })
   }
 }

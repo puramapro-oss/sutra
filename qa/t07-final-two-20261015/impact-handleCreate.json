@@ -1,0 +1,147 @@
+{
+  "status": "ambiguous",
+  "message": "Found 5 symbols matching 'handleCreate'. Blast radius differs per candidate (max 1 impacted at risk UNKNOWN; LOW among the candidates that resolved, and at least one could not be walked). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "handleCreate"
+  },
+  "direction": "upstream",
+  "totalCandidates": 5,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 1,
+  "maxRisk": "UNKNOWN",
+  "knownMaxRisk": "LOW",
+  "candidates": [
+    {
+      "uid": "Function:src/components/library/FolderModal.tsx:FolderModal.handleCreate@15:2",
+      "name": "handleCreate",
+      "kind": "Function",
+      "filePath": "src/components/library/FolderModal.tsx",
+      "line": 16,
+      "score": 0.56,
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    },
+    {
+      "uid": "Function:mobile/app/(tabs)/create.tsx:CreateScreen.handleCreate@35:2",
+      "name": "handleCreate",
+      "kind": "Function",
+      "filePath": "mobile/app/(tabs)/create.tsx",
+      "line": 36,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    },
+    {
+      "uid": "Function:src/app/(dashboard)/autopilot/page.tsx:AutopilotPage.handleCreate@78:2",
+      "name": "handleCreate",
+      "kind": "Function",
+      "filePath": "src/app/(dashboard)/autopilot/page.tsx",
+      "line": 79,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    },
+    {
+      "uid": "Function:src/app/(dashboard)/auto/themes/page.tsx:ThemesPage.handleCreate@49:2",
+      "name": "handleCreate",
+      "kind": "Function",
+      "filePath": "src/app/(dashboard)/auto/themes/page.tsx",
+      "line": 50,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    },
+    {
+      "uid": "Function:src/app/(dashboard)/auto/schedules/page.tsx:SchedulesPage.handleCreate@113:2",
+      "name": "handleCreate",
+      "kind": "Function",
+      "filePath": "src/app/(dashboard)/auto/schedules/page.tsx",
+      "line": 114,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    }
+  ]
+}
+
+  GitNexus Impact (1.6.12)

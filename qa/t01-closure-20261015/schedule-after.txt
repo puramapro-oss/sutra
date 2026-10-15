@@ -1,0 +1,67 @@
+(node:96948) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96948) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ GET rejects anonymous before privileged access (1.514166ms)
+✔ GET rejects expired before privileged access (0.393292ms)
+✔ GET rejects revoked before privileged access (0.363125ms)
+✔ GET redacts Error at auth (0.989083ms)
+✔ GET redacts object at auth (0.267542ms)
+✔ GET redacts Error at service (0.246167ms)
+✔ GET redacts object at service (0.147167ms)
+✔ GET redacts Error at read (1.318917ms)
+✔ GET redacts object at read (0.174917ms)
+✔ PATCH rejects anonymous before privileged access (0.596583ms)
+✔ PATCH rejects expired before privileged access (0.159ms)
+✔ PATCH rejects revoked before privileged access (0.126166ms)
+✔ PATCH redacts Error at auth (0.148667ms)
+✔ PATCH redacts object at auth (0.138709ms)
+✔ PATCH redacts Error at service (0.1715ms)
+✔ PATCH redacts object at service (0.241833ms)
+✔ PATCH redacts Error at write (0.218708ms)
+✔ PATCH redacts object at write (0.142167ms)
+✔ two identities read only their own configuration (0.145708ms)
+✔ lazy configuration creation retains defaults and hides insertion diagnostics (0.134625ms)
+✔ patch uses authenticated owner and accepted fields only (0.16275ms)
+✔ unknown fields cannot trigger a write (0.100333ms)
+(node:96949) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96949) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ schedule replacement requires explicit precondition before privileged query (2.663584ms)
+✔ two concurrent intents on one snapshot have exactly one winner (14.13175ms)
+✔ authenticated owner filter cannot replace another user schedules (0.407166ms)
+✔ missing row is conflict, never lazy upsert or overwrite (0.316458ms)
+✔ lost acknowledgment leaves saved schedules intact and retry cannot duplicate (0.503542ms)
+✔ unrelated settings retain schedules and their existing contract (0.190042ms)
+✔ historical extension fields and textual identities survive valid edit (0.258625ms)
+✔ invalid historical schedule can be removed using exact snapshot (0.182667ms)
+✔ invalid schedule name rejected before write (0.124083ms)
+✔ invalid schedule id rejected before write (0.114791ms)
+✔ invalid schedule is_active rejected before write (0.106625ms)
+✔ invalid schedule frequency rejected before write (0.087625ms)
+✔ invalid schedule days rejected before write (0.07675ms)
+✔ invalid schedule time rejected before write (0.079625ms)
+✔ invalid schedule timezone rejected before write (0.1015ms)
+✔ invalid schedule theme_ids rejected before write (0.114542ms)
+✔ invalid schedules null rejected (0.080458ms)
+✔ invalid schedules object rejected (0.063167ms)
+✔ invalid schedules scalar rejected (0.062583ms)
+✔ invalid schedules duplicate rejected (0.093ms)
+✔ invalid schedules missing rejected (0.211ms)
+✔ invalid schedules days rejected (0.128959ms)
+✔ malformed precondition null rejected (0.096709ms)
+✔ malformed precondition {} rejected (0.076833ms)
+✔ malformed precondition "[]" rejected (0.0735ms)
+✔ database error is redacted (0.168792ms)
+✔ database throw is redacted (0.136042ms)
+✔ anonymous request is rejected before all privileged access (0.073334ms)
+✔ invalid request envelope null is 400 (0.074209ms)
+✔ invalid request envelope [] is 400 (0.052875ms)
+✔ invalid request envelope "text" is 400 (0.048542ms)
+ℹ tests 53
+ℹ suites 0
+ℹ pass 53
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 195.95375

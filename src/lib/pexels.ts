@@ -1,7 +1,10 @@
-// Clé lue à l'appel (jamais capturée à l'import) — sans clé : liste vide
-// propre, sans aucun appel réseau.
+import { z } from 'zod'
+import { requireEnv } from '@/lib/env'
+import { providerRecord } from '@/lib/provider-response'
+
+// A missing credential or failed search must not masquerade as empty stock.
 function pexelsApiKey(): string {
-  return process.env.PEXELS_API_KEY ?? ''
+  return requireEnv('PEXELS_API_KEY', 'recherche de medias Pexels')
 }
 
 export type MediaFormat = '9:16' | '16:9' | '1:1'
@@ -16,28 +19,45 @@ interface PexelsVideoFile {
   fps?: number
 }
 
-interface PexelsVideo {
-  id: number
-  url: string
-  width: number
-  height: number
-  duration: number
-  user?: { id: number; name: string; url: string }
-  video_files: PexelsVideoFile[]
-}
+const mediaUrl = z.string().refine(value => {
+  try {
+    const url = new URL(value)
+    return value.length <= 8192 && url.protocol === 'https:' && !url.username && !url.password && !url.hash
+      && (!url.port || url.port === '443')
+  } catch { return false }
+})
+const dimension = z.number().int().positive()
+const videoSchema = z.object({
+  id: dimension, url: mediaUrl, duration: z.number().positive(),
+  user: z.object({ name: z.string(), url: mediaUrl }).optional(),
+  video_files: z.array(z.object({
+    id: dimension, quality: z.string(), link: mediaUrl, width: dimension.nullable(), height: dimension.nullable(),
+    file_type: z.string().optional(), fps: z.number().positive().optional(),
+  })).transform(files => files.filter((file): file is PexelsVideoFile => file.width !== null && file.height !== null
+    && (!file.file_type || file.file_type === 'video/mp4'))),
+})
+const photoSchema = z.object({
+  id: dimension, url: mediaUrl, width: dimension, height: dimension,
+  photographer: z.string().optional(), photographer_url: mediaUrl.optional(),
+  src: z.object({ original: mediaUrl.optional(), large2x: mediaUrl.optional(), large: mediaUrl.optional() })
+    .refine(src => Boolean(src.original || src.large2x || src.large)),
+})
 
-interface PexelsPhoto {
-  id: number
-  url: string
-  width: number
-  height: number
-  photographer?: string
-  photographer_url?: string
-  src: {
-    original: string
-    large2x?: string
-    large: string
+async function pexelsData(path: string, params: URLSearchParams, apiKey: string) {
+  const signal = AbortSignal.timeout(15_000)
+  let response: Response
+  try {
+    response = await fetch(`https://api.pexels.com/${path}?${params}`, {
+      method: 'GET', redirect: 'error', signal,
+      headers: { Authorization: apiKey }, next: { revalidate: 86_400 },
+    })
+  } catch { throw new Error('Pexels TRANSPORT_OR_TIMEOUT') }
+  if (!response.ok) {
+    void response.body?.cancel().catch(() => {})
+    throw new Error(`Pexels HTTP ${response.status}`)
   }
+  return providerRecord(response, signal, 2 * 1024 * 1024)
+    .catch(() => { throw new Error('Pexels INVALID_RESPONSE') })
 }
 
 export interface PexelsVideoResult {
@@ -108,8 +128,8 @@ export async function searchVideos(
     minHeight?: number
   } = {},
 ): Promise<PexelsVideoResult[]> {
+  if (!query.trim()) return []
   const apiKey = pexelsApiKey()
-  if (!apiKey || !query.trim()) return []
 
   const format = options.format ?? '16:9'
   const params = new URLSearchParams({
@@ -118,19 +138,12 @@ export async function searchVideos(
     orientation: orientationFor(format),
   })
 
-  const res = await fetch(`https://api.pexels.com/v1/videos/search?${params}`, {
-    headers: { Authorization: apiKey },
-    next: { revalidate: 86_400 },
-  })
+  const data = await pexelsData('v1/videos/search', params, apiKey)
+  const parsed = z.array(videoSchema).safeParse(data.videos)
+  if (!parsed.success) throw new Error('Pexels INVALID_RESPONSE')
 
-  if (!res.ok) {
-    console.warn(`[pexels] recherche videos: HTTP ${res.status} — resultats vides`)
-    return []
-  }
-  const data = await res.json()
-
-  return (data.videos ?? [])
-    .map((video: PexelsVideo): PexelsVideoResult | null => {
+  return parsed.data
+    .map((video): PexelsVideoResult | null => {
       const file = selectBestVideoFile(
         video.video_files,
         format,
@@ -158,8 +171,8 @@ export async function searchImages(
   perPage = 3,
   options: { format?: MediaFormat } = {},
 ): Promise<PexelsImageResult[]> {
+  if (!query.trim()) return []
   const apiKey = pexelsApiKey()
-  if (!apiKey || !query.trim()) return []
 
   const format = options.format ?? '16:9'
   const params = new URLSearchParams({
@@ -168,20 +181,13 @@ export async function searchImages(
     orientation: orientationFor(format),
   })
 
-  const res = await fetch(`https://api.pexels.com/v1/search?${params}`, {
-    headers: { Authorization: apiKey },
-    next: { revalidate: 86_400 },
-  })
+  const data = await pexelsData('v1/search', params, apiKey)
+  const parsed = z.array(photoSchema).safeParse(data.photos)
+  if (!parsed.success) throw new Error('Pexels INVALID_RESPONSE')
 
-  if (!res.ok) {
-    console.warn(`[pexels] recherche photos: HTTP ${res.status} — resultats vides`)
-    return []
-  }
-  const data = await res.json()
-
-  return (data.photos ?? []).map((photo: PexelsPhoto) => ({
+  return parsed.data.map((photo) => ({
     id: photo.id,
-    url: photo.src.original || photo.src.large2x || photo.src.large,
+    url: (photo.src.original || photo.src.large2x || photo.src.large)!,
     width: photo.width,
     height: photo.height,
     sourcePage: photo.url,

@@ -21,7 +21,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     }
     const values = JSON.parse(Buffer.concat(chunks).toString('utf8'));
     if (!values || typeof values !== 'object' || Array.isArray(values)
-        || Object.keys(values).some(k => !['SALAD_API_KEY', 'SALAD_ORGANIZATION', 'SALAD_PROJECT'].includes(k))) throw new Error();
+        || Object.keys(values).some(k => !['SALAD_API_KEY', 'SALAD_ORGANIZATION', 'SALAD_PROJECT', 'SALAD_ORGANIZATION_NAME', 'SALAD_PROJECT_NAME'].includes(k))) throw new Error();
     process.stdout.write(JSON.stringify(await validateAccess(values)) + '\n');
   } catch {
     process.stdout.write(JSON.stringify({ status: 'BLOQUE', reason: 'VALIDATION_FAILED_REDACTED' }) + '\n');

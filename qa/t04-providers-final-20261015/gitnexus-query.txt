@@ -1,0 +1,202 @@
+
+  GitNexus Query (1.6.12)
+{
+  "processes": [
+    {
+      "id": "proc_141_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.101,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_162_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.101,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_179_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.101,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_193_post",
+      "summary": "POST → EstimateCost",
+      "priority": 0.101,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_203_post",
+      "summary": "POST → EstimateCost",
+      "priority": 0.101,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/logger.ts:estimateCost",
+      "name": "estimateCost",
+      "filePath": "src/lib/logger.ts",
+      "startLine": 109,
+      "endLine": 119,
+      "module": "Stripe",
+      "process_id": "proc_141_get",
+      "step_index": 3
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:src/lib/fallbacks.ts:generateVisualWithFallback",
+      "name": "generateVisualWithFallback",
+      "filePath": "src/lib/fallbacks.ts",
+      "startLine": 38,
+      "endLine": 94,
+      "module": "Cluster_461"
+    },
+    {
+      "id": "Function:src/lib/fallbacks.ts:generateVoiceWithProvenance",
+      "name": "generateVoiceWithProvenance",
+      "filePath": "src/lib/fallbacks.ts",
+      "startLine": 157,
+      "endLine": 165,
+      "module": "Cluster_6"
+    },
+    {
+      "id": "File:src/lib/fallbacks.ts",
+      "name": "fallbacks.ts",
+      "filePath": "src/lib/fallbacks.ts"
+    },
+    {
+      "id": "Function:qa/t04-final-providers-20261015/salad-read.mjs:readScope",
+      "name": "readScope",
+      "filePath": "qa/t04-final-providers-20261015/salad-read.mjs",
+      "startLine": 41,
+      "endLine": 70,
+      "module": "T04-final-providers-20261015"
+    },
+    {
+      "id": "Function:qa/t04-final-providers-20261015/salad-read.mjs:audit",
+      "name": "audit",
+      "filePath": "qa/t04-final-providers-20261015/salad-read.mjs",
+      "startLine": 72,
+      "endLine": 91,
+      "module": "T04-final-providers-20261015"
+    },
+    {
+      "id": "File:qa/t04-final-providers-20261015/salad-read.mjs",
+      "name": "salad-read.mjs",
+      "filePath": "qa/t04-final-providers-20261015/salad-read.mjs"
+    },
+    {
+      "id": "Property:src/lib/pexels.ts:PexelsVideoResult.provider",
+      "name": "provider",
+      "filePath": "src/lib/pexels.ts",
+      "startLine": 52,
+      "endLine": 52
+    },
+    {
+      "id": "Property:src/lib/pexels.ts:PexelsImageResult.provider",
+      "name": "provider",
+      "filePath": "src/lib/pexels.ts",
+      "startLine": 63,
+      "endLine": 63
+    },
+    {
+      "id": "File:src/lib/pexels.ts",
+      "name": "pexels.ts",
+      "filePath": "src/lib/pexels.ts"
+    },
+    {
+      "id": "Function:qa/t04-salad-access-20261015/validate-access.test.mjs:fn@8:78.fn@10:46.fetchImpl@10:80",
+      "name": "fetchImpl",
+      "filePath": "qa/t04-salad-access-20261015/validate-access.test.mjs",
+      "startLine": 11,
+      "endLine": 16
+    },
+    {
+      "id": "Function:qa/t04-salad-access-20261015/validate-access.test.mjs:fn@35:59.fn@37:48.fetchImpl@37:82",
+      "name": "fetchImpl",
+      "filePath": "qa/t04-salad-access-20261015/validate-access.test.mjs",
+      "startLine": 38,
+      "endLine": 38
+    },
+    {
+      "id": "File:qa/t04-salad-access-20261015/validate-access.test.mjs",
+      "name": "validate-access.test.mjs",
+      "filePath": "qa/t04-salad-access-20261015/validate-access.test.mjs"
+    },
+    {
+      "id": "Function:qa/t04-final-providers-20261015/salad-read.test.mjs:fn@22:82.fetchImpl@23:53",
+      "name": "fetchImpl",
+      "filePath": "qa/t04-final-providers-20261015/salad-read.test.mjs",
+      "startLine": 24,
+      "endLine": 29
+    },
+    {
+      "id": "Function:qa/t04-final-providers-20261015/salad-read.test.mjs:fn@41:62.fetchImpl@43:69",
+      "name": "fetchImpl",
+      "filePath": "qa/t04-final-providers-20261015/salad-read.test.mjs",
+      "startLine": 44,
+      "endLine": 44
+    },
+    {
+      "id": "File:qa/t04-final-providers-20261015/salad-read.test.mjs",
+      "name": "salad-read.test.mjs",
+      "filePath": "qa/t04-final-providers-20261015/salad-read.test.mjs"
+    },
+    {
+      "id": "Const:src/app/(dashboard)/admin/health/health-config.tsx:SERVICE_LABELS",
+      "name": "SERVICE_LABELS",
+      "filePath": "src/app/(dashboard)/admin/health/health-config.tsx",
+      "startLine": 37,
+      "endLine": 47
+    },
+    {
+      "id": "Property:src/app/(dashboard)/admin/health/health-config.tsx:SERVICE_LABELS.pexels",
+      "name": "pexels",
+      "filePath": "src/app/(dashboard)/admin/health/health-config.tsx",
+      "startLine": 43,
+      "endLine": 43
+    },
+    {
+      "id": "File:src/app/(dashboard)/admin/health/health-config.tsx",
+      "name": "health-config.tsx",
+      "filePath": "src/app/(dashboard)/admin/health/health-config.tsx"
+    },
+    {
+      "id": "Function:src/lib/constants.ts:resolveVoiceProviderId",
+      "name": "resolveVoiceProviderId",
+      "filePath": "src/lib/constants.ts",
+      "startLine": 100,
+      "endLine": 107,
+      "module": "Cluster_456"
+    },
+    {
+      "id": "Const:src/lib/constants.ts:TIMEOUTS",
+      "name": "TIMEOUTS",
+      "filePath": "src/lib/constants.ts",
+      "startLine": 109,
+      "endLine": 118
+    }
+  ],
+  "timing": {
+    "vector": 3,
+    "bm25": 180.6,
+    "merge": 0.1,
+    "symbol_lookup": 13.1,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 194.6
+  }
+}

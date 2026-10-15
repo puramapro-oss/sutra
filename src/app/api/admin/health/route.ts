@@ -55,7 +55,7 @@ async function probe(
     return {
       provider,
       status: 'error',
-      reason: err instanceof Error ? err.name === 'TimeoutError' ? 'timeout' : err.message.slice(0, 120) : 'erreur reseau',
+      reason: err instanceof Error && err.name === 'TimeoutError' ? 'timeout' : 'erreur reseau',
       latencyMs: Date.now() - start,
     }
   }

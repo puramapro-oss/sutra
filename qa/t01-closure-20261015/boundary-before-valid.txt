@@ -1,0 +1,122 @@
+✖ Shotstack resumed polling must reject a body completed after local cancellation (124.724ms)
+[pexels] recherche videos: HTTP 403 — resultats vides
+[pexels] recherche videos: HTTP 429 — resultats vides
+[pexels] recherche videos: HTTP 500 — resultats vides
+(node:17976) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17976) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ stock-only http403: no visual submission or paid intent at the adapter/pipeline boundary (8.994667ms)
+✖ stock-only http429: no visual submission or paid intent at the adapter/pipeline boundary (0.530834ms)
+✖ stock-only http500: no visual submission or paid intent at the adapter/pipeline boundary (0.335708ms)
+✖ stock-only malformed: no visual submission or paid intent at the adapter/pipeline boundary (0.508666ms)
+✖ stock-only empty: no visual submission or paid intent at the adapter/pipeline boundary (0.226083ms)
+✔ successful stock response reaches the scene checkpoint with provenance and no visual generation (0.5255ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 1
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 545.733042
+
+✖ failing tests:
+
+test at qa/t01-closure-20261015/shotstack-boundary.test.mts:1:241
+✖ Shotstack resumed polling must reject a body completed after local cancellation (124.724ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-closure-20261015/shotstack-boundary.test.mts:27:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/stock-boundary.test.mts:1:3321
+✖ stock-only http403: no visual submission or paid intent at the adapter/pipeline boundary (8.994667ms)
+  AssertionError [ERR_ASSERTION]: stock failure called visual provider: T08_SYNTHETIC_PAID_VISUAL_ATTEMPT
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-closure-20261015/stock-boundary.test.mts:73:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/stock-boundary.test.mts:1:3321
+✖ stock-only http429: no visual submission or paid intent at the adapter/pipeline boundary (0.530834ms)
+  AssertionError [ERR_ASSERTION]: stock failure called visual provider: T08_SYNTHETIC_PAID_VISUAL_ATTEMPT
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-closure-20261015/stock-boundary.test.mts:73:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/stock-boundary.test.mts:1:3321
+✖ stock-only http500: no visual submission or paid intent at the adapter/pipeline boundary (0.335708ms)
+  AssertionError [ERR_ASSERTION]: stock failure called visual provider: T08_SYNTHETIC_PAID_VISUAL_ATTEMPT
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-closure-20261015/stock-boundary.test.mts:73:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/stock-boundary.test.mts:1:3321
+✖ stock-only malformed: no visual submission or paid intent at the adapter/pipeline boundary (0.508666ms)
+  AssertionError [ERR_ASSERTION]: stock failure called visual provider: T08_SYNTHETIC_PAID_VISUAL_ATTEMPT
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-closure-20261015/stock-boundary.test.mts:73:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/stock-boundary.test.mts:1:3321
+✖ stock-only empty: no visual submission or paid intent at the adapter/pipeline boundary (0.226083ms)
+  AssertionError [ERR_ASSERTION]: stock failure called visual provider: T08_SYNTHETIC_PAID_VISUAL_ATTEMPT
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-closure-20261015/stock-boundary.test.mts:73:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

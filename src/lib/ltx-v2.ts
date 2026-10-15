@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { downloadMediaBytes } from './media-download'
-import { boundedProviderJson } from './provider-json'
+import { providerRecord } from './provider-response'
 import { requireEnv } from './env'
 import { LTX_REQUESTS, validateLtxRequest, type LtxCost, type LtxEndpoint, type LtxInputMedia, type LtxRequest } from './ltx-v2-contract'
 
@@ -122,13 +122,14 @@ export function createLtxClient(deps: { fetch?: typeof fetch; now?: () => number
     let response: Response
     let data: Record<string, unknown>
     try {
+      const signal = execution.signal ? AbortSignal.any([execution.signal, AbortSignal.timeout(30_000)]) : AbortSignal.timeout(30_000)
       response = await request(`${BASE}/${endpoint}`, {
         method: 'POST', cache: 'no-store', redirect: 'error',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
         body: JSON.stringify(body),
-        signal: execution.signal ? AbortSignal.any([execution.signal, AbortSignal.timeout(30_000)]) : AbortSignal.timeout(30_000),
+        signal,
       })
-      data = await boundedProviderJson(response)
+      data = await providerRecord(response, signal)
     } catch {
       job = await persist(job, execution.store, { state: 'submission_unknown', errorCode: 'LTX_SUBMISSION_UNKNOWN' })
       throw new LtxJobError('LTX_SUBMISSION_UNKNOWN', job)
@@ -157,11 +158,12 @@ export function createLtxClient(deps: { fetch?: typeof fetch; now?: () => number
     let res: Response
     let data: Record<string, unknown>
     try {
+      const signal = execution.signal ? AbortSignal.any([execution.signal, AbortSignal.timeout(Math.max(1, Math.min(15_000, remainingMs)))]) : AbortSignal.timeout(Math.max(1, Math.min(15_000, remainingMs)))
       res = await request(`${BASE}/${job.endpoint}/${encodeURIComponent(job.id)}`, {
         cache: 'no-store', redirect: 'error', headers: { Authorization: `Bearer ${apiKey}` },
-        signal: execution.signal ? AbortSignal.any([execution.signal, AbortSignal.timeout(Math.max(1, Math.min(15_000, remainingMs)))]) : AbortSignal.timeout(Math.max(1, Math.min(15_000, remainingMs))),
+        signal,
       })
-      data = await boundedProviderJson(res)
+      data = await providerRecord(res, signal)
     } catch { throw new LtxJobError(execution.signal?.aborted ? 'LTX_WAIT_CANCELLED_REMOTE_UNCHANGED' : 'LTX_POLL_TRANSIENT', job) }
     if (res.status !== 200) {
       const retry = Number(res.headers.get('retry-after'))

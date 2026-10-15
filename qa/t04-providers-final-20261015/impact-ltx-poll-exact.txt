@@ -1,0 +1,295 @@
+{
+  "target": {
+    "id": "Function:src/lib/ltx-v2.ts:createLtxClient.poll@151:2",
+    "name": "poll",
+    "type": "Function",
+    "filePath": "src/lib/ltx-v2.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 24,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "lower-bound",
+  "boundaries": [
+    "1 call site invoking `poll` was dropped at index time because the receiver's type could not be established (e.g. an unresolved constructor, factory or chained expression). Those callers are absent from this result — actual impact may be higher."
+  ],
+  "causes": {
+    "scopeExtractionFiles": 0,
+    "receiverTyping": 1,
+    "dispatchBoundary": 0,
+    "externalBoundary": 0,
+    "undecidedSatisfaction": 0,
+    "callableValueReferences": 0
+  },
+  "summary": {
+    "direct": 3,
+    "processes_affected": 0,
+    "modules_affected": 6
+  },
+  "byDepthCounts": {
+    "1": 3,
+    "2": 4,
+    "3": 17
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Cluster_478",
+      "hits": 5,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_475",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_8",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Scripts",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_469",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Salad",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:scripts/test-ltx-v2-contracts.mts",
+        "name": "test-ltx-v2-contracts.mts",
+        "filePath": "scripts/test-ltx-v2-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/ltx-v2.ts:createLtxClient",
+        "name": "createLtxClient",
+        "filePath": "src/lib/ltx-v2.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/ltx-v2.ts:createLtxClient.wait@192:2",
+        "name": "wait",
+        "filePath": "src/lib/ltx-v2.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx-v2.ts",
+        "name": "ltx-v2.ts",
+        "filePath": "src/lib/ltx-v2.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:scripts/test-ltx-v2-contracts.mts:harness",
+        "name": "harness",
+        "filePath": "scripts/test-ltx-v2-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/ltx-v2.ts:createLtxClient.resume@216:2",
+        "name": "resume",
+        "filePath": "src/lib/ltx-v2.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/ltx.ts:callLtxApi",
+        "name": "callLtxApi",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+        "name": "adapter-recovery.test.mts",
+        "filePath": "qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-provider-safety.mts",
+        "name": "test-provider-safety.mts",
+        "filePath": "scripts/test-provider-safety.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-salad-worker.mts",
+        "name": "test-salad-worker.mts",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/fallbacks.ts",
+        "name": "fallbacks.ts",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx-checkpoint.ts",
+        "name": "ltx-checkpoint.ts",
+        "filePath": "src/lib/ltx-checkpoint.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx-types.ts",
+        "name": "ltx-types.ts",
+        "filePath": "src/lib/ltx-types.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx-workflow.ts",
+        "name": "ltx-workflow.ts",
+        "filePath": "src/lib/ltx-workflow.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx.ts",
+        "name": "ltx.ts",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ffmpeg-encoder.ts:listEncoders",
+        "name": "listEncoders",
+        "filePath": "src/lib/ffmpeg-encoder.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ltx.ts:extendVideo",
+        "name": "extendVideo",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ltx.ts:generateVideoSmart",
+        "name": "generateVideoSmart",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ltx.ts:imageToVideo",
+        "name": "imageToVideo",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ltx.ts:reframeVideo",
+        "name": "reframeVideo",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ltx.ts:retakeVideo",
+        "name": "retakeVideo",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ltx.ts:textToVideo",
+        "name": "textToVideo",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ltx.ts:videoToHdr",
+        "name": "videoToHdr",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/salad/application.ts:generateSaladVideo",
+        "name": "generateSaladVideo",
+        "filePath": "src/lib/salad/application.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      }
+    ]
+  }
+}

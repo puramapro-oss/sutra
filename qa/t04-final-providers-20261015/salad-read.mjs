@@ -5,7 +5,14 @@ import { pathToFileURL } from 'node:url';
 import { parse as dotenvParse } from 'dotenv';
 import { names, parseSelected } from '../t04-provider-validation-20261014/probe.mjs';
 
-const scopeNames = ['SALAD_ORGANIZATION', 'SALAD_PROJECT', 'SALAD_CONTAINER_GROUP'];
+const scopeNames = ['SALAD_ORGANIZATION', 'SALAD_PROJECT', 'SALAD_CONTAINER_GROUP', 'SALAD_ORGANIZATION_NAME', 'SALAD_PROJECT_NAME'];
+// NAME is the operator-facing spelling; legacy configuration remains accepted.
+// An ambiguous scope must never select one organization's/project's resources.
+function scope(values, name) {
+  const legacy = values[name]; const canonical = values[`${name}_NAME`];
+  if (legacy !== undefined && canonical !== undefined && legacy !== canonical) return undefined;
+  return canonical ?? legacy;
+}
 export function selected(source) {
   const values = parseSelected(source);
   for (const line of source.split(/\r?\n/)) {
@@ -39,13 +46,14 @@ export function summarize(kind, http, body) {
 }
 
 export async function readScope(kind, values, { fetchImpl = fetch, timeoutMs = 15000, maxBytes = 1048576 } = {}) {
+  const organization = scope(values, 'SALAD_ORGANIZATION'); const project = scope(values, 'SALAD_PROJECT');
   if (!['quotas', 'groups'].includes(kind) || !/^[A-Za-z0-9._~-]{16,512}$/.test(values.SALAD_API_KEY ?? '')
-      || !/^[a-z][a-z0-9-]{0,61}[a-z0-9]$/.test(values.SALAD_ORGANIZATION ?? '')
-      || (kind === 'groups' && !/^[a-z][a-z0-9-]{0,61}[a-z0-9]$/.test(values.SALAD_PROJECT ?? ''))) {
+      || !/^[a-z][a-z0-9-]{0,61}[a-z0-9]$/.test(organization ?? '')
+      || (kind === 'groups' && !/^[a-z][a-z0-9-]{0,61}[a-z0-9]$/.test(project ?? ''))) {
     return { status: 'BLOQUE', reason: 'MISSING_OR_INVALID_SCOPE', requests: 0 };
   }
-  const base = `https://api.salad.com/api/public/organizations/${values.SALAD_ORGANIZATION}`;
-  const url = kind === 'quotas' ? `${base}/quotas` : `${base}/projects/${values.SALAD_PROJECT}/containers`;
+  const base = `https://api.salad.com/api/public/organizations/${organization}`;
+  const url = kind === 'quotas' ? `${base}/quotas` : `${base}/projects/${project}/containers`;
   const controller = new AbortController(); let timer; let http;
   const deadline = new Promise((_, reject) => { timer = setTimeout(() => { controller.abort(); reject(new Error()); }, timeoutMs); });
   try {
@@ -74,10 +82,11 @@ export async function audit() {
   if (!info.isFile() || (info.mode & 0o077) || info.uid !== process.getuid()) throw new Error();
   const inspected = inspectMaster(await readFile(path, 'utf8'));
   const { values, variables } = inspected; const results = {};
+  const organization = scope(values, 'SALAD_ORGANIZATION'); const project = scope(values, 'SALAD_PROJECT');
   let requests = 0;
-  if (values.SALAD_API_KEY && values.SALAD_ORGANIZATION) {
+  if (values.SALAD_API_KEY && organization) {
     results.organization = await readScope('quotas', values); requests += results.organization.requests === 0 ? 0 : 1;
-    if (results.organization.status === 'PASS' && values.SALAD_PROJECT) {
+    if (results.organization.status === 'PASS' && project) {
       results.project = await readScope('groups', values); requests += results.project.requests === 0 ? 0 : 1;
     }
   }
@@ -86,7 +95,7 @@ export async function audit() {
     results, requests, mutations: 0, retries: 0,
     status: results.project?.status === 'PASS' ? 'PASS_READ_ONLY' : 'BLOQUE',
     reason: variables.some(v => v.name === 'SALAD_API_KEY' && v.syntax === 'UNSUPPORTED') ? 'MASTER_SALAD_KEY_SYNTAX_REQUIRES_LITERAL_VALUE'
-      : !values.SALAD_ORGANIZATION || !values.SALAD_PROJECT ? 'PUBLIC_API_CANNOT_ENUMERATE_ORGANIZATIONS_OR_PROJECTS' : 'SEE_RESULTS',
+      : !organization || !project ? 'MISSING_OR_CONFLICTING_SCOPE_PUBLIC_API_CANNOT_ENUMERATE' : 'SEE_RESULTS',
     saladEnabled: values.SALAD_ENABLED === 'true', generation: 'NON_TESTE', credits: 'NON_TESTE' };
 }
 

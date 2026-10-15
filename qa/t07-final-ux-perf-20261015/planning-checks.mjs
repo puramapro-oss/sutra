@@ -64,7 +64,7 @@ export async function planningChecks({ page, context, base, fixture, output, che
     assert.equal(writes.length - before, 1)
     await expect(remove).toBeVisible()
     mode = 'success'
-    await remove.click()
+    await page.getByRole('button', { name: 'Vérifier et réessayer', exact: true }).click()
     await expect(remove).toHaveCount(0)
   })
   await check('lost save response has bounded wait, no automatic retry and stable draft ID', async () => {

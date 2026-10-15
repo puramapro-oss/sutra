@@ -193,9 +193,8 @@ export async function GET(req: Request) {
     )
 
     return NextResponse.json(stats)
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur recuperation stats admin', details: message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Erreur recuperation stats admin' }, { status: 500 })
   }
 }
 
@@ -226,8 +225,7 @@ export async function POST(req: Request) {
     if (error) throw error
 
     return NextResponse.json({ success: true, saved: rows.length })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur sauvegarde config', details: message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Erreur sauvegarde config' }, { status: 500 })
   }
 }

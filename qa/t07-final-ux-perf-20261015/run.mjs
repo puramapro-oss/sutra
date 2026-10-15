@@ -11,6 +11,8 @@ import { navigationChecks } from './navigation-checks.mjs'
 import { planningChecks } from './planning-checks.mjs'
 import { checks as schedulerCancellationChecks } from '../t07-scheduler-cancel-20261015/checks.mjs'
 import { reconcileChecks } from '../t07-scheduler-cancel-20261015/reconcile-checks.mjs'
+import { casChecks } from '../t07-final-two-20261015/cas-checks.mjs'
+import { socialReloadChecks } from '../t01-closure-20261015/social-reload-checks.mjs'
 import { enterTestSession } from './session.mjs'
 import assert from 'node:assert/strict'
 import { createServer } from 'node:http'
@@ -84,6 +86,10 @@ async function runScenario(options, scenarioOutput) {
         readOnlyProbes.push({ path: url.pathname, method: 'HEAD' })
         return route.fulfill({ status: 200, body: '' })
       }
+      if (url.pathname === '/api/social/autopilot') return route.fulfill({ json: { config: {
+        enabled: false, default_platforms: [], auto_caption: true, auto_hashtags: true,
+        caption_style: 'professional', max_hashtags: 5, include_cta: false,
+      } } })
       return route.fulfill({ json: { should_show: false, accounts: [], videos: [], notifications: [], data: [] } })
     }
     if (!['GET', 'HEAD'].includes(request.method())) return route.abort()
@@ -94,7 +100,12 @@ async function runScenario(options, scenarioOutput) {
   page.setDefaultTimeout(15000)
   runtimeSnapshot = await observeRuntimeErrors(page, { engine: browser.browserType().name(), nativeControl: engineControl, fixtureOrigin: fixture.url })
   if (options.includes('--social')) fixtureReadSnapshot = installFixtureReadBarrier(page, { appOrigin: base, fixtureOrigin: fixture.url, userId: fixture.user.id })
-  if (options.includes('--scheduler-cancellation') || options.includes('--production-reconcile')) {
+  if (options.includes('--schedule-cas') || options.includes('--social-reload')) {
+    await enterTestSession({ page, base, fixture })
+    const run = options.includes('--schedule-cas') ? casChecks : socialReloadChecks
+    await run({ page, context, base, fixture, output, check, details, production: productionSuite })
+  }
+  else if (options.includes('--scheduler-cancellation') || options.includes('--production-reconcile')) {
     await enterTestSession({ page, base, fixture })
     const run = options.includes('--production-reconcile') ? reconcileChecks : schedulerCancellationChecks
     await run({ page, context, base, fixture, output, check, details, before: false })
@@ -156,10 +167,11 @@ try {
         ['scheduler-cancellation', ['--scheduler-cancellation']],
         ['production-reconcile', ['--production-reconcile']],
       )
+      if (finalIntegrated) cases.push(['schedule-cas', ['--schedule-cas']], ['social-reload', ['--social-reload']])
       for (const [name, options] of cases) await runScenario(options, resolve(output, browserName, name))
       await browser.close(); browser = null
     }
-    if (finalIntegrated) assert.equal(summaries.length, 22, 'ten scenarios in both engines and two targeted Chromium closure scenarios')
+    if (finalIntegrated) assert.equal(summaries.length, 26, 'twelve scenarios in both engines and two targeted Chromium closure scenarios')
   } else {
     browser = await ({ chromium, webkit }[engine]).launch({ headless: true })
     engineControl = await nativeRuntimeControls(browser)

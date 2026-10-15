@@ -250,18 +250,16 @@ test('Pexels searchVideos: succes + format portrait dans la requête', async () 
   assert.ok(calls[0].url.includes('orientation=portrait'))
 })
 
-test('Pexels searchVideos: 404 -> liste vide (dégradation propre)', async () => {
+test('Pexels searchVideos: 404 -> erreur explicite sans faux stock vide', async () => {
   setKey('PEXELS_API_KEY', true)
   mockFetch(() => textResponse(404, 'not found'))
-  const results = await searchVideos('x', 3, { format: '16:9' })
-  assert.deepEqual(results, [])
+  await assert.rejects(searchVideos('x', 3, { format: '16:9' }), /Pexels HTTP 404/)
 })
 
-test('Pexels searchVideos: clé absente -> liste vide sans appel réseau', async () => {
+test('Pexels searchVideos: clé absente -> erreur explicite sans appel réseau', async () => {
   setKey('PEXELS_API_KEY', false)
   mockFetch(() => { throw new Error('ne doit pas etre appele') })
-  const results = await searchVideos('x', 3)
-  assert.deepEqual(results, [])
+  await assert.rejects(searchVideos('x', 3), MissingEnvError)
   assert.equal(calls.length, 0)
 })
 

@@ -139,6 +139,20 @@ jobs:
           SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-final-social-history.mjs
       - name: Social revocation routes with canonical timestamp and history triggers
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t06-integrated-retest-20261015/run-postgres.mjs history
+      - name: Schedule compare-and-swap through the actual route and query builder
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t01-closure-20261015/schedule-postgres-run.mjs
+      - name: Durable HTTP route acknowledgement loss against disposable PostgreSQL
+        run: node --experimental-test-module-mocks --import tsx --test --test-concurrency=1 qa/t03-final-candidate-20261015/api-postgres.test.mts
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          PGHOST: 127.0.0.1
+          PGPORT: '5432'
+          PGUSER: fixture
+          PGPASSWORD: fixture
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
+          NEXT_PUBLIC_SUPABASE_URL: https://db.fixture.invalid
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: fixture-anon
+          SUPABASE_SERVICE_ROLE_KEY: fixture-service
       - name: Salad isolated journal, concurrency and immutable artifacts
         run: node --import tsx --test scripts/test-salad-persistence.mts
         env:

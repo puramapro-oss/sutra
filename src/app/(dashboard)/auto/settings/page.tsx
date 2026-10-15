@@ -86,7 +86,18 @@ export default function SettingsPage() {
       const res = await fetch('/api/auto/config', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cfg),
+        // Only this screen's editable preferences. Schedules have their own CAS contract.
+        body: JSON.stringify({
+          default_style: cfg.default_style,
+          default_duration: cfg.default_duration,
+          default_aspect_ratio: cfg.default_aspect_ratio,
+          default_voice_enabled: cfg.default_voice_enabled,
+          publish_platforms: cfg.publish_platforms,
+          auto_publish: cfg.auto_publish,
+          require_approval_before_publish: cfg.require_approval_before_publish,
+          preferred_model: cfg.preferred_model,
+          quality_level: cfg.quality_level,
+        }),
       })
       const json = await res.json()
       if (json.config) {

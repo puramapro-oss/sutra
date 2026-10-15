@@ -1,0 +1,22 @@
+Changes: 5 files, 7 symbols
+Affected processes: 6
+Risk level: high
+
+Changed symbols:
+  Function probe → src/app/api/admin/health/route.ts
+  Property reason → src/app/api/admin/health/route.ts
+  Function GET → src/app/api/admin/stats/route.ts
+  Function POST → src/app/api/admin/stats/route.ts
+  Function GET → src/app/api/admin/users/[id]/route.ts
+  Function GET → src/app/api/admin/users/route.ts
+  Function POST → src/app/api/stripe/webhook/route.ts
+
+Affected execution flows:
+  • GET → Probe (3 steps) — changed: probe
+  • GET → Denied (5 steps) — changed: GET
+  • GET → GetRedis (3 steps) — changed: GET
+  • GET → IsSuperAdmin (3 steps) — changed: GET
+  • GET → Blocked (3 steps) — changed: GET
+  • GET → Denied (4 steps) — changed: GET
+
+  GitNexus Detect Changes (1.6.12)

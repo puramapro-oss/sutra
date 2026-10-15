@@ -1,0 +1,49 @@
+FAIL 375: inactive schedule exposes status and per-schedule resume: expect(locator).toBeVisible() failed
+
+Locator: getByRole('button', { name: 'Reprendre le planning Planning existant', exact: true })
+Expected: visible
+Timeout: 1200ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 1200ms
+  - waiting for getByRole('button', { name: 'Reprendre le planning Planning existant', exact: true })
+
+FAIL 375: configurable IANA timezone: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('schedule-timezone')
+Expected: visible
+Timeout: 1200ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 1200ms
+  - waiting for getByTestId('schedule-timezone')
+
+PASS 375: double click sends one PATCH
+FAIL 375: lost acknowledgement reconciles before any replay: retry must consult persisted configuration
+FAIL 1440: inactive schedule exposes status and per-schedule resume: expect(locator).toBeVisible() failed
+
+Locator: getByRole('button', { name: 'Reprendre le planning Planning existant', exact: true })
+Expected: visible
+Timeout: 1200ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 1200ms
+  - waiting for getByRole('button', { name: 'Reprendre le planning Planning existant', exact: true })
+
+FAIL 1440: configurable IANA timezone: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('schedule-timezone')
+Expected: visible
+Timeout: 1200ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 1200ms
+  - waiting for getByTestId('schedule-timezone')
+
+PASS 1440: double click sends one PATCH
+FAIL 1440: lost acknowledgement reconciles before any replay: retry must consult persisted configuration
+PASS loopback only; no unexpected mutation, runtime or hydration error

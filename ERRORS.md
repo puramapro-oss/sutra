@@ -102,3 +102,9 @@ FAIL EXTERNE DE FIXTURE : parcours T08 historique4 PASS/4 FAIL user=u apres durc
 ## T07 — FRONTEND-JOURNEY, 2026-10-14
 
 CORRIGÉ/VÉRIFIÉ local : mentions404, consentement sans modal/focus et contrastes3thèmes, requête légale pendante, vidéo failed annoncée en génération, commandes sans fichier, téléchargement natif silencieux après307 privé.61 assertions finales PASS ; reproductions et FAIL de banc préservés : qa/t07-frontend-journey-20261014/README.md. Deadline10s consentement et30s téléchargement, contrôle SHA des octets avant remise. Aucun défaut backend repris en parallèle. Limites : mémoire des gros médias/CORS réel/Safari et production NON TESTÉS ; erreur visible sans rendu de secours. Handoff T07 dédié, réception T01 attendue.
+
+## T01 — consolidation finale 2026-10-15
+- CAS planning: ecriture sans precondition pouvait ecraser une edition concurrente; snapshot attendu obligatoire et UPDATE JSONB atomique utilisateur, erreurs428/409, validation serveur. 53contrats +3PG PASS.
+- Social reload: accounts ne fournit pas autopilot; GET canonique distinct atomique, inconnu reste indisponible, delai/retry unique. Reproduction5FAIL1PASS; valeurs375/1440 et erreurs/reprise PASS apres.
+- Stock-only: resultat vide declenchait IA implicite; echec explicite sans intention facturee.6contrats PASS.
+- Shotstack: signal ne couvrait pas corps GET; providerRecord borne et verification annulation. Corps annule refuse; POST tardif conserve identite distante pour reconciliation sans resoumission (comportement preexistant verifie).

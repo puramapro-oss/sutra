@@ -1,6 +1,6 @@
 import { fetchWithRetry, httpErrorMessage } from '@/lib/utils/api'
 import { requireEnv } from '@/lib/env'
-import { providerBytes } from '@/lib/provider-response'
+import { providerBytes, providerRecord } from '@/lib/provider-response'
 
 // Clé lue à l'appel (jamais au top-level) : erreur explicite si absente
 // au lieu d'un crash à l'import, et aucun secret dans les messages.
@@ -54,6 +54,7 @@ export async function cloneVoice(params: {
   description?: string
 }): Promise<string> {
   const apiKey = requireEnv('ELEVENLABS_API_KEY', 'clonage de voix ElevenLabs')
+  const signal = AbortSignal.timeout(60_000)
 
   const form = new FormData()
   form.append('name', params.name)
@@ -64,13 +65,14 @@ export async function cloneVoice(params: {
     method: 'POST',
     headers: { 'xi-api-key': apiKey },
     body: form,
-    signal: AbortSignal.timeout(60_000),
+    signal, redirect: 'error', cache: 'no-store',
   })
   if (!res.ok) {
     throw new Error(`ElevenLabs clonage: ${await httpErrorMessage(res)}`)
   }
-  const data = (await res.json()) as { voice_id?: string }
-  if (!data.voice_id) {
+  const data = await providerRecord(res, signal)
+    .catch(() => { throw new Error('ElevenLabs clonage: reponse invalide') })
+  if (typeof data.voice_id !== 'string' || !/^[A-Za-z0-9_-]{1,200}$/.test(data.voice_id)) {
     throw new Error('ElevenLabs clonage: reponse invalide (voice_id absent)')
   }
   return data.voice_id
@@ -80,17 +82,21 @@ export async function listVoices(): Promise<
   Array<{ voice_id: string; name: string; preview_url: string | null }>
 > {
   const apiKey = requireEnv('ELEVENLABS_API_KEY', 'liste des voix ElevenLabs')
+  const signal = AbortSignal.timeout(15_000)
 
   const res = await fetch('https://api.elevenlabs.io/v1/voices', {
     headers: { 'xi-api-key': apiKey },
-    signal: AbortSignal.timeout(15_000),
+    signal, redirect: 'error',
     next: { revalidate: 3_600 },
   })
   if (!res.ok) {
     throw new Error(`ElevenLabs voix: ${await httpErrorMessage(res)}`)
   }
-  const data = (await res.json()) as { voices?: Array<{ voice_id: string; name: string; preview_url: string | null }> }
-  if (!Array.isArray(data.voices)) {
+  const data = await providerRecord(res, signal, 2 * 1024 * 1024)
+    .catch(() => { throw new Error('ElevenLabs voix: reponse invalide') })
+  if (!Array.isArray(data.voices) || !data.voices.every(voice => voice && typeof voice.voice_id === 'string'
+      && /^[A-Za-z0-9_-]{1,200}$/.test(voice.voice_id) && typeof voice.name === 'string'
+      && (voice.preview_url === null || (typeof voice.preview_url === 'string' && /^https:\/\//.test(voice.preview_url))))) {
     throw new Error('ElevenLabs voix: reponse invalide (voices[] absent)')
   }
   return data.voices

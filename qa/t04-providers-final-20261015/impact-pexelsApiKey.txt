@@ -1,0 +1,113 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "target": {
+    "id": "Function:src/lib/pexels.ts:pexelsApiKey",
+    "name": "pexelsApiKey",
+    "type": "Function",
+    "filePath": "src/lib/pexels.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 7,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 3,
+    "3": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Cluster_461",
+      "hits": 5,
+      "impact": "direct"
+    },
+    {
+      "name": "Scripts",
+      "hits": 2,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/pexels.ts:searchImages",
+        "name": "searchImages",
+        "filePath": "src/lib/pexels.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/pexels.ts:searchVideos",
+        "name": "searchVideos",
+        "filePath": "src/lib/pexels.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/fallbacks.ts:generateVisualWithFallback",
+        "name": "generateVisualWithFallback",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/production-pipeline.ts:defaultProviders.visual@92:4",
+        "name": "visual",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob.resolveSceneClip@159:2",
+        "name": "resolveSceneClip",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob",
+        "name": "executeCreateJob",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob.resolveSceneClip@159:27.generateVisual@169:4",
+        "name": "generateVisual",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

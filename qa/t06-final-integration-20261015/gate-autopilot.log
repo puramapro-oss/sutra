@@ -1,0 +1,151 @@
+TAP version 13
+# (node:89404) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:89404) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: autopilot GET refuses anonymous before privileged access
+ok 1 - autopilot GET refuses anonymous before privileged access
+  ---
+  duration_ms: 3.02425
+  type: 'test'
+  ...
+# Subtest: autopilot GET refuses expired before privileged access
+ok 2 - autopilot GET refuses expired before privileged access
+  ---
+  duration_ms: 0.364167
+  type: 'test'
+  ...
+# Subtest: autopilot GET refuses revoked before privileged access
+ok 3 - autopilot GET refuses revoked before privileged access
+  ---
+  duration_ms: 0.231875
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes thrown auth diagnostics
+ok 4 - autopilot GET sanitizes thrown auth diagnostics
+  ---
+  duration_ms: 0.760792
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes thrown service diagnostics
+ok 5 - autopilot GET sanitizes thrown service diagnostics
+  ---
+  duration_ms: 0.282708
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes returned database diagnostics
+ok 6 - autopilot GET sanitizes returned database diagnostics
+  ---
+  duration_ms: 0.623084
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes thrown database diagnostics
+ok 7 - autopilot GET sanitizes thrown database diagnostics
+  ---
+  duration_ms: 0.186542
+  type: 'test'
+  ...
+# Subtest: autopilot POST refuses anonymous before privileged access
+ok 8 - autopilot POST refuses anonymous before privileged access
+  ---
+  duration_ms: 0.539792
+  type: 'test'
+  ...
+# Subtest: autopilot POST refuses expired before privileged access
+ok 9 - autopilot POST refuses expired before privileged access
+  ---
+  duration_ms: 0.199
+  type: 'test'
+  ...
+# Subtest: autopilot POST refuses revoked before privileged access
+ok 10 - autopilot POST refuses revoked before privileged access
+  ---
+  duration_ms: 0.179833
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes thrown auth diagnostics
+ok 11 - autopilot POST sanitizes thrown auth diagnostics
+  ---
+  duration_ms: 0.171416
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes thrown service diagnostics
+ok 12 - autopilot POST sanitizes thrown service diagnostics
+  ---
+  duration_ms: 1.35225
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes returned database diagnostics
+ok 13 - autopilot POST sanitizes returned database diagnostics
+  ---
+  duration_ms: 3.878167
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes thrown database diagnostics
+ok 14 - autopilot POST sanitizes thrown database diagnostics
+  ---
+  duration_ms: 0.333583
+  type: 'test'
+  ...
+# Subtest: autopilot lazy insertion sanitizes returned diagnostics
+ok 15 - autopilot lazy insertion sanitizes returned diagnostics
+  ---
+  duration_ms: 0.206833
+  type: 'test'
+  ...
+# Subtest: autopilot lazy insertion sanitizes thrown diagnostics
+ok 16 - autopilot lazy insertion sanitizes thrown diagnostics
+  ---
+  duration_ms: 0.351625
+  type: 'test'
+  ...
+# Subtest: autopilot preserves saved configuration and user isolation
+ok 17 - autopilot preserves saved configuration and user isolation
+  ---
+  duration_ms: 0.366959
+  type: 'test'
+  ...
+# Subtest: autopilot lazy defaults never enable publication
+ok 18 - autopilot lazy defaults never enable publication
+  ---
+  duration_ms: 0.120042
+  type: 'test'
+  ...
+# Subtest: autopilot deduplicates destinations in first-selected order
+ok 19 - autopilot deduplicates destinations in first-selected order
+  ---
+  duration_ms: 0.295917
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {}
+ok 20 - autopilot rejects invalid input {}
+  ---
+  duration_ms: 0.378125
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":"true"}
+ok 21 - autopilot rejects invalid input {"enabled":"true"}
+  ---
+  duration_ms: 0.181583
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":false,"default_platforms":["unknown"]}
+ok 22 - autopilot rejects invalid input {"enabled":false,"default_platforms":["unknown"]}
+  ---
+  duration_ms: 0.185959
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":false,"max_hashtags":31}
+ok 23 - autopilot rejects invalid input {"enabled":false,"max_hashtags":31}
+  ---
+  duration_ms: 0.257708
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 308.8155

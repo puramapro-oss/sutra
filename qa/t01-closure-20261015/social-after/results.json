@@ -1,0 +1,50 @@
+{
+  "baseCommit": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: saved autopilot comes from its authoritative GET and survives reload",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "1440: saved autopilot comes from its authoritative GET and survives reload",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "autopilot failure is unknown, never a default editable state",
+      "status": "PASS"
+    },
+    {
+      "name": "autopilot missing is unknown, never a default editable state",
+      "status": "PASS"
+    },
+    {
+      "name": "autopilot invalid is unknown, never a default editable state",
+      "status": "PASS"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "autopilot-read-contract",
+      "reads": 17,
+      "writes": 0,
+      "realAccountsConnected": 0,
+      "publications": 0
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

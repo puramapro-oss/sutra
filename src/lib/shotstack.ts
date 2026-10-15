@@ -8,6 +8,7 @@ import { compositionPlan, type CompositionContract, type CompositionRequirements
 import { measureCompositionAudio, validateRenderedBuffer, type MediaValidation } from './media-validation'
 import { buildTracks, shotstackContract } from './shotstack-timeline'
 import { boundedProviderJson } from './provider-json'
+import { providerRecord } from './provider-response'
 import { resolveMediaTree } from './private-media'
 
 export type ShotstackFormat = '9:16' | '16:9' | '1:1'
@@ -186,14 +187,16 @@ async function pollShotstackRender(renderId: string, apiKey: string, base: strin
   const end = Date.now() + 300_000
   while (Date.now() < end) {
     deadline.throwIfAborted()
-    const res = await fetch(`${base}/render/${encodeURIComponent(renderId)}`, {headers:{'x-api-key':apiKey},redirect:'error',signal:AbortSignal.any([deadline,AbortSignal.timeout(15_000)])})
+    const requestSignal = AbortSignal.any([deadline, AbortSignal.timeout(15_000)])
+    const res = await fetch(`${base}/render/${encodeURIComponent(renderId)}`, {headers:{'x-api-key':apiKey},redirect:'error',signal:requestSignal})
     if (!res.ok) {
       if ([401,403,404].includes(res.status)) throw new Error(`Shotstack status: HTTP ${res.status}`)
       try { await res.body?.cancel() } catch { /* release unsuccessful poll */ }
       await sleep(5000, deadline)
       continue
     }
-    const data = await boundedProviderJson(res) as {response?:{status?:string;url?:string;duration?:number}}
+    const data = await providerRecord(res, requestSignal) as {response?:{status?:string;url?:string;duration?:number}}
+    requestSignal.throwIfAborted()
     if (data?.response?.status === 'done') {
       if (!data.response.url) throw new Error('Shotstack: rendu termine sans URL')
       return {url:validUrl(data.response.url),duration:positive(data.response.duration ?? 0,'OUTPUT_DURATION')}
