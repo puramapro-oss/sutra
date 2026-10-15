@@ -24,13 +24,18 @@ export async function calibrateKeyboard(browser) {
 }
 
 // The only admissible engine diagnostic requires a matching fetch STARTED by
-// the departing document during lifecycle teardown under an explicit goto.
+// the departing document during lifecycle teardown under an explicit goto/reload.
 // No general string allowlist: every other pageerror remains a gate failure.
 export function classifyRuntimeErrors({ engine, nativeControl, errors, events, navigations, domErrors }) {
   const qualified = [], unexpected = []
   for (const error of errors) {
     const match = /^Fetch API cannot load (https?:\/\/[^\s]+) due to access control checks\.$/.exec(error.stack?.split('\n')[0] ?? '')
-    const navigation = navigations.find(row => row.id === error.navigation)
+    const navigation = navigations.find(row => row.id === error.navigation && ['goto', 'reload'].includes(row.method))
+    let allowedResource = false
+    try {
+      const url = new URL(match?.[1]), query = [...url.searchParams]
+      allowedResource = !url.hash && (!url.search || (query.length === 1 && query[0][0] === '_rsc' && /^[a-zA-Z0-9_-]{1,128}$/.test(query[0][1])))
+    } catch { /* Malformed/unknown query is never qualified. */ }
     const fetch = match && events.find(row => row.kind === 'unload-fetch' && row.url === match[1]
       && row.navigation === error.navigation && row.document === navigation?.from
       && Math.abs(row.at - error.at) <= 1000)
@@ -38,7 +43,7 @@ export function classifyRuntimeErrors({ engine, nativeControl, errors, events, n
     try { sameOrigin = Boolean(navigation && match && new URL(match[1]).origin === new URL(navigation.from).origin && new URL(navigation.to).origin === new URL(navigation.from).origin) } catch { /* unknown remains a failure */ }
     const domFailure = domErrors.some(row => row.navigation === error.navigation && Math.abs(row.at - error.at) <= 1000)
     if (engine === 'webkit' && nativeControl?.caughtUnloadDiagnostic === true && error.kind === 'pageerror'
-      && sameOrigin && fetch && !domFailure && navigation && error.at >= navigation.startedAt
+      && allowedResource && sameOrigin && fetch && !domFailure && navigation && error.at >= navigation.startedAt
       && error.at <= (navigation.finishedAt ?? error.at) + 1000) {
       qualified.push({ ...error, qualification: 'native-webkit-caught-fetch-during-explicit-document-teardown', matchingFetch: fetch })
     } else unexpected.push(error)
@@ -77,19 +82,26 @@ export async function observeRuntimeErrors(page, { engine, nativeControl }) {
       if (unloading) {
         try {
           const url = new URL(typeof args[0] === 'string' || args[0] instanceof URL ? args[0] : args[0].url, location.href)
-          // Loopback fixture metadata only; never retain query/body/header data.
-          if (url.origin === location.origin && !url.search && !url.hash) emit({ kind: 'unload-fetch', url: url.origin + url.pathname })
+          // Only the synthetic fixture's Next cache token is permitted. Unknown
+          // query/header/body data is never collected or qualified.
+          const query = [...url.searchParams]
+          const nextRsc = query.length === 1 && query[0][0] === '_rsc' && /^[a-zA-Z0-9_-]{1,128}$/.test(query[0][1])
+          if (url.origin === location.origin && !url.hash && (!url.search || nextRsc)) {
+            emit({ kind: 'unload-fetch', url: url.origin + url.pathname + url.search })
+          }
         } catch { /* Original fetch determines success/failure unchanged. */ }
       }
       return Reflect.apply(originalFetch, this, args)
     }
   }, { marker })
-  const goto = page.goto.bind(page)
-  page.goto = async (target, options) => {
-    const from = new URL(page.url()), to = new URL(target)
-    const row = { id: navigations.length + 1, from: from.origin + from.pathname, to: to.origin + to.pathname, startedAt: Date.now() }
-    navigations.push(row); activeNavigation = row
-    try { return await goto(target, options) } finally { row.finishedAt = Date.now() }
+  for (const method of ['goto', 'reload']) {
+    const original = page[method].bind(page)
+    page[method] = async (...args) => {
+      const from = new URL(page.url()), to = method === 'goto' ? new URL(args[0]) : from
+      const row = { id: navigations.length + 1, method, from: from.origin + from.pathname, to: to.origin + to.pathname, startedAt: Date.now() }
+      navigations.push(row); activeNavigation = row
+      try { return await original(...args) } finally { row.finishedAt = Date.now() }
+    }
   }
   return () => classifyRuntimeErrors({ engine, nativeControl, errors, events, navigations, domErrors })
 }

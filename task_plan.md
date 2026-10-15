@@ -514,3 +514,7 @@ Limites : Salad désactivé, clé master malformée et organisation/projet non p
 ### T01 2026-10-15T02:13:21.818002+00:00 — correction contrats CI
 
 Candidat48eb91a non promouvable :2FAIL contrats, PG PASS, qualité/navigateur encore en cours. Deux fixtures réconciliées sans code produit :58PASS/0FAIL/0SKIP et lint ciblé PASS. Détails qa/t01-final-20261015/RECONCILIATION.md, rouge conservé. Manifeste mis à jour. Nouveau SHA/CI exacte et ACK T08 requis ; production86d04c8 inchangée.
+
+### T01 2026-10-15T02:33:33.830617+00:00 — CI WebKit et qualification native
+
+CI48eb91a :5gardes WebKit FAIL, fonctions attendues PASS ; requetes _rsc non observees et reload attribue a un goto ancien. Harnais seul corrige,22PASS/0FAIL/0SKIP dont controles HTML Chromium/WebKit et vraies erreurs negatives. Controle pagehide reproduit5diagnostics WebKit qualifies ; essais beforeunload seul ne reproduisant pas le diagnostic conserves. Aucune suppression de garde/erreur brute ni modification produit. Nouveau manifeste exact,7WIP et lots conserves. Rejeu CI du nouveau commit requis, ACK T08 toujours absent, production86d04c8 inchangee.

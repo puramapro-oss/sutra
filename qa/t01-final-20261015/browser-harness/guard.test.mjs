@@ -1,15 +1,16 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdtemp, writeFile } from 'node:fs/promises'
 import { chromium, webkit } from '@playwright/test'
 import { classifyRuntimeErrors } from './runtime-guard.mjs'
 import { nativeRuntimeControls } from './native-controls.mjs'
 
+const output = await mkdtemp('qa/t01-final-20261015/browser-harness/reload-rsc-results-')
 const base = 'https://127.0.0.1:1234'
 const seed = () => ({ engine: 'webkit', nativeControl: { caughtUnloadDiagnostic: true },
   errors: [{ kind: 'pageerror', navigation: 1, at: 120, message: 'engine diagnostic', stack: `Fetch API cannot load ${base}/slow due to access control checks.\n    at unknown (${base}/caught:1:1)` }],
   events: [{ kind: 'unload-fetch', navigation: 1, document: base + '/caught', url: base + '/slow', at: 119 }],
-  navigations: [{ id: 1, from: base + '/caught', to: base + '/next', startedAt: 100, finishedAt: 125 }], domErrors: [] })
+  navigations: [{ id: 1, method: 'goto', from: base + '/caught', to: base + '/next', startedAt: 100, finishedAt: 125 }], domErrors: [] })
 
 test('exact native teardown control is qualified and raw error retained', () => {
   const result = classifyRuntimeErrors(seed())
@@ -22,6 +23,7 @@ for (const [name, mutate] of [
   ['hydration', state => { state.errors[0].kind = 'hydration' }],
   ['no teardown fetch', state => { state.events = [] }],
   ['different document', state => { state.events[0].document = base + '/wrong' }],
+  ['unobserved method', state => { state.navigations[0].method = 'click' }],
   ['client navigation', state => { state.navigations = [] }],
   ['cross-origin resource', state => { state.errors[0].stack = 'Fetch API cannot load https://elsewhere.invalid/slow due to access control checks.' }],
   ['delayed error', state => { state.errors[0].at = 10000 }],
@@ -30,12 +32,25 @@ for (const [name, mutate] of [
   const state = seed(); mutate(state)
   assert.ok(classifyRuntimeErrors(state).unexpected.length > 0)
 })
+for (const method of ['goto', 'reload']) test(`exact Next RSC request during ${method} is qualified`, () => {
+  const state = seed(); state.navigations[0].method = method
+  state.errors[0].stack = `Fetch API cannot load ${base}/slow?_rsc=fixture_token due to access control checks.`
+  state.events[0].url += '?_rsc=fixture_token'
+  assert.equal(classifyRuntimeErrors(state).qualified.length, 1)
+  state.events[0].url = base + '/slow?_rsc=different'
+  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+})
+for (const query of ['?token=private', '?_rsc=valid&token=private', '?_rsc=one&_rsc=two', '?_rsc=', '?_rsc=bad%20value', '#fragment']) test(`fail closed: unsupported query ${query}`, () => {
+  const state = seed()
+  state.errors[0].stack = `Fetch API cannot load ${base}/slow${query} due to access control checks.`
+  state.events[0].url += query
+  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+})
 for (const [engine, type] of Object.entries({ chromium, webkit })) test(`${engine}: real native HTML controls without SUTRA or build`, async () => {
   const browser = await type.launch({ headless: true })
   try {
     const result = await nativeRuntimeControls(browser)
-    await mkdir('qa/t01-final-20261015/browser-harness/results', { recursive: true })
-    await writeFile(`qa/t01-final-20261015/browser-harness/results/native-${engine}.json`, JSON.stringify(result, null, 2) + '\n')
+    await writeFile(`${output}/native-${engine}.json`, JSON.stringify(result, null, 2) + '\n', { flag: 'wx' })
     assert.equal(result.negativeControls.realExceptionDetected, true)
     assert.equal(result.negativeControls.unhandledRejectionDetected, true)
   } finally { await browser.close() }

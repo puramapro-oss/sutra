@@ -18,8 +18,8 @@ La configuration reste synthetique et explicite : service/anon fixture, URLs loo
 
 - le moteur est WebKit et son controle HTML natif courant a reproduit exactement le diagnostic d'un fetch intercepte par `.catch()` pendant `pagehide` ;
 - la premiere ligne de stack correspond exactement au diagnostic `Fetch API cannot load ... due to access control checks.` ;
-- un `page.goto` explicite est en cours ou vient de terminer (borne 1 s) ;
-- le document sortant a effectivement commence ce meme fetch pendant son dechargement ; origine source/cible/navigation identique, sans query ni fragment ;
+- un `page.goto` ou `page.reload` explicite est en cours ou vient de terminer (borne 1 s) ;
+- le document sortant a effectivement commence ce meme fetch pendant son dechargement ; origine source/cible/navigation identique, sans fragment ; seule la query Next `_rsc` unique, alphanumerique/underscore/tiret (1–128 caracteres), est observee avec sa valeur fixture pour une correspondance exacte. Toute autre query reste bloquante ;
 - aucune vraie erreur DOM non interceptee n'a ete observee dans cette fenetre.
 
 Toutes les autres erreurs restent bloquantes. `TypeError: Load failed`, CORS externe, navigation cliente, absence de trace, autre moteur, hydratation ou vraie exception ne sont pas exclus. Chaque scenario produit `runtime-errors.json`, plus les listes brutes/inattendues/qualifiees dans `results.json`. Les erreurs attendues des contre-tests restent dans le recu HTML natif et ne sont jamais melangees a la recette produit.
@@ -43,3 +43,13 @@ POLICY_OK depuis racine canonique ; le script lance depuis ce worktree autonome 
 ## Limite restante
 
 La campagne application complete n'a deliberement pas ete lancee ici. La CI doit valider les vingt scenarios avec le candidat integre. Si un diagnostic ne satisfait pas toutes les conditions, il doit rester rouge et etre examine ; aucune extension automatique du filtre. Safari natif et appareil iOS restent NON TESTES.
+
+## Correction CI48eb91a — rechargements et cache Next
+
+CI38669067659 : vingt groupes fonctionnels executes, cinq gardes WebKit FAIL (social/planning/legal/journey/extra), Chromium PASS. Traces brutes conservees dans ci-48eb91a-quality-artifacts. Deux lacunes prouvees : reload attribue au dernier goto et requetes cache Next _rsc non observees. Aucun fichier produit corrige pour ces diagnostics.
+
+Le harnais observe maintenant les deux operations explicites et leur vrai document sortant. Le fetch original et son resultat/promise restent inchanges : aucun catch ajoute au produit, erreur DOM/rejection toujours bloquante. URL exacte requise, fenetre 1s inchangee ; methode inconnue, query differente, privee ou dupliquee toujours refusee. Metadata query permise uniquement pour le jeton cache synthetique `_rsc`, sans master/header/body.
+
+Contre-preuve HTML sans Next : quatre combinaisons goto/reload x requete simple/_rsc, fetch attrape pendant beforeunload et pagehide ; vraies exceptions/rejections toujours detectees. Nouvelle commande `node --test qa/t01-final-20261015/browser-harness/guard.test.mjs` :22PASS/0FAIL/0SKIP sur Mac. Les recus historiques ne sont pas ecrases ; chaque rejeu cree un dossier distinct. Recette applicative Linux du nouveau SHA encore requise, aucun FAIL historique converti retroactivement en PASS.
+
+Le premier essai natif beforeunload seul ne reproduisait aucun diagnostic sur Mac : qualification des erreurs applicatives aurait donc reste fermee. Le controle conserve maintenant aussi pagehide, comme la preuve initiale. Les deux recus sont gardes ; seuls les nouveaux controles effectivement reproduits autorisent une qualification.
