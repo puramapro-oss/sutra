@@ -1,0 +1,28 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 31 files, 8 symbols
+Affected processes: 366
+Risk level: critical
+
+Changed symbols:
+  Section SUTRA T01 — production OVH, 2026-10-13 → HANDOFF-SUTRA-T01-20261012.md
+  Section T01 — campagne finale exacte et promotion conditionnée, 2026-10-14T16:55:48.931637+00:00 → HANDOFF-SUTRA-T01-20261012.md
+  Function journeyChecks → qa/t07-frontend-journey-20261014/journey-checks.mjs
+  Const exportCalls → qa/t07-frontend-journey-20261014/journey-checks.mjs
+  Const productionCalls → qa/t07-frontend-journey-20261014/journey-checks.mjs
+  Const nodeTests → scripts/run-ci.mjs
+  Function POST → src/app/api/create/route.ts
+  Interface UseVideoGenerationProps → src/hooks/useVideoGeneration.ts
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: journeyChecks, journeyChecks, journeyChecks, journeyChecks
+  • CommunityScreen → ApiFetch (3 steps) — changed: journeyChecks, journeyChecks, journeyChecks
+  • AdminContestPage → FetchData (3 steps) — changed: journeyChecks, journeyChecks, journeyChecks
+  • AdminUsersPage → FetchUsers (3 steps) — changed: journeyChecks, journeyChecks, journeyChecks
+  • AutoPage → RequestClientJson (3 steps) — changed: journeyChecks, journeyChecks, journeyChecks
+  • CommunityPage → FetchBuddy (3 steps) — changed: journeyChecks, journeyChecks, journeyChecks
+  • CommunityPage → FetchCircles (3 steps) — changed: journeyChecks, journeyChecks, journeyChecks
+  • CommunityPage → FetchWall (3 steps) — changed: journeyChecks, journeyChecks, journeyChecks
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: journeyChecks
+  • JeuCreatifPage → Load (3 steps) — changed: journeyChecks, journeyChecks, journeyChecks
+... and 356 more

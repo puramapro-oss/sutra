@@ -61,12 +61,17 @@ export async function privateDownloadChecks({ page, context, base, fixture, chec
     await page.clock.install()
     const transferCount = fixture.state.suspendedMedia.length
     const signatureCount = fixture.state.signatures.length
+    const fetchCount = mediaFetches
     await button.click()
     // Observe the real loopback stream, independently of redirect event attribution.
     // Chromium CI can report the final 200 on /api/media rather than the signed URL.
     await expect.poll(() => fixture.state.suspendedMedia.length).toBe(transferCount + 1)
     const transfer = fixture.state.suspendedMedia[transferCount]
-    assert.equal(transfer.method, 'GET'); assert.equal(transfer.destination, 'empty')
+    assert.equal(transfer.method, 'GET')
+    assert.equal(mediaFetches - fetchCount, 1, 'one browser fetch, not a media element request')
+    // WebKit omits this optional Fetch Metadata header; the browser request above
+    // proves the resource type independently of HTTP header support.
+    if (transfer.destination !== undefined) assert.equal(transfer.destination, 'empty')
     assert.equal(transfer.status, 200); assert.equal(transfer.bytesWritten, 1)
     assert.equal(transfer.ended, false); assert.equal(transfer.closed, false)
     assert.ok(fixture.state.signatures.length > signatureCount, 'real media route signs a fresh owner request')

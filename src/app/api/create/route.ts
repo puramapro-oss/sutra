@@ -23,6 +23,7 @@ export const maxDuration = 300
 export async function POST(req: Request) {
   const worker = `inline-${randomUUID()}`
   let jobId: string | null = null
+  let submissionAttempted = false
   try {
     const supabase = await createServerClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -72,6 +73,7 @@ export async function POST(req: Request) {
     }
 
     const identity = submissionIdentity(`create-${user.id}`, parsed.data, req.headers.get('Idempotency-Key'))
+    submissionAttempted = true
     const submitted = await submitVideoJob(profile as Profile, {
       kind: 'create', videoId, input, ...identity,
       initialVideo: { format, quality, tags: [], media_mode: mediaMode, stock_sources: stockSelections ?? [] },
@@ -125,7 +127,7 @@ export async function POST(req: Request) {
     }
     const modeCode = message.split(':', 1)[0]
     if (Object.hasOwn(modeErrors, modeCode)) {
-      return NextResponse.json({ error: modeErrors[modeCode], code: modeCode }, { status: 503 })
+      return NextResponse.json({ error: modeErrors[modeCode], code: modeCode, ...(!submissionAttempted ? { submissionState: 'not_submitted' } : {}) }, { status: 503 })
     }
     return NextResponse.json({ error: 'Erreur lors de la generation de la video', code: 'SUTRA_GENERATION_FAILED' }, { status: submissionErrorStatus(message) })
   }

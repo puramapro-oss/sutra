@@ -1,5 +1,5 @@
 {
-  "base": "a70b913ae31f7ce670aba595eab194851b5673eb",
+  "base": "4ce8f5c2308a252545b119af96b9b780dbc48b2a",
   "status": "CANDIDATE_AWAITING_EXACT_SHA_CI",
   "scope": "Committed application, migrations, delivery tooling, configuration and executable validation sources; no secrets or mutable receipts",
   "files": [
@@ -494,6 +494,30 @@
     {
       "path": "qa/t01-consolidation-20261014/verify-checkpoint-restore.py",
       "sha256": "72d4024f86bb65431dd5b6ad92fe1107255803de7256a68246fb310888252874"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/browser.mjs",
+      "sha256": "eef964a773131b4f8c5d1e8d36832d7ab4e2a232411ee55dc2c245d6b913d30b"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/checks.mjs",
+      "sha256": "a95dcfd9dae88455366d99e0ba23baf31d939eef4f77b2b8edd2a77211d866ab"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/client.test.mts",
+      "sha256": "a70ed3a4e218173987a1f312abd3bb2096b8fecef1e10e7561034160a5869fa3"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/control.test.mts",
+      "sha256": "5986cfd91f715df791dc4cbb6415fdc483051de90cb309b58180d8dd0e297d34"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/run.mjs",
+      "sha256": "559b12393426844680406494b2ce870edc73a43af76fea83f7d01630813b6068"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/submission.test.mts",
+      "sha256": "324c2b429d0c08c51221a8029343c0436a17e1c0ab664d4237db22b7f33e7ae0"
     },
     {
       "path": "qa/t01-final-20261015/backup-restore.py",
@@ -1145,7 +1169,7 @@
     },
     {
       "path": "qa/t07-frontend-journey-20261014/journey-checks.mjs",
-      "sha256": "bb58f512f8fa689a959c4510f0c2e740852fd4f5310f0089588eb93d9638ea57"
+      "sha256": "93c948c7859ed4586e5263411346bc65c5bea7f82414e80dff6f01bd43424b1b"
     },
     {
       "path": "qa/t07-frontend-journey-20261014/legal-checks.mjs",
@@ -1157,7 +1181,7 @@
     },
     {
       "path": "qa/t07-frontend-journey-20261014/private-download-checks.mjs",
-      "sha256": "98f120db73e4d32af20f9ee29f9a2290db9f63d4b3db4e89a631a3405a489a4b"
+      "sha256": "f46f2e7548064f4473fe4088add96529d1d880254d6c77420e4b0f9931522e85"
     },
     {
       "path": "qa/t07-frontend-journey-20261014/retry-checks.mjs",
@@ -1373,7 +1397,7 @@
     },
     {
       "path": "scripts/run-ci.mjs",
-      "sha256": "52cc8fe44e5a6540147e4afb4193d729c72b1e36654a559b340f620099be37f6"
+      "sha256": "dca0f2049d16b246eeb75dd3e0c130a3a1d06cb387d105128f595543d4025c87"
     },
     {
       "path": "scripts/screenshot-landing.mjs",
@@ -1889,7 +1913,7 @@
     },
     {
       "path": "src/app/(dashboard)/create/page.tsx",
-      "sha256": "94bfc71de6d0f23f4f56337f4efecfb910aaf8737389c0aa51e4b429ef1997c3"
+      "sha256": "e813773ee2f19d587b302b7db39c482dd5884c2ae7acd6ef5ffb60b998ba77af"
     },
     {
       "path": "src/app/(dashboard)/create/page.tsx.bak",
@@ -2213,7 +2237,11 @@
     },
     {
       "path": "src/app/api/create/route.ts",
-      "sha256": "1b01c9abc7ce0961f16f1ce1ccf8e10d3a639d105b20a4e7af0b5a196d8befc4"
+      "sha256": "29ebc4a9672f77f800c239ede82112b911eceb67dd2953dc6a9de2df94875754"
+    },
+    {
+      "path": "src/app/api/create/status/route.ts",
+      "sha256": "b3586e76c196256bd1627533141d5df568b33cfb2c3bf28b2aa9c5956f0352db"
     },
     {
       "path": "src/app/api/cron/account-deletion/route.ts",
@@ -3341,7 +3369,7 @@
     },
     {
       "path": "src/components/production/ProductionRequestStatus.tsx",
-      "sha256": "e589b0f02f7c859ce58d9d08fb7810583cc428fc0c1e1624e6cdcd58fce2d877"
+      "sha256": "86e7b035090fe703f67dfc8ff59df444e48b9f205fe4cc0379930d0a6f1d6d37"
     },
     {
       "path": "src/components/production/ScriptStep.tsx",
@@ -3796,6 +3824,10 @@
       "sha256": "361dce8aaa200291afbe754d3939e14d2a05d426b22588b3bb3596ebeafbee1c"
     },
     {
+      "path": "src/hooks/useCreateRequest.ts",
+      "sha256": "dd17b62c45fbe60ed5f5b814413ec59fc44fa6ee8cda0656b83f5b9b83083d17"
+    },
+    {
       "path": "src/hooks/useEditorHandlers.ts",
       "sha256": "3025ff15c2922a234cbf1c41730b91bea6f6148e84199a9052d8c101f287c84f"
     },
@@ -3865,7 +3897,7 @@
     },
     {
       "path": "src/hooks/useVideoGeneration.ts",
-      "sha256": "fa4745cf9aae1191fab8f61e2b52bcb381ab47ea6f900390c0ccccb16afe729f"
+      "sha256": "ba564cc62eeeda784fa869ba2cdfdc093b8b4a75cb0fb14cca548484e1f64896"
     },
     {
       "path": "src/hooks/useVideoPlayer.ts",
@@ -3950,6 +3982,10 @@
     {
       "path": "src/lib/create-constants.tsx",
       "sha256": "33b1e769f9bf061e90be469c9ffa844cfbe7028118c98391641713d07b6f1d00"
+    },
+    {
+      "path": "src/lib/create-intent-client.ts",
+      "sha256": "661b751e438d173cdc3539cac807260818ce74fd855aa1ecf6b949120a6ce381"
     },
     {
       "path": "src/lib/create-utils.ts",

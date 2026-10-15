@@ -221,3 +221,7 @@ INTEGRE/TESTE : candidat3855665fa79e3cc2171124d864a834214d6ac617 ; CI38598361267
 Sept lots propres/préservés,66fichiers manifeste identiques,7WIP étrangers inchangés. Matrice T01 provisoire41PASS/0FAIL/2BLOQUE/10NONTESTE ; avis indépendant final T08 absent. Blocage exact : utilisateur exige cette recette avant promotion ; T08 original non joignable via MacDevBridge -32603, aucun remplaçant/ACK présumé. Prochaine tâche unique : recevoir ACK T08 sur3855665, puis préconditions/backup frais et promotion autorisée, sans rejouer toute la CI.
 
 Production86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164 saine/inchangée au16:41UTC. Candidat exact image4d8f5358 construit/testé sans réseau et arrêté ; backup141tables restauré/comparé, migration3fonctions testée/copierollback, non appliquée. Cron infrastructure absente et exécuteurs maintenus inactifs, observateur lecture seule testé seulement. Aucun GPU/paid/publication/consentement personnel. Documentation ultérieure ne remplace pas le SHA testé. Tous terminaux préservés/non fermés.
+
+
+## T01 R74/R94 — 2026-10-15T23:49:19.184945+00:00
+Annulation create durable livree via queue/control existants; aucun second moteur. 11 navigateur+PG et10 contrats PASS, TS/lint PASS; pertes ACK,404 initial,reload/restart,late worker,quota/audit unique. R94 en-tete WebKit facultatif sans retirer les assertions stream/abort. Details qa/t01-create-cancel-20261016/README.md. CI exacte/T08 encore requis; runtime86d04c85 inchange, aucun apply/deploy.

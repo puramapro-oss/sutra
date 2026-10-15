@@ -1,0 +1,24 @@
+✔ fixed public categories never echo arbitrary diagnostics (0.605792ms)
+✔ tab receipt is owner scoped, preserves cancel intention and fails closed on corrupt data (1.779583ms)
+(node:57295) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57295) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ unauthenticated and auth error never read or cancel; no-store (4.300167ms)
+✔ invalid, absent, duplicate or oversized identity rejected before DB (1.282833ms)
+✔ other owner, other kind and other key are absent, never cancelled (0.607792ms)
+✔ GET exposes only owner status; does not execute cancellation or return payload/video while queued (0.503791ms)
+✔ DELETE confirms canonical state; completed job cannot be reported cancelled (0.273584ms)
+✔ missing early cancellation is unconfirmed and performs no mutation (0.136709ms)
+✔ read failures and uncertain cancel ACK are 503 without private diagnostic (0.260125ms)
+(node:57296) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57296) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ only a pre-submission mode refusal releases the client receipt (3.517ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 630.199292

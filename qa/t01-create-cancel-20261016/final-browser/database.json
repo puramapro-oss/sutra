@@ -1,0 +1,212 @@
+{
+  "jobs": [
+    {
+      "id": "919abe7b-f68a-4aaa-960f-29801ebd385b",
+      "status": "cancelled",
+      "kind": "create",
+      "idempotency_key": "create-11111111-1111-4111-8111-111111111111-8c1cd2dd-430b-4ad4-b5d9-17f537c7158d",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T23:45:48.360Z",
+      "updated_at": "2026-10-15T23:45:49.418Z"
+    },
+    {
+      "id": "7cd97cba-46a8-4b84-9da0-c6464d977ac0",
+      "status": "cancelled",
+      "kind": "create",
+      "idempotency_key": "create-11111111-1111-4111-8111-111111111111-dddf8d79-b597-4755-8e9e-10286387eab4",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T23:45:51.724Z",
+      "updated_at": "2026-10-15T23:45:52.612Z"
+    },
+    {
+      "id": "95c14f89-2608-4648-978c-532f80943b72",
+      "status": "cancelled",
+      "kind": "create",
+      "idempotency_key": "create-11111111-1111-4111-8111-111111111111-b7f9bcbe-3feb-47b0-9084-b3b155be278f",
+      "provider_job_ids": {
+        "fixture": "synthetic-remote-already-submitted"
+      },
+      "created_at": "2026-10-15T23:45:53.454Z",
+      "updated_at": "2026-10-15T23:45:53.581Z"
+    },
+    {
+      "id": "e0e21da4-4b88-48f8-9f93-a08e5a466bdb",
+      "status": "cancelled",
+      "kind": "create",
+      "idempotency_key": "create-11111111-1111-4111-8111-111111111111-b2ab3a4e-732d-4ce4-b7aa-cc37dacffaee",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T23:45:54.439Z",
+      "updated_at": "2026-10-15T23:45:55.264Z"
+    },
+    {
+      "id": "2ca0db1e-d6f7-4722-b5ba-e23e23ba355f",
+      "status": "cancelled",
+      "kind": "create",
+      "idempotency_key": "create-11111111-1111-4111-8111-111111111111-fc156254-241a-44eb-954e-03d14c1a1d93",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T23:45:57.725Z",
+      "updated_at": "2026-10-15T23:45:58.692Z"
+    },
+    {
+      "id": "6759e0bb-8cfa-4c28-ba27-30ab6679f270",
+      "status": "cancelled",
+      "kind": "create",
+      "idempotency_key": "create-11111111-1111-4111-8111-111111111111-82b1c6e5-17c3-4b3c-bff7-2d16ffa082cc",
+      "provider_job_ids": {
+        "fixture": "synthetic-remote-already-submitted"
+      },
+      "created_at": "2026-10-15T23:45:59.520Z",
+      "updated_at": "2026-10-15T23:45:59.665Z"
+    }
+  ],
+  "beforeCleanup": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 6
+    }
+  ],
+  "counters": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 6
+    }
+  ],
+  "cleanupCancellations": 0,
+  "activityLogs": [
+    {
+      "id": "2964dcec-4a03-48a1-a51e-d03251ec7702",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "create",
+        "job_id": "919abe7b-f68a-4aaa-960f-29801ebd385b",
+        "previous_status": "queued",
+        "provider_submitted": false
+      },
+      "created_at": "2026-10-15T23:45:49.417Z"
+    },
+    {
+      "id": "d96de140-c436-4a0c-ae6a-cd2c4fa3d0d1",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "create",
+        "job_id": "7cd97cba-46a8-4b84-9da0-c6464d977ac0",
+        "previous_status": "queued",
+        "provider_submitted": false
+      },
+      "created_at": "2026-10-15T23:45:52.611Z"
+    },
+    {
+      "id": "846acf39-48ff-41ca-b6e6-01ad9ecf1cda",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "create",
+        "job_id": "95c14f89-2608-4648-978c-532f80943b72",
+        "previous_status": "processing",
+        "provider_submitted": true
+      },
+      "created_at": "2026-10-15T23:45:53.581Z"
+    },
+    {
+      "id": "7bbeabfe-9700-459d-8d2d-1c3c31a841fe",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "create",
+        "job_id": "e0e21da4-4b88-48f8-9f93-a08e5a466bdb",
+        "previous_status": "queued",
+        "provider_submitted": false
+      },
+      "created_at": "2026-10-15T23:45:55.264Z"
+    },
+    {
+      "id": "9cbeb5b9-d751-405b-9cda-6af4ebd264c5",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "create",
+        "job_id": "2ca0db1e-d6f7-4722-b5ba-e23e23ba355f",
+        "previous_status": "queued",
+        "provider_submitted": false
+      },
+      "created_at": "2026-10-15T23:45:58.691Z"
+    },
+    {
+      "id": "daa491bd-1b16-456c-85a1-f23ace133d47",
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "type": "video_cancelled",
+      "description": "Annulation de la tâche vidéo",
+      "metadata": {
+        "kind": "create",
+        "job_id": "6759e0bb-8cfa-4c28-ba27-30ab6679f270",
+        "previous_status": "processing",
+        "provider_submitted": true
+      },
+      "created_at": "2026-10-15T23:45:59.665Z"
+    }
+  ],
+  "evidence": {
+    "requests": [],
+    "rpc": [
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "claim_video_job_by_key",
+      "checkpoint_video_job_v2",
+      "cancel_video_job",
+      "finish_video_job",
+      "claim_video_job_by_key",
+      "finish_video_job",
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "claim_video_job_by_key",
+      "checkpoint_video_job_v2",
+      "cancel_video_job",
+      "finish_video_job",
+      "claim_video_job_by_key",
+      "finish_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key"
+    ],
+    "workerCalls": 2,
+    "providerCalls": 0,
+    "publicationCalls": 0,
+    "restartedPools": 2,
+    "restarts": [
+      {
+        "before": "2026-10-15T23:45:35.893Z",
+        "after": "2026-10-15T23:45:49.665Z",
+        "status": 0,
+        "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+        "stderr": ""
+      },
+      {
+        "before": "2026-10-15T23:45:49.665Z",
+        "after": "2026-10-15T23:45:55.504Z",
+        "status": 0,
+        "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+        "stderr": ""
+      }
+    ]
+  }
+}

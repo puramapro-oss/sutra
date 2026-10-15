@@ -1,0 +1,72 @@
+{
+  "baseCommit": "4ce8f5c2308a252545b119af96b9b780dbc48b2a",
+  "cancelOnly": false,
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: create lost ACK; reload; cancel ACK loss; GET confirms SQL/audit/quota without another POST",
+      "status": "PASS"
+    },
+    {
+      "name": "375: early cancel 404 stays uncertain; late submission is cancelled with no replay",
+      "status": "PASS"
+    },
+    {
+      "name": "375: in-flight create cancellation preserves provider receipt and rejects stale completion",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: create lost ACK; reload; cancel ACK loss; GET confirms SQL/audit/quota without another POST",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: early cancel 404 stays uncertain; late submission is cancelled with no replay",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: in-flight create cancellation preserves provider receipt and rejects stale completion",
+      "status": "PASS"
+    },
+    {
+      "name": "repeated DELETE returns cancelled; one canonical audit receipt and quota release",
+      "status": "PASS"
+    },
+    {
+      "name": "conclusive quota refusal: classification, draft, no locked receipt or automatic retry",
+      "status": "PASS"
+    },
+    {
+      "name": "conclusive disabled refusal: classification, draft, no locked receipt or automatic retry",
+      "status": "PASS"
+    },
+    {
+      "name": "conclusive profile refusal: classification, draft, no locked receipt or automatic retry",
+      "status": "PASS"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "jobs": 6,
+      "auditEvents": 6,
+      "totals": {
+        "reserved": 0,
+        "released": 6
+      },
+      "generations": 0,
+      "publications": 0
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

@@ -44,11 +44,16 @@ export async function journeyChecks({ page, context, base, fixture, output, chec
   }
   const capabilities = { version: 1, client: { mode: 'api', availability: 'unknown', reason: 'PROVIDER_NOT_PROBED' }, personal: { provider: 'salad', allowed: false, available: false, state: 'unavailable', reason: null, operations: [], profiles: [], quotaRemaining: null, cost: { currency: 'USD', actualUsd: null, basis: 'compute-only-excludes-idle-storage-network', estimatedComputeUsd: null } } }
   await context.route('**/api/video/capabilities', route => route.fulfill({ json: capabilities }))
-  const createCalls = [], exportCalls = [], productionCalls = []
+  const createCalls = [], createControls = [], exportCalls = [], productionCalls = []
+  const createJob = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
   await context.route('**/api/create', async route => {
     createCalls.push({ key: route.request().headers()['idempotency-key'], body: route.request().postDataJSON() })
     await new Promise(done => setTimeout(done, 250))
-    await route.fulfill({ status: 202, json: { jobId: 'fixture-job' } })
+    await route.fulfill({ status: 202, json: { jobId: createJob, status: 'queued' } })
+  })
+  await context.route('**/api/create/status?*', route => {
+    createControls.push({ method: route.request().method(), requestId: new URL(route.request().url()).searchParams.get('requestId') })
+    return route.fulfill({ json: { jobId: createJob, status: route.request().method() === 'DELETE' ? 'cancelled' : 'unknown' } })
   })
   await context.route('**/api/video/status/*', route => route.fulfill({ json: { status: 'unknown' } }))
   await context.route('**/api/production', async route => {
@@ -79,12 +84,20 @@ export async function journeyChecks({ page, context, base, fixture, output, chec
       await expect(page.getByText('Résultat de la génération non confirmé', { exact: true })).toBeVisible({ timeout: 12000 })
       assert.equal(createCalls.length - before, 1)
       await expect(page.getByRole('link', { name: 'Vérifier la bibliothèque' })).toBeVisible()
-      await submit.click()
+      await expect(submit).toBeDisabled()
+      await page.getByTestId('production-resume').click()
       await expect(page.getByText('Résultat de la génération non confirmé', { exact: true })).toBeVisible({ timeout: 12000 })
-      assert.equal(createCalls.length - before, 2)
+      assert.equal(createCalls.length - before, 1)
       assert.ok(createCalls[before].key)
-      assert.equal(createCalls[before].key, createCalls[before + 1].key)
+      assert.equal(createControls.at(-1).method, 'GET')
+      assert.equal(createControls.at(-1).requestId, createCalls[before].key)
       await page.screenshot({ path: resolve(output, `create-error-${width}.png`), fullPage: true })
+      await page.getByTestId('production-cancel').click()
+      await expect(page.getByRole('status').filter({ hasText: 'Annulation confirmée par le serveur.' })).toBeVisible()
+      assert.equal(createControls.at(-1).method, 'DELETE')
+      assert.equal(createControls.at(-1).requestId, createCalls[before].key)
+      assert.equal(createCalls.length - before, 1)
+      await expect(submit).toBeEnabled()
     })
     capabilities.personal.allowed = true; capabilities.personal.state = 'disabled'
     await page.goto(base + '/production')
@@ -141,5 +154,5 @@ export async function journeyChecks({ page, context, base, fixture, output, chec
     })
     fixture.state.videos = []
   }
-  details.push({ createCalls, productionCalls, exportCalls })
+  details.push({ createCalls, createControls, productionCalls, exportCalls })
 }

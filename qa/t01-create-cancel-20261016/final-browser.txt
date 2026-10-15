@@ -1,0 +1,14 @@
+PASS 375: create lost ACK; reload; cancel ACK loss; GET confirms SQL/audit/quota without another POST
+PASS 375: early cancel 404 stays uncertain; late submission is cancelled with no replay
+PASS 375: in-flight create cancellation preserves provider receipt and rejects stale completion
+PASS 1440: create lost ACK; reload; cancel ACK loss; GET confirms SQL/audit/quota without another POST
+PASS 1440: early cancel 404 stays uncertain; late submission is cancelled with no replay
+PASS 1440: in-flight create cancellation preserves provider receipt and rejects stale completion
+PASS repeated DELETE returns cancelled; one canonical audit receipt and quota release
+PASS conclusive quota refusal: classification, draft, no locked receipt or automatic retry
+PASS conclusive disabled refusal: classification, draft, no locked receipt or automatic retry
+PASS conclusive profile refusal: classification, draft, no locked receipt or automatic retry
+PASS loopback only; no unexpected mutation, runtime or hydration error
+(node:57840) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57840) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.

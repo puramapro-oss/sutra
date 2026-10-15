@@ -20,6 +20,7 @@ import { MANUAL_STEPS } from '@/lib/create-utils'
 import { cn } from '@/lib/utils'
 import { ModeToggle } from '@/components/create/ModeToggle'
 import { ExecutionModeNotice, GenerationErrorNotice } from '@/components/create/ExecutionModeNotice'
+import ProductionRequestStatus from '@/components/production/ProductionRequestStatus'
 import { PipelineProgress } from '@/components/create/PipelineProgress'
 import { MediaModeCards, type MediaMode } from '@/components/create/MediaModeCards'
 import { SceneStockPicker, type StockResult } from '@/components/create/StockPicker'
@@ -81,7 +82,9 @@ export default function CreatePage() {
     fetchKeywords,
     startGeneration,
     resetGeneration,
+    request,
   } = useVideoGeneration({
+    userId: profile?.id,
     topic,
     format,
     quality,
@@ -139,6 +142,12 @@ export default function CreatePage() {
 
       <ExecutionModeNotice isGenerating={isGenerating} />
       {error && <GenerationErrorNotice error={error} />}
+
+      {(request.intent || request.message) && <ProductionRequestStatus
+        intent={request.intent} busy={request.busy} cancelling={request.cancelling}
+        message={request.message} error={request.error}
+        onResume={() => void request.resume()} onCancel={() => void request.cancel()}
+      />}
 
       {/* Mode Toggle */}
       <div className="flex justify-center">
@@ -232,7 +241,7 @@ export default function CreatePage() {
               setVoice={setVoice}
               isQualityAvailable={isQualityAvailable}
               isEngineAvailable={isEngineAvailable}
-              isOverLimit={isOverLimit}
+              isOverLimit={isOverLimit || request.requestLocked}
               onGenerate={startGeneration}
               mediaMode={mediaMode}
               setMediaMode={setMediaMode}
@@ -258,7 +267,7 @@ export default function CreatePage() {
               setVoice={setVoice}
               isQualityAvailable={isQualityAvailable}
               isEngineAvailable={isEngineAvailable}
-              isOverLimit={isOverLimit}
+              isOverLimit={isOverLimit || request.requestLocked}
               step={manualStep}
               setStep={(s) => {
                 setManualStep(s)

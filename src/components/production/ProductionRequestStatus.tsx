@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 import type { ProductionIntent } from '@/lib/production-intent-client'
 
 export default function ProductionRequestStatus({ intent, busy, cancelling, message, error, onResume, onCancel }: {
-  intent: ProductionIntent | null
+  intent: (Pick<ProductionIntent, 'requestId' | 'cancelRequested'> & Partial<ProductionIntent>) | null
   busy: boolean
   cancelling: boolean
   message: string

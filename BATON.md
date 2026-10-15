@@ -387,3 +387,7 @@ Base f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5. Shotstack cancellation already in
 T01 2026-10-15T22:48:39.920173+00:00: canonical activity_logs added to T03 private API/SQL fixture;13PASS after0PASS14FAIL including hook before. No product/SQL delta after99dd. Import T07 QA5e005ff; CI38819302007 PGFAIL, obsolete remaining jobs cancelled, new final CI required.
 
 Remaining fixtures: CI38819672945 red preserved. Private remaining-run.mjs before19PASS11FAIL0SKIP inclhook; table-only28PASS1FAIL; final29PASS0FAIL0SKIP. Canonical audit table and expectation of unique receipt plus all old progress; no product delta. Diagnostic stdout corrected; full lint0errors111warnings. GitNexus exact callbacks UNKNOWN, direct bounded review. T07 proof57a79f2 exact import,8PASS at99dd with equivalence. Next exact CI required.
+
+
+## T01 R74/R94 — 2026-10-15T23:49:19.184669+00:00
+Annulation create durable livree via queue/control existants; aucun second moteur. 11 navigateur+PG et10 contrats PASS, TS/lint PASS; pertes ACK,404 initial,reload/restart,late worker,quota/audit unique. R94 en-tete WebKit facultatif sans retirer les assertions stream/abort. Details qa/t01-create-cancel-20261016/README.md. CI exacte/T08 encore requis; runtime86d04c85 inchange, aucun apply/deploy.
