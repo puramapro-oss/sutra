@@ -35,7 +35,24 @@ else child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'dev', 
 const results = [], details = [], blocked = [], mutations = [], errors = []
 let browser, page
 async function check(name, fn) {
-  try { await fn(); results.push({ name, status: 'PASS' }); process.stdout.write(`PASS ${name}\n`) }
+  const cancelScenario = /lost submit ACK|already submitted provider/.test(name)
+  if (process.env.T07_CANCEL_ONLY === '1' && !cancelScenario && !name.startsWith('loopback only')) return
+  try {
+    await fn()
+    if (process.env.T07_CANCEL_ONLY === '1' && cancelScenario) {
+      const jobs = (await wire.sql("SELECT id,kind,provider_job_ids,progress FROM video_jobs WHERE status='cancelled'")).rows
+      const events = (await wire.sql("SELECT * FROM activity_logs WHERE type='video_cancelled'")).rows
+      assert.equal(events.length, jobs.length, 'one canonical audit event for each UI cancellation')
+      for (const job of jobs) {
+        const matches = events.filter(event => event.metadata.job_id === job.id)
+        assert.equal(matches.length, 1)
+        assert.equal(matches[0].user_id, fixture.user.id)
+        assert.equal(job.progress.effects['activity_logs:cancelled'], matches[0].id)
+        assert.equal(matches[0].metadata.provider_submitted, Object.keys(job.provider_job_ids).length > 0)
+      }
+    }
+    results.push({ name, status: 'PASS' }); process.stdout.write(`PASS ${name}\n`)
+  }
   catch (error) {
     results.push({ name, status: 'FAIL', message: error.message }); process.exitCode = 1
     process.stdout.write(`FAIL ${name}: ${error.message}\n`)
@@ -87,5 +104,5 @@ finally {
   proxy?.closeAllConnections(); await new Promise(done => proxy ? proxy.close(done) : done())
   try { process.kill(-child.pid, 'SIGTERM') } catch { /* already stopped */ }
   fixture.server.closeAllConnections(); await new Promise(done => fixture.server.close(done)); await log.close()
-  await writeFile(resolve(output, 'results.json'), JSON.stringify({ baseCommit: 'f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5', serverMode: process.argv.includes('--production') ? 'production' : 'dev', results, details, blocked, mutations, errors, legalAcceptances: fixture.state.acceptances.map(({ doc_type }) => doc_type) }, null, 2) + '\n')
+  await writeFile(resolve(output, 'results.json'), JSON.stringify({ baseCommit: process.env.T07_CANDIDATE_SHA, cancelOnly: process.env.T07_CANCEL_ONLY === '1', serverMode: process.argv.includes('--production') ? 'production' : 'dev', results, details, blocked, mutations, errors, legalAcceptances: fixture.state.acceptances.map(({ doc_type }) => doc_type) }, null, 2) + '\n')
 }

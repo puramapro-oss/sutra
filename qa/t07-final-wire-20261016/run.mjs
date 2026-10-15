@@ -8,6 +8,8 @@ import { createServer } from 'node:net'
 const here = import.meta.dirname, root = resolve(here, '../..')
 const prefix = process.argv[2] || 'first-'
 if (!/^[a-z0-9-]+$/.test(prefix)) throw new Error('Invalid receipt name')
+const candidate = process.argv.find(arg => arg.startsWith('--candidate='))?.slice(12) || 'f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5'
+if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error('Invalid candidate SHA')
 if ((await import('node:fs')).existsSync(join(here, prefix + 'browser'))) throw new Error('Receipt already exists')
 const bin = '/opt/homebrew/opt/postgresql@18/bin'
 const directory = mkdtempSync(join(tmpdir(), 'sutra-t07-wire-pg-')), data = join(directory, 'data')
@@ -16,6 +18,7 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
 const port = server.address().port
 await new Promise(resolve => server.close(resolve))
 const fixture = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: tmpdir(), LC_ALL: 'C',
+  T07_CANDIDATE_SHA: candidate, T07_CANCEL_ONLY: process.argv.includes('--cancel-only') ? '1' : '0',
   SUTRA_DISPOSABLE_DB: '1', CRON_SECRET: 'synthetic-local-cron-only', T07_OUTPUT: prefix + 'browser', SUTRA_T07_PGDATA: data, PGHOST: '127.0.0.1', PGPORT: String(port), PGUSER: 'fixture',
   NEXT_PUBLIC_SUPABASE_URL: 'https://db.fixture.invalid', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fixture-anon',
   SUPABASE_SERVICE_ROLE_KEY: 'fixture-service', NODE_OPTIONS: `--require=${join(root, 'qa/t08/offline.cjs')}` }
@@ -39,11 +42,20 @@ try {
     'migrations/20261014_durable_checkpoint_integrity.sql', 'migrations/20261015_final_durable_integrity.sql',
     'src/lib/video-queue.ts', 'src/lib/pipeline-state.ts', 'src/lib/production-pipeline.ts',
     'src/data/setup-schema.ts', 'migrations/sutra_auto.sql', 'migrations/20261006_auto_occurrence_integrity.sql', 'package-lock.json']
-  writeFileSync(join(here, `${prefix}execution.json`), JSON.stringify({ command: [process.execPath, ...args], exit_code: result.status,
+  const productFiles = [...new Set([...files, ...Object.keys(JSON.parse(readFileSync(join(here, 'integration-manifest.json'), 'utf8')).sources)])]
+    .filter(path => path.startsWith('src/') || path.startsWith('migrations/') || path.startsWith('package'))
+  const candidateMismatches = productFiles.filter(path => {
+    const expected = spawnSync('git', ['show', `${candidate}:${path}`], { cwd: root, env: fixture })
+    return expected.status !== 0 || !expected.stdout.equals(readFileSync(join(root, path)))
+  })
+  const exitCode = candidateMismatches.length ? 1 : result.status
+  writeFileSync(join(here, `${prefix}execution.json`), JSON.stringify({ command: [process.execPath, ...args], exit_code: exitCode,
+    candidate, cancelOnly: fixture.T07_CANCEL_ONLY === '1',
+    candidateProductFiles: productFiles.length, candidateMismatches,
     environment: 'private disposable loopback PostgreSQL; no ambient credentials; external sockets and secret files denied',
     canonical_migration_only_in_new_fixture: true, network_provider_calls: 0,
     source_sha256: Object.fromEntries(files.map(path => [path, createHash('sha256').update(readFileSync(join(root, path))).digest('hex')])) }, null, 2) + '\n')
-  process.exitCode = result.status ?? 1
+  process.exitCode = exitCode ?? 1
 } finally {
   if (started) {
     try { requireSuccess(run(process.execPath, [join(here, 'settle.mjs')], 'settlement'), 'SETTLEMENT') }

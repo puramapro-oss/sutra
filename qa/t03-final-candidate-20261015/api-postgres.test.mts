@@ -111,7 +111,8 @@ before(async () => {
     CREATE TABLE auth.users(id uuid PRIMARY KEY); CREATE TABLE profiles(id uuid PRIMARY KEY);
     CREATE TABLE sutra_auto_themes(id uuid PRIMARY KEY,user_id uuid,times_used int DEFAULT 0,last_used_at timestamptz);
     CREATE TABLE sutra_auto_memory(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid,memory_type text,content text,importance numeric,related_video_id uuid);`)
-  await query(table(setupSchema, 'videos')); await query(table(source('migrations/sutra_auto.sql'), 'sutra_auto_videos'))
+  await query(table(setupSchema, 'videos')); await query(table(setupSchema, 'activity_logs'))
+  await query(table(source('migrations/sutra_auto.sql'), 'sutra_auto_videos'))
   for (const path of ['migrations/20261006_auto_occurrence_integrity.sql','migrations/v10_durable_jobs_quota.sql',
     'migrations/v11_pipeline_checkpoints.sql','migrations/20261015_final_durable_integrity.sql']) await query(source(path))
   await query(`CREATE TABLE fixture_faults(job_id uuid PRIMARY KEY, target_status text);

@@ -30,7 +30,20 @@ try {
   const triggers = (await wire.sql("SELECT tgname FROM pg_trigger WHERE tgrelid='sutra.video_jobs'::regclass AND NOT tgisinternal")).rows
   const functionBody = (await wire.sql("SELECT pg_get_functiondef('sutra.cancel_video_job(text)'::regprocedure) AS definition")).rows[0].definition
   assert.ok(events.length >= 1, 'AUDIT_GAP: cancellation acknowledged, but no canonical activity event for the actor/job')
+  assert.equal(events.length, 1)
+  assert.equal(events[0].type, 'video_cancelled')
+  assert.deepEqual(events[0].metadata, { job_id: job.id, kind: 'production', previous_status: 'queued', provider_submitted: false })
+  const progress = (await wire.sql('SELECT progress FROM video_jobs WHERE id=$1', [job.id])).rows[0].progress
+  assert.equal(progress.effects['activity_logs:cancelled'], events[0].id)
   results.push({ name: 'durable cancellation activity event', status: 'PASS', events, triggers })
+  await wire.reopen()
+  const repeated = await post({ step: 'cancel', targetStep: 'script', requestId, idea: 'Audit gratuit sans fournisseur' })
+  assert.equal(repeated.status, 200); assert.equal((await repeated.json()).data.cancelled, false)
+  const recovered = await wire.handle(new Request(`http://localhost/api/production?requestId=${requestId}&targetStep=script`))
+  assert.equal(recovered.status, 200); assert.equal((await recovered.json()).status, 'cancelled')
+  assert.deepEqual((await wire.sql('SELECT id,user_id,type,description,metadata,created_at FROM activity_logs WHERE user_id=$1', [user.id])).rows, events)
+  assert.deepEqual((await wire.sql('SELECT reserved,released FROM video_quota_counters')).rows[0], quota)
+  results.push({ name: 'restart and repeated API cancellation preserve one audit receipt and one quota release', status: 'PASS' })
   await writeFile(resolve(output, 'cancel-function.sql'), functionBody)
 } catch (error) {
   results.push({ name: 'durable cancellation activity event', status: 'FAIL', message: error.message,
@@ -40,7 +53,7 @@ try {
   process.exitCode = 1
 } finally {
   await wire.close(output)
-  await writeFile(resolve(output, 'results.json'), JSON.stringify({ baseCommit: 'f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5',
+  await writeFile(resolve(output, 'results.json'), JSON.stringify({ baseCommit: process.env.T07_CANDIDATE_SHA,
     scope: 'canonical production handler + canonical cancellation SQL; minimal canonical activity table; no deployed audit certification', results }, null, 2) + '\n')
   for (const result of results) process.stdout.write(`${result.status} ${result.name}${result.message ? ': ' + result.message : ''}\n`)
 }

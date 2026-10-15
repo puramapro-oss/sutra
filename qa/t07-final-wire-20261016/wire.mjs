@@ -22,6 +22,7 @@ export async function startWire(user) {
     CREATE TABLE sutra_auto_themes(id uuid PRIMARY KEY,user_id uuid,times_used int DEFAULT 0,last_used_at timestamptz);
     CREATE TABLE sutra_auto_memory(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid,memory_type text,content text,importance numeric,related_video_id uuid);`)
   await sql(table(setupSchema, 'videos'))
+  await sql(table(setupSchema, 'activity_logs'))
   for (const name of ['sutra_auto_videos', 'sutra_auto_config']) await sql(table(source('migrations/sutra_auto.sql'), name))
   for (const name of ['20261006_auto_occurrence_integrity.sql', 'v10_durable_jobs_quota.sql', 'v11_pipeline_checkpoints.sql', '20261015_final_durable_integrity.sql']) await sql(source('migrations/' + name))
   await sql('INSERT INTO auth.users VALUES($1)', [user.id]); await sql('INSERT INTO profiles VALUES($1)', [user.id])
@@ -140,8 +141,9 @@ export async function startWire(user) {
         assert.equal((await sql('SELECT cancel_video_job($1) AS ok', [row.idempotency_key])).rows[0].ok, true); cleanupCancellations++
       }
       const counters = (await sql('SELECT reserved,completed,released FROM video_quota_counters')).rows
+      const activityLogs = (await sql('SELECT * FROM activity_logs ORDER BY created_at,id')).rows
       assert.ok(counters.every(row => row.reserved === 0))
-      writeFileSync(join(output, 'database.json'), JSON.stringify({ jobs, beforeCleanup, counters, cleanupCancellations, evidence }, null, 2) + '\n')
+      writeFileSync(join(output, 'database.json'), JSON.stringify({ jobs, beforeCleanup, counters, cleanupCancellations, activityLogs, evidence }, null, 2) + '\n')
       await pool.end()
     },
   }
