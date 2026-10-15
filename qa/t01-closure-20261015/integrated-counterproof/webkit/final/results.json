@@ -1,0 +1,185 @@
+{
+  "baseline": false,
+  "productionSuite": true,
+  "finalIntegrated": true,
+  "results": [
+    {
+      "name": "signup: inputs cannot lose text before client hydration",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: password visibility reachable by keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: password visibility reachable by keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: password visibility reachable by keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: password visibility reachable by keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "signup: confirmation and legal notice use a synthetic identity only",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "signup-375-double-submit",
+      "calls": 1,
+      "recoveryMs": 1179
+    },
+    {
+      "name": "signup-375-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/signup",
+      "width": 375,
+      "responseMs": 8,
+      "domContentLoadedMs": 27,
+      "resourceCount": 28,
+      "transferredBytes": 344080,
+      "decodedBytes": 1279281
+    },
+    {
+      "name": "signup-1440-double-submit",
+      "calls": 1,
+      "recoveryMs": 1666
+    },
+    {
+      "name": "signup-1440-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/signup",
+      "width": 1440,
+      "responseMs": 8,
+      "domContentLoadedMs": 26,
+      "resourceCount": 27,
+      "transferredBytes": 344080,
+      "decodedBytes": 1279281
+    },
+    {
+      "name": "login-375-double-submit",
+      "calls": 1,
+      "recoveryMs": 1171
+    },
+    {
+      "name": "login-375-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/login",
+      "width": 375,
+      "responseMs": 8,
+      "domContentLoadedMs": 27,
+      "resourceCount": 29,
+      "transferredBytes": 345572,
+      "decodedBytes": 1280753
+    },
+    {
+      "name": "login-1440-double-submit",
+      "calls": 1,
+      "recoveryMs": 1168
+    },
+    {
+      "name": "login-1440-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/login",
+      "width": 1440,
+      "responseMs": 6,
+      "domContentLoadedMs": 28,
+      "resourceCount": 29,
+      "transferredBytes": 345572,
+      "decodedBytes": 1280753
+    }
+  ],
+  "errors": [],
+  "unexpectedErrors": [],
+  "qualifiedEngineDiagnostics": [],
+  "blocked": [],
+  "mutations": [],
+  "readOnlyProbes": [],
+  "writes": [],
+  "acceptances": []
+}

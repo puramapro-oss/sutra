@@ -8,6 +8,7 @@ import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import { toast } from 'sonner'
 import { signupSchema } from '@/lib/validators'
 import { useAuth } from '@/hooks/useAuth'
+import { useHydrated } from '@/hooks/useHydrated'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import LegalAcceptanceNotice from '@/lib/legal/components/LegalAcceptanceNotice'
@@ -23,6 +24,7 @@ export default function SignupPage() {
 }
 
 function SignupContent() {
+  const hydrated = useHydrated()
   const { signUp, signInWithGoogle } = useAuth()
   const searchParams = useSearchParams()
   const refCode = searchParams.get('ref') ?? ''
@@ -151,7 +153,7 @@ function SignupContent() {
             className="w-full mb-6 px-4 text-sm sm:text-base"
             onClick={handleGoogle}
             loading={googleLoading}
-            disabled={loading}
+            disabled={loading || !hydrated}
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
               <path
@@ -188,6 +190,7 @@ function SignupContent() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               data-testid="name-input"
+              disabled={!hydrated}
               type="text"
               label="Prenom"
               value={name}
@@ -199,6 +202,7 @@ function SignupContent() {
 
             <Input
               data-testid="email-input"
+              disabled={!hydrated}
               type="email"
               label="Email"
               value={email}
@@ -210,6 +214,7 @@ function SignupContent() {
 
             <Input
               data-testid="password-input"
+              disabled={!hydrated}
               type={showPassword ? 'text' : 'password'}
               label="Mot de passe"
               value={password}

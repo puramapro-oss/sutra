@@ -88,11 +88,15 @@ export async function extraChecks({ page, context, base, fixture, output, check,
     await expect(page.getByTestId('create-button')).toBeEnabled()
     assert.equal(calls, 1)
   })
-  let polls = 0
-  await context.route('**/api/production', route => route.fulfill({ status: 202, json: { jobId: 'production-fixture', status: 'queued' } }))
-  await context.route('**/api/video/status/production-fixture', route => {
+  let polls = 0, submissions = 0
+  const productionJob = '66666666-6666-4666-8666-666666666666'
+  await context.route('**/api/production', route => {
+    assert.equal(route.request().method(), 'POST'); submissions++
+    return route.fulfill({ status: 202, json: { jobId: productionJob, status: 'queued' } })
+  })
+  await context.route(`**/api/video/status/${productionJob}`, route => {
     polls++
-    return route.fulfill({ json: polls === 1 ? { jobId: 'production-fixture', status: 'processing' } : { jobId: 'production-fixture', status: 'done', data: { title: 'Simulation locale', scenes: [{ voiceover: 'Résultat simulé', visual_prompt: 'Montagne', duration_seconds: 5 }] } } })
+    return route.fulfill({ json: polls === 1 ? { jobId: productionJob, status: 'processing' } : { jobId: productionJob, status: 'done', data: { title: 'Simulation locale', scenes: [{ voiceover: 'Résultat simulé', visual_prompt: 'Montagne', duration_seconds: 5 }] } } })
   })
   await check('queued production stays pending until simulated completion', async () => {
     await page.goto(base + '/production')
@@ -105,5 +109,9 @@ export async function extraChecks({ page, context, base, fixture, output, check,
     await expect(nav.locator('[aria-current=step]')).toHaveAccessibleName(/^2\./)
     await expect(nav.locator('[aria-current=step]')).toHaveAccessibleName(/^3\./, { timeout: 15000 })
     assert.equal(polls, 2)
+    assert.equal(submissions, 1, 'queued work never triggers a second generation')
+    await nav.getByRole('button').nth(1).click()
+    await expect(page.locator('main pre')).toContainText('Résultat simulé')
+    assert.equal(await page.evaluate(id => sessionStorage.getItem(`sutra:production-intent:v1:${id}`), fixture.user.id), null)
   })
 }

@@ -14,6 +14,23 @@ export async function finalChecks({ page, context, base, fixture, output, check,
     await new Promise(done => setTimeout(done, 350))
     await route.fulfill({ status: 400, json: { error: 'invalid_grant', error_description: 'Invalid login credentials', msg: 'Invalid login credentials' } })
   })
+  await check('signup: inputs cannot lose text before client hydration', async () => {
+    let release
+    const hydration = new Promise(done => { release = done })
+    const scriptPattern = url => url.origin === base && url.pathname.startsWith('/_next/static/') && url.pathname.endsWith('.js')
+    const holdScript = async route => { await hydration; await route.continue() }
+    await context.route(scriptPattern, holdScript)
+    try {
+      await page.goto(base + '/signup', { waitUntil: 'commit' })
+      for (const id of ['name-input', 'email-input', 'password-input', 'signup-button', 'google-button']) {
+        await expect(page.getByTestId(id)).toBeVisible()
+        await expect(page.getByTestId(id)).toBeDisabled()
+      }
+      release()
+      await expect(page.getByTestId('name-input')).toBeEnabled()
+      await expect(page.getByTestId('signup-button')).toBeEnabled()
+    } finally { release(); await context.unroute(scriptPattern, holdScript) }
+  })
   for (const path of ['signup', 'login']) {
     for (const width of [375, 1440]) {
       await page.setViewportSize({ width, height: 900 })
@@ -86,10 +103,25 @@ export async function finalChecks({ page, context, base, fixture, output, check,
     await page.getByTestId('email-input').fill('ux-test@example.invalid')
     await page.getByTestId('password-input').fill('Fixture-pass-123!')
     await expect(page.getByRole('link', { name: 'CGU', exact: true })).toHaveAttribute('href', '/cgu')
+    await expect(page.getByTestId('name-input')).toHaveValue('Test UX')
+    await expect(page.getByTestId('email-input')).toHaveValue('ux-test@example.invalid')
+    const before = authCalls.length
+    let submittedName, submittedEmail
+    const captureSignup = request => {
+      if (new URL(request.url()).pathname === '/auth/v1/signup') {
+        const payload = request.postDataJSON()
+        submittedName = payload.data?.name; submittedEmail = payload.email
+      }
+    }
+    page.on('request', captureSignup)
     mode = 'success'
     await page.getByTestId('signup-button').click()
     await expect(page.getByRole('heading', { name: 'Verifie ton email' })).toBeVisible()
     await expect(page.getByText('ux-test@example.invalid', { exact: true })).toBeVisible()
+    page.off('request', captureSignup)
+    assert.equal(authCalls.length - before, 1)
+    assert.equal(submittedName, 'Test UX')
+    assert.equal(submittedEmail, 'ux-test@example.invalid')
     await page.getByRole('link', { name: 'Retour a la connexion' }).click()
     await expect(page.getByTestId('login-button')).toBeVisible()
     // An unconfirmed identity cannot gain access through this test.

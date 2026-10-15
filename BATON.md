@@ -366,3 +366,7 @@ Base integration d5d49a458e9e630ffbc1a433a7693a8cecd7dad5, produit c7a7ebd ; run
 ## Clôture T01 — 2026-10-15, candidat intégré après d5d49a4
 
 T02 e63aedd, T04 7176c72, T07 483d1973 reçus FIN_ECRITURE et importés à blobs exacts (60/28/135 fichiers; append propriétaires préservés au commit original). Auto/config refuse authError et expurge erreurs22tests; GET production de réconciliation29tests/57avec régressions PASS. UI cancel jamais rejoue de génération après intention; campagne CI exacte à venir, aucune promotion encore. Manifest réactualisé; nouvelles preuves qa/t01-closure-20261015. Backup18:10UTC/restauration141tables et3migrations copie privée PASS, validité22:10UTC. R30 autonome et create cancel non livrés, Salad saisie requise etOFF. Aucun paid/publication.
+
+## T01 2026-10-15T19:55:14.965312+00:00 — contre-epreuve corrigee
+
+Trois causes CI479 corrigees, seul produit modifie signup/useHydrated; fixtures Salad pre-execution et job UUID conformes. Archive optimisee sans secrets, commande `node qa/t01-closure-20261015/integrated-counterproof.mjs --final-integrated`: six familles/176PASS/0FAIL/0SKIP. Reproduction avant produit44PASS2FAIL preservee. TypeScript/lint/gitleaksPASS; manifeste1095 et7WIP etrangers conformes. GitNexus detect_changes execute, CRITICAL/partiel365flux melanges; revue directe bornee, pas certification exhaustive. Nouveau SHA et CI/T08 requis; production86d04c8 inchangee, aucune DDL ni promotion encore.

@@ -54,7 +54,7 @@ export async function journeyChecks({ page, context, base, fixture, output, chec
   await context.route('**/api/production', async route => {
     productionCalls.push(route.request().postDataJSON())
     await new Promise(done => setTimeout(done, 250))
-    await route.fulfill({ status: 503, json: { error: 'SALAD_WORKER_DISABLED' } })
+    await route.fulfill({ status: 503, json: { error: 'SALAD_WORKER_DISABLED', code: 'SALAD_UNAVAILABLE' } })
   })
   await context.route('**/api/video/export', async route => {
     exportCalls.push(route.request().postDataJSON())
@@ -93,7 +93,10 @@ export async function journeyChecks({ page, context, base, fixture, output, chec
       await page.getByTestId('production-idea').fill('Montage fictif')
       const before = productionCalls.length, submit = page.getByTestId('generate-all')
       await submit.evaluate(b => { b.click(); b.click() })
-      await expect(page.getByText('Mode personnel distant indisponible', { exact: true })).toBeVisible()
+      await expect(page.getByText('GPU distant indisponible. Aucun repli API payant.', { exact: true })).toBeVisible()
+      await expect(page.getByText('SALAD_WORKER_DISABLED', { exact: true })).toHaveCount(0)
+      await expect(page.getByTestId('production-resume')).toHaveCount(0)
+      assert.equal(await page.evaluate(id => sessionStorage.getItem(`sutra:production-intent:v1:${id}`), fixture.user.id), null)
       await expect(submit).toBeEnabled()
       assert.equal(productionCalls.length - before, 1)
     })
