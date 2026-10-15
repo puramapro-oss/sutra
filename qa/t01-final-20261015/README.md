@@ -1,5 +1,7 @@
 # SUTRA — livraison T01 du 15 octobre 2026
 
+> Rapport historique d21 conservé. **État courant du candidat c7 et CI verte : [consolidation T01](../t01-promotion-20261015/README.md)**. Les états et compteurs ci-dessous concernent d21, pas une promotion c7.
+
 ## Versions et verdict
 
 - Candidat exact en recette : `d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2`, branche `codex/sutra-final-providers-20261013`, poussé.

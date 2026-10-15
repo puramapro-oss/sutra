@@ -347,3 +347,14 @@ T02 8c41629, T03 6fe4085, T04 db93ef0, T05 f0bb470, T06 3edae7a, T07 cbcf174, T0
 ## T01 — 2026-10-15, barriere sociale et nouveau candidat
 
 Base 72f406b : CI 38745298450 conservee FAIL (283 PASS / 1 FAIL navigateur, 20 familles). Correction bornee au harnais social : attendre GET notifications fixture document courant, corps termine avant navigation. Aucun filtre runtime ni produit modifie. Contre-tests 18 PASS, vrai CORS/JS toujours bloquant ; parcours production isole social Chromium+WebKit 20 PASS / 0 FAIL, build unique sans secrets. Preuves qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/. Recette T08 99ad7a5 importe 60 fichiers exacts, 112 tests inchanges reutilises. Nouveau SHA/CI exact requis avant migrations/deploiement ; production demeure 86d04c85. Pilotes operationnels observer lecture seule, probes GET fournisseurs et navigateur public prepares, non executes.
+
+
+## T01 — 2026-10-15T15:02:31.852012+00:00 — consolidation c7 et CI exacte verte
+
+Candidat **c7a7ebd876d36c521b1c30f6d487b7bb07f000a8**, CI **38750974353 SUCCESS** : quality/contracts/disposable-database PASS. Rapport courant : [consolidation finale](qa/t01-promotion-20261015/README.md). Commandes et reçus exacts ci-c7a7ebd-completed/quality/database/contract-counts.json. TypeScript/lint/build PASS ; contrats990PASS/0FAIL/7SKIP historiques ; legacy1022PASS/0FAIL/25SKIP historiques ;20familles navigateur PASS. Compteurs recouvrants non additionnés. Audit production seuil high PASS,2low/5moderate conservés. Aucune exclusion nouvelle.
+
+Sept livraisons intégrées et WIP préservés ;1074fichiers manifeste et7empreintes étrangères inchangés. Dernière recette T08 indépendante99ad7a5 :112PASS sur parent72f, pas encore de certification différentielle c7. Nouveau SHA et CI verte transmis au handoff commun ; contrôle automatique Terminal refusé par outil, relais demandé. **INTEGRE / TESTE / PROMOTION BLOQUEE PAR ACK T08 EXACT ABSENT**. Aucune nouvelle autorisation de déployer demandée et aucun ACK inventé.
+
+OVH reste **86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164**, https://sutra.purama.dev, healthy/zéro restart au contrôle14:50UTC ; accueil/login200 TLS vérifié. Image candidate c7 isolée construite et arrêtée,5smokes/FFmpeg PASS. Trois migrations prêtes, non appliquées ; snapshot13:21UTC,141tables restauration/comptages PASS, gate fraîcheur jusqu'à17:21UTC. Aucun changement runtime, cron/observer ou DDL de ce lot. Commandes apply/deploy/rollback conditionnelles dans le rapport. Après ACK exact : vérifier fraîcheur backup et état attendu avant suite séquentielle ; ne pas répéter les suites vertes inchangées.
+
+R30 ordonnanceur autonome et R74 annulation UI durable restent absents. Salad désactivé, clé master malformée au dernier contrôleT04/org-projet absents ; aucune dépense/GPU/publication. Consentements personnels, génération réelle, appareils physiques/SLA/DR complet restent non testés. Aucun terminal fermé.

@@ -1,0 +1,863 @@
+{
+  "source": "c7a7ebd876d36c521b1c30f6d487b7bb07f000a8",
+  "run": "38750974353",
+  "status": "PASS",
+  "groupsOverlap": true,
+  "quality": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 15749
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "."
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 24778
+    },
+    {
+      "name": "build",
+      "command": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build",
+        "--webpack"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 76668
+    }
+  ],
+  "nativeGuard": {
+    "tests": 90,
+    "pass": 90,
+    "fail": 0,
+    "skip": 0
+  },
+  "browserRedteam": {
+    "checks": 210,
+    "browserErrors": 0,
+    "axeAnalyses": 165
+  },
+  "library": {
+    "assertions": 25,
+    "errors": 0,
+    "violations": 13,
+    "unexpectedMutations": 0
+  },
+  "integratedBrowser": {
+    "productionSuite": true,
+    "finalIntegrated": true,
+    "singleBuild": true,
+    "nativeSafari": false,
+    "summaries": [
+      {
+        "engine": "chromium",
+        "options": [
+          "--final"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/final",
+        "pass": 22,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--social"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/social",
+        "pass": 10,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--planning"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/planning",
+        "pass": 9,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--legal"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/legal",
+        "pass": 15,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--journeys"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/journey",
+        "pass": 34,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--journeys",
+          "--private-download"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/private-download",
+        "pass": 9,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--extra"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/extra",
+        "pass": 31,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--editor"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/editor",
+        "pass": 5,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--visual"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/visual",
+        "pass": 3,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--navigation"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/chromium/navigation",
+        "pass": 4,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--final"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/final",
+        "pass": 22,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--social"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/social",
+        "pass": 10,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--planning"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/planning",
+        "pass": 9,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--legal"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/legal",
+        "pass": 15,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--journeys"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/journey",
+        "pass": 34,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--journeys",
+          "--private-download"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/private-download",
+        "pass": 9,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--extra"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/extra",
+        "pass": 31,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--editor"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/editor",
+        "pass": 5,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--visual"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/visual",
+        "pass": 3,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--navigation"
+        ],
+        "output": "/home/runner/work/sutra/sutra/qa/t01-final-20261015/browser-final/webkit/navigation",
+        "pass": 4,
+        "fail": 0
+      }
+    ]
+  },
+  "integratedBrowserEvidence": [
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/editor/results.json",
+      "sha256": "f4fb3674a1ba10ab93b91bf184182a84c03aeabee4b897f343293d73b9bf71c9",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/extra/results.json",
+      "sha256": "e58e0c6f5ff063fb210ba468fa79e065f46bfe7b9128a3972c664b9e53d5b300",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/final/results.json",
+      "sha256": "161f8e293ba5d1754e2a6336ff0f623e0bb0c1342d46fd1081aaaab2ad9c41ed",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/journey/results.json",
+      "sha256": "a8a07b4a46ad667250438f891dff757d0e0f07c72df2773ce5770aeb0d9faf58",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/legal/results.json",
+      "sha256": "15fb65fb8ecb1c32bcdb45627ff4173667f4d639b84c7d610c334fe355892ae1",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/navigation/results.json",
+      "sha256": "07d1adb7563f953e933eca03a303c9de854700c1ff8138b7062977c44a5ccb46",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/planning/results.json",
+      "sha256": "5a94550ab199396be102c5609b1c7644c9b3f28dd8eedd83ecf25fe758d9a605",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/private-download/results.json",
+      "sha256": "f93eb99fc9de53287a5a65c0a6bfca173d5ea76f43f213845e0f218bd33eb36f",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/social/results.json",
+      "sha256": "a324504491bee935bd63275f79bd51ad609267ca47af3aa69e10d6843d2eb329",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/chromium/visual/results.json",
+      "sha256": "0e87e30247960c6a3c6f7c24be61f6255f73c9a18ec0cb221766b91b3fe5a42f",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/editor/results.json",
+      "sha256": "f4fb3674a1ba10ab93b91bf184182a84c03aeabee4b897f343293d73b9bf71c9",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/extra/results.json",
+      "sha256": "15c531713e91506158e8a3a7fd3ed02a8ca39cb427ec691c497ac77abeeaa915",
+      "rawBrowserErrors": 15,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 15
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/final/results.json",
+      "sha256": "975b98e5d2544ebc59948054bd2a63dd5aea59e195943e6d518a652b03c4f2fa",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/journey/results.json",
+      "sha256": "88e37aa50d36f4502dd781c3d5eba9d3845ecf3762ba77ec2fc2205770aff74c",
+      "rawBrowserErrors": 114,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 114
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/legal/results.json",
+      "sha256": "564b8c4b4d11d7b2c371d9bf9e1734e3560f07c6c3ccd5e7f9b2e91bc8fec456",
+      "rawBrowserErrors": 16,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 16
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/navigation/results.json",
+      "sha256": "2a9803f9ab88068188c23da35d47e91d90f586b5094eaa122e2af05a694dc7a1",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/planning/results.json",
+      "sha256": "33d7ff717c0fda6e85ff9f6039d86a0bd686e77a3950cfefbbd627db3270162b",
+      "rawBrowserErrors": 21,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 21
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/private-download/results.json",
+      "sha256": "4c8b6898b0434e68ff7b50e9954e857476a7daeb19d1a5b6464deef247796595",
+      "rawBrowserErrors": 12,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 12
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/social/results.json",
+      "sha256": "8abd9e4b0dac9d0b201b9e19e69815498914ea7b74bec5ce6a01cba615fd5ef9",
+      "rawBrowserErrors": 48,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 48
+    },
+    {
+      "file": "qa/t01-final-20261015/browser-final/webkit/visual/results.json",
+      "sha256": "0e87e30247960c6a3c6f7c24be61f6255f73c9a18ec0cb221766b91b3fe5a42f",
+      "rawBrowserErrors": 0,
+      "unexpectedErrors": 0,
+      "qualifiedEngineDiagnostics": 0
+    }
+  ],
+  "legacy": {
+    "stats": {
+      "startTime": "2026-10-15T14:45:31.605Z",
+      "duration": 495211.706,
+      "expected": 1022,
+      "skipped": 25,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": [],
+    "skips": [
+      {
+        "file": "media-mode.spec.ts",
+        "line": 15,
+        "title": "media-mode.spec.ts / Media Mode (stock footage) / mediaMode cards visible on /create (auto mode)",
+        "project": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/media-mode.spec.ts",
+              "line": 25,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "media-mode.spec.ts",
+        "line": 32,
+        "title": "media-mode.spec.ts / Media Mode (stock footage) / selecting each mediaMode toggles selected state",
+        "project": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/media-mode.spec.ts",
+              "line": 40,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "media-mode.spec.ts",
+        "line": 15,
+        "title": "media-mode.spec.ts / Media Mode (stock footage) / mediaMode cards visible on /create (auto mode)",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/media-mode.spec.ts",
+              "line": 25,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "media-mode.spec.ts",
+        "line": 32,
+        "title": "media-mode.spec.ts / Media Mode (stock footage) / selecting each mediaMode toggles selected state",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/media-mode.spec.ts",
+              "line": 40,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "media-mode.spec.ts",
+        "line": 15,
+        "title": "media-mode.spec.ts / Media Mode (stock footage) / mediaMode cards visible on /create (auto mode)",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/media-mode.spec.ts",
+              "line": 25,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "media-mode.spec.ts",
+        "line": 32,
+        "title": "media-mode.spec.ts / Media Mode (stock footage) / selecting each mediaMode toggles selected state",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/media-mode.spec.ts",
+              "line": 40,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 56,
+        "title": "spiritual-pages.spec.ts / /aide \u2014 Help center / aide page has escalade section",
+        "project": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 56,
+              "column": 8
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 72,
+        "title": "spiritual-pages.spec.ts / /aide \u2014 Help center / aide escalade form reveals on click",
+        "project": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 72,
+              "column": 8
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 80,
+        "title": "spiritual-pages.spec.ts / /aide \u2014 Help center / aide is accessible on mobile",
+        "project": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Mobile only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 81,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 56,
+        "title": "spiritual-pages.spec.ts / /aide \u2014 Help center / aide page has escalade section",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 56,
+              "column": 8
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 72,
+        "title": "spiritual-pages.spec.ts / /aide \u2014 Help center / aide escalade form reveals on click",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 72,
+              "column": 8
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 80,
+        "title": "spiritual-pages.spec.ts / /aide \u2014 Help center / aide is accessible on mobile",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Mobile only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 81,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 56,
+        "title": "spiritual-pages.spec.ts / /aide \u2014 Help center / aide page has escalade section",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 56,
+              "column": 8
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 72,
+        "title": "spiritual-pages.spec.ts / /aide \u2014 Help center / aide escalade form reveals on click",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 72,
+              "column": 8
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 95,
+        "title": "spiritual-pages.spec.ts / API /api/gratitude / returns 401 without auth",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 96,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 101,
+        "title": "spiritual-pages.spec.ts / API /api/gratitude / POST returns 401 without auth",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 102,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 95,
+        "title": "spiritual-pages.spec.ts / API /api/gratitude / returns 401 without auth",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 96,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 101,
+        "title": "spiritual-pages.spec.ts / API /api/gratitude / POST returns 401 without auth",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 102,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "spiritual-pages.spec.ts",
+        "line": 114,
+        "title": "spiritual-pages.spec.ts / Sidebar \u2014 Breathe & Gratitude links / sidebar has breathe link (desktop)",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Desktop only",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/spiritual-pages.spec.ts",
+              "line": 115,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "v3-features.spec.ts",
+        "line": 28,
+        "title": "v3-features.spec.ts / V3 Features \u2014 /financer / financer API responds",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/v3-features.spec.ts",
+              "line": 29,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "v3-features.spec.ts",
+        "line": 28,
+        "title": "v3-features.spec.ts / V3 Features \u2014 /financer / financer API responds",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/v3-features.spec.ts",
+              "line": 29,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "v3-features.spec.ts",
+        "line": 85,
+        "title": "v3-features.spec.ts / V3 Features \u2014 Locale API / locale API sets cookie",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/v3-features.spec.ts",
+              "line": 86,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "v3-features.spec.ts",
+        "line": 95,
+        "title": "v3-features.spec.ts / V3 Features \u2014 Locale API / locale API rejects invalid locale",
+        "project": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/v3-features.spec.ts",
+              "line": 96,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "v3-features.spec.ts",
+        "line": 85,
+        "title": "v3-features.spec.ts / V3 Features \u2014 Locale API / locale API sets cookie",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/v3-features.spec.ts",
+              "line": 86,
+              "column": 10
+            }
+          }
+        ]
+      },
+      {
+        "file": "v3-features.spec.ts",
+        "line": 95,
+        "title": "v3-features.spec.ts / V3 Features \u2014 Locale API / locale API rejects invalid locale",
+        "project": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "location": {
+              "file": "/home/runner/work/sutra/sutra/e2e/v3-features.spec.ts",
+              "line": 96,
+              "column": 10
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "pythonSuites": [
+    {
+      "command": "python3 -m unittest discover -s deploy -p test_*.py",
+      "pass": 77,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "python3 -m unittest discover -s qa/t01-consolidation-20261014 -p test_*.py",
+      "pass": 25,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "python3 qa/t01-final-20261015/social-history-transition-test.py",
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "Exact candidate promotion and rollback simulations (inline workflow)",
+      "pass": 8,
+      "fail": 0,
+      "skip": 0
+    }
+  ],
+  "audit": {
+    "command": "npm audit --omit=dev --audit-level=high",
+    "status": "PASS_AT_HIGH_THRESHOLD",
+    "low": 2,
+    "moderate": 5,
+    "high": 0,
+    "critical": 0
+  },
+  "logSha256": "fe270e9148843d94900cd26680501f677733291ee6788f7d6263114e80335d1f"
+}
