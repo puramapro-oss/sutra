@@ -16,7 +16,8 @@ test('WAN preserves landscape, portrait and square formats', () => {
 
 test('Pexels uses the current video endpoint and keeps provenance', () => {
   const source = read('src/lib/pexels.ts')
-  assert.match(source, /api\.pexels\.com\/v1\/videos\/search/)
+  assert.match(source, /https:\/\/api\.pexels\.com\/\$\{path\}/)
+  assert.match(source, /pexelsData\('v1\/videos\/search', params, apiKey\)/)
   assert.match(source, /sourcePage:/)
   assert.match(source, /authorUrl:/)
 })
