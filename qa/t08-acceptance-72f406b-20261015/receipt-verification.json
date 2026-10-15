@@ -1,0 +1,79 @@
+{
+  "candidate": "72f406b940b7e3cdfb27873751a4059375646f25",
+  "observedAt": "2026-10-15T14:03:58.684463+00:00",
+  "command": "python3 qa/t08-acceptance-72f406b-20261015/verify_receipts.py",
+  "counts": {
+    "PASS": 15
+  },
+  "notFunctionalTestCount": true,
+  "checks": [
+    {
+      "check": "snapshotted receipt qa/t01-promotion-20261015/backup-restore.json",
+      "status": "PASS"
+    },
+    {
+      "check": "snapshotted receipt qa/t01-promotion-20261015/scheduler-inventory.json",
+      "status": "PASS"
+    },
+    {
+      "check": "snapshotted receipt qa/t01-promotion-20261015/scheduler-plan.json",
+      "status": "PASS"
+    },
+    {
+      "check": "snapshotted receipt qa/t01-final-20261015/checkpoint-restore.json",
+      "status": "PASS"
+    },
+    {
+      "check": "snapshotted receipt qa/t01-final-20261015/client-permissions-restore.json",
+      "status": "PASS"
+    },
+    {
+      "check": "snapshotted receipt qa/t01-final-20261015/social-history-restore.json",
+      "status": "PASS"
+    },
+    {
+      "check": "snapshotted receipt qa/t01-final-20261015/candidate.json",
+      "status": "PASS"
+    },
+    {
+      "check": "exact migration, private replay and rollback checkpoint-restore",
+      "status": "PASS"
+    },
+    {
+      "check": "exact migration, private replay and rollback client-permissions-restore",
+      "status": "PASS"
+    },
+    {
+      "check": "exact migration, private replay and rollback social-history-restore",
+      "status": "PASS"
+    },
+    {
+      "check": "bounded restore141 receipt",
+      "status": "PASS"
+    },
+    {
+      "check": "backup receipt under4h at this snapshot",
+      "status": "PASS"
+    },
+    {
+      "check": "exact isolated OVH image receipt with five smokes and FFmpeg",
+      "status": "PASS"
+    },
+    {
+      "check": "scheduler remains explicitly inactive in current receipt",
+      "status": "PASS"
+    },
+    {
+      "check": "observer plan is not a dispatch executor",
+      "status": "PASS"
+    }
+  ],
+  "backupAgeHours": 0.71,
+  "runtimeAtReceipt": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+  "limits": [
+    "Owner T01 executed remote read-only/copy checks; T08 verifies receipts only.",
+    "Auth IDs only and blobs not atomically frozen; no complete backup certification.",
+    "Scheduler inactivity is confirmed as a blocker, not a feature PASS.",
+    "No production deployment, DDL or rollback is executed or authorized by this verification."
+  ]
+}

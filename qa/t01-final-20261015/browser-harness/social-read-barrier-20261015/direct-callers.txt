@@ -1,0 +1,7 @@
+qa/t07-final-ux-perf-20261015/run.mjs:51:async function runScenario(options, scenarioOutput) {
+qa/t07-final-ux-perf-20261015/run.mjs:93:  if (options.includes('--social')) fixtureReadSnapshot = installFixtureReadBarrier(page, { appOrigin: base, fixtureOrigin: fixture.url, userId: fixture.user.id })
+qa/t07-final-ux-perf-20261015/run.mjs:147:      for (const [name, options] of cases) await runScenario(options, resolve(output, browserName, name))
+qa/t07-final-ux-perf-20261015/run.mjs:155:    await runScenario(process.argv, output)
+qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs:4:export function installFixtureReadBarrier(page, { appOrigin, fixtureOrigin, userId, timeout = 15000 }) {
+qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs:34:  const snapshot = installFixtureReadBarrier(page, { appOrigin, fixtureOrigin, userId, timeout: 40 })
+qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs:118:      const reads = barrier ? installFixtureReadBarrier(page, { appOrigin: origin, fixtureOrigin: fixture, userId, timeout: 1500 }) : null

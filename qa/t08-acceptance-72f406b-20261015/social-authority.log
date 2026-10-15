@@ -1,0 +1,103 @@
+TAP version 13
+# (node:29776) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:29776) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06 FINAL callback rejects profile reassigned while provider GET is pending
+ok 1 - T06 FINAL callback rejects profile reassigned while provider GET is pending
+  ---
+  duration_ms: 5.634417
+  type: 'test'
+  ...
+# Subtest: T06 FINAL callback rejects profile removed while provider GET is pending
+ok 2 - T06 FINAL callback rejects profile removed while provider GET is pending
+  ---
+  duration_ms: 0.873666
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on reassigned but retains local fence
+ok 3 - T06 FINAL revoke blocks remote DELETE on reassigned but retains local fence
+  ---
+  duration_ms: 1.61725
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on removed but retains local fence
+ok 4 - T06 FINAL revoke blocks remote DELETE on removed but retains local fence
+  ---
+  duration_ms: 0.956792
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on invalid-binding but retains local fence
+ok 5 - T06 FINAL revoke blocks remote DELETE on invalid-binding but retains local fence
+  ---
+  duration_ms: 0.712584
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on missing-provenance but retains local fence
+ok 6 - T06 FINAL revoke blocks remote DELETE on missing-provenance but retains local fence
+  ---
+  duration_ms: 0.563792
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on foreign-profile but retains local fence
+ok 7 - T06 FINAL revoke blocks remote DELETE on foreign-profile but retains local fence
+  ---
+  duration_ms: 0.496333
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on foreign-custodian but retains local fence
+ok 8 - T06 FINAL revoke blocks remote DELETE on foreign-custodian but retains local fence
+  ---
+  duration_ms: 0.451292
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on after-claim but retains local fence
+ok 9 - T06 FINAL revoke blocks remote DELETE on after-claim but retains local fence
+  ---
+  duration_ms: 0.566083
+  type: 'test'
+  ...
+# Subtest: T06 FINAL unchanged tenant can connect, revoke and personally reconnect
+ok 10 - T06 FINAL unchanged tenant can connect, revoke and personally reconnect
+  ---
+  duration_ms: 0.862667
+  type: 'test'
+  ...
+# Subtest: T06 FINAL provider refusal keeps revocation fenced and does not repeat DELETE
+ok 11 - T06 FINAL provider refusal keeps revocation fenced and does not repeat DELETE
+  ---
+  duration_ms: 0.470667
+  type: 'test'
+  ...
+# Subtest: T06 FINAL confirmed revocation is idempotent without a second remote DELETE
+ok 12 - T06 FINAL confirmed revocation is idempotent without a second remote DELETE
+  ---
+  duration_ms: 0.491667
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke erases legacy token fields (already confirmed=false)
+ok 13 - T06 FINAL revoke erases legacy token fields (already confirmed=false)
+  ---
+  duration_ms: 0.38975
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke erases legacy token fields (already confirmed=true)
+ok 14 - T06 FINAL revoke erases legacy token fields (already confirmed=true)
+  ---
+  duration_ms: 0.445541
+  type: 'test'
+  ...
+# Subtest: T06 FINAL pending revocation clears legacy credentials without retrying the provider
+ok 15 - T06 FINAL pending revocation clears legacy credentials without retrying the provider
+  ---
+  duration_ms: 0.410583
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 177.882666

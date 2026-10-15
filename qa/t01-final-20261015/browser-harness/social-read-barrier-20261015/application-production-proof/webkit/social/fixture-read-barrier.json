@@ -1,0 +1,153 @@
+{
+  "documents": [
+    {
+      "id": 1,
+      "url": "https://127.0.0.1:52868/login?next=/library",
+      "reads": []
+    },
+    {
+      "id": 2,
+      "url": "https://127.0.0.1:52868/login?next=/library",
+      "reads": []
+    },
+    {
+      "id": 3,
+      "url": "https://127.0.0.1:52868/library",
+      "reads": [
+        {
+          "url": "https://127.0.0.1:52867/rest/v1/user_notifications?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&limit=10",
+          "method": "GET",
+          "startedAt": 1792073888709,
+          "state": "finished",
+          "status": 200,
+          "finishedAt": 1792073888723
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": []
+    },
+    {
+      "id": 5,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": [
+        {
+          "url": "https://127.0.0.1:52867/rest/v1/user_notifications?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&limit=10",
+          "method": "GET",
+          "startedAt": 1792073890307,
+          "state": "finished",
+          "status": 200,
+          "finishedAt": 1792073890313
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": []
+    },
+    {
+      "id": 7,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": [
+        {
+          "url": "https://127.0.0.1:52867/rest/v1/user_notifications?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&limit=10",
+          "method": "GET",
+          "startedAt": 1792073890596,
+          "state": "finished",
+          "status": 200,
+          "finishedAt": 1792073890599
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": []
+    },
+    {
+      "id": 9,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": [
+        {
+          "url": "https://127.0.0.1:52867/rest/v1/user_notifications?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&limit=10",
+          "method": "GET",
+          "startedAt": 1792073890995,
+          "state": "finished",
+          "status": 200,
+          "finishedAt": 1792073890998
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": []
+    },
+    {
+      "id": 11,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": [
+        {
+          "url": "https://127.0.0.1:52867/rest/v1/user_notifications?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&limit=10",
+          "method": "GET",
+          "startedAt": 1792073892038,
+          "state": "finished",
+          "status": 200,
+          "finishedAt": 1792073892040
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": []
+    },
+    {
+      "id": 13,
+      "url": "https://127.0.0.1:52868/settings/social",
+      "reads": [
+        {
+          "url": "https://127.0.0.1:52867/rest/v1/user_notifications?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&limit=10",
+          "method": "GET",
+          "startedAt": 1792073892221,
+          "state": "finished",
+          "status": 200,
+          "finishedAt": 1792073892223
+        }
+      ]
+    }
+  ],
+  "waits": [
+    {
+      "document": 5,
+      "from": "https://127.0.0.1:52868/settings/social",
+      "startedAt": 1792073890499,
+      "status": "PASS",
+      "finishedAt": 1792073890505
+    },
+    {
+      "document": 7,
+      "from": "https://127.0.0.1:52868/settings/social",
+      "startedAt": 1792073890897,
+      "status": "PASS",
+      "finishedAt": 1792073890897
+    },
+    {
+      "document": 9,
+      "from": "https://127.0.0.1:52868/settings/social",
+      "startedAt": 1792073891951,
+      "status": "PASS",
+      "finishedAt": 1792073891952
+    },
+    {
+      "document": 11,
+      "from": "https://127.0.0.1:52868/settings/social",
+      "startedAt": 1792073892126,
+      "status": "PASS",
+      "finishedAt": 1792073892129
+    }
+  ]
+}

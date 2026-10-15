@@ -1,6 +1,7 @@
 // Local application, synthetic identity, genuine legal route, loopback database fixture.
 import { nativeRuntimeControls } from '../t01-final-20261015/browser-harness/native-controls.mjs'
 import { observeRuntimeErrors } from '../t01-final-20261015/browser-harness/runtime-guard.mjs'
+import { installFixtureReadBarrier } from '../t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs'
 import { finalChecks } from './checks.mjs'
 import { socialChecks } from './social-checks.mjs'
 import { extraChecks } from './extra-checks.mjs'
@@ -53,7 +54,7 @@ async function runScenario(options, scenarioOutput) {
   const privateDownload = options.includes('--private-download')
   await mkdir(output, { recursive: true })
   const results = [], blocked = [], mutations = [], readOnlyProbes = [], details = []
-  let context, page, navigationSnapshot, runtimeSnapshot
+  let context, page, navigationSnapshot, runtimeSnapshot, fixtureReadSnapshot
   async function check(name, run) {
     try { await run(); results.push({ name, status: 'PASS' }); process.stdout.write(`PASS ${name}\n`) }
     catch (error) {
@@ -89,6 +90,7 @@ async function runScenario(options, scenarioOutput) {
   navigationSnapshot = observeNavigation(page)
   page.setDefaultTimeout(15000)
   runtimeSnapshot = await observeRuntimeErrors(page, { engine: browser.browserType().name(), nativeControl: engineControl, fixtureOrigin: fixture.url })
+  if (options.includes('--social')) fixtureReadSnapshot = installFixtureReadBarrier(page, { appOrigin: base, fixtureOrigin: fixture.url, userId: fixture.user.id })
   if (options.includes('--visual')) await visualChecks({ page, context, base, fixture, output, check, details })
   else if (options.includes('--navigation')) await navigationChecks({ page, context, base, fixture, output, check, details, runtimeSnapshot })
   else if (options.includes('--editor')) await editorChecks({ page, context, base, fixture, output, check, details })
@@ -107,6 +109,7 @@ async function runScenario(options, scenarioOutput) {
     if (page) await page.screenshot({ path: resolve(output, 'diagnostic.png'), fullPage: true }).catch(() => {})
   } finally {
     if (navigationSnapshot) await writeFile(resolve(output, 'navigation.json'), JSON.stringify(navigationSnapshot(), null, 2) + '\n')
+    if (fixtureReadSnapshot) await writeFile(resolve(output, 'fixture-read-barrier.json'), JSON.stringify(fixtureReadSnapshot(), null, 2) + '\n')
     const runtime = runtimeSnapshot?.() ?? { errors: [], unexpected: [], qualified: [] }
     if (runtimeSnapshot) await writeFile(resolve(output, 'runtime-errors.json'), JSON.stringify(runtime, null, 2) + '\n')
     await context?.close()

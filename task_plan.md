@@ -541,3 +541,8 @@ Sept livraisons intégrées/préservées, neuf worktrees auteurs/historiques pro
 ## 2026-10-15T13:41:52.661088+00:00 — Integration des quatre corrections finales
 
 T02 8c41629, T03 6fe4085, T04 db93ef0, T05 f0bb470, T06 3edae7a, T07 cbcf174, T08 8842667 verifies, bases et hashes dans qa/t01-promotion-20261015/deliveries*.json. Aucun merge aveugle ni ecrasement des journaux/WIP. Correctifs produit: diagnostics RPC allowlist, CAS revocation apres trigger timestamp, legacy Zernio sans revision; borne GET/HEAD du harnais. Integration ciblee: production19PASS, routes+PG9PASS, TS/lintPASS; SQL27PASS et harnais78PASS auteurs. Trois repetitions migration/rollback sur copie OVH PASS, sauvegarde141tables13:21UTC. Aucun changement production; SHA live86d04c8. Nouveau candidat/CI/T08 requis. Salad bloque acces, GPU et dispatch payant/publication desactives.
+
+
+## T01 — 2026-10-15, barriere sociale et nouveau candidat
+
+Base 72f406b : CI 38745298450 conservee FAIL (283 PASS / 1 FAIL navigateur, 20 familles). Correction bornee au harnais social : attendre GET notifications fixture document courant, corps termine avant navigation. Aucun filtre runtime ni produit modifie. Contre-tests 18 PASS, vrai CORS/JS toujours bloquant ; parcours production isole social Chromium+WebKit 20 PASS / 0 FAIL, build unique sans secrets. Preuves qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/. Recette T08 99ad7a5 importe 60 fichiers exacts, 112 tests inchanges reutilises. Nouveau SHA/CI exact requis avant migrations/deploiement ; production demeure 86d04c85. Pilotes operationnels observer lecture seule, probes GET fournisseurs et navigateur public prepares, non executes.
