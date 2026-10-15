@@ -63,3 +63,15 @@ Le controle natif courant ajoute maintenant une lecture ordinaire reussie et un 
 Commande `node --test qa/t01-final-20261015/browser-harness/guard.test.mjs` :45PASS/0FAIL/0SKIP (Mac), preuves `cross-origin-guard-tests.txt` et `cross-origin-guard-results-U1eleM`. Chromium/WebKit detectent le vrai refus CORS ; WebKit reproduit3diagnostics de teardown qualifiables. Lint cible PASS. Le prochain run Linux doit encore valider le candidat ; aucune requalification retroactive de la trace CIed12 et aucune declaration de cause applicative certaine.
 
 GitNexus impact observeRuntimeErrors/classifyRuntimeErrors/nativeRuntimeControls/runScenario : UNKNOWN, symboles absents de l'index ancien. Revue directe : appelants QA uniquement, aucun chemin produit modifie. Detect-changes obligatoire avant commit ; les limites du graphe restent explicites.
+
+## Correction ciblee CI a520114 — profil synthetique et HEAD
+
+CI38674263839 est FAIL : social WebKit9PASS/1FAIL et navigation WebKit3PASS/1FAIL; les18autres familles PASS. Legacy et simulations livraison ne sont pas executes apres cette erreur. Les recus historiques restent intacts.
+
+Le diagnostic de profil exact est reproduit sur HTML natif deux origines TLS, sans SUTRA : lecture CORS normale PASS,3diagnostics WebKit pendant teardown, vrai refus CORS detecte (profile-reproduction.json, classificateur a520114). La qualification ajoute uniquement GET /rest/v1/profiles avec select=* et identite fixe11111111-1111-4111-8111-111111111111. Elle exige son propre controle natif courant; origine fixture exacte et tous les gardes precedents restent requis. Autre identite, query, methode, preuve manquante ou erreur DOM restent bloquantes. Cette preuve synthetique ne certifie pas le CORS production; un refus CORS attrape pendant teardown n'est pas un parcours produit certifie.
+
+Le garde reseau classait HEAD /api/status comme mutation; cette requete lecture est emise par ErrorPage lors du depart force du document. HEAD est maintenant intercepte sans appel API reel, compte separement en readOnlyProbes; POST/PATCH/DELETE restent interdits. Navigation verifie explicitement absence decran erreur persistant, destination/planning indisponible attendu et HEAD200 intercepte. Aucun code applicatif ni catch produit modifie.
+
+`node --test qa/t01-final-20261015/browser-harness/guard.test.mjs`:56PASS/0FAIL/0SKIP, lint des7fichiers PASS. Diagnostic production isole sans env, produit ed12d9c identique a a520114, nouveau harnais exact : social10/10 et navigation4/4 par moteur Chromium/WebKit; une build, aucun serveur tiers arrete, preuves profile-head-application/. Ancien diagnostic conserve. CI Linux du nouveau SHA encore requise, aucun ancien rouge requalifie.
+
+GitNexus impact UNKNOWN sur6symboles QA absents de lindex; appels directs QA controles. Manifeste mis a jour et detect_changes avant commit obligatoires. Aucun ACK T08 independant.

@@ -52,7 +52,7 @@ async function runScenario(options, scenarioOutput) {
   const output = scenarioOutput
   const privateDownload = options.includes('--private-download')
   await mkdir(output, { recursive: true })
-  const results = [], blocked = [], mutations = [], details = []
+  const results = [], blocked = [], mutations = [], readOnlyProbes = [], details = []
   let context, page, navigationSnapshot, runtimeSnapshot
   async function check(name, run) {
     try { await run(); results.push({ name, status: 'PASS' }); process.stdout.write(`PASS ${name}\n`) }
@@ -72,9 +72,13 @@ async function runScenario(options, scenarioOutput) {
       if (url.pathname === '/api/legal/accept') return route.continue()
       if (privateDownload && url.pathname.startsWith('/api/media/') && request.method() === 'GET') return route.continue()
       if (url.pathname === '/api/legal/cookie-consent') return route.fulfill({ json: { success: true } })
-      if (request.method() !== 'GET') {
+      if (!['GET', 'HEAD'].includes(request.method())) {
         mutations.push({ path: url.pathname, method: request.method() })
         return route.fulfill({ status: 403, json: { error: 'fixture_forbids_mutation' } })
+      }
+      if (request.method() === 'HEAD') {
+        readOnlyProbes.push({ path: url.pathname, method: 'HEAD' })
+        return route.fulfill({ status: 200, body: '' })
       }
       return route.fulfill({ json: { should_show: false, accounts: [], videos: [], notifications: [], data: [] } })
     }
@@ -106,7 +110,7 @@ async function runScenario(options, scenarioOutput) {
     const runtime = runtimeSnapshot?.() ?? { errors: [], unexpected: [], qualified: [] }
     if (runtimeSnapshot) await writeFile(resolve(output, 'runtime-errors.json'), JSON.stringify(runtime, null, 2) + '\n')
     await context?.close()
-    await writeFile(resolve(output, 'results.json'), JSON.stringify({ baseline, productionSuite, finalIntegrated, results, details, errors: runtime.errors, unexpectedErrors: runtime.unexpected, qualifiedEngineDiagnostics: runtime.qualified, blocked, mutations, writes: fixture.state.writes, acceptances: fixture.state.acceptances.map(({ user_id, doc_type, version }) => ({ user_id, doc_type, version })) }, null, 2) + '\n')
+    await writeFile(resolve(output, 'results.json'), JSON.stringify({ baseline, productionSuite, finalIntegrated, results, details, errors: runtime.errors, unexpectedErrors: runtime.unexpected, qualifiedEngineDiagnostics: runtime.qualified, blocked, mutations, readOnlyProbes, writes: fixture.state.writes, acceptances: fixture.state.acceptances.map(({ user_id, doc_type, version }) => ({ user_id, doc_type, version })) }, null, 2) + '\n')
     summaries.push({ engine: browser?.browserType().name(), options, output, pass: results.filter(r => r.status === 'PASS').length, fail: results.filter(r => r.status === 'FAIL').length })
   }
 }

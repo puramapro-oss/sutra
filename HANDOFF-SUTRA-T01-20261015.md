@@ -13,3 +13,7 @@ Tests : commandes intégrées .github/workflows/web-ci.yml et scripts/run-ci.mjs
 Avant production : CI3jobsPASS, recette T08 du même SHA, candidat OVH isolé, backup frais/restauration vérifiée, application des trois migrations avec reçus exacts, snapshot protégé et rollback CAS. La commande autorisée reste python3 deploy/ovh.py deploy --source-ref SHA40 --ci-run RUN_ID --schema-ready --proof-dir qa/t01-final-20261015 ; SHA40 et RUN_ID doivent provenir des gates et ne sont pas des valeurs à inventer.
 
 Non testé/bloqué : image et génération GPU Salad, génération facturée des fournisseurs, publication réelle et consentements personnels, Safari/iOS natifs, ordonnanceur continu, annulation durable via /create. Aucune activation payante ni contournement de consentement permis.
+
+### T01 2026-10-15T03:34:44.387950+00:00 — delta QA profil/HEAD
+
+CIa520114 FAIL conserve (deux gardes WebKit); app/SQL/config inchanges. Reproduction native du profil synthetique puis qualification strictement bornee, HEAD lecture classe separement et absence ecran erreur persistant verifiee.56controles harnais PASS/0FAIL/0SKIP, social10etnavigation4PASS par moteur sur diagnostic production isole. CI exacte nouveau commit attendue, original T08 requis; production86d04c8 inchangee. Aucune generation/publication/migration/deploy.

@@ -1,0 +1,458 @@
+{
+  "baseline": false,
+  "productionSuite": true,
+  "finalIntegrated": false,
+  "results": [
+    {
+      "name": "375: social unavailable is persistent, never a disconnected summary",
+      "status": "PASS"
+    },
+    {
+      "name": "375: explicit retry recovers and ignores duplicate requests",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: social unavailable is persistent, never a disconnected summary",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: explicit retry recovers and ignores duplicate requests",
+      "status": "PASS"
+    },
+    {
+      "name": "disconnect dialog is named",
+      "status": "PASS"
+    },
+    {
+      "name": "disconnect dialog traps focus, Escape restores trigger",
+      "status": "PASS"
+    },
+    {
+      "name": "unconfirmed revocation survives failed account refresh without false empty state",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed account response is unavailable, not an empty account list",
+      "status": "PASS"
+    },
+    {
+      "name": "social slow response recovers within 12 seconds without late overwrite",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "social-timeout",
+      "elapsedMs": 10904
+    }
+  ],
+  "errors": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/voices?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/voices?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198278
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/chat?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/chat?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/templates?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/templates?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/styles?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/styles?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/storyboard?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/storyboard?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/karma?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/karma?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/referral?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/referral?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/partenaire?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/partenaire?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/contest?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/contest?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/classement?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/classement?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/analytics?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/analytics?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198280
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/wallet?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/wallet?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198280
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/wallet?_rsc=w6vFx7dpYDuv6vIh due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/wallet?_rsc=w6vFx7dpYDuv6vIh due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 6,
+      "at": 1792035199898
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/settings?_rsc=w6vFx7dpYDuv6vIh due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/settings?_rsc=w6vFx7dpYDuv6vIh due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 6,
+      "at": 1792035199898
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/settings/social?_rsc=w6vFx7dpYDuv6vIh due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/settings/social?_rsc=w6vFx7dpYDuv6vIh due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 6,
+      "at": 1792035199898
+    }
+  ],
+  "unexpectedErrors": [],
+  "qualifiedEngineDiagnostics": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/voices?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/voices?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198278,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/voices?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198278
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/chat?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/chat?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/chat?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/templates?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/templates?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/templates?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/styles?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/styles?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/styles?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/storyboard?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/storyboard?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/storyboard?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/karma?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/karma?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/karma?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/referral?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/referral?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/referral?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/partenaire?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/partenaire?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/partenaire?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/contest?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/contest?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/contest?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/classement?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/classement?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198279,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/classement?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198279
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/analytics?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/analytics?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198280,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/analytics?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198280
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/wallet?_rsc=X6bKcBj4Narm8enU due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/wallet?_rsc=X6bKcBj4Narm8enU due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 3,
+      "at": 1792035198280,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/wallet?_rsc=X6bKcBj4Narm8enU",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 3,
+        "at": 1792035198280
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/wallet?_rsc=w6vFx7dpYDuv6vIh due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/wallet?_rsc=w6vFx7dpYDuv6vIh due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 6,
+      "at": 1792035199898,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/wallet?_rsc=w6vFx7dpYDuv6vIh",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 6,
+        "at": 1792035199898
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/settings?_rsc=w6vFx7dpYDuv6vIh due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/settings?_rsc=w6vFx7dpYDuv6vIh due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 6,
+      "at": 1792035199898,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/settings?_rsc=w6vFx7dpYDuv6vIh",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 6,
+        "at": 1792035199898
+      }
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:50629/settings/social?_rsc=w6vFx7dpYDuv6vIh due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:50629/settings/social?_rsc=w6vFx7dpYDuv6vIh due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at w (https://127.0.0.1:50629/_next/static/chunks/3122-f3944c204fab12a7.js:52:12274)",
+      "navigation": 6,
+      "at": 1792035199898,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:50629/settings/social?_rsc=w6vFx7dpYDuv6vIh",
+        "method": "GET",
+        "document": "https://127.0.0.1:50629/settings/social",
+        "navigation": 6,
+        "at": 1792035199898
+      }
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "readOnlyProbes": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

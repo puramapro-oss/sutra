@@ -5,7 +5,7 @@ import { chromium, webkit } from '@playwright/test'
 import { classifyRuntimeErrors } from './runtime-guard.mjs'
 import { nativeRuntimeControls } from './native-controls.mjs'
 
-const output = await mkdtemp('qa/t01-final-20261015/browser-harness/cross-origin-guard-results-')
+const output = await mkdtemp('qa/t01-final-20261015/browser-harness/profile-head-guard-results-')
 const base = 'https://127.0.0.1:1234'
 const seed = () => ({ engine: 'webkit', nativeControl: { caughtUnloadDiagnostic: true },
   errors: [{ kind: 'pageerror', navigation: 1, at: 120, message: 'engine diagnostic', stack: `Fetch API cannot load ${base}/slow due to access control checks.\n    at unknown (${base}/caught:1:1)` }],
@@ -90,6 +90,34 @@ for (const url of [
   state.errors[0].stack = `Fetch API cannot load ${url} due to access control checks.`
   assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
 })
+const profileSeed = () => {
+  const state = syntheticSeed()
+  state.nativeControl.crossOriginProfileCaughtUnloadDiagnostic = true
+  state.events[0].url = state.fixtureOrigin + '/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111'
+  state.errors[0].stack = `Fetch API cannot load ${state.events[0].url} due to access control checks.`
+  return state
+}
+for (const method of ['goto', 'reload']) test(`exact synthetic profile ${method} needs resource-specific native proof`, () => {
+  const state = profileSeed(); state.navigations[0].method = method
+  assert.equal(classifyRuntimeErrors(state).qualified.length, 1)
+  state.nativeControl.crossOriginProfileCaughtUnloadDiagnostic = false
+  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+})
+for (const suffix of [
+  '?select=*&id=eq.22222222-2222-4222-8222-222222222222',
+  '?select=*&id=eq.11111111-1111-4111-8111-111111111111&token=private',
+  '?select=*&id=eq.11111111-1111-4111-8111-111111111111#fragment',
+  '?select=*', '',
+]) test(`unknown profile query fails closed: ${suffix}`, () => {
+  const state = profileSeed()
+  state.events[0].url = state.fixtureOrigin + '/rest/v1/profiles' + suffix
+  state.errors[0].stack = `Fetch API cannot load ${state.events[0].url} due to access control checks.`
+  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+})
+for (const method of ['HEAD', 'POST', 'PATCH', 'DELETE']) test(`profile ${method} cannot qualify as synthetic GET`, () => {
+  const state = profileSeed(); state.events[0].method = method
+  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+})
 for (const [engine, type] of Object.entries({ chromium, webkit })) test(`${engine}: real native HTML controls without SUTRA or build`, async () => {
   const browser = await type.launch({ headless: true })
   try {
@@ -99,5 +127,7 @@ for (const [engine, type] of Object.entries({ chromium, webkit })) test(`${engin
     assert.equal(result.negativeControls.unhandledRejectionDetected, true)
     assert.equal(result.crossOrigin.normalCrossOriginRead, 'PASS')
     assert.equal(result.crossOrigin.realCorsDenialDetected, true)
+    assert.equal(result.crossOriginProfile.normalCrossOriginRead, 'PASS')
+    assert.equal(result.crossOriginProfile.realCorsDenialDetected, true)
   } finally { await browser.close() }
 })

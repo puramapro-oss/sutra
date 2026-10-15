@@ -1,0 +1,197 @@
+{
+  "engine": "webkit",
+  "fixtureOrigin": "https://127.0.0.1:49811",
+  "normalCrossOriginRead": "PASS",
+  "cases": [
+    {
+      "method": "goto",
+      "navigation": 3,
+      "qualified": []
+    },
+    {
+      "method": "reload",
+      "navigation": 5,
+      "qualified": []
+    }
+  ],
+  "caught": {
+    "errors": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+        "navigation": 3,
+        "at": 1792035013603
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+        "navigation": 5,
+        "at": 1792035014118
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+        "navigation": 6,
+        "at": 1792035014650
+      }
+    ],
+    "qualified": [],
+    "unexpected": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+        "navigation": 3,
+        "at": 1792035013603
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+        "navigation": 5,
+        "at": 1792035014118
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+        "navigation": 6,
+        "at": 1792035014650
+      }
+    ],
+    "events": [
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:49812/normal",
+        "navigation": 2,
+        "at": 1792035013591
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:49812/caught",
+        "navigation": 3,
+        "at": 1792035013602
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:49812/next",
+        "navigation": 4,
+        "at": 1792035014111
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:49812/caught",
+        "navigation": 5,
+        "at": 1792035014118
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:49812/caught",
+        "navigation": 6,
+        "at": 1792035014650
+      }
+    ],
+    "navigations": [
+      {
+        "id": 1,
+        "method": "goto",
+        "from": "nullblank",
+        "to": "https://127.0.0.1:49812/normal",
+        "startedAt": 1792035013224,
+        "finishedAt": 1792035013251
+      },
+      {
+        "id": 2,
+        "method": "goto",
+        "from": "https://127.0.0.1:49812/normal",
+        "to": "https://127.0.0.1:49812/caught",
+        "startedAt": 1792035013574,
+        "finishedAt": 1792035013593
+      },
+      {
+        "id": 3,
+        "method": "goto",
+        "from": "https://127.0.0.1:49812/caught",
+        "to": "https://127.0.0.1:49812/next",
+        "startedAt": 1792035013593,
+        "finishedAt": 1792035013604
+      },
+      {
+        "id": 4,
+        "method": "goto",
+        "from": "https://127.0.0.1:49812/next",
+        "to": "https://127.0.0.1:49812/caught",
+        "startedAt": 1792035014106,
+        "finishedAt": 1792035014113
+      },
+      {
+        "id": 5,
+        "method": "reload",
+        "from": "https://127.0.0.1:49812/caught",
+        "to": "https://127.0.0.1:49812/caught",
+        "startedAt": 1792035014113,
+        "finishedAt": 1792035014120
+      },
+      {
+        "id": 6,
+        "method": "goto",
+        "from": "https://127.0.0.1:49812/caught",
+        "to": "https://127.0.0.1:49812/normal",
+        "startedAt": 1792035014624,
+        "finishedAt": 1792035014652
+      }
+    ],
+    "domErrors": []
+  },
+  "reproduced": false,
+  "realCorsDenialDetected": true,
+  "negativeEvidence": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+      "navigation": 3,
+      "at": 1792035013603
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+      "navigation": 5,
+      "at": 1792035014118
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:46:27)\n    at unknown (https://127.0.0.1:49812/caught:3:35)\n    at unknown (https://127.0.0.1:49812/caught:6:61)",
+      "navigation": 6,
+      "at": 1792035014650
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:49811/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+      "stack": "",
+      "navigation": 6,
+      "at": 1792035015161
+    },
+    {
+      "kind": "pageerror",
+      "message": "TypeError: Load failed",
+      "stack": "Unhandled Promise Rejection: TypeError: Load failed\n",
+      "navigation": 6,
+      "at": 1792035015161
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "TypeError: Load failed",
+      "document": "https://127.0.0.1:49812/normal",
+      "navigation": 6,
+      "at": 1792035015161
+    }
+  ],
+  "classifierSourceRef": "a5201148c99ce1d7383a0162f32e75a346ae90f9",
+  "status": "NATIVE_REPRODUCTION_OF_UNQUALIFIED_DIAGNOSTIC"
+}

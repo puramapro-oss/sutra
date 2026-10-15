@@ -56,9 +56,11 @@ export async function nativeRuntimeControls(browser) {
     assert.ok(snapshot().unexpected.some(error => error.message?.includes('NEGATIVE_CONTROL_REAL_REJECTION')), 'guard must reject unhandled rejection')
     const all = snapshot()
     const crossOrigin = await crossOriginRuntimeControls(browser)
+    const crossOriginProfile = await crossOriginRuntimeControls(browser, 'profiles')
     return { engine, browserVersion: browser.version(), nativeSafari: false, keyboard,
       caughtUnloadDiagnostic: caught.qualified.length > 0, cases, caught,
       crossOriginCaughtUnloadDiagnostic: crossOrigin.reproduced, crossOrigin,
+      crossOriginProfileCaughtUnloadDiagnostic: crossOriginProfile.reproduced, crossOriginProfile,
       negativeControls: { realExceptionDetected: true, unhandledRejectionDetected: true }, negativeEvidence: all.unexpected }
   } finally {
     await context?.close()

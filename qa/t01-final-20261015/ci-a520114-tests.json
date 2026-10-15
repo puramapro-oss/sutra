@@ -1,0 +1,337 @@
+{
+  "candidate": "a5201148c99ce1d7383a0162f32e75a346ae90f9",
+  "ciRun": 38674263839,
+  "observedAt": "2026-10-15T03:33:04.418241+00:00",
+  "status": "FAIL",
+  "groups": [
+    {
+      "name": "contracts",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=2",
+        "scripts/test-t03-final-durable.mts",
+        "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+        "scripts/test-t02-final-security-grants.mts",
+        "scripts/test-t06-final-social.mts",
+        "qa/t04-final-providers-20261015/container.test.mjs",
+        "qa/t04-final-providers-20261015/context.test.mjs",
+        "qa/t04-final-providers-20261015/salad-read.test.mjs",
+        "qa/t08-final-candidate-20261015/cancellation.test.mts",
+        "scripts/test-t06-social-validation.mts",
+        "qa/t04-provider-validation-20261014/probe.test.mjs",
+        "scripts/test-t02-final-validation-media.mts",
+        "qa/t02-final-validation-20261014/production-error.test.mts",
+        "qa/final-delta-20261014/social-feedback.test.mts",
+        "scripts/test-t03-orchestration-fixes.mts",
+        "scripts/test-t03-suno-recovery.mts",
+        "scripts/test-t04-provider-fixes.mts",
+        "scripts/test-t04-pollinations.mts",
+        "scripts/test-t02-security-fixes-storage.mts",
+        "scripts/test-t02-security-fixes-proof.mts",
+        "scripts/test-t02-security-fixes-session-media.mts",
+        "scripts/test-t02-security-fixes-ots.mts",
+        "scripts/test-t08-integration-journey.mts",
+        "scripts/test-salad-worker.mts",
+        "scripts/test-salad-host.mts",
+        "scripts/test-t03-salad-recovery.mts",
+        "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+        "scripts/test-t06-social-final.mts",
+        "scripts/test-t08-final-modes.mts",
+        "scripts/test-insee.mjs",
+        "scripts/test-editor-export.mts",
+        "scripts/test-export-integration.mts",
+        "scripts/test-integration.mts",
+        "scripts/test-ltx-tiers.mjs",
+        "scripts/test-karma-split.mjs",
+        "scripts/test-api-contracts.mts",
+        "scripts/test-env-contracts.mts",
+        "scripts/test-suno-contract.mts",
+        "qa/t03-provider-complement-20261013/music-recovery.test.mts",
+        "qa/t08/providers-20261013/provider-contract-redteam.test.mts",
+        "scripts/test-local-engine.mts",
+        "scripts/test-shotstack-contracts.mts",
+        "scripts/test-production-queue.mts",
+        "scripts/test-auto-export-queue.mts",
+        "scripts/test-release-regressions.mts",
+        "scripts/test-video-contracts.mjs",
+        "scripts/test-opentimestamps.mjs",
+        "scripts/test-ltx-v2-media.mts",
+        "scripts/test-social-publication.mts",
+        "scripts/test-auth-session.mts",
+        "scripts/test-public-origin.mts",
+        "tooling/disposable-database.test.mjs",
+        "scripts/test-pipeline-interruptions.mts",
+        "scripts/test-pipeline-submit.mts",
+        "scripts/test-release-oauth.mts",
+        "scripts/test-zernio-oauth-contracts.mts",
+        "scripts/test-security-account.mts",
+        "scripts/test-t02-oauth-boundaries.mts",
+        "scripts/test-private-media.mts",
+        "scripts/test-security-media.mts",
+        "scripts/test-security-routes.mts",
+        "scripts/test-security-storage.mts",
+        "scripts/test-t06-social-autonomy.mts",
+        "scripts/test-t06-social-routes.mts",
+        "scripts/test-ltx-v2-contracts.mts",
+        "scripts/test-provider-safety.mts",
+        "src/lib/video-compositor.test.mts",
+        "src/lib/ffmpeg-concurrency.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 27783,
+      "group": "contracts",
+      "counts": {
+        "tests": 962,
+        "pass": 955,
+        "fail": 0,
+        "skipped": 7
+      },
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/contracts/contracts.log"
+    },
+    {
+      "name": "durable-submission",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t03-durable-reliability.mts",
+        "qa/t03-durable-reliability-20261014/submission.test.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1234,
+      "group": "contracts",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/contracts/durable-submission.log"
+    },
+    {
+      "name": "schedule",
+      "command": [
+        "node",
+        "scripts/test-auto-schedule.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 116,
+      "group": "contracts",
+      "counts": {},
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/contracts/schedule.log"
+    },
+    {
+      "name": "composition",
+      "command": [
+        "node",
+        "scripts/test-auto-composition.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 85,
+      "group": "contracts",
+      "counts": {},
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/contracts/composition.log"
+    },
+    {
+      "name": "publication",
+      "command": [
+        "node",
+        "scripts/test-auto-publication.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 82,
+      "group": "contracts",
+      "counts": {},
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/contracts/publication.log"
+    },
+    {
+      "name": "retained-real-exports",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-real-export.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 58824,
+      "group": "media",
+      "counts": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/media/retained-real-exports.log"
+    },
+    {
+      "name": "composition-delta",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-composition-fix.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 10962,
+      "group": "media",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/media/composition-delta.log"
+    },
+    {
+      "name": "final-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-final-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 67989,
+      "group": "media",
+      "counts": {
+        "tests": 32,
+        "pass": 32,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/media/final-media.log"
+    },
+    {
+      "name": "salad-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-salad-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 8128,
+      "group": "media",
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/media/salad-media.log"
+    },
+    {
+      "name": "local-engine",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-local-engine-e2e.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1321,
+      "group": "media",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/media/local-engine.log"
+    },
+    {
+      "name": "compositor",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--import",
+        "./scripts/helpers/local-media-fixture.mts",
+        "--test",
+        "--test-concurrency=1",
+        "src/lib/ffmpeg-compositor.test.ts",
+        "src/lib/ffmpeg-compositor-formats.test.ts",
+        "src/lib/media-validation.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 60148,
+      "group": "media",
+      "counts": {
+        "tests": 31,
+        "pass": 31,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-a520114-contract-artifacts/test-results/ci/media/compositor.log"
+    }
+  ],
+  "redteam": {
+    "profile": "redteam",
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "command": [
+      "/opt/hostedtoolcache/node/24.21.0/x64/bin/node",
+      "--test-reporter=tap",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-concurrency=1",
+      "qa/t08/integrated/offline.test.mjs",
+      "qa/t08/integrated/load.test.mts"
+    ],
+    "durationMs": 732
+  },
+  "browser": {
+    "status": "FAIL",
+    "familiesPass": 18,
+    "familiesFail": 2,
+    "failures": [
+      "webkit/social: synthetic fixed profile fetch diagnostic at explicit teardown; not qualified in this candidate",
+      "webkit/navigation: HEAD /api/status classified as mutation"
+    ],
+    "functionalChecks": "passed within all twenty families; final guard failures retained"
+  },
+  "notExecutedAfterFailure": [
+    "node scripts/run-ci.mjs legacy",
+    "python3 -m unittest discover -s deploy -p test_*.py",
+    "python3 -m unittest discover -s qa/t01-consolidation-20261014 -p test_*.py",
+    "python3 qa/t01-final-20261015/social-history-transition-test.py",
+    "exact promotion and rollback simulations"
+  ]
+}

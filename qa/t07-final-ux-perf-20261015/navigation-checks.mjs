@@ -15,6 +15,7 @@ export async function navigationChecks({ page, base, fixture, check, details, ru
     const start = errors.length
     await page.waitForTimeout(2000)
     assert.equal(errors.length, start)
+    await expect(page.getByTestId('error-reset-button')).toHaveCount(0)
   })
   await check('normal client navigation library to create to library has no runtime errors', async () => {
     phase = 'client-navigation'
@@ -26,6 +27,7 @@ export async function navigationChecks({ page, base, fixture, check, details, ru
     await expect(page.getByTestId('library-create-btn')).toBeVisible()
     await page.waitForLoadState('networkidle')
     assert.equal(errors.length, start)
+    await expect(page.getByTestId('error-reset-button')).toHaveCount(0)
   })
   phase = 'hard-navigation-control'
   await page.goto(base + '/settings/social')
@@ -34,6 +36,11 @@ export async function navigationChecks({ page, base, fixture, check, details, ru
   await check('forced document navigation retains errors and qualifies only native teardown diagnostics', async () => {
     const runtime = runtimeSnapshot()
     assert.deepEqual(runtime.unexpected, [])
+    await expect(page).toHaveURL(base + '/auto/schedules')
+    await expect(page.getByTestId('error-reset-button')).toHaveCount(0)
+    await expect(page.getByText('Impossible de vérifier les plannings. Leur état est indisponible.')).toBeVisible()
+    // HEAD is a read-only connectivity probe; the route guard must not label it a write.
+    assert.equal(await page.evaluate(async () => (await fetch('/api/status', { method: 'HEAD' })).status), 200)
     details.push({ name: 'forced-navigation-engine-diagnostics', qualified: runtime.qualified, unexpected: runtime.unexpected })
   })
   details.push({ name: 'navigation-error-diagnostics', errors, failed })

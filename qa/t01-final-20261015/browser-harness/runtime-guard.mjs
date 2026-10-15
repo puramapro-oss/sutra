@@ -36,8 +36,10 @@ export function classifyRuntimeErrors({ engine, nativeControl, errors, events, n
       const url = new URL(match?.[1]), query = [...url.searchParams]
       const fixture = fixtureOrigin && new URL(fixtureOrigin)
       syntheticRead = Boolean(fixture && fixture.origin === fixtureOrigin && fixture.protocol === 'https:' && fixture.hostname === '127.0.0.1' && fixture.port
-        && url.origin === fixtureOrigin && !url.username && !url.password && !url.hash && url.pathname === '/rest/v1/affirmations'
-        && /^\?select=\*&category=eq\.(abundance|power|wisdom)$/.test(url.search))
+        && url.origin === fixtureOrigin && !url.username && !url.password && !url.hash
+        && ((url.pathname === '/rest/v1/affirmations' && /^\?select=\*&category=eq\.(abundance|power|wisdom)$/.test(url.search))
+          || (url.pathname === '/rest/v1/profiles' && url.search === '?select=*&id=eq.11111111-1111-4111-8111-111111111111'
+            && nativeControl?.crossOriginProfileCaughtUnloadDiagnostic === true)))
       allowedResource = !url.hash && (!url.search || (query.length === 1 && query[0][0] === '_rsc' && /^[a-zA-Z0-9_-]{1,128}$/.test(query[0][1])))
     } catch { /* Malformed/unknown query is never qualified. */ }
     const fetch = match && events.find(row => row.kind === 'unload-fetch' && row.url === match[1]
@@ -90,15 +92,16 @@ export async function observeRuntimeErrors(page, { engine, nativeControl, fixtur
       if (unloading) {
         try {
           const url = new URL(typeof args[0] === 'string' || args[0] instanceof URL ? args[0] : args[0].url, location.href)
-          // Only bounded synthetic Next-cache / affirmation queries are observed.
+          // Only bounded Next-cache / synthetic affirmation and fixed fixture-profile queries are observed.
           // Unknown query/header/body data is never collected or qualified.
           const query = [...url.searchParams]
           const nextRsc = query.length === 1 && query[0][0] === '_rsc' && /^[a-zA-Z0-9_-]{1,128}$/.test(query[0][1])
           const fixture = fixtureOrigin && new URL(fixtureOrigin)
           const method = String(args[1]?.method ?? (args[0] instanceof Request ? args[0].method : 'GET')).toUpperCase()
           const syntheticRead = fixture && fixture.origin === fixtureOrigin && fixture.protocol === 'https:' && fixture.hostname === '127.0.0.1' && fixture.port
-            && url.origin === fixtureOrigin && !url.username && !url.password && url.pathname === '/rest/v1/affirmations' && method === 'GET'
-            && /^\?select=\*&category=eq\.(abundance|power|wisdom)$/.test(url.search)
+            && url.origin === fixtureOrigin && !url.username && !url.password && method === 'GET'
+            && ((url.pathname === '/rest/v1/affirmations' && /^\?select=\*&category=eq\.(abundance|power|wisdom)$/.test(url.search))
+              || (url.pathname === '/rest/v1/profiles' && url.search === '?select=*&id=eq.11111111-1111-4111-8111-111111111111'))
           if (!url.hash && ((url.origin === location.origin && (!url.search || nextRsc)) || syntheticRead)) {
             emit({ kind: 'unload-fetch', url: url.origin + url.pathname + url.search, method })
           }

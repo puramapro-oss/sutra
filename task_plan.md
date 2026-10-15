@@ -523,3 +523,7 @@ CI48eb91a :5gardes WebKit FAIL, fonctions attendues PASS ; requetes _rsc non obs
 ### T01 2026-10-15T03:02:58.952579+00:00 — qualification navigateur cross-origin bornee
 
 CIed12d9c38671657736 FAIL : seul garde social WebKit rouge ; contrats/medias/PG/TS/lint/build PASS. Aucun produit corrige sur cette seule trace. Reproduction HTML independante, lecture CORS ordinaire PASS et vrai refus CORS toujours detecte ; nouveau harnais45PASS/0FAIL/0SKIP, lint cible PASS. Qualification uniquement sur requete fixture exacte observee pendant unload + controle natif courant + absence erreur DOM. Erreurs brutes et rouge CI conserves. Nouveau SHA/CI exacte requis ; ACK T08 absent, production86d04c8 inchangee.
+
+### T01 2026-10-15T03:34:44.387700+00:00 — delta QA profil/HEAD
+
+CIa520114 FAIL conserve (deux gardes WebKit); app/SQL/config inchanges. Reproduction native du profil synthetique puis qualification strictement bornee, HEAD lecture classe separement et absence ecran erreur persistant verifiee.56controles harnais PASS/0FAIL/0SKIP, social10etnavigation4PASS par moteur sur diagnostic production isole. CI exacte nouveau commit attendue, original T08 requis; production86d04c8 inchangee. Aucune generation/publication/migration/deploy.

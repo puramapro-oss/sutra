@@ -70,3 +70,7 @@ Vérification ciblée : `node --import tsx --test --test-concurrency=1 scripts/t
 ### T01 2026-10-15T02:33:33.830617+00:00 — CI WebKit et qualification native
 
 CI48eb91a :5gardes WebKit FAIL, fonctions attendues PASS ; requetes _rsc non observees et reload attribue a un goto ancien. Harnais seul corrige,22PASS/0FAIL/0SKIP dont controles HTML Chromium/WebKit et vraies erreurs negatives. Controle pagehide reproduit5diagnostics WebKit qualifies ; essais beforeunload seul ne reproduisant pas le diagnostic conserves. Aucune suppression de garde/erreur brute ni modification produit. Nouveau manifeste exact,7WIP et lots conserves. Rejeu CI du nouveau commit requis, ACK T08 toujours absent, production86d04c8 inchangee.
+
+### T01 2026-10-15T03:34:44.388230+00:00 — delta QA profil/HEAD
+
+CIa520114 FAIL conserve (deux gardes WebKit); app/SQL/config inchanges. Reproduction native du profil synthetique puis qualification strictement bornee, HEAD lecture classe separement et absence ecran erreur persistant verifiee.56controles harnais PASS/0FAIL/0SKIP, social10etnavigation4PASS par moteur sur diagnostic production isole. CI exacte nouveau commit attendue, original T08 requis; production86d04c8 inchangee. Aucune generation/publication/migration/deploy.

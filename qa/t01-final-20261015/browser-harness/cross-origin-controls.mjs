@@ -5,7 +5,7 @@ import { prepareTLS } from '../../t07-frontend-journey-20261014/tls-fixture.mjs'
 import { observeRuntimeErrors } from './runtime-guard.mjs'
 
 // Independent HTML, two loopback TLS origins, no application or provider.
-export async function crossOriginRuntimeControls(browser) {
+export async function crossOriginRuntimeControls(browser, resource = 'affirmations') {
   const engine = browser.browserType().name(), tls = await prepareTLS()
   let appOrigin, denyCors = false, context
   const api = createServer(tls.options, (_request, response) => {
@@ -17,7 +17,10 @@ export async function crossOriginRuntimeControls(browser) {
   })
   api.listen(0, '127.0.0.1'); await once(api, 'listening')
   const fixtureOrigin = `https://127.0.0.1:${api.address().port}`
-  const endpoint = fixtureOrigin + '/rest/v1/affirmations?select=*&category=eq.wisdom'
+  assert.ok(['affirmations', 'profiles'].includes(resource), 'bounded synthetic resource')
+  const endpoint = fixtureOrigin + (resource === 'profiles'
+    ? '/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111'
+    : '/rest/v1/affirmations?select=*&category=eq.wisdom')
   const app = createServer(tls.options, (_request, response) => {
     response.writeHead(200, { 'Content-Type': 'text/html' })
     response.end(`<h1>Native cross-origin control</h1><script>
@@ -37,7 +40,7 @@ export async function crossOriginRuntimeControls(browser) {
     await context.route('**/*', route => [appOrigin, fixtureOrigin].includes(new URL(route.request().url()).origin) ? route.continue() : route.abort())
     const page = await context.newPage()
     const snapshot = await observeRuntimeErrors(page, { engine, fixtureOrigin,
-      nativeControl: { crossOriginCaughtUnloadDiagnostic: true } })
+      nativeControl: { crossOriginCaughtUnloadDiagnostic: true, crossOriginProfileCaughtUnloadDiagnostic: true } })
     await page.goto(appOrigin + '/normal')
     assert.deepEqual(await page.evaluate(() => window.runRead()), [])
     assert.deepEqual(snapshot().errors, [], 'ordinary cross-origin read must succeed without a diagnostic')
@@ -65,7 +68,7 @@ export async function crossOriginRuntimeControls(browser) {
     const negative = snapshot()
     assert.ok(negative.unexpected.some(error => error.kind === 'dom-uncaught' && error.message.includes('Load failed')
       || error.kind === 'dom-uncaught' && error.message.includes('Failed to fetch')), 'real CORS rejection must fail the guard')
-    return { engine, fixtureOrigin, normalCrossOriginRead: 'PASS', cases, caught,
+    return { engine, resource, fixtureOrigin, normalCrossOriginRead: 'PASS', cases, caught,
       reproduced: caught.qualified.length > 0, realCorsDenialDetected: true, negativeEvidence: negative.unexpected }
   } finally {
     await context?.close()
