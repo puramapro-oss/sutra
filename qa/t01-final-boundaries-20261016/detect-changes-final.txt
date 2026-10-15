@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 237 files, 22 symbols
+Affected processes: 365
+Risk level: critical
+
+Changed symbols:
+  Variable DEFINITIONS → qa/t01-consolidation-20261014/checkpoint-transition.py
+  Function guarded_sql → qa/t01-consolidation-20261014/checkpoint-transition.py
+  Variable source → qa/t01-consolidation-20261014/verify-checkpoint-restore.py
+  Const browser → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Const denyCors → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Const held → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Const endpoint → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Property acceptances → qa/t07-frontend-journey-20261014/fixture.mjs
+  Property delayMs → qa/t07-frontend-journey-20261014/fixture.mjs
+  Property legalMode → qa/t07-frontend-journey-20261014/fixture.mjs
+  Property mediaDelayMs → qa/t07-frontend-journey-20261014/fixture.mjs
+  Property mediaMode → qa/t07-frontend-journey-20261014/fixture.mjs
+  Property requests → qa/t07-frontend-journey-20261014/fixture.mjs
+  Property signatures → qa/t07-frontend-journey-20261014/fixture.mjs
+  Property videoMode → qa/t07-frontend-journey-20261014/fixture.mjs
+... and 7 more
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: guarded_sql, guarded_sql, guarded_sql, guarded_sql
+  • CommunityScreen → ApiFetch (3 steps) — changed: guarded_sql, guarded_sql, guarded_sql
+  • AdminContestPage → FetchData (3 steps) — changed: guarded_sql, guarded_sql, guarded_sql
+  • AdminUsersPage → FetchUsers (3 steps) — changed: guarded_sql, guarded_sql, guarded_sql
+  • AutoPage → RequestClientJson (3 steps) — changed: guarded_sql, guarded_sql, guarded_sql
+  • CommunityPage → FetchBuddy (3 steps) — changed: guarded_sql, guarded_sql, guarded_sql
+  • CommunityPage → FetchCircles (3 steps) — changed: guarded_sql, guarded_sql, guarded_sql
+  • CommunityPage → FetchWall (3 steps) — changed: guarded_sql, guarded_sql, guarded_sql
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: guarded_sql
+  • JeuCreatifPage → Load (3 steps) — changed: guarded_sql, guarded_sql, guarded_sql
+... and 355 more

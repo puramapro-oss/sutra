@@ -35,8 +35,7 @@ export function installFixtureReadBarrier(page, { appOrigin, fixtureOrigin, user
     const row = requests.get(request)
     if (row) { row.state = 'failed'; row.failure = request.failure()?.errorText; notify() }
   })
-  const originalGoto = page.goto.bind(page)
-  page.goto = async (...args) => {
+  const beforeNavigation = async () => {
     const from = new URL(page.url())
     if (from.origin === app.origin && from.pathname === '/settings/social') {
       const document = current
@@ -65,7 +64,13 @@ export function installFixtureReadBarrier(page, { appOrigin, fixtureOrigin, user
       } catch (error) { wait.status = 'FAIL'; wait.message = error.message; throw error }
       finally { wait.finishedAt = Date.now() }
     }
-    return originalGoto(...args)
+  }
+  for (const method of ['goto', 'reload']) {
+    const original = page[method].bind(page)
+    page[method] = async (...args) => {
+      await beforeNavigation()
+      return original(...args)
+    }
   }
   return () => structuredClone({ documents, waits })
 }

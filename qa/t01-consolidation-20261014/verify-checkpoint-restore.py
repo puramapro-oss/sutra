@@ -20,7 +20,7 @@ source = 'MIGRATION=' + repr(migration) + '\nBACKUP=' + repr(backup) + '\n' + r'
 import hashlib,json,os,pathlib,subprocess,re
 os.umask(0o077)
 stage='preconditions'
-names=['finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid']
+names=['finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid','cancel_video_job']
 report={'status':'FAIL','productionChanged':False,'migrationSha256':hashlib.sha256(MIGRATION.encode()).hexdigest(),'migrationPath':'migrations/20261015_final_durable_integrity.sql'}
 def query(database,sql):
     result=subprocess.run(['docker','exec','-i','supabase-db','psql','-U','supabase_admin','-d',database,'-X','-A','-t','-q','-v','ON_ERROR_STOP=1','-v','VERBOSITY=verbose'],input=sql,text=True,capture_output=True,timeout=60)
@@ -35,7 +35,7 @@ definition_query="""SELECT json_agg(json_build_object(
  'authenticatedExecute',has_function_privilege('authenticated',p.oid,'EXECUTE'),
  'serviceExecute',has_function_privilege('service_role',p.oid,'EXECUTE')) ORDER BY p.proname)
  FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
- WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid');"""
+ WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid','cancel_video_job');"""
 def definitions(database): return json.loads(query(database,definition_query))
 def metadata(rows): return [{k:v for k,v in row.items() if k!='definition'} for row in rows]
 def rows_digest(database):
@@ -53,7 +53,7 @@ try:
     for name,item in BACKUP['artifacts'].items():
         assert hashlib.sha256((folder/name).read_bytes()).hexdigest()==item['sha256']
     before=definitions(database); production=definitions('postgres')
-    assert len(before)==5 and before==production and not any(r['name']=='video_job_result_valid' for r in before)
+    assert len(before)==6 and before==production and not any(r['name']=='video_job_result_valid' for r in before)
     assert all(not row['securityDefiner'] and row['serviceExecute'] for row in before)
     rollback='BEGIN;\nSET LOCAL search_path TO sutra, pg_temp;\n'+''.join(row['definition']+';\n' for row in before)+'DROP FUNCTION sutra.video_job_result_valid(sutra.video_jobs);\nCOMMIT;\n'
     protected=folder/('checkpoint-'+report['migrationSha256'][:12]+'-v2'); protected.mkdir(mode=0o700,exist_ok=False)
@@ -65,7 +65,7 @@ try:
     stage='restored_migration'
     query(database,MIGRATION); after=definitions(database)
     stage='restored_metadata'
-    assert len(after)==6
+    assert len(after)==7
     inherited=[row for row in after if row['name']!='video_job_result_valid']
     expected=metadata(before)
     for row in expected: row['config']=['search_path=sutra, pg_temp']
@@ -84,7 +84,7 @@ try:
     assert definitions('postgres')==production
     report.update({'status':'PASS','database':'isolated restored SUTRA copy','protectedRollback':str(protected),
         'tablesDataUnchanged':len(data_before),'definitionsRestoredExactly':True,'replaySafe':True,'aclAndOwnershipUnchanged':True,
-        'scope':'Five existing RPCs retain ACL and owner; search_path sutra, pg_temp. New invoker-only helper service-only, removed by rollback.',
+        'scope':'Six existing RPCs retain ACL and owner; search_path sutra, pg_temp. New invoker-only helper service-only, removed by rollback.',
         'permissions':metadata(before),'backupVerified':True,'rollbackSha256':hashlib.sha256(rollback.encode()).hexdigest(),
         'beforeDefinitionsSha256':hashlib.sha256(json.dumps(before,sort_keys=True).encode()).hexdigest(),
         'afterDefinitionsSha256':hashlib.sha256(json.dumps(after,sort_keys=True).encode()).hexdigest()})

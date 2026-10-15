@@ -13,3 +13,9 @@ Limites : npm non clean sans nouveau chemin API exploitable démontré; outillag
 Après import T01 : vérifier les cinq blobs puis exécuter `python3 qa/t02-final-sha-security-20261015/run.py admin-webhook routes` sur le SHA exact, sans éditer ses preuves en parallèle; résultats dans un nouveau dossier T02. Étendre seulement aux changements d'intégration et notifier T08 du verdict borné.
 
 Nouveau rouge extérieur reçu20:23UTC : T06 `/api/social/autopilot`12PASS11FAIL, correction réservée T06. T01/T08 doivent également solder cette livraison avant verdict candidat global. Les tests state/révocation verts ne couvrent pas cette route de configuration.
+
+## T02 2026-10-15T22:31:43.871553+00:00 — sécurité intégrée f360
+
+Candidat exact `f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5`, branche `codex/sutra-t02-security-f36013a-20261016`. Correctif `6d4d72993c44233807d847228255a28dafdb1d30` intégré, neuf blobs MATCH. PASS local : RPC/config70, admin/webhook38, autopilot23, OAuth76, publication92, auth/stockage76, cron21, SSRF61, routes10, frontières changées76; PostgreSQL privé RLS261 assertions et écritures30; TS/lint PASS. Groupes recouvrants non additionnés. Aucun produit modifié dans ce lot. Commandes et preuves : [rapport T02](qa/t02-final-integration-proof-20261015/README.md).
+
+FAIL gate finale f360 : CI38809803219 Chromium private-download et WebKit social-reload, 416PASS2FAIL; cinq étapes suivantes SKIPPED/NON TESTÉES. T01 seul corrige les harnais réservés, nouveau SHA attendu. Npm brut7prod/30total, pas de nouveau chemin API exploitable démontré; organisations natives/runtime/consentements réels NON TESTÉS; headers absents, TTL300s et rate limits par processus explicites. GitNexus partiel. Prochain contrôle uniquement delta final T01, pas de build/audit répétitif. Aucun secret réel lu, paid, push ou production.

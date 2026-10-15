@@ -1,0 +1,5 @@
+# Atomic cancellation audit
+
+Base f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5. T07 AUDIT_GAP confirmed. `node qa/t01-cancel-audit-20261016/run.mjs before`:21PASS3FAIL0SKIP. Same tests after canonical SQL fix:24PASS0FAIL0SKIP. PostgreSQL18 private loopback, no secrets/provider. `python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'`:25PASS. `node_modules/.bin/tsc --noEmit --incremental false`:PASS; targeted ESLint PASS.
+
+Only cancel_video_job changes product behavior. Existing row lock serializes cancellation, quota transaction unchanged, bounded activity metadata and progress receipt persist atomically. A failed audit write rolls back cancellation and quota. No historical backfill or provider cancellation claim. OVH read-only confirms zero custom video_jobs triggers and activity table presence. Deployment migration/rollback function scope extended to include cancellation; fresh restored-copy proof still required. GitNexus SQL UNKNOWN; caller graphCRITICAL mixed/stale142direct/14flows. Direct search plus SQL concurrency and failure tests bound the change, not exhaustive graph certification.

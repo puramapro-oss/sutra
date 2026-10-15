@@ -1,0 +1,216 @@
+PASS [oauth] T02 account list omits private metadata/tokens and another user account
+PASS [oauth] T02 account list redacts error diagnostics
+PASS [oauth] T02 account list redacts throw diagnostics
+PASS [oauth] T02 anonymous account list does not reach the privileged database
+PASS [oauth] T02 callback without verified session never consumes or exchanges state
+PASS [oauth] T02 callback rejects a different user without burning the owner state
+PASS [oauth] T02 callback rejects a platform switch
+PASS [oauth] T02 callback rejects a missing or forged browser secret
+PASS [oauth] T02 callback rejects an expired state before token exchange
+PASS [oauth] T02 concurrent callbacks verify only once and never store or expose tokens
+PASS [oauth] T02 database outage during callback cannot authorize an exchange
+PASS [oauth] T02 uncertain exchange is sanitized and consumed state cannot be replayed
+PASS [oauth] T02 callback from another login session cannot consume the current state
+PASS [oauth] T02 callback cannot change server profile or use an unrelated provider account without verification
+PASS [oauth] T06 FINAL callback rejects profile reassigned while provider GET is pending
+PASS [oauth] T06 FINAL callback rejects profile removed while provider GET is pending
+PASS [oauth] T06 FINAL revoke blocks remote DELETE on reassigned but retains local fence
+PASS [oauth] T06 FINAL revoke blocks remote DELETE on removed but retains local fence
+PASS [oauth] T06 FINAL revoke blocks remote DELETE on invalid-binding but retains local fence
+PASS [oauth] T06 FINAL revoke blocks remote DELETE on missing-provenance but retains local fence
+PASS [oauth] T06 FINAL revoke blocks remote DELETE on foreign-profile but retains local fence
+PASS [oauth] T06 FINAL revoke blocks remote DELETE on foreign-custodian but retains local fence
+PASS [oauth] T06 FINAL revoke blocks remote DELETE on after-claim but retains local fence
+PASS [oauth] T06 FINAL unchanged tenant can connect, revoke and personally reconnect
+PASS [oauth] T06 FINAL provider refusal keeps revocation fenced and does not repeat DELETE
+PASS [oauth] T06 FINAL confirmed revocation is idempotent without a second remote DELETE
+PASS [oauth] T06 FINAL revoke erases legacy token fields (already confirmed=false)
+PASS [oauth] T06 FINAL revoke erases legacy token fields (already confirmed=true)
+PASS [oauth] T06 FINAL pending revocation clears legacy credentials without retrying the provider
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: tiktok
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: youtube
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: instagram
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: facebook
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: x
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: linkedin
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: pinterest
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: reddit
+PASS [oauth] T06-FINAL OAuth route + adapter + atomic state: threads
+PASS [oauth] T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+PASS [oauth] T06-FINAL session rotation during hosted consent requires fresh state
+PASS [oauth] T06-FINAL expired hosted consent never reaches identity lookup
+PASS [oauth] T06-FINAL atomic duplicate callback invokes real identity adapter only once
+PASS [oauth] T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+PASS [oauth] T06-FINAL lost POST response uses identical persisted wire request, then GET only
+PASS [oauth] T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+PASS [oauth] T06-FINAL reconnect replaces local identity but requires explicit new account selection
+PASS [oauth] T06-FINAL separate productions on same account receive distinct keys and histories
+PASS [oauth] T06-FINAL another session user cannot revoke the bound account
+PASS [oauth] T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+PASS [oauth] T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+PASS [oauth] T06-FINAL wrong remote account cannot confirm or retry a known post
+PASS [oauth] T06-FINAL revoked during claim never reaches real POST adapter
+PASS [oauth] T06-FINAL unverified media and missing approval never reach real POST adapter
+PASS [oauth] T06-FINAL UI regression: a revoked account must expose Se connecter again
+PASS [oauth] T06-DELTA denied consent consumes the bound state even without account identity
+PASS [oauth] T06-DELTA a forged denial cannot consume another session state
+PASS [oauth] T06-DELTA consent issued before revocation must not reconnect the revoked account
+PASS [oauth] T06-DELTA revocation while identity lookup is in flight must win over callback
+PASS [oauth] T06-DELTA X denial accepts the documented provider platform alias and consumes state
+PASS [oauth] T06-DELTA unknown provider error remains generic and still consumes state
+PASS [oauth] T06-DELTA fresh consent after completed revoke can reconnect without reviving old state
+PASS [oauth] T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion
+PASS [oauth] T06-DELTA two initial consent callbacks cannot overwrite the winning account
+PASS [oauth] T06-DELTA account snapshot read error fails closed before state consumption or provider GET
+PASS [oauth] T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish
+PASS [oauth] T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke
+PASS [oauth] T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke
+PASS [oauth] T06 routes: session absente ne modifie ni compte ni production
+PASS [oauth] T06 routes: partiel ne peut pas etre remis a ready ou supprime
+PASS [oauth] T06 routes: occurrence non publiee conserve son identite de deduplication
+PASS [oauth] T06 routes: journal reserve avant projection interdit reset et suppression
+PASS [oauth] T06 routes: transition concurrente preserve publishing et refuse un faux acquittement
+PASS [oauth] T06 routes: panne revoke distante rend 202 avec etat local revoque
+PASS [oauth] T06 routes: compte absent rend 404 et panne DB rend 503 sans revoke distant
+PASS [oauth] T06 routes: cron desactive reconcilie en lecture seule sans travail de generation
+PASS [oauth] T06 routes: cron sans autorisation ne lit ni ne soumet rien
+PASS [publication] Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence
+PASS [publication] Zernio accepte 201 programme sans jamais annoncer publie
+PASS [publication] Zernio convertit x en twitter et transmet chaque caption propre
+PASS [publication] Zernio refuse une echeance passee au lieu de publier immediatement
+PASS [publication] Zernio refuse UUID local, plateforme indisponible et cle absente avant appel
+PASS [publication] Zernio succes pour un autre compte reste inconnu
+PASS [publication] Zernio resultat partiel conserve toutes les destinations demandees
+PASS [publication] Zernio ancienne reponse success=true sans preuve n'est pas acceptee
+PASS [publication] Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable
+PASS [publication] Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien
+PASS [publication] Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien
+PASS [publication] Publication: timeout laisse une reservation, reprise exacte apres le bail
+PASS [publication] Publication: succes partiel, GET puis retry du seul compte en echec
+PASS [publication] Publication: programmation puis reconciliation utilise GET sans POST supplementaire
+PASS [publication] Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation
+PASS [publication] Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee
+PASS [publication] Publication: historique secondaire reparable sans nouvelle publication
+PASS [publication] Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme
+PASS [publication] Publication: les trois routes historiques partagent le handler
+PASS [publication] Zernio reconciliation refuse les destinations supplementaires avant tout retry
+PASS [publication] Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible
+PASS [publication] Zernio retry vise le post original une seule fois et ne recree jamais de post
+PASS [publication] Zernio revoke 404 est idempotent et erreur sensible jamais loggee
+PASS [publication] T06: une production peut cibler deux comptes distincts sans reposter au premier
+PASS [publication] T06: compte manquant conserve le partiel puis reprend uniquement cette destination
+PASS [publication] T06: compte revoked refuse avant POST
+PASS [publication] T06: compte disconnected refuse avant POST
+PASS [publication] T06: compte expired refuse avant POST
+PASS [publication] T06: compte invalid-expiry refuse avant POST
+PASS [publication] T06: revocation apres reservation empeche le POST
+PASS [publication] T06: revocation locale precedente a la panne distante; historique conserve et aucune repetition aveugle
+PASS [publication] T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST
+PASS [publication] T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay
+PASS [publication] T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate
+PASS [publication] T06: replay refuse si revoked a change
+PASS [publication] T06: replay refuse si external-id a change
+PASS [publication] T06: replay refuse si media-hash a change
+PASS [publication] T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed
+PASS [publication] T06: panne de projection reparee depuis journal sans creation distante
+PASS [publication] T06: succes video ne valide pas un nouvel export url
+PASS [publication] T06: succes video ne valide pas un nouvel export sha256
+PASS [publication] T06: succes auto ne valide pas un nouvel export url
+PASS [publication] T06: succes auto ne valide pas un nouvel export sha256
+PASS [publication] T06: import PR3 multi-destination conserve le succes et les identifiants historiques
+PASS [publication] T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication
+PASS [publication] T06: autonomie refuse inactive
+PASS [publication] T06: autonomie refuse approval
+PASS [publication] T06: autonomie refuse not-due
+PASS [publication] T06: autonomie refuse invalid-date
+PASS [publication] T06: autonomie refuse no-proof
+PASS [publication] T06: approbation explicite autorise le media verifie meme avec mode automatique arrete
+PASS [publication] T06: autorisation retiree entre reservation et envoi ferme toute destination
+PASS [publication] T06: controle service isole utilisateur et production, sans nouvelle requete
+PASS [publication] T06: replay reautorise apres claim si revoked change
+PASS [publication] T06: replay reautorise apres claim si disconnected change
+PASS [publication] T06: replay reautorise apres claim si external-id change
+PASS [publication] T06: replay reautorise apres claim si media-hash change
+PASS [publication] T06: replay reautorise apres claim si profile-revoked change
+PASS [publication] T06: autonomie replay refuse une approbation retiree apres claim
+PASS [publication] T06: retry reautorise apres claim si revoked change
+PASS [publication] T06: retry reautorise apres claim si disconnected change
+PASS [publication] T06: retry reautorise apres claim si external-id change
+PASS [publication] T06: retry reautorise apres claim si media-hash change
+PASS [publication] T06: retry reautorise apres claim si profile-revoked change
+PASS [publication] T06: autonomie retry refuse une approbation retiree apres claim
+PASS [publication] T06: profil banned refuse la publication video service-role
+PASS [publication] T06: profil revoked refuse la publication video service-role
+PASS [publication] T06: profil missing refuse la publication video service-role
+PASS [publication] T06: profil unreadable refuse la publication video service-role
+PASS [publication] T06: profil banned refuse la publication auto service-role
+PASS [publication] T06: profil revoked refuse la publication auto service-role
+PASS [publication] T06: profil missing refuse la publication auto service-role
+PASS [publication] T06: profil unreadable refuse la publication auto service-role
+PASS [publication] T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET
+PASS [publication] T06 tenant: first refuses profile-changed
+PASS [publication] T06 tenant: first refuses binding-removed
+PASS [publication] T06 tenant: first refuses metadata-absent
+PASS [publication] T06 tenant: first refuses revocation-pending
+PASS [publication] T06 tenant: replay refuses profile-changed
+PASS [publication] T06 tenant: replay refuses binding-removed
+PASS [publication] T06 tenant: replay refuses metadata-absent
+PASS [publication] T06 tenant: replay refuses revocation-pending
+PASS [publication] T06 tenant: retry refuses profile-changed
+PASS [publication] T06 tenant: retry refuses binding-removed
+PASS [publication] T06 tenant: retry refuses metadata-absent
+PASS [publication] T06 tenant: retry refuses revocation-pending
+PASS [publication] T06 tenant: binding removed after durable claim prevents first POST
+PASS [publication] T06 tenant: automatic publication uses the same current profile authority
+PASS [publication] T06 tenant: read-only reconciliation preserves historical success after reassignment
+PASS [publication] T06 tenant: fresh consent in current profile permits one send and no duplicate
+PASS [publication] T06 CAS: real Supabase serializer preserves ownership and NULL predicates
+PASS [publication] T06 CAS: real Supabase serializer preserves ownership and JSONB predicates
+PASS [auto-config] GET rejects anonymous before privileged access
+PASS [auto-config] GET rejects expired before privileged access
+PASS [auto-config] GET rejects revoked before privileged access
+PASS [auto-config] GET redacts Error at auth
+PASS [auto-config] GET redacts object at auth
+PASS [auto-config] GET redacts Error at service
+PASS [auto-config] GET redacts object at service
+PASS [auto-config] GET redacts Error at read
+PASS [auto-config] GET redacts object at read
+PASS [auto-config] PATCH rejects anonymous before privileged access
+PASS [auto-config] PATCH rejects expired before privileged access
+PASS [auto-config] PATCH rejects revoked before privileged access
+PASS [auto-config] PATCH redacts Error at auth
+PASS [auto-config] PATCH redacts object at auth
+PASS [auto-config] PATCH redacts Error at service
+PASS [auto-config] PATCH redacts object at service
+PASS [auto-config] PATCH redacts Error at write
+PASS [auto-config] PATCH redacts object at write
+PASS [auto-config] two identities read only their own configuration
+PASS [auto-config] lazy configuration creation retains defaults and hides insertion diagnostics
+PASS [auto-config] patch uses authenticated owner and accepted fields only
+PASS [auto-config] unknown fields cannot trigger a write
+PASS [autopilot] autopilot GET refuses anonymous before privileged access
+PASS [autopilot] autopilot GET refuses expired before privileged access
+PASS [autopilot] autopilot GET refuses revoked before privileged access
+PASS [autopilot] autopilot GET sanitizes thrown auth diagnostics
+PASS [autopilot] autopilot GET sanitizes thrown service diagnostics
+PASS [autopilot] autopilot GET sanitizes returned database diagnostics
+PASS [autopilot] autopilot GET sanitizes thrown database diagnostics
+PASS [autopilot] autopilot POST refuses anonymous before privileged access
+PASS [autopilot] autopilot POST refuses expired before privileged access
+PASS [autopilot] autopilot POST refuses revoked before privileged access
+PASS [autopilot] autopilot POST sanitizes thrown auth diagnostics
+PASS [autopilot] autopilot POST sanitizes thrown service diagnostics
+PASS [autopilot] autopilot POST sanitizes returned database diagnostics
+PASS [autopilot] autopilot POST sanitizes thrown database diagnostics
+PASS [autopilot] autopilot lazy insertion sanitizes returned diagnostics
+PASS [autopilot] autopilot lazy insertion sanitizes thrown diagnostics
+PASS [autopilot] autopilot preserves saved configuration and user isolation
+PASS [autopilot] autopilot lazy defaults never enable publication
+PASS [autopilot] autopilot deduplicates destinations in first-selected order
+PASS [autopilot] autopilot rejects invalid input {}
+PASS [autopilot] autopilot rejects invalid input {"enabled":"true"}
+PASS [autopilot] autopilot rejects invalid input {"enabled":false,"default_platforms":["unknown"]}
+PASS [autopilot] autopilot rejects invalid input {"enabled":false,"max_hashtags":31}
+PASS: timezone, DST, weekly, monthly and invalid schedule cases
+PASS: T06 folds, half-hour gap, date line, strict input, occurrence boundaries and conflicting identities
+PASS: mixed accounts, aliases, scheduledAt, disconnected accounts, empty configuration

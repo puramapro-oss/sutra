@@ -19,6 +19,7 @@ function fakePage() {
   const frame = { url: () => url }
   page.mainFrame = () => frame; page.url = () => url; page.evaluate = async () => {}
   page.goto = async next => { url = next; page.emit('framenavigated', frame) }
+  page.reload = async () => { page.emit('framenavigated', frame) }
   return page
 }
 function read(page, { method = 'GET', url = fixtureOrigin + path, status = 200, finish = true, fail = false } = {}) {
@@ -85,6 +86,23 @@ test('a document change during the wait fails instead of navigating from stale s
   const moving = page.goto(appOrigin + '/next')
   const rejected = assert.rejects(moving, /source document changed/)
   page.emit('framenavigated', page.mainFrame()); await rejected
+})
+
+test('reload waits for the current exact GET body, then requires a new read in the new document', async () => {
+  const { page, snapshot } = await setup()
+  const moving = page.reload()
+  const request = read(page, { finish: false })
+  await Promise.resolve()
+  assert.equal(snapshot().documents.length, 1, 'headers cannot reload the document')
+  page.emit('requestfinished', request); await moving
+  assert.equal(snapshot().waits[0].status, 'PASS')
+  assert.equal(snapshot().documents.length, 2)
+  await assert.rejects(page.reload(), /exact GET did not complete/)
+})
+for (const options of [{ status: 503 }, { fail: true }]) test(`reload preserves failed read ${JSON.stringify(options)}`, async () => {
+  const { page, snapshot } = await setup(); read(page, options)
+  await assert.rejects(page.reload(), /read failed/)
+  assert.equal(snapshot().documents.length, 1)
 })
 
 for (const engine of ['chromium', 'webkit']) test(`${engine}: native deferred read, barrier, genuine CORS and JS failures`, async () => {

@@ -23,7 +23,7 @@ DEFINITIONS = """SELECT json_agg(json_build_object(
  'authenticatedExecute',has_function_privilege('authenticated',p.oid,'EXECUTE'),
  'serviceExecute',has_function_privilege('service_role',p.oid,'EXECUTE')) ORDER BY p.proname)
  FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
- WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid');"""
+ WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid','cancel_video_job');"""
 
 
 def digest(value):
@@ -147,7 +147,7 @@ def guarded_sql(expected, sql):
     guard = """BEGIN;
 SELECT p.oid FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
  WHERE n.nspname='sutra' AND p.proname IN
- ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid')
+ ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid','cancel_video_job')
  ORDER BY p.oid FOR UPDATE OF p;
 DO $sutra_transition_guard$ BEGIN
  IF (""" + DEFINITIONS.rstrip(';') + ")::jsonb IS DISTINCT FROM '" + encoded + "'::jsonb THEN\n"

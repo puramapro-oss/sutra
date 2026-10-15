@@ -1,0 +1,27 @@
+{
+  "baseCommit": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+  "scope": "canonical production handler + canonical cancellation SQL; minimal canonical activity table; no deployed audit certification",
+  "results": [
+    {
+      "name": "canonical cancellation and quota",
+      "status": "PASS",
+      "job": {
+        "id": "dac8f0e2-9c7d-4add-91bb-9e629e83880f",
+        "status": "cancelled",
+        "created_at": "2026-10-15T22:38:02.776Z",
+        "updated_at": "2026-10-15T22:38:02.780Z"
+      },
+      "quota": {
+        "reserved": 0,
+        "released": 1
+      }
+    },
+    {
+      "name": "durable cancellation activity event",
+      "status": "FAIL",
+      "message": "AUDIT_GAP: cancellation acknowledged, but no canonical activity event for the actor/job",
+      "activityEvents": [],
+      "triggers": []
+    }
+  ]
+}

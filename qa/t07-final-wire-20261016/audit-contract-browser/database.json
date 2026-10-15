@@ -1,0 +1,61 @@
+{
+  "jobs": [
+    {
+      "id": "0278b8f7-e119-47b2-a003-df23b93d80d2",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-cbfe0dea-a9d8-4e06-85e2-6bf76603089a",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T22:31:56.540Z",
+      "updated_at": "2026-10-15T22:31:56.543Z"
+    }
+  ],
+  "beforeCleanup": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 1
+    }
+  ],
+  "counters": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 1
+    }
+  ],
+  "cleanupCancellations": 0,
+  "evidence": {
+    "requests": [
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Audit gratuit sans fournisseur",
+          "template": "youtube",
+          "format": "16:9",
+          "requestId": "cbfe0dea-a9d8-4e06-85e2-6bf76603089a"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "cbfe0dea-a9d8-4e06-85e2-6bf76603089a",
+          "idea": "Audit gratuit sans fournisseur"
+        }
+      }
+    ],
+    "rpc": [
+      "submit_video_job",
+      "cancel_video_job"
+    ],
+    "workerCalls": 0,
+    "providerCalls": 0,
+    "publicationCalls": 0,
+    "restartedPools": 0
+  }
+}

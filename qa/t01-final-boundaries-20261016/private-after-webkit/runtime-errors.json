@@ -1,0 +1,65 @@
+{
+  "errors": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:65471/_next/static/webpack/29fdb5f4fa4e2217.webpack.hot-update.json due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:65471/_next/static/webpack/29fdb5f4fa4e2217.webpack.hot-update.json due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:65471/_next/static/chunks/webpack.js?v=1792103564263:1374:25)",
+      "navigation": 2,
+      "at": 1792103569405
+    }
+  ],
+  "qualified": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:65471/_next/static/webpack/29fdb5f4fa4e2217.webpack.hot-update.json due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:65471/_next/static/webpack/29fdb5f4fa4e2217.webpack.hot-update.json due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:65471/_next/static/chunks/webpack.js?v=1792103564263:1374:25)",
+      "navigation": 2,
+      "at": 1792103569405,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:65471/_next/static/webpack/29fdb5f4fa4e2217.webpack.hot-update.json",
+        "method": "GET",
+        "document": "https://127.0.0.1:65471/library",
+        "navigation": 2,
+        "at": 1792103569405
+      }
+    }
+  ],
+  "unexpected": [],
+  "events": [
+    {
+      "kind": "unload-fetch",
+      "url": "https://127.0.0.1:65471/_next/static/webpack/29fdb5f4fa4e2217.webpack.hot-update.json",
+      "method": "GET",
+      "document": "https://127.0.0.1:65471/library",
+      "navigation": 2,
+      "at": 1792103569405
+    },
+    {
+      "kind": "pagehide",
+      "document": "https://127.0.0.1:65471/library",
+      "navigation": 2,
+      "at": 1792103569775
+    }
+  ],
+  "navigations": [
+    {
+      "id": 1,
+      "method": "goto",
+      "from": "nullblank",
+      "to": "https://127.0.0.1:65471/login",
+      "startedAt": 1792103564240,
+      "finishedAt": 1792103564745
+    },
+    {
+      "id": 2,
+      "method": "goto",
+      "from": "https://127.0.0.1:65471/library",
+      "to": "https://127.0.0.1:65471/editor/22222222-2222-4222-8222-222222222222",
+      "startedAt": 1792103568763,
+      "finishedAt": 1792103569779
+    }
+  ],
+  "domErrors": []
+}

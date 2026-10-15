@@ -1,0 +1,18 @@
+{
+  "head": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+  "command": [
+    "gitleaks",
+    "stdin",
+    "--redact=100",
+    "--report-format=json",
+    "--report-path",
+    "/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-integration-proof-20261015/gitleaks-source-qa.json",
+    "--no-banner"
+  ],
+  "exitCode": 1,
+  "findingCount": 1,
+  "inputFiles": 880,
+  "inputSha256": "e236f780da2f43bf1596bfd3f381eea24e5df7a6604d4442a39a2426f7e91a7b",
+  "scope": "tracked source/scripts/migrations/sql/packages/config plus own final receipts; excludes env files, no master access",
+  "rules": "default; redaction100; minimal environment"
+}

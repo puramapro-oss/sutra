@@ -59,12 +59,22 @@ export async function privateDownloadChecks({ page, context, base, fixture, chec
     fixture.state.mediaMode = 'hang'; fixture.state.mediaDelayMs = 0
     const before = downloads
     await page.clock.install()
-    const response = page.waitForResponse(r => r.url().includes('/storage/v1/object/sign/') && r.request().resourceType() === 'fetch')
-    await button.click(); await response
+    const transferCount = fixture.state.suspendedMedia.length
+    const signatureCount = fixture.state.signatures.length
+    await button.click()
+    // Observe the real loopback stream, independently of redirect event attribution.
+    // Chromium CI can report the final 200 on /api/media rather than the signed URL.
+    await expect.poll(() => fixture.state.suspendedMedia.length).toBe(transferCount + 1)
+    const transfer = fixture.state.suspendedMedia[transferCount]
+    assert.equal(transfer.method, 'GET'); assert.equal(transfer.destination, 'empty')
+    assert.equal(transfer.status, 200); assert.equal(transfer.bytesWritten, 1)
+    assert.equal(transfer.ended, false); assert.equal(transfer.closed, false)
+    assert.ok(fixture.state.signatures.length > signatureCount, 'real media route signs a fresh owner request')
     await expect(button).toBeDisabled()
     await page.clock.fastForward(31000)
     await expect(error).toBeVisible(); await expect(button).toBeEnabled()
     assert.equal(downloads, before)
-    details.push({ timeout: '30000ms browser clock advanced 31000ms; body suspended', noActualWait30s: true })
+    await expect.poll(() => transfer.closed).toBe(true)
+    details.push({ suspendedTransfer: transfer, timeout: '30000ms browser clock advanced 31000ms; body suspended', noActualWait30s: true })
   })
 }

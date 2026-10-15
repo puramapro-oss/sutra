@@ -1,0 +1,1293 @@
+{
+  "target": {
+    "name": "cancelJobByKey",
+    "type": "",
+    "filePath": "src/lib/video-queue.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 158,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "CRITICAL",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 142,
+    "processes_affected": 14,
+    "modules_affected": 14
+  },
+  "byDepthCounts": {
+    "1": 142,
+    "2": 15,
+    "3": 1
+  },
+  "affected_processes": [
+    {
+      "name": "POST → FetchWithRetry",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/create/route.ts",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "AdminWithdrawalsPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "CanalRegistrationPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "LoginPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "POST → GetMaxQuality",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "POST → HttpErrorMessage",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "PartenaireDashboard → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "PartnerCoachPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "ResetPasswordPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "VideosPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "DashboardPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "PartenariatPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "Submit → Blocked",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 21,
+      "impact": "direct"
+    },
+    {
+      "name": "Salad",
+      "hits": 9,
+      "impact": "direct"
+    },
+    {
+      "name": "Callback",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_5",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Hooks",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Library",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Production",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "T07-final-ux-perf-20261015",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Browser-harness",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_458",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_494",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_495",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Ui",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "[id]",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "truncated": true
+  },
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Class:scripts/test-t03-salad-recovery.mts:Transport",
+        "name": "Transport",
+        "filePath": "scripts/test-t03-salad-recovery.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:BATON.md",
+        "name": "BATON.md",
+        "filePath": "BATON.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T01-20261012.md",
+        "name": "HANDOFF-SUTRA-T01-20261012.md",
+        "filePath": "HANDOFF-SUTRA-T01-20261012.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T01-20261015.md",
+        "name": "HANDOFF-SUTRA-T01-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T01-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T02-RPC-SECURITY-20261015.md",
+        "name": "HANDOFF-SUTRA-T02-RPC-SECURITY-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T02-RPC-SECURITY-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T03-20261012.md",
+        "name": "HANDOFF-SUTRA-T03-20261012.md",
+        "filePath": "HANDOFF-SUTRA-T03-20261012.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T03-DURABLE-CLOSURE-20261015.md",
+        "name": "HANDOFF-SUTRA-T03-DURABLE-CLOSURE-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T03-DURABLE-CLOSURE-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T03-DURABLE-RELIABILITY-20261014.md",
+        "name": "HANDOFF-SUTRA-T03-DURABLE-RELIABILITY-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T03-DURABLE-RELIABILITY-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T03-FINAL-DURABLE-20261015.md",
+        "name": "HANDOFF-SUTRA-T03-FINAL-DURABLE-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T03-FINAL-DURABLE-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T03-ORCHESTRATION-FIXES-20261014.md",
+        "name": "HANDOFF-SUTRA-T03-ORCHESTRATION-FIXES-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T03-ORCHESTRATION-FIXES-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T04-20261012.md",
+        "name": "HANDOFF-SUTRA-T04-20261012.md",
+        "filePath": "HANDOFF-SUTRA-T04-20261012.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T04-FINAL-PROVIDERS-20261015.md",
+        "name": "HANDOFF-SUTRA-T04-FINAL-PROVIDERS-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T04-FINAL-PROVIDERS-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T04-PROVIDER-FIXES-20261014.md",
+        "name": "HANDOFF-SUTRA-T04-PROVIDER-FIXES-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T04-PROVIDER-FIXES-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T04-PROVIDER-VALIDATION-20261014.md",
+        "name": "HANDOFF-SUTRA-T04-PROVIDER-VALIDATION-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T04-PROVIDER-VALIDATION-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T05-20261012.md",
+        "name": "HANDOFF-SUTRA-T05-20261012.md",
+        "filePath": "HANDOFF-SUTRA-T05-20261012.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T05-INTEGRATED-RETEST-20261015.md",
+        "name": "HANDOFF-SUTRA-T05-INTEGRATED-RETEST-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T05-INTEGRATED-RETEST-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T05-REAL-EXPORT-20261014.md",
+        "name": "HANDOFF-SUTRA-T05-REAL-EXPORT-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T05-REAL-EXPORT-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T06-20261012.md",
+        "name": "HANDOFF-SUTRA-T06-20261012.md",
+        "filePath": "HANDOFF-SUTRA-T06-20261012.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T06-FINAL-SOCIAL-20261015.md",
+        "name": "HANDOFF-SUTRA-T06-FINAL-SOCIAL-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T06-FINAL-SOCIAL-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T06-INTEGRATED-RETEST-20261015.md",
+        "name": "HANDOFF-SUTRA-T06-INTEGRATED-RETEST-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T06-INTEGRATED-RETEST-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T06-SOCIAL-FINAL-20261014.md",
+        "name": "HANDOFF-SUTRA-T06-SOCIAL-FINAL-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T06-SOCIAL-FINAL-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T06-SOCIAL-RECOVERY-20261014.md",
+        "name": "HANDOFF-SUTRA-T06-SOCIAL-RECOVERY-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T06-SOCIAL-RECOVERY-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T07-20261012.md",
+        "name": "HANDOFF-SUTRA-T07-20261012.md",
+        "filePath": "HANDOFF-SUTRA-T07-20261012.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T07-FINAL-UX-PERF-20261015.md",
+        "name": "HANDOFF-SUTRA-T07-FINAL-UX-PERF-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T07-FINAL-UX-PERF-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T07-FRONTEND-FIXES-20261014.md",
+        "name": "HANDOFF-SUTRA-T07-FRONTEND-FIXES-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T07-FRONTEND-FIXES-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T07-INTEGRATED-RETEST-20261015.md",
+        "name": "HANDOFF-SUTRA-T07-INTEGRATED-RETEST-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T07-INTEGRATED-RETEST-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T07-MODES-20261014.md",
+        "name": "HANDOFF-SUTRA-T07-MODES-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T07-MODES-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T08-20261012.md",
+        "name": "HANDOFF-SUTRA-T08-20261012.md",
+        "filePath": "HANDOFF-SUTRA-T08-20261012.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T08-ACCEPTANCE-72F-20261015.md",
+        "name": "HANDOFF-SUTRA-T08-ACCEPTANCE-72F-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T08-ACCEPTANCE-72F-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T08-ACCEPTANCE-D21-20261015.md",
+        "name": "HANDOFF-SUTRA-T08-ACCEPTANCE-D21-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T08-ACCEPTANCE-D21-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T08-CLOSURE-20261014.md",
+        "name": "HANDOFF-SUTRA-T08-CLOSURE-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T08-CLOSURE-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T08-FINAL-CANDIDATE-20261015.md",
+        "name": "HANDOFF-SUTRA-T08-FINAL-CANDIDATE-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T08-FINAL-CANDIDATE-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:HANDOFF-SUTRA-T08-FINAL-MODES-20261014.md",
+        "name": "HANDOFF-SUTRA-T08-FINAL-MODES-20261014.md",
+        "filePath": "HANDOFF-SUTRA-T08-FINAL-MODES-20261014.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:deploy/README.md",
+        "name": "README.md",
+        "filePath": "deploy/README.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-consolidation-20261014/legal-diagnostic.mjs",
+        "name": "legal-diagnostic.mjs",
+        "filePath": "qa/t01-consolidation-20261014/legal-diagnostic.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-consolidation-20261014/legal-throttled-diagnostic.mjs",
+        "name": "legal-throttled-diagnostic.mjs",
+        "filePath": "qa/t01-consolidation-20261014/legal-throttled-diagnostic.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-consolidation-20261014/navigation-diagnostic.mjs",
+        "name": "navigation-diagnostic.mjs",
+        "filePath": "qa/t01-consolidation-20261014/navigation-diagnostic.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-final-20261015/browser-harness/native-controls.mjs",
+        "name": "native-controls.mjs",
+        "filePath": "qa/t01-final-20261015/browser-harness/native-controls.mjs",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t02-integrated-security-20261015/evidence-output.cjs",
+        "name": "evidence-output.cjs",
+        "filePath": "qa/t02-integrated-security-20261015/evidence-output.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "name": "test-t02-salad-security-contract.mts",
+        "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t02-security-fixes-20261014/probe-request-redirect.cjs",
+        "name": "probe-request-redirect.cjs",
+        "filePath": "qa/t02-security-fixes-20261014/probe-request-redirect.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t04-final-providers-20261015/salad-read.mjs",
+        "name": "salad-read.mjs",
+        "filePath": "qa/t04-final-providers-20261015/salad-read.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t04-salad-access-20261015/README.md",
+        "name": "README.md",
+        "filePath": "qa/t04-salad-access-20261015/README.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t04-salad-access-20261015/secure_setup.py",
+        "name": "secure_setup.py",
+        "filePath": "qa/t04-salad-access-20261015/secure_setup.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-final-ux-perf-20261015/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t07-final-ux-perf-20261015/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-frontend-fixes-20261014/browser.mjs",
+        "name": "browser.mjs",
+        "filePath": "qa/t07-frontend-fixes-20261014/browser.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-frontend-journey-20261014/journey-checks.mjs",
+        "name": "journey-checks.mjs",
+        "filePath": "qa/t07-frontend-journey-20261014/journey-checks.mjs",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-frontend-journey-20261014/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t07-frontend-journey-20261014/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-integrated-retest-20261015/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t07-integrated-retest-20261015/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-modes-20261014/browser.mjs",
+        "name": "browser.mjs",
+        "filePath": "qa/t07-modes-20261014/browser.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-scheduler-cancel-20261015/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t07-scheduler-cancel-20261015/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-local-engine-e2e.mts",
+        "name": "test-local-engine-e2e.mts",
+        "filePath": "scripts/test-local-engine-e2e.mts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-release-regressions.mts",
+        "name": "test-release-regressions.mts",
+        "filePath": "scripts/test-release-regressions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-security-account.mts",
+        "name": "test-security-account.mts",
+        "filePath": "scripts/test-security-account.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-t02-salad-security.mts",
+        "name": "test-t02-salad-security.mts",
+        "filePath": "scripts/test-t02-salad-security.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-t03-suno-recovery.mts",
+        "name": "test-t03-suno-recovery.mts",
+        "filePath": "scripts/test-t03-suno-recovery.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-t04-pollinations.mts",
+        "name": "test-t04-pollinations.mts",
+        "filePath": "scripts/test-t04-pollinations.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-t06-social-final.mts",
+        "name": "test-t06-social-final.mts",
+        "filePath": "scripts/test-t06-social-final.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-t08-final-modes.mts",
+        "name": "test-t08-final-modes.mts",
+        "filePath": "scripts/test-t08-final-modes.mts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-ui-isolated.mjs",
+        "name": "test-ui-isolated.mjs",
+        "filePath": "scripts/test-ui-isolated.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/app/(dashboard)/auto/schedules/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/auto/schedules/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/app/api/auto/generate/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/generate/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/app/api/create/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/production/IdeaStep.tsx",
+        "name": "IdeaStep.tsx",
+        "filePath": "src/components/production/IdeaStep.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/production/MusicStep.tsx",
+        "name": "MusicStep.tsx",
+        "filePath": "src/components/production/MusicStep.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/production/ScriptStep.tsx",
+        "name": "ScriptStep.tsx",
+        "filePath": "src/components/production/ScriptStep.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/production/StepGenerateCard.tsx",
+        "name": "StepGenerateCard.tsx",
+        "filePath": "src/components/production/StepGenerateCard.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/production/VoiceStep.tsx",
+        "name": "VoiceStep.tsx",
+        "filePath": "src/components/production/VoiceStep.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/ui/Button.tsx",
+        "name": "Button.tsx",
+        "filePath": "src/components/ui/Button.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/hooks/useAuth.ts",
+        "name": "useAuth.ts",
+        "filePath": "src/hooks/useAuth.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/elevenlabs.ts",
+        "name": "elevenlabs.ts",
+        "filePath": "src/lib/elevenlabs.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/local-engine.ts",
+        "name": "local-engine.ts",
+        "filePath": "src/lib/local-engine.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/ltx-utils.ts",
+        "name": "ltx-utils.ts",
+        "filePath": "src/lib/ltx-utils.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/ltx-workflow.ts",
+        "name": "ltx-workflow.ts",
+        "filePath": "src/lib/ltx-workflow.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/ltx.ts",
+        "name": "ltx.ts",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/private-media.ts",
+        "name": "private-media.ts",
+        "filePath": "src/lib/private-media.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/production-pipeline.ts",
+        "name": "production-pipeline.ts",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/application.ts",
+        "name": "application.ts",
+        "filePath": "src/lib/salad/application.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/client.ts",
+        "name": "client.ts",
+        "filePath": "src/lib/salad/client.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/config.ts",
+        "name": "config.ts",
+        "filePath": "src/lib/salad/config.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/engine.ts",
+        "name": "engine.ts",
+        "filePath": "src/lib/salad/engine.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/host.ts",
+        "name": "host.ts",
+        "filePath": "src/lib/salad/host.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/http.ts",
+        "name": "http.ts",
+        "filePath": "src/lib/salad/http.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/inspection.ts",
+        "name": "inspection.ts",
+        "filePath": "src/lib/salad/inspection.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/workflow-contract.ts",
+        "name": "workflow-contract.ts",
+        "filePath": "src/lib/salad/workflow-contract.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/shotstack.ts",
+        "name": "shotstack.ts",
+        "filePath": "src/lib/shotstack.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/suno.ts",
+        "name": "suno.ts",
+        "filePath": "src/lib/suno.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/supabase-server.ts",
+        "name": "supabase-server.ts",
+        "filePath": "src/lib/supabase-server.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/supabase.ts",
+        "name": "supabase.ts",
+        "filePath": "src/lib/supabase.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/video-queue.ts",
+        "name": "video-queue.ts",
+        "filePath": "src/lib/video-queue.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/video-worker.ts",
+        "name": "video-worker.ts",
+        "filePath": "src/lib/video-worker.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:mobile/components/ui/ProgressBar.tsx:ProgressBar",
+        "name": "ProgressBar",
+        "filePath": "mobile/components/ui/ProgressBar.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:qa/t01-consolidation-20261014/browser-diagnostic.mjs:runT07Flows",
+        "name": "runT07Flows",
+        "filePath": "qa/t01-consolidation-20261014/browser-diagnostic.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:qa/t01-consolidation-20261014/browser-diagnostic.mjs:runT07Flows.started@9:4",
+        "name": "started",
+        "filePath": "qa/t01-consolidation-20261014/browser-diagnostic.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:qa/t01-final-20261015/browser-harness/cross-origin-controls.mjs:crossOriginRuntimeControls",
+        "name": "crossOriginRuntimeControls",
+        "filePath": "qa/t01-final-20261015/browser-harness/cross-origin-controls.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-release-regressions.mts:fn@188:84.validate@192:22",
+        "name": "validate",
+        "filePath": "scripts/test-release-regressions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-release-regressions.mts:publicationDatabase",
+        "name": "publicationDatabase",
+        "filePath": "scripts/test-release-regressions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-t02-final-security-grants.mts:denied",
+        "name": "denied",
+        "filePath": "scripts/test-t02-final-security-grants.mts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/create/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_178_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_295_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_88_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/components/autopilot/AutopilotSeriesCard.tsx:AutopilotSeriesCard",
+        "name": "AutopilotSeriesCard",
+        "filePath": "src/components/autopilot/AutopilotSeriesCard.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:HANDOFF-SUTRA-T04-SALAD-ACCESS-20261015.md",
+        "name": "HANDOFF-SUTRA-T04-SALAD-ACCESS-20261015.md",
+        "filePath": "HANDOFF-SUTRA-T04-SALAD-ACCESS-20261015.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:qa/t04-salad-auth-20261015/README.md",
+        "name": "README.md",
+        "filePath": "qa/t04-salad-auth-20261015/README.md",
+        "relationType": "IMPORTS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/auto/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/auto/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/auto/settings/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/auto/settings/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/production/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/production/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/auto/config/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/config/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/production/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/production/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/components/auto/AutoSchedulerControl.tsx",
+        "name": "AutoSchedulerControl.tsx",
+        "filePath": "src/components/auto/AutoSchedulerControl.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/components/production/ProductionRequestStatus.tsx",
+        "name": "ProductionRequestStatus.tsx",
+        "filePath": "src/components/production/ProductionRequestStatus.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/components/production/ThumbnailStep.tsx",
+        "name": "ThumbnailStep.tsx",
+        "filePath": "src/components/production/ThumbnailStep.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/components/ui/EmptyState.tsx",
+        "name": "EmptyState.tsx",
+        "filePath": "src/components/ui/EmptyState.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/hooks/useProductionGeneration.ts",
+        "name": "useProductionGeneration.ts",
+        "filePath": "src/hooks/useProductionGeneration.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/pipeline-submit.ts",
+        "name": "pipeline-submit.ts",
+        "filePath": "src/lib/pipeline-submit.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/storage.ts",
+        "name": "storage.ts",
+        "filePath": "src/lib/storage.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/production/ScriptStep.tsx:ScriptStep",
+        "name": "ScriptStep",
+        "filePath": "src/components/production/ScriptStep.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t02-rpc-security-production.mts",
+        "name": "test-t02-rpc-security-production.mts",
+        "filePath": "scripts/test-t02-rpc-security-production.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 6,
+    "hint": "⚠️ Index is 6 commits behind HEAD. Run analyze tool to update."
+  }
+}

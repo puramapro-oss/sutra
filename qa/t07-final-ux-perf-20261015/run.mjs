@@ -99,7 +99,7 @@ async function runScenario(options, scenarioOutput) {
   navigationSnapshot = observeNavigation(page)
   page.setDefaultTimeout(15000)
   runtimeSnapshot = await observeRuntimeErrors(page, { engine: browser.browserType().name(), nativeControl: engineControl, fixtureOrigin: fixture.url })
-  if (options.includes('--social')) fixtureReadSnapshot = installFixtureReadBarrier(page, { appOrigin: base, fixtureOrigin: fixture.url, userId: fixture.user.id })
+  if (options.includes('--social') || options.includes('--social-reload')) fixtureReadSnapshot = installFixtureReadBarrier(page, { appOrigin: base, fixtureOrigin: fixture.url, userId: fixture.user.id })
   if (options.includes('--schedule-cas') || options.includes('--social-reload')) {
     await enterTestSession({ page, base, fixture })
     const run = options.includes('--schedule-cas') ? casChecks : socialReloadChecks

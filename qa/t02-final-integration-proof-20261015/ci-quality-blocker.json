@@ -1,0 +1,50 @@
+{
+  "candidate": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+  "ciRun": 38809803219,
+  "status": "FAIL",
+  "observedAt": "2026-10-15T22:30:24.119851+00:00",
+  "browser": {
+    "pass": 416,
+    "fail": 2
+  },
+  "failures": [
+    {
+      "family": "chromium/private-download",
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-f36013a-quality-artifacts/qa/t01-final-20261015/browser-final/chromium/private-download/results.json",
+      "sha256": "a304ac123753dfdc1511372e69bfafcdb3cbb2f6e9174690a875ebff21053ee6",
+      "status": "FAIL",
+      "owner": "T01",
+      "failedTests": [
+        "download suspended body: bounded timeout and retry; no file"
+      ]
+    },
+    {
+      "family": "webkit/social-reload",
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-f36013a-quality-artifacts/qa/t01-final-20261015/browser-final/webkit/social-reload/results.json",
+      "sha256": "683c759034415f38309cafc4d0bb5af0e384c8ca4b57036a393bcca0d9827f28",
+      "status": "FAIL",
+      "owner": "T01",
+      "failedTests": [
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ]
+    }
+  ],
+  "skippedSteps": [
+    "Run node scripts/run-ci.mjs legacy",
+    "Run python3 -m unittest discover -s deploy -p 'test_*.py'",
+    "Run python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'",
+    "Atomic social history transition and retained rollback simulations",
+    "Exact candidate promotion and rollback simulations"
+  ],
+  "sourceReceipts": [
+    {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t08-final-ack-20261015/qa/t08-final-ack-20261015/failure-f36013a.json",
+      "sha256": "0f99b9c8e890653135c5ec9b4173b111788be7f3e85f5128d6a525f9aa3d4fd9"
+    },
+    {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t08-final-ack-20261015/qa/t08-final-ack-20261015/ci-verification.json",
+      "sha256": "7297b47a2db28b730e20ec29b2ebfcc0ccd350bd7f525c01d2e77881c43a40fa"
+    }
+  ],
+  "ownerAction": "T01 exclusively reserved both harness boundaries; new final SHA and exact CI awaited. No duplicate browser/build execution."
+}

@@ -1,0 +1,14 @@
+{
+  "status": "PASS_TRIAGED_SYNTHETIC_FIXTURE",
+  "rawFindingCount": 1,
+  "rule": "generic-api-key",
+  "file": "scripts/test-release-regressions.mts",
+  "line": 41,
+  "fileSha256": "385fd6ac175ecbd854bf0a04cdf38febd70c58e75826c4cffd398619253ecf5a",
+  "assignmentSha256": "e9ce15c50c24e1b66d4425ff57d71e6d131787d9e1746a98ba0aa140245bc9a7",
+  "classification": "Hardcoded test-only replacement for CRON_SECRET in negative auth fixture. No runtime credential read or needed. Fixture value not disclosed.",
+  "source": "gitleaks-source-qa.json",
+  "ruleSuppressionAdded": false,
+  "realSecretFindingDemonstrated": false,
+  "scopeLimit": "tracked source/scripts/SQL/config and own QA only; no claim about every remote artifact or production log"
+}

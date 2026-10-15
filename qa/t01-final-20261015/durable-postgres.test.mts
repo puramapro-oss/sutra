@@ -29,6 +29,7 @@ before(async () => {
     CREATE TABLE sutra.sutra_auto_themes(id uuid PRIMARY KEY,user_id uuid,times_used int DEFAULT 0,last_used_at timestamptz);
     CREATE TABLE sutra.sutra_auto_memory(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid,memory_type text,content text,importance numeric,related_video_id uuid);`)
   await query(table(setupSchema, 'videos'))
+  await query(table(setupSchema, 'activity_logs'))
   await query(table(source('migrations/sutra_auto.sql'), 'sutra_auto_videos'))
   await query(source('migrations/20261006_auto_occurrence_integrity.sql'))
   await query(source('migrations/v10_durable_jobs_quota.sql'))
@@ -234,4 +235,54 @@ test('SQL finalization and ready reject fractional measured dimensions', async (
     await assert.rejects(query("SELECT finish_video_job($1,'w','done')", [j.id]), /RESULT_CHECKPOINT_REQUIRED/)
     assert.deepEqual(await counter(j.user), { reserved: 1, completed: 0, released: 0 })
   }
+})
+
+
+test('cancellation creates one bounded durable audit receipt with twelve concurrent requests', async () => {
+  const j = await job('production', { step: 'script', idea: 'private-fixture-prompt' })
+  await cp(j.id, 'w', { effects: { existing: 'retained' } })
+  await query("UPDATE video_jobs SET provider_job_ids='{\"fixture\":\"private-remote-id\"}' WHERE id=$1", [j.id])
+  const results = await Promise.all(Array.from({ length: 12 }, () => query('SELECT cancel_video_job($1) ok', [j.key])))
+  assert.equal(results.filter(r => r.rows[0].ok).length, 1)
+  const events = (await query('SELECT * FROM activity_logs WHERE user_id=$1', [j.user])).rows
+  assert.equal(events.length, 1)
+  assert.equal(events[0].type, 'video_cancelled')
+  assert.deepEqual(events[0].metadata, { job_id: j.id, kind: 'production', previous_status: 'processing', provider_submitted: true })
+  assert.ok(!JSON.stringify(events).includes('private-fixture-prompt'))
+  assert.ok(!JSON.stringify(events).includes('private-remote-id'))
+  const state = await snapshot(j.id)
+  assert.equal(state.progress.effects['activity_logs:cancelled'], events[0].id)
+  assert.equal(state.progress.effects.existing, 'retained')
+  assert.equal(state.status, 'cancelled'); assert.equal(state.locked_by, null); assert.equal(state.lease_until, null)
+  assert.deepEqual(await counter(j.user), { reserved: 0, completed: 0, released: 1 })
+})
+test('failed audit persistence rolls cancellation and quota back together', async () => {
+  const j = await job('production', { step: 'script' })
+  await query("ALTER TABLE activity_logs ADD CONSTRAINT reject_fixture_cancel CHECK(type <> 'video_cancelled') NOT VALID")
+  try {
+    await assert.rejects(query('SELECT cancel_video_job($1)', [j.key]), /reject_fixture_cancel/)
+    assert.equal((await snapshot(j.id)).status, 'processing')
+    assert.deepEqual(await counter(j.user), { reserved: 1, completed: 0, released: 0 })
+    assert.equal((await query('SELECT * FROM activity_logs WHERE user_id=$1', [j.user])).rowCount, 0)
+  } finally { await query('ALTER TABLE activity_logs DROP CONSTRAINT reject_fixture_cancel') }
+  assert.equal((await query('SELECT cancel_video_job($1) ok', [j.key])).rows[0].ok, true)
+})
+test('missing quota fails closed without an audit event or cancellation', async () => {
+  const j = await job('production', { step: 'script' })
+  await query('UPDATE video_quota_counters SET reserved=0 WHERE user_id=$1', [j.user])
+  await assert.rejects(query('SELECT cancel_video_job($1)', [j.key]), /QUOTA_RECONCILIATION_REQUIRED/)
+  assert.equal((await snapshot(j.id)).status, 'processing')
+  assert.equal((await query('SELECT * FROM activity_logs WHERE user_id=$1', [j.user])).rowCount, 0)
+})
+test('queued prior-month cancellation audits once without touching current-month quota', async () => {
+  const j = await job('production', { step: 'script' })
+  await query("UPDATE video_jobs SET status='queued',created_at=date_trunc('month',now())-interval '1 day' WHERE id=$1", [j.id])
+  await query("UPDATE video_quota_counters SET period_start=(date_trunc('month',now())-interval '1 month')::date WHERE user_id=$1", [j.user])
+  await query("INSERT INTO video_quota_counters(user_id,period_start,reserved) VALUES($1,date_trunc('month',now())::date,2)", [j.user])
+  assert.equal((await query('SELECT cancel_video_job($1) ok', [j.key])).rows[0].ok, true)
+  assert.equal((await query('SELECT cancel_video_job($1) ok', [j.key])).rows[0].ok, false)
+  const rows = (await query('SELECT reserved,completed,released FROM video_quota_counters WHERE user_id=$1 ORDER BY period_start', [j.user])).rows
+  assert.deepEqual(rows, [{ reserved: 0, completed: 0, released: 1 }, { reserved: 2, completed: 0, released: 0 }])
+  const events = (await query('SELECT metadata FROM activity_logs WHERE user_id=$1', [j.user])).rows
+  assert.equal(events.length, 1); assert.equal(events[0].metadata.previous_status, 'queued'); assert.equal(events[0].metadata.provider_submitted, false)
 })

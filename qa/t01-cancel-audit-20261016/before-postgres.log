@@ -1,0 +1,85 @@
+✔ SQL refuses invalid terminal result false without consuming quota (302.303084ms)
+✔ SQL refuses invalid terminal result true without consuming quota (10.463667ms)
+✔ SQL refuses invalid terminal result "" without consuming quota (12.337ms)
+✔ SQL refuses invalid terminal result 0 without consuming quota (6.514958ms)
+✔ SQL refuses invalid terminal result [] without consuming quota (6.375ms)
+✔ SQL refuses invalid terminal result {} without consuming quota (6.508375ms)
+✔ SQL refuses invalid terminal result {"videoUrl":"raw.mp4"} without consuming quota (6.681958ms)
+✔ generation RPC cannot enter social states without media or publication journal (18.412375ms)
+✔ retry has durable backoff shared by targeted and batch claims, including concurrent restart (13.521958ms)
+✔ uncertain operation is quarantined directly, with reservation and completed video retained (2.797083ms)
+✔ completed prior-month reservation is settled once, current-month budget untouched (3.268292ms)
+✔ expired lease cannot cancel the new worker result through stale finish or checkpoint (16.26975ms)
+✔ valid measured results finish once for every generation kind and production assembly (11.123125ms)
+✔ substep results agree with their complete checkpoint; invalid string sentinels are refused (15.710917ms)
+✔ SQL rejects missing stages, missing required tracks, raw or unmeasured final output (43.163958ms)
+✔ quota SQL failure rolls back done, preserves acquired result and permits settlement-only retry (8.833083ms)
+✔ legacy compositing_failed is refused; generation states remain SQL-compatible and acquired data survives failure (12.722083ms)
+✔ backoff grows on retry and exhausted jobs are quarantined without releasing uncertain budget (2.908208ms)
+✔ ready rejects malformed scene receipts and missing audio for an acquired optional track (16.058292ms)
+✔ SQL finalization and ready reject fractional measured dimensions (19.091916ms)
+✖ cancellation creates one bounded durable audit receipt with twelve concurrent requests (12.908667ms)
+✖ failed audit persistence rolls cancellation and quota back together (4.050291ms)
+✔ missing quota fails closed without an audit event or cancellation (1.490625ms)
+✖ queued prior-month cancellation audits once without touching current-month quota (2.697916ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 21
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 745.701625
+
+✖ failing tests:
+
+test at qa/t01-final-20261015/durable-postgres.test.mts:5:14332
+✖ cancellation creates one bounded durable audit receipt with twelve concurrent requests (12.908667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/durable-postgres.test.mts:248:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-final-20261015/durable-postgres.test.mts:5:15615
+✖ failed audit persistence rolls cancellation and quota back together (4.050291ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/durable-postgres.test.mts:263:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /reject_fixture_cancel/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t01-final-20261015/durable-postgres.test.mts:5:16837
+✖ queued prior-month cancellation audits once without touching current-month quota (2.697916ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/durable-postgres.test.mts:287:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,59 @@
+{
+  "jobs": [
+    {
+      "id": "fae124eb-9fe4-4138-90a2-31cde9a0a0ae",
+      "status": "queued",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-a105ca58-4e3e-45db-8773-4b8c0c404ff1",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T22:31:24.173Z",
+      "updated_at": "2026-10-15T22:31:24.173Z"
+    }
+  ],
+  "beforeCleanup": [
+    {
+      "reserved": 1,
+      "completed": 0,
+      "released": 0
+    }
+  ],
+  "counters": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 1
+    }
+  ],
+  "cleanupCancellations": 1,
+  "evidence": {
+    "requests": [
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Audit gratuit sans fournisseur",
+          "template": "youtube",
+          "format": "16:9",
+          "requestId": "a105ca58-4e3e-45db-8773-4b8c0c404ff1"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "a105ca58-4e3e-45db-8773-4b8c0c404ff1"
+        }
+      }
+    ],
+    "rpc": [
+      "submit_video_job"
+    ],
+    "workerCalls": 0,
+    "providerCalls": 0,
+    "publicationCalls": 0,
+    "restartedPools": 0
+  }
+}

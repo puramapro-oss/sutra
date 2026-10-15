@@ -8,7 +8,7 @@ export async function startFixture(tlsOptions) {
   const user = { id: '11111111-1111-4111-8111-111111111111', aud: 'authenticated', role: 'authenticated', email: 'legal-test@example.invalid', app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: { name: 'Legal Test' }, created_at: new Date().toISOString(), email_confirmed_at: new Date().toISOString() }
   const token = `${Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url')}.${Buffer.from(JSON.stringify({ sub: user.id, aud: 'authenticated', role: 'authenticated', exp: Math.floor(Date.now() / 1000) + 3600, iat: Math.floor(Date.now() / 1000), email: user.email })).toString('base64url')}.fixture-signature`
   const profile = { id: user.id, email: user.email, name: 'Legal Test', plan: 'creator', credits: 40, monthly_video_count: 0, is_admin: false, tutorial_completed: true, brand_kit: null }
-  const state = { acceptances: [], writes: [], requests: [], legalMode: 'normal', delayMs: 250, videos: [], videoMode: 'normal', signatures: [], mediaMode: 'normal', mediaDelayMs: 0 }
+  const state = { acceptances: [], writes: [], requests: [], legalMode: 'normal', delayMs: 250, videos: [], videoMode: 'normal', signatures: [], mediaMode: 'normal', mediaDelayMs: 0, suspendedMedia: [] }
   const handle = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Headers', '*')
@@ -46,7 +46,14 @@ export async function startFixture(tlsOptions) {
       if (state.mediaMode === 'denied') { res.writeHead(403); return send({ error: 'fixture_denied_private_diagnostic' }) }
       if (state.mediaMode === 'html') { res.setHeader('Content-Type', 'text/html'); return res.end('<html>not a video</html>') }
       res.setHeader('Content-Type', 'video/mp4')
-      if (state.mediaMode === 'hang') { res.write(mediaBytes.subarray(0, 1)); return }
+      if (state.mediaMode === 'hang') {
+        const transfer = { method: req.method, destination: req.headers['sec-fetch-dest'], path,
+          status: 200, bytesWritten: 1, ended: false, closed: false }
+        res.on('close', () => { transfer.closed = true })
+        res.write(mediaBytes.subarray(0, 1))
+        state.suspendedMedia.push(transfer)
+        return
+      }
       return res.end(state.mediaMode === 'corrupt' ? Buffer.from('different bytes') : mediaBytes)
     }
     if (path === '/media.mp4') { res.setHeader('Content-Type', 'video/mp4'); res.setHeader('Content-Disposition', 'attachment; filename="sutra-video.mp4"'); return res.end(mediaBytes) }

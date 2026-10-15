@@ -1,0 +1,65 @@
+{
+  "errors": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json due to access control checks.",
+      "stack": "Fetch API cannot load http://127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (http://127.0.0.1:49773/_next/static/chunks/webpack.js?v=1792103806328:1374:25)",
+      "navigation": 2,
+      "at": 1792103812218
+    }
+  ],
+  "qualified": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json due to access control checks.",
+      "stack": "Fetch API cannot load http://127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (http://127.0.0.1:49773/_next/static/chunks/webpack.js?v=1792103806328:1374:25)",
+      "navigation": 2,
+      "at": 1792103812218,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "http://127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json",
+        "method": "GET",
+        "document": "http://127.0.0.1:49773/library",
+        "navigation": 2,
+        "at": 1792103812218
+      }
+    }
+  ],
+  "unexpected": [],
+  "events": [
+    {
+      "kind": "unload-fetch",
+      "url": "http://127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json",
+      "method": "GET",
+      "document": "http://127.0.0.1:49773/library",
+      "navigation": 2,
+      "at": 1792103812218
+    },
+    {
+      "kind": "pagehide",
+      "document": "http://127.0.0.1:49773/library",
+      "navigation": 2,
+      "at": 1792103812697
+    }
+  ],
+  "navigations": [
+    {
+      "id": 1,
+      "method": "goto",
+      "from": "nullblank",
+      "to": "http://127.0.0.1:49773/login",
+      "startedAt": 1792103806312,
+      "finishedAt": 1792103806809
+    },
+    {
+      "id": 2,
+      "method": "goto",
+      "from": "http://127.0.0.1:49773/library",
+      "to": "http://127.0.0.1:49773/settings/social",
+      "startedAt": 1792103811840,
+      "finishedAt": 1792103812701
+    }
+  ],
+  "domErrors": []
+}
