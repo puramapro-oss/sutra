@@ -6,18 +6,18 @@ La matrice T08 du 15 octobre remplace le compte historique «4 FAIL /3 BLOQUÉS 
 
 | Exigence | Propriétaire et livraison | Correction et preuve | État intégré |
 |---|---|---|---|
-| R54 / T08-CANCEL-01 | T03 ee3f701 ; test indépendant T08 3e49d03 | Diagnostic RPC expurgé, annulation/ACK bornés. Test indépendant conservé dans la CI. | Code reçu ; recette exacte attendue |
-| R55 / T02-CAP-01 | T02 5822770 | Autorité de profil, révocation et provenance vérifiées avant signature privée.19nouveaux tests/22régressions auteur. | Code reçu ; recette exacte attendue |
-| R56 | T06 10693a2 | Revalidation après attente fournisseur et avant DELETE/CAS. | Code reçu ; recette exacte attendue |
-| R64 | T06 10693a2 | Révocation confirmée idempotente, aucun second DELETE. | Code reçu ; recette exacte attendue |
-| R65 | T06 10693a2 | Anciens champs tokens purgés dans les deux issues de révocation. | Code reçu ; recette exacte attendue |
-| R66 / T01-SQL-01 | T01, client_write_permissions | Révocation DML client/colonnes sensibles, politique insert concours bornée.30tests PostgreSQL ; copie OVH rejouable/rollback exact/données inchangées. | Migration préparée, production NON MODIFIÉE |
-| R67 / T06-HISTORY-01 | T01 SQL, contrat T06 | Journal atomique append-only des changements SUTRA, RLS et révocation/reconnexion.23tests PostgreSQL,12simulations transition ; copie OVH/rollback conservant le journal. | Migration préparée, production NON MODIFIÉE |
-| R68 | T05 44cbbab | Slots réservés synchroniquement, minimum1, attente/transport/encodeur bornés par le délai total.34tests auteur dont17exports CPU encodés. | Code reçu ; recette exacte attendue |
-| R69 | T07 c72188a | Panne/timeout chargement social distincts de0compte, reprise explicite. | Code reçu ; Chromium ciblé PASS, erreurs de banc WebKit à qualifier dans campagne exacte |
-| R70 | T07 c72188a | Nom accessible, focus initial et piège clavier du dialogue. | Code reçu ; Chromium ciblé PASS, erreurs de banc WebKit à qualifier dans campagne exacte |
-| R71 | T07 c72188a | Garde synchrone double soumission login/signup, clavier mot de passe. | Code reçu ; Chromium ciblé PASS, erreurs de banc WebKit à qualifier dans campagne exacte |
-| R72 | T03 ee3f701 + T01 SQL | Validation terminale stricte, promotion pending, checkpoints immuables et voix intègre, ACK avant mémoire. Migration cumulative6fonctions. | Code reçu ; PostgreSQL intégré PASS borné |
+| R54 / T08-CANCEL-01 | T03 ee3f701 ; test indépendant T08 3e49d03 | Diagnostic RPC expurgé, annulation/ACK bornés. Test indépendant conservé dans la CI. | Intégré ; CI d21b7b4 PASS ; revue T08 attendue |
+| R55 / T02-CAP-01 | T02 5822770 | Autorité de profil, révocation et provenance vérifiées avant signature privée.19nouveaux tests/22régressions auteur. | Intégré ; CI d21b7b4 PASS ; revue T08 attendue |
+| R56 | T06 10693a2 | Revalidation après attente fournisseur et avant DELETE/CAS. | Intégré ; CI d21b7b4 PASS ; revue T08 attendue |
+| R64 | T06 10693a2 | Révocation confirmée idempotente, aucun second DELETE. | Intégré ; CI d21b7b4 PASS ; revue T08 attendue |
+| R65 | T06 10693a2 | Anciens champs tokens purgés dans les deux issues de révocation. | Intégré ; CI d21b7b4 PASS ; revue T08 attendue |
+| R66 / T01-SQL-01 | T01, client_write_permissions | Révocation DML client/colonnes sensibles, politique insert concours bornée.30tests PostgreSQL ; copie OVH rejouable/rollback exact/données inchangées. | Copie/CI d21b7b4 PASS ; production NON MODIFIÉE |
+| R67 / T06-HISTORY-01 | T01 SQL, contrat T06 | Journal atomique append-only des changements SUTRA, RLS et révocation/reconnexion.23tests PostgreSQL,12simulations transition ; copie OVH/rollback conservant le journal. | Copie/CI d21b7b4 PASS ; production NON MODIFIÉE |
+| R68 | T05 44cbbab | Slots réservés synchroniquement, minimum1, attente/transport/encodeur bornés par le délai total.34tests auteur dont17exports CPU encodés. | Intégré ; CI d21b7b4 PASS ; revue T08 attendue |
+| R69 | T07 c72188a | Panne/timeout chargement social distincts de0compte, reprise explicite. | Intégré ; Chromium/WebKit CI d21b7b4 PASS ; diagnostics bruts qualifiés conservés, revue T08 attendue |
+| R70 | T07 c72188a | Nom accessible, focus initial et piège clavier du dialogue. | Intégré ; Chromium/WebKit CI d21b7b4 PASS ; diagnostics bruts qualifiés conservés, revue T08 attendue |
+| R71 | T07 c72188a | Garde synchrone double soumission login/signup, clavier mot de passe. | Intégré ; Chromium/WebKit CI d21b7b4 PASS ; diagnostics bruts qualifiés conservés, revue T08 attendue |
+| R72 | T03 ee3f701 + T01 SQL | Validation terminale stricte, promotion pending, checkpoints immuables et voix intègre, ACK avant mémoire. Migration cumulative6fonctions. | PostgreSQL CI d21b7b4 PASS ; migration production NON APPLIQUÉE |
 
 Preuve PostgreSQL intégrée : premier passage46tests44PASS2FAIL0SKIP. Deux assertions historiques devenues incompatibles avec le contrat renforcé : erreur RPC avant CHECK SQL, dix étapes avec storyboard au lieu de neuf. Rouge conservé dans integrated-postgres-before-fixture-correction.*. Correction des seules fixtures : erreur RPC vérifiée ET CHECK SQL exercé directement ; liste exacte des dix étapes et storyboard skipped vide. Rejeu du seul fichier affecté :13PASS0FAIL0SKIP, durable-regression-after.*. Ne pas additionner ce rejeu aux46tests.
 
@@ -74,3 +74,13 @@ CI48eb91a :5gardes WebKit FAIL, fonctions attendues PASS ; requetes _rsc non obs
 ### T01 2026-10-15T03:34:44.388230+00:00 — delta QA profil/HEAD
 
 CIa520114 FAIL conserve (deux gardes WebKit); app/SQL/config inchanges. Reproduction native du profil synthetique puis qualification strictement bornee, HEAD lecture classe separement et absence ecran erreur persistant verifiee.56controles harnais PASS/0FAIL/0SKIP, social10etnavigation4PASS par moteur sur diagnostic production isole. CI exacte nouveau commit attendue, original T08 requis; production86d04c8 inchangee. Aucune generation/publication/migration/deploy.
+
+### T01 2026-10-15T04:11:50.419783+00:00 — recette exacte complète, promotion suspendue à T08
+
+Candidat **d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2**, CI **38677062190 SUCCESS**, trois jobs PASS. Contrats955PASS/0FAIL/7SKIP ; legacy1022PASS/0FAIL/25SKIP ; vingt familles Chromium/WebKit PASS ; médias CPU réels17exports ; PostgreSQL/RLS et simulations livraison PASS. Résultats détaillés sans addition des recouvrements : [rapport final](README.md) et reçus ci-d21b7b4-tests/database/status.json. Les SKIP historiques et les sept alertes npm low/moderate restent affichés. Aucune nouvelle exclusion.
+
+Les douze défauts de la matrice historique ont leurs corrections intégrées et contrôles T01 exacts PASS ; ceci ne réécrit pas le verdict indépendant T08. R66/R67/R72 restent NON DÉPLOYÉS. Production **86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164**, https://sutra.purama.dev, image/source/démarrage inchangés au contrôle03:40UTC. Candidat OVH d21 isolé construit et arrêté, cinq smokes/FFmpeg PASS. Aucun apply SQL/promotion de ce lot.
+
+Prochaine étape : ACK indépendant du T08 original sur d21b7b4 et CI38677062190. Transport terminal indisponible (-32603), relais déjà demandé ; aucun accord inventé. Après ACK : revalider backup de moins de4h (actuel01:10UTC), manifeste, runtime et reçus SQL avant la promotion déjà autorisée. Aucun nouveau build complet sans delta. Salad reste désactivé (clé master malformée non envoyée, clé valide requise depuis https://portal.salad.com/). Consentements légaux/OAuth personnels requis pour les réseaux voulus ; aucun compte connecté automatiquement.
+
+Sept livraisons intégrées/préservées, neuf worktrees auteurs/historiques propres et HEAD inchangés, sept empreintes WIP étrangères et1034fichiers du manifeste vérifiés. T02–T07 FIN_ECRITURE ; T08 attente revue exacte ; T01 intégré/testé, release bloquée externe. Aucun terminal fermé ni FERMABLE global présumé. Secrets non affichés, aucune dépense/génération/publication.

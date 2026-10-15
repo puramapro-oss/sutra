@@ -1,0 +1,45 @@
+{
+  "source": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+  "imageId": "sha256:d1c8e9ee93fd7c647a92461acb192f934e6ddac6e9976459457e0fef693541fc",
+  "id": "8fb40a84ffa31f443e2fe718574fb79880f1450185ac1f6c4209815ed87eb511",
+  "startedAt": "2026-10-14T04:13:37.086258614Z",
+  "health": "healthy",
+  "restarts": 0,
+  "candidateStopped": true,
+  "unchangedSourceAndImage": true,
+  "observedAt": "2026-10-15T03:40:04.182931+00:00",
+  "readOnly": true,
+  "publicChecks": [
+    {
+      "path": "/",
+      "status": 200,
+      "expected": 200,
+      "passCheck": true
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "expected": 200,
+      "passCheck": true
+    },
+    {
+      "path": "/api/points",
+      "status": 401,
+      "expected": 401,
+      "passCheck": true
+    },
+    {
+      "path": "/api/video/status/00000000-0000-0000-0000-000000000000",
+      "status": 401,
+      "expected": 401,
+      "passCheck": true
+    },
+    {
+      "path": "/api/media/b3duZXJzL3UvdGVzdC5tcDQ",
+      "status": 401,
+      "expected": 401,
+      "passCheck": true
+    }
+  ],
+  "status": "PASS"
+}

@@ -328,3 +328,13 @@ CIed12d9c38671657736 FAIL : seul garde social WebKit rouge ; contrats/medias/PG/
 ### T01 2026-10-15T03:34:44.387436+00:00 — delta QA profil/HEAD
 
 CIa520114 FAIL conserve (deux gardes WebKit); app/SQL/config inchanges. Reproduction native du profil synthetique puis qualification strictement bornee, HEAD lecture classe separement et absence ecran erreur persistant verifiee.56controles harnais PASS/0FAIL/0SKIP, social10etnavigation4PASS par moteur sur diagnostic production isole. CI exacte nouveau commit attendue, original T08 requis; production86d04c8 inchangee. Aucune generation/publication/migration/deploy.
+
+### T01 2026-10-15T04:11:50.419783+00:00 — recette exacte complète, promotion suspendue à T08
+
+Candidat **d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2**, CI **38677062190 SUCCESS**, trois jobs PASS. Contrats955PASS/0FAIL/7SKIP ; legacy1022PASS/0FAIL/25SKIP ; vingt familles Chromium/WebKit PASS ; médias CPU réels17exports ; PostgreSQL/RLS et simulations livraison PASS. Résultats détaillés sans addition des recouvrements : [rapport final](qa/t01-final-20261015/README.md) et reçus ci-d21b7b4-tests/database/status.json. Les SKIP historiques et les sept alertes npm low/moderate restent affichés. Aucune nouvelle exclusion.
+
+Les douze défauts de la matrice historique ont leurs corrections intégrées et contrôles T01 exacts PASS ; ceci ne réécrit pas le verdict indépendant T08. R66/R67/R72 restent NON DÉPLOYÉS. Production **86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164**, https://sutra.purama.dev, image/source/démarrage inchangés au contrôle03:40UTC. Candidat OVH d21 isolé construit et arrêté, cinq smokes/FFmpeg PASS. Aucun apply SQL/promotion de ce lot.
+
+Prochaine étape : ACK indépendant du T08 original sur d21b7b4 et CI38677062190. Transport terminal indisponible (-32603), relais déjà demandé ; aucun accord inventé. Après ACK : revalider backup de moins de4h (actuel01:10UTC), manifeste, runtime et reçus SQL avant la promotion déjà autorisée. Aucun nouveau build complet sans delta. Salad reste désactivé (clé master malformée non envoyée, clé valide requise depuis https://portal.salad.com/). Consentements légaux/OAuth personnels requis pour les réseaux voulus ; aucun compte connecté automatiquement.
+
+Sept livraisons intégrées/préservées, neuf worktrees auteurs/historiques propres et HEAD inchangés, sept empreintes WIP étrangères et1034fichiers du manifeste vérifiés. T02–T07 FIN_ECRITURE ; T08 attente revue exacte ; T01 intégré/testé, release bloquée externe. Aucun terminal fermé ni FERMABLE global présumé. Secrets non affichés, aucune dépense/génération/publication.
