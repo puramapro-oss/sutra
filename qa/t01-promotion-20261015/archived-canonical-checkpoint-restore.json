@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "productionChanged": false,
+  "migrationSha256": "e8befa9e9fa602d80c483245bc71d07831fe56aad9ee05ed83dc2261a1d7805c",
+  "migrationPath": "migrations/20261015_final_durable_integrity.sql",
+  "database": "isolated restored SUTRA copy",
+  "protectedRollback": "/opt/purama/apps/sutra/backup-t01-coherent-9w47314s/checkpoint-e8befa9e9fa6-v2",
+  "tablesDataUnchanged": 138,
+  "definitionsRestoredExactly": true,
+  "replaySafe": true,
+  "aclAndOwnershipUnchanged": true,
+  "scope": "Five existing RPCs retain ACL and owner; search_path sutra, pg_temp. New invoker-only helper service-only, removed by rollback.",
+  "permissions": [
+    {
+      "name": "checkpoint_video_job_v2",
+      "signature": "sutra.checkpoint_video_job_v2(uuid,text,jsonb,jsonb)",
+      "owner": "supabase_admin",
+      "acl": [
+        "supabase_admin=X/supabase_admin",
+        "service_role=X/supabase_admin"
+      ],
+      "config": [
+        "search_path=sutra, pg_temp"
+      ],
+      "securityDefiner": false,
+      "anonymousExecute": false,
+      "authenticatedExecute": false,
+      "serviceExecute": true
+    },
+    {
+      "name": "claim_video_job_by_key",
+      "signature": "sutra.claim_video_job_by_key(text,text,integer)",
+      "owner": "supabase_admin",
+      "acl": null,
+      "config": null,
+      "securityDefiner": false,
+      "anonymousExecute": true,
+      "authenticatedExecute": true,
+      "serviceExecute": true
+    },
+    {
+      "name": "claim_video_jobs",
+      "signature": "sutra.claim_video_jobs(text,integer,integer)",
+      "owner": "supabase_admin",
+      "acl": null,
+      "config": [
+        "search_path=sutra, pg_temp"
+      ],
+      "securityDefiner": false,
+      "anonymousExecute": true,
+      "authenticatedExecute": true,
+      "serviceExecute": true
+    },
+    {
+      "name": "finish_video_job",
+      "signature": "sutra.finish_video_job(uuid,text,text,text)",
+      "owner": "supabase_admin",
+      "acl": [
+        "supabase_admin=X/supabase_admin",
+        "service_role=X/supabase_admin"
+      ],
+      "config": [
+        "search_path=sutra, pg_temp"
+      ],
+      "securityDefiner": false,
+      "anonymousExecute": false,
+      "authenticatedExecute": false,
+      "serviceExecute": true
+    },
+    {
+      "name": "persist_video_job_video",
+      "signature": "sutra.persist_video_job_video(uuid,text,text,uuid,jsonb,boolean)",
+      "owner": "supabase_admin",
+      "acl": [
+        "supabase_admin=X/supabase_admin",
+        "service_role=X/supabase_admin"
+      ],
+      "config": [
+        "search_path=sutra, pg_temp"
+      ],
+      "securityDefiner": false,
+      "anonymousExecute": false,
+      "authenticatedExecute": false,
+      "serviceExecute": true
+    }
+  ],
+  "backupVerified": true,
+  "rollbackSha256": "bd930c60012cf4eaa0222fb6a6921c7bdf0d77d850de886a25ab54753980e483",
+  "beforeDefinitionsSha256": "cee9bb87babbeae728066b1dd1a49a616fea077b5fedab09cc15085ebcc9823a",
+  "afterDefinitionsSha256": "59444c6aa1e9140ba0883d52efda030206a599a2156b9e5108000b93565e5d42",
+  "observedAt": "2026-10-15T01:36:14.499039+00:00",
+  "command": "python3 qa/t01-consolidation-20261014/verify-checkpoint-restore.py --proof-dir qa/t01-final-20261015"
+}

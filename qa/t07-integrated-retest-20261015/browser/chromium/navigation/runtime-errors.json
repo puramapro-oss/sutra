@@ -1,0 +1,70 @@
+{
+  "errors": [],
+  "qualified": [],
+  "unexpected": [],
+  "events": [
+    {
+      "kind": "pagehide",
+      "document": "https://127.0.0.1:60848/library",
+      "navigation": 2,
+      "at": 1792069748617
+    },
+    {
+      "kind": "unload-fetch",
+      "url": "https://127.0.0.1:60848/api/social/accounts",
+      "method": "GET",
+      "document": "https://127.0.0.1:60848/settings/social",
+      "navigation": 3,
+      "at": 1792069749167
+    },
+    {
+      "kind": "unload-fetch",
+      "url": "https://127.0.0.1:60848/api/social/accounts",
+      "method": "GET",
+      "document": "https://127.0.0.1:60848/settings/social",
+      "navigation": 3,
+      "at": 1792069749178
+    },
+    {
+      "kind": "unload-fetch",
+      "url": "https://127.0.0.1:60847/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+      "method": "GET",
+      "document": "https://127.0.0.1:60848/settings/social",
+      "navigation": 3,
+      "at": 1792069749261
+    },
+    {
+      "kind": "pagehide",
+      "document": "https://127.0.0.1:60848/settings/social",
+      "navigation": 3,
+      "at": 1792069749347
+    }
+  ],
+  "navigations": [
+    {
+      "id": 1,
+      "method": "goto",
+      "from": "nullblank",
+      "to": "https://127.0.0.1:60848/login",
+      "startedAt": 1792069742820,
+      "finishedAt": 1792069743608
+    },
+    {
+      "id": 2,
+      "method": "goto",
+      "from": "https://127.0.0.1:60848/library",
+      "to": "https://127.0.0.1:60848/settings/social",
+      "startedAt": 1792069748572,
+      "finishedAt": 1792069749129
+    },
+    {
+      "id": 3,
+      "method": "goto",
+      "from": "https://127.0.0.1:60848/settings/social",
+      "to": "https://127.0.0.1:60848/auto/schedules",
+      "startedAt": 1792069749129,
+      "finishedAt": 1792069749870
+    }
+  ],
+  "domErrors": []
+}

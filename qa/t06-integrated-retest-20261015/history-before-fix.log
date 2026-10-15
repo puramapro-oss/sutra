@@ -1,0 +1,11 @@
+Own isolated PostgreSQL cluster stopped and preserved
+file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-integrated-retest-20261015/run-postgres.mjs:21
+  if (result.status !== 0) throw new Error('T06_PRIVATE_PG_CHECK_FAILED: ' + (name || command))
+                                 ^
+
+Error: T06_PRIVATE_PG_CHECK_FAILED: postgres
+    at run (file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-integrated-retest-20261015/run-postgres.mjs:21:34)
+    at file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-integrated-retest-20261015/run-postgres.mjs:29:3
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v24.21.0

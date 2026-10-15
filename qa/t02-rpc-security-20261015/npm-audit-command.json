@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/opt/homebrew/bin/npm",
+    "audit",
+    "--omit=dev",
+    "--json",
+    "--ignore-scripts",
+    "--registry=https://registry.npmjs.org",
+    "--userconfig=/dev/null",
+    "--globalconfig=/dev/null"
+  ],
+  "exitCode": 1,
+  "stderr": "Exit prior to config file resolving\ncause\ndouble-loading config \"/dev/null\" as \"global\", previously loaded as \"user\"\n"
+}

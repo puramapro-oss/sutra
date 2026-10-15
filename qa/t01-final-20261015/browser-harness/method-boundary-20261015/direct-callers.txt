@@ -1,0 +1,35 @@
+qa/t07-integrated-retest-20261015/run.mjs:3:import { nativeRuntimeControls } from '../t01-final-20261015/browser-harness/native-controls.mjs'
+qa/t07-integrated-retest-20261015/run.mjs:138:      engineControl = await nativeRuntimeControls(browser)
+qa/t07-integrated-retest-20261015/run.mjs:149:    engineControl = await nativeRuntimeControls(browser)
+qa/t01-final-20261015/browser-harness/native-controls.mjs:8:export async function nativeRuntimeControls(browser) {
+qa/t01-final-20261015/browser-harness/runtime-guard.mjs:29:export function classifyRuntimeErrors({ engine, nativeControl, errors, events, navigations, domErrors, fixtureOrigin }) {
+qa/t01-final-20261015/browser-harness/runtime-guard.mjs:128:  return () => classifyRuntimeErrors({ engine, nativeControl, errors, events, navigations, domErrors, fixtureOrigin })
+qa/t07-final-ux-perf-20261015/run.mjs:2:import { nativeRuntimeControls } from '../t01-final-20261015/browser-harness/native-controls.mjs'
+qa/t07-final-ux-perf-20261015/run.mjs:139:      engineControl = await nativeRuntimeControls(browser)
+qa/t07-final-ux-perf-20261015/run.mjs:150:    engineControl = await nativeRuntimeControls(browser)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:5:import { classifyRuntimeErrors } from './runtime-guard.mjs'
+qa/t01-final-20261015/browser-harness/guard.test.mjs:6:import { nativeRuntimeControls } from './native-controls.mjs'
+qa/t01-final-20261015/browser-harness/guard.test.mjs:16:  const result = classifyRuntimeErrors(seed())
+qa/t01-final-20261015/browser-harness/guard.test.mjs:21:  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:23:  const result = classifyRuntimeErrors(state)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:26:  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:30:  const result = classifyRuntimeErrors(state)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:37:  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:53:  assert.ok(classifyRuntimeErrors(state).unexpected.length > 0)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:59:  assert.equal(classifyRuntimeErrors(state).qualified.length, 1)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:61:  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:67:  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:82:  const result = classifyRuntimeErrors(state)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:98:  assert.ok(classifyRuntimeErrors(state).unexpected.length > 0)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:111:  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:122:  assert.equal(classifyRuntimeErrors(state).qualified.length, 1)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:124:  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:135:  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:139:  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+qa/t01-final-20261015/browser-harness/guard.test.mjs:144:    const result = await nativeRuntimeControls(browser)
+qa/t01-final-20261015/browser-harness/method-boundary-20261015/t08-boundaries.test.mjs:3:import { classifyRuntimeErrors } from '../runtime-guard.mjs'
+qa/t01-final-20261015/browser-harness/method-boundary-20261015/t08-boundaries.test.mjs:21:  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)
+qa/t01-final-20261015/browser-harness/method-boundary-20261015/t08-boundaries.test.mjs:26:    const result = classifyRuntimeErrors(example(method))
+qa/t01-final-20261015/browser-harness/method-boundary-20261015/t08-boundaries.test.mjs:39:  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)
+qa/t01-final-20261015/browser-harness/method-boundary-20261015/t08-boundaries.test.mjs:41:  assert.equal(classifyRuntimeErrors(state).qualified.length, 1)
+qa/t01-final-20261015/browser-harness/method-boundary-20261015/t08-boundaries.test.mjs:43:  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)

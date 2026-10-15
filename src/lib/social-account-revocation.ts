@@ -1,7 +1,7 @@
 import { createServiceClient } from '@/lib/supabase'
 import { randomUUID } from 'node:crypto'
 import { disconnectAccount, getAuthorizedProfileId, type SocialPlatform } from '@/lib/zernio'
-import { SOCIAL_OAUTH_ACCOUNT_COLUMNS, updateSocialOAuthAccount, type SocialOAuthAccount } from '@/lib/social-oauth-account'
+import { SOCIAL_OAUTH_ACCOUNT_COLUMNS, readSocialOAuthAccount, updateSocialOAuthAccount, type SocialOAuthAccount } from '@/lib/social-oauth-account'
 
 /** Retain the account and historical foreign keys. A provider outage cannot
  * restore local publication permission or masquerade as a confirmed revoke. */
@@ -44,8 +44,19 @@ export async function revokeSocialAccount(userId: string, accountId: string,
   // An unknown DELETE may still complete remotely. Keep its durable fence until
   // explicit reconciliation; fresh consent or another DELETE would race it.
   if (!remoteRevoked) return { success: false, status: 'revoked', remoteStatus: 'unconfirmed' }
-  const completed = await updateSocialOAuthAccount(userId, { ...account, ...pending } as SocialOAuthAccount,
-    { metadata: { ...pending.metadata, sutra_revocation_pending: false } }, service)
+  // The DB updated_at trigger replaces the client clock. Reload the committed
+  // snapshot after remote confirmation, retaining ownership of this operation:
+  // a concurrent cleanup may change the timestamp, never its revision/target.
+  const current = await readSocialOAuthAccount(userId, account.platform, service)
+  if (!current || current.id !== account.id || current.external_id !== account.external_id || current.status !== 'revoked'
+    || current.metadata?.sutra_oauth_revision !== pending.metadata.sutra_oauth_revision
+    || current.metadata?.sutra_revocation_pending !== true
+    || current.metadata?.credential_owner !== pending.metadata.credential_owner
+    || current.metadata?.zernio_profile_id !== pending.metadata.zernio_profile_id) {
+    throw new Error('SUTRA_REVOCATION_NOT_CONFIRMED')
+  }
+  const completed = await updateSocialOAuthAccount(userId, current,
+    { metadata: { ...current.metadata, sutra_revocation_pending: false } }, service)
   if (completed.error || !completed.data) throw new Error('SUTRA_REVOCATION_NOT_CONFIRMED')
   return { success: remoteRevoked, status: 'revoked', remoteStatus: remoteRevoked ? 'revoked' : 'unconfirmed' }
 }

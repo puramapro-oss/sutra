@@ -142,7 +142,15 @@ export async function POST(req: Request) {
     jobId = null
     return NextResponse.json({ data: finalData, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
+    // Submission is not the only failure boundary: profile, claim and worker
+    // errors may contain RPC diagnostics or credentials. Only exact public
+    // codes may cross HTTP or be persisted in the user-visible task receipt.
+    const candidate = err instanceof Error ? err.message : ''
+    const message = [
+      'SUTRA_QUOTA_EXHAUSTED', 'SUTRA_IDEMPOTENCY_CONFLICT', 'SUTRA_INVALID_REQUEST_ID',
+      'SUTRA_SUBMISSION_UNCONFIRMED', 'SUTRA_JOB_FINISH_UNCONFIRMED',
+      'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.',
+    ].includes(candidate) ? candidate : 'Generation indisponible'
     try {
       if (jobId) await finishJob(jobId, worker, 'queued', message)
     } catch {

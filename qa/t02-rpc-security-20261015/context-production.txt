@@ -1,0 +1,192 @@
+
+  GitNexus Context (1.6.12)
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/app/api/production/route.ts:POST",
+    "name": "POST",
+    "kind": "Function",
+    "filePath": "src/app/api/production/route.ts",
+    "startLine": 43,
+    "endLine": 153
+  },
+  "epistemic": "exact",
+  "incoming": {},
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Function:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts:workerFixture.blocked@163:2",
+        "name": "blocked",
+        "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts"
+      },
+      {
+        "uid": "Function:src/app/api/production/route.ts:validateStepInputs",
+        "name": "validateStepInputs",
+        "filePath": "src/app/api/production/route.ts"
+      },
+      {
+        "uid": "Function:src/lib/local-engine.ts:shouldUseLocalEngine",
+        "name": "shouldUseLocalEngine",
+        "filePath": "src/lib/local-engine.ts"
+      },
+      {
+        "uid": "Function:src/lib/ltx-utils.ts:clampQualityToPlan",
+        "name": "clampQualityToPlan",
+        "filePath": "src/lib/ltx-utils.ts"
+      },
+      {
+        "uid": "Function:src/lib/pipeline-submit.ts:submissionErrorStatus",
+        "name": "submissionErrorStatus",
+        "filePath": "src/lib/pipeline-submit.ts"
+      },
+      {
+        "uid": "Function:src/lib/pipeline-submit.ts:submissionIdentity",
+        "name": "submissionIdentity",
+        "filePath": "src/lib/pipeline-submit.ts"
+      },
+      {
+        "uid": "Function:src/lib/pipeline-submit.ts:submitVideoJob",
+        "name": "submitVideoJob",
+        "filePath": "src/lib/pipeline-submit.ts"
+      },
+      {
+        "uid": "Function:src/lib/production-schema.ts:sanitizeScriptData",
+        "name": "sanitizeScriptData",
+        "filePath": "src/lib/production-schema.ts"
+      },
+      {
+        "uid": "Function:src/lib/salad/application.ts:saladApplicationConfig",
+        "name": "saladApplicationConfig",
+        "filePath": "src/lib/salad/application.ts"
+      },
+      {
+        "uid": "Function:src/lib/salad/config.ts:requireActive",
+        "name": "requireActive",
+        "filePath": "src/lib/salad/config.ts"
+      },
+      {
+        "uid": "Function:src/lib/storyboard.ts:getPollinationsUrl",
+        "name": "getPollinationsUrl",
+        "filePath": "src/lib/storyboard.ts"
+      },
+      {
+        "uid": "Function:src/lib/supabase-server.ts:createServerClient",
+        "name": "createServerClient",
+        "filePath": "src/lib/supabase-server.ts"
+      },
+      {
+        "uid": "Function:src/lib/supabase.ts:createServiceClient",
+        "name": "createServiceClient",
+        "filePath": "src/lib/supabase.ts"
+      },
+      {
+        "uid": "Function:src/lib/video-queue.ts:cancelJobByKey",
+        "name": "cancelJobByKey",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Function:src/lib/video-queue.ts:claimJobByKey",
+        "name": "claimJobByKey",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Function:src/lib/video-queue.ts:completeQuotaForFinishedJob",
+        "name": "completeQuotaForFinishedJob",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Function:src/lib/video-queue.ts:finishJob",
+        "name": "finishJob",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Function:src/lib/video-worker.ts:runVideoJob",
+        "name": "runVideoJob",
+        "filePath": "src/lib/video-worker.ts"
+      }
+    ],
+    "accesses": [
+      {
+        "uid": "Property:src/lib/pipeline-submit.ts:submissionIdentity.key@20:11",
+        "name": "key",
+        "filePath": "src/lib/pipeline-submit.ts"
+      },
+      {
+        "uid": "Property:src/lib/pipeline-submit.ts:submissionIdentity.key@20:11",
+        "name": "key",
+        "filePath": "src/lib/pipeline-submit.ts"
+      },
+      {
+        "uid": "Property:src/lib/video-queue.ts:VideoJob.id",
+        "name": "id",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Property:src/lib/video-queue.ts:VideoJob.id",
+        "name": "id",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Property:src/lib/video-queue.ts:VideoJob.id",
+        "name": "id",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Property:src/lib/video-queue.ts:VideoJob.progress",
+        "name": "progress",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Property:src/lib/video-queue.ts:VideoJob.status",
+        "name": "status",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Property:src/lib/video-queue.ts:VideoJob.status",
+        "name": "status",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Property:src/lib/video-queue.ts:VideoJob.status",
+        "name": "status",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Property:src/lib/video-queue.ts:VideoJob.status",
+        "name": "status",
+        "filePath": "src/lib/video-queue.ts"
+      },
+      {
+        "uid": "Property:src/types/database.ts:ScriptData.thumbnail_prompt",
+        "name": "thumbnail_prompt",
+        "filePath": "src/types/database.ts"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "proc_124_post",
+      "name": "POST → Failure",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_125_post",
+      "name": "POST → Ok",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_292_post",
+      "name": "POST → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_328_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    }
+  ]
+}

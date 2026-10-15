@@ -1,0 +1,10 @@
+# Retest minimal après corrections intégrées
+
+1. T01 publie dans le handoff le nouveau SHA intégré et la liste des quatre correctifs : RPC T02, CAS T06, historique SQL T01, borne méthode harnais T01. Aucun retest sur WIP ou ancien d21 à la place du candidat.
+2. T08 crée une recette isolée de ce SHA, vérifie les deltas et leurs empreintes. Réutiliser les artefacts CI d21 seulement si sources, dépendances, config et commande concernées sont inchangées ; marquer les autres EN ATTENTE puis PASS/FAIL/BLOQUÉ/NON TESTÉ après exécution.
+3. Rejouer sans changer les assertions : harness-boundaries.test.mjs ; test-t02-rpc-security-production.mts ; routes+PG T06 history-routes et SQL historique T01. Ajouter les consommateurs seulement affectés : private-capabilities, OAuth/revocation/publication et production annulation/file. Supabase/provider externes restent simulés ; PG exclusivement jetable loopback.
+4. Une fois ces rouges corrigés, lancer UNE fois scripts/test-t08-integration-journey.mts : auth→projet→devis/quota simulé→file/worker→pipeline→reprise upload/DB/timeout→validation/export→journal de planification/publication simulée, concurrence12 et erreurs partielles. Aucun fournisseur réel.
+5. T01 gère sa CI exacte ; T07 les seules régressions navigateur affectées. Réutiliser ses20familles Chromium/WebKit et T05 CPU synthétique inchangés ; ne pas recréer un build identique. Contrôler que les traces qualifiées sont strictement GET/HEAD avec contre-preuve native correspondante et que les mutations restent rouges.
+6. Réévaluer la matrice72+R73 et la fraîcheur du backup. Publication réelle/GPU/facturation/consentements personnels restent NON TESTÉS sans preuve. Cron désactivé reste BLOQUÉ configuration ; ne jamais l'activer dans cette recette. /create n'expose pas l'annulation durable : signaler explicitement cette limite UI.
+
+Le verdict PRÊT ne constitue aucune autorisation de déploiement ou migration. Aucun ACK de promotion n'est donné par le présent rapport. L'utilisateur reste seul habilité à effectuer les consentements personnels et à autoriser séparément un éventuel essai payant plafonné.

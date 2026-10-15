@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "noEmit": true, "incremental": false, "allowImportingTsExtensions": true },
+  "include": ["framework.d.ts", "../../src/**/*.d.ts", "../../src/app/api/production/route.ts", "../../scripts/test-t02-rpc-security-*.mts"],
+  "exclude": ["../../node_modules"]
+}

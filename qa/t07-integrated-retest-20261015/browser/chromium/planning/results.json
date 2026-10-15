@@ -1,0 +1,126 @@
+{
+  "baseline": false,
+  "multiScenario": true,
+  "finalIntegrated": true,
+  "results": [
+    {
+      "name": "375: schedule labels, state and contrast",
+      "status": "PASS"
+    },
+    {
+      "name": "375: failed schedule save preserves draft and rejects duplicate submissions",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: schedule labels, state and contrast",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: failed schedule save preserves draft and rejects duplicate submissions",
+      "status": "PASS"
+    },
+    {
+      "name": "failed delete preserves schedule and manual retry deletes once",
+      "status": "PASS"
+    },
+    {
+      "name": "lost save response has bounded wait, no automatic retry and stable draft ID",
+      "status": "PASS"
+    },
+    {
+      "name": "schedule load failure cannot become empty or allow overwriting existing schedules",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed successful load cannot become an empty schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "planning-375-axe",
+      "violations": []
+    },
+    {
+      "name": "schedule-375-double-submit",
+      "calls": 1,
+      "draftRetained": true
+    },
+    {
+      "name": "planning-1440-axe",
+      "violations": []
+    },
+    {
+      "name": "schedule-1440-double-submit",
+      "calls": 1,
+      "draftRetained": true
+    },
+    {
+      "name": "save-timeout",
+      "timeoutMs": 10894,
+      "requests": 1
+    }
+  ],
+  "errors": [],
+  "unexpectedErrors": [],
+  "qualifiedEngineDiagnostics": [],
+  "blocked": [],
+  "mutations": [],
+  "readOnlyProbes": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

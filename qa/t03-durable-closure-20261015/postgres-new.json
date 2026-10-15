@@ -1,0 +1,30 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "qa/t03-durable-closure-20261015/postgres.test.mts"
+  ],
+  "exit_code": 0,
+  "environment": "private disposable loopback PostgreSQL; no ambient credentials; external sockets and secret files denied",
+  "canonical_migration_only_in_new_fixture": true,
+  "network_provider_calls": 0,
+  "source_sha256": {
+    "qa/t03-durable-closure-20261015/postgres.test.mts": "0e1d9d79ff1af696d1e2b9e97a2c5b9b85eb1c756410a2e7de1775e2ecc8487a",
+    "qa/t03-durable-closure-20261015/run.mjs": "781e4ba3bdadde316ec77af7f484b2edf8070fe2a391afb8ad888a9339c45851",
+    "qa/t08/offline.cjs": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+    "migrations/v10_durable_jobs_quota.sql": "a112552d0479dc7e54c50231fddb43c8675da639ebaeecc786b3382cad00a73d",
+    "migrations/v11_pipeline_checkpoints.sql": "704bcad695215f7892aea0cc3ae34591864a17353100417ae2a8f9ff42e9b6fc",
+    "migrations/20261014_durable_checkpoint_integrity.sql": "93b96256c604baaa857efe8064519ad552ccaaff2305628c139294f34579882c",
+    "migrations/20261015_final_durable_integrity.sql": "e8befa9e9fa602d80c483245bc71d07831fe56aad9ee05ed83dc2261a1d7805c",
+    "src/lib/video-queue.ts": "23a432fd7228bd77f16fc9bf85cbc253ef34880fbf94ca9927418f16a0ae6d3f",
+    "src/lib/pipeline-state.ts": "be88e636733523e9e0499febe000b02882966b39d618b42f5fceb4fdce3d0e35",
+    "src/lib/production-pipeline.ts": "78efb9c0a85301ed8ad2596f927c759946ddee683c8e8a23c42fcd778eb7b931",
+    "src/data/setup-schema.ts": "ab74eb544e1ae8f01911c27f30a2fce00b14428b09de51a5dbbf95db124ff48d",
+    "migrations/sutra_auto.sql": "c49dcf28c9fd58ec7d2e84b33e15c0e29f35b4a54cb158ea71dd35faf8663c1c",
+    "migrations/20261006_auto_occurrence_integrity.sql": "0ce30341243c9a87add6c6ef8a07c02a82b34aef64c9010cd00b6b8b29d6b6b5",
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+  }
+}

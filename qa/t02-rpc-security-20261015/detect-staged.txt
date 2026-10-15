@@ -1,0 +1,22 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 64 files, 9 symbols
+Affected processes: 4
+Risk level: medium
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 — consolidation finale du15oct, 2026-10-15T01:56:19.302552+00:00 → BATON.md
+  Section T01 2026-10-15T04:11:50.419783+00:00 — recette exacte complète, promotion suspendue à T08 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T07 — FRONTEND-JOURNEY, 2026-10-14 → ERRORS.md
+  Function POST → src/app/api/production/route.ts
+  Section 2026-10-13 — T05 complément fournisseur livré localement → task_plan.md
+  Section T01 — consolidation finale du15oct, 2026-10-15T01:56:19.302552+00:00 → task_plan.md
+  Section T01 2026-10-15T04:11:50.419783+00:00 — recette exacte complète, promotion suspendue à T08 → task_plan.md
+
+Affected execution flows:
+  • POST → Failure (4 steps) — changed: POST
+  • POST → Ok (4 steps) — changed: POST
+  • POST → CreateServiceClient (3 steps) — changed: POST
+  • POST → Denied (4 steps) — changed: POST

@@ -1,0 +1,80 @@
+TAP version 13
+# (node:62011) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:62011) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: PG routes: connection, revocation and reconnection retain consent history and clear credentials
+not ok 1 - PG routes: connection, revocation and reconnection retain consent history and clear credentials
+  ---
+  duration_ms: 37.283584
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-integrated-retest-20261015/history-routes.test.mts:13:3988'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    503 !== 200
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 200
+  actual: 503
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-integrated-retest-20261015/history-routes.test.mts:173:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# Subtest: PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect
+ok 2 - PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect
+  ---
+  duration_ms: 9.616709
+  type: 'test'
+  ...
+# Subtest: PG routes: one state can produce only one successful callback under concurrency
+ok 3 - PG routes: one state can produce only one successful callback under concurrency
+  ---
+  duration_ms: 11.262875
+  type: 'test'
+  ...
+# Subtest: PG routes: state refuses another session, another user, profile change and expiry
+ok 4 - PG routes: state refuses another session, another user, profile change and expiry
+  ---
+  duration_ms: 6.026375
+  type: 'test'
+  ...
+# Subtest: PG routes: audit write failure rolls back account; callback state remains consumed
+ok 5 - PG routes: audit write failure rolls back account; callback state remains consumed
+  ---
+  duration_ms: 6.818708
+  type: 'test'
+  ...
+# Subtest: PG routes: legacy scoped account without revision must still revoke locally
+not ok 6 - PG routes: legacy scoped account without revision must still revoke locally
+  ---
+  duration_ms: 3.723417
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-integrated-retest-20261015/history-routes.test.mts:13:7796'
+  failureType: 'testCodeFailure'
+  error: 'Local revoke refused: status=503; SUTRA_SOCIAL_HISTORY_REVOCATION_INVALID'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-integrated-retest-20261015/history-routes.test.mts:224:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 4
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 229.741292

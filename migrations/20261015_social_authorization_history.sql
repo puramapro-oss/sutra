@@ -92,6 +92,7 @@ CREATE OR REPLACE FUNCTION sutra.capture_social_authorization_history() RETURNS 
 LANGUAGE plpgsql SECURITY DEFINER SET search_path = '' AS $$
 DECLARE
   old_scoped boolean := false;
+  old_legacy_zernio boolean := false;
   new_scoped boolean;
   old_revision uuid;
   new_revision uuid;
@@ -110,6 +111,14 @@ BEGIN
   IF TG_OP='UPDATE' THEN
     old_scoped := COALESCE(OLD.metadata->>'credential_owner'='zernio'
       AND OLD.metadata ? 'sutra_oauth_revision', false);
+    -- Legacy accounts have no operation revision to observe. They may enter a
+    -- new revocation only with their existing Zernio provenance intact. A null
+    -- or malformed revision is not legacy, nor is an unresolved pending revoke.
+    old_legacy_zernio := COALESCE(OLD.metadata->>'credential_owner'='zernio'
+      AND NOT (OLD.metadata ? 'sutra_oauth_revision')
+      AND OLD.metadata->>'zernio_profile_id' ~ '^[a-fA-F0-9]{24}$'
+      AND (NOT (OLD.metadata ? 'sutra_revocation_pending')
+        OR OLD.metadata->'sutra_revocation_pending'='false'::jsonb), false);
   END IF;
   IF NOT old_scoped AND NOT new_scoped THEN RETURN NEW; END IF;
   -- A browser writer of another application's rows must never gain this
@@ -172,11 +181,13 @@ BEGIN
     END IF;
     event_name := CASE WHEN TG_OP='INSERT' THEN 'connection' ELSE 'reconnection' END;
   ELSIF NEW.status='revoked' AND new_pending AND (NOT old_scoped OR new_revision IS DISTINCT FROM old_revision) THEN
-    IF NOT old_scoped OR old_pending
+    IF NOT (old_scoped OR old_legacy_zernio) OR old_pending
       OR NEW.external_id IS DISTINCT FROM OLD.external_id
       OR NEW.metadata->>'zernio_profile_id' IS DISTINCT FROM OLD.metadata->>'zernio_profile_id' THEN
       RAISE EXCEPTION 'SUTRA_SOCIAL_HISTORY_REVOCATION_INVALID';
     END IF;
+    -- A legacy transition records this new request only; no prior consent,
+    -- historical revision, requested scopes or successful remote revoke is inferred.
     event_name := 'revocation_requested';
   ELSIF old_scoped AND OLD.status='revoked' AND old_pending AND NEW.status='revoked'
     AND NEW.metadata->'sutra_revocation_pending'='false'::jsonb

@@ -5,16 +5,36 @@ import { chromium, webkit } from '@playwright/test'
 import { classifyRuntimeErrors } from './runtime-guard.mjs'
 import { nativeRuntimeControls } from './native-controls.mjs'
 
-const output = await mkdtemp('qa/t01-final-20261015/browser-harness/profile-head-guard-results-')
+const output = await mkdtemp('qa/t01-final-20261015/browser-harness/method-boundary-20261015/native-results-')
 const base = 'https://127.0.0.1:1234'
 const seed = () => ({ engine: 'webkit', nativeControl: { caughtUnloadDiagnostic: true },
   errors: [{ kind: 'pageerror', navigation: 1, at: 120, message: 'engine diagnostic', stack: `Fetch API cannot load ${base}/slow due to access control checks.\n    at unknown (${base}/caught:1:1)` }],
-  events: [{ kind: 'unload-fetch', navigation: 1, document: base + '/caught', url: base + '/slow', at: 119 }],
+  events: [{ kind: 'unload-fetch', navigation: 1, document: base + '/caught', url: base + '/slow', method: 'GET', at: 119 }],
   navigations: [{ id: 1, method: 'goto', from: base + '/caught', to: base + '/next', startedAt: 100, finishedAt: 125 }], domErrors: [] })
 
 test('exact native teardown control is qualified and raw error retained', () => {
   const result = classifyRuntimeErrors(seed())
   assert.equal(result.qualified.length, 1); assert.equal(result.errors.length, 1); assert.equal(result.unexpected.length, 0)
+})
+test('same-origin HEAD requires its own native proof, independently of GET', () => {
+  const state = seed(); state.events[0].method = 'HEAD'
+  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)
+  state.nativeControl = { caughtHeadUnloadDiagnostic: true }
+  const result = classifyRuntimeErrors(state)
+  assert.equal(result.qualified.length, 1); assert.equal(result.errors.length, 1); assert.equal(result.unexpected.length, 0)
+  state.events[0].method = 'GET'
+  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)
+})
+for (const method of ['POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS', undefined, '', 'get', 'head']) test(`same-origin method ${String(method)} cannot qualify as a native read`, () => {
+  const state = seed(); state.nativeControl.caughtHeadUnloadDiagnostic = true; state.events[0].method = method
+  const result = classifyRuntimeErrors(state)
+  assert.equal(result.qualified.length, 0); assert.equal(result.unexpected.length, 1); assert.equal(result.errors.length, 1)
+})
+for (const method of ['POST', 'HEAD', undefined]) for (const reverse of [false, true]) test(`ambiguous GET/${String(method)} at one URL fails closed, reverse=${reverse}`, () => {
+  const state = seed(); state.nativeControl.caughtHeadUnloadDiagnostic = true
+  state.events.push({ ...state.events[0], method })
+  if (reverse) state.events.reverse()
+  assert.equal(classifyRuntimeErrors(state).unexpected.length, 1)
 })
 for (const [name, mutate] of [
   ['other engine', state => { state.engine = 'chromium' }],
@@ -125,6 +145,11 @@ for (const [engine, type] of Object.entries({ chromium, webkit })) test(`${engin
     await writeFile(`${output}/native-${engine}.json`, JSON.stringify(result, null, 2) + '\n', { flag: 'wx' })
     assert.equal(result.negativeControls.realExceptionDetected, true)
     assert.equal(result.negativeControls.unhandledRejectionDetected, true)
+    assert.equal(result.negativeControls.mutationErrorsRetained, true)
+    assert.equal(result.caughtUnloadDiagnostic, result.caught.qualified.some(error => error.matchingFetch.method === 'GET'))
+    assert.equal(result.caughtHeadUnloadDiagnostic, result.caught.qualified.some(error => error.matchingFetch.method === 'HEAD'))
+    assert.equal(result.cases.length, 8)
+    assert.equal(result.mutationCases.length, 6)
     assert.equal(result.crossOrigin.normalCrossOriginRead, 'PASS')
     assert.equal(result.crossOrigin.realCorsDenialDetected, true)
     assert.equal(result.crossOriginProfile.normalCrossOriginRead, 'PASS')

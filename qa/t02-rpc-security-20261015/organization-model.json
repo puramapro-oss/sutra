@@ -1,0 +1,13 @@
+{
+  "command": [
+    "rg",
+    "-n",
+    "organization_id|organisation_id|org_id|tenant_id|CREATE TABLE.*org",
+    "src/data/setup-schema.ts",
+    "migrations",
+    "sql"
+  ],
+  "exitCode": 1,
+  "output": "",
+  "interpretation": "No application organization dimension found in canonical SQL; two Zernio provider tenants are distinct from two application organizations."
+}

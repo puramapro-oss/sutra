@@ -1,5 +1,5 @@
 {
-  "base": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "base": "56754679abed9aa1e51323c29aed5bef38bc17d0",
   "status": "CANDIDATE_AWAITING_EXACT_SHA_CI",
   "scope": "Committed application, migrations, delivery tooling, configuration and executable validation sources; no secrets or mutable receipts",
   "files": [
@@ -13,7 +13,7 @@
     },
     {
       "path": ".github/workflows/web-ci.yml",
-      "sha256": "68cfc202fd6627847f90f33b6824672c268f8a2d223efbe7bada646aa4c84655"
+      "sha256": "999e9ba0686787d2e97c422dd24f96546b103425d9eeb315c597d585c5179c47"
     },
     {
       "path": "deploy/README.md",
@@ -125,7 +125,7 @@
     },
     {
       "path": "migrations/20261015_social_authorization_history.sql",
-      "sha256": "f78dd649afccc975236a6a0bc54b03dce1126d0023024a0ec7da3ff301896376"
+      "sha256": "d2f6a9cb380a15285759085cdf602701f0d9d785d4a7f76f2061438d38ab9ddc"
     },
     {
       "path": "migrations/audit_completion.sql",
@@ -453,11 +453,15 @@
     },
     {
       "path": "qa/t01-final-20261015/browser-harness/guard.test.mjs",
-      "sha256": "5445f2b72c78649f139e47480491de50daeb7c48b5585e5602890f27acab3015"
+      "sha256": "6446f8598c8b4006763a2332d5bf7609628ca75d3298c88fe1c9532ee4ce96c4"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/method-boundary-20261015/t08-boundaries.test.mjs",
+      "sha256": "4cfa0a9e2d1386242f8c6fd6a4d56f33ee3ef7334f49d456e4bd6ba95a9e659b"
     },
     {
       "path": "qa/t01-final-20261015/browser-harness/native-controls.mjs",
-      "sha256": "5ea27cfcfa22ce6639b66627a7080c93b11b530586a7f6188cb0c3d97bbb8ee2"
+      "sha256": "5e473fae60032700be7096b77c4e70e470480ccd023303b67404b65c55e402ec"
     },
     {
       "path": "qa/t01-final-20261015/browser-harness/profile-reproduction.mjs",
@@ -465,7 +469,7 @@
     },
     {
       "path": "qa/t01-final-20261015/browser-harness/runtime-guard.mjs",
-      "sha256": "e598f263ec079d33e50a141fccadd977f0bbbf434377d361c878a1f484eee534"
+      "sha256": "7ff36658d4cb495c946e8d14fef80d35baef710b64fbf84e6a5d3b033ba5d915"
     },
     {
       "path": "qa/t01-final-20261015/client-permissions.py",
@@ -528,6 +532,18 @@
       "sha256": "cf93fc4bfbb17953a769621cbab7552de866ca7eead5a91e7ca3d9e0f2d05920"
     },
     {
+      "path": "qa/t02-rpc-security-20261015/framework.d.ts",
+      "sha256": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc"
+    },
+    {
+      "path": "qa/t02-rpc-security-20261015/run.py",
+      "sha256": "84f7236ea036d97af5da8ff572ee8c7b6ebca72b18d799f8b0c8fa77e14d0c08"
+    },
+    {
+      "path": "qa/t02-rpc-security-20261015/tsconfig.json",
+      "sha256": "1ce0352377c0d890bcd75acf2f39c9a22840fa6ce33724fa8e5b9ca8996c3331"
+    },
+    {
       "path": "qa/t02-salad-security-20261014/run-t02-salad-security.py",
       "sha256": "042d5cfcb620691f1a2cec70e74bf188c0b3fcc7ce74e2a36bfe48ca3337884a"
     },
@@ -542,6 +558,22 @@
     {
       "path": "qa/t02-security-fixes-20261014/run.py",
       "sha256": "06cc036a55e83352c6846e615e3e509daf539fc3b2b893d579ce0bdc244664fd"
+    },
+    {
+      "path": "qa/t03-durable-closure-20261015/postgres.test.mts",
+      "sha256": "0e1d9d79ff1af696d1e2b9e97a2c5b9b85eb1c756410a2e7de1775e2ecc8487a"
+    },
+    {
+      "path": "qa/t03-durable-closure-20261015/run.mjs",
+      "sha256": "781e4ba3bdadde316ec77af7f484b2edf8070fe2a391afb8ad888a9339c45851"
+    },
+    {
+      "path": "qa/t03-durable-closure-20261015/settle.mjs",
+      "sha256": "c34a1dd274047c0af2647e599bc13a2f62109149674990f767e055eea6d95191"
+    },
+    {
+      "path": "qa/t03-durable-closure-20261015/tsconfig.json",
+      "sha256": "7866bf64edecd07a750d2d0fac1f2d718a60be242331567da596d2122920dfdd"
     },
     {
       "path": "qa/t03-durable-reliability-20261014/postgres.mjs",
@@ -672,6 +704,26 @@
       "sha256": "3e6ef31d9ed460426ee047263c039c9715db42a006158150a199281f9785e6d5"
     },
     {
+      "path": "qa/t04-salad-access-20261015/Saisie-Salad.command",
+      "sha256": "6f19a38d23ce933b4430f454fe25575b55f1a24c236aaa003839baba132d7b0a"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/secure_setup.py",
+      "sha256": "b563770010de3f54b21ae54e7888dfb90796b4b23c9cd55e7886bafa21ec9feb"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/test_secure_setup.py",
+      "sha256": "b978fc55d6cdcb5c7f890fd8a1fde17e6e5cc11b851371ec03eaefdb8e1f02ea"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/validate-access.mjs",
+      "sha256": "5bfe890a8d4027a51fadbf0c00530e8c1f21f4fbe03708117e6348bfd3c558cb"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/validate-access.test.mjs",
+      "sha256": "2ee591852c01e78b853c6032fa92877f4c3f89bbcdab9d52c1e0be23cc7c31b3"
+    },
+    {
       "path": "qa/t05-composition-fix-20261014/run-targeted.mjs",
       "sha256": "23a53d127613b3150dbf9f243f30e5fefb1b5a69493985b54770584f149cbaa8"
     },
@@ -682,6 +734,18 @@
     {
       "path": "qa/t05-final-media-20261015/run-targeted.mjs",
       "sha256": "b600da69aa3b5e0d11a9772e71921130d355fdeaa7af227c8b15e7ecd3843d1d"
+    },
+    {
+      "path": "qa/t05-integrated-retest-20261015/retest.mts",
+      "sha256": "7fe5ce972e0eda9a2c5b91d98bbc332355ae4732741710d6f4b54d91af0acc9d"
+    },
+    {
+      "path": "qa/t05-integrated-retest-20261015/run.mjs",
+      "sha256": "9a15be1a049e52e1c18cd27052cbdfc8026a2856d7db9e08daa2b165bfadffe9"
+    },
+    {
+      "path": "qa/t05-integrated-retest-20261015/tsconfig.json",
+      "sha256": "f83d873f7df91b7ede516104a38ba9bdc27b29db101b317a44539e3eba432b29"
     },
     {
       "path": "qa/t05-real-export-20261014/helpers.mts",
@@ -710,6 +774,26 @@
     {
       "path": "qa/t06-final-social-20261015/run.mjs",
       "sha256": "91beb2f1403a0d6f2b527bfa72fc6b6a34aab1232e8efe2d1882128fd485689d"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/history-routes.test.mts",
+      "sha256": "d6e0ea65ad986fee57d608e774e8e287d005f75ca07de7d534959f57e00ceb58"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/run-postgres.mjs",
+      "sha256": "ed2a665747540ffa0532cdee8acfc37efe3645e2613a3657e157d35c189b4f91"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/run.mjs",
+      "sha256": "e29438214d077801f3a298a4d02d831d5a4bd01c2e4c00ca3da3cb17014a2a22"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/t01-social-history.sql",
+      "sha256": "d2f6a9cb380a15285759085cdf602701f0d9d785d4a7f76f2061438d38ab9ddc"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/tsconfig.json",
+      "sha256": "4677288641c8b941632a9a753d984c7921c8319741611d18908c40be382b8bbc"
     },
     {
       "path": "qa/t06-social-recovery-20261014/run-postgres.mjs",
@@ -824,6 +908,10 @@
       "sha256": "3f65a717a0bfbd7281273f1fb57f8b5f601c32a3d108977a0a547626a247c44b"
     },
     {
+      "path": "qa/t07-integrated-retest-20261015/run.mjs",
+      "sha256": "826ddb874582a201bafb8afeaf82112119432ab0971758cd78f58315504bf956"
+    },
+    {
       "path": "qa/t07-modes-20261014/browser.mjs",
       "sha256": "c4ed412e8e285c3132b0341c661632becdcd86cd538524b5a44da39d2b9c60ce"
     },
@@ -834,6 +922,18 @@
     {
       "path": "qa/t07-modes-20261014/generation-fixtures.mjs",
       "sha256": "331b8a11387203e389f181fad9e1ca02284e96572f012fd8a4533a1cc81f20f2"
+    },
+    {
+      "path": "qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs",
+      "sha256": "af7d0508679d9f08b65391f4e367dcba6fa78b79eae83e6ae27db0bd7e64f2e1"
+    },
+    {
+      "path": "qa/t08-acceptance-d21b7b4-20261015/run.py",
+      "sha256": "ab56770bab6f4e2f3c7a98aa7bc73377a0b16ee4453fa877403afb88c04d44c5"
+    },
+    {
+      "path": "qa/t08-acceptance-d21b7b4-20261015/verify_evidence.py",
+      "sha256": "4b9e9d69b514a61ea1ff14862c6fdf7af3c9e9f988ffb2411f49395d13b48bc6"
     },
     {
       "path": "qa/t08-closure-20261014/production-error.test.mts",
@@ -937,7 +1037,7 @@
     },
     {
       "path": "scripts/run-ci.mjs",
-      "sha256": "840b617a3a43cd3ff9e7218a174a2076f495a631071c4ea4330861d39635fd26"
+      "sha256": "c00f66b4cef89b89de8db82270921b08959d32b4858bd2ad912aa240fafecc2d"
     },
     {
       "path": "scripts/screenshot-landing.mjs",
@@ -985,7 +1085,7 @@
     },
     {
       "path": "scripts/test-final-social-history.mjs",
-      "sha256": "0af3cf59013031caab092689472cff9af1a1a2bebd5f6f76f00536afd0ea3995"
+      "sha256": "3919c69b6c4f92f45475dda7a85bc2a69aecbd6a9d88c72be190154752c40627"
     },
     {
       "path": "scripts/test-final-write-permissions.mjs",
@@ -1130,6 +1230,14 @@
     {
       "path": "scripts/test-t02-oauth-boundaries.mts",
       "sha256": "5ed47d1a79fd9ebf7cee6f2838cb1fbc7706cba8855a619f35e745db0a0a2803"
+    },
+    {
+      "path": "scripts/test-t02-rpc-security-dependencies.mts",
+      "sha256": "cd1f4ef3223e8d0d2bb25e0b9dc70d8320de313ceabbca8d6bd9849e4eac3b9c"
+    },
+    {
+      "path": "scripts/test-t02-rpc-security-production.mts",
+      "sha256": "da3218f73a182ee2ebcf31a2281558de118d5d669296677fd1666e569bc6ecc2"
     },
     {
       "path": "scripts/test-t02-salad-security.mts",
@@ -2025,7 +2133,7 @@
     },
     {
       "path": "src/app/api/production/route.ts",
-      "sha256": "d0ba06cb35edda7ad8af1aa3670fe7eac83e13ea21489a207e5a0c3608fb987f"
+      "sha256": "b16a97c07d43811a3b193e17c9bb3bfdb90b2c07c009dfb7aac1906d02a34f85"
     },
     {
       "path": "src/app/api/publish/route.ts",
@@ -3937,7 +4045,7 @@
     },
     {
       "path": "src/lib/social-account-revocation.ts",
-      "sha256": "5116a46c104f45a175ff3d534d00021f183716d2dd3845dbde9083256c84e9ba"
+      "sha256": "18715b9d1cd68d2b911e2eb5f7b885e1a1fdb932a78bf70e7ba77326e39f7a1d"
     },
     {
       "path": "src/lib/social-oauth-account.ts",

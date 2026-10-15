@@ -1,0 +1,1863 @@
+{
+  "engine": "webkit",
+  "browserVersion": "26.0",
+  "nativeSafari": false,
+  "keyboard": {
+    "engine": "webkit",
+    "key": "Alt+Tab",
+    "observations": [
+      {
+        "key": "Tab",
+        "focused": "next"
+      },
+      {
+        "key": "Alt+Tab",
+        "focused": "toggle"
+      }
+    ],
+    "negativeFocused": "next",
+    "nativeSafari": false
+  },
+  "caughtUnloadDiagnostic": true,
+  "caughtHeadUnloadDiagnostic": true,
+  "cases": [
+    {
+      "requestMethod": "GET",
+      "method": "goto",
+      "query": false,
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+          "navigation": 2,
+          "at": 1792071060802
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+          "navigation": 2,
+          "at": 1792071060802,
+          "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64073/slow",
+            "method": "GET",
+            "document": "https://127.0.0.1:64073/caught-get",
+            "navigation": 2,
+            "at": 1792071060797
+          }
+        }
+      ]
+    },
+    {
+      "requestMethod": "GET",
+      "method": "goto",
+      "query": true,
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+          "navigation": 4,
+          "at": 1792071061117
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+          "navigation": 4,
+          "at": 1792071061117,
+          "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+            "method": "GET",
+            "document": "https://127.0.0.1:64073/caught-get-rsc",
+            "navigation": 4,
+            "at": 1792071061114
+          }
+        }
+      ]
+    },
+    {
+      "requestMethod": "GET",
+      "method": "reload",
+      "query": false,
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+          "navigation": 6,
+          "at": 1792071061430
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+          "navigation": 6,
+          "at": 1792071061430,
+          "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64073/slow",
+            "method": "GET",
+            "document": "https://127.0.0.1:64073/caught-get",
+            "navigation": 6,
+            "at": 1792071061427
+          }
+        }
+      ]
+    },
+    {
+      "requestMethod": "GET",
+      "method": "reload",
+      "query": true,
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+          "navigation": 8,
+          "at": 1792071061743
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+          "navigation": 8,
+          "at": 1792071061743,
+          "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+            "method": "GET",
+            "document": "https://127.0.0.1:64073/caught-get-rsc",
+            "navigation": 8,
+            "at": 1792071061740
+          }
+        }
+      ]
+    },
+    {
+      "requestMethod": "HEAD",
+      "method": "goto",
+      "query": false,
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+          "navigation": 10,
+          "at": 1792071062056
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+          "navigation": 10,
+          "at": 1792071062056,
+          "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64073/slow",
+            "method": "HEAD",
+            "document": "https://127.0.0.1:64073/caught-head",
+            "navigation": 10,
+            "at": 1792071062053
+          }
+        }
+      ]
+    },
+    {
+      "requestMethod": "HEAD",
+      "method": "goto",
+      "query": true,
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head-rsc:6:54)",
+          "navigation": 12,
+          "at": 1792071062368
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head-rsc:6:54)",
+          "navigation": 12,
+          "at": 1792071062368,
+          "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+            "method": "HEAD",
+            "document": "https://127.0.0.1:64073/caught-head-rsc",
+            "navigation": 12,
+            "at": 1792071062365
+          }
+        }
+      ]
+    },
+    {
+      "requestMethod": "HEAD",
+      "method": "reload",
+      "query": false,
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+          "navigation": 14,
+          "at": 1792071062680
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+          "navigation": 14,
+          "at": 1792071062680,
+          "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64073/slow",
+            "method": "HEAD",
+            "document": "https://127.0.0.1:64073/caught-head",
+            "navigation": 14,
+            "at": 1792071062677
+          }
+        }
+      ]
+    },
+    {
+      "requestMethod": "HEAD",
+      "method": "reload",
+      "query": true,
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head-rsc:6:54)",
+          "navigation": 16,
+          "at": 1792071062993
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head-rsc:6:54)",
+          "navigation": 16,
+          "at": 1792071062993,
+          "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+            "method": "HEAD",
+            "document": "https://127.0.0.1:64073/caught-head-rsc",
+            "navigation": 16,
+            "at": 1792071062990
+          }
+        }
+      ]
+    }
+  ],
+  "caught": {
+    "errors": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+        "navigation": 2,
+        "at": 1792071060802
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+        "navigation": 4,
+        "at": 1792071061117
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+        "navigation": 6,
+        "at": 1792071061430
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+        "navigation": 7,
+        "at": 1792071061737
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+        "navigation": 8,
+        "at": 1792071061743
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+        "navigation": 9,
+        "at": 1792071062050
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+        "navigation": 10,
+        "at": 1792071062056
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head-rsc:6:54)",
+        "navigation": 12,
+        "at": 1792071062368
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+        "navigation": 14,
+        "at": 1792071062680
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+        "navigation": 15,
+        "at": 1792071062987
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head-rsc:6:54)",
+        "navigation": 16,
+        "at": 1792071062993
+      }
+    ],
+    "qualified": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+        "navigation": 2,
+        "at": 1792071060802,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "GET",
+          "document": "https://127.0.0.1:64073/caught-get",
+          "navigation": 2,
+          "at": 1792071060797
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+        "navigation": 4,
+        "at": 1792071061117,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+          "method": "GET",
+          "document": "https://127.0.0.1:64073/caught-get-rsc",
+          "navigation": 4,
+          "at": 1792071061114
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+        "navigation": 6,
+        "at": 1792071061430,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "GET",
+          "document": "https://127.0.0.1:64073/caught-get",
+          "navigation": 6,
+          "at": 1792071061427
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get:6:54)",
+        "navigation": 7,
+        "at": 1792071061737,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "GET",
+          "document": "https://127.0.0.1:64073/caught-get",
+          "navigation": 7,
+          "at": 1792071061734
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+        "navigation": 8,
+        "at": 1792071061743,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+          "method": "GET",
+          "document": "https://127.0.0.1:64073/caught-get-rsc",
+          "navigation": 8,
+          "at": 1792071061740
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-get-rsc:6:54)",
+        "navigation": 9,
+        "at": 1792071062050,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+          "method": "GET",
+          "document": "https://127.0.0.1:64073/caught-get-rsc",
+          "navigation": 9,
+          "at": 1792071062047
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+        "navigation": 10,
+        "at": 1792071062056,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "HEAD",
+          "document": "https://127.0.0.1:64073/caught-head",
+          "navigation": 10,
+          "at": 1792071062053
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head-rsc:6:54)",
+        "navigation": 12,
+        "at": 1792071062368,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+          "method": "HEAD",
+          "document": "https://127.0.0.1:64073/caught-head-rsc",
+          "navigation": 12,
+          "at": 1792071062365
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+        "navigation": 14,
+        "at": 1792071062680,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "HEAD",
+          "document": "https://127.0.0.1:64073/caught-head",
+          "navigation": 14,
+          "at": 1792071062677
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head:6:54)",
+        "navigation": 15,
+        "at": 1792071062987,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "HEAD",
+          "document": "https://127.0.0.1:64073/caught-head",
+          "navigation": 15,
+          "at": 1792071062984
+        }
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64073/slow?_rsc=fixture_token due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-head-rsc:6:54)",
+        "navigation": 16,
+        "at": 1792071062993,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+          "method": "HEAD",
+          "document": "https://127.0.0.1:64073/caught-head-rsc",
+          "navigation": 16,
+          "at": 1792071062990
+        }
+      }
+    ],
+    "unexpected": [],
+    "events": [
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 2,
+        "at": 1792071060797
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 2,
+        "at": 1792071060802
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 2,
+        "at": 1792071060802
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/next",
+        "navigation": 3,
+        "at": 1792071061109
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 4,
+        "at": 1792071061114
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 4,
+        "at": 1792071061117
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 4,
+        "at": 1792071061117
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/next",
+        "navigation": 5,
+        "at": 1792071061424
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 6,
+        "at": 1792071061427
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 6,
+        "at": 1792071061430
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 6,
+        "at": 1792071061430
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 7,
+        "at": 1792071061734
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 7,
+        "at": 1792071061737
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get",
+        "navigation": 7,
+        "at": 1792071061737
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 8,
+        "at": 1792071061740
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 8,
+        "at": 1792071061743
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 8,
+        "at": 1792071061743
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 9,
+        "at": 1792071062047
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 9,
+        "at": 1792071062049
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:64073/caught-get-rsc",
+        "navigation": 9,
+        "at": 1792071062050
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 10,
+        "at": 1792071062053
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 10,
+        "at": 1792071062056
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 10,
+        "at": 1792071062056
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/next",
+        "navigation": 11,
+        "at": 1792071062362
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head-rsc",
+        "navigation": 12,
+        "at": 1792071062365
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-head-rsc",
+        "navigation": 12,
+        "at": 1792071062368
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head-rsc",
+        "navigation": 12,
+        "at": 1792071062368
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/next",
+        "navigation": 13,
+        "at": 1792071062674
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 14,
+        "at": 1792071062677
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 14,
+        "at": 1792071062680
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 14,
+        "at": 1792071062680
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 15,
+        "at": 1792071062984
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 15,
+        "at": 1792071062987
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head",
+        "navigation": 15,
+        "at": 1792071062987
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head-rsc",
+        "navigation": 16,
+        "at": 1792071062990
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:64073/caught-head-rsc",
+        "navigation": 16,
+        "at": 1792071062993
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:64073/slow?_rsc=fixture_token",
+        "method": "HEAD",
+        "document": "https://127.0.0.1:64073/caught-head-rsc",
+        "navigation": 16,
+        "at": 1792071062993
+      }
+    ],
+    "navigations": [
+      {
+        "id": 1,
+        "method": "goto",
+        "from": "nullblank",
+        "to": "https://127.0.0.1:64073/caught-get",
+        "startedAt": 1792071060752,
+        "finishedAt": 1792071060794
+      },
+      {
+        "id": 2,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/caught-get",
+        "to": "https://127.0.0.1:64073/next",
+        "startedAt": 1792071060795,
+        "finishedAt": 1792071060803
+      },
+      {
+        "id": 3,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/next",
+        "to": "https://127.0.0.1:64073/caught-get-rsc",
+        "startedAt": 1792071061105,
+        "finishedAt": 1792071061111
+      },
+      {
+        "id": 4,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/caught-get-rsc",
+        "to": "https://127.0.0.1:64073/next",
+        "startedAt": 1792071061111,
+        "finishedAt": 1792071061118
+      },
+      {
+        "id": 5,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/next",
+        "to": "https://127.0.0.1:64073/caught-get",
+        "startedAt": 1792071061420,
+        "finishedAt": 1792071061425
+      },
+      {
+        "id": 6,
+        "method": "reload",
+        "from": "https://127.0.0.1:64073/caught-get",
+        "to": "https://127.0.0.1:64073/caught-get",
+        "startedAt": 1792071061425,
+        "finishedAt": 1792071061431
+      },
+      {
+        "id": 7,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/caught-get",
+        "to": "https://127.0.0.1:64073/caught-get-rsc",
+        "startedAt": 1792071061732,
+        "finishedAt": 1792071061738
+      },
+      {
+        "id": 8,
+        "method": "reload",
+        "from": "https://127.0.0.1:64073/caught-get-rsc",
+        "to": "https://127.0.0.1:64073/caught-get-rsc",
+        "startedAt": 1792071061738,
+        "finishedAt": 1792071061744
+      },
+      {
+        "id": 9,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/caught-get-rsc",
+        "to": "https://127.0.0.1:64073/caught-head",
+        "startedAt": 1792071062045,
+        "finishedAt": 1792071062051
+      },
+      {
+        "id": 10,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/caught-head",
+        "to": "https://127.0.0.1:64073/next",
+        "startedAt": 1792071062051,
+        "finishedAt": 1792071062057
+      },
+      {
+        "id": 11,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/next",
+        "to": "https://127.0.0.1:64073/caught-head-rsc",
+        "startedAt": 1792071062358,
+        "finishedAt": 1792071062363
+      },
+      {
+        "id": 12,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/caught-head-rsc",
+        "to": "https://127.0.0.1:64073/next",
+        "startedAt": 1792071062364,
+        "finishedAt": 1792071062370
+      },
+      {
+        "id": 13,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/next",
+        "to": "https://127.0.0.1:64073/caught-head",
+        "startedAt": 1792071062670,
+        "finishedAt": 1792071062675
+      },
+      {
+        "id": 14,
+        "method": "reload",
+        "from": "https://127.0.0.1:64073/caught-head",
+        "to": "https://127.0.0.1:64073/caught-head",
+        "startedAt": 1792071062675,
+        "finishedAt": 1792071062681
+      },
+      {
+        "id": 15,
+        "method": "goto",
+        "from": "https://127.0.0.1:64073/caught-head",
+        "to": "https://127.0.0.1:64073/caught-head-rsc",
+        "startedAt": 1792071062982,
+        "finishedAt": 1792071062989
+      },
+      {
+        "id": 16,
+        "method": "reload",
+        "from": "https://127.0.0.1:64073/caught-head-rsc",
+        "to": "https://127.0.0.1:64073/caught-head-rsc",
+        "startedAt": 1792071062989,
+        "finishedAt": 1792071062994
+      }
+    ],
+    "domErrors": []
+  },
+  "mutationCases": [
+    {
+      "requestMethod": "POST",
+      "method": "goto",
+      "events": [
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "POST",
+          "document": "https://127.0.0.1:64073/caught-post",
+          "navigation": 18,
+          "at": 1792071063303
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "POST",
+          "document": "https://127.0.0.1:64073/caught-post",
+          "navigation": 18,
+          "at": 1792071063305
+        }
+      ],
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-post:6:54)",
+          "navigation": 18,
+          "at": 1792071063305
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-post:6:54)",
+          "navigation": 18,
+          "at": 1792071063305
+        }
+      ]
+    },
+    {
+      "requestMethod": "POST",
+      "method": "reload",
+      "events": [
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "POST",
+          "document": "https://127.0.0.1:64073/caught-post",
+          "navigation": 20,
+          "at": 1792071063614
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "POST",
+          "document": "https://127.0.0.1:64073/caught-post",
+          "navigation": 20,
+          "at": 1792071063617
+        }
+      ],
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-post:6:54)",
+          "navigation": 20,
+          "at": 1792071063617
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-post:6:54)",
+          "navigation": 20,
+          "at": 1792071063617
+        }
+      ]
+    },
+    {
+      "requestMethod": "PATCH",
+      "method": "goto",
+      "events": [
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "PATCH",
+          "document": "https://127.0.0.1:64073/caught-patch",
+          "navigation": 22,
+          "at": 1792071063926
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "PATCH",
+          "document": "https://127.0.0.1:64073/caught-patch",
+          "navigation": 22,
+          "at": 1792071063928
+        }
+      ],
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-patch:6:54)",
+          "navigation": 22,
+          "at": 1792071063928
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-patch:6:54)",
+          "navigation": 22,
+          "at": 1792071063928
+        }
+      ]
+    },
+    {
+      "requestMethod": "PATCH",
+      "method": "reload",
+      "events": [
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "PATCH",
+          "document": "https://127.0.0.1:64073/caught-patch",
+          "navigation": 24,
+          "at": 1792071064238
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "PATCH",
+          "document": "https://127.0.0.1:64073/caught-patch",
+          "navigation": 24,
+          "at": 1792071064240
+        }
+      ],
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-patch:6:54)",
+          "navigation": 24,
+          "at": 1792071064240
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-patch:6:54)",
+          "navigation": 24,
+          "at": 1792071064240
+        }
+      ]
+    },
+    {
+      "requestMethod": "DELETE",
+      "method": "goto",
+      "events": [
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "DELETE",
+          "document": "https://127.0.0.1:64073/caught-delete",
+          "navigation": 26,
+          "at": 1792071064550
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "DELETE",
+          "document": "https://127.0.0.1:64073/caught-delete",
+          "navigation": 26,
+          "at": 1792071064552
+        }
+      ],
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-delete:6:54)",
+          "navigation": 26,
+          "at": 1792071064552
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-delete:6:54)",
+          "navigation": 26,
+          "at": 1792071064552
+        }
+      ]
+    },
+    {
+      "requestMethod": "DELETE",
+      "method": "reload",
+      "events": [
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "DELETE",
+          "document": "https://127.0.0.1:64073/caught-delete",
+          "navigation": 28,
+          "at": 1792071064860
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64073/slow",
+          "method": "DELETE",
+          "document": "https://127.0.0.1:64073/caught-delete",
+          "navigation": 28,
+          "at": 1792071064863
+        }
+      ],
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-delete:6:54)",
+          "navigation": 28,
+          "at": 1792071064863
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64073/slow due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-delete:6:54)",
+          "navigation": 28,
+          "at": 1792071064863
+        }
+      ]
+    }
+  ],
+  "crossOriginCaughtUnloadDiagnostic": true,
+  "crossOrigin": {
+    "engine": "webkit",
+    "resource": "affirmations",
+    "fixtureOrigin": "https://127.0.0.1:64082",
+    "normalCrossOriginRead": "PASS",
+    "cases": [
+      {
+        "method": "goto",
+        "navigation": 3,
+        "qualified": [
+          {
+            "kind": "pageerror",
+            "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+            "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+            "navigation": 3,
+            "at": 1792071065978,
+            "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+            "matchingFetch": {
+              "kind": "unload-fetch",
+              "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+              "method": "GET",
+              "document": "https://127.0.0.1:64083/caught",
+              "navigation": 3,
+              "at": 1792071065975
+            }
+          }
+        ]
+      },
+      {
+        "method": "reload",
+        "navigation": 5,
+        "qualified": [
+          {
+            "kind": "pageerror",
+            "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+            "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+            "navigation": 5,
+            "at": 1792071066489,
+            "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+            "matchingFetch": {
+              "kind": "unload-fetch",
+              "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+              "method": "GET",
+              "document": "https://127.0.0.1:64083/caught",
+              "navigation": 5,
+              "at": 1792071066487
+            }
+          }
+        ]
+      }
+    ],
+    "caught": {
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+          "navigation": 3,
+          "at": 1792071065978
+        },
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+          "navigation": 5,
+          "at": 1792071066489
+        },
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+          "navigation": 6,
+          "at": 1792071066995
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+          "navigation": 3,
+          "at": 1792071065978,
+          "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+            "method": "GET",
+            "document": "https://127.0.0.1:64083/caught",
+            "navigation": 3,
+            "at": 1792071065975
+          }
+        },
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+          "navigation": 5,
+          "at": 1792071066489,
+          "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+            "method": "GET",
+            "document": "https://127.0.0.1:64083/caught",
+            "navigation": 5,
+            "at": 1792071066487
+          }
+        },
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+          "navigation": 6,
+          "at": 1792071066995,
+          "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+            "method": "GET",
+            "document": "https://127.0.0.1:64083/caught",
+            "navigation": 6,
+            "at": 1792071066992
+          }
+        }
+      ],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64083/normal",
+          "navigation": 2,
+          "at": 1792071065972
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 3,
+          "at": 1792071065975
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 3,
+          "at": 1792071065978
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 3,
+          "at": 1792071065978
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64083/next",
+          "navigation": 4,
+          "at": 1792071066484
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 5,
+          "at": 1792071066487
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 5,
+          "at": 1792071066489
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 5,
+          "at": 1792071066489
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 6,
+          "at": 1792071066992
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 6,
+          "at": 1792071066995
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:64083/caught",
+          "navigation": 6,
+          "at": 1792071066995
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "https://127.0.0.1:64083/normal",
+          "startedAt": 1792071065586,
+          "finishedAt": 1792071065638
+        },
+        {
+          "id": 2,
+          "method": "goto",
+          "from": "https://127.0.0.1:64083/normal",
+          "to": "https://127.0.0.1:64083/caught",
+          "startedAt": 1792071065969,
+          "finishedAt": 1792071065973
+        },
+        {
+          "id": 3,
+          "method": "goto",
+          "from": "https://127.0.0.1:64083/caught",
+          "to": "https://127.0.0.1:64083/next",
+          "startedAt": 1792071065973,
+          "finishedAt": 1792071065979
+        },
+        {
+          "id": 4,
+          "method": "goto",
+          "from": "https://127.0.0.1:64083/next",
+          "to": "https://127.0.0.1:64083/caught",
+          "startedAt": 1792071066480,
+          "finishedAt": 1792071066485
+        },
+        {
+          "id": 5,
+          "method": "reload",
+          "from": "https://127.0.0.1:64083/caught",
+          "to": "https://127.0.0.1:64083/caught",
+          "startedAt": 1792071066485,
+          "finishedAt": 1792071066491
+        },
+        {
+          "id": 6,
+          "method": "goto",
+          "from": "https://127.0.0.1:64083/caught",
+          "to": "https://127.0.0.1:64083/normal",
+          "startedAt": 1792071066990,
+          "finishedAt": 1792071066996
+        }
+      ],
+      "domErrors": []
+    },
+    "reproduced": true,
+    "realCorsDenialDetected": true,
+    "negativeEvidence": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64083/caught:3:35)\n    at unknown (https://127.0.0.1:64083/caught:6:61)",
+        "navigation": 6,
+        "at": 1792071066995
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64082/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+        "stack": "",
+        "navigation": 6,
+        "at": 1792071067501
+      },
+      {
+        "kind": "pageerror",
+        "message": "TypeError: Load failed",
+        "stack": "Unhandled Promise Rejection: TypeError: Load failed\n",
+        "navigation": 6,
+        "at": 1792071067501
+      },
+      {
+        "kind": "dom-uncaught",
+        "message": "TypeError: Load failed",
+        "document": "https://127.0.0.1:64083/normal",
+        "navigation": 6,
+        "at": 1792071067501
+      }
+    ]
+  },
+  "crossOriginProfileCaughtUnloadDiagnostic": true,
+  "crossOriginProfile": {
+    "engine": "webkit",
+    "resource": "profiles",
+    "fixtureOrigin": "https://127.0.0.1:64089",
+    "normalCrossOriginRead": "PASS",
+    "cases": [
+      {
+        "method": "goto",
+        "navigation": 3,
+        "qualified": [
+          {
+            "kind": "pageerror",
+            "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+            "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+            "navigation": 3,
+            "at": 1792071068632,
+            "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+            "matchingFetch": {
+              "kind": "unload-fetch",
+              "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+              "method": "GET",
+              "document": "https://127.0.0.1:64090/caught",
+              "navigation": 3,
+              "at": 1792071068629
+            }
+          }
+        ]
+      },
+      {
+        "method": "reload",
+        "navigation": 5,
+        "qualified": [
+          {
+            "kind": "pageerror",
+            "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+            "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+            "navigation": 5,
+            "at": 1792071069143,
+            "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+            "matchingFetch": {
+              "kind": "unload-fetch",
+              "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+              "method": "GET",
+              "document": "https://127.0.0.1:64090/caught",
+              "navigation": 5,
+              "at": 1792071069140
+            }
+          }
+        ]
+      }
+    ],
+    "caught": {
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+          "navigation": 3,
+          "at": 1792071068632
+        },
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+          "navigation": 5,
+          "at": 1792071069143
+        },
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+          "navigation": 6,
+          "at": 1792071069650
+        }
+      ],
+      "qualified": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+          "navigation": 3,
+          "at": 1792071068632,
+          "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+            "method": "GET",
+            "document": "https://127.0.0.1:64090/caught",
+            "navigation": 3,
+            "at": 1792071068629
+          }
+        },
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+          "navigation": 5,
+          "at": 1792071069143,
+          "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+            "method": "GET",
+            "document": "https://127.0.0.1:64090/caught",
+            "navigation": 5,
+            "at": 1792071069140
+          }
+        },
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+          "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+          "navigation": 6,
+          "at": 1792071069650,
+          "qualification": "native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown",
+          "matchingFetch": {
+            "kind": "unload-fetch",
+            "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+            "method": "GET",
+            "document": "https://127.0.0.1:64090/caught",
+            "navigation": 6,
+            "at": 1792071069647
+          }
+        }
+      ],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64090/normal",
+          "navigation": 2,
+          "at": 1792071068627
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+          "method": "GET",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 3,
+          "at": 1792071068629
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 3,
+          "at": 1792071068632
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+          "method": "GET",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 3,
+          "at": 1792071068632
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64090/next",
+          "navigation": 4,
+          "at": 1792071069138
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+          "method": "GET",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 5,
+          "at": 1792071069140
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 5,
+          "at": 1792071069143
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+          "method": "GET",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 5,
+          "at": 1792071069143
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+          "method": "GET",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 6,
+          "at": 1792071069647
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 6,
+          "at": 1792071069650
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111",
+          "method": "GET",
+          "document": "https://127.0.0.1:64090/caught",
+          "navigation": 6,
+          "at": 1792071069650
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "https://127.0.0.1:64090/normal",
+          "startedAt": 1792071068240,
+          "finishedAt": 1792071068292
+        },
+        {
+          "id": 2,
+          "method": "goto",
+          "from": "https://127.0.0.1:64090/normal",
+          "to": "https://127.0.0.1:64090/caught",
+          "startedAt": 1792071068623,
+          "finishedAt": 1792071068628
+        },
+        {
+          "id": 3,
+          "method": "goto",
+          "from": "https://127.0.0.1:64090/caught",
+          "to": "https://127.0.0.1:64090/next",
+          "startedAt": 1792071068628,
+          "finishedAt": 1792071068633
+        },
+        {
+          "id": 4,
+          "method": "goto",
+          "from": "https://127.0.0.1:64090/next",
+          "to": "https://127.0.0.1:64090/caught",
+          "startedAt": 1792071069135,
+          "finishedAt": 1792071069139
+        },
+        {
+          "id": 5,
+          "method": "reload",
+          "from": "https://127.0.0.1:64090/caught",
+          "to": "https://127.0.0.1:64090/caught",
+          "startedAt": 1792071069139,
+          "finishedAt": 1792071069144
+        },
+        {
+          "id": 6,
+          "method": "goto",
+          "from": "https://127.0.0.1:64090/caught",
+          "to": "https://127.0.0.1:64090/normal",
+          "startedAt": 1792071069645,
+          "finishedAt": 1792071069651
+        }
+      ],
+      "domErrors": []
+    },
+    "reproduced": true,
+    "realCorsDenialDetected": true,
+    "negativeEvidence": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64090/caught:3:35)\n    at unknown (https://127.0.0.1:64090/caught:6:61)",
+        "navigation": 6,
+        "at": 1792071069650
+      },
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:64089/rest/v1/profiles?select=*&id=eq.11111111-1111-4111-8111-111111111111 due to access control checks.",
+        "stack": "",
+        "navigation": 6,
+        "at": 1792071070156
+      },
+      {
+        "kind": "pageerror",
+        "message": "TypeError: Load failed",
+        "stack": "Unhandled Promise Rejection: TypeError: Load failed\n",
+        "navigation": 6,
+        "at": 1792071070156
+      },
+      {
+        "kind": "dom-uncaught",
+        "message": "TypeError: Load failed",
+        "document": "https://127.0.0.1:64090/normal",
+        "navigation": 6,
+        "at": 1792071070156
+      }
+    ]
+  },
+  "negativeControls": {
+    "realExceptionDetected": true,
+    "unhandledRejectionDetected": true,
+    "mutationErrorsRetained": true
+  },
+  "negativeEvidence": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:64073/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-post:6:54)",
+      "navigation": 18,
+      "at": 1792071063305
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:64073/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-post:6:54)",
+      "navigation": 20,
+      "at": 1792071063617
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:64073/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-post:6:54)",
+      "navigation": 21,
+      "at": 1792071063923
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:64073/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-patch:6:54)",
+      "navigation": 22,
+      "at": 1792071063928
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:64073/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-patch:6:54)",
+      "navigation": 24,
+      "at": 1792071064240
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:64073/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-patch:6:54)",
+      "navigation": 25,
+      "at": 1792071064547
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:64073/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-delete:6:54)",
+      "navigation": 26,
+      "at": 1792071064552
+    },
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:64073/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:64073/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:64073/caught-delete:6:54)",
+      "navigation": 28,
+      "at": 1792071064863
+    },
+    {
+      "kind": "pageerror",
+      "message": "NEGATIVE_CONTROL_REAL_EXCEPTION",
+      "stack": "Error: NEGATIVE_CONTROL_REAL_EXCEPTION\n    at unknown (undefined:1:43)",
+      "navigation": 28,
+      "at": 1792071065169
+    },
+    {
+      "kind": "pageerror",
+      "message": "Error: NEGATIVE_CONTROL_REAL_REJECTION",
+      "stack": "",
+      "navigation": 28,
+      "at": 1792071065268
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "Error: NEGATIVE_CONTROL_REAL_EXCEPTION",
+      "document": "https://127.0.0.1:64073/caught-delete",
+      "navigation": 28,
+      "at": 1792071065169
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "Error: NEGATIVE_CONTROL_REAL_REJECTION",
+      "document": "https://127.0.0.1:64073/caught-delete",
+      "navigation": 28,
+      "at": 1792071065268
+    }
+  ]
+}

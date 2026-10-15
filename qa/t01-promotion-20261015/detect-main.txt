@@ -1,0 +1,38 @@
+
+  GitNexus Detect Changes (1.6.12)
+LISTING CAPPED: the changed-symbol list was capped, so it does not name every changed symbol. The counts and risk level still cover all of them.
+
+Changes: 3870 files, 2864 symbols
+Affected processes: 99
+Risk level: critical
+
+Changed symbols:
+  Section This is NOT the Next.js you know → AGENTS.md
+  Section GitNexus — Code Intelligence → AGENTS.md
+  Section Always Do → AGENTS.md
+  Section Never Do → AGENTS.md
+  Section Resources → AGENTS.md
+  Section CLI → AGENTS.md
+  Section SUTRA — jalon intégration Salad désactivée, 2026-10-14 → BATON.md
+  Section SUTRA — reprise apres verification finale, 2026-10-13 → BATON.md
+  Section BATON — SUTRA T01, OVH en production → BATON.md
+  Section Archive antérieure au déploiement final → BATON.md
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-13 — livraison T04 fournisseurs, sans déploiement → BATON.md
+  Section Livraison 47e49ee → BATON.md
+  Section Livraison 312522a → BATON.md
+  Section Livraison 460acd3 → BATON.md
+... and 2849 more
+
+Affected execution flows:
+  • Submit → Blocked (3 steps) — changed: load
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: ExecutionModeNotice, fetchPublicCapabilities, CreatePage
+  • LibraryPage → FetchVideos (3 steps) — changed: LibraryPage
+  • GET → CreateServiceClient (6 steps) — changed: runPublicationJournal
+  • GET → Origin (6 steps) — changed: runPublicationJournal
+  • GET → Denied (5 steps) — changed: denied, enforceAccountAccess, createServerClient
+  • GET → Signature (5 steps) — changed: runPublicationJournal
+  • GET → ContentWithTags (5 steps) — changed: runPublicationJournal
+  • GET → ProviderPlatform (5 steps) — changed: runPublicationJournal
+  • AnalyticsPage → CreateClient (4 steps) — changed: createClient
+... and 89 more

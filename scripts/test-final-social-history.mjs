@@ -33,6 +33,8 @@ const absent = '11000000-0000-4000-8000-000000000003'
 const profile = '111111111111111111111111'
 const external = '222222222222222222222222'
 const oldAccount = randomUUID(), oldRevision = randomUUID(), foreign = randomUUID(), legacy = randomUUID()
+const invalidRevisions = [null, 'invalid-revision'].map((revision, index) => ({ id: randomUUID(), revision,
+  platform: ['linkedin', 'pinterest'][index] }))
 const fresh = randomUUID(), firstRevision = randomUUID()
 const meta = (revision, pending) => ({ credential_owner: 'zernio', zernio_profile_id: profile,
   sutra_oauth_revision: revision, ...(pending === undefined ? {} : { sutra_revocation_pending: pending }) })
@@ -78,6 +80,7 @@ try {
     ${insert(oldAccount, alice, 'youtube', meta(oldRevision))}
     ${insert(foreign, bob, 'tiktok', { credential_owner: 'other-app', sutra_oauth_revision: 'foreign-opaque-value' })}
     ${insert(legacy, bob, 'youtube', { credential_owner: 'zernio', foreign_app: true })}
+    ${invalidRevisions.map(({ id, revision, platform }) => insert(id, alice, platform, meta(revision))).join('\n')}
     GRANT ALL ON public.social_accounts TO service_role;
     ALTER TABLE public.social_accounts ENABLE ROW LEVEL SECURITY;
     GRANT SELECT(id,user_id,status) ON public.social_accounts TO authenticated;
@@ -124,6 +127,75 @@ try {
     await service(update(foreign, { application: 'foreign', arbitrary: true }, 'revoked'))
     await service(update(legacy, { credential_owner: 'zernio', foreign_app: true }, 'revoked'))
     assert.equal(await count(), 0)
+  })
+  await check('legacy Zernio without revision revokes without inventing historical consent', async () => {
+    const id = randomUUID(), revision = randomUUID()
+    const metadata = { credential_owner: 'zernio', zernio_profile_id: profile, display: 'preserved' }
+    await service(insert(id, alice, 'facebook', metadata))
+    assert.equal(await count(id), 0)
+    await service(update(id, { ...metadata, ...meta(revision, true) }, 'revoked', ',access_token=NULL,refresh_token=NULL'))
+    const [requested] = await rows(id)
+    assert.equal(requested.event_type, 'revocation_requested')
+    assert.equal(requested.revision_id, revision)
+    assert.equal(requested.requested_scopes, null)
+    assert.equal(requested.granted_scopes, null)
+    assert.equal(requested.remote_outcome, 'unknown')
+    assert.equal(requested.user_id, alice)
+    assert.equal(requested.zernio_profile_id, profile)
+    assert.equal(await sql(`SELECT access_token IS NULL AND refresh_token IS NULL AND metadata->>'display'='preserved'
+      FROM public.social_accounts WHERE id=${literal(id)};`), 't')
+    await service(update(id, { ...metadata, ...meta(revision, true) }, 'revoked'))
+    assert.equal(await count(id), 1, 'Pending cleanup must not repeat a request')
+    await service(update(id, { ...metadata, ...meta(revision, false) }, 'revoked'))
+    await service(update(id, { ...metadata, ...meta(revision, false) }, 'revoked'))
+    assert.deepEqual((await rows(id)).map(event => event.event_type), ['revocation_requested', 'revocation_confirmed'])
+    await service(update(id, meta(randomUUID())))
+    assert.deepEqual((await rows(id)).map(event => event.event_type), ['revocation_requested', 'revocation_confirmed', 'reconnection'])
+  })
+  await check('legacy revocation rejects foreign missing malformed and pending provenance atomically', async () => {
+    const valid = { credential_owner: 'zernio', zernio_profile_id: profile }
+    for (const metadata of [{ ...valid, credential_owner: 'another-app' }, { zernio_profile_id: profile },
+      { credential_owner: 'zernio' }, { ...valid, zernio_profile_id: 'invalid' },
+      ...[true, 'true', null].map(pending => ({ ...valid, sutra_revocation_pending: pending }))]) {
+      const id = randomUUID()
+      await service(insert(id, alice, 'x', metadata))
+      const before = await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(id)};`)
+      await denied(`SET ROLE service_role; ${update(id, meta(randomUUID(), true), 'revoked', ',access_token=NULL,refresh_token=NULL')}`,
+        /REVOCATION_INVALID/)
+      assert.equal(await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(id)};`), before)
+      assert.equal(await count(id), 0)
+      await service(`DELETE FROM public.social_accounts WHERE id=${literal(id)};`)
+    }
+    for (const { id } of invalidRevisions) {
+      const before = await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(id)};`)
+      await denied(`SET ROLE service_role; ${update(id, meta(randomUUID(), true), 'revoked')}`, /PREVIOUS_PROVENANCE_INVALID/)
+      assert.equal(await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(id)};`), before)
+      assert.equal(await count(id), 0, 'An invalid revision must never become fabricated legacy history')
+    }
+  })
+  await check('legacy revocation cannot transfer identity or profile or insert a fabricated request', async () => {
+    const id = randomUUID(), metadata = { credential_owner: 'zernio', zernio_profile_id: profile }
+    await service(insert(id, alice, 'x', metadata))
+    const before = await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(id)};`)
+    for (const extra of [`,user_id='${bob}'`, ",platform='reddit'", ",external_id='333333333333333333333333'"]) {
+      await denied(`SET ROLE service_role; ${update(id, meta(randomUUID(), true), 'revoked', extra)}`, /OWNER_IMMUTABLE|REVOCATION_INVALID/)
+    }
+    await denied(`SET ROLE service_role; ${update(id, { ...meta(randomUUID(), true), zernio_profile_id: '333333333333333333333333' }, 'revoked')}`,
+      /REVOCATION_INVALID/)
+    await denied(`SET ROLE service_role; ${insert(randomUUID(), alice, 'reddit', meta(randomUUID(), true), 'revoked')}`, /REVOCATION_INVALID/)
+    assert.equal(await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(id)};`), before)
+    assert.equal(await count(id), 0)
+    await service(`DELETE FROM public.social_accounts WHERE id=${literal(id)};`)
+  })
+  await check('eight legacy CAS revocation writers record exactly one operation', async () => {
+    const id = randomUUID(), metadata = { credential_owner: 'zernio', zernio_profile_id: profile }
+    await service(insert(id, alice, 'x', metadata, 'expired'))
+    const results = await Promise.all(Array.from({ length: 8 }, () => service(`UPDATE public.social_accounts
+      SET metadata=${json(meta(randomUUID(), true))},status='revoked',access_token=NULL,refresh_token=NULL
+      WHERE id=${literal(id)} AND metadata=${json(metadata)} RETURNING id;`)))
+    assert.equal(results.filter(Boolean).length, 1)
+    assert.deepEqual((await rows(id)).map(event => event.event_type), ['revocation_requested'])
+    await service(`DELETE FROM public.social_accounts WHERE id=${literal(id)};`)
   })
   await check('fresh connection produces one posting request with unknown actual grants', async () => {
     await service(insert(fresh, alice, 'instagram', { ...meta(firstRevision),
@@ -182,6 +254,9 @@ try {
     assert.equal(await count(fresh), previous + 1)
   })
   await check('audit insertion failure rolls back the account mutation', async () => {
+    const legacyId = randomUUID()
+    await service(insert(legacyId, alice, 'x', { credential_owner: 'zernio', zernio_profile_id: profile }))
+    const legacyBefore = await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(legacyId)};`)
     const before = await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(fresh)};`)
     const previous = await count(fresh)
     await sql(`CREATE FUNCTION sutra.fixture_fail_audit() RETURNS trigger LANGUAGE plpgsql AS
@@ -189,6 +264,10 @@ try {
       CREATE TRIGGER fixture_fail_audit BEFORE INSERT ON sutra.social_authorization_history
       FOR EACH ROW EXECUTE FUNCTION sutra.fixture_fail_audit();`)
     await denied(`SET ROLE service_role; ${update(fresh, meta(randomUUID()))}`, /FIXTURE_AUDIT_UNAVAILABLE/)
+    await denied(`SET ROLE service_role; ${update(legacyId, meta(randomUUID(), true), 'revoked', ',access_token=NULL,refresh_token=NULL')}`,
+      /FIXTURE_AUDIT_UNAVAILABLE/)
+    assert.equal(await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(legacyId)};`), legacyBefore)
+    assert.equal(await count(legacyId), 0)
     assert.equal(await sql(`SELECT to_jsonb(a) FROM public.social_accounts a WHERE id=${literal(fresh)};`), before)
     assert.equal(await count(fresh), previous)
     await sql('DROP TRIGGER fixture_fail_audit ON sutra.social_authorization_history; DROP FUNCTION sutra.fixture_fail_audit();')

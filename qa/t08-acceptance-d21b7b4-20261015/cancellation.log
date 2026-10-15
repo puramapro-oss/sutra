@@ -1,0 +1,37 @@
+TAP version 13
+# (node:58007) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:58007) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: C01 cancellation requires a session and complete identity before RPC
+ok 1 - C01 cancellation requires a session and complete identity before RPC
+  ---
+  duration_ms: 3.645167
+  type: 'test'
+  ...
+# Subtest: C02 foreign user cannot cancel the owner job even with its request UUID
+ok 2 - C02 foreign user cannot cancel the owner job even with its request UUID
+  ---
+  duration_ms: 0.507833
+  type: 'test'
+  ...
+# Subtest: C03 double click reaches the same cancel key; fixture releases once
+ok 3 - C03 double click reaches the same cancel key; fixture releases once
+  ---
+  duration_ms: 0.563208
+  type: 'test'
+  ...
+# Subtest: C04 T08-CANCEL-01: SQL failure must not leak backend diagnostics through cancel response
+ok 4 - C04 T08-CANCEL-01: SQL failure must not leak backend diagnostics through cancel response
+  ---
+  duration_ms: 0.31575
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 602.482875

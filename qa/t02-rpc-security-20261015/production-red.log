@@ -1,0 +1,151 @@
+(node:59142) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:59142) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ production denies anonymous before privileged reads and RPCs (2.49375ms)
+✔ production denies expired before privileged reads and RPCs (0.284083ms)
+✔ production denies revoked before privileged reads and RPCs (0.31675ms)
+✔ two users with the same client intent get distinct user-scoped jobs and server-derived plans (7.19725ms)
+✔ client cannot inject another user or an elevated plan (0.341708ms)
+✔ diagnostic redaction at submit_video_job (0.289417ms)
+✔ diagnostic redaction at submit_video_job:throw (0.208458ms)
+✖ diagnostic redaction at claim_video_job_by_key (1.089375ms)
+✖ diagnostic redaction at claim_video_job_by_key:throw (0.29625ms)
+✖ diagnostic redaction at profile (0.192167ms)
+✔ exact public submission code remains 403: SUTRA_QUOTA_EXHAUSTED (0.196709ms)
+✖ embedded public code cannot expose a claim diagnostic: SUTRA_QUOTA_EXHAUSTED (0.192417ms)
+✔ exact public submission code remains 409: SUTRA_IDEMPOTENCY_CONFLICT (0.130667ms)
+✖ embedded public code cannot expose a claim diagnostic: SUTRA_IDEMPOTENCY_CONFLICT (0.169167ms)
+✔ exact public submission code remains 400: SUTRA_INVALID_REQUEST_ID (0.110708ms)
+✖ embedded public code cannot expose a claim diagnostic: SUTRA_INVALID_REQUEST_ID (0.130416ms)
+✖ worker diagnostic is redacted both from the response and the durable last_error (0.181083ms)
+✔ unconfirmed durable error write stays fail-closed (0.144208ms)
+✔ non-Error throw cannot escape diagnostic values (0.106417ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 12
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 282.508708
+
+✖ failing tests:
+
+test at scripts/test-t02-rpc-security-production.mts:1:4272
+✖ diagnostic redaction at claim_video_job_by_key (1.089375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-rpc-security-20261015/scripts/test-t02-rpc-security-production.mts:100:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-rpc-security-production.mts:1:4272
+✖ diagnostic redaction at claim_video_job_by_key:throw (0.29625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-rpc-security-20261015/scripts/test-t02-rpc-security-production.mts:100:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-rpc-security-production.mts:1:4272
+✖ diagnostic redaction at profile (0.192167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-rpc-security-20261015/scripts/test-t02-rpc-security-production.mts:100:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-rpc-security-production.mts:1:4953
+✖ embedded public code cannot expose a claim diagnostic: SUTRA_QUOTA_EXHAUSTED (0.192417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  403 !== 503
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-rpc-security-20261015/scripts/test-t02-rpc-security-production.mts:114:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 403,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-rpc-security-production.mts:1:4953
+✖ embedded public code cannot expose a claim diagnostic: SUTRA_IDEMPOTENCY_CONFLICT (0.169167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  409 !== 503
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-rpc-security-20261015/scripts/test-t02-rpc-security-production.mts:114:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 409,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-rpc-security-production.mts:1:4953
+✖ embedded public code cannot expose a claim diagnostic: SUTRA_INVALID_REQUEST_ID (0.130416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  400 !== 503
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-rpc-security-20261015/scripts/test-t02-rpc-security-production.mts:114:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 400,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-rpc-security-production.mts:1:5236
+✖ worker diagnostic is redacted both from the response and the durable last_error (0.181083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-rpc-security-20261015/scripts/test-t02-rpc-security-production.mts:122:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

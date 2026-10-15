@@ -1,0 +1,34 @@
+Changes: 47 files, 62 symbols
+Affected processes: 363
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 — consolidation finale du15oct, 2026-10-15T01:56:19.302552+00:00 → BATON.md
+  Section T01 2026-10-15T04:11:50.419783+00:00 — recette exacte complète, promotion suspendue à T08 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T07 — FRONTEND-JOURNEY, 2026-10-14 → ERRORS.md
+  Const port → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  Const pool → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  TypeAlias Row → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  Const alice → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  Const bob → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  Const externalId → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  Const profile → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  Const session → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  Const sessionId → qa/t06-integrated-retest-20261015/history-routes.test.mts
+  Const userId → qa/t06-integrated-retest-20261015/history-routes.test.mts
+... and 47 more
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: onConfirmation, onConfirmation, onConfirmation, onConfirmation
+  • CommunityScreen → ApiFetch (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+  • AdminContestPage → FetchData (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+  • AdminUsersPage → FetchUsers (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+  • CommunityPage → FetchBuddy (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+  • CommunityPage → FetchCircles (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+  • CommunityPage → FetchWall (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+  • JeuCreatifPage → Load (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+  • LightningPage → Load (3 steps) — changed: onConfirmation, onConfirmation, onConfirmation
+... and 353 more

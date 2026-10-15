@@ -53,6 +53,8 @@ jobs:
           smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
       - run: npm run check
       - run: npx playwright install --with-deps chromium webkit
+      - name: Native browser error guard method boundaries
+        run: node --test qa/t01-final-20261015/browser-harness/guard.test.mjs
       - run: node qa/t08/run.mjs browser-redteam
       - name: Library pagination and consent contrast regressions
         run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
@@ -88,6 +90,7 @@ jobs:
             test-results/t08
             qa/t07-frontend-fixes-20261014/evidence/after
             qa/t01-final-20261015/browser-final
+            qa/t01-final-20261015/browser-harness/method-boundary-20261015
           if-no-files-found: warn
 
   disposable-database:
@@ -130,6 +133,8 @@ jobs:
         run: |
           SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-final-write-permissions.mjs
           SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-final-social-history.mjs
+      - name: Social revocation routes with canonical timestamp and history triggers
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t06-integrated-retest-20261015/run-postgres.mjs history
       - name: Salad isolated journal, concurrency and immutable artifacts
         run: node --import tsx --test scripts/test-salad-persistence.mts
         env:

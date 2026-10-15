@@ -42,9 +42,15 @@ export function classifyRuntimeErrors({ engine, nativeControl, errors, events, n
             && nativeControl?.crossOriginProfileCaughtUnloadDiagnostic === true)))
       allowedResource = !url.hash && (!url.search || (query.length === 1 && query[0][0] === '_rsc' && /^[a-zA-Z0-9_-]{1,128}$/.test(query[0][1])))
     } catch { /* Malformed/unknown query is never qualified. */ }
-    const fetch = match && events.find(row => row.kind === 'unload-fetch' && row.url === match[1]
+    const matchingFetches = match ? events.filter(row => row.kind === 'unload-fetch' && row.url === match[1]
       && row.navigation === error.navigation && row.document === navigation?.from
-      && Math.abs(row.at - error.at) <= 1000)
+      && Math.abs(row.at - error.at) <= 1000) : []
+    const fetch = matchingFetches[0]
+    // The engine diagnostic has no request ID or method. Conflicting methods
+    // at this URL cannot be attributed to the proven native read control.
+    const unambiguousMethod = fetch && matchingFetches.every(row => row.method === fetch.method)
+    const sameOriginMethodProof = (fetch?.method === 'GET' && nativeControl?.caughtUnloadDiagnostic === true)
+      || (fetch?.method === 'HEAD' && nativeControl?.caughtHeadUnloadDiagnostic === true)
     let sameOrigin = false
     try { sameOrigin = Boolean(navigation && match && new URL(match[1]).origin === new URL(navigation.from).origin && new URL(navigation.to).origin === new URL(navigation.from).origin) } catch { /* unknown remains a failure */ }
     let syntheticOriginProof = false
@@ -52,8 +58,8 @@ export function classifyRuntimeErrors({ engine, nativeControl, errors, events, n
       && new URL(navigation.to).origin === new URL(navigation.from).origin && new URL(navigation.from).origin !== fixtureOrigin) } catch { /* unknown remains a failure */ }
     const domFailure = domErrors.some(row => row.navigation === error.navigation && Math.abs(row.at - error.at) <= 1000)
     if (engine === 'webkit' && error.kind === 'pageerror'
-      && ((nativeControl?.caughtUnloadDiagnostic === true && allowedResource && sameOrigin) || syntheticOriginProof)
-      && fetch && !domFailure && navigation && error.at >= navigation.startedAt
+      && ((sameOriginMethodProof && allowedResource && sameOrigin) || syntheticOriginProof)
+      && unambiguousMethod && !domFailure && navigation && error.at >= navigation.startedAt
       && error.at <= (navigation.finishedAt ?? error.at) + 1000) {
       qualified.push({ ...error, qualification: syntheticOriginProof ? 'native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown' : 'native-webkit-caught-fetch-during-explicit-document-teardown', matchingFetch: fetch })
     } else unexpected.push(error)

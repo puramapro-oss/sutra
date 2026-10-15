@@ -17,8 +17,9 @@ export async function nativeRuntimeControls(browser) {
       response.end(`<h1>Native HTML engine control</h1><script>
         if (location.pathname.startsWith('/caught')) {
           const resource = location.pathname.endsWith('-rsc') ? '/slow?_rsc=fixture_token' : '/slow';
+          const method = location.pathname.split('-')[1]?.toUpperCase() || 'GET';
           for (const lifecycle of ['beforeunload', 'pagehide']) {
-            addEventListener(lifecycle, () => { fetch(resource).catch(() => {}) });
+            addEventListener(lifecycle, () => { fetch(resource, { method }).catch(() => {}) });
           }
         }
       </script>`)
@@ -32,22 +33,38 @@ export async function nativeRuntimeControls(browser) {
     context = await browser.newContext({ ignoreHTTPSErrors: true })
     await context.route('**/*', route => new URL(route.request().url()).origin === base ? route.continue() : route.abort())
     const page = await context.newPage()
-    const snapshot = await observeRuntimeErrors(page, { engine, nativeControl: { caughtUnloadDiagnostic: true } })
+    const snapshot = await observeRuntimeErrors(page, { engine, nativeControl: { caughtUnloadDiagnostic: true, caughtHeadUnloadDiagnostic: true } })
     const cases = []
-    for (const method of ['goto', 'reload']) for (const query of [false, true]) {
-      await page.goto(base + (query ? '/caught-rsc' : '/caught'))
+    for (const requestMethod of ['GET', 'HEAD']) for (const method of ['goto', 'reload']) for (const query of [false, true]) {
+      await page.goto(base + '/caught-' + requestMethod.toLowerCase() + (query ? '-rsc' : ''))
       const before = snapshot().errors.length
       if (method === 'goto') await page.goto(base + '/next')
       else await page.reload()
       await page.waitForTimeout(300)
       const state = snapshot(), navigation = state.navigations.at(-1)
       assert.equal(navigation.method, method)
-      assert.ok(state.events.some(event => event.kind === 'unload-fetch' && event.navigation === navigation.id && event.url === base + '/slow' + (query ? '?_rsc=fixture_token' : '')), 'native unload fetch must be observed exactly')
+      assert.ok(state.events.some(event => event.kind === 'unload-fetch' && event.navigation === navigation.id && event.method === requestMethod && event.url === base + '/slow' + (query ? '?_rsc=fixture_token' : '')), 'native unload fetch and method must be observed exactly')
       assert.deepEqual(state.unexpected, [], 'native caught teardown must have no unexpected application error')
-      cases.push({ method, query, errors: state.errors.slice(before), qualified: state.qualified.filter(error => error.navigation === navigation.id) })
+      cases.push({ requestMethod, method, query, errors: state.errors.slice(before), qualified: state.qualified.filter(error => error.navigation === navigation.id) })
     }
     const caught = structuredClone(snapshot())
     assert.deepEqual(caught.unexpected, [], 'native caught teardown must have no unexpected application error')
+    const mutationCases = []
+    for (const requestMethod of ['POST', 'PATCH', 'DELETE']) for (const method of ['goto', 'reload']) {
+      await page.goto(base + '/caught-' + requestMethod.toLowerCase())
+      if (method === 'goto') await page.goto(base + '/next')
+      else await page.reload()
+      await page.waitForTimeout(300)
+      const state = snapshot(), navigation = state.navigations.at(-1)
+      const events = state.events.filter(event => event.kind === 'unload-fetch' && event.navigation === navigation.id)
+      const errors = state.errors.filter(error => error.navigation === navigation.id)
+      const qualified = state.qualified.filter(error => error.navigation === navigation.id)
+      const unexpected = state.unexpected.filter(error => error.navigation === navigation.id)
+      assert.ok(events.some(event => event.method === requestMethod && event.url === base + '/slow'), 'native mutation method must be observed')
+      assert.deepEqual(qualified, [], 'mutation diagnostics must never qualify as native reads')
+      assert.ok(errors.every(error => unexpected.some(row => row.at === error.at && row.stack === error.stack)), 'all mutation errors must remain blocking')
+      mutationCases.push({ requestMethod, method, events, errors, qualified, unexpected })
+    }
     await page.evaluate(() => { setTimeout(() => { throw new Error('NEGATIVE_CONTROL_REAL_EXCEPTION') }, 0) })
     await page.waitForTimeout(100)
     assert.ok(snapshot().unexpected.some(error => error.message?.includes('NEGATIVE_CONTROL_REAL_EXCEPTION')), 'guard must reject a real exception')
@@ -58,10 +75,11 @@ export async function nativeRuntimeControls(browser) {
     const crossOrigin = await crossOriginRuntimeControls(browser)
     const crossOriginProfile = await crossOriginRuntimeControls(browser, 'profiles')
     return { engine, browserVersion: browser.version(), nativeSafari: false, keyboard,
-      caughtUnloadDiagnostic: caught.qualified.length > 0, cases, caught,
+      caughtUnloadDiagnostic: caught.qualified.some(error => error.matchingFetch.method === 'GET'),
+      caughtHeadUnloadDiagnostic: caught.qualified.some(error => error.matchingFetch.method === 'HEAD'), cases, caught, mutationCases,
       crossOriginCaughtUnloadDiagnostic: crossOrigin.reproduced, crossOrigin,
       crossOriginProfileCaughtUnloadDiagnostic: crossOriginProfile.reproduced, crossOriginProfile,
-      negativeControls: { realExceptionDetected: true, unhandledRejectionDetected: true }, negativeEvidence: all.unexpected }
+      negativeControls: { realExceptionDetected: true, unhandledRejectionDetected: true, mutationErrorsRetained: true }, negativeEvidence: all.unexpected }
   } finally {
     await context?.close()
     server.closeAllConnections(); await new Promise(done => server.close(done))

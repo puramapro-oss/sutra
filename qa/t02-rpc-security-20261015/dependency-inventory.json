@@ -1,0 +1,678 @@
+{
+  "lockSha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+  "productionAudit": {
+    "info": 0,
+    "low": 2,
+    "moderate": 5,
+    "high": 0,
+    "critical": 0,
+    "total": 7
+  },
+  "allAudit": {
+    "info": 0,
+    "low": 4,
+    "moderate": 8,
+    "high": 17,
+    "critical": 1,
+    "total": 30
+  },
+  "packages": [
+    {
+      "package": "@lhci/cli",
+      "severity": "high",
+      "direct": true,
+      "via": [
+        "@lhci/utils",
+        "inquirer",
+        "lighthouse",
+        "proxy-agent",
+        "tmp",
+        "uuid"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/@lhci/cli",
+          "version": "0.15.1",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "@lhci/utils",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "js-yaml",
+        "lighthouse"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/@lhci/utils",
+          "version": "0.15.1",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "@next/eslint-plugin-next",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "fast-glob"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/@next/eslint-plugin-next",
+          "version": "16.3.8",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "@puppeteer/browsers",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "extract-zip",
+        "proxy-agent"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/@puppeteer/browsers",
+          "version": "2.13.2",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "argparse",
+      "severity": "moderate",
+      "direct": false,
+      "via": [
+        "sprintf-js"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/@lhci/utils/node_modules/argparse",
+          "version": "1.0.10",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "basic-ftp",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        {
+          "source": 1240853,
+          "name": "basic-ftp",
+          "dependency": "basic-ftp",
+          "title": "basic-ftp: Quadratic-time CPU denial of service in Client.list() Unix directory-listing parser (RE_LINE backtracking)",
+          "url": "https://github.com/advisories/GHSA-c475-qrg2-pj4r",
+          "severity": "high",
+          "cwe": [
+            "CWE-1333"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=6.2.0"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/basic-ftp",
+          "version": "5.3.1",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "bitcore-lib",
+      "severity": "low",
+      "direct": false,
+      "via": [
+        "elliptic"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/bitcore-lib",
+          "version": "8.25.47",
+          "developmentOnly": false
+        }
+      ]
+    },
+    {
+      "package": "braces",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        {
+          "source": 1240992,
+          "name": "braces",
+          "dependency": "braces",
+          "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+          "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=3.0.3"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/braces",
+          "version": "3.0.3",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "compression",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        {
+          "source": 1241221,
+          "name": "compression",
+          "dependency": "compression",
+          "title": "compression vulnerable to Denial of Service via memory leak on premature response close",
+          "url": "https://github.com/advisories/GHSA-vc2v-76pw-4v95",
+          "severity": "high",
+          "cwe": [
+            "CWE-401",
+            "CWE-459"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<1.8.2"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/compression",
+          "version": "1.8.1",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "elliptic",
+      "severity": "low",
+      "direct": false,
+      "via": [
+        {
+          "source": 1112030,
+          "name": "elliptic",
+          "dependency": "elliptic",
+          "title": "Elliptic Uses a Cryptographic Primitive with a Risky Implementation",
+          "url": "https://github.com/advisories/GHSA-848j-6mx2-7j84",
+          "severity": "low",
+          "cwe": [
+            "CWE-1240"
+          ],
+          "cvss": {
+            "score": 5.6,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L"
+          },
+          "range": "<=6.6.1"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/elliptic",
+          "version": "6.6.1",
+          "developmentOnly": false
+        }
+      ]
+    },
+    {
+      "package": "eslint-config-next",
+      "severity": "high",
+      "direct": true,
+      "via": [
+        "@next/eslint-plugin-next"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/eslint-config-next",
+          "version": "16.3.8",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "external-editor",
+      "severity": "low",
+      "direct": false,
+      "via": [
+        "tmp"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/external-editor",
+          "version": "3.1.0",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "extract-zip",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        {
+          "source": 1139346,
+          "name": "extract-zip",
+          "dependency": "extract-zip",
+          "title": "extract-zip unvalidated symlink path traversal",
+          "url": "https://github.com/advisories/GHSA-jmr9-qjv8-65gv",
+          "severity": "high",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N"
+          },
+          "range": "<=2.0.1"
+        },
+        {
+          "source": 1193685,
+          "name": "extract-zip",
+          "dependency": "extract-zip",
+          "title": "extract-zip allows arbitrary file writes through symlink archive entries",
+          "url": "https://github.com/advisories/GHSA-7pqw-9j4j-h8q3",
+          "severity": "high",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:H"
+          },
+          "range": "<=2.0.1"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/extract-zip",
+          "version": "2.0.1",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "fast-glob",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "micromatch"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/fast-glob",
+          "version": "3.3.1",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "get-uri",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "basic-ftp"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/get-uri",
+          "version": "6.0.5",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "inquirer",
+      "severity": "low",
+      "direct": false,
+      "via": [
+        "external-editor"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/inquirer",
+          "version": "6.5.2",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "js-yaml",
+      "severity": "moderate",
+      "direct": false,
+      "via": [
+        "argparse"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/@lhci/utils/node_modules/js-yaml",
+          "version": "3.15.2",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "lighthouse",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "puppeteer-core"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/lighthouse",
+          "version": "12.6.1",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "micromatch",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "braces"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/micromatch",
+          "version": "4.0.8",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "opentimestamps",
+      "severity": "moderate",
+      "direct": true,
+      "via": [
+        "bitcore-lib",
+        "request",
+        "request-promise"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/javascript-opentimestamps",
+          "version": "0.4.9",
+          "developmentOnly": false
+        }
+      ]
+    },
+    {
+      "package": "pac-proxy-agent",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "get-uri"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/pac-proxy-agent",
+          "version": "7.2.0",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "proxy-addr",
+      "severity": "critical",
+      "direct": false,
+      "via": [
+        {
+          "source": 1241210,
+          "name": "proxy-addr",
+          "dependency": "proxy-addr",
+          "title": "proxy-addr vulnerable to IP spoofing via IPv4-mapped IPv6 trust subnet",
+          "url": "https://github.com/advisories/GHSA-jqcg-44mw-7w3h",
+          "severity": "critical",
+          "cwe": [
+            "CWE-290",
+            "CWE-348",
+            "CWE-697"
+          ],
+          "cvss": {
+            "score": 9.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+          },
+          "range": ">=1.1.0 <2.0.8"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/proxy-addr",
+          "version": "2.0.7",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "proxy-agent",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "pac-proxy-agent"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/proxy-agent",
+          "version": "6.5.0",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "puppeteer-core",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        "@puppeteer/browsers"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/puppeteer-core",
+          "version": "24.43.1",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "request",
+      "severity": "moderate",
+      "direct": false,
+      "via": [
+        {
+          "source": 1096727,
+          "name": "request",
+          "dependency": "request",
+          "title": "Server-Side Request Forgery in Request",
+          "url": "https://github.com/advisories/GHSA-p8p7-x288-28g6",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-918"
+          ],
+          "cvss": {
+            "score": 6.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+          },
+          "range": "<=2.88.2"
+        },
+        "uuid"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/request",
+          "version": "2.88.2",
+          "developmentOnly": false
+        }
+      ]
+    },
+    {
+      "package": "request-promise",
+      "severity": "moderate",
+      "direct": false,
+      "via": [
+        "request",
+        "request-promise-core"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/request-promise",
+          "version": "4.2.6",
+          "developmentOnly": false
+        }
+      ]
+    },
+    {
+      "package": "request-promise-core",
+      "severity": "moderate",
+      "direct": false,
+      "via": [
+        "request"
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/request-promise-core",
+          "version": "1.1.4",
+          "developmentOnly": false
+        }
+      ]
+    },
+    {
+      "package": "sprintf-js",
+      "severity": "moderate",
+      "direct": false,
+      "via": [
+        {
+          "source": 1241202,
+          "name": "sprintf-js",
+          "dependency": "sprintf-js",
+          "title": "sprintf-js vulnerable to denial of service through unbounded precision specifiers",
+          "url": "https://github.com/advisories/GHSA-hp3w-g68c-fv3c",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1284"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<=1.1.3"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/sprintf-js",
+          "version": "1.0.3",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "tmp",
+      "severity": "high",
+      "direct": false,
+      "via": [
+        {
+          "source": 1109537,
+          "name": "tmp",
+          "dependency": "tmp",
+          "title": "tmp allows arbitrary temporary file / directory write via symbolic link `dir` parameter",
+          "url": "https://github.com/advisories/GHSA-52f5-9888-hmc6",
+          "severity": "low",
+          "cwe": [
+            "CWE-59"
+          ],
+          "cvss": {
+            "score": 2.5,
+            "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": "<=0.2.3"
+        },
+        {
+          "source": 1120654,
+          "name": "tmp",
+          "dependency": "tmp",
+          "title": "tmp has Path Traversal via unsanitized prefix/postfix that enables directory escape",
+          "url": "https://github.com/advisories/GHSA-ph9p-34f9-6g65",
+          "severity": "high",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<0.2.6"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/external-editor/node_modules/tmp",
+          "version": "0.0.33",
+          "developmentOnly": true
+        },
+        {
+          "path": "node_modules/tmp",
+          "version": "0.1.0",
+          "developmentOnly": true
+        }
+      ]
+    },
+    {
+      "package": "uuid",
+      "severity": "moderate",
+      "direct": false,
+      "via": [
+        {
+          "source": 1119441,
+          "name": "uuid",
+          "dependency": "uuid",
+          "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-787",
+            "CWE-1285"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<11.1.1"
+        }
+      ],
+      "nodes": [
+        {
+          "path": "node_modules/@lhci/cli/node_modules/uuid",
+          "version": "9.0.1",
+          "developmentOnly": true
+        },
+        {
+          "path": "node_modules/request/node_modules/uuid",
+          "version": "3.4.0",
+          "developmentOnly": false
+        }
+      ]
+    }
+  ]
+}

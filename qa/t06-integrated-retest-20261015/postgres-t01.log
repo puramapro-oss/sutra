@@ -1,0 +1,68 @@
+TAP version 13
+# (node:3421) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:3421) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: PG routes: connection, revocation and reconnection retain consent history and clear credentials
+ok 1 - PG routes: connection, revocation and reconnection retain consent history and clear credentials
+  ---
+  duration_ms: 50.386666
+  type: 'test'
+  ...
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# Subtest: PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect
+ok 2 - PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect
+  ---
+  duration_ms: 8.915625
+  type: 'test'
+  ...
+# Subtest: PG routes: one state can produce only one successful callback under concurrency
+ok 3 - PG routes: one state can produce only one successful callback under concurrency
+  ---
+  duration_ms: 12.731917
+  type: 'test'
+  ...
+# Subtest: PG routes: state refuses another session, another user, profile change and expiry
+ok 4 - PG routes: state refuses another session, another user, profile change and expiry
+  ---
+  duration_ms: 5.632459
+  type: 'test'
+  ...
+# Subtest: PG routes: audit write failure rolls back account; callback state remains consumed
+ok 5 - PG routes: audit write failure rolls back account; callback state remains consumed
+  ---
+  duration_ms: 6.882458
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent pending cleanup retains one DELETE and confirms the original operation
+ok 6 - PG routes: concurrent pending cleanup retains one DELETE and confirms the original operation
+  ---
+  duration_ms: 14.280875
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent account change before-reload prevents false revocation confirmation
+ok 7 - PG routes: concurrent account change before-reload prevents false revocation confirmation
+  ---
+  duration_ms: 6.910333
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent account change after-reload prevents false revocation confirmation
+ok 8 - PG routes: concurrent account change after-reload prevents false revocation confirmation
+  ---
+  duration_ms: 6.420625
+  type: 'test'
+  ...
+# Subtest: PG routes: legacy scoped account without revision must still revoke locally
+ok 9 - PG routes: legacy scoped account without revision must still revoke locally
+  ---
+  duration_ms: 4.281333
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 402.246833

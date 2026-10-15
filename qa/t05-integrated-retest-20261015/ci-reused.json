@@ -1,0 +1,154 @@
+{
+  "candidate": "d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2",
+  "ciRun": 38677062190,
+  "observedAt": "2026-10-15T04:11:05.310647+00:00",
+  "status": "PASS",
+  "receipt": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-tests.json",
+  "receiptSha256": "957842d1297009da2615d308a2f5a1aa9086d8a8de10ed0de14e305406da5351",
+  "reusedGroups": [
+    {
+      "name": "retained-real-exports",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-real-export.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 61102,
+      "group": "media",
+      "counts": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/retained-real-exports.log",
+      "receiptSha256": "84ef90ffe2d5aa79ba0ab0240b60b489d7e5e2578f186fc1af61570fbaf1659a"
+    },
+    {
+      "name": "composition-delta",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-composition-fix.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 11356,
+      "group": "media",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/composition-delta.log",
+      "receiptSha256": "454929a52b09c53b2b8c151dd130e367bd72197ab23bb6cee3ed24c3cde670a1"
+    },
+    {
+      "name": "final-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-final-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 68501,
+      "group": "media",
+      "counts": {
+        "tests": 32,
+        "pass": 32,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/final-media.log",
+      "receiptSha256": "b6fe6067156d041261827417fe31d5e85bbf1458d422fb73c409639a8e2134ec"
+    },
+    {
+      "name": "salad-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-salad-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 8060,
+      "group": "media",
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/salad-media.log",
+      "receiptSha256": "635c515675e6f22cb2ba261020664475eeeeb3f97d957ab92550c7a0da9289ff"
+    },
+    {
+      "name": "local-engine",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-local-engine-e2e.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1337,
+      "group": "media",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/local-engine.log",
+      "receiptSha256": "da060d2801b978b9ad6ff62f7b5de0128eb3f18b2a3b92a70dc275a694b7b768"
+    },
+    {
+      "name": "compositor",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--import",
+        "./scripts/helpers/local-media-fixture.mts",
+        "--test",
+        "--test-concurrency=1",
+        "src/lib/ffmpeg-compositor.test.ts",
+        "src/lib/ffmpeg-compositor-formats.test.ts",
+        "src/lib/media-validation.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 60010,
+      "group": "media",
+      "counts": {
+        "tests": 31,
+        "pass": 31,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/compositor.log",
+      "receiptSha256": "216bcec6dd2f147e68b6dd16a3ca6db901a8211802fa693f1a73a5608a9cfd54"
+    }
+  ]
+}
