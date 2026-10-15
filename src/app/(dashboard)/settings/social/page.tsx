@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
 import { PLATFORM_INFO, type SocialPlatform } from '@/lib/zernio'
@@ -9,6 +9,7 @@ import { ConnectionSummary } from '@/components/settings/social/ConnectionSummar
 import { PlatformGrid } from '@/components/settings/social/PlatformGrid'
 import { AutopilotSection, type AutopilotConfig } from '@/components/settings/social/AutopilotSection'
 import { DisconnectConfirmModal } from '@/components/settings/social/DisconnectConfirmModal'
+import Button from '@/components/ui/Button'
 
 interface SocialAccount {
   id: string
@@ -54,6 +55,8 @@ export default function SocialAccountsPage() {
   const [accounts, setAccounts] = useState<SocialAccount[]>([])
   const [autopilotConfig, setAutopilotConfig] = useState<AutopilotConfig | null>(null)
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const accountsRequest = useRef<AbortController | null>(null)
   const [connecting, setConnecting] = useState<SocialPlatform | null>(null)
   const [disconnectingId, setDisconnectingId] = useState<string | null>(null)
   const [savingAutopilot, setSavingAutopilot] = useState(false)
@@ -61,27 +64,43 @@ export default function SocialAccountsPage() {
   const [disconnectNotice, setDisconnectNotice] = useState<string | null>(null)
 
   const fetchAccounts = useCallback(async () => {
+    if (accountsRequest.current) return
+    const controller = new AbortController()
+    accountsRequest.current = controller
+    setLoading(true)
+    setLoadError(null)
+    const timeout = setTimeout(() => controller.abort(), 10_000)
     try {
-      const res = await fetch('/api/social/accounts', { cache: 'no-store' })
+      const res = await fetch('/api/social/accounts', { cache: 'no-store', signal: controller.signal })
       if (!res.ok) throw new Error('fetch_failed')
       const data = await res.json()
-      setAccounts(Array.isArray(data?.accounts) ? data.accounts : [])
+      if (!Array.isArray(data?.accounts)) throw new Error('invalid_accounts')
+      if (accountsRequest.current !== controller || controller.signal.aborted) return
+      setAccounts(data.accounts)
       if (data?.autopilot) {
         setAutopilotConfig({ ...DEFAULT_AUTOPILOT, ...data.autopilot })
       } else {
         setAutopilotConfig(DEFAULT_AUTOPILOT)
       }
     } catch {
-      setAccounts([])
-      setAutopilotConfig(DEFAULT_AUTOPILOT)
-      toast.error('Impossible de charger tes comptes sociaux')
+      if (accountsRequest.current === controller) {
+        setLoadError('Impossible de vérifier tes comptes sociaux. Leur état est indisponible. Réessaie dans un instant.')
+      }
     } finally {
-      setLoading(false)
+      clearTimeout(timeout)
+      if (accountsRequest.current === controller) {
+        accountsRequest.current = null
+        setLoading(false)
+      }
     }
   }, [])
 
   useEffect(() => {
-    fetchAccounts()
+    void fetchAccounts()
+    return () => {
+      accountsRequest.current?.abort()
+      accountsRequest.current = null
+    }
   }, [fetchAccounts])
 
   useEffect(() => {
@@ -223,24 +242,33 @@ export default function SocialAccountsPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
         <PageHeader />
 
-        <ConnectionSummary
+        {loading && <p role="status" className="mb-6 text-sm text-white/70">Vérification des comptes sociaux…</p>}
+
+        {loadError && (
+          <div id="autopilot" role="alert" data-testid="social-load-error" className="mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200">
+            <p className="mb-4">{loadError}</p>
+            <Button variant="secondary" onClick={() => void fetchAccounts()}>Réessayer</Button>
+          </div>
+        )}
+
+        {!loading && !loadError && <ConnectionSummary
           connectedCount={connectedCount}
           totalPlatforms={TOTAL_PLATFORMS}
           progressPct={progressPct}
-        />
+        />}
 
         {disconnectNotice && <p role="alert" className="mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200">{disconnectNotice}</p>}
 
-        <PlatformGrid
+        {!loadError && <PlatformGrid
           loading={loading}
           accountsByPlatform={accountsByPlatform}
           connecting={connecting}
           disconnectingId={disconnectingId}
           onConnect={handleConnect}
           onDisconnectClick={setConfirmDisconnect}
-        />
+        />}
 
-        <AutopilotSection
+        {!loading && !loadError && <AutopilotSection
           config={autopilotConfig}
           accountsByPlatform={connectedAccountsByPlatform}
           connectedCount={connectedCount}
@@ -248,7 +276,7 @@ export default function SocialAccountsPage() {
           onUpdateConfig={updateAutopilot}
           onTogglePlatformDefault={togglePlatformDefault}
           onSave={handleSaveAutopilot}
-        />
+        />}
       </div>
 
       <DisconnectConfirmModal

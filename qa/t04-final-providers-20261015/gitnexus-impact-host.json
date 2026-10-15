@@ -1,0 +1,49 @@
+{
+  "target": {
+    "id": "Function:src/lib/salad/host.ts:startSaladHost",
+    "name": "startSaladHost",
+    "type": "Function",
+    "filePath": "src/lib/salad/host.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "byDepthCounts": {
+    "1": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-host.mts",
+        "name": "test-salad-host.mts",
+        "filePath": "scripts/test-salad-host.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/serve.mts",
+        "name": "serve.mts",
+        "filePath": "src/lib/salad/serve.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

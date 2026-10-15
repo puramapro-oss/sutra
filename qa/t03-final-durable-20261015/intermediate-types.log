@@ -1,0 +1,9 @@
+qa/t03-final-durable-20261015/postgres.test.mts(160,12): error TS2571: Object is of type 'unknown'.
+qa/t03-final-durable-20261015/postgres.test.mts(163,12): error TS2571: Object is of type 'unknown'.
+scripts/test-t03-final-durable.mts(120,5): error TS2322: Type '() => Promise<{ title: string; description: string; tags: never[]; narration: string; scenes: { visual_prompt: string; duration_seconds: number; use_stock: boolean; }[]; music_prompt: string; music_style: string; thumbnail_prompt: string; estimated_duration: number; }>' is not assignable to type '(args: { topic: string; style: string; format: string; durationHint: string; }) => Promise<ScriptData>'.
+  Type 'Promise<{ title: string; description: string; tags: never[]; narration: string; scenes: { visual_prompt: string; duration_seconds: number; use_stock: boolean; }[]; music_prompt: string; music_style: string; thumbnail_prompt: string; estimated_duration: number; }>' is not assignable to type 'Promise<ScriptData>'.
+    Type '{ title: string; description: string; tags: never[]; narration: string; scenes: { visual_prompt: string; duration_seconds: number; use_stock: boolean; }[]; music_prompt: string; music_style: string; thumbnail_prompt: string; estimated_duration: number; }' is not assignable to type 'ScriptData'.
+      Types of property 'music_style' are incompatible.
+        Type 'string' is not assignable to type 'MusicStyle'.
+src/lib/opentimestamps.ts(2,28): error TS7016: Could not find a declaration file for module 'javascript-opentimestamps'. '/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/javascript-opentimestamps/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/opentimestamps` if it exists or add a new declaration (.d.ts) file containing `declare module 'javascript-opentimestamps';`

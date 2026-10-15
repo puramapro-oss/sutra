@@ -37,7 +37,8 @@ before(async () => {
   await query(source('migrations/v10_durable_jobs_quota.sql'))
   await query(source('migrations/v11_pipeline_checkpoints.sql'))
   const finalMigration = source('migrations/20261014_durable_checkpoint_integrity.sql')
-  await query(finalMigration); await query(finalMigration) // Exact integrated migration, replay-safe.
+  await query(finalMigration); await query(finalMigration)
+  await query(source('migrations/20261015_final_durable_integrity.sql')) // Exact integrated migration, replay-safe.
 })
 after(async () => { await pool?.end() })
 const cp = (id: string, worker: string, progress: object) => query('SELECT checkpoint_video_job_v2($1,$2,$3,NULL)', [id, worker, progress])
@@ -128,7 +129,9 @@ test('canonical SQL CHECKs accept orchestrator states; rejected state rolls back
     await query("SELECT persist_video_job_video($1,'w','sutra_auto_videos',$2,$3,false)", [j.id, j.video, { status }])
   }
   await assert.rejects(query("SELECT persist_video_job_video($1,'w','sutra_auto_videos',$2,$3,false)",
-    [j.id, j.video, { status: 'invented-state' }]), /sutra_auto_videos_status_check/)
+    [j.id, j.video, { status: 'invented-state' }]), /SUTRA_INVALID_VIDEO_TRANSITION/)
+  // The RPC rejects first; retain a direct proof that the SQL CHECK also fences writes.
+  await assert.rejects(query("UPDATE sutra_auto_videos SET status='invented-state' WHERE id=$1", [j.video]), /sutra_auto_videos_status_check/)
   assert.equal((await query('SELECT status FROM sutra_auto_videos WHERE id=$1', [j.video])).rows[0].status, 'failed')
   await assert.rejects(query("SELECT finish_video_job($1,'w','ready')", [j.id]), /INVALID_JOB_TRANSITION/)
   await assert.rejects(query("UPDATE video_jobs SET status='ready' WHERE id=$1", [j.id]), /video_jobs_status_check/)
@@ -211,7 +214,10 @@ test('worker restart after provider ACK lost reconciles persisted ID once, prese
   await assert.rejects(cp(j.id, 'w', { steps: { late: true } }), /LEASE_LOST/)
   await run(owners[0].locked_by); await run(owners[0].locked_by)
   assert.equal(submissions, 1); assert.equal(polls, 1)
-  assert.equal(Object.keys((await snapshot(j.id)).progress.steps).filter(k => k.startsWith('stage:')).length, 9)
+  const stages = (await snapshot(j.id)).progress.steps
+  assert.deepEqual(Object.keys(stages).filter(k => k.startsWith('stage:')).sort(),
+    ['script', 'storyboard', 'scenes', 'images', 'voice', 'music', 'subtitles', 'composition', 'export', 'publication'].map(stage => `stage:${stage}`).sort())
+  assert.deepEqual(stages['stage:storyboard'], { status: 'skipped', value: [] })
 })
 
 test('provider response without durable ID never resubmits after restart; completed video survives music failure', async () => {

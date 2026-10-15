@@ -12,7 +12,7 @@ mock.module('../src/lib/supabase-server.ts', { namedExports: {
   createServerClient: async () => ({ auth: { getUser: async () => ({ data: { user: authenticated ? { id: 'u' } : null }, error: null }) } }),
 } })
 mock.module('../src/lib/supabase.ts', { namedExports: { createServiceClient: () => db.client } })
-mock.module('../src/lib/zernio.ts', { namedExports: { disconnectAccount: async () => { providerCalls++; return false } } })
+mock.module('../src/lib/zernio.ts', { namedExports: { getAuthorizedProfileId: () => 'a'.repeat(24), disconnectAccount: async () => { providerCalls++; return false } } })
 mock.module('../src/lib/sutra-auto.ts', { namedExports: {
   publishAutoVideoRecord: async (_user: string, _video: string, _approval: boolean, _service: unknown, _publish?: unknown, _gateway?: unknown, readOnly = false) => {
     modes.push(readOnly); return { status: 'publishing', success: false }

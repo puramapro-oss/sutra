@@ -1,4 +1,5 @@
 """Exercise the checkpoint migration on the existing private OVH restore only."""
+import argparse
 import datetime
 import hashlib
 import json
@@ -7,14 +8,20 @@ import subprocess
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-migration = (ROOT / 'migrations/20261014_durable_checkpoint_integrity.sql').read_text()
-backup = json.loads((HERE / 'backup-restore.json').read_text())
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--proof-dir', type=Path, default=HERE)
+args = parser.parse_args()
+PROOF = args.proof_dir.resolve()
+assert PROOF.is_relative_to(ROOT / 'qa')
+assert not (PROOF / 'checkpoint-restore.json').exists(), 'Receipt already exists; inspect before retry.'
+migration = (ROOT / 'migrations/20261015_final_durable_integrity.sql').read_text()
+backup = json.loads((PROOF / 'backup-restore.json').read_text())
 source = 'MIGRATION=' + repr(migration) + '\nBACKUP=' + repr(backup) + '\n' + r'''
 import hashlib,json,os,pathlib,subprocess,re
 os.umask(0o077)
 stage='preconditions'
-names=['finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key']
-report={'status':'FAIL','productionChanged':False,'migrationSha256':hashlib.sha256(MIGRATION.encode()).hexdigest()}
+names=['finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid']
+report={'status':'FAIL','productionChanged':False,'migrationSha256':hashlib.sha256(MIGRATION.encode()).hexdigest(),'migrationPath':'migrations/20261015_final_durable_integrity.sql'}
 def query(database,sql):
     result=subprocess.run(['docker','exec','-i','supabase-db','psql','-U','supabase_admin','-d',database,'-X','-A','-t','-q','-v','ON_ERROR_STOP=1','-v','VERBOSITY=verbose'],input=sql,text=True,capture_output=True,timeout=60)
     if result.returncode:
@@ -28,7 +35,7 @@ definition_query="""SELECT json_agg(json_build_object(
  'authenticatedExecute',has_function_privilege('authenticated',p.oid,'EXECUTE'),
  'serviceExecute',has_function_privilege('service_role',p.oid,'EXECUTE')) ORDER BY p.proname)
  FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
- WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key');"""
+ WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid');"""
 def definitions(database): return json.loads(query(database,definition_query))
 def metadata(rows): return [{k:v for k,v in row.items() if k!='definition'} for row in rows]
 def rows_digest(database):
@@ -46,9 +53,9 @@ try:
     for name,item in BACKUP['artifacts'].items():
         assert hashlib.sha256((folder/name).read_bytes()).hexdigest()==item['sha256']
     before=definitions(database); production=definitions('postgres')
-    assert len(before)==3 and before==production
+    assert len(before)==5 and before==production and not any(r['name']=='video_job_result_valid' for r in before)
     assert all(not row['securityDefiner'] and row['serviceExecute'] for row in before)
-    rollback='BEGIN;\nSET LOCAL search_path TO sutra, pg_temp;\n'+''.join(row['definition']+';\n' for row in before)+'COMMIT;\n'
+    rollback='BEGIN;\nSET LOCAL search_path TO sutra, pg_temp;\n'+''.join(row['definition']+';\n' for row in before)+'DROP FUNCTION sutra.video_job_result_valid(sutra.video_jobs);\nCOMMIT;\n'
     protected=folder/('checkpoint-'+report['migrationSha256'][:12]+'-v2'); protected.mkdir(mode=0o700,exist_ok=False)
     (protected/'before.json').write_text(json.dumps(before))
     (protected/'rollback.sql').write_text(rollback)
@@ -56,25 +63,28 @@ try:
     assert all(p.stat().st_mode&0o777==0o600 for p in protected.iterdir())
     data_before=rows_digest(database)
     stage='restored_migration'
-    try:
-        query(database,MIGRATION); after=definitions(database)
-        stage='restored_metadata'
-        expected=metadata(before)
-        for row in expected:
-            if row['name']=='claim_video_job_by_key': row['config']=['search_path=sutra, pg_temp']
-        assert metadata(after)==expected
-        assert all(a['definition']!=b['definition'] for a,b in zip(after,before))
-        stage='restored_replay'
-        query(database,MIGRATION); assert definitions(database)==after
-        assert rows_digest(database)==data_before
-    finally:
-        query(database,rollback)
+    query(database,MIGRATION); after=definitions(database)
+    stage='restored_metadata'
+    assert len(after)==6
+    inherited=[row for row in after if row['name']!='video_job_result_valid']
+    expected=metadata(before)
+    for row in expected: row['config']=['search_path=sutra, pg_temp']
+    assert metadata(inherited)==expected
+    assert all(a['definition']!=b['definition'] for a,b in zip(inherited,before))
+    helper=next(row for row in after if row['name']=='video_job_result_valid')
+    assert not helper['securityDefiner'] and helper['serviceExecute']
+    assert not helper['anonymousExecute'] and not helper['authenticatedExecute']
+    assert helper['owner']=='supabase_admin' and helper['config']==['search_path=sutra, pg_temp']
+    stage='restored_replay'
+    query(database,MIGRATION); assert definitions(database)==after
+    assert rows_digest(database)==data_before
+    query(database,rollback)
     stage='restored_rollback'
     assert definitions(database)==before and rows_digest(database)==data_before
     assert definitions('postgres')==production
     report.update({'status':'PASS','database':'isolated restored SUTRA copy','protectedRollback':str(protected),
         'tablesDataUnchanged':len(data_before),'definitionsRestoredExactly':True,'replaySafe':True,'aclAndOwnershipUnchanged':True,
-        'onlyConfigChange':'claim_video_job_by_key search_path hardened to sutra, pg_temp',
+        'scope':'Five existing RPCs retain ACL and owner; search_path sutra, pg_temp. New invoker-only helper service-only, removed by rollback.',
         'permissions':metadata(before),'backupVerified':True,'rollbackSha256':hashlib.sha256(rollback.encode()).hexdigest(),
         'beforeDefinitionsSha256':hashlib.sha256(json.dumps(before,sort_keys=True).encode()).hexdigest(),
         'afterDefinitionsSha256':hashlib.sha256(json.dumps(after,sort_keys=True).encode()).hexdigest()})
@@ -83,16 +93,16 @@ except Exception as error:
 print(json.dumps(report))
 raise SystemExit(0 if report['status']=='PASS' else 1)
 '''
-result = subprocess.run(['ssh', '-i', str(Path.home() / '.ssh/purama_vps_ed25519'), '-o', 'IdentitiesOnly=yes', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', 'root@144.217.14.210', 'python3 -'], input=source, capture_output=True, text=True, timeout=180)
 try:
+    result = subprocess.run(['ssh', '-i', str(Path.home() / '.ssh/purama_vps_ed25519'), '-o', 'IdentitiesOnly=yes', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', 'root@144.217.14.210', 'python3 -'], input=source, capture_output=True, text=True, timeout=180)
     receipt = json.loads(result.stdout)
-except Exception:
+    assert result.returncode == 0 or receipt['status'] != 'PASS'
+except BaseException:
     receipt = {'status': 'UNKNOWN', 'details': 'Safe remote receipt unavailable; inspect before retry.'}
 receipt['observedAt'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
-receipt['command'] = 'python3 qa/t01-consolidation-20261014/verify-checkpoint-restore.py'
-previous = HERE / 'checkpoint-restore.json'
-if previous.exists() and not (HERE / 'checkpoint-restore-before.json').exists():
-    (HERE / 'checkpoint-restore-before.json').write_bytes(previous.read_bytes())
-previous.write_text(json.dumps(receipt, indent=2) + '\n')
+receipt['command'] = 'python3 qa/t01-consolidation-20261014/verify-checkpoint-restore.py --proof-dir ' + str(PROOF.relative_to(ROOT))
+with (PROOF / 'checkpoint-restore.json').open('x') as stream:
+    json.dump(receipt, stream, indent=2)
+    stream.write('\n')
 print(json.dumps(receipt))
-raise SystemExit(0 if result.returncode == 0 and receipt['status'] == 'PASS' else 1)
+raise SystemExit(0 if receipt['status'] == 'PASS' else 1)

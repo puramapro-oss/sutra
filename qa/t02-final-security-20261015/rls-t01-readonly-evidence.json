@@ -1,0 +1,387 @@
+{
+  "reviewedAt": "2026-10-15T01:15:41.226822+00:00",
+  "source": "T01 read-only metadata, not a T02 production query",
+  "observations": {
+    "rls-metadata.json": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/rls-metadata.json",
+      "sha256": "719476001a70a387fbee7c704f6567469569e79b9bdda59f28c4756ec43471a1",
+      "evidence": {
+        "observedAt": "2026-10-15T01:13:22.573034+00:00",
+        "readOnly": true,
+        "businessRowsRead": 0,
+        "rows": [
+          {
+            "table_name": "activity_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "anon",
+            "table_select": false,
+            "any_column_select": false,
+            "table_insert": false,
+            "any_column_insert": false,
+            "table_update": false,
+            "any_column_update": false,
+            "table_delete": false,
+            "table_truncate": false,
+            "policy_count": 1
+          },
+          {
+            "table_name": "activity_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "authenticated",
+            "table_select": false,
+            "any_column_select": false,
+            "table_insert": false,
+            "any_column_insert": false,
+            "table_update": false,
+            "any_column_update": false,
+            "table_delete": false,
+            "table_truncate": false,
+            "policy_count": 1
+          },
+          {
+            "table_name": "activity_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "service_role",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": true,
+            "policy_count": 1
+          },
+          {
+            "table_name": "api_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "anon",
+            "table_select": false,
+            "any_column_select": false,
+            "table_insert": false,
+            "any_column_insert": false,
+            "table_update": false,
+            "any_column_update": false,
+            "table_delete": false,
+            "table_truncate": false,
+            "policy_count": 1
+          },
+          {
+            "table_name": "api_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "authenticated",
+            "table_select": false,
+            "any_column_select": false,
+            "table_insert": false,
+            "any_column_insert": false,
+            "table_update": false,
+            "any_column_update": false,
+            "table_delete": false,
+            "table_truncate": false,
+            "policy_count": 1
+          },
+          {
+            "table_name": "api_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "service_role",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": true,
+            "policy_count": 1
+          },
+          {
+            "table_name": "contest_submissions",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "anon",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": false,
+            "policy_count": 2
+          },
+          {
+            "table_name": "contest_submissions",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "authenticated",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": false,
+            "policy_count": 2
+          },
+          {
+            "table_name": "contest_submissions",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "service_role",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": true,
+            "policy_count": 2
+          },
+          {
+            "table_name": "error_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "anon",
+            "table_select": false,
+            "any_column_select": false,
+            "table_insert": false,
+            "any_column_insert": false,
+            "table_update": false,
+            "any_column_update": false,
+            "table_delete": false,
+            "table_truncate": false,
+            "policy_count": 1
+          },
+          {
+            "table_name": "error_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "authenticated",
+            "table_select": false,
+            "any_column_select": false,
+            "table_insert": false,
+            "any_column_insert": false,
+            "table_update": false,
+            "any_column_update": false,
+            "table_delete": false,
+            "table_truncate": false,
+            "policy_count": 1
+          },
+          {
+            "table_name": "error_logs",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "service_role",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": true,
+            "policy_count": 1
+          },
+          {
+            "table_name": "referral_commissions",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "anon",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": false,
+            "policy_count": 2
+          },
+          {
+            "table_name": "referral_commissions",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "authenticated",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": false,
+            "policy_count": 2
+          },
+          {
+            "table_name": "referral_commissions",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "service_role",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": true,
+            "policy_count": 2
+          },
+          {
+            "table_name": "referrals",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "anon",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": false,
+            "policy_count": 2
+          },
+          {
+            "table_name": "referrals",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "authenticated",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": false,
+            "policy_count": 2
+          },
+          {
+            "table_name": "referrals",
+            "rls_enabled": true,
+            "force_rls": false,
+            "role_name": "service_role",
+            "table_select": true,
+            "any_column_select": true,
+            "table_insert": true,
+            "any_column_insert": true,
+            "table_update": true,
+            "any_column_update": true,
+            "table_delete": true,
+            "table_truncate": true,
+            "policy_count": 2
+          }
+        ]
+      }
+    },
+    "rls-policies.json": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/rls-policies.json",
+      "sha256": "460769adf7dd961af739d58a8a127cb14074ea5bd45af11dba2ee9e5d080d0e0",
+      "evidence": {
+        "observedAt": "2026-10-15T01:13:47.345204+00:00",
+        "readOnly": true,
+        "rows": [
+          {
+            "tablename": "activity_logs",
+            "policyname": "t02_active_account",
+            "roles": [
+              "authenticated"
+            ],
+            "cmd": "ALL",
+            "qual": "sutra.account_is_active()",
+            "with_check": "sutra.account_is_active()"
+          },
+          {
+            "tablename": "api_logs",
+            "policyname": "t02_active_account",
+            "roles": [
+              "authenticated"
+            ],
+            "cmd": "ALL",
+            "qual": "sutra.account_is_active()",
+            "with_check": "sutra.account_is_active()"
+          },
+          {
+            "tablename": "contest_submissions",
+            "policyname": "own_contests",
+            "roles": [
+              "public"
+            ],
+            "cmd": "ALL",
+            "qual": "(auth.uid() = user_id)",
+            "with_check": null
+          },
+          {
+            "tablename": "contest_submissions",
+            "policyname": "t02_active_account",
+            "roles": [
+              "authenticated"
+            ],
+            "cmd": "ALL",
+            "qual": "sutra.account_is_active()",
+            "with_check": "sutra.account_is_active()"
+          },
+          {
+            "tablename": "error_logs",
+            "policyname": "t02_active_account",
+            "roles": [
+              "authenticated"
+            ],
+            "cmd": "ALL",
+            "qual": "sutra.account_is_active()",
+            "with_check": "sutra.account_is_active()"
+          },
+          {
+            "tablename": "referral_commissions",
+            "policyname": "own_commissions",
+            "roles": [
+              "public"
+            ],
+            "cmd": "ALL",
+            "qual": "((auth.uid() = referrer_id) OR (auth.uid() = referred_id))",
+            "with_check": null
+          },
+          {
+            "tablename": "referral_commissions",
+            "policyname": "t02_active_account",
+            "roles": [
+              "authenticated"
+            ],
+            "cmd": "ALL",
+            "qual": "sutra.account_is_active()",
+            "with_check": "sutra.account_is_active()"
+          },
+          {
+            "tablename": "referrals",
+            "policyname": "own_referrals",
+            "roles": [
+              "public"
+            ],
+            "cmd": "ALL",
+            "qual": "((auth.uid() = referrer_id) OR (auth.uid() = referred_id))",
+            "with_check": null
+          },
+          {
+            "tablename": "referrals",
+            "policyname": "t02_active_account",
+            "roles": [
+              "authenticated"
+            ],
+            "cmd": "ALL",
+            "qual": "sutra.account_is_active()",
+            "with_check": "sutra.account_is_active()"
+          }
+        ]
+      }
+    }
+  }
+}

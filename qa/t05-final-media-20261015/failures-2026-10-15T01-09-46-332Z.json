@@ -1,0 +1,51 @@
+{
+  "exports": [],
+  "checks": [
+    {
+      "case": "both-engines-failed",
+      "result": "rejected",
+      "uploads": 0,
+      "fallbackMockOnly": 1
+    },
+    {
+      "case": "fallback-source-url",
+      "result": "rejected"
+    },
+    {
+      "case": "required-audio-missing",
+      "measurement": {
+        "sha256": "85866695a56f2a41a939ec5bf4d7255a28f9fe89c90a4520b55424c4c2be31dc",
+        "bytes": 3593,
+        "duration": 1.2,
+        "bitrate": 23953,
+        "video": {
+          "width": 1280,
+          "height": 720,
+          "orientation": "landscape",
+          "fps": 30,
+          "nominalFps": 30,
+          "codec": "h264",
+          "pixelFormat": "yuv420p",
+          "sar": "1:1",
+          "rotation": 0,
+          "bitrate": 15300,
+          "start": 0,
+          "duration": 1.2,
+          "frames": 36
+        },
+        "audio": [],
+        "subtitleStreams": 0,
+        "fullDecode": true
+      },
+      "result": "rejected",
+      "uploads": 0,
+      "fallback": 0
+    },
+    {
+      "case": "budget-no-fallback",
+      "result": "rejected",
+      "uploads": 0,
+      "fallback": 0
+    }
+  ]
+}

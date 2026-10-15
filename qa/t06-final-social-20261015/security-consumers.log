@@ -1,0 +1,199 @@
+TAP version 13
+# (node:1371) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1371) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T08-Z01 current connect endpoint must replace undocumented /oauth/url
+ok 1 - T08-Z01 current connect endpoint must replace undocumented /oauth/url
+  ---
+  duration_ms: 1.66125
+  type: 'test'
+  ...
+# Subtest: T08-Z02 initiation must carry owned profileId, redirect_url and posting scopes
+ok 2 - T08-Z02 initiation must carry owned profileId, redirect_url and posting scopes
+  ---
+  duration_ms: 0.511375
+  type: 'test'
+  ...
+# Subtest: T08-Z03 documented authUrl response must survive adapter parsing
+ok 3 - T08-Z03 documented authUrl response must survive adapter parsing
+  ---
+  duration_ms: 0.178083
+  type: 'test'
+  ...
+# Subtest: T08-Z04 hosted callback must reach session verification without requiring an obsolete code
+ok 4 - T08-Z04 hosted callback must reach session verification without requiring an obsolete code
+  ---
+  duration_ms: 0.746625
+  type: 'test'
+  ...
+# Subtest: T08-S01 provider 2xx error payload must never reach the music API caller
+ok 5 - T08-S01 provider 2xx error payload must never reach the music API caller
+  ---
+  duration_ms: 2.662833
+  type: 'test'
+  ...
+# Subtest: T08-S02 provider 401 payload stays redacted at the same music API boundary
+ok 6 - T08-S02 provider 401 payload stays redacted at the same music API boundary
+  ---
+  duration_ms: 0.649041
+  type: 'test'
+  ...
+# (node:1372) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1372) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: banned session fails in the actual OAuth and admin handlers before side effects
+ok 7 - banned session fails in the actual OAuth and admin handlers before side effects
+  ---
+  duration_ms: 2.446625
+  type: 'test'
+  ...
+# Subtest: OAuth initiation is limited per authenticated user before contacting provider
+ok 8 - OAuth initiation is limited per authenticated user before contacting provider
+  ---
+  duration_ms: 4.023084
+  type: 'test'
+  ...
+# Subtest: OAuth provider exception is not returned to the browser
+ok 9 - OAuth provider exception is not returned to the browser
+  ---
+  duration_ms: 0.214833
+  type: 'test'
+  ...
+# Subtest: OAuth initiation binds its own state to user, profile and verified session on the canonical public origin
+ok 10 - OAuth initiation binds its own state to user, profile and verified session on the canonical public origin
+  ---
+  duration_ms: 0.799041
+  type: 'test'
+  ...
+# Subtest: OAuth initiation rejects a mismatched verified session or client-chosen tenant before side effects
+ok 11 - OAuth initiation rejects a mismatched verified session or client-chosen tenant before side effects
+  ---
+  duration_ms: 0.411708
+  type: 'test'
+  ...
+# Subtest: OAuth callback never reflects untrusted provider errors into a redirect URL
+ok 12 - OAuth callback never reflects untrusted provider errors into a redirect URL
+  ---
+  duration_ms: 0.116541
+  type: 'test'
+  ...
+# Subtest: OAuth callback rejects missing one-use state before exchanging code
+ok 13 - OAuth callback rejects missing one-use state before exchanging code
+  ---
+  duration_ms: 1.374208
+  type: 'test'
+  ...
+# Subtest: failed/missing target lookup cannot authorize a ban
+ok 14 - failed/missing target lookup cannot authorize a ban
+  ---
+  duration_ms: 0.340042
+  type: 'test'
+  ...
+# Subtest: ban, unban and plan changes require a confirmed database row
+ok 15 - ban, unban and plan changes require a confirmed database row
+  ---
+  duration_ms: 0.658084
+  type: 'test'
+  ...
+# Subtest: middleware blocks a banned dashboard session without a login redirect loop
+ok 16 - middleware blocks a banned dashboard session without a login redirect loop
+  ---
+  duration_ms: 0.993
+  type: 'test'
+  ...
+# (node:1373) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1373) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T02 account list omits private metadata/tokens and another user account
+ok 17 - T02 account list omits private metadata/tokens and another user account
+  ---
+  duration_ms: 2.043542
+  type: 'test'
+  ...
+# Subtest: T02 account list redacts error diagnostics
+ok 18 - T02 account list redacts error diagnostics
+  ---
+  duration_ms: 0.262625
+  type: 'test'
+  ...
+# Subtest: T02 account list redacts throw diagnostics
+ok 19 - T02 account list redacts throw diagnostics
+  ---
+  duration_ms: 0.203125
+  type: 'test'
+  ...
+# Subtest: T02 anonymous account list does not reach the privileged database
+ok 20 - T02 anonymous account list does not reach the privileged database
+  ---
+  duration_ms: 0.122042
+  type: 'test'
+  ...
+# Subtest: T02 callback without verified session never consumes or exchanges state
+ok 21 - T02 callback without verified session never consumes or exchanges state
+  ---
+  duration_ms: 1.735625
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a different user without burning the owner state
+ok 22 - T02 callback rejects a different user without burning the owner state
+  ---
+  duration_ms: 0.873375
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a platform switch
+ok 23 - T02 callback rejects a platform switch
+  ---
+  duration_ms: 0.225792
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a missing or forged browser secret
+ok 24 - T02 callback rejects a missing or forged browser secret
+  ---
+  duration_ms: 0.295209
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects an expired state before token exchange
+ok 25 - T02 callback rejects an expired state before token exchange
+  ---
+  duration_ms: 0.155708
+  type: 'test'
+  ...
+# Subtest: T02 concurrent callbacks verify only once and never store or expose tokens
+ok 26 - T02 concurrent callbacks verify only once and never store or expose tokens
+  ---
+  duration_ms: 0.310834
+  type: 'test'
+  ...
+# Subtest: T02 database outage during callback cannot authorize an exchange
+ok 27 - T02 database outage during callback cannot authorize an exchange
+  ---
+  duration_ms: 0.174417
+  type: 'test'
+  ...
+# Subtest: T02 uncertain exchange is sanitized and consumed state cannot be replayed
+ok 28 - T02 uncertain exchange is sanitized and consumed state cannot be replayed
+  ---
+  duration_ms: 0.209417
+  type: 'test'
+  ...
+# Subtest: T02 callback from another login session cannot consume the current state
+ok 29 - T02 callback from another login session cannot consume the current state
+  ---
+  duration_ms: 0.129541
+  type: 'test'
+  ...
+# Subtest: T02 callback cannot change server profile or use an unrelated provider account without verification
+ok 30 - T02 callback cannot change server profile or use an unrelated provider account without verification
+  ---
+  duration_ms: 0.112584
+  type: 'test'
+  ...
+1..30
+# tests 30
+# suites 0
+# pass 30
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 220.165042

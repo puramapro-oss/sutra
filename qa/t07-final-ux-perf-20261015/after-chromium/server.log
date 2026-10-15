@@ -1,0 +1,68 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:60954
+- Network:       http://127.0.0.1:60954
+✓ Ready in 220ms
+✓ Running next.config.ts took 21ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+ GET /login 200 in 2.1s (next.js: 1684ms, proxy.ts: 92ms, application-code: 318ms)
+ GET /signup 200 in 1047ms (next.js: 866ms, proxy.ts: 5ms, application-code: 176ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] TypeError: Failed to fetch
+    at async signUp (src/hooks/useAuth.ts:17:21)
+    at async handleSubmit (src/app/(auth)/signup/page.tsx:76:7)
+  15 |
+  16 | async function signUp(email: string, password: string, name: string, referralCode?: string) {
+> 17 |   const { error } = await supabase.auth.signUp({
+     |                     ^
+  18 |     email, password,
+  19 |     options: {
+  20 |       emailRedirectTo: `${window.location.origin}/auth/callback`, (src/hooks/useAuth.ts:17:21)
+ GET /signup 200 in 43ms (next.js: 1.3ms, proxy.ts: 2ms, application-code: 39ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] TypeError: Failed to fetch
+    at async signUp (src/hooks/useAuth.ts:17:21)
+    at async handleSubmit (src/app/(auth)/signup/page.tsx:76:7)
+  15 |
+  16 | async function signUp(email: string, password: string, name: string, referralCode?: string) {
+> 17 |   const { error } = await supabase.auth.signUp({
+     |                     ^
+  18 |     email, password,
+  19 |     options: {
+  20 |       emailRedirectTo: `${window.location.origin}/auth/callback`, (src/hooks/useAuth.ts:17:21)
+ GET /login 200 in 45ms (next.js: 4ms, proxy.ts: 4ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] TypeError: Failed to fetch
+    at signIn (src/hooks/useAuth.ts:12:41)
+    at handleSubmit (src/app/(auth)/login/page.tsx:55:13)
+  10 |
+  11 | async function signIn(email: string, password: string) {
+> 12 |   const { error } = await supabase.auth.signInWithPassword({ email, password })
+     |                                         ^
+  13 |   if (error) throw error
+  14 | }
+  15 | (src/hooks/useAuth.ts:12:21)
+ GET /login 200 in 35ms (next.js: 1.2ms, proxy.ts: 3ms, application-code: 30ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] TypeError: Failed to fetch
+    at signIn (src/hooks/useAuth.ts:12:41)
+    at handleSubmit (src/app/(auth)/login/page.tsx:55:13)
+  10 |
+  11 | async function signIn(email: string, password: string) {
+> 12 |   const { error } = await supabase.auth.signInWithPassword({ email, password })
+     |                                         ^
+  13 |   if (error) throw error
+  14 | }
+  15 | (src/hooks/useAuth.ts:12:21)
+ GET /signup 200 in 29ms (next.js: 0.9ms, proxy.ts: 2ms, application-code: 26ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ POST /api/legal/accept 401 in 661ms (next.js: 604ms, proxy.ts: 4ms, application-code: 53ms)
+ POST /api/legal/accept 401 in 662ms (next.js: 604ms, proxy.ts: 4ms, application-code: 54ms)
+ POST /api/legal/accept 401 in 663ms (next.js: 604ms, proxy.ts: 4ms, application-code: 55ms)
+ GET /login 200 in 635ms (next.js: 616ms, proxy.ts: 7ms, application-code: 13ms)
+[?25h

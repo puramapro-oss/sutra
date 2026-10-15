@@ -1,6 +1,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto'
 import { createServiceClient } from '@/lib/supabase'
+import { getAuthorizedProfileId } from '@/lib/zernio'
 
 // The job owner is checked against the durable lease before entering this scope.
 // AsyncLocalStorage keeps concurrent workers' media authorities separate.
@@ -113,10 +114,15 @@ export async function authorizePublicationMedia(value: string, token: string, se
     throw new Error('SUTRA_MEDIA_ACCESS_DENIED')
   }
   const accounts = await service.schema('public').from('social_accounts')
-    .select('id,platform,external_id,status,token_expires_at').eq('user_id', grant.userId)
+    .select('id,platform,external_id,status,token_expires_at,metadata').eq('user_id', grant.userId)
+  // A previously emitted capability cannot outlive its current social authority.
+  // Reuse the same server binding as the publication journal on every retrieval.
+  const authorizedProfile = getAuthorizedProfileId(grant.userId)
   if (accounts.error || !op.request.platforms?.length || op.request.platforms.some((platform: string) =>
     (accounts.data ?? []).filter(a => a.id === op.accountRows?.[platform] && a.platform === platform
       && a.external_id === op.request.accountIds?.[platform] && a.status === 'connected'
+      && a.metadata?.sutra_revocation_pending !== true
+      && a.metadata?.credential_owner === 'zernio' && a.metadata?.zernio_profile_id === authorizedProfile
       && (!a.token_expires_at || Date.parse(a.token_expires_at) > now)).length !== 1)) throw new Error('SUTRA_MEDIA_ACCESS_DENIED')
   await assertMediaOwner(path, grant.userId, service)
   return grant.userId

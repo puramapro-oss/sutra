@@ -16,6 +16,7 @@
  * (lazy + cache memoire) : jamais re-sondee a chaque clip/passe.
  */
 import { spawn } from 'node:child_process'
+import { FfmpegCompositorError } from './ffmpeg-io.ts'
 
 export interface VideoEncoder {
   codec: string
@@ -36,36 +37,42 @@ const HARDWARE_ENCODERS: Array<{ platform: NodeJS.Platform; name: string }> = [
   { platform: 'darwin', name: 'h264_videotoolbox' },
 ]
 
-async function listEncoders(bin: string): Promise<string> {
-  return new Promise((resolve) => {
+async function listEncoders(bin: string, signal?: AbortSignal): Promise<string> {
+  const cancelled = () => new FfmpegCompositorError('Detection encodeur annulee ou delai depasse', 'cancelled')
+  if (signal?.aborted) throw cancelled()
+  return new Promise((resolve, reject) => {
     const child = spawn(bin, ['-hide_banner', '-encoders'])
-    let out = ''
-    child.stdout.on('data', (c) => (out += c.toString()))
-    child.on('error', () => resolve(''))
-    child.on('close', () => resolve(out))
+    let out = '', failed = false
+    const abort = () => { child.kill('SIGKILL') }
+    const timer = setTimeout(() => { failed = true; child.kill('SIGKILL') }, 2000)
+    const cleanup = () => { clearTimeout(timer); signal?.removeEventListener('abort', abort) }
+    signal?.addEventListener('abort', abort, { once: true })
+    child.stdout.on('data', (chunk) => {
+      if (out.length + chunk.length > 1_000_000) { failed = true; child.kill('SIGKILL') }
+      else out += chunk.toString()
+    })
+    child.stderr.resume()
+    child.on('error', () => { cleanup(); if (signal?.aborted) reject(cancelled()); else resolve('') })
+    child.on('close', (code) => {
+      cleanup()
+      if (signal?.aborted) reject(cancelled())
+      else resolve(failed || code !== 0 ? '' : out)
+    })
   })
 }
 
-let cached: Promise<VideoEncoder> | null = null
+// Cache successful discovery only. One caller's abort cannot poison later jobs.
+let cached: VideoEncoder | null = null
 
-/** Resultat mis en cache pour tout le process — un seul sondage ffmpeg. */
-export function detectVideoEncoder(ffmpegBin: string): Promise<VideoEncoder> {
-  if (!cached) {
-    cached = (async () => {
-      const candidate = HARDWARE_ENCODERS.find((e) => e.platform === process.platform)
-      if (!candidate) return SOFTWARE_ENCODER
-      try {
-        const list = await listEncoders(ffmpegBin)
-        if (!list.includes(candidate.name)) return SOFTWARE_ENCODER
-        return {
-          codec: candidate.name,
-          args: (quality) => ['-c:v', candidate.name, '-b:v', HARDWARE_BITRATE[quality]],
-        }
-      } catch {
-        return SOFTWARE_ENCODER
-      }
-    })()
-  }
+export async function detectVideoEncoder(ffmpegBin: string, signal?: AbortSignal): Promise<VideoEncoder> {
+  if (signal?.aborted) throw new FfmpegCompositorError('Detection encodeur annulee', 'cancelled')
+  if (cached) return cached
+  const candidate = HARDWARE_ENCODERS.find((e) => e.platform === process.platform)
+  const list = candidate ? await listEncoders(ffmpegBin, signal) : ''
+  cached = candidate && list.includes(candidate.name) ? {
+    codec: candidate.name,
+    args: (quality) => ['-c:v', candidate.name, '-b:v', HARDWARE_BITRATE[quality]],
+  } : SOFTWARE_ENCODER
   return cached
 }
 

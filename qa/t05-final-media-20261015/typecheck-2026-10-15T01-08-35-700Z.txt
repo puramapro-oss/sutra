@@ -1,0 +1,24 @@
+scripts/test-t05-final-media.mts(199,3): error TS2322: Type '() => Promise<{ url: string; timeline: {}; validation: MediaValidation | undefined; }>' is not assignable to type '(params: AssembleParams, deps?: { measureAudio?: ((contract: CompositionContract, signal?: AbortSignal | undefined) => Promise<{ voice: MediaProbe | null; music: MediaProbe | null; }>) | undefined; }) => Promise<...>'.
+  Type 'Promise<{ url: string; timeline: {}; validation: MediaValidation | undefined; }>' is not assignable to type 'Promise<AssembleResult>'.
+    Type '{ url: string; timeline: {}; validation: MediaValidation | undefined; }' is missing the following properties from type 'AssembleResult': duration, outputQuality, outputSize, outputVerified
+scripts/test-t05-final-media.mts(211,3): error TS2322: Type '() => Promise<{ buffer: NonSharedBuffer; durationSeconds: number; }>' is not assignable to type '(params: ComposeVideoParams) => Promise<ComposeVideoResult>'.
+  Type 'Promise<{ buffer: NonSharedBuffer; durationSeconds: number; }>' is not assignable to type 'Promise<ComposeVideoResult>'.
+    Property 'resolution' is missing in type '{ buffer: NonSharedBuffer; durationSeconds: number; }' but required in type 'ComposeVideoResult'.
+        0.92 real         1.42 user         0.10 sys
+           359251968  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               22246  page reclaims
+                  82  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   2  messages sent
+                   0  messages received
+                   0  signals received
+                1685  voluntary context switches
+                4712  involuntary context switches
+         17537281682  instructions retired
+          6026528187  cycles elapsed
+           344905024  peak memory footprint

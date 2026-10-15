@@ -1,0 +1,21 @@
+PASS 375: social unavailable is persistent, never a disconnected summary
+PASS 375: explicit retry recovers and ignores duplicate requests
+PASS 1440: social unavailable is persistent, never a disconnected summary
+PASS 1440: explicit retry recovers and ignores duplicate requests
+FAIL disconnect dialog is named, traps focus, Escape restores trigger: expect(locator).toHaveAccessibleName(expected) failed
+
+Locator:  getByRole('dialog')
+Expected: "Deconnecter YouTube ?"
+Received: ""
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.have.accessible.name" with timeout 5000ms
+  - waiting for getByRole('dialog')
+    9 × locator resolved to <div role="dialog" aria-modal="true" class="w-full max-w-md bg-[#0A0A0F] border border-white/[0.08] rounded-2xl p-6 shadow-2xl">…</div>
+      - unexpected value ""
+
+PASS unconfirmed revocation survives failed account refresh without false empty state
+PASS malformed account response is unavailable, not an empty account list
+PASS social slow response recovers within 12 seconds without late overwrite
+PASS no unexpected mutation, uncaught error or hydration mismatch

@@ -89,31 +89,35 @@ export function useEditorHandlers({
   // Subtitle editing
   const updateSubtitle = useCallback(
     (id: string, field: 'text' | 'start' | 'end', value: string | number) => {
-      setSubtitles((prev) =>
-        prev.map((s) => (s.id === id ? { ...s, [field]: value } : s))
-      )
+      const next = subtitles.map((s) => (s.id === id ? { ...s, [field]: value } : s))
+      setSubtitles(next)
+      pushHistory({ script, scenes, subtitles: next, voiceVolume, musicVolume })
     },
-    [setSubtitles]
+    [script, scenes, subtitles, voiceVolume, musicVolume, pushHistory, setSubtitles]
   )
 
   const addSubtitle = useCallback(() => {
     const lastEnd = subtitles.length > 0 ? subtitles[subtitles.length - 1].end : 0
-    setSubtitles((prev) => [
-      ...prev,
+    const next = [
+      ...subtitles,
       {
         id: `sub-${Date.now()}`,
         text: '',
         start: lastEnd,
         end: lastEnd + 3,
       },
-    ])
-  }, [subtitles, setSubtitles])
+    ]
+    setSubtitles(next)
+    pushHistory({ script, scenes, subtitles: next, voiceVolume, musicVolume })
+  }, [script, scenes, subtitles, voiceVolume, musicVolume, pushHistory, setSubtitles])
 
   const removeSubtitle = useCallback(
     (id: string) => {
-      setSubtitles((prev) => prev.filter((s) => s.id !== id))
+      const next = subtitles.filter((s) => s.id !== id)
+      setSubtitles(next)
+      pushHistory({ script, scenes, subtitles: next, voiceVolume, musicVolume })
     },
-    [setSubtitles]
+    [script, scenes, subtitles, voiceVolume, musicVolume, pushHistory, setSubtitles]
   )
 
   // Export

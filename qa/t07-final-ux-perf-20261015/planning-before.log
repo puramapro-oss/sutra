@@ -1,0 +1,24 @@
+FAIL 375: schedule labels, state and contrast: expect(locator).toHaveAccessibleName(expected) failed
+
+Locator:  getByTestId('schedule-time')
+Expected: "Heure (Europe/Paris)"
+Received: ""
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.have.accessible.name" with timeout 5000ms
+  - waiting for getByTestId('schedule-time')
+    9 × locator resolved to <input type="time" value="10:00" data-testid="schedule-time" class="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-violet-500/40"/>
+      - unexpected value ""
+
+FAIL 375: failed schedule save preserves draft and rejects duplicate submissions: Expected values to be strictly equal:
+
+2 !== 1
+
+locator.click: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for getByTestId('schedule-add')[22m
+
+    at planningChecks (/Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/planning-checks.mjs:26:44)
+    at async runScenario (/Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/run.mjs:81:39)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/run.mjs:130:5

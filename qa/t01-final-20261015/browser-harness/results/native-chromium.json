@@ -1,0 +1,93 @@
+{
+  "engine": "chromium",
+  "browserVersion": "145.0.7632.6",
+  "nativeSafari": false,
+  "keyboard": {
+    "engine": "chromium",
+    "key": "Tab",
+    "observations": [
+      {
+        "key": "Tab",
+        "focused": "toggle"
+      },
+      {
+        "key": "Alt+Tab",
+        "focused": "toggle"
+      }
+    ],
+    "negativeFocused": "next",
+    "nativeSafari": false
+  },
+  "caughtUnloadDiagnostic": false,
+  "caught": {
+    "errors": [],
+    "qualified": [],
+    "unexpected": [],
+    "events": [
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:61551/caught",
+        "navigation": 2,
+        "at": 1792029350848
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:61551/slow",
+        "document": "https://127.0.0.1:61551/caught",
+        "navigation": 2,
+        "at": 1792029350849
+      }
+    ],
+    "navigations": [
+      {
+        "id": 1,
+        "from": "nullblank",
+        "to": "https://127.0.0.1:61551/caught",
+        "startedAt": 1792029350805,
+        "finishedAt": 1792029350844
+      },
+      {
+        "id": 2,
+        "from": "https://127.0.0.1:61551/caught",
+        "to": "https://127.0.0.1:61551/next",
+        "startedAt": 1792029350844,
+        "finishedAt": 1792029350852
+      }
+    ],
+    "domErrors": []
+  },
+  "negativeControls": {
+    "realExceptionDetected": true,
+    "unhandledRejectionDetected": true
+  },
+  "negativeEvidence": [
+    {
+      "kind": "pageerror",
+      "message": "NEGATIVE_CONTROL_REAL_EXCEPTION",
+      "stack": "Error: NEGATIVE_CONTROL_REAL_EXCEPTION\n    at eval (eval at evaluate (:290:30), <anonymous>:1:34)",
+      "navigation": 2,
+      "at": 1792029351157
+    },
+    {
+      "kind": "pageerror",
+      "message": "NEGATIVE_CONTROL_REAL_REJECTION",
+      "stack": "Error: NEGATIVE_CONTROL_REAL_REJECTION\n    at eval (eval at evaluate (:290:30), <anonymous>:1:24)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+      "navigation": 2,
+      "at": 1792029351257
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "Uncaught Error: NEGATIVE_CONTROL_REAL_EXCEPTION",
+      "document": "https://127.0.0.1:61551/next",
+      "navigation": 2,
+      "at": 1792029351156
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "Error: NEGATIVE_CONTROL_REAL_REJECTION",
+      "document": "https://127.0.0.1:61551/next",
+      "navigation": 2,
+      "at": 1792029351257
+    }
+  ]
+}

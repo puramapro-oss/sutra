@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useState, useMemo, useEffect } from 'react'
+import { Suspense, useState, useMemo, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -39,6 +39,7 @@ function SignupContent() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const submitting = useRef(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errors, setErrors] = useState<{
@@ -51,6 +52,7 @@ function SignupContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (submitting.current || googleLoading) return
     setErrors({})
 
     const result = signupSchema.safeParse({ name, email, password })
@@ -66,6 +68,7 @@ function SignupContent() {
       return
     }
 
+    submitting.current = true
     setLoading(true)
     try {
       let storedRef = refCode
@@ -94,6 +97,7 @@ function SignupContent() {
         toast.error(message)
       }
     } finally {
+      submitting.current = false
       setLoading(false)
     }
   }
@@ -218,7 +222,7 @@ function SignupContent() {
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   className="text-white/60 hover:text-white/60 transition-colors pointer-events-auto"
-                  tabIndex={-1}
+                  aria-pressed={showPassword}
                   aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}

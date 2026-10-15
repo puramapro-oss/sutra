@@ -1,0 +1,549 @@
+{
+  "base": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "method": "Static triage of explicit sensitive table definitions in canonical sources. Dynamic SQL/policies, effective ACL and deployed schema require T01 metadata verification. Not a vulnerability or exhaustive runtime assertion.",
+  "tableCount": 84,
+  "tables": [
+    {
+      "table": "sutra.activity_logs",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": false
+    },
+    {
+      "table": "sutra.ambassador_tiers",
+      "definition": "migrations/v6_final.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.annual_summaries",
+      "definition": "migrations/v6_fiscal.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.api_logs",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": false
+    },
+    {
+      "table": "sutra.autopilot_series",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.awakening_events",
+      "definition": "migrations/v3_spiritual.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.boost_tranches",
+      "definition": "migrations/v6_smart_split.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.breath_sessions",
+      "definition": "migrations/v3_spiritual.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.card_waitlist",
+      "definition": "migrations/v6_subscribe_prime.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.circle_members",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.cloned_voices",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.connect_accounts",
+      "definition": "migrations/v7_1_connect_karma_ots.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.contest_submissions",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": false
+    },
+    {
+      "table": "sutra.cross_promos",
+      "definition": "migrations/v7_cross_promo.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.daily_gifts",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.dossiers_financement",
+      "definition": "migrations/v3_financer.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.drafts",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.dream_goals",
+      "definition": "migrations/v6_smart_split.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.email_sequences",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.error_logs",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": false
+    },
+    {
+      "table": "sutra.fiscal_notifications",
+      "definition": "migrations/v6_fiscal.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.gratitude_entries",
+      "definition": "migrations/v3_spiritual.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.influencer_profiles",
+      "definition": "migrations/audit_completion.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.intentions",
+      "definition": "migrations/v3_spiritual.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_creatif_submissions",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_defi_submissions",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_dharma_spins",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_lightning_claims",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_mission_completions",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_pool_transactions",
+      "definition": "migrations/v7_1_connect_karma_ots.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_quete_streaks",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_seed_transactions",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_seeds",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.karma_tournoi_scores",
+      "definition": "migrations/v7_karma_light.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.lottery_tickets",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.lottery_winners",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.love_mission_contributions",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.love_reactions",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.love_wall_posts",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.magic_moments",
+      "definition": "migrations/v6_final.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.media_ownership",
+      "definition": "migrations/20261012_private_media.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.notification_preferences",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.partners",
+      "definition": "migrations/audit_completion.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.payments",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.point_milestones",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.point_purchases",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.point_transactions",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.pool_balances",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.prime_payouts",
+      "definition": "migrations/v6_subscribe_prime.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.profiles",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.purama_points",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.purama_scores",
+      "definition": "migrations/v6_final.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.push_log",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.referral_codes",
+      "definition": "migrations/audit_completion.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.referral_commissions",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": false
+    },
+    {
+      "table": "sutra.referrals",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": false
+    },
+    {
+      "table": "sutra.retractions",
+      "definition": "migrations/v6_subscribe_prime.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.review_prompts",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.scheduled_posts",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.shareable_cards",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.social_accounts",
+      "definition": "migrations/audit_completion.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.social_autopilot_config",
+      "definition": "migrations/audit_completion.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.social_feed",
+      "definition": "migrations/v6_final.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.social_oauth_states",
+      "definition": "migrations/20261011_social_oauth_state.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.social_posts",
+      "definition": "migrations/audit_completion.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.social_publication_journals",
+      "definition": "migrations/20261012_social_publication_journals.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.social_shares",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.solidaire_transfers",
+      "definition": "migrations/v6_smart_split.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.subscriptions",
+      "definition": "migrations/v6_subscribe_prime.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.sutra_auto_config",
+      "definition": "migrations/sutra_auto.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.sutra_auto_memory",
+      "definition": "migrations/sutra_auto.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.sutra_auto_themes",
+      "definition": "migrations/sutra_auto.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.sutra_auto_videos",
+      "definition": "migrations/sutra_auto.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.user_achievements",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.user_coupons",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.user_events",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.user_feedback",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.user_notification_profiles",
+      "definition": "migrations/v3_features.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.user_notifications",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.user_templates",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.video_generations",
+      "definition": "migrations/v7_1_connect_karma_ots.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.video_proofs",
+      "definition": "migrations/v7_1_connect_karma_ots.sql",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.videos",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    },
+    {
+      "table": "sutra.withdrawals",
+      "definition": "src/data/setup-schema.ts",
+      "literalEnableRlsFound": true
+    }
+  ],
+  "inputs": [
+    {
+      "path": "migrations/20261006_auto_occurrence_integrity.sql",
+      "sha256": "0ce30341243c9a87add6c6ef8a07c02a82b34aef64c9010cd00b6b8b29d6b6b5"
+    },
+    {
+      "path": "migrations/20261011_social_oauth_state.sql",
+      "sha256": "483101bbb0e66e91f09b550ceb2c877cde52b65f0dad36c0375b246017c11bc2"
+    },
+    {
+      "path": "migrations/20261012_private_media.sql",
+      "sha256": "98769829e0de73382b9ed28af591c1dcf34fc4c44920e9ac7bc10ac1bfc77ae7"
+    },
+    {
+      "path": "migrations/20261012_social_publication_journals.sql",
+      "sha256": "33b755a9ca964dfdc04dbe31feb884f16922c9347a7fd1ccf027bd2fdce5fb1e"
+    },
+    {
+      "path": "migrations/20261012_t02_account_permissions.sql",
+      "sha256": "b1c26b76c4f3d979d9e23122f9ce4750945c5a1e0f2773b8a10b367a31e2e5e5"
+    },
+    {
+      "path": "migrations/20261012_t02_final_permissions.sql",
+      "sha256": "5c4cb0d80bc2937d6a3bbde1fe2afa0fc47e0ba332f0618042c9feb8e1d14790"
+    },
+    {
+      "path": "migrations/20261013_feature_service_permissions.sql",
+      "sha256": "620778abea0c3642b22c7d7a22156dca28d56e603bb7cdeaed27a455de77126a"
+    },
+    {
+      "path": "migrations/20261013_job_service_permissions.sql",
+      "sha256": "6f10b77b37c0fa343789c0831a17bc46f6804e262d5ce065a3e5fb9161295cb0"
+    },
+    {
+      "path": "migrations/20261014_affirmations_read_permission.sql",
+      "sha256": "ac5b390b8174f4d31681c07d9f28469f5dda5d0980e7e1ef6103580b2995535e"
+    },
+    {
+      "path": "migrations/20261014_durable_checkpoint_integrity.sql",
+      "sha256": "93b96256c604baaa857efe8064519ad552ccaaff2305628c139294f34579882c"
+    },
+    {
+      "path": "migrations/20261014_salad_worker_journal.sql",
+      "sha256": "2a0d9314f4b35a71640f6833ad43249ac51b118f3d9e94ae1458010b6d1482fc"
+    },
+    {
+      "path": "migrations/audit_completion.sql",
+      "sha256": "9fafd314df0dfc5f9854ccf9cfcdc3de0062873d1feb41a16f9e3dbf0b0167e2"
+    },
+    {
+      "path": "migrations/sutra_auto.sql",
+      "sha256": "c49dcf28c9fd58ec7d2e84b33e15c0e29f35b4a54cb158ea71dd35faf8663c1c"
+    },
+    {
+      "path": "migrations/v10_durable_jobs_quota.sql",
+      "sha256": "a112552d0479dc7e54c50231fddb43c8675da639ebaeecc786b3382cad00a73d"
+    },
+    {
+      "path": "migrations/v11_pipeline_checkpoints.sql",
+      "sha256": "704bcad695215f7892aea0cc3ae34591864a17353100417ae2a8f9ff42e9b6fc"
+    },
+    {
+      "path": "migrations/v3_features.sql",
+      "sha256": "f6cc12a208730b89ab2d50f7c28170f3890478731e5a8d7f41571c4c3674d656"
+    },
+    {
+      "path": "migrations/v3_financer.sql",
+      "sha256": "8040d00d0312bebffd129eb25b0989e8ea17bf699e500779e65a2c6d09b5f694"
+    },
+    {
+      "path": "migrations/v3_spiritual.sql",
+      "sha256": "da2576dc8e6bee00774d8142f279db130214076e6a2372bd42e033364ae4e7ba"
+    },
+    {
+      "path": "migrations/v6_final.sql",
+      "sha256": "ea4dd58e3a8bd1c15121366feaeb3bcec4b007e60563e2120184cd4b4c362e01"
+    },
+    {
+      "path": "migrations/v6_fiscal.sql",
+      "sha256": "03a74eedbad5439472f43f1f73de5e8b7b5e2dc05417f0c8b6034a75e9dfeb7f"
+    },
+    {
+      "path": "migrations/v6_parrainage_v4.sql",
+      "sha256": "38727f9de466333997da66cae034cbce39326bf4275eb8447b603079589aa9b8"
+    },
+    {
+      "path": "migrations/v6_smart_split.sql",
+      "sha256": "408e7e85be81494177f37e4f77ef68b92d6ee2ca92424bda36cac2fda82e537b"
+    },
+    {
+      "path": "migrations/v6_subscribe_prime.sql",
+      "sha256": "b8d8da022fb1416cf348bb809ab9f5e5db806c9c96da44d8b9ed4cadfe036340"
+    },
+    {
+      "path": "migrations/v7_1_connect_karma_ots.sql",
+      "sha256": "89141b91f14cd945695a1d38752cf1e0341734925566c806eaac1146ec3a03fe"
+    },
+    {
+      "path": "migrations/v7_1_storage_video_proofs.sql",
+      "sha256": "c7797e6e60c04f67dab44599ed3810d666bcdf2bae019e8c04eb00fcc0c26715"
+    },
+    {
+      "path": "migrations/v7_cross_promo.sql",
+      "sha256": "0c48e396d0ee5ad6293705269e3a59a890e509151f6187bf50154659cb93e4ba"
+    },
+    {
+      "path": "migrations/v7_karma_light.sql",
+      "sha256": "9f6eb58905492668d8fb7859e8cd6d9c0e6d664e4af294e87acb6495cea10677"
+    },
+    {
+      "path": "sql/partnership.sql",
+      "sha256": "f1579db9d6e13de39ce3beab3aabe77b0e63f470daba7287cee5a2a13c1bb159"
+    },
+    {
+      "path": "sql/social-autopilot.sql",
+      "sha256": "9c2f2c2184593d2475a8374d630cb9e8f1030f788a48c863002b4fc730c1b3ea"
+    },
+    {
+      "path": "src/data/setup-schema.ts",
+      "sha256": "ab74eb544e1ae8f01911c27f30a2fce00b14428b09de51a5dbbf95db124ff48d"
+    }
+  ]
+}

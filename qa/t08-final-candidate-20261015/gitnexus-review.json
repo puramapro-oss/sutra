@@ -1,0 +1,76 @@
+{
+  "at": "2026-10-15T01:19:58.069154+00:00",
+  "checks": [
+    {
+      "name": "staged",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "/Users/matissdornier/.npm/_npx/e46929201c1128dd/node_modules/gitnexus/dist/cli/index.js",
+        "detect-changes",
+        "--scope",
+        "staged",
+        "--repo",
+        ".",
+        "--limit",
+        "10000"
+      ],
+      "exitCode": 0,
+      "log": "gitnexus-staged.log"
+    },
+    {
+      "name": "compare-main",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "/Users/matissdornier/.npm/_npx/e46929201c1128dd/node_modules/gitnexus/dist/cli/index.js",
+        "detect-changes",
+        "--scope",
+        "compare",
+        "--base-ref",
+        "main",
+        "--repo",
+        ".",
+        "--limit",
+        "10000"
+      ],
+      "exitCode": 0,
+      "log": "gitnexus-compare-main.log"
+    }
+  ],
+  "limitations": [
+    "Partial local graph: five large files skipped; cross-language and entry/callee truncation; FTS disabled.",
+    "Historical compare main includes other terminals prior changes; only new QA and append documentation owned by T08.",
+    "No existing product symbol edited; manual staged path and diff review required."
+  ],
+  "results": {
+    "staged": {
+      "files": 49,
+      "symbols": 4,
+      "flows": 0,
+      "risk": "LOW"
+    },
+    "compareMain": {
+      "files": 2690,
+      "symbols": 7978,
+      "flows": 229,
+      "risk": "CRITICAL",
+      "listingCapped": true
+    }
+  },
+  "review": "User warned before commit. Current changes restricted to owned QA plus append-only state docs; no product symbols edited. New QA symbols not fully represented by this partial index.",
+  "finalStagedCheck": {
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "/Users/matissdornier/.npm/_npx/e46929201c1128dd/node_modules/gitnexus/dist/cli/index.js",
+      "detect-changes",
+      "--scope",
+      "staged",
+      "--repo",
+      ".",
+      "--limit",
+      "10000"
+    ],
+    "exitCode": 0,
+    "at": "2026-10-15T01:21:20.456189+00:00",
+    "log": "gitnexus-staged-final.log"
+  }
+}

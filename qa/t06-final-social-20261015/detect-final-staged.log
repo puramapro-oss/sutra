@@ -1,0 +1,27 @@
+Changes: 47 files, 19 symbols
+Affected processes: 2
+Risk level: medium
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 — campagne finale exacte et promotion conditionnée, 2026-10-14T16:55:48.931637+00:00 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T07 — FRONTEND-JOURNEY, 2026-10-14 → ERRORS.md
+  Function disconnectAccount → scripts/test-t06-social-routes.mts
+  Function GET → src/app/api/social/callback/route.ts
+  Property user_id → src/app/api/social/callback/route.ts
+  Function revokeSocialAccount → src/lib/social-account-revocation.ts
+  Property remoteStatus → src/lib/social-account-revocation.ts
+  Property status → src/lib/social-account-revocation.ts
+  Property success → src/lib/social-account-revocation.ts
+  Property status → src/lib/social-account-revocation.ts
+  Property updated_at → src/lib/social-account-revocation.ts
+  Property metadata → src/lib/social-account-revocation.ts
+  Property remoteStatus → src/lib/social-account-revocation.ts
+... and 4 more
+
+Affected execution flows:
+  • GET → ProviderId (3 steps) — changed: GET
+  • GET → Denied (4 steps) — changed: GET
+
+  GitNexus Detect Changes (1.6.12)

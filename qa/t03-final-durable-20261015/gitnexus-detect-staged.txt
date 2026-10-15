@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 87 files, 77 symbols
+Affected processes: 366
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 — campagne finale exacte et promotion conditionnée, 2026-10-14T16:55:48.931637+00:00 → BATON.md
+  Section T03 FINAL-DURABLE — 15 octobre 2026, livraison locale → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T07 — FRONTEND-JOURNEY, 2026-10-14 → ERRORS.md
+  Section T03 FINAL-DURABLE — 15 octobre 2026 → ERRORS.md
+  Section T03 → T01 — pipeline durable final, 15 octobre 2026 → HANDOFF-SUTRA-T03-FINAL-DURABLE-20261015.md
+  Section T03 — pipeline durable, livraison locale du 15 octobre 2026 → qa/t03-final-durable-20261015/README.md
+  Section Défauts reproduits et corrections → qa/t03-final-durable-20261015/README.md
+  Section Commandes exactes et résultats → qa/t03-final-durable-20261015/README.md
+  Section Machine d'états et checkpoints → qa/t03-final-durable-20261015/README.md
+  Section Proposition SQL à T01 → qa/t03-final-durable-20261015/README.md
+  Section Ownership, impact et limites → qa/t03-final-durable-20261015/README.md
+  Const answer → qa/t03-final-durable-20261015/cancel-ack.test.mts
+  Const transport → qa/t03-final-durable-20261015/cancel-ack.test.mts
+... and 62 more
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: createServiceClient, createServiceClient, createServiceClient, createServiceClient
+  • CommunityScreen → ApiFetch (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+  • AdminContestPage → FetchData (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+  • AdminUsersPage → FetchUsers (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+  • CommunityPage → FetchBuddy (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+  • CommunityPage → FetchCircles (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+  • CommunityPage → FetchWall (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+  • JeuCreatifPage → Load (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+  • LightningPage → Load (3 steps) — changed: createServiceClient, createServiceClient, createServiceClient
+... and 356 more

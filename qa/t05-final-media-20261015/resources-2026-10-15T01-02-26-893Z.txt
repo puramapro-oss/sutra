@@ -1,0 +1,100 @@
+✖ resource: release must reserve a queued slot before a newcomer (17.691583ms)
+✖ resource: timeout applies while queued and releases waiter (726.905042ms)
+✖ resource: total deadline cancels stalled download and cleans temp (253.235708ms)
+✖ resource: fractional concurrency cannot create zero slots (3.659625ms)
+✔ resource: real FFmpeg and probe timeout kill children (84.070791ms)
+✔ resource: resumable failure preserves owned checkpoints, successful retry removes them (1372.210917ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 2
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2827.801
+
+✖ failing tests:
+
+test at scripts/test-t05-final-media.mts:1:6051
+✖ resource: release must reserve a queued slot before a newcomer (17.691583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-final-media-20261015/scripts/test-t05-final-media.mts:89:9)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t05-final-media.mts:1:6614
+✖ resource: timeout applies while queued and releases waiter (726.905042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-final-media-20261015/scripts/test-t05-final-media.mts:99:9)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t05-final-media.mts:1:7308
+✖ resource: total deadline cancels stalled download and cleans temp (253.235708ms)
+  AssertionError [ERR_ASSERTION]: deadline ignored: 251.81216700000004ms
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-final-media-20261015/scripts/test-t05-final-media.mts:111:9)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/test-t05-final-media.mts:1:8044
+✖ resource: fractional concurrency cannot create zero slots (3.659625ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(getFfmpegConcurrencyState().max>=1)
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-final-media-20261015/scripts/test-t05-final-media.mts:116:14)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+        2.88 real         1.10 user         0.44 sys
+           190005248  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               70696  page reclaims
+                2897  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 136  messages sent
+                  96  messages received
+                 374  signals received
+                1043  voluntary context switches
+               13260  involuntary context switches
+           843335251  instructions retired
+           295802195  cycles elapsed
+            20171320  peak memory footprint

@@ -1,0 +1,89 @@
+{
+  "target": {
+    "id": "Function:src/lib/ffmpeg-concurrency.ts:resolveMaxConcurrency",
+    "name": "resolveMaxConcurrency",
+    "type": "Function",
+    "filePath": "src/lib/ffmpeg-concurrency.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 3,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "composeVideo",
+      "type": "Function",
+      "filePath": "src/lib/ffmpeg-compositor.ts",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Cluster_381",
+      "hits": 3,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/ffmpeg-concurrency.ts:acquireFfmpegSlot",
+        "name": "acquireFfmpegSlot",
+        "filePath": "src/lib/ffmpeg-concurrency.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/ffmpeg-concurrency.ts:getFfmpegConcurrencyState",
+        "name": "getFfmpegConcurrencyState",
+        "filePath": "src/lib/ffmpeg-concurrency.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/ffmpeg-compositor.ts:composeVideo",
+        "name": "composeVideo",
+        "filePath": "src/lib/ffmpeg-compositor.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_45_composevideo",
+            "label": "ComposeVideo → FfmpegCompositorError",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_101_composevideo",
+            "label": "ComposeVideo → GetResolution",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

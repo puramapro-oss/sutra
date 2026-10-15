@@ -1,0 +1,131 @@
+{
+  "baseline": false,
+  "productionSuite": true,
+  "results": [
+    {
+      "name": "login and explicit consent open empty library",
+      "status": "PASS"
+    },
+    {
+      "name": "375: private media 307 to inline cross-origin storage downloads at keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: private media 307 to inline cross-origin storage downloads at keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "download denied: no file, sanitized visible error and retry enabled",
+      "status": "PASS"
+    },
+    {
+      "name": "download html: no file, sanitized visible error and retry enabled",
+      "status": "PASS"
+    },
+    {
+      "name": "download corrupt: no file, sanitized visible error and retry enabled",
+      "status": "PASS"
+    },
+    {
+      "name": "download retry after failure: one fetch for simultaneous clicks, hash preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "download suspended body: bounded timeout and retry; no file",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '/127.0.0.1:64086/voices?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/chat?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/templates?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/styles?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/storyboard?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/karma?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/referral?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/partenaire?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/contest?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/classement?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/analytics?_rsc=1APznfIM62_Ec2VZ due to access control checks.',\n+   '/127.0.0.1:64086/wallet?_rsc=1APznfIM62_Ec2VZ due to access control checks.'\n+ ]\n- []\n"
+    }
+  ],
+  "details": [
+    {
+      "width": 375,
+      "filename": "sutra-video.mp4",
+      "sha256": "b9ebe80ebc87e1b589884fa3172c4a3758604fc6ba4314885464920a6294927c",
+      "storageSigned": true,
+      "externalStorage": false
+    },
+    {
+      "width": 1440,
+      "filename": "sutra-video.mp4",
+      "sha256": "b9ebe80ebc87e1b589884fa3172c4a3758604fc6ba4314885464920a6294927c",
+      "storageSigned": true,
+      "externalStorage": false
+    },
+    {
+      "timeout": "30000ms browser clock advanced 31000ms; body suspended",
+      "noActualWait30s": true
+    }
+  ],
+  "errors": [
+    "/127.0.0.1:64086/voices?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/chat?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/templates?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/styles?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/storyboard?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/karma?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/referral?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/partenaire?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/contest?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/classement?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/analytics?_rsc=1APznfIM62_Ec2VZ due to access control checks.",
+    "/127.0.0.1:64086/wallet?_rsc=1APznfIM62_Ec2VZ due to access control checks."
+  ],
+  "blocked": [],
+  "mutations": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

@@ -2,15 +2,16 @@ import test, { mock } from 'node:test'
 import assert from 'node:assert/strict'
 process.env.NEXT_PUBLIC_APP_URL = 'https://sutra.test.invalid'
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'fixture-media-signing-key'
+process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ '11111111-1111-4111-8111-111111111111': 'a'.repeat(24), '22222222-2222-4222-8222-222222222222': 'b'.repeat(24) })
 let signatures = 0
-let actor: string | null = 'alice'
+let actor: string | null = '11111111-1111-4111-8111-111111111111'
 let revoked = false
 let disconnected = false
 let mediaChanged = false
 let dbError = false
 let operations: unknown[] = []
 const service = {
-  schema: () => ({ from: () => ({ select: () => ({ eq: async () => ({ data: [{ id: 'account-1', platform: 'youtube', external_id: 'remote-1', status: disconnected ? 'revoked' : 'connected' }] }) }) }) }),
+  schema: () => ({ from: () => ({ select: () => ({ eq: async () => ({ data: [{ id: 'account-1', platform: 'youtube', external_id: 'remote-1', status: disconnected ? 'revoked' : 'connected', metadata: { credential_owner: 'zernio', zernio_profile_id: 'a'.repeat(24) } }] }) }) }) }),
   storage: { from: () => ({ createSignedUrl: async (path: string, ttl: number) => {
     signatures++; assert.equal(ttl, 300)
     return { data: { signedUrl: `https://storage.test.invalid/${path}?token=fixture-${signatures}` }, error: null }
@@ -21,8 +22,8 @@ const service = {
       if (dbError) return { error: { message: 'fixture-secret' }, data: null }
       if (table === 'profiles') return { data: { id: eqs.id, subscription_status: revoked ? 'banned' : 'active' } }
       if (table === 'videos') return { data: { video_url: mediaChanged ? 'changed' : url, status: 'ready', shotstack_json: { sutraVerification: { sha256: 'a'.repeat(64) } } } }
-      if (table === 'social_publication_journals') return { data: { operations: eqs.user_id === 'alice' && eqs.production_id === 'video-1' && eqs.kind === 'video' ? operations : [] } }
-      return { data: eqs.object_path === 'legacy/a.mp4' && eqs.user_id === 'alice' ? { user_id: 'alice' } : null }
+      if (table === 'social_publication_journals') return { data: { operations: eqs.user_id === '11111111-1111-4111-8111-111111111111' && eqs.production_id === 'video-1' && eqs.kind === 'video' ? operations : [] } }
+      return { data: eqs.object_path === 'legacy/a.mp4' && eqs.user_id === '11111111-1111-4111-8111-111111111111' ? { user_id: '11111111-1111-4111-8111-111111111111' } : null }
     } }
     return q
   },
@@ -31,43 +32,43 @@ mock.module('../src/lib/supabase.ts', { namedExports: { createServiceClient: () 
 mock.module('../src/lib/supabase-server.ts', { namedExports: { createServerClient: async () => ({ auth: { getUser: async () => ({ data: { user: actor ? { id: actor } : null }, error: null }) } }) } })
 const media = await import('../src/lib/private-media.ts')
 const { GET } = await import('../src/app/api/media/[reference]/route.ts')
-const url = media.durableMediaUrl('owners/alice/video.mp4')
+const url = media.durableMediaUrl('owners/11111111-1111-4111-8111-111111111111/video.mp4')
 const request = (value = url) => GET(new Request(value), { params: Promise.resolve({ reference: new URL(value).pathname.split('/').at(-1)! }) })
 test('private reference stays constant while authorized signatures renew', async () => {
-  const first = await media.withMediaOwner('alice', () => media.resolveMediaUrl(url))
-  const second = await media.withMediaOwner('alice', () => media.resolveMediaUrl(url))
-  assert.notEqual(first, second); assert.equal(media.mediaPath(url), 'owners/alice/video.mp4')
+  const first = await media.withMediaOwner('11111111-1111-4111-8111-111111111111', () => media.resolveMediaUrl(url))
+  const second = await media.withMediaOwner('11111111-1111-4111-8111-111111111111', () => media.resolveMediaUrl(url))
+  assert.notEqual(first, second); assert.equal(media.mediaPath(url), 'owners/11111111-1111-4111-8111-111111111111/video.mp4')
   assert.equal(await media.resolveMediaUrl('https://stock.test.invalid/a.mp4'), 'https://stock.test.invalid/a.mp4')
 })
 test('missing owner and cross-user access are refused before signing', async () => {
   const before = signatures
   await assert.rejects(media.resolveMediaUrl(url), /OWNER_REQUIRED/)
-  await assert.rejects(media.withMediaOwner('bob', () => media.resolveMediaUrl(url)), /ACCESS_DENIED/)
+  await assert.rejects(media.withMediaOwner('22222222-2222-4222-8222-222222222222', () => media.resolveMediaUrl(url)), /ACCESS_DENIED/)
   assert.equal(signatures, before)
-  assert.throws(() => media.withMediaOwner('alice', () => media.withMediaOwner('bob', () => 1)), /OWNER_MISMATCH/)
+  assert.throws(() => media.withMediaOwner('11111111-1111-4111-8111-111111111111', () => media.withMediaOwner('22222222-2222-4222-8222-222222222222', () => 1)), /OWNER_MISMATCH/)
 })
 test('worker authorities are isolated under concurrency', async () => {
-  await Promise.all(['alice', 'bob'].map(user => media.withMediaOwner(user, async () => {
+  await Promise.all(['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222'].map(user => media.withMediaOwner(user, async () => {
     await new Promise(resolve => setImmediate(resolve))
     assert.equal(media.mediaOwner(), user)
     assert.match(await media.resolveMediaUrl(media.durableMediaUrl(`owners/${user}/v.mp4`)), new RegExp(`/owners/${user}/`))
   })))
 })
 test('legacy ownership fails closed for ambiguous or missing inventory', async () => {
-  await media.assertMediaOwner('legacy/a.mp4', 'alice')
-  await assert.rejects(media.assertMediaOwner('legacy/a.mp4', 'bob'), /ACCESS_DENIED/)
-  await assert.rejects(media.assertMediaOwner('legacy/missing.mp4', 'alice'), /ACCESS_DENIED/)
+  await media.assertMediaOwner('legacy/a.mp4', '11111111-1111-4111-8111-111111111111')
+  await assert.rejects(media.assertMediaOwner('legacy/a.mp4', '22222222-2222-4222-8222-222222222222'), /ACCESS_DENIED/)
+  await assert.rejects(media.assertMediaOwner('legacy/missing.mp4', '11111111-1111-4111-8111-111111111111'), /ACCESS_DENIED/)
 })
 test('route authenticates the owner and never caches redirects or failures', async () => {
   actor = null; assert.equal((await request()).status, 401)
-  actor = 'bob'; assert.equal((await request()).status, 404)
-  actor = 'alice'; const response = await request()
+  actor = '22222222-2222-4222-8222-222222222222'; assert.equal((await request()).status, 404)
+  actor = '11111111-1111-4111-8111-111111111111'; const response = await request()
   assert.equal(response.status, 307); assert.match(response.headers.get('cache-control')!, /no-store/)
   assert.equal(response.headers.get('referrer-policy'), 'no-referrer')
 })
 test('publication capability requires exact durable journal, owner and live profile', async () => {
   const expires = Date.now() + 60_000
-  const capability = (await media.publicationMediaUrl(url, { userId: 'alice', productionId: 'video-1', kind: 'video', operationId: 'op-1', expires }))!
+  const capability = (await media.publicationMediaUrl(url, { userId: '11111111-1111-4111-8111-111111111111', productionId: 'video-1', kind: 'video', operationId: 'op-1', expires }))!
   const token = new URL(capability).searchParams.get('grant')!
   actor = null
   assert.equal((await request(capability)).status, 404)
@@ -84,7 +85,7 @@ test('publication capability requires exact durable journal, owner and live prof
   operations = []; assert.equal((await request(capability)).status, 404)
 })
 test('malformed references cannot escape their owner prefix', async () => {
-  for (const path of ['owners/alice/../bob/x', 'owners/alice//x', '/owners/alice/x', 'owners/alice/\\x']) {
+  for (const path of ['owners/11111111-1111-4111-8111-111111111111/../22222222-2222-4222-8222-222222222222/x', 'owners/11111111-1111-4111-8111-111111111111//x', '/owners/11111111-1111-4111-8111-111111111111/x', 'owners/11111111-1111-4111-8111-111111111111/\\x']) {
     assert.throws(() => media.mediaPath(media.durableMediaUrl(path)), /REFERENCE_INVALID/)
   }
   assert.throws(() => media.mediaPath(url + '?grant=anything'), /REFERENCE_INVALID/)

@@ -1,0 +1,118 @@
+✔ disabled default and Mac guard start no engine (1.108ms)
+✔ single canonical engine/bridge/host; private loopback; account keys absent in all child environments (0.148416ms)
+✔ malformed database and conflicting addresses rejected before spawn (0.081417ms)
+✔ SIGTERM drains host before stopping bridge and Comfy; no restart (3.384292ms)
+✔ bounded host grace kills uncertain process without restarting any computation (6.120084ms)
+✔ cold-start failure cleans up the single started process (0.188917ms)
+✔ child failure drains remaining processes once, no implicit restart (0.166334ms)
+✔ stop during startup cannot start bridge or host later (1.499042ms)
+✖ Comfy readiness GET accepts queue contract and rejects malformed success (12.1285ms)
+✔ Comfy readiness refusal/timeout/cancel do not submit a job (10.649167ms)
+✔ health authenticates using header only and accepts ready/busy contracts (0.296791ms)
+✖ health rejects malformed 200, interruption, wrong protocol, errors and disabled configuration (0.280375ms)
+✖ image source allowlist contains transitive media verification, never copies repository/env (1.227834ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 10
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 125.071125
+
+✖ failing tests:
+
+test at qa/t04-final-providers-20261015/container.test.mjs:66:1
+✖ Comfy readiness GET accepts queue contract and rejects malformed success (12.1285ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t04-final-providers-20261015/qa/t04-final-providers-20261015/container.test.mjs:68:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-final-providers-20261015/container.test.mjs:81:1
+✖ health rejects malformed 200, interruption, wrong protocol, errors and disabled configuration (0.280375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t04-final-providers-20261015/qa/t04-final-providers-20261015/container.test.mjs:83:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t04-final-providers-20261015/container.test.mjs:88:1
+✖ image source allowlist contains transitive media verification, never copies repository/env (1.227834ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /COPY src\/lib\/salad-persistence.ts src\/lib\/media-probe.ts/. Input:
+
+  '# Build ONLY on an explicitly authorized Linux builder. No models in build context.\n' +
+    '# This recipe is pinned; a built image digest and GPU qualification are still required.\n' +
+    'FROM --platform=linux/amd64 node:24.21.0-bookworm-slim@sha256:51b1100cc2a83d370c6a60952e3f2989c8a43159d0e38586e090f3b3326efefd AS node\n' +
+    'FROM --platform=linux/amd64 python:3.12.12-slim-bookworm@sha256:2986c55feb36e6cae00fa1fefb454283e4b33f35e75ff8bdd123b134130be301\n' +
+    '\n' +
+    '# Frozen Debian snapshot pins transitive OS packages, including ffmpeg/ffprobe.\n' +
+    'RUN rm /etc/apt/sources.list.d/debian.sources && \\\n' +
+    "    printf '%s\\n' 'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian/20261014T000000Z bookworm main' \\\n" +
+    "    'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian-security/20261014T000000Z bookworm-security main' > /etc/apt/sources.list && \\\n" +
+    '    apt-get update && apt-get install -y --no-install-recommends ca-certificates git ffmpeg libgomp1 libgl1 && \\\n' +
+    '    rm -rf /var/lib/apt/lists/*\n' +
+    'COPY --from=node /usr/local/bin/node /usr/local/bin/node\n' +
+    'COPY --from=node /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm\n' +
+    '\n' +
+    'WORKDIR /app\n' +
+    'COPY src/lib/salad/container/package.json src/lib/salad/container/package-lock.json ./\n' +
+    'RUN node /usr/local/lib/node_modules/npm/bin/npm-cli.js ci --ignore-scripts --omit=dev --no-audit --no-fund && \\\n' +
+    `    node --import tsx --input-type=module -e "await import('pg'); await import('zod')"\n` +
+    '\n' +
+    'COPY src/lib/salad/container/requirements.lock /opt/requirements.lock\n' +
+    'RUN python3 -m pip install --no-cache-dir --only-binary=:all: --require-hashes -r /opt/requirements.lock && \\\n' +
+    '    python3 -m pip check\n' +
+    'RUN git init /opt/ComfyUI && cd /opt/ComfyUI && \\\n' +
+    '    git remote add origin https://github.com/Comfy-Org/ComfyUI.git && \\\n' +
+    '    git fetch --depth=1 origin 3541246a9c997f4b8c32f9f88f3c985d02021c79 && \\\n' +
+    '    git checkout --detach 3541246a9c997f4b8c32f9f88f3c985d02021c79 && \\\n' +
+    '    rm -rf .git\n' +
+    '\n' +
+    '# Deliberate source allowlist. No .env, repository metadata, application or account secrets.\n' +
+    'COPY src/lib/salad/config.ts src/lib/salad/contracts.ts src/lib/salad/host.ts src/lib/salad/inspection.ts src/lib/salad/workflow-contract.ts src/lib/salad/worker.ts src/lib/salad/engine.ts src/lib/salad/http.ts src/lib/salad/serve.mts ./src/lib/salad/\n' +
+    'COPY src/lib/salad-persistence.ts ./src/lib/\n' +
+    'COPY scripts/comfyui-engine-server.mjs ./scripts/\n' +
+    'COPY src/lib/salad/container/launch.mjs src/lib/salad/container/health.mjs ./src/lib/salad/container/\n' +
+    'RUN useradd --uid 10001 --create-home --shell /usr/sbin/nologin sutra && \\\n' +
+    '    mkdir -p /run/sutra /opt/ComfyUI/output /opt/ComfyUI/input /opt/ComfyUI/temp /opt/ComfyUI/user /home/sutra/.cache && \\\n' +
+    '    chown -R 10001:10001 /opt/ComfyUI/output /opt/ComfyUI/input /opt/ComfyUI/temp /opt/ComfyUI/user /home/sutra && \\\n' +
+    '    chmod -R a-w /app /opt/ComfyUI/models\n' +
+    '\n' +
+    'ENV SALAD_ENABLED=false \\\n' +
+    '    NVIDIA_VISIBLE_DEVICES=all NVIDIA_DRIVER_CAPABILITIES=compute,utility \\\n' +
+    '    PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \\\n' +
+    '    HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 HF_HOME=/home/sutra/.cache/huggingface TORCH_HOME=/home/sutra/.cache/torch \\\n' +
+    '    HOME=/home/sutra\n' +
+    'USER 10001:10001\n' +
+    'EXPOSE 7862\n' +
+    'STOPSIGNAL SIGTERM\n' +
+    'HEALTHCHECK --interval=30s --timeout=8s --start-period=300s --retries=3 CMD ["node", "/app/src/lib/salad/container/health.mjs"]\n' +
+    'ENTRYPOINT ["node", "--import", "tsx", "/app/src/lib/salad/container/launch.mjs"]\n'
+
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t04-final-providers-20261015/qa/t04-final-providers-20261015/container.test.mjs:90:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `# Build ONLY on an explicitly authorized Linux builder. No models in build context.\n# This recipe is pinned; a built image digest and GPU qualification are still required.\nFROM --platform=linux/amd64 node:24.21.0-bookworm-slim@sha256:51b1100cc2a83d370c6a60952e3f2989c8a43159d0e38586e090f3b3326efefd AS node\nFROM --platform=linux/amd64 python:3.12.12-slim-bookworm@sha256:2986c55feb36e6cae00fa1fefb454283e4b33f35e75ff8bdd123b134130be301\n\n# Frozen Debian snapshot pins transitive OS packages, including ffmpeg/ffprobe.\nRUN rm /etc/apt/sources.list.d/debian.sources && \\\n    printf '%s\\n' 'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian/20261014T000000Z bookworm main' \\\n    'deb [check-valid-until=no] https://snapshot.debian.org/archive/debian-security/20261014T000000Z bookworm-security main' > /etc/apt/sources.list && \\\n    apt-get update && apt-get install -y --no-install-recommends ca-certificates git ffmpeg libgomp1 libgl1 && \\\n    rm -rf /var/lib/apt/lists/*\nCOPY --from=node /usr/local/bin/node /usr/local/bin/node\nCOPY --from=node /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm\n\nWORKDIR /app\nCOPY src/lib/salad/container/package.json src/lib/salad/container/package-lock.json ./\nRUN node /usr/local/lib/node_modules/npm/bin/npm-cli.js ci --ignore-scripts --omit=dev --no-audit --no-fund && \\\n    node --import tsx --input-type=module -e "await import('pg'); await import('zod')"\n\nCOPY src/lib/salad/container/requirements.lock /opt/requirements.lock\nRUN python3 -m pip install --no-cache-dir --only-binary=:all: --require-hashes -r /opt/requirements.lock && \\\n    python3 -m pip check\nRUN git init /opt/ComfyUI && cd /opt/ComfyUI && \\\n    git remote add origin https://github.com/Comfy-Org/ComfyUI.git && \\\n    git fetch --depth=1 origin 3541246a9c997f4b8c32f9f88f3c985d02021c79 && \\\n    git checkout --detach 3541246a9c997f4b8c32f9f88f3c985d02021c79 && \\\n    rm -rf .git\n\n# Deliberate source allowlist. No .env, repository metadata, application or account secrets.\nCOPY src/lib/salad/config.ts src/lib/salad/contracts.ts src/lib/salad/host.ts src/lib/salad/inspection.ts src/lib/salad/workflow-contract.ts src/lib/salad/worker.ts src/lib/salad/engine.ts src/lib/salad/http.ts src/lib/salad/serve.mts ./src/lib/salad/\nCOPY src/lib/salad-persistence.ts ./src/lib/\nCOPY scripts/comfyui-engine-server.mjs ./scripts/\nCOPY src/lib/salad/container/launch.mjs src/lib/salad/container/health.mjs ./src/lib/salad/container/\nRUN useradd --uid 10001 --create-home --shell /usr/sbin/nologin sutra && \\\n    mkdir -p /run/sutra /opt/ComfyUI/output /opt/ComfyUI/input /opt/ComfyUI/temp /opt/ComfyUI/user /home/sutra/.cache && \\\n    chown -R 10001:10001 /opt/ComfyUI/output /opt/ComfyUI/input /opt/ComfyUI/temp /opt/ComfyUI/user /home/sutra && \\\n    chmod -R a-w /app /opt/ComfyUI/models\n\nENV SALAD_ENABLED=false \\\n    NVIDIA_VISIBLE_DEVICES=all NVIDIA_DRIVER_CAPABILITIES=compute,utility \\\n    PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \\\n    HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 HF_HOME=/home/sutra/.cache/huggingface TORCH_HOME=/home/sutra/.cache/torch \\\n    HOME=/home/sutra\nUSER 10001:10001\nEXPOSE 7862\nSTOPSIGNAL SIGTERM\nHEALTHCHECK --interval=30s --timeout=8s --start-period=300s --retries=3 CMD ["node", "/app/src/lib/salad/container/health.mjs"]\nENTRYPOINT ["node", "--import", "tsx", "/app/src/lib/salad/container/launch.mjs"]\n`,
+    expected: /COPY src\/lib\/salad-persistence.ts src\/lib\/media-probe.ts/,
+    operator: 'match',
+    diff: 'simple'
+  }

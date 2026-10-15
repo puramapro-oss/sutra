@@ -82,6 +82,12 @@ export async function GET(req: Request) {
     // Zernio holds all platform tokens; verify the hosted result by a scoped server GET.
     const profile = await getConnectedAccount(platform, profileId, accountId!)
 
+    // The provider GET awaited remote I/O. A reassigned profile must not become
+    // a new local authorization using the binding captured before that wait.
+    if (getAuthorizedProfileId(userId) !== profileId) {
+      return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
+    }
+
     if (!profile.externalId || !profile.username) {
       return redirectToSettings(siteUrl, { error: 'oauth_empty_profile' })
     }

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "productionChanged": false,
+  "sessions": 2,
+  "concurrentDdlBlocked": true,
+  "sqlstate": "55P03",
+  "guardedMigration": true,
+  "pauseBeforeFirstDdl": true,
+  "withoutLockDdlCommitted": true,
+  "withoutLockGuardRejected": true,
+  "rollbackExact": true,
+  "productionUnchanged": true,
+  "limitation": "Existing scoped function rows only; not a global schema or role lock.",
+  "observedAt": "2026-10-15T01:38:40.374277+00:00",
+  "command": "python3 qa/t01-consolidation-20261014/verify-checkpoint-concurrency.py --proof-dir /Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015"
+}

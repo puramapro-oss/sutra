@@ -205,9 +205,12 @@ export async function executeProductionStep(
     if (clips.length === 0) throw new Error('Aucune scene resolue (IA et stock indisponibles) — video annulee, aucun autre cout engage')
     await checkpointStage(done, hooks, 'scenes', clips)
     await checkpointStage(done, hooks, 'images', [], 'skipped')
-    await checkpointStage(done, hooks, 'music', music)
-    const voiceUrl = await resolveVoiceUrl(input, done, hooks, step, providers, script.narration)
-    await checkpointStage(done, hooks, 'voice', voiceUrl)
+    await checkpointStage(done, hooks, 'music', music ?? '', music ? 'complete' : 'skipped')
+    // No new synthesis for an empty narration. Retain/reconcile any older
+    // acquired or uncertain voice operation before advancing the checkpoint.
+    const voiceUrl = script.narration?.trim() || Object.hasOwn(done, 'voice_submission_started') || Object.hasOwn(done, 'voice_url')
+      ? await resolveVoiceUrl(input, done, hooks, step, providers, script.narration) : ''
+    await checkpointStage(done, hooks, 'voice', voiceUrl, voiceUrl ? 'complete' : 'skipped')
     return runAssembly(input, step, providers, done, hooks, { script, clips, voiceUrl, musicUrl: music ?? '' })
   }
 
@@ -242,25 +245,33 @@ export async function voiceB64Checkpointed(
   narration: string,
   voice: string | null
 ): Promise<string | null> {
-  // Cache bloc unique (voix ≤20 Mo).
-  if (typeof done.voice_b64 === 'string') return done.voice_b64
+  const corrupt = () => new Error('SUTRA_RECONCILIATION_REQUIRED: SUTRA_VOICE_CHECKPOINT_CORRUPT')
+  const validate = (encoded: unknown, checksumRequired: boolean): string => {
+    if (typeof encoded !== 'string' || !encoded.length || encoded.length % 4 !== 0
+      || Buffer.from(encoded, 'base64').toString('base64') !== encoded) throw corrupt()
+    const checksum = done.voice_b64_sha256
+    if ((checksumRequired || checksum !== undefined)
+      && (typeof checksum !== 'string' || !/^[a-f\d]{64}$/.test(checksum)
+        || createHash('sha256').update(encoded).digest('hex') !== checksum)) throw corrupt()
+    return encoded
+  }
+  // Legacy single-block checkpoints have no hash; preserve canonical base64 only.
+  if (Object.hasOwn(done, 'voice_b64')) return validate(done.voice_b64, false)
   // Cache morceaux (voix >20 Mo) : réassemblage SANS synthèse.
   const parts = typeof done.voice_b64_parts === 'number' ? done.voice_b64_parts : 0
+  if (Object.hasOwn(done, 'voice_b64_parts') && (!Number.isSafeInteger(parts) || parts <= 0
+    || parts > Object.keys(done).filter(key => /^voice_b64:\d+$/.test(key)).length)) throw corrupt()
   if (parts > 0) {
     let b64 = ''
     for (let i = 0; i < parts; i++) {
       const part = done[`voice_b64:${i}`]
-      if (typeof part !== 'string') throw new Error(`checkpoint voix corrompu (morceau ${i} manquant)`)
+      if (typeof part !== 'string' || !part.length) throw corrupt()
       b64 += part
     }
-    const checksum = done.voice_b64_sha256
-    if (typeof checksum === 'string' && createHash('sha256').update(b64).digest('hex') !== checksum) {
-      throw new Error('SUTRA_VOICE_CHECKPOINT_CORRUPT')
-    }
-    return b64
+    return validate(b64, true)
   }
 
-  if (done.voice_submission_started || Object.keys(done).some(key => /^voice_b64:\d+$/.test(key))) {
+  if (done.voice_submission_started || done.voice_b64_sha256 !== undefined || Object.keys(done).some(key => /^voice_b64:\d+$/.test(key))) {
     throw new Error('SUTRA_RECONCILIATION_REQUIRED: resultat vocal incomplet, aucune nouvelle synthese')
   }
 
@@ -269,6 +280,7 @@ export async function voiceB64Checkpointed(
   const buf = await providers.voice(narration, resolveVoiceProviderId(voice))
   if (!buf.byteLength) throw new Error('SUTRA_VOICE_EMPTY_RESULT')
   const encoded = Buffer.from(buf).toString('base64')
+  await step('voice_b64_sha256', async () => createHash('sha256').update(encoded).digest('hex'))
   if (encoded.length <= MAX_VOICE_B64) {
     await step('voice_b64', async () => encoded)
     return encoded
@@ -278,7 +290,6 @@ export async function voiceB64Checkpointed(
   for (let i = 0; i < encoded.length; i += VOICE_CHUNK_B64) chunks.push(encoded.slice(i, i + VOICE_CHUNK_B64))
   // The manifest precedes chunks: a partial write must never trigger a new voice
   // generation and combine the old beginning with a different recording.
-  await step('voice_b64_sha256', async () => createHash('sha256').update(encoded).digest('hex'))
   await step('voice_b64_parts', async () => chunks.length)
   for (let i = 0; i < chunks.length; i++) {
     await step(`voice_b64:${i}`, async () => chunks[i])
@@ -302,7 +313,8 @@ async function runAssembly(
   if (scriptData?.scenes?.length && scriptData.scenes.length !== clips.length) throw new Error('SUTRA_INCOMPLETE_SCENES')
   await checkpointStage(done, hooks, 'script', scriptData, scriptData ? 'complete' : 'skipped')
   await checkpointStage(done, hooks, 'scenes', clips)
-  await checkpointStage(done, hooks, 'images', clips.filter(c => c.kind === 'photo'))
+  const images = clips.filter(c => c.kind === 'photo')
+  await checkpointStage(done, hooks, 'images', images, images.length ? 'complete' : 'skipped')
   const musicUrl = prefetched?.musicUrl ?? ((input.previousData.music as { url?: string } | undefined)?.url ?? '')
   requireTracks(voiceUrl, musicUrl, { voice: Boolean(scriptData?.narration), music: input.musicStyle !== 'none' })
   await checkpointStage(done, hooks, 'voice', voiceUrl ?? '', voiceUrl ? 'complete' : 'skipped')

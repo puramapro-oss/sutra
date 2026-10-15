@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -21,6 +21,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const submitting = useRef(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
   const [rememberChoice, setRememberMe] = useState<boolean | undefined>()
@@ -31,6 +32,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (submitting.current || googleLoading) return
     setErrors({})
 
     const result = loginSchema.safeParse({ email, password })
@@ -46,6 +48,7 @@ export default function LoginPage() {
       return
     }
 
+    submitting.current = true
     setLoading(true)
     try {
       rememberSession(rememberMe)
@@ -64,6 +67,7 @@ export default function LoginPage() {
         toast.error(message)
       }
     } finally {
+      submitting.current = false
       setLoading(false)
     }
   }

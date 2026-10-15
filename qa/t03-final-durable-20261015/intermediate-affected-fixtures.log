@@ -1,0 +1,139 @@
+✔ restart after durable script checkpoint preserves all nine independent outputs (1.994542ms)
+✔ restart after durable scenes checkpoint preserves all nine independent outputs (0.387083ms)
+✔ restart after durable images checkpoint preserves all nine independent outputs (0.710916ms)
+✔ restart after durable voice checkpoint preserves all nine independent outputs (0.306333ms)
+✔ restart after durable music checkpoint preserves all nine independent outputs (0.242625ms)
+✔ restart after durable subtitles checkpoint preserves all nine independent outputs (0.20425ms)
+✔ restart after durable composition checkpoint preserves all nine independent outputs (0.244417ms)
+✔ restart after durable export checkpoint preserves all nine independent outputs (0.21925ms)
+✔ restart after durable publication checkpoint preserves all nine independent outputs (0.239625ms)
+✔ paid call safety with intent-not-written (0.189125ms)
+✔ paid call safety with intent-ack-lost (0.065041ms)
+✔ paid call safety with result-not-written (0.0535ms)
+✔ paid call safety with result-ack-lost (0.0395ms)
+✔ 30 simultaneous requests in one executor share one provider operation (5.277917ms)
+✔ a durable remote id allows polling, never another submission (0.180209ms)
+✔ forged or non-finite final media proof cannot authorize ready (0.22125ms)
+✔ final proof requires literal validation flags and positive finite integer dimensions (0.178458ms)
+✓ interruption : acquis avant crash checkpointé (script+musique+scène 0)
+✓ reprise : aucun acquis régénéré, chaque ressource payée une fois (scène tuée: 2 appels max)
+✓ étape video : reprise complète, scènes saines jamais régénérées
+✓ voix : reprise après crash upload sans resynthèse (1 seul débit ElevenLabs)
+✓ annulation : nouvelle requête repart de zéro, aucun résultat annulé réutilisé
+✔ INTERRUPTION : crash à la scène 1 — les résultats déjà payés sont checkpointés (2.050292ms)
+✔ REPRISE : seules les scènes manquantes sont générées — AUCUN double appel (1.240375ms)
+✔ étape VIDEO step-by-step : interruption scène 0 puis reprise complète (0.226542ms)
+✔ VOIX : buffer checkpointé — crash avant upload ne re-paie pas la synthèse (0.378542ms)
+✔ ANNULATION (niveau pipeline) : une tâche annulée ne rejoue pas depuis ses checkpoints (0.412916ms)
+(node:98162) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ legacy null final checkpoint in create is quarantined without replaying paid work (3.852458ms)
+✔ legacy null final checkpoint in export is quarantined without replaying paid work (0.52575ms)
+✔ legacy null final checkpoint in auto is quarantined without replaying paid work (0.360708ms)
+✔ legacy null final checkpoint in production is quarantined without replaying paid work (0.315667ms)
+✔ null music requires explicit skip, matching empty value: ["cinematic",{"status":"skipped","value":null}] (0.354959ms)
+✔ null music requires explicit skip, matching empty value: ["none",{"status":"complete","value":null}] (0.299625ms)
+✔ null music requires explicit skip, matching empty value: ["none",{"status":"skipped","value":"https://wrong.fixture.invalid/music.mp3"}] (0.24525ms)
+✔ null music requires explicit skip, matching empty value: ["none",{"status":"skipped"}] (0.286459ms)
+✔ explicit music none still resumes its acknowledged skipped result (0.618167ms)
+✔ new music-none execution persists its skip and null result without invoking a provider (2.699417ms)
+✔ lost finish ACK rejects contradictory skipped-music value undefined (0.581292ms)
+✔ lost finish ACK rejects contradictory skipped-music value https://unexpected.fixture.invalid/music.mp3 (0.237208ms)
+(node:98163) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:98163) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+(node:98163) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+✔ finish done rejects incompatible DB receipt failed (3.548125ms)
+✔ finish done rejects incompatible DB receipt queued (0.589792ms)
+✔ finish done rejects incompatible DB receipt reconciliation_required (0.366625ms)
+✔ finish queued still accepts SQL quarantine receipt (0.368666ms)
+✖ finish done lost ACK: reconcile persisted result with one GET, never repeat quota mutation (0.947625ms)
+✖ duplicate completion after lost ACK reads existing outcome; no second successful mutation (3.111875ms)
+✔ unconfirmed finish cannot promote processing to done (0.358208ms)
+✔ unconfirmed finish cannot promote queued to done (0.278084ms)
+✔ unconfirmed finish cannot promote cancelled to done (0.243ms)
+✔ unconfirmed finish cannot promote failed to done (0.260875ms)
+✔ unconfirmed finish cannot promote reconciliation_required to done (0.233875ms)
+✔ unconfirmed finish with unreadable DB remains blocked (0.22575ms)
+✔ terminal status without result undefined cannot reconcile as successful media (0.220083ms)
+✔ terminal status without result null cannot reconcile as successful media (0.206041ms)
+✔ lost finish ACK for explicitly skipped production music accepts its durable null result (0.245167ms)
+✖ worker interrupted after final checkpoint: production resumes result without replaying effects (0.492959ms)
+✖ worker interrupted after final checkpoint: create resumes result without replaying effects (0.216375ms)
+✖ worker interrupted after final checkpoint: export resumes result without replaying effects (0.169208ms)
+✖ worker interrupted after final checkpoint: auto resumes result without replaying effects (0.158917ms)
+✔ cached result never bypasses owner guard (0.116708ms)
+✔ cached result never bypasses lease guard (0.071333ms)
+✔ cached result never bypasses expired guard (0.166333ms)
+✔ cached result never bypasses video guard (0.058709ms)
+✔ cached result never bypasses auto-video guard (0.056584ms)
+✔ cached result never bypasses kind guard (0.061583ms)
+✔ acquired scene survives event-after-visual: no generation replay and no lost visual (2.8015ms)
+✔ acquired scene survives scene-checkpoint: no generation replay and no lost visual (1.183041ms)
+✔ music fails after video acquired: preserve completed scene, no second paid music submission or ready (1.294875ms)
+✔ production music: required music absent cannot succeed or start downstream paid work (0.084709ms)
+✔ production all: required music absent cannot succeed or start downstream paid work (0.070917ms)
+✔ production explicit no-music remains a skipped checkpoint (0.059625ms)
+✔ checkpoint write is always required before final worker success (2.596208ms)
+✔ fresh DB checkpoint is still lease-fenced (0.192375ms)
+✔ AUTO voice received then storage fails: retry upload from checkpoint, synthesize exactly once (0.446417ms)
+✔ AUTO legacy uncertain voice remains quarantined, never synthesized again (0.048833ms)
+ℹ tests 69
+ℹ suites 0
+ℹ pass 63
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1024.673209
+
+✖ failing tests:
+
+test at scripts/test-t03-orchestration-fixes.mts:1:5533
+✖ finish done lost ACK: reconcile persisted result with one GET, never repeat quota mutation (0.947625ms)
+  Error: SUTRA_JOB_FINISH_UNCONFIRMED
+      at finishJob (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/video-queue.ts:283:9)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-orchestration-fixes.mts:101:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at scripts/test-t03-orchestration-fixes.mts:1:5837
+✖ duplicate completion after lost ACK reads existing outcome; no second successful mutation (3.111875ms)
+  Error: SUTRA_JOB_FINISH_UNCONFIRMED
+      at finishJob (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/video-queue.ts:283:9)
+      at async Promise.all (index 0)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-orchestration-fixes.mts:106:20)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at scripts/test-t03-orchestration-fixes.mts:1:7561
+✖ worker interrupted after final checkpoint: production resumes result without replaying effects (0.492959ms)
+  Error: SUTRA_RECONCILIATION_REQUIRED: invalid final result checkpoint
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/video-worker.ts:36:46)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-orchestration-fixes.mts:137:22)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at scripts/test-t03-orchestration-fixes.mts:1:7561
+✖ worker interrupted after final checkpoint: create resumes result without replaying effects (0.216375ms)
+  Error: SUTRA_RECONCILIATION_REQUIRED: invalid final result checkpoint
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/video-worker.ts:36:46)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-orchestration-fixes.mts:137:22)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at scripts/test-t03-orchestration-fixes.mts:1:7561
+✖ worker interrupted after final checkpoint: export resumes result without replaying effects (0.169208ms)
+  Error: SUTRA_RECONCILIATION_REQUIRED: invalid final result checkpoint
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/video-worker.ts:36:46)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-orchestration-fixes.mts:137:22)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+
+test at scripts/test-t03-orchestration-fixes.mts:1:7561
+✖ worker interrupted after final checkpoint: auto resumes result without replaying effects (0.158917ms)
+  Error: SUTRA_RECONCILIATION_REQUIRED: invalid final result checkpoint
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/video-worker.ts:36:46)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-orchestration-fixes.mts:137:22)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)

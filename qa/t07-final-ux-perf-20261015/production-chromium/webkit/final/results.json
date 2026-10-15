@@ -1,0 +1,181 @@
+{
+  "baseline": false,
+  "productionSuite": true,
+  "results": [
+    {
+      "name": "signup 375: password visibility reachable by keyboard",
+      "status": "FAIL",
+      "message": "expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: 'Afficher le mot de passe' })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.focused\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Afficher le mot de passe' })\n    9 × locator resolved to <button type=\"button\" aria-pressed=\"false\" aria-label=\"Afficher le mot de passe\" class=\"text-white/60 hover:text-white/60 transition-colors pointer-events-auto\">…</button>\n      - unexpected value \"inactive\"\n"
+    },
+    {
+      "name": "signup 375: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: password visibility reachable by keyboard",
+      "status": "FAIL",
+      "message": "expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: 'Afficher le mot de passe' })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.focused\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Afficher le mot de passe' })\n    9 × locator resolved to <button type=\"button\" aria-pressed=\"false\" aria-label=\"Afficher le mot de passe\" class=\"text-white/60 hover:text-white/60 transition-colors pointer-events-auto\">…</button>\n      - unexpected value \"inactive\"\n"
+    },
+    {
+      "name": "signup 1440: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: password visibility reachable by keyboard",
+      "status": "FAIL",
+      "message": "expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: 'Afficher le mot de passe' })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.focused\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Afficher le mot de passe' })\n    9 × locator resolved to <button type=\"button\" aria-pressed=\"false\" aria-label=\"Afficher le mot de passe\" class=\"text-white/60 hover:text-white/60 transition-colors pointer-events-auto\">…</button>\n      - unexpected value \"inactive\"\n"
+    },
+    {
+      "name": "login 375: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: password visibility reachable by keyboard",
+      "status": "FAIL",
+      "message": "expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: 'Afficher le mot de passe' })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.focused\" with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Afficher le mot de passe' })\n    9 × locator resolved to <button type=\"button\" aria-pressed=\"false\" aria-label=\"Afficher le mot de passe\" class=\"text-white/60 hover:text-white/60 transition-colors pointer-events-auto\">…</button>\n      - unexpected value \"inactive\"\n"
+    },
+    {
+      "name": "login 1440: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "signup: confirmation and legal notice use a synthetic identity only",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "signup-375-double-submit",
+      "calls": 1,
+      "recoveryMs": 1179
+    },
+    {
+      "name": "signup-375-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/signup",
+      "width": 375,
+      "responseMs": 20,
+      "domContentLoadedMs": 48,
+      "resourceCount": 28,
+      "transferredBytes": 412917,
+      "decodedBytes": 1419760
+    },
+    {
+      "name": "signup-1440-double-submit",
+      "calls": 1,
+      "recoveryMs": 1666
+    },
+    {
+      "name": "signup-1440-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/signup",
+      "width": 1440,
+      "responseMs": 13,
+      "domContentLoadedMs": 36,
+      "resourceCount": 27,
+      "transferredBytes": 345589,
+      "decodedBytes": 1279187
+    },
+    {
+      "name": "login-375-double-submit",
+      "calls": 1,
+      "recoveryMs": 1168
+    },
+    {
+      "name": "login-375-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/login",
+      "width": 375,
+      "responseMs": 13,
+      "domContentLoadedMs": 34,
+      "resourceCount": 29,
+      "transferredBytes": 347070,
+      "decodedBytes": 1280721
+    },
+    {
+      "name": "login-1440-double-submit",
+      "calls": 1,
+      "recoveryMs": 1172
+    },
+    {
+      "name": "login-1440-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/login",
+      "width": 1440,
+      "responseMs": 13,
+      "domContentLoadedMs": 34,
+      "resourceCount": 29,
+      "transferredBytes": 347070,
+      "decodedBytes": 1280721
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "mutations": [],
+  "writes": [],
+  "acceptances": []
+}

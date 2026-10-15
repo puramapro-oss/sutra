@@ -1,0 +1,138 @@
+(node:37777) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:37777) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication (33.459041ms)
+✔ J02 bounded 12-click burst shares one queued job, project and provider intent; changed content conflicts (19.469083ms)
+✔ J03 quota or submission DB refusal has no orphan project or provider effects (9.323875ms)
+✔ J04 upload failure resumes stored voice and other resolved assets, without resynthesis (10.725625ms)
+✔ J05 ready-write DB failure cannot publish; resume reuses verified media and settles once (10.389541ms)
+✔ J06 created client project remains isolated across status, export and publication boundaries (7.816083ms)
+✔ J07 corrupt export validation preserves prior ready media and retry does not render again (11.171ms)
+✖ J08 two destination partial publication reconciles existing posts, never republishes the successful target (7.892458ms)
+✖ J09 changed or missing final proof and revoked access block simulated publication (8.532708ms)
+✔ J10 lost remote render receipt stays uncertain across route retry without another submission (6.536417ms)
+✖ J11 bounded 12-click publication burst sends one verified media intent and repairs projections (8.643084ms)
+✖ J12 re-export after a scheduled intent cannot silently replace the scheduled verified media (7.592375ms)
+✖ J13 a past schedule cannot turn into immediate publication after successful export (10.051458ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 7
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 853.642791
+
+✖ failing tests:
+
+test at scripts/test-t08-integration-journey.mts:1:8833
+✖ J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication (33.459041ms)
+  AssertionError [ERR_ASSERTION]: {"status":409,"body":{"error":"Publication non confirmee","code":"SUTRA_MEDIA_ORIGIN_INVALID"}}
+  
+  409 !== 202
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-t08-integration-journey.mts:193:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 409,
+    expected: 202,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t08-integration-journey.mts:1:16350
+✖ J08 two destination partial publication reconciles existing posts, never republishes the successful target (7.892458ms)
+  AssertionError [ERR_ASSERTION]: {"status":409,"body":{"error":"Publication non confirmee","code":"SUTRA_MEDIA_ORIGIN_INVALID"}}
+  + actual - expected
+  
+  + undefined
+  - 'partially_published'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-t08-integration-journey.mts:307:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'partially_published',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t08-integration-journey.mts:1:17287
+✖ J09 changed or missing final proof and revoked access block simulated publication (8.532708ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'SUTRA_MEDIA_ORIGIN_INVALID'
+  - 'SUTRA_ACCOUNT_ACCESS_DENIED'
+           ^
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-t08-integration-journey.mts:330:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SUTRA_MEDIA_ORIGIN_INVALID',
+    expected: 'SUTRA_ACCOUNT_ACCESS_DENIED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t08-integration-journey.mts:1:18686
+✖ J11 bounded 12-click publication burst sends one verified media intent and repairs projections (8.643084ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-t08-integration-journey.mts:357:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t08-integration-journey.mts:1:19435
+✖ J12 re-export after a scheduled intent cannot silently replace the scheduled verified media (7.592375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'scheduled'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-t08-integration-journey.mts:369:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'scheduled',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t08-integration-journey.mts:1:20173
+✖ J13 a past schedule cannot turn into immediate publication after successful export (10.051458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'SUTRA_MEDIA_ORIGIN_INVALID'
+  - 'SUTRA_ZERNIO_SCHEDULE_MUST_BE_FUTURE'
+           ^
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-t08-integration-journey.mts:385:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'SUTRA_MEDIA_ORIGIN_INVALID',
+    expected: 'SUTRA_ZERNIO_SCHEDULE_MUST_BE_FUTURE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

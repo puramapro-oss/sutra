@@ -1,4 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
+import { isDeepStrictEqual } from 'node:util'
 import type { AssembleResult } from '@/lib/shotstack'
 import type { createServiceClient } from '@/lib/supabase'
 
@@ -35,12 +36,43 @@ export function pipelineSteps(done: Record<string, unknown>, hooks: PipelineHook
   return step
 }
 
-export type PipelineStage = 'script' | 'scenes' | 'images' | 'voice' | 'music' | 'subtitles' | 'composition' | 'export' | 'publication'
+export type PipelineStage = 'script' | 'storyboard' | 'scenes' | 'images' | 'voice' | 'music' | 'subtitles' | 'composition' | 'export' | 'publication'
+const stageWrites = new WeakMap<object, Promise<unknown>>()
 export async function checkpointStage(
   done: Record<string, unknown>, hooks: PipelineHooks, stage: PipelineStage,
   value: unknown, status: 'complete' | 'skipped' | 'pending' = 'complete',
 ) {
-  return pipelineSteps(done, hooks)(`stage:${stage}`, async () => ({ status, value }))
+  const key = `stage:${stage}`, next = { status, value }
+  // Serialize local deliveries; the database fences independent workers.
+  const write = (stageWrites.get(done) ?? Promise.resolve()).catch(() => undefined).then(async () => {
+    const previous = done[key] as { status?: string; value?: unknown } | undefined
+    if (isDeepStrictEqual(previous, next)) return previous
+    // Older production jobs recorded an empty optional stage as complete.
+    // Keep that immutable receipt if the desired output is still equally empty.
+    const emptyOptional = (candidate: unknown) => stage === 'images' ? Array.isArray(candidate) && candidate.length === 0
+      : stage === 'music' && (candidate === null || candidate === '')
+    if (previous?.status === 'complete' && status === 'skipped' && emptyOptional(previous.value) && emptyOptional(value)) return previous
+    if (previous !== undefined && previous?.status !== 'pending') {
+      throw new Error(`SUTRA_RECONCILIATION_REQUIRED: SUTRA_CHECKPOINT_CONFLICT ${key}`)
+    }
+    await hooks.heartbeat?.()
+    await hooks.onStepResolved?.(key, next)
+    done[key] = next
+    return next
+  })
+  stageWrites.set(done, write)
+  let result
+  try { result = await write }
+  finally { if (stageWrites.get(done) === write) stageWrites.delete(done) }
+  if (stage === 'script') {
+    // The storyboard is a separate durable boundary, derived from the already
+    // acquired script/plan. Retrying this write cannot call a script provider.
+    const script = value as { scenes?: unknown; video_prompt?: unknown } | null
+    const storyboard = Array.isArray(script?.scenes) ? script.scenes
+      : typeof script?.video_prompt === 'string' ? [{ visual_prompt: script.video_prompt }] : []
+    await checkpointStage(done, hooks, 'storyboard', storyboard, storyboard.length ? 'complete' : 'skipped')
+  }
+  return result
 }
 
 /** Cached booleans and provider URLs are not proof of a composed final file. */

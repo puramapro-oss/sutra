@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: PG T06: 24 concurrent CAS on a legacy nullable row produce exactly one winner
+ok 1 - PG T06: 24 concurrent CAS on a legacy nullable row produce exactly one winner
+  ---
+  duration_ms: 25.155583
+  type: 'test'
+  ...
+# Subtest: PG T06: JSONB equality accepts reordered keys but refuses a changed revision with the same clock
+ok 2 - PG T06: JSONB equality accepts reordered keys but refuses a changed revision with the same clock
+  ---
+  duration_ms: 4.830542
+  type: 'test'
+  ...
+# Subtest: PG T06: stale callback snapshot cannot reactivate a confirmed revoked account
+ok 3 - PG T06: stale callback snapshot cannot reactivate a confirmed revoked account
+  ---
+  duration_ms: 3.6755
+  type: 'test'
+  ...
+# Subtest: PG T06: one in-flight revoke fences 23 concurrent retries and only one remote DELETE
+ok 4 - PG T06: one in-flight revoke fences 23 concurrent retries and only one remote DELETE
+  ---
+  duration_ms: 8.393458
+  type: 'test'
+  ...
+# Subtest: PG T06: unknown DELETE retains durable fence and refuses a new OAuth state
+ok 5 - PG T06: unknown DELETE retains durable fence and refuses a new OAuth state
+  ---
+  duration_ms: 3.728208
+  type: 'test'
+  ...
+# Subtest: PG T06: first connection uniqueness gives one winner across 24 SQL sessions
+ok 6 - PG T06: first connection uniqueness gives one winner across 24 SQL sessions
+  ---
+  duration_ms: 5.933458
+  type: 'test'
+  ...
+# Subtest: PG T06: another owner or a changed external account cannot pass CAS
+ok 7 - PG T06: another owner or a changed external account cannot pass CAS
+  ---
+  duration_ms: 3.291625
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 208.850166

@@ -21,7 +21,7 @@ before(async () => {
   await admin.query(`CREATE DATABASE ${database}`); await admin.end()
   pool = new pg.Pool({ ...connection, max: 12, options: '-c search_path=sutra,public' })
   await query(`CREATE SCHEMA sutra; CREATE TABLE sutra.videos(id uuid PRIMARY KEY,user_id uuid,status text,created_at timestamptz DEFAULT now());`)
-  for (const name of ['v10_durable_jobs_quota.sql', 'v11_pipeline_checkpoints.sql', '20261014_durable_checkpoint_integrity.sql']) {
+  for (const name of ['v10_durable_jobs_quota.sql', 'v11_pipeline_checkpoints.sql', '20261014_durable_checkpoint_integrity.sql', '20261015_final_durable_integrity.sql']) {
     await query(readFileSync(new URL(`../../migrations/${name}`, import.meta.url), 'utf8'))
   }
   globalThis.fetch = async (request, options) => {
@@ -52,10 +52,10 @@ async function newJob(skipMusic = false) {
   const reservations = await Promise.all(Array.from({ length: 12 }, () => query('SELECT reserve_video_quota($1,1) AS ok', [user])))
   assert.equal(reservations.filter(r => r.rows[0].ok).length, 1, 'budget admits only one concurrent reservation')
   await query(`INSERT INTO video_jobs(id,user_id,kind,payload,idempotency_key,status,locked_by,lease_until,attempts)
-    VALUES($1::uuid,$2,'production',$3,$1::text,'processing','first',clock_timestamp()+interval '5 minutes',1)`, [id, user, { input: { userId: user, ...(skipMusic ? { step: 'music', musicStyle: 'none' } : {}) } }])
+    VALUES($1::uuid,$2,'production',$3,$1::text,'processing','first',clock_timestamp()+interval '5 minutes',1)`, [id, user, { input: { userId: user, ...(skipMusic ? { step: 'music', musicStyle: 'none' } : { step: 'voice' }) } }])
   await query("SELECT checkpoint_video_job_v2($1,'first',$2,'{}')", [id, skipMusic
     ? { result: null, steps: { 'stage:music': { status: 'skipped', value: null } } }
-    : { result: { url: 'https://media.fixture.invalid/final.mp4' } }])
+    : { result: { url: 'https://media.fixture.invalid/final.mp4' }, steps: { 'stage:voice': { status: 'complete', value: 'https://media.fixture.invalid/final.mp4' } } }])
   return { id, user }
 }
 const counters = async (user: string) => (await query('SELECT reserved,completed,failed,released FROM video_quota_counters WHERE user_id=$1', [user])).rows[0]

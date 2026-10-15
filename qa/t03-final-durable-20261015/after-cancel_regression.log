@@ -1,0 +1,18 @@
+✓ interruption : acquis avant crash checkpointé (script+musique+scène 0)
+✓ reprise : aucun acquis régénéré, chaque ressource payée une fois (scène tuée: 2 appels max)
+✓ étape video : reprise complète, scènes saines jamais régénérées
+✓ voix : reprise après crash upload sans resynthèse (1 seul débit ElevenLabs)
+✓ annulation : nouvelle requête repart de zéro, aucun résultat annulé réutilisé
+✔ INTERRUPTION : crash à la scène 1 — les résultats déjà payés sont checkpointés (2.01075ms)
+✔ REPRISE : seules les scènes manquantes sont générées — AUCUN double appel (1.157583ms)
+✔ étape VIDEO step-by-step : interruption scène 0 puis reprise complète (0.221292ms)
+✔ VOIX : buffer checkpointé — crash avant upload ne re-paie pas la synthèse (0.352042ms)
+✔ ANNULATION (niveau pipeline) : une tâche annulée ne rejoue pas depuis ses checkpoints (0.397375ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 298.475

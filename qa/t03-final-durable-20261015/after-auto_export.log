@@ -1,0 +1,18 @@
+✓ export : interruption→reprise sans double rendu, re-reprise 100% en cache
+✓ auto : crash assets → plan conservé, chaque étape payée une fois au total
+✓ auto : échec montage tracé, aucune URL finale publiable
+✓ voix 7 Mo : checkpointée et jamais resynthétisée après interruption
+✓ voix 24 Mo : 3 morceaux checkpointés, jamais resynthétisée après interruption
+✔ EXPORT : crash pendant le rendu → reprise SANS re-rendu de l'acquis (2.953208ms)
+✔ AUTO : crash pendant les assets → plan conservé, assets/assemblage une seule fois (1.30025ms)
+✔ AUTO : échec de montage → aucun résultat final, erreur transmise au worker (0.36925ms)
+✔ VOIX >5 Mo : buffer checkpointé — interruption ne régénère PAS la voix (16.859625ms)
+✔ VOIX 24 Mo : morceaux checkpointés — interruption ne régénère PAS (63.130708ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 456.745875

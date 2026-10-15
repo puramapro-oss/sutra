@@ -1,0 +1,22 @@
+{
+  "policy": "POLICY_OK at session start",
+  "tested_sources": "PASS exact sha256 matches tested-source-manifest.json before commit",
+  "gitleaks": {
+    "command": "gitleaks git --pre-commit --staged --no-banner --redact --report-format json --report-path qa/t06-final-social-20261015/gitleaks.json",
+    "exitCode": 0,
+    "findings": 0,
+    "includes": "product, tests and staged evidence logs after synthetic dump redaction"
+  },
+  "diff_check": {
+    "command": "git diff --cached --check",
+    "exitCode": 0
+  },
+  "gitnexus": {
+    "pre_edit": "GET UNKNOWN; revokeSocialAccount LOW, two direct callers; fixture files UNKNOWN with direct review",
+    "staged": "MEDIUM, see detect-staged.log",
+    "compare_main": "CRITICAL historical aggregate, announced before commit; see detect-compare-main.log",
+    "coverage": "PARTIAL / exhaustive UNKNOWN; manual product diff reviewed"
+  },
+  "ownership": "T06 files only. T01 SQL/config/bindings, T02 capability and T07 UI untouched.",
+  "history_requirement": "FAIL, SQL contract requested from T01; no ACK or corrected history presumed."
+}

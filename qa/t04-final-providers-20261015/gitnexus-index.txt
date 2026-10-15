@@ -1,0 +1,26 @@
+
+  GitNexus Analyzer (1.6.12)
+
+  GitNexus Analyzer (1.6.12)
+
+  Skipped 5 large files (>512KB, likely generated/vendored)
+
+  - graphify-out/graph.html
+
+  - graphify-out/graph.json
+
+  - qa/integration-20261012/evidence/legacy-first-results.json
+
+  - qa/release-20261012/evidence/legacy-playwright-results.json
+
+  - qa/t07-reprise/evidence/legacy/results.json
+
+  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+{"level":40,"time":1792026060815,"name":"gitnexus","msg":"[scope-resolution] 966 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean \"unused\" — it means the definition anchor is in a different language. Affected: calls (javascript/typescript), compose (typescript), config (javascript/typescript), directory (typescript), output (typescript), profiles (typescript), run (typescript), show (typescript), state (javascript/typescript), user (javascript/typescript), …"}
+{"level":40,"time":1792026060911,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":1178,"entryPointsUnexplored":0,"walksCutByBudget":3,"tracesDepthCapped":0,"calleesDropped":664,"processesDropped":0},"msg":"[processes] 364 flows reported, but whole flows are MISSING: 1178 of 1378 candidate entry point(s) never ranked in, 0 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 664 callee(s) skipped at maxBranching, 3 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}
+{"level":30,"time":1792026075327,"name":"gitnexus","msg":"name-fallback resolution: 51 call sites (19 distinct caller-file/name pairs), 3 refused as impossible (guessed/refused by language: javascript 44/3, typescript 7/0)"}
+
+  Repository indexed successfully (26.0s)
+
+  19,038 nodes | 36,791 edges | 428 clusters | 364 flows
+  /Users/matissdornier/purama-worktrees/sutra-t04-final-providers-20261015

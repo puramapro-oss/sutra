@@ -1,0 +1,38 @@
+✔ disabled default and Mac guard start no engine (0.7425ms)
+✔ single canonical engine/bridge/host; private loopback; account keys absent in all child environments (0.130709ms)
+✔ malformed database and conflicting addresses rejected before spawn (0.083667ms)
+✔ SIGTERM drains host before stopping bridge and Comfy; no restart (3.063833ms)
+✔ bounded host grace kills uncertain process without restarting any computation (5.468084ms)
+✔ cold-start failure cleans up the single started process (0.210292ms)
+✔ child failure drains remaining processes once, no implicit restart (0.181334ms)
+✔ stop during startup cannot start bridge or host later (1.50575ms)
+✔ Comfy readiness GET accepts queue contract and rejects malformed success (20.263875ms)
+✔ Comfy readiness refusal/timeout/cancel do not submit a job (11.177875ms)
+✔ health authenticates using header only and accepts ready/busy contracts (0.389958ms)
+✔ health rejects malformed 200, interruption, wrong protocol, errors and disabled configuration (0.245542ms)
+✔ health and readiness bound stalled bodies and cancel their streams (22.242625ms)
+✔ health rejects oversized responses without logging or accepting successful HTTP status (0.227167ms)
+✔ image source allowlist contains transitive media verification, never copies repository/env (0.669667ms)
+✔ isolated build context contains only exact sources, hashes and restrictive permissions (14.619083ms)
+✔ context rejects missing inputs and source symlinks without creating a destination (1.546208ms)
+✔ Docker COPY and all relative runtime imports are closed over the minimal context (25.271042ms)
+✔ unsupported master syntax is reported by name only without execution or suppressing other fields (1.462125ms)
+✔ selected names only, private values never copied into report (0.438625ms)
+✔ missing scope or mutation name makes zero calls (0.153708ms)
+✔ documented GET and server auth; summarize quotas without raw account data (8.869959ms)
+✔ group discovery redacts nested environment variables and names (0.179083ms)
+✔ HTTP 401 never claims invalid key specifically, no retry, no body echo (0.238042ms)
+✔ HTTP 403 never claims invalid key specifically, no retry, no body echo (0.113ms)
+✔ HTTP 404 never claims invalid key specifically, no retry, no body echo (0.102958ms)
+✔ HTTP 429 never claims invalid key specifically, no retry, no body echo (0.098458ms)
+✔ HTTP 500 never claims invalid key specifically, no retry, no body echo (0.111333ms)
+✔ malformed JSON, schema and oversized body fail closed (0.458916ms)
+✔ header and stalled-body timeout bounded even if transport ignores abort (21.110542ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 415.071375

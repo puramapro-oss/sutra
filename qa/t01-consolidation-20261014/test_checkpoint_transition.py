@@ -176,5 +176,105 @@ class TransitionTests(unittest.TestCase):
         transition.validate_backup(receipt)
 
 
+class AdditivePort(Port):
+    def execute_guarded(self, expected, sql):
+        super().execute_guarded(expected, sql)
+        if sql == 'rollback':
+            self.state = 'history-preserved'
+            if self.failure == 'rollback-lost-ack':
+                raise RuntimeError('synthetic-private-value')
+
+
+class AdditiveTransitionTests(unittest.TestCase):
+    def invoke(self, port, mode='apply'):
+        proof = {
+            'beforeDefinitionsSha256': transition.digest({'state': 'old'}),
+            'afterDefinitionsSha256': transition.digest({'state': 'new'}),
+            'rollbackDefinitionsSha256': transition.digest({'state': 'history-preserved'}),
+            'migrationSha256': hashlib.sha256(b'apply').hexdigest(),
+            'rollbackSha256': hashlib.sha256(b'rollback').hexdigest(),
+        }
+        receipt = transition.transition(port, mode, proof, 'apply')
+        self.assertNotIn('synthetic-private-value', str(receipt))
+        self.assertFalse(receipt['dataRestore'])
+        self.assertFalse(receipt['workerStarted'])
+        return receipt
+
+    def test_apply_and_additive_rollback_have_distinct_verified_targets(self):
+        port = AdditivePort()
+        self.assertEqual(self.invoke(port)['status'], 'PASS')
+        self.assertEqual(self.invoke(port, 'rollback')['status'], 'PASS')
+        self.assertEqual(port.state, 'history-preserved')
+        self.assertEqual(port.calls.count('apply'), 1)
+        self.assertEqual(port.calls.count('rollback'), 1)
+
+    def test_apply_requires_original_baseline_even_after_additive_rollback(self):
+        port = AdditivePort()
+        port.state = 'history-preserved'
+        self.assertEqual(self.invoke(port)['status'], 'FAIL')
+        self.assertEqual(port.calls, ['preflight'])
+
+    def test_rollback_requires_applied_state_not_original_or_preserved_state(self):
+        for state in ('old', 'history-preserved', 'foreign'):
+            with self.subTest(state=state):
+                port = AdditivePort()
+                port.state = state
+                self.assertEqual(self.invoke(port, 'rollback')['status'], 'FAIL')
+                self.assertEqual(port.calls, ['preflight'])
+
+    def test_confirmed_apply_failure_compensates_without_claiming_original_state(self):
+        port = AdditivePort('lost-ack')
+        receipt = self.invoke(port)
+        self.assertEqual(receipt['status'], 'FAIL')
+        self.assertTrue(receipt['rollbackTriggered'])
+        self.assertTrue(receipt['rollbackDefinitionsVerified'])
+        self.assertFalse(receipt['previousDefinitionsVerified'])
+        self.assertEqual(port.calls.count('rollback'), 1)
+
+    def test_confirmed_rejection_accepts_original_state_without_rollback(self):
+        port = AdditivePort('rejected')
+        receipt = self.invoke(port)
+        self.assertEqual(receipt['status'], 'FAIL')
+        self.assertTrue(receipt['previousDefinitionsVerified'])
+        self.assertFalse(receipt['rollbackDefinitionsVerified'])
+        self.assertNotIn('rollback', port.calls)
+
+    def test_rollback_commit_then_confirmed_error_reconciles_preserved_state_once(self):
+        port = AdditivePort('rollback-lost-ack')
+        port.state = 'new'
+        receipt = self.invoke(port, 'rollback')
+        self.assertEqual(receipt['status'], 'FAIL')
+        self.assertTrue(receipt['rollbackDefinitionsVerified'])
+        self.assertFalse(receipt['previousDefinitionsVerified'])
+        self.assertEqual(port.calls.count('rollback'), 1)
+
+    def test_wrong_rollback_target_never_passes(self):
+        port = Port()
+        port.state = 'new'
+        receipt = self.invoke(port, 'rollback')
+        self.assertEqual(receipt['status'], 'FAIL')
+        self.assertTrue(receipt['previousDefinitionsVerified'])
+        self.assertFalse(receipt['rollbackDefinitionsVerified'])
+        self.assertEqual(port.calls.count('rollback'), 1)
+
+    def test_unknown_apply_or_rollback_never_reconciles_or_retries(self):
+        for mode in ('apply', 'rollback'):
+            for failure in ('timeout', 'interrupt', 'transport'):
+                with self.subTest(mode=mode, failure=failure):
+                    port = AdditivePort(failure)
+                    port.state = 'old' if mode == 'apply' else 'new'
+                    receipt = self.invoke(port, mode)
+                    self.assertEqual(receipt['status'], 'UNKNOWN')
+                    self.assertNotIn('previousDefinitionsVerified', receipt)
+                    self.assertNotIn('rollbackDefinitionsVerified', receipt)
+                    self.assertEqual(port.calls, ['preflight', 'snapshot', mode])
+
+    def test_foreign_drift_after_apply_never_triggers_rollback(self):
+        port = AdditivePort('drift')
+        self.assertEqual(self.invoke(port)['status'], 'UNKNOWN')
+        self.assertEqual(port.state, 'foreign')
+        self.assertNotIn('rollback', port.calls)
+
+
 if __name__ == '__main__':
     unittest.main()

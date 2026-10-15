@@ -1,0 +1,307 @@
+{
+  "method": "Same local fixtures, widths375/1440,350ms auth response; dev DCL includes compilation/cache and is not a speedup claim. Production metrics include harness resources/axe. recoveryMs includes an800ms test wait. No public-network or LCP/INP measurement.",
+  "measurements": {
+    "before-chromium": [
+      {
+        "name": "signup-375-double-submit",
+        "calls": 2,
+        "recoveryMs": 1685
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/signup",
+        "width": 375,
+        "responseMs": 715,
+        "domContentLoadedMs": 775,
+        "resourceCount": 19,
+        "transferredBytes": 5396666,
+        "decodedBytes": 23626337
+      },
+      {
+        "name": "signup-1440-double-submit",
+        "calls": 2,
+        "recoveryMs": 1666
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/signup",
+        "width": 1440,
+        "responseMs": 80,
+        "domContentLoadedMs": 98,
+        "resourceCount": 18,
+        "transferredBytes": 5368008,
+        "decodedBytes": 23597981
+      },
+      {
+        "name": "login-375-double-submit",
+        "calls": 2,
+        "recoveryMs": 1668
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/login",
+        "width": 375,
+        "responseMs": 223,
+        "domContentLoadedMs": 232,
+        "resourceCount": 12,
+        "transferredBytes": 5250732,
+        "decodedBytes": 23078704
+      },
+      {
+        "name": "login-1440-double-submit",
+        "calls": 2,
+        "recoveryMs": 1173
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/login",
+        "width": 1440,
+        "responseMs": 115,
+        "domContentLoadedMs": 131,
+        "resourceCount": 12,
+        "transferredBytes": 5250737,
+        "decodedBytes": 23078704
+      }
+    ],
+    "after-chromium": [
+      {
+        "name": "signup-375-double-submit",
+        "calls": 1,
+        "recoveryMs": 1183
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/signup",
+        "width": 375,
+        "responseMs": 1055,
+        "domContentLoadedMs": 1078,
+        "resourceCount": 16,
+        "transferredBytes": 5290400,
+        "decodedBytes": 23156305
+      },
+      {
+        "name": "signup-1440-double-submit",
+        "calls": 1,
+        "recoveryMs": 1170
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/signup",
+        "width": 1440,
+        "responseMs": 45,
+        "domContentLoadedMs": 144,
+        "resourceCount": 15,
+        "transferredBytes": 5290084,
+        "decodedBytes": 23156289
+      },
+      {
+        "name": "login-375-double-submit",
+        "calls": 1,
+        "recoveryMs": 1668
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/login",
+        "width": 375,
+        "responseMs": 47,
+        "domContentLoadedMs": 126,
+        "resourceCount": 15,
+        "transferredBytes": 5279660,
+        "decodedBytes": 23107692
+      },
+      {
+        "name": "login-1440-double-submit",
+        "calls": 1,
+        "recoveryMs": 1172
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/login",
+        "width": 1440,
+        "responseMs": 37,
+        "domContentLoadedMs": 115,
+        "resourceCount": 15,
+        "transferredBytes": 5279659,
+        "decodedBytes": 23107692
+      }
+    ],
+    "production-chromium/chromium/final": [
+      {
+        "name": "signup-375-double-submit",
+        "calls": 1,
+        "recoveryMs": 1172
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/signup",
+        "width": 375,
+        "responseMs": 41,
+        "domContentLoadedMs": 91,
+        "resourceCount": 28,
+        "transferredBytes": 411644,
+        "decodedBytes": 1419055
+      },
+      {
+        "name": "signup-1440-double-submit",
+        "calls": 1,
+        "recoveryMs": 1163
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/signup",
+        "width": 1440,
+        "responseMs": 11,
+        "domContentLoadedMs": 39,
+        "resourceCount": 27,
+        "transferredBytes": 411329,
+        "decodedBytes": 1419039
+      },
+      {
+        "name": "login-375-double-submit",
+        "calls": 1,
+        "recoveryMs": 1164
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/login",
+        "width": 375,
+        "responseMs": 11,
+        "domContentLoadedMs": 24,
+        "resourceCount": 29,
+        "transferredBytes": 412759,
+        "decodedBytes": 1420573
+      },
+      {
+        "name": "login-1440-double-submit",
+        "calls": 1,
+        "recoveryMs": 1162
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/login",
+        "width": 1440,
+        "responseMs": 10,
+        "domContentLoadedMs": 20,
+        "resourceCount": 29,
+        "transferredBytes": 412758,
+        "decodedBytes": 1420573
+      }
+    ],
+    "production-chromium/webkit/final": [
+      {
+        "name": "signup-375-double-submit",
+        "calls": 1,
+        "recoveryMs": 1179
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/signup",
+        "width": 375,
+        "responseMs": 20,
+        "domContentLoadedMs": 48,
+        "resourceCount": 28,
+        "transferredBytes": 412917,
+        "decodedBytes": 1419760
+      },
+      {
+        "name": "signup-1440-double-submit",
+        "calls": 1,
+        "recoveryMs": 1666
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/signup",
+        "width": 1440,
+        "responseMs": 13,
+        "domContentLoadedMs": 36,
+        "resourceCount": 27,
+        "transferredBytes": 345589,
+        "decodedBytes": 1279187
+      },
+      {
+        "name": "login-375-double-submit",
+        "calls": 1,
+        "recoveryMs": 1168
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/login",
+        "width": 375,
+        "responseMs": 13,
+        "domContentLoadedMs": 34,
+        "resourceCount": 29,
+        "transferredBytes": 347070,
+        "decodedBytes": 1280721
+      },
+      {
+        "name": "login-1440-double-submit",
+        "calls": 1,
+        "recoveryMs": 1172
+      },
+      {
+        "name": "local-page-metrics",
+        "path": "/login",
+        "width": 1440,
+        "responseMs": 13,
+        "domContentLoadedMs": 34,
+        "resourceCount": 29,
+        "transferredBytes": 347070,
+        "decodedBytes": 1280721
+      }
+    ],
+    "planning-before-chromium": [
+      {
+        "name": "schedule-375-double-submit",
+        "calls": 2,
+        "draftRetained": false
+      }
+    ],
+    "production-chromium/chromium/planning": [
+      {
+        "name": "schedule-375-double-submit",
+        "calls": 1,
+        "draftRetained": true
+      },
+      {
+        "name": "schedule-1440-double-submit",
+        "calls": 1,
+        "draftRetained": true
+      },
+      {
+        "name": "save-timeout",
+        "timeoutMs": 10899,
+        "requests": 1
+      }
+    ],
+    "production-chromium/webkit/planning": [
+      {
+        "name": "schedule-375-double-submit",
+        "calls": 1,
+        "draftRetained": true
+      },
+      {
+        "name": "schedule-1440-double-submit",
+        "calls": 1,
+        "draftRetained": true
+      },
+      {
+        "name": "save-timeout",
+        "timeoutMs": 10903,
+        "requests": 1
+      }
+    ],
+    "social-before-chromium": [],
+    "production-chromium/chromium/social": [
+      {
+        "name": "social-timeout",
+        "elapsedMs": 10890
+      }
+    ],
+    "production-chromium/webkit/social": [
+      {
+        "name": "social-timeout",
+        "elapsedMs": 10883
+      }
+    ]
+  }
+}

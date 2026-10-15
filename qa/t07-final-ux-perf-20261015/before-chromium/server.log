@@ -1,0 +1,40 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:55043
+- Network:       http://127.0.0.1:55043
+✓ Ready in 349ms
+✓ Running next.config.ts took 111ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+○ Compiling /login ...
+ GET /login 200 in 1298ms (next.js: 1004ms, proxy.ts: 34ms, application-code: 261ms)
+ GET /signup 200 in 704ms (next.js: 510ms, proxy.ts: 3ms, application-code: 192ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /signup 200 in 18ms (next.js: 1.6ms, proxy.ts: 3ms, application-code: 14ms)
+ GET /signup 200 in 76ms (next.js: 7ms, proxy.ts: 7ms, application-code: 62ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /signup 200 in 18ms (next.js: 1.8ms, proxy.ts: 3ms, application-code: 13ms)
+ GET /signup 200 in 24ms (next.js: 8ms, proxy.ts: 6ms, application-code: 9ms)
+⨯ Error: The destination stream closed early.
+    at ignore-listed frames {
+  digest: '243997090'
+}
+ GET /login 200 in 190ms (next.js: 11ms, proxy.ts: 4ms, application-code: 175ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /login 200 in 98ms (next.js: 6ms, proxy.ts: 11ms, application-code: 81ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /signup 200 in 69ms (next.js: 3ms, proxy.ts: 8ms, application-code: 58ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ POST /api/legal/accept 401 in 849ms (next.js: 762ms, proxy.ts: 4ms, application-code: 83ms)
+ POST /api/legal/accept 401 in 850ms (next.js: 762ms, proxy.ts: 4ms, application-code: 84ms)
+ POST /api/legal/accept 401 in 851ms (next.js: 762ms, proxy.ts: 4ms, application-code: 85ms)
+ GET /login 200 in 759ms (next.js: 738ms, proxy.ts: 3ms, application-code: 18ms)
+ GET /login 200 in 106ms (next.js: 1.6ms, proxy.ts: 8ms, application-code: 96ms)
+ GET /login 200 in 84ms (next.js: 1.5ms, proxy.ts: 2.0ms, application-code: 81ms)
+ GET /login 200 in 12ms (next.js: 1.2ms, proxy.ts: 2ms, application-code: 9ms)
+[?25h

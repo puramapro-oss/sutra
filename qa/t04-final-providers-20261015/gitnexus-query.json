@@ -1,0 +1,210 @@
+{
+  "processes": [
+    {
+      "id": "proc_167_post",
+      "summary": "POST → IsSuperAdmin",
+      "priority": 0.076,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_299_post",
+      "summary": "POST → Denied",
+      "priority": 0.076,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_77_post",
+      "summary": "POST → GetMaxQuality",
+      "priority": 0.076,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_117_productionpage",
+      "summary": "ProductionPage → ParsePublicCapabilities",
+      "priority": 0.072,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_32_createpage",
+      "summary": "CreatePage → ParsePublicCapabilities",
+      "priority": 0.072,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 4
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/app/api/create/route.ts:POST",
+      "name": "POST",
+      "filePath": "src/app/api/create/route.ts",
+      "startLine": 23,
+      "endLine": 132,
+      "module": "Production",
+      "process_id": "proc_167_post",
+      "step_index": 1
+    },
+    {
+      "id": "Function:src/components/create/ExecutionModeNotice.tsx:parsePublicCapabilities",
+      "name": "parsePublicCapabilities",
+      "filePath": "src/components/create/ExecutionModeNotice.tsx",
+      "startLine": 21,
+      "endLine": 39,
+      "module": "Create",
+      "process_id": "proc_117_productionpage",
+      "step_index": 4
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:src/lib/salad/engine.ts:createComfyBridge",
+      "name": "createComfyBridge",
+      "filePath": "src/lib/salad/engine.ts",
+      "startLine": 9,
+      "endLine": 46,
+      "module": "Salad"
+    },
+    {
+      "id": "Function:src/lib/salad/engine.ts:createComfyBridge.generate@23:2",
+      "name": "generate",
+      "filePath": "src/lib/salad/engine.ts",
+      "startLine": 24,
+      "endLine": 44,
+      "module": "Salad"
+    },
+    {
+      "id": "File:src/lib/salad/engine.ts",
+      "name": "engine.ts",
+      "filePath": "src/lib/salad/engine.ts"
+    },
+    {
+      "id": "Function:scripts/test-salad-worker.mts:fixture",
+      "name": "fixture",
+      "filePath": "scripts/test-salad-worker.mts",
+      "startLine": 62,
+      "endLine": 86,
+      "module": "Salad"
+    },
+    {
+      "id": "Function:scripts/test-salad-worker.mts:appValues",
+      "name": "appValues",
+      "filePath": "scripts/test-salad-worker.mts",
+      "startLine": 462,
+      "endLine": 467
+    },
+    {
+      "id": "File:scripts/test-salad-worker.mts",
+      "name": "test-salad-worker.mts",
+      "filePath": "scripts/test-salad-worker.mts"
+    },
+    {
+      "id": "Function:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts:capabilityResponse",
+      "name": "capabilityResponse",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "startLine": 47,
+      "endLine": 51,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts:workerFixture",
+      "name": "workerFixture",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "startLine": 162,
+      "endLine": 171,
+      "module": "T02-salad-security-20261014"
+    },
+    {
+      "id": "File:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "name": "test-t02-salad-security-contract.mts",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts"
+    },
+    {
+      "id": "Property:src/lib/salad/worker.ts:WorkerPorts.bridge",
+      "name": "bridge",
+      "filePath": "src/lib/salad/worker.ts",
+      "startLine": 23,
+      "endLine": 23
+    },
+    {
+      "id": "Function:src/lib/salad/worker.ts:createSaladWorker",
+      "name": "createSaladWorker",
+      "filePath": "src/lib/salad/worker.ts",
+      "startLine": 29,
+      "endLine": 163,
+      "module": "Salad"
+    },
+    {
+      "id": "File:src/lib/salad/worker.ts",
+      "name": "worker.ts",
+      "filePath": "src/lib/salad/worker.ts"
+    },
+    {
+      "id": "Const:src/lib/salad/serve.mts:url",
+      "name": "url",
+      "filePath": "src/lib/salad/serve.mts",
+      "startLine": 12,
+      "endLine": 12
+    },
+    {
+      "id": "Const:src/lib/salad/serve.mts:host",
+      "name": "host",
+      "filePath": "src/lib/salad/serve.mts",
+      "startLine": 19,
+      "endLine": 22
+    },
+    {
+      "id": "File:src/lib/salad/serve.mts",
+      "name": "serve.mts",
+      "filePath": "src/lib/salad/serve.mts"
+    },
+    {
+      "id": "Const:qa/t04-provider-validation-20261014/probe.mjs:names",
+      "name": "names",
+      "filePath": "qa/t04-provider-validation-20261014/probe.mjs",
+      "startLine": 7,
+      "endLine": 14
+    },
+    {
+      "id": "Function:qa/t04-provider-validation-20261014/probe.mjs:classify",
+      "name": "classify",
+      "filePath": "qa/t04-provider-validation-20261014/probe.mjs",
+      "startLine": 66,
+      "endLine": 89,
+      "module": "T04-provider-validation-20261014"
+    },
+    {
+      "id": "File:qa/t04-provider-validation-20261014/probe.mjs",
+      "name": "probe.mjs",
+      "filePath": "qa/t04-provider-validation-20261014/probe.mjs"
+    },
+    {
+      "id": "Property:src/app/api/create/route.ts:POST.SUTRA_SALAD_NOT_CONFIGURED@109:6",
+      "name": "SUTRA_SALAD_NOT_CONFIGURED",
+      "filePath": "src/app/api/create/route.ts",
+      "startLine": 110,
+      "endLine": 110
+    },
+    {
+      "id": "File:src/app/api/create/route.ts",
+      "name": "route.ts",
+      "filePath": "src/app/api/create/route.ts"
+    }
+  ],
+  "timing": {
+    "vector": 2.8,
+    "bm25": 146.3,
+    "merge": 0.1,
+    "symbol_lookup": 12.2,
+    "ranking": 0,
+    "formatting": 0.1,
+    "wall": 159.5
+  }
+}

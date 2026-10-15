@@ -1,0 +1,363 @@
+✖ invalid non-null terminal result is refused: false (1.816ms)
+✖ invalid non-null terminal result is refused: true (0.135375ms)
+✖ invalid non-null terminal result is refused: "" (0.077791ms)
+✖ invalid non-null terminal result is refused: 0 (0.064667ms)
+✖ invalid non-null terminal result is refused: [] (0.162ms)
+✖ invalid non-null terminal result is refused: {} (0.071167ms)
+✖ invalid non-null terminal result is refused: {"videoUrl":"https://fixture.invalid/raw.mp4"} (0.062208ms)
+✖ terminal replay needs matching measured export and all required stages (0.104542ms)
+✖ production substeps need a result bound to their independent checkpoint (0.142958ms)
+✖ pending checkpoint advances durably, completed result remains immutable (0.363167ms)
+✖ failed pending promotion is not reflected in memory or acknowledged (0.210292ms)
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"%%%INVALID%%%"} (0.156333ms)
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":""} (0.063916ms)
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64_sha256":"0000000000000000000000000000000000000000000000000000000000000000"} (0.05675ms)
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz"} (0.061958ms)
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1.5,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64:1":"","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.084917ms)
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"???","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.442292ms)
+✔ valid chunked and legacy unchunked voice are preserved without regeneration (0.073584ms)
+✖ new small voice persists integrity before payload and never regenerates on lost payload write (0.184875ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 1
+ℹ fail 18
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 876.608291
+
+✖ failing tests:
+
+test at scripts/test-t03-final-durable.mts:1:1377
+✖ invalid non-null terminal result is refused: false (1.816ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:25:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:1377
+✖ invalid non-null terminal result is refused: true (0.135375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:25:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:1377
+✖ invalid non-null terminal result is refused: "" (0.077791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:25:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:1377
+✖ invalid non-null terminal result is refused: 0 (0.064667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:25:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:1377
+✖ invalid non-null terminal result is refused: [] (0.162ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:25:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:1377
+✖ invalid non-null terminal result is refused: {} (0.071167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:25:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:1377
+✖ invalid non-null terminal result is refused: {"videoUrl":"https://fixture.invalid/raw.mp4"} (0.062208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:25:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:1554
+✖ terminal replay needs matching measured export and all required stages (0.104542ms)
+  AssertionError [ERR_ASSERTION]: stage:script
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:32:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:2090
+✖ production substeps need a result bound to their independent checkpoint (0.142958ms)
+  AssertionError [ERR_ASSERTION]: script
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:50:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:2913
+✖ pending checkpoint advances durably, completed result remains immutable (0.363167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'pending'
+  - 'complete'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:58:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'pending',
+    expected: 'complete',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:3503
+✖ failed pending promotion is not reflected in memory or acknowledged (0.210292ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:64:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SQL_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:4282
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"%%%INVALID%%%"} (0.156333ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:77:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:4282
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":""} (0.063916ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:77:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:4282
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64_sha256":"0000000000000000000000000000000000000000000000000000000000000000"} (0.05675ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:77:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:4282
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz"} (0.061958ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:77:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:4282
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1.5,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64:1":"","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.084917ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:77:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:4282
+✖ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"???","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.442292ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /RECONCILIATION_REQUIRED/. Input:
+
+  'Error: SUTRA_VOICE_CHECKPOINT_CORRUPT'
+
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:77:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: SUTRA_VOICE_CHECKPOINT_CORRUPT
+        at voiceB64Checkpointed (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/production-pipeline.ts:258:13)
+        at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:77:26)
+        at Test.runInAsyncScope (node:async_hooks:226:14)
+        at Test.run (node:internal/test_runner/test:1201:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+        at Test.postRun (node:internal/test_runner/test:1330:19)
+        at Test.run (node:internal/test_runner/test:1258:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:831:7),
+    expected: /RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t03-final-durable.mts:1:5016
+✖ new small voice persists integrity before payload and never regenerates on lost payload write (0.184875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + undefined
+  - '8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:101:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: '8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

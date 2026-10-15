@@ -1,0 +1,144 @@
+(node:7950) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:7950) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ cancel transport failure is scrubbed and never acknowledged (1.615459ms)
+✖ cancel malformed ACK null requires reconciliation (0.259417ms)
+✖ cancel malformed ACK undefined requires reconciliation (0.087625ms)
+✖ cancel malformed ACK "true" requires reconciliation (0.072917ms)
+✖ cancel malformed ACK "false" requires reconciliation (0.069709ms)
+✖ cancel malformed ACK 0 requires reconciliation (0.057625ms)
+✖ cancel malformed ACK {} requires reconciliation (0.072625ms)
+✖ cancel malformed ACK [] requires reconciliation (0.118416ms)
+✔ cancel literal boolean ACK remains authoritative (0.101416ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 1
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 287.665958
+
+✖ failing tests:
+
+test at qa/t03-final-durable-20261015/cancel-ack.test.mts:1:662
+✖ cancel transport failure is scrubbed and never acknowledged (1.615459ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+
+  Caught error:
+
+  Error: T03_SYNTHETIC_PRIVATE_TRANSPORT_DIAGNOSTIC
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:12:9)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: T03_SYNTHETIC_PRIVATE_TRANSPORT_DIAGNOSTIC
+        at Object.rpc (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:7:43)
+        at cancelJobByKey (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/video-queue.ts:241:42)
+        at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:12:30)
+        at Test.runInAsyncScope (node:async_hooks:226:14)
+        at Test.run (node:internal/test_runner/test:1201:25)
+        at Test.start (node:internal/test_runner/test:1096:17)
+        at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/cancel-ack.test.mts:1:964
+✖ cancel malformed ACK null requires reconciliation (0.259417ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:18:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_CANCEL_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/cancel-ack.test.mts:1:964
+✖ cancel malformed ACK undefined requires reconciliation (0.087625ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:18:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_CANCEL_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/cancel-ack.test.mts:1:964
+✖ cancel malformed ACK "true" requires reconciliation (0.072917ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:18:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_CANCEL_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/cancel-ack.test.mts:1:964
+✖ cancel malformed ACK "false" requires reconciliation (0.069709ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:18:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_CANCEL_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/cancel-ack.test.mts:1:964
+✖ cancel malformed ACK 0 requires reconciliation (0.057625ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:18:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_CANCEL_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/cancel-ack.test.mts:1:964
+✖ cancel malformed ACK {} requires reconciliation (0.072625ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:18:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_CANCEL_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/cancel-ack.test.mts:1:964
+✖ cancel malformed ACK [] requires reconciliation (0.118416ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/cancel-ack.test.mts:18:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_CANCEL_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

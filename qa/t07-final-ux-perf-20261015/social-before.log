@@ -1,0 +1,42 @@
+FAIL 375: social unavailable is persistent, never a disconnected summary: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('social-load-error')
+Expected: visible
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 5000ms
+  - waiting for getByTestId('social-load-error')
+
+FAIL 375: explicit retry recovers and ignores duplicate requests: locator.evaluate: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for getByTestId('social-load-error').getByRole('button', { name: 'Réessayer', exact: true })[22m
+
+FAIL 1440: social unavailable is persistent, never a disconnected summary: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('social-load-error')
+Expected: visible
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 5000ms
+  - waiting for getByTestId('social-load-error')
+
+FAIL 1440: explicit retry recovers and ignores duplicate requests: locator.evaluate: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for getByTestId('social-load-error').getByRole('button', { name: 'Réessayer', exact: true })[22m
+
+FAIL social slow response recovers within 12 seconds without late overwrite: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('social-load-error')
+Expected: visible
+Timeout: 12000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 12000ms
+  - waiting for getByTestId('social-load-error')
+
+PASS no unexpected mutation, uncaught error or hydration mismatch

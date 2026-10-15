@@ -47,11 +47,16 @@ const client = service as unknown as Parameters<typeof readSocialOAuthAccount>[2
 const id = '11111111-1111-4111-8111-111111111111'
 const user = '22222222-2222-4222-8222-222222222222'
 const snapshot = () => readSocialOAuthAccount(user, 'youtube', client)
+async function authorizeFixture() {
+  process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ [user]: 'a'.repeat(24) })
+  await pool.query('UPDATE public.social_accounts SET metadata=$1', [{ zernio_profile_id: 'a'.repeat(24), credential_owner: 'zernio' }])
+}
 
 before(async () => {
   await pool.query(`CREATE TABLE public.social_accounts (
     id uuid PRIMARY KEY, user_id uuid NOT NULL, platform text NOT NULL,
     external_id text, status text NOT NULL, updated_at timestamptz, metadata jsonb,
+    access_token text, refresh_token text, token_expires_at timestamptz,
     UNIQUE(user_id, platform))`)
 })
 beforeEach(async () => {
@@ -82,6 +87,7 @@ test('PG T06: JSONB equality accepts reordered keys but refuses a changed revisi
 })
 
 test('PG T06: stale callback snapshot cannot reactivate a confirmed revoked account', async () => {
+  await authorizeFixture()
   const account = (await snapshot())!
   assert.equal((await revokeSocialAccount(user, id, client, async () => true)).success, true)
   const stale = await updateSocialOAuthAccount(user, account, { status: 'connected' }, client)
@@ -90,6 +96,7 @@ test('PG T06: stale callback snapshot cannot reactivate a confirmed revoked acco
 })
 
 test('PG T06: one in-flight revoke fences 23 concurrent retries and only one remote DELETE', async () => {
+  await authorizeFixture()
   let release!: () => void, reached!: () => void, calls = 0
   const hold = new Promise<void>(resolve => { release = resolve })
   const started = new Promise<void>(resolve => { reached = resolve })
@@ -105,6 +112,7 @@ test('PG T06: one in-flight revoke fences 23 concurrent retries and only one rem
 })
 
 test('PG T06: unknown DELETE retains durable fence and refuses a new OAuth state', async () => {
+  await authorizeFixture()
   assert.equal((await revokeSocialAccount(user, id, client, async () => false)).remoteStatus, 'unconfirmed')
   assert.equal((await snapshot())!.metadata!.sutra_revocation_pending, true)
   await assert.rejects(() => issueSocialOAuthState(user, 'youtube', 'fixture-state-with-enough-length',

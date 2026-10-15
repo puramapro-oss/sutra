@@ -1,0 +1,23 @@
+{
+  "command": [
+    "node",
+    "--experimental-test-module-mocks",
+    "--import",
+    "tsx",
+    "--test",
+    "scripts/test-pipeline-interruptions.mts",
+    "scripts/test-t03-durable-reliability.mts",
+    "scripts/test-t03-orchestration-fixes.mts",
+    "scripts/test-production-queue.mts"
+  ],
+  "exit_code": 0,
+  "source_head": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "source_sha256": {
+    "src/lib/video-queue.ts": "23a432fd7228bd77f16fc9bf85cbc253ef34880fbf94ca9927418f16a0ae6d3f",
+    "src/lib/pipeline-state.ts": "be88e636733523e9e0499febe000b02882966b39d618b42f5fceb4fdce3d0e35",
+    "src/lib/production-pipeline.ts": "78efb9c0a85301ed8ad2596f927c759946ddee683c8e8a23c42fcd778eb7b931",
+    "scripts/test-t03-orchestration-fixes.mts": "5c5a5b2c794fbf063d3c781fe75d4cbbc7c01385d868c746915819f7ed99345f",
+    "scripts/test-t03-final-durable.mts": "ba9a1f4d5835a59f950981150be298315ba320711b215773207f07ccfd9eace4"
+  },
+  "environment": "synthetic fixtures only; secrets, sockets and media processes denied"
+}

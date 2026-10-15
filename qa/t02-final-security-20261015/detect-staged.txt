@@ -1,0 +1,28 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 30 files, 17 symbols
+Affected processes: 3
+Risk level: medium
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 — campagne finale exacte et promotion conditionnée, 2026-10-14T16:55:48.931637+00:00 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T07 — FRONTEND-JOURNEY, 2026-10-14 → ERRORS.md
+  Const signatures → scripts/test-private-media.mts
+  Const revoked → scripts/test-private-media.mts
+  Const service → scripts/test-private-media.mts
+  Function from → scripts/test-private-media.mts
+  Function createSignedUrl → scripts/test-private-media.mts
+  Property storage → scripts/test-private-media.mts
+  Function from → scripts/test-private-media.mts
+  Function maybeSingle → scripts/test-private-media.mts
+  Property data → scripts/test-private-media.mts
+  Function request → scripts/test-private-media.mts
+  Function authorizePublicationMedia → src/lib/private-media.ts
+... and 2 more
+
+Affected execution flows:
+  • GET → Origin (4 steps) — changed: authorizePublicationMedia
+  • GET → Signature (3 steps) — changed: authorizePublicationMedia
+  • GET → CreateServiceClient (4 steps) — changed: authorizePublicationMedia

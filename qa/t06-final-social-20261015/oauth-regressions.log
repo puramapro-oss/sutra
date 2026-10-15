@@ -1,0 +1,302 @@
+TAP version 13
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# (node:99971) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:99971) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: tiktok
+ok 1 - T06-FINAL OAuth route + adapter + atomic state: tiktok
+  ---
+  duration_ms: 5.852875
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: youtube
+ok 2 - T06-FINAL OAuth route + adapter + atomic state: youtube
+  ---
+  duration_ms: 0.8805
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: instagram
+ok 3 - T06-FINAL OAuth route + adapter + atomic state: instagram
+  ---
+  duration_ms: 0.709333
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: facebook
+ok 4 - T06-FINAL OAuth route + adapter + atomic state: facebook
+  ---
+  duration_ms: 0.600708
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: x
+ok 5 - T06-FINAL OAuth route + adapter + atomic state: x
+  ---
+  duration_ms: 0.592708
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: linkedin
+ok 6 - T06-FINAL OAuth route + adapter + atomic state: linkedin
+  ---
+  duration_ms: 0.486
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: pinterest
+ok 7 - T06-FINAL OAuth route + adapter + atomic state: pinterest
+  ---
+  duration_ms: 0.372459
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: reddit
+ok 8 - T06-FINAL OAuth route + adapter + atomic state: reddit
+  ---
+  duration_ms: 0.388208
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: threads
+ok 9 - T06-FINAL OAuth route + adapter + atomic state: threads
+  ---
+  duration_ms: 0.393875
+  type: 'test'
+  ...
+# Subtest: T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+ok 10 - T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+  ---
+  duration_ms: 0.437209
+  type: 'test'
+  ...
+# Subtest: T06-FINAL session rotation during hosted consent requires fresh state
+ok 11 - T06-FINAL session rotation during hosted consent requires fresh state
+  ---
+  duration_ms: 0.355208
+  type: 'test'
+  ...
+# Subtest: T06-FINAL expired hosted consent never reaches identity lookup
+ok 12 - T06-FINAL expired hosted consent never reaches identity lookup
+  ---
+  duration_ms: 0.300542
+  type: 'test'
+  ...
+# Subtest: T06-FINAL atomic duplicate callback invokes real identity adapter only once
+ok 13 - T06-FINAL atomic duplicate callback invokes real identity adapter only once
+  ---
+  duration_ms: 0.410166
+  type: 'test'
+  ...
+# Subtest: T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+ok 14 - T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+  ---
+  duration_ms: 0.365916
+  type: 'test'
+  ...
+# Subtest: T06-FINAL lost POST response uses identical persisted wire request, then GET only
+ok 15 - T06-FINAL lost POST response uses identical persisted wire request, then GET only
+  ---
+  duration_ms: 2.871208
+  type: 'test'
+  ...
+# Subtest: T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+ok 16 - T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+  ---
+  duration_ms: 1.397667
+  type: 'test'
+  ...
+# Subtest: T06-FINAL reconnect replaces local identity but requires explicit new account selection
+ok 17 - T06-FINAL reconnect replaces local identity but requires explicit new account selection
+  ---
+  duration_ms: 1.572208
+  type: 'test'
+  ...
+# Subtest: T06-FINAL separate productions on same account receive distinct keys and histories
+ok 18 - T06-FINAL separate productions on same account receive distinct keys and histories
+  ---
+  duration_ms: 0.97
+  type: 'test'
+  ...
+# Subtest: T06-FINAL another session user cannot revoke the bound account
+ok 19 - T06-FINAL another session user cannot revoke the bound account
+  ---
+  duration_ms: 0.678875
+  type: 'test'
+  ...
+# Subtest: T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+ok 20 - T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+  ---
+  duration_ms: 1.32225
+  type: 'test'
+  ...
+# Subtest: T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+ok 21 - T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+  ---
+  duration_ms: 1.315709
+  type: 'test'
+  ...
+# Subtest: T06-FINAL wrong remote account cannot confirm or retry a known post
+ok 22 - T06-FINAL wrong remote account cannot confirm or retry a known post
+  ---
+  duration_ms: 1.098542
+  type: 'test'
+  ...
+# Subtest: T06-FINAL revoked during claim never reaches real POST adapter
+ok 23 - T06-FINAL revoked during claim never reaches real POST adapter
+  ---
+  duration_ms: 0.786625
+  type: 'test'
+  ...
+# Subtest: T06-FINAL unverified media and missing approval never reach real POST adapter
+ok 24 - T06-FINAL unverified media and missing approval never reach real POST adapter
+  ---
+  duration_ms: 0.5605
+  type: 'test'
+  ...
+# Subtest: T06-FINAL UI regression: a revoked account must expose Se connecter again
+ok 25 - T06-FINAL UI regression: a revoked account must expose Se connecter again
+  ---
+  duration_ms: 9.717875
+  type: 'test'
+  ...
+# Subtest: T06-DELTA denied consent consumes the bound state even without account identity
+ok 26 - T06-DELTA denied consent consumes the bound state even without account identity
+  ---
+  duration_ms: 0.650583
+  type: 'test'
+  ...
+# Subtest: T06-DELTA a forged denial cannot consume another session state
+ok 27 - T06-DELTA a forged denial cannot consume another session state
+  ---
+  duration_ms: 0.307291
+  type: 'test'
+  ...
+# Subtest: T06-DELTA consent issued before revocation must not reconnect the revoked account
+ok 28 - T06-DELTA consent issued before revocation must not reconnect the revoked account
+  ---
+  duration_ms: 0.689167
+  type: 'test'
+  ...
+# Subtest: T06-DELTA revocation while identity lookup is in flight must win over callback
+ok 29 - T06-DELTA revocation while identity lookup is in flight must win over callback
+  ---
+  duration_ms: 0.957958
+  type: 'test'
+  ...
+# Subtest: T06-DELTA X denial accepts the documented provider platform alias and consumes state
+ok 30 - T06-DELTA X denial accepts the documented provider platform alias and consumes state
+  ---
+  duration_ms: 0.359375
+  type: 'test'
+  ...
+# Subtest: T06-DELTA unknown provider error remains generic and still consumes state
+ok 31 - T06-DELTA unknown provider error remains generic and still consumes state
+  ---
+  duration_ms: 0.262583
+  type: 'test'
+  ...
+# Subtest: T06-DELTA fresh consent after completed revoke can reconnect without reviving old state
+ok 32 - T06-DELTA fresh consent after completed revoke can reconnect without reviving old state
+  ---
+  duration_ms: 2.469333
+  type: 'test'
+  ...
+# Subtest: T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion
+ok 33 - T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion
+  ---
+  duration_ms: 1.103542
+  type: 'test'
+  ...
+# Subtest: T06-DELTA two initial consent callbacks cannot overwrite the winning account
+ok 34 - T06-DELTA two initial consent callbacks cannot overwrite the winning account
+  ---
+  duration_ms: 0.672083
+  type: 'test'
+  ...
+# Subtest: T06-DELTA account snapshot read error fails closed before state consumption or provider GET
+ok 35 - T06-DELTA account snapshot read error fails closed before state consumption or provider GET
+  ---
+  duration_ms: 0.3115
+  type: 'test'
+  ...
+# Subtest: T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish
+ok 36 - T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish
+  ---
+  duration_ms: 0.990167
+  type: 'test'
+  ...
+# Subtest: T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke
+ok 37 - T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke
+  ---
+  duration_ms: 1.332541
+  type: 'test'
+  ...
+# Subtest: T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke
+ok 38 - T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke
+  ---
+  duration_ms: 4.573583
+  type: 'test'
+  ...
+# [sutra:cron] refused: invalid authorization
+# (node:99972) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:99972) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06 routes: session absente ne modifie ni compte ni production
+ok 39 - T06 routes: session absente ne modifie ni compte ni production
+  ---
+  duration_ms: 2.341125
+  type: 'test'
+  ...
+# Subtest: T06 routes: partiel ne peut pas etre remis a ready ou supprime
+ok 40 - T06 routes: partiel ne peut pas etre remis a ready ou supprime
+  ---
+  duration_ms: 0.913041
+  type: 'test'
+  ...
+# Subtest: T06 routes: occurrence non publiee conserve son identite de deduplication
+ok 41 - T06 routes: occurrence non publiee conserve son identite de deduplication
+  ---
+  duration_ms: 0.228416
+  type: 'test'
+  ...
+# Subtest: T06 routes: journal reserve avant projection interdit reset et suppression
+ok 42 - T06 routes: journal reserve avant projection interdit reset et suppression
+  ---
+  duration_ms: 0.325917
+  type: 'test'
+  ...
+# Subtest: T06 routes: transition concurrente preserve publishing et refuse un faux acquittement
+ok 43 - T06 routes: transition concurrente preserve publishing et refuse un faux acquittement
+  ---
+  duration_ms: 0.275917
+  type: 'test'
+  ...
+# Subtest: T06 routes: panne revoke distante rend 202 avec etat local revoque
+ok 44 - T06 routes: panne revoke distante rend 202 avec etat local revoque
+  ---
+  duration_ms: 1.747667
+  type: 'test'
+  ...
+# Subtest: T06 routes: compte absent rend 404 et panne DB rend 503 sans revoke distant
+ok 45 - T06 routes: compte absent rend 404 et panne DB rend 503 sans revoke distant
+  ---
+  duration_ms: 0.388459
+  type: 'test'
+  ...
+# Subtest: T06 routes: cron desactive reconcilie en lecture seule sans travail de generation
+ok 46 - T06 routes: cron desactive reconcilie en lecture seule sans travail de generation
+  ---
+  duration_ms: 0.454542
+  type: 'test'
+  ...
+# Subtest: T06 routes: cron sans autorisation ne lit ni ne soumet rien
+ok 47 - T06 routes: cron sans autorisation ne lit ni ne soumet rien
+  ---
+  duration_ms: 0.372375
+  type: 'test'
+  ...
+1..47
+# tests 47
+# suites 0
+# pass 47
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 520.133417

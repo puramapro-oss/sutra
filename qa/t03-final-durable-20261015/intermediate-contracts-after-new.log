@@ -1,0 +1,41 @@
+✔ invalid non-null terminal result is refused: false (0.7135ms)
+✔ invalid non-null terminal result is refused: true (0.157542ms)
+✔ invalid non-null terminal result is refused: "" (0.10625ms)
+✔ invalid non-null terminal result is refused: 0 (0.038041ms)
+✔ invalid non-null terminal result is refused: [] (0.042916ms)
+✔ invalid non-null terminal result is refused: {} (0.111834ms)
+✔ invalid non-null terminal result is refused: {"videoUrl":"https://fixture.invalid/raw.mp4"} (0.062417ms)
+✔ terminal replay needs matching measured export and all required stages (0.200542ms)
+✔ production substeps need a result bound to their independent checkpoint (0.634167ms)
+✔ pending checkpoint advances durably, completed result remains immutable (0.35525ms)
+✔ failed pending promotion is not reflected in memory or acknowledged (0.08325ms)
+✔ storyboard write interruption preserves script and resumes without paying again (0.267209ms)
+✔ 24 duplicate stage deliveries serialize to one durable receipt; conflict never overwrites it (4.774292ms)
+✔ legacy empty optional checkpoints are retained byte for byte (0.161292ms)
+✔ required tracks cannot be skipped by changing final result alone (0.17325ms)
+✖ production all with disabled music completes and replays without duplicate providers (1.405084ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"%%%INVALID%%%"} (0.134583ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":""} (0.058ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64_sha256":"0000000000000000000000000000000000000000000000000000000000000000"} (0.056708ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz"} (0.049667ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1.5,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64:1":"","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.0445ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"???","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.043916ms)
+✔ valid chunked and legacy unchunked voice are preserved without regeneration (0.066834ms)
+✔ new small voice persists integrity before payload and never regenerates on lost payload write (0.130333ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 23
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 772.156875
+
+✖ failing tests:
+
+test at scripts/test-t03-final-durable.mts:1:6505
+✖ production all with disabled music completes and replays without duplicate providers (1.405084ms)
+  Error: SUTRA_SHOTSTACK_UNKNOWN_OUTPUT
+      at actualQualityFor (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/shotstack.ts:124:75)
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/production-pipeline.ts:348:14)
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/src/lib/pipeline-state.ts:28:28)

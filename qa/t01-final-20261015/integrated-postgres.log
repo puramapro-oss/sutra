@@ -1,0 +1,99 @@
+✔ SQL refuses invalid terminal result false without consuming quota (212.255625ms)
+✔ SQL refuses invalid terminal result true without consuming quota (6.899041ms)
+✔ SQL refuses invalid terminal result "" without consuming quota (7.243791ms)
+✔ SQL refuses invalid terminal result 0 without consuming quota (7.302584ms)
+✔ SQL refuses invalid terminal result [] without consuming quota (7.542791ms)
+✔ SQL refuses invalid terminal result {} without consuming quota (6.989334ms)
+✔ SQL refuses invalid terminal result {"videoUrl":"raw.mp4"} without consuming quota (6.676417ms)
+✔ generation RPC cannot enter social states without media or publication journal (18.498125ms)
+✔ retry has durable backoff shared by targeted and batch claims, including concurrent restart (14.253875ms)
+✔ uncertain operation is quarantined directly, with reservation and completed video retained (3.52325ms)
+✔ completed prior-month reservation is settled once, current-month budget untouched (3.366625ms)
+✔ expired lease cannot cancel the new worker result through stale finish or checkpoint (12.062459ms)
+✔ valid measured results finish once for every generation kind and production assembly (11.086333ms)
+✔ substep results agree with their complete checkpoint; invalid string sentinels are refused (17.841291ms)
+✔ SQL rejects missing stages, missing required tracks, raw or unmeasured final output (52.6825ms)
+✔ quota SQL failure rolls back done, preserves acquired result and permits settlement-only retry (9.685292ms)
+✔ legacy compositing_failed is refused; generation states remain SQL-compatible and acquired data survives failure (14.463208ms)
+✔ backoff grows on retry and exhausted jobs are quarantined without releasing uncertain budget (3.037959ms)
+✔ ready rejects malformed scene receipts and missing audio for an acquired optional track (17.736ms)
+✔ SQL finalization and ready reject fractional measured dimensions (20.720583ms)
+✔ SQL done rejects legacy null result and retains reservation; only explicit music skip succeeds (171.121209ms)
+✔ duplicate final result is idempotent; conflicting result cannot replace the completed output (15.413958ms)
+✔ conflicting concurrent results elect one durable winner without overwriting it (7.708875ms)
+✔ completed stages and scenes survive conflicting late delivery, while provider journal can advance (11.695625ms)
+✔ paid outputs and remote identities are immutable before aggregate stage completion (61.58975ms)
+✔ targeted exhausted claim quarantines atomically and retains uncertain work and budget (12.470166ms)
+✖ canonical SQL CHECKs accept orchestrator states; rejected state rolls back business write (5.431792ms)
+✔ canonical auto ready and pending_approval require final proof, complete stages and requested tracks (7.571542ms)
+✔ separate worker process exits after durable remote ID; replacement polls once and replay does nothing (267.350542ms)
+✖ worker restart after provider ACK lost reconciles persisted ID once, preserves all independent stages (14.967833ms)
+✔ provider response without durable ID never resubmits after restart; completed video survives music failure (4.04675ms)
+✔ SQL checkpoint rollback before paid intent prevents any provider call and allows a safe retry (3.778042ms)
+✔ cancellation during remote execution fences late results and releases reservation exactly once (6.406875ms)
+✔ lost finish response plus 12 duplicate completions: one completed debit, read reconciliation only (217.690958ms)
+✔ expired lease after final checkpoint: new owner finishes; old owner cannot alter result or budget (11.603041ms)
+✔ cancel races finish: exactly one quota settlement, cancellation can never reconcile as done (35.363125ms)
+✔ quota settlement DB failure rolls back done, retains result; restoring ledger allows safe finish (7.747334ms)
+✔ explicitly skipped music reconciles its committed null result after a lost ACK (5.663875ms)
+✔ failed outcome with lost ACK and duplicate callbacks releases exactly one reservation (11.089875ms)
+✔ PG T06: 24 concurrent CAS on a legacy nullable row produce exactly one winner (34.069292ms)
+✔ PG T06: JSONB equality accepts reordered keys but refuses a changed revision with the same clock (6.923666ms)
+✔ PG T06: stale callback snapshot cannot reactivate a confirmed revoked account (4.949666ms)
+✔ PG T06: one in-flight revoke fences 23 concurrent retries and only one remote DELETE (7.966167ms)
+✔ PG T06: unknown DELETE retains durable fence and refuses a new OAuth state (2.986541ms)
+✔ PG T06: first connection uniqueness gives one winner across 24 SQL sessions (4.34275ms)
+✔ PG T06: another owner or a changed external account cannot pass CAS (3.211208ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 44
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2376.014958
+
+✖ failing tests:
+
+test at qa/t03-durable-reliability-20261014/postgres.test.mts:5:6035
+✖ canonical SQL CHECKs accept orchestrator states; rejected state rolls back business write (5.431792ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /sutra_auto_videos_status_check/. Input:
+  
+  'error: SUTRA_INVALID_VIDEO_TRANSITION'
+  
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-reliability-20261014/postgres.test.mts:131:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: error: SUTRA_INVALID_VIDEO_TRANSITION
+        at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-reliability-20261014/postgres.test.mts:131:3)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /sutra_auto_videos_status_check/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-durable-reliability-20261014/postgres.test.mts:5:10044
+✖ worker restart after provider ACK lost reconciles persisted ID once, preserves all independent stages (14.967833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  10 !== 9
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-durable-reliability-20261014/postgres.test.mts:215:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 10,
+    expected: 9,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

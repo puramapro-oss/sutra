@@ -156,11 +156,15 @@ try {
   const checkpointIntegrity = await readFile(new URL('../migrations/20261014_durable_checkpoint_integrity.sql', import.meta.url), 'utf8')
   const rpcPrivileges = `SELECT p.proname,r.rolname,has_function_privilege(r.rolname,p.oid,'EXECUTE'),p.prosecdef
     FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace CROSS JOIN pg_roles r
-    WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key')
+    WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video')
     AND r.rolname IN ('anon','authenticated','service_role') ORDER BY p.proname,r.rolname;`
   const beforeRpcPrivileges = await sql(rpcPrivileges)
   await sql(checkpointIntegrity); await sql(checkpointIntegrity)
+  const finalDurable = await readFile(new URL('../migrations/20261015_final_durable_integrity.sql', import.meta.url), 'utf8')
+  await sql(finalDurable); await sql(finalDurable)
   assert.equal(await sql(rpcPrivileges), beforeRpcPrivileges); checks++
+  assert.equal(await sql("SELECT has_function_privilege('anon','sutra.video_job_result_valid(sutra.video_jobs)','EXECUTE') OR has_function_privilege('authenticated','sutra.video_job_result_valid(sutra.video_jobs)','EXECUTE');"), 'f'); checks++
+  assert.equal(await sql("SELECT has_function_privilege('service_role','sutra.video_job_result_valid(sutra.video_jobs)','EXECUTE');"), 't'); checks++
   assert.equal(await sql(clientPrivileges), beforeClientPrivileges); checks++
   for (const role of ['anon', 'authenticated']) {
     // The legacy claim RPC is invoker-only: effective table permissions must

@@ -14,7 +14,7 @@ import subprocess
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-MIGRATION = 'migrations/20261014_durable_checkpoint_integrity.sql'
+MIGRATION = 'migrations/20261015_final_durable_integrity.sql'
 PREVIOUS = '86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164'
 DEFINITIONS = """SELECT json_agg(json_build_object(
  'name',p.proname,'signature',p.oid::regprocedure::text,'definition',pg_get_functiondef(p.oid),
@@ -23,7 +23,7 @@ DEFINITIONS = """SELECT json_agg(json_build_object(
  'authenticatedExecute',has_function_privilege('authenticated',p.oid,'EXECUTE'),
  'serviceExecute',has_function_privilege('service_role',p.oid,'EXECUTE')) ORDER BY p.proname)
  FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
- WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key');"""
+ WHERE n.nspname='sutra' AND p.proname IN ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid');"""
 
 
 def digest(value):
@@ -35,7 +35,7 @@ class UnconfirmedSqlExecution(Exception):
 
 
 def transition(port, mode, proof, migration):
-    """One submission, then reconcile the three definitions before any rollback."""
+    """One submission, then reconcile the scoped definitions before any rollback."""
     receipt = {'status': 'FAIL', 'mode': mode, 'dataRestore': False, 'workerStarted': False}
     submitted = False
     try:
@@ -43,6 +43,8 @@ def transition(port, mode, proof, migration):
         port.preflight(mode)
         old = proof['beforeDefinitionsSha256']
         new = proof['afterDefinitionsSha256']
+        reverted = proof.get('rollbackDefinitionsSha256', old)
+        assert all(re.fullmatch('[0-9a-f]{64}', value) for value in (old, new, reverted))
         expected = port.definitions()
         current = digest(expected)
         assert current == (old if mode == 'apply' else new), 'DEFINITION_DRIFT'
@@ -52,7 +54,7 @@ def transition(port, mode, proof, migration):
         port.snapshot(expected)
         submitted = True  # Includes ambiguous transport failures after SQL submission.
         port.execute_guarded(expected, migration if mode == 'apply' else rollback)
-        assert digest(port.definitions()) == (new if mode == 'apply' else old)
+        assert digest(port.definitions()) == (new if mode == 'apply' else reverted)
         receipt.update(status='PASS', definitionsVerified=True, rollbackTriggered=False)
     except (subprocess.TimeoutExpired, KeyboardInterrupt, UnconfirmedSqlExecution):
         receipt.update(status='UNKNOWN', submitted=submitted,
@@ -63,12 +65,13 @@ def transition(port, mode, proof, migration):
             try:
                 observed_definitions = port.definitions()
                 observed = digest(observed_definitions)
-                if observed == proof['afterDefinitionsSha256']:
+                if mode == 'apply' and observed == new:
                     port.execute_guarded(observed_definitions, rollback)
                     observed = digest(port.definitions())
                     receipt['rollbackTriggered'] = True
-                assert observed == proof['beforeDefinitionsSha256']
-                receipt['previousDefinitionsVerified'] = True
+                assert observed in (old, reverted)
+                receipt['previousDefinitionsVerified'] = observed == old
+                receipt['rollbackDefinitionsVerified'] = observed == reverted
             except BaseException:
                 receipt['status'] = 'UNKNOWN'
                 receipt['action'] = 'Inspect protected definitions and receipt before any retry.'
@@ -139,12 +142,12 @@ class RemotePort:
 
 
 def guarded_sql(expected, sql):
-    """Lock only the three SUTRA catalog rows, then compare under those locks."""
+    """Lock only the existing scoped SUTRA catalog rows, then compare under those locks."""
     encoded = json.dumps(expected).replace("'", "''")
     guard = """BEGIN;
 SELECT p.oid FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
  WHERE n.nspname='sutra' AND p.proname IN
- ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key')
+ ('finish_video_job','checkpoint_video_job_v2','claim_video_job_by_key','claim_video_jobs','persist_video_job_video','video_job_result_valid')
  ORDER BY p.oid FOR UPDATE OF p;
 DO $sutra_transition_guard$ BEGIN
  IF (""" + DEFINITIONS.rstrip(';') + ")::jsonb IS DISTINCT FROM '" + encoded + "'::jsonb THEN\n"
@@ -168,22 +171,25 @@ def main():
     parser.add_argument('mode', choices=['apply', 'rollback'])
     parser.add_argument('--source-ref', required=True)
     parser.add_argument('--ci-run', required=True)
+    parser.add_argument('--proof-dir', type=Path, default=HERE)
     args = parser.parse_args()
+    proof_dir = args.proof_dir.resolve()
+    assert proof_dir.parent == ROOT / 'qa' and proof_dir.is_dir()
     assert re.fullmatch('[0-9a-f]{40}', args.source_ref)
     assert re.fullmatch('[0-9]+', args.ci_run)
-    proof = json.loads((HERE / 'checkpoint-restore.json').read_text())
+    proof = json.loads((proof_dir / 'checkpoint-restore.json').read_text())
     assert proof['status'] == 'PASS' and proof['definitionsRestoredExactly'] and proof['aclAndOwnershipUnchanged']
     migration = subprocess.check_output(['git', 'show', args.source_ref + ':' + MIGRATION], cwd=ROOT, text=True)
     assert migration == (ROOT / MIGRATION).read_text()
     assert hashlib.sha256(migration.encode()).hexdigest() == proof['migrationSha256']
-    backup = json.loads((HERE / 'backup-restore.json').read_text())
+    backup = json.loads((proof_dir / 'backup-restore.json').read_text())
     validate_backup(backup)
     if args.mode == 'apply':
         ci = json.loads(subprocess.check_output(['gh', 'run', 'view', args.ci_run,
             '--json', 'headSha,status,conclusion,jobs'], cwd=ROOT))
         assert ci['headSha'] == args.source_ref and ci['status'] == 'completed' and ci['conclusion'] == 'success'
         assert len(ci['jobs']) == 3 and all(job['conclusion'] == 'success' for job in ci['jobs'])
-        candidate = json.loads((HERE / 'candidate.json').read_text())
+        candidate = json.loads((proof_dir / 'candidate.json').read_text())
         assert candidate['source'] == args.source_ref and candidate['status'] == 'PASS' and candidate['network'] == 'none'
         age = datetime.datetime.now(datetime.timezone.utc) - datetime.datetime.fromisoformat(backup['observedAt'])
         assert datetime.timedelta(0) <= age <= datetime.timedelta(hours=4), 'FRESH_BACKUP_REQUIRED'
@@ -204,7 +210,8 @@ def main():
         receipt = {'status': 'UNKNOWN', 'action': 'Inspect protected definitions before any retry.'}
     receipt.update(source=args.source_ref, migrationSha256=proof['migrationSha256'],
         observedAt=datetime.datetime.now(datetime.timezone.utc).isoformat())
-    (HERE / ('checkpoint-' + args.mode + '.json')).write_text(json.dumps(receipt, indent=2) + '\n')
+    with (proof_dir / ('checkpoint-' + args.mode + '.json')).open('x') as output:
+        output.write(json.dumps(receipt, indent=2) + '\n')
     print(json.dumps(receipt))
     raise SystemExit(0 if receipt['status'] == 'PASS' else 1)
 

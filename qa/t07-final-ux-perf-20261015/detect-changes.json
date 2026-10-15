@@ -1,0 +1,32 @@
+Changes: 9 files, 24 symbols
+Affected processes: 9
+Risk level: high
+
+Changed symbols:
+  Function LoginPage → src/app/(auth)/login/page.tsx
+  Function handleSubmit → src/app/(auth)/login/page.tsx
+  Function SignupContent → src/app/(auth)/signup/page.tsx
+  Function handleSubmit → src/app/(auth)/signup/page.tsx
+  Function AutoLayout → src/app/(dashboard)/auto/layout.tsx
+  Function SchedulesPage → src/app/(dashboard)/auto/schedules/page.tsx
+  Function fetchSchedules → src/app/(dashboard)/auto/schedules/page.tsx
+  Function saveSchedules → src/app/(dashboard)/auto/schedules/page.tsx
+  Function handleCreate → src/app/(dashboard)/auto/schedules/page.tsx
+  Function handleDelete → src/app/(dashboard)/auto/schedules/page.tsx
+  Function toggleDay → src/app/(dashboard)/auto/schedules/page.tsx
+  Function EditorPage → src/app/(dashboard)/editor/[id]/page.tsx
+  Function fetchVideo → src/app/(dashboard)/editor/[id]/page.tsx
+  Function SocialAccountsPage → src/app/(dashboard)/settings/social/page.tsx
+  Function fetchAccounts → src/app/(dashboard)/settings/social/page.tsx
+... and 9 more
+
+Affected execution flows:
+  • LoginPage → UseHydrated (3 steps) — changed: LoginPage
+  • SocialAccountsPage → Cn (4 steps) — changed: SocialAccountsPage
+  • SchedulesPage → Error (3 steps) — changed: fetchSchedules, SchedulesPage
+  • LoginPage → Cn (3 steps) — changed: LoginPage
+  • HandleCreate → Error (3 steps) — changed: handleCreate, saveSchedules
+  • SocialAccountsPage → Error (3 steps) — changed: fetchAccounts, SocialAccountsPage
+  • SchedulesPage → Cn (3 steps) — changed: SchedulesPage
+  • HandleDisconnect → Error (3 steps) — changed: fetchAccounts
+  • HandleSubmit → ApiFetch (3 steps) — changed: handleSubmit

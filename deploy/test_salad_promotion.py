@@ -4,6 +4,8 @@ No SSH, Docker, Node, GitHub, provider or credential access. The real embedded
 remote Python also runs, against temporary files and a simulated Docker port.
 """
 import contextlib
+import datetime
+import shutil
 import hashlib
 import importlib.util
 import io
@@ -18,7 +20,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 
-SOURCE = Path(__file__).resolve().parents[1] / 'qa/salad-integration-20261014'
+SOURCE = Path(__file__).resolve().parents[1] / 'qa/t01-consolidation-20261014'
 SHA = 'a' * 40
 PREVIOUS = 'b' * 40
 OLD_IMAGE = 'sha256:' + 'c' * 64
@@ -38,9 +40,22 @@ class LocalScriptCase(unittest.TestCase):
         self.directory = tempfile.TemporaryDirectory(prefix='sutra-promotion-test-')
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name).resolve()
-        self.proof = self.root / 'qa/salad-integration-20261014'
+        self.proof = self.root / 'qa/t01-consolidation-20261014'
         self.proof.mkdir(parents=True)
         self.output = io.StringIO()
+        for path in ['deploy/promotion_guards.py', 'deploy/ovh.py',
+                'qa/t01-consolidation-20261014/promote.py',
+                'qa/t01-consolidation-20261014/checkpoint-transition.py',
+                'qa/t01-consolidation-20261014/run-authenticated.py',
+                'qa/t01-final-20261015/client-permissions.py',
+                'qa/t01-final-20261015/social-history-transition.py',
+                'migrations/20261015_final_durable_integrity.sql',
+                'migrations/20261015_client_write_permissions.sql',
+                'migrations/20261015_social_authorization_history.sql']:
+            dest = self.root / path
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(Path(__file__).resolve().parents[1] / path, dest)
+
 
     def execute(self, filename, modules):
         # The source and all gates are unchanged; only __file__ and imported
@@ -122,13 +137,14 @@ class PromotionInterruptionTests(LocalScriptCase):
         self.compose = ('services:\n  sutra:\n    image: sutra-test:previous\n'
             '    labels:\n      traefik.http.routers.sutra.tls.certresolver: mytlschallenge\n')
         (self.live / 'compose.yml').write_text(self.compose)
-        backup = self.root / 'backup'
+        backup = self.live / 'backup-fixture'
         backup.mkdir()
         (backup / 'sutra.dump').write_bytes(b'synthetic backup')
         self.fixtures = {
             'candidate': {'source': SHA, 'status': 'PASS', 'network': 'none',
                           'image': IMAGE_TAG, 'imageId': NEW_IMAGE},
-            'backup-restore': {'directory': str(backup), 'rowCountsMatch': True,
+            'backup-restore': {'directory': '/opt/purama/apps/sutra/backup-fixture', 'rowCountsMatch': True,
+                'observedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'restoredTables': 141,
                 'restoredSchema': {'jobs': True, 'quota': True, 'journals': True, 'mediaOwnership': True},
                 'productionDdl': False, 'migrations': [], 'artifacts': {'sutra.dump': {
                     'sha256': hashlib.sha256(b'synthetic backup').hexdigest()}}},
@@ -136,6 +152,40 @@ class PromotionInterruptionTests(LocalScriptCase):
                 'saladEnabled': False, 'otherContainers': [
                     {'name': 'supabase-db', 'id': 'unchanged-database', 'startedAt': 'unchanged-start'}]},
         }
+        for name in ('public-social.dump', 'public-social-dependencies.sql', 'sutra-assets.tar.gz',
+                     'storage-metadata.json', 'referenced-auth-ids.json'):
+            (backup / name).write_bytes(b'synthetic backup')
+            self.fixtures['backup-restore']['artifacts'][name] = {'sha256': hashlib.sha256(b'synthetic backup').hexdigest()}
+        self.definitions = [{'definition': 'synthetic exact function'}]
+        migration_hash = hashlib.sha256((self.root / 'migrations/20261015_final_durable_integrity.sql').read_bytes()).hexdigest()
+        self.fixtures['checkpoint-restore'] = {'status': 'PASS', 'definitionsRestoredExactly': True,
+            'aclAndOwnershipUnchanged': True, 'migrationSha256': migration_hash,
+            'beforeDefinitionsSha256': 'c' * 64,
+            'afterDefinitionsSha256': hashlib.sha256(json.dumps(self.definitions, sort_keys=True).encode()).hexdigest()}
+        self.fixtures['checkpoint-apply'] = {'status': 'PASS', 'mode': 'apply', 'definitionsVerified': True,
+            'source': SHA, 'migrationSha256': migration_hash,
+            'observedAt': datetime.datetime.now(datetime.timezone.utc).isoformat()}
+        self.permission_state = [{'name': 'synthetic exact permissions', 'grants': []}]
+        permission_hash = hashlib.sha256((self.root / 'migrations/20261015_client_write_permissions.sql').read_bytes()).hexdigest()
+        state_hash = hashlib.sha256(json.dumps(self.permission_state, sort_keys=True).encode()).hexdigest()
+        self.fixtures['client-permissions-restore'] = {'status': 'PASS', 'stateRestoredExactly': True,
+            'dataUnchanged': True, 'replaySafe': True, 'beforeStateSha256': 'e' * 64,
+            'afterStateSha256': state_hash, 'migrationSha256': permission_hash, 'rollbackSha256': 'f' * 64,
+            'protectedRollback': '/opt/purama/apps/sutra/backup-fixture/permissions-fixture'}
+        self.fixtures['client-permissions-apply'] = {'status': 'PASS', 'mode': 'apply', 'source': SHA,
+            'migrationSha256': permission_hash, 'stateVerified': True, 'stateSha256': state_hash,
+            'observedAt': datetime.datetime.now(datetime.timezone.utc).isoformat()}
+        self.social_state = {'table': 'synthetic history', 'captureActive': True}
+        social_hash = hashlib.sha256((self.root / 'migrations/20261015_social_authorization_history.sql').read_bytes()).hexdigest()
+        social_state_hash = hashlib.sha256(json.dumps(self.social_state, sort_keys=True).encode()).hexdigest()
+        self.fixtures['social-history-restore'] = {'status': 'PASS', 'dataUnchanged': True,
+            'replaySafe': True, 'rollbackPreservesHistory': True, 'productionChanged': False,
+            'beforeStateSha256': 'a' * 64, 'afterStateSha256': social_state_hash,
+            'rollbackStateSha256': 'b' * 64, 'migrationSha256': social_hash, 'rollbackSha256': 'c' * 64,
+            'protectedRollback': '/opt/purama/apps/sutra/backup-fixture/social-fixture'}
+        self.fixtures['social-history-apply'] = {'status': 'PASS', 'mode': 'apply', 'source': SHA,
+            'migrationSha256': social_hash, 'stateVerified': True, 'stateSha256': social_state_hash,
+            'observedAt': datetime.datetime.now(datetime.timezone.utc).isoformat()}
         for name, value in self.fixtures.items():
             (self.proof / (name + '.json')).write_text(json.dumps(value))
         helper_path = self.root / 'helper.py'
@@ -146,6 +196,9 @@ class PromotionInterruptionTests(LocalScriptCase):
         self.replacements = []
         self.interrupt_after_replace = False
         self.helper_commands = []
+        self.auth_exit = 0
+        self.ssh_fault = None
+        self.drift_after_promote = None
 
     def docker_inspect(self, name):
         if name == 'supabase-db':
@@ -167,6 +220,13 @@ class PromotionInterruptionTests(LocalScriptCase):
         return SHA + '\n'
 
     def remote_run(self, argv, **kwargs):
+        if argv[:4] == ['docker', 'exec', '-i', 'supabase-db']:
+            sql = kwargs['input']
+            if 'social_authorization_history' in sql:
+                data = self.social_state
+            else:
+                data = self.permission_state if 'AS grants' in sql else self.definitions
+            return subprocess.CompletedProcess(argv, 0, stdout=json.dumps(data), stderr='')
         if argv[:2] == ['docker', 'logs']:
             return subprocess.CompletedProcess(argv, 0, stdout='Ready in 1ms\n', stderr='')
         self.assertEqual(argv[:2], ['docker', 'compose'])
@@ -185,15 +245,21 @@ class PromotionInterruptionTests(LocalScriptCase):
         # Keep the real snapshot, replace, rollback, hashing and permission
         # checks. Only the absolute production root is mapped into a fixture.
         def local_path(value):
-            return self.live if value == '/opt/purama/apps/sutra' else Path(value)
+            value = str(value)
+            return self.live / value.removeprefix('/opt/purama/apps/sutra/').removeprefix('/opt/purama/apps/sutra') if value.startswith('/opt/purama/apps/sutra') else Path(value)
 
         output = io.StringIO()
         with patch.dict(sys.modules, {
             'pathlib': module('pathlib', Path=local_path),
-            'os': module('os', umask=lambda value: None, replace=os.replace),
+            'os': os,
             'subprocess': module('subprocess', run=self.remote_run, check_output=self.remote_check_output),
         }), contextlib.redirect_stdout(output):
-            exec(compile(source, '<real-promotion-remote>', 'exec'), {})
+            namespace = {}
+            try:
+                exec(compile(source, '<real-promotion-remote>', 'exec'), namespace)
+            finally:
+                if 'lock' in namespace:
+                    namespace['lock'].close()
         return output.getvalue()
 
     def helper_ssh(self, command, capture=False):
@@ -215,9 +281,19 @@ class PromotionInterruptionTests(LocalScriptCase):
     def local_run(self, argv, **kwargs):
         if argv[0] == 'ssh':
             self.assertEqual(argv[-1], 'python3 -')
-            return subprocess.CompletedProcess(argv, 0, stdout=self.execute_remote(kwargs['input']), stderr='')
-        self.assertEqual(argv, [sys.executable, str(self.proof / 'run-authenticated.py')])
-        return subprocess.CompletedProcess(argv, 0, stdout=b'', stderr=b'')
+            try:
+                stdout = self.execute_remote(kwargs['input'])
+            except BaseException:
+                return subprocess.CompletedProcess(argv, 1, stdout='', stderr=SECRET_CANARY)
+            if "replace_compose(root,snapshot,'promote'" in kwargs['input'] and self.ssh_fault:
+                if self.ssh_fault == 'nonzero':
+                    return subprocess.CompletedProcess(argv, 255, stdout=stdout, stderr=SECRET_CANARY)
+                raise self.ssh_fault
+            return subprocess.CompletedProcess(argv, 0, stdout=stdout, stderr='')
+        self.assertEqual(argv[:2], [sys.executable, '-c'])
+        if self.drift_after_promote:
+            self.drift_after_promote()
+        return subprocess.CompletedProcess(argv, self.auth_exit, stdout=b'', stderr=b'')
 
     def local_check_output(self, argv, **kwargs):
         if argv[0] == 'gh':
@@ -228,23 +304,41 @@ class PromotionInterruptionTests(LocalScriptCase):
         self.assertTrue(argv[2].startswith(SHA + ':'))
         data = b'synthetic tested source'
         if argv[2].endswith('tested-source-manifest.json'):
+            expected = getattr(self, 'expected_manifest', 'qa/t01-consolidation-20261014/tested-source-manifest.json')
+            self.assertEqual(argv[2], SHA + ':' + expected)
             return json.dumps({'files': [{'path': 'src/test-source',
                 'sha256': hashlib.sha256(data).hexdigest()}]}).encode()
-        self.assertEqual(argv[2], SHA + ':src/test-source')
-        return data
+        if argv[2] == SHA + ':src/test-source':
+            return data
+        return (self.root / argv[2].split(':', 1)[1]).read_bytes()
 
-    def invoke(self):
+    def invoke(self, *, proof_dir=None):
         helper = SimpleNamespace(SSH_KEY=self.root / 'unused-key', REMOTE='fixture.invalid', ssh=self.helper_ssh)
         spec = SimpleNamespace(loader=SimpleNamespace(exec_module=lambda target: None))
         process = module('subprocess', run=self.local_run, check_output=self.local_check_output,
-                         CalledProcessError=subprocess.CalledProcessError)
-        with patch.object(sys, 'argv', ['promote.py', '--source-ref', SHA, '--ci-run', '123']), \
+                         CalledProcessError=subprocess.CalledProcessError, TimeoutExpired=subprocess.TimeoutExpired)
+        import promotion_guards
+        argv = ['promote.py', '--source-ref', SHA, '--ci-run', '123']
+        if proof_dir is not None:
+            argv += ['--proof-dir', str(proof_dir)]
+        with patch.object(promotion_guards.subprocess, 'run', side_effect=self.local_run), patch.object(sys, 'argv', argv), \
                 patch.object(importlib.util, 'spec_from_file_location', return_value=spec), \
                 patch.object(importlib.util, 'module_from_spec', return_value=helper):
             self.execute('promote.py', {'ovh': self.ovh, 'subprocess': process, 'time': module('time', sleep=Mock())})
 
-    def test_interruption_after_container_replacement_restores_previous_image(self):
+    def test_interruption_after_container_replacement_never_races_rollback(self):
         self.interrupt_after_replace = True
+        with self.assertRaisesRegex(RuntimeError, 'PROMOTION_UNKNOWN_NO_CONCURRENT_ROLLBACK'):
+            self.invoke()
+        self.assertEqual(self.replacements, [NEW_IMAGE])
+        self.assertEqual(self.current_image, NEW_IMAGE)
+        self.assertFalse((self.proof / 'automatic-rollback.json').exists())
+        self.assertEqual(self.receipt('deployment')['status'], 'UNKNOWN')
+        self.assertEqual(json.loads((self.live / '.deployment-operation.json').read_text())['phase'], 'running')
+        self.assertNotIn(SECRET_CANARY, self.output.getvalue())
+
+    def test_confirmed_promotion_then_failed_smoke_restores_previous_image(self):
+        self.auth_exit = 1
         with self.assertRaisesRegex(RuntimeError, 'PROMOTION_FAILED_REVIEW_REDACTED_RECEIPTS'):
             self.invoke()
         self.assertEqual(self.replacements, [NEW_IMAGE, OLD_IMAGE])

@@ -1,0 +1,835 @@
+{
+  "candidate": "3855665fa79e3cc2171124d864a834214d6ac617",
+  "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-consolidation-20261014/ci-3855665-contract-artifacts/test-results/ci/contracts/contracts.log",
+  "sha256": "eea548fcb3b42e18ab1fc83eba1c3899f6cc7d95270fbb6735086ee6d59e3b85",
+  "groups": {
+    "R15": [
+      {
+        "line": 46,
+        "test": "✔ default Suno production adapter: submit-network cannot cause a second paid submission (3.334495ms)"
+      },
+      {
+        "line": 47,
+        "test": "✔ default Suno production adapter: submit-503 cannot cause a second paid submission (2.115581ms)"
+      },
+      {
+        "line": 48,
+        "test": "✔ default Suno production adapter: poll-network cannot cause a second paid submission (7.807224ms)"
+      },
+      {
+        "line": 49,
+        "test": "✔ default Suno production adapter: poll-403 cannot cause a second paid submission (1.924959ms)"
+      },
+      {
+        "line": 50,
+        "test": "✔ default Suno production adapter: result-write cannot cause a second paid submission (1.991203ms)"
+      },
+      {
+        "line": 51,
+        "test": "✔ default Suno production adapter: result-ack cannot cause a second paid submission (1.312327ms)"
+      },
+      {
+        "line": 52,
+        "test": "✔ default Suno production adapter: stage-ack cannot cause a second paid submission (1.167562ms)"
+      },
+      {
+        "line": 53,
+        "test": "✔ default Suno production adapter: success cannot cause a second paid submission (1.549482ms)"
+      },
+      {
+        "line": 54,
+        "test": "✔ default Suno adapter: unconfirmed intent never reaches HTTP (0.397174ms)"
+      },
+      {
+        "line": 67,
+        "test": "✔ Suno configured variable precedence matches application; malformed preferred URL never falls back (0.195116ms)"
+      },
+      {
+        "line": 72,
+        "test": "✔ Suno separates successful authentication from zero/positive credits; rejects malformed credit and HTTP200 API error (0.199716ms)"
+      },
+      {
+        "line": 73,
+        "test": "✔ Suno API 429 means insufficient credits, distinct from HTTP429 and API405/430 rate limits (0.207747ms)"
+      },
+      {
+        "line": 93,
+        "test": "✔ Suno: succes apres polling (3005.333004ms)"
+      },
+      {
+        "line": 94,
+        "test": "✔ Suno: POST 500 = UNE SEULE tentative (pas de rejeu génératif payant) (0.895146ms)"
+      },
+      {
+        "line": 95,
+        "test": "✔ Suno: 401 au poll -> abandon immediat (pas de boucle 2 min) (0.642692ms)"
+      },
+      {
+        "line": 96,
+        "test": "✔ Suno: reponse invalide (id absent) -> detail fournisseur expurge (0.503721ms)"
+      },
+      {
+        "line": 97,
+        "test": "✔ Suno: cle absente -> erreur explicite (0.232309ms)"
+      },
+      {
+        "line": 365,
+        "test": "✔ Suno ambiguous submission never reflects provider payload or resubmits (10.238044ms)"
+      },
+      {
+        "line": 366,
+        "test": "✔ Suno polling bounds and redacts malformed responses without resubmission (4.97985ms)"
+      },
+      {
+        "line": 647,
+        "test": "✔ SunoAPI explicit V6 custom instrumental contract and authenticated task polling (30.304586ms)"
+      },
+      {
+        "line": 648,
+        "test": "✔ SunoAPI config rejects unsupported/credentialed URLs before sending a key (0.99735ms)"
+      },
+      {
+        "line": 649,
+        "test": "✔ SunoAPI explicit current URL wins over legacy alias without mutating it (0.957291ms)"
+      },
+      {
+        "line": 650,
+        "test": "✔ SunoAPI bounds input before any submission (0.588568ms)"
+      },
+      {
+        "line": 651,
+        "test": "✔ SunoAPI body-level rejection and uncertain transport never resubmit or reflect diagnostics (2.329506ms)"
+      },
+      {
+        "line": 652,
+        "test": "✔ SunoAPI task mismatch, failed/unknown status and untrusted media fail closed (8.099908ms)"
+      },
+      {
+        "line": 653,
+        "test": "✔ SunoAPI callback is acknowledgement only and has no body/storage/provider dependency (1.031195ms)"
+      },
+      {
+        "line": 810,
+        "test": "✔ create: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (6.466712ms)"
+      },
+      {
+        "line": 816,
+        "test": "✔ production: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (0.689404ms)"
+      },
+      {
+        "line": 822,
+        "test": "✔ auto: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (0.59414ms)"
+      },
+      {
+        "line": 828,
+        "test": "✔ duplicate Suno submission callbacks are coalesced; a competing task identity cannot replace the binding (0.569172ms)"
+      },
+      {
+        "line": 839,
+        "test": "✔ Suno checkpoints accepted task before polling; ACK failure preserves ID and blocks GET (1.896066ms)"
+      },
+      {
+        "line": 840,
+        "test": "✔ Suno resumes a durable task with GET only (0.995664ms)"
+      },
+      {
+        "line": 845,
+        "test": "✔ Suno awaits durable ACK before GET and returns unchanged legacy result shape (5.278468ms)"
+      },
+      {
+        "line": 846,
+        "test": "✔ Suno recovery validates checkpoint before I/O and retains ID on timeout or malformed replies (22.881509ms)"
+      }
+    ],
+    "R22": [
+      {
+        "line": 4,
+        "test": "✔ connect success preserves authorized OAuth redirect (0.752133ms)"
+      },
+      {
+        "line": 81,
+        "test": "✔ T08-Z01 current connect endpoint must replace undocumented /oauth/url (3.368396ms)"
+      },
+      {
+        "line": 396,
+        "test": "✔ OAUTH: utilisateur, plateforme et navigateur doivent correspondre sans consommer le bon etat (4.305933ms)"
+      },
+      {
+        "line": 397,
+        "test": "✔ OAUTH: expiration et rejeu concurrent refusés (3.279416ms)"
+      },
+      {
+        "line": 398,
+        "test": "✔ OAUTH: erreur de base bloque initiation et consommation (4.14324ms)"
+      },
+      {
+        "line": 399,
+        "test": "✔ OAUTH: profile reassignment or another login session cannot consume a pending state (0.527197ms)"
+      },
+      {
+        "line": 561,
+        "test": "✔ billing status changes cannot undo an administrative revocation (0.308707ms)"
+      },
+      {
+        "line": 571,
+        "test": "✔ revoked session cannot read or mutate points (0.422718ms)"
+      },
+      {
+        "line": 591,
+        "test": "✔ banned session fails in the actual OAuth and admin handlers before side effects (5.55885ms)"
+      },
+      {
+        "line": 592,
+        "test": "✔ OAuth initiation is limited per authenticated user before contacting provider (10.700556ms)"
+      },
+      {
+        "line": 593,
+        "test": "✔ OAuth provider exception is not returned to the browser (0.6236ms)"
+      },
+      {
+        "line": 594,
+        "test": "✔ OAuth initiation binds its own state to user, profile and verified session on the canonical public origin (2.305558ms)"
+      },
+      {
+        "line": 595,
+        "test": "✔ OAuth initiation rejects a mismatched verified session or client-chosen tenant before side effects (1.231023ms)"
+      },
+      {
+        "line": 596,
+        "test": "✔ OAuth callback never reflects untrusted provider errors into a redirect URL (0.338572ms)"
+      },
+      {
+        "line": 597,
+        "test": "✔ OAuth callback rejects missing one-use state before exchanging code (3.117495ms)"
+      },
+      {
+        "line": 646,
+        "test": "✔ Zernio revoke 404 est idempotent et erreur sensible jamais loggee (1.064998ms)"
+      },
+      {
+        "line": 733,
+        "test": "✔ media reference: revocation after a success prevents the next signature (0.795274ms)"
+      },
+      {
+        "line": 849,
+        "test": "✔ T06: compte revoked refuse avant POST (0.666861ms)"
+      },
+      {
+        "line": 853,
+        "test": "✔ T06: revocation apres reservation empeche le POST (1.640179ms)"
+      },
+      {
+        "line": 854,
+        "test": "✔ T06: revocation locale precedente a la panne distante; historique conserve et aucune repetition aveugle (2.823555ms)"
+      },
+      {
+        "line": 855,
+        "test": "✔ T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST (3.269831ms)"
+      },
+      {
+        "line": 858,
+        "test": "✔ T06: replay refuse si revoked a change (1.559537ms)"
+      },
+      {
+        "line": 877,
+        "test": "✔ T06: replay reautorise apres claim si revoked change (1.523978ms)"
+      },
+      {
+        "line": 881,
+        "test": "✔ T06: replay reautorise apres claim si profile-revoked change (1.422081ms)"
+      },
+      {
+        "line": 883,
+        "test": "✔ T06: retry reautorise apres claim si revoked change (1.641553ms)"
+      },
+      {
+        "line": 887,
+        "test": "✔ T06: retry reautorise apres claim si profile-revoked change (1.603915ms)"
+      },
+      {
+        "line": 890,
+        "test": "✔ T06: profil revoked refuse la publication video service-role (0.349507ms)"
+      },
+      {
+        "line": 894,
+        "test": "✔ T06: profil revoked refuse la publication auto service-role (0.695888ms)"
+      },
+      {
+        "line": 904,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: tiktok (14.170913ms)"
+      },
+      {
+        "line": 905,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: youtube (2.702323ms)"
+      },
+      {
+        "line": 906,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: instagram (2.571369ms)"
+      },
+      {
+        "line": 907,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: facebook (1.822569ms)"
+      },
+      {
+        "line": 908,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: x (1.910135ms)"
+      },
+      {
+        "line": 909,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: linkedin (1.658325ms)"
+      },
+      {
+        "line": 910,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: pinterest (1.10022ms)"
+      },
+      {
+        "line": 911,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: reddit (1.607271ms)"
+      },
+      {
+        "line": 912,
+        "test": "✔ T06-FINAL OAuth route + adapter + atomic state: threads (1.258998ms)"
+      },
+      {
+        "line": 914,
+        "test": "✔ T06-FINAL session rotation during hosted consent requires fresh state (1.044123ms)"
+      },
+      {
+        "line": 915,
+        "test": "✔ T06-FINAL expired hosted consent never reaches identity lookup (0.938163ms)"
+      },
+      {
+        "line": 919,
+        "test": "✔ T06-FINAL missing account preserves partial outcome; next consent sends only missing destination (5.211082ms)"
+      },
+      {
+        "line": 922,
+        "test": "✔ T06-FINAL another session user cannot revoke the bound account (2.73745ms)"
+      },
+      {
+        "line": 924,
+        "test": "✔ T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled (4.586103ms)"
+      },
+      {
+        "line": 926,
+        "test": "✔ T06-FINAL revoked during claim never reaches real POST adapter (3.144128ms)"
+      },
+      {
+        "line": 928,
+        "test": "✔ T06-FINAL UI regression: a revoked account must expose Se connecter again (27.085426ms)"
+      },
+      {
+        "line": 929,
+        "test": "✔ T06-DELTA denied consent consumes the bound state even without account identity (1.435204ms)"
+      },
+      {
+        "line": 931,
+        "test": "✔ T06-DELTA consent issued before revocation must not reconnect the revoked account (2.185415ms)"
+      },
+      {
+        "line": 932,
+        "test": "✔ T06-DELTA revocation while identity lookup is in flight must win over callback (2.319348ms)"
+      },
+      {
+        "line": 935,
+        "test": "✔ T06-DELTA fresh consent after completed revoke can reconnect without reviving old state (2.62893ms)"
+      },
+      {
+        "line": 936,
+        "test": "✔ T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion (3.638671ms)"
+      },
+      {
+        "line": 937,
+        "test": "✔ T06-DELTA two initial consent callbacks cannot overwrite the winning account (2.163211ms)"
+      },
+      {
+        "line": 939,
+        "test": "✔ T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish (2.306495ms)"
+      },
+      {
+        "line": 940,
+        "test": "✔ T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke (2.236767ms)"
+      },
+      {
+        "line": 941,
+        "test": "✔ T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke (1.976933ms)"
+      },
+      {
+        "line": 951,
+        "test": "✔ T06 routes: panne revoke distante rend 202 avec etat local revoque (4.640174ms)"
+      },
+      {
+        "line": 952,
+        "test": "✔ T06 routes: compte absent rend 404 et panne DB rend 503 sans revoke distant (3.154345ms)"
+      },
+      {
+        "line": 958,
+        "test": "✔ T06 tenant: first refuses revocation-pending (0.49134ms)"
+      },
+      {
+        "line": 962,
+        "test": "✔ T06 tenant: replay refuses revocation-pending (1.602739ms)"
+      },
+      {
+        "line": 966,
+        "test": "✔ T06 tenant: retry refuses revocation-pending (1.113667ms)"
+      },
+      {
+        "line": 970,
+        "test": "✔ T06 tenant: fresh consent in current profile permits one send and no duplicate (0.838442ms)"
+      },
+      {
+        "line": 993,
+        "test": "✔ J09 changed or missing final proof and revoked access block simulated publication (23.717656ms)"
+      },
+      {
+        "line": 1005,
+        "test": "✔ Zernio OAuth uses GET, mapped platform, posting-only consent and exact callback correlation (19.2915ms)"
+      }
+    ],
+    "R23": [
+      {
+        "line": 43,
+        "test": "✔ T02-C13 worker storage errors are expunged, no signed URL or credential returned (0.934042ms)"
+      },
+      {
+        "line": 96,
+        "test": "✔ Suno: reponse invalide (id absent) -> detail fournisseur expurge (0.503721ms)"
+      },
+      {
+        "line": 138,
+        "test": "✔ raster image signatures determine storage type (1.202183ms)"
+      },
+      {
+        "line": 232,
+        "test": "✔ 404 expiry is not proof of failure or permission to spend again (0.524979ms)"
+      },
+      {
+        "line": 314,
+        "test": "✔ A pending proof serialized by 0.4.5 remains readable byte for byte (1.970741ms)"
+      },
+      {
+        "line": 319,
+        "test": "✔ Base64 encode/decode of proof bytes is lossless (0.156055ms)"
+      },
+      {
+        "line": 337,
+        "test": "✔ forged or non-finite final media proof cannot authorize ready (0.433805ms)"
+      },
+      {
+        "line": 338,
+        "test": "✔ final proof requires literal validation flags and positive finite integer dimensions (0.369614ms)"
+      },
+      {
+        "line": 385,
+        "test": "✔ visual: storage failure after paid WAN/LTX success retains job, never generates a fallback (2.269117ms)"
+      },
+      {
+        "line": 481,
+        "test": "✔ cron upgrade-ots-proofs: secret absent, dev et invalide refusent avant toute operation (340.891299ms)"
+      },
+      {
+        "line": 604,
+        "test": "✔ storage result: failed upload/delete/list never report success or expose provider details (1.750996ms)"
+      },
+      {
+        "line": 605,
+        "test": "✔ storage exception: failed upload/delete/list never report success or expose provider details (0.311114ms)"
+      },
+      {
+        "line": 653,
+        "test": "✔ SunoAPI callback is acknowledgement only and has no body/storage/provider dependency (1.031195ms)"
+      },
+      {
+        "line": 658,
+        "test": "✔ private download: missing context rejects before Storage, DNS or HTTPS (0.825334ms)"
+      },
+      {
+        "line": 660,
+        "test": "✔ private download: Storage error is constant and prevents all network activity (0.516206ms)"
+      },
+      {
+        "line": 663,
+        "test": "✔ private download: invalid signed destination http://storage.example.test/clip cannot bypass SSRF checks (0.316217ms)"
+      },
+      {
+        "line": 665,
+        "test": "✔ private download: malicious Storage redirect cannot reach metadata (0.646864ms)"
+      },
+      {
+        "line": 721,
+        "test": "✔ public proof: service-exception never exposes internal details (6.668777ms)"
+      },
+      {
+        "line": 722,
+        "test": "✔ public proof: db-error never exposes internal details (1.054133ms)"
+      },
+      {
+        "line": 723,
+        "test": "✔ public proof: verify-exception never exposes internal details (0.805173ms)"
+      },
+      {
+        "line": 724,
+        "test": "✔ public proof: parse-error never exposes internal details (0.900428ms)"
+      },
+      {
+        "line": 725,
+        "test": "✔ public proof: mismatch never exposes internal details (0.77262ms)"
+      },
+      {
+        "line": 726,
+        "test": "✔ public proof: pending and verified responses keep the public proof contract (1.851864ms)"
+      },
+      {
+        "line": 727,
+        "test": "✔ public proof: malformed IDs fail before querying, missing rows remain 404 (0.822221ms)"
+      },
+      {
+        "line": 740,
+        "test": "✔ delete: traversal and malformed paths cannot reach storage (0.660525ms)"
+      },
+      {
+        "line": 743,
+        "test": "✔ list: traversal and malformed paths cannot reach storage (0.507899ms)"
+      },
+      {
+        "line": 786,
+        "test": "✔ AUTO voice received then storage fails: retry upload from checkpoint, synthesize exactly once (0.831692ms)"
+      },
+      {
+        "line": 873,
+        "test": "✔ T06: autonomie refuse no-proof (0.246914ms)"
+      },
+      {
+        "line": 993,
+        "test": "✔ J09 changed or missing final proof and revoked access block simulated publication (23.717656ms)"
+      }
+    ],
+    "R31": [
+      {
+        "line": 17,
+        "test": "✔ T02-C02 Salad URL rejects metadata (0.572234ms)"
+      },
+      {
+        "line": 31,
+        "test": "✔ T02-C07 foreign job scope/fingerprint rejected before accepting any result (2.69091ms)"
+      },
+      {
+        "line": 33,
+        "test": "✔ T02-C09 private bridge accepts loopback only, never a remote/metadata host (0.262318ms)"
+      },
+      {
+        "line": 69,
+        "test": "✔ reject generation/admin/cancel, foreign hosts, credential URLs and header injection before I/O (0.474462ms)"
+      },
+      {
+        "line": 211,
+        "test": "✔ same operation with changed content rejects, including references/media metadata (0.867227ms)"
+      },
+      {
+        "line": 248,
+        "test": "✔ source metadata and priced bounds: retake, extend frame limit, HDR, reframe (0.931011ms)"
+      },
+      {
+        "line": 249,
+        "test": "✔ checkpoint adapter: concurrent submission persists one intent and preserves foreign slots (0.675258ms)"
+      },
+      {
+        "line": 339,
+        "test": "✔ request identity is stable across object key order, distinct across users and intents (7.911407ms)"
+      },
+      {
+        "line": 346,
+        "test": "✔ missing owner and cross-user access are refused before signing (0.610895ms)"
+      },
+      {
+        "line": 541,
+        "test": "✔ private bridge cannot target Mac/network URLs and rejects foreign media before GET (75.742575ms)"
+      },
+      {
+        "line": 549,
+        "test": "✔ foreign provider checkpoint is never overwritten or interpreted as Salad (0.778028ms)"
+      },
+      {
+        "line": 576,
+        "test": "✔ audio: redirects into cloud metadata are rejected (1.263549ms)"
+      },
+      {
+        "line": 579,
+        "test": "✔ image: redirects into cloud metadata are rejected (0.752524ms)"
+      },
+      {
+        "line": 661,
+        "test": "✔ private download: invalid signed destination https://127.0.0.1/private cannot bypass SSRF checks (0.607092ms)"
+      },
+      {
+        "line": 662,
+        "test": "✔ private download: invalid signed destination https://169.254.169.254/latest/meta-data/ cannot bypass SSRF checks (0.334229ms)"
+      },
+      {
+        "line": 663,
+        "test": "✔ private download: invalid signed destination http://storage.example.test/clip cannot bypass SSRF checks (0.316217ms)"
+      },
+      {
+        "line": 665,
+        "test": "✔ private download: malicious Storage redirect cannot reach metadata (0.646864ms)"
+      },
+      {
+        "line": 671,
+        "test": "✔ T02 account list omits private metadata/tokens and another user account (4.054898ms)"
+      },
+      {
+        "line": 957,
+        "test": "✔ T06 tenant: first refuses metadata-absent (0.667687ms)"
+      },
+      {
+        "line": 961,
+        "test": "✔ T06 tenant: replay refuses metadata-absent (1.723302ms)"
+      },
+      {
+        "line": 965,
+        "test": "✔ T06 tenant: retry refuses metadata-absent (0.978649ms)"
+      }
+    ],
+    "R53": [
+      {
+        "line": 4,
+        "test": "✔ connect success preserves authorized OAuth redirect (0.752133ms)"
+      },
+      {
+        "line": 29,
+        "test": "✔ T02-C05 capability GET sends both credentials only as headers and forbids redirects (40.259557ms)"
+      },
+      {
+        "line": 32,
+        "test": "✔ T02-C08 result download binds fixed job path, both auth headers, bytes hash and redirects (3.328108ms)"
+      },
+      {
+        "line": 71,
+        "test": "✔ Shotstack empty templates valid, HTML or success=false invalid (0.164195ms)"
+      },
+      {
+        "line": 75,
+        "test": "✔ GET only, redirects forbidden, expected header, bounded success body (3.624588ms)"
+      },
+      {
+        "line": 76,
+        "test": "✔ malformed, oversized and redirect/transport errors are redacted with one attempt (1.765531ms)"
+      },
+      {
+        "line": 82,
+        "test": "✔ T08-Z02 initiation must carry owned profileId, redirect_url and posting scopes (1.412986ms)"
+      },
+      {
+        "line": 140,
+        "test": "✔ literal internal navigation points to an existing page or declared redirect (28.063332ms)"
+      },
+      {
+        "line": 167,
+        "test": "✔ env: Shotstack diagnostic selects the configured environment without substituting credentials (0.559518ms)"
+      },
+      {
+        "line": 249,
+        "test": "✔ checkpoint adapter: concurrent submission persists one intent and preserves foreign slots (0.675258ms)"
+      },
+      {
+        "line": 284,
+        "test": "✔ Media revalide les redirections avant le second telechargement (0.610895ms)"
+      },
+      {
+        "line": 285,
+        "test": "✔ Media suit une redirection publique bornee (1.013664ms)"
+      },
+      {
+        "line": 286,
+        "test": "✔ Media bloque les boucles de redirection (0.862321ms)"
+      },
+      {
+        "line": 349,
+        "test": "✔ route authenticates the owner and never caches redirects or failures (20.2641ms)"
+      },
+      {
+        "line": 394,
+        "test": "✔ OVH protected-page redirects preserve path, query and refreshed cookies (1.396346ms)"
+      },
+      {
+        "line": 395,
+        "test": "✔ OVH authenticated and denied-role redirects use canonical origin (1.917859ms)"
+      },
+      {
+        "line": 481,
+        "test": "✔ cron upgrade-ots-proofs: secret absent, dev et invalide refusent avant toute operation (340.891299ms)"
+      },
+      {
+        "line": 494,
+        "test": "✔ SHOTSTACK: apres interruption du polling, reprise par ID sans nouveau POST (4.045404ms)"
+      },
+      {
+        "line": 495,
+        "test": "✔ SHOTSTACK: soumission sans ID confirme bloque un second rendu (0.18356ms)"
+      },
+      {
+        "line": 520,
+        "test": "✔ strict configuration: management API, credentials in URL, arbitrary host, query, redirect domain rejected (2.693194ms)"
+      },
+      {
+        "line": 528,
+        "test": "✔ no blind retry on 401/429/503, invalid JSON, body hang or redirect (7.423406ms)"
+      },
+      {
+        "line": 576,
+        "test": "✔ audio: redirects into cloud metadata are rejected (1.263549ms)"
+      },
+      {
+        "line": 579,
+        "test": "✔ image: redirects into cloud metadata are rejected (0.752524ms)"
+      },
+      {
+        "line": 596,
+        "test": "✔ OAuth callback never reflects untrusted provider errors into a redirect URL (0.338572ms)"
+      },
+      {
+        "line": 600,
+        "test": "✔ middleware blocks a banned dashboard session without a login redirect loop (2.973046ms)"
+      },
+      {
+        "line": 607,
+        "test": "✔ Shotstack: 4K autorisee — preset demande, fichier encore non verifie (12.767973ms)"
+      },
+      {
+        "line": 608,
+        "test": "✔ Shotstack: 1080p 16:9 exporte en 1920×1080 (1.967621ms)"
+      },
+      {
+        "line": 609,
+        "test": "✔ Shotstack: horloge de montage — intro décale voix et sous-titres, durées par clip (2.41045ms)"
+      },
+      {
+        "line": 610,
+        "test": "✔ Shotstack: une PHOTO devient un asset image, pas vidéo (1.385137ms)"
+      },
+      {
+        "line": 611,
+        "test": "✔ Shotstack: transition fade demandée = fade appliquée (pas none) (2.589262ms)"
+      },
+      {
+        "line": 612,
+        "test": "✔ Shotstack: 429 au submit -> erreur explicite (1.272331ms)"
+      },
+      {
+        "line": 613,
+        "test": "✔ Shotstack: rendu failed -> erreur explicite (1.101932ms)"
+      },
+      {
+        "line": 614,
+        "test": "✔ Shotstack: cle absente -> erreur explicite (0.26475ms)"
+      },
+      {
+        "line": 623,
+        "test": "✔ Shotstack: environnement et cle restent lies au submit et au polling (4.574103ms)"
+      },
+      {
+        "line": 665,
+        "test": "✔ private download: malicious Storage redirect cannot reach metadata (0.646864ms)"
+      },
+      {
+        "line": 692,
+        "test": "✔ calendar redirect denied: http://127.0.0.1/private (1.086362ms)"
+      },
+      {
+        "line": 693,
+        "test": "✔ calendar redirect denied: http://169.254.169.254/latest/meta-data (0.573641ms)"
+      },
+      {
+        "line": 694,
+        "test": "✔ calendar redirect denied: https://evil.invalid/private (0.655255ms)"
+      },
+      {
+        "line": 695,
+        "test": "✔ Esplora rejects redirects without requesting an internal destination (0.815674ms)"
+      },
+      {
+        "line": 715,
+        "test": "✔ actual OTS crypto accepts matching Merkle fixture and refuses mismatch; no Bitcoin node access (3.517742ms)"
+      }
+    ],
+    "budget": [
+      {
+        "line": 65,
+        "test": "✔ selected names only, comments/quotes, no inherited environment (0.705397ms)"
+      },
+      {
+        "line": 160,
+        "test": "✔ estimateCost: grille officielle LTX 2.3 (fast 1080p = 0.06 USD/s) (0.466016ms)"
+      },
+      {
+        "line": 219,
+        "test": "✔ submission HTTP 400: explicit status/quota, no automatic resubmission (0.749824ms)"
+      },
+      {
+        "line": 220,
+        "test": "✔ submission HTTP 401: explicit status/quota, no automatic resubmission (0.399829ms)"
+      },
+      {
+        "line": 221,
+        "test": "✔ submission HTTP 402: explicit status/quota, no automatic resubmission (0.334918ms)"
+      },
+      {
+        "line": 222,
+        "test": "✔ submission HTTP 403: explicit status/quota, no automatic resubmission (0.386048ms)"
+      },
+      {
+        "line": 223,
+        "test": "✔ submission HTTP 404: explicit status/quota, no automatic resubmission (0.342847ms)"
+      },
+      {
+        "line": 224,
+        "test": "✔ submission HTTP 422: explicit status/quota, no automatic resubmission (0.328203ms)"
+      },
+      {
+        "line": 225,
+        "test": "✔ submission HTTP 429: explicit status/quota, no automatic resubmission (0.313631ms)"
+      },
+      {
+        "line": 340,
+        "test": "✔ submission uses one RPC for quota/video/job and returns original video on retry (3.937479ms)"
+      },
+      {
+        "line": 372,
+        "test": "✔ smart: source provenance includes job/cost/timeout/quota, excludes signed output URL (2.101672ms)"
+      },
+      {
+        "line": 507,
+        "test": "✔ QUOTA: confirmation done est une lecture, jamais un second settlement (0.733949ms)"
+      },
+      {
+        "line": 530,
+        "test": "✔ expired quote, insufficient budget and unqualified profile never reserve or POST (2.678906ms)"
+      },
+      {
+        "line": 546,
+        "test": "✔ preflight binds worker timeout and budget before any POST (1.334328ms)"
+      },
+      {
+        "line": 757,
+        "test": "✔ finish done lost ACK: reconcile persisted result with one GET, never repeat quota mutation (2.87268ms)"
+      },
+      {
+        "line": 833,
+        "test": "✔ production thumbnail uses the same Classic contract without provider, quota or worker calls (7.015678ms)"
+      },
+      {
+        "line": 985,
+        "test": "✔ J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication (98.463711ms)"
+      },
+      {
+        "line": 987,
+        "test": "✔ J03 quota or submission DB refusal has no orphan project or provider effects (30.800905ms)"
+      },
+      {
+        "line": 1001,
+        "test": "✔ cost estimates include quality and duration (0.182962ms)"
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+(node:90998) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:90998) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication (35.4265ms)
+✔ J02 bounded 12-click burst shares one queued job, project and provider intent; changed content conflicts (20.377875ms)
+✔ J03 quota or submission DB refusal has no orphan project or provider effects (12.969917ms)
+✔ J04 upload failure resumes stored voice and other resolved assets, without resynthesis (14.424959ms)
+✔ J05 ready-write DB failure cannot publish; resume reuses verified media and settles once (13.789333ms)
+✔ J06 created client project remains isolated across status, export and publication boundaries (9.853834ms)
+✔ J07 corrupt export validation preserves prior ready media and retry does not render again (13.432625ms)
+✔ J08 two destination partial publication reconciles existing posts, never republishes the successful target (11.161917ms)
+✔ J09 changed or missing final proof and revoked access block simulated publication (10.586417ms)
+✔ J10 lost remote render receipt stays uncertain across route retry without another submission (7.597375ms)
+✔ J11 bounded 12-click publication burst sends one verified media intent and repairs projections (11.954ms)
+✔ J12 re-export after a scheduled intent cannot silently replace the scheduled verified media (13.802916ms)
+✔ J13 a past schedule cannot turn into immediate publication after successful export (14.250583ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 564.939417

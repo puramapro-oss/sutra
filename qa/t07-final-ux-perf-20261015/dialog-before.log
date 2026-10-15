@@ -1,0 +1,27 @@
+FAIL disconnect dialog is named: expect(locator).toHaveAccessibleName(expected) failed
+
+Locator:  getByRole('dialog')
+Expected: "Deconnecter YouTube ?"
+Received: ""
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.have.accessible.name" with timeout 5000ms
+  - waiting for getByRole('dialog')
+    9 × locator resolved to <div role="dialog" aria-modal="true" class="w-full max-w-md bg-[#0A0A0F] border border-white/[0.08] rounded-2xl p-6 shadow-2xl">…</div>
+      - unexpected value ""
+
+FAIL disconnect dialog traps focus, Escape restores trigger: expect(locator).toBeFocused() failed
+
+Locator:  getByTestId('cancel-disconnect')
+Expected: focused
+Received: inactive
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.be.focused" with timeout 5000ms
+  - waiting for getByTestId('cancel-disconnect')
+    9 × locator resolved to <button tabindex="0" type="button" data-testid="cancel-disconnect" class="relative inline-flex items-center justify-center font-medium transition-all duration-200 overflow-hidden select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06050e] disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none bg-white/5 backdrop-blur-xl border border-white/[0.08] text-white/90 hover:bg-white/10 hover:…>…</button>
+      - unexpected value "inactive"
+
+PASS no unexpected mutation, uncaught error or hydration mismatch

@@ -1,0 +1,46 @@
+{
+  "target": {
+    "id": "Function:src/app/(auth)/signup/page.tsx:SignupContent",
+    "name": "SignupContent",
+    "type": "Function",
+    "filePath": "src/app/(auth)/signup/page.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Library",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/app/(auth)/signup/page.tsx:SignupPage",
+        "name": "SignupPage",
+        "filePath": "src/app/(auth)/signup/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

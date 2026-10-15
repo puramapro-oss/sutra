@@ -1,6 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { useRef } from 'react'
 import { AlertTriangle } from 'lucide-react'
 import Button from '@/components/ui/Button'
+import Modal from '@/components/ui/Modal'
 import { PLATFORM_INFO, type SocialPlatform } from '@/lib/zernio'
 
 interface SocialAccount {
@@ -24,56 +25,43 @@ export function DisconnectConfirmModal({
   onCancel,
   onConfirm,
 }: DisconnectConfirmModalProps) {
+  const cancelRef = useRef<HTMLButtonElement>(null)
   return (
-    <AnimatePresence>
+    <Modal
+      open={!!account}
+      onClose={onCancel}
+      title={account ? `Deconnecter ${PLATFORM_INFO[account.platform].label} ?` : undefined}
+      initialFocusRef={cancelRef}
+      className="max-w-md bg-[#0A0A0F]"
+    >
       {account && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
-          onClick={onCancel}
-        >
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-md bg-[#0A0A0F] border border-white/[0.08] rounded-2xl p-6 shadow-2xl"
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className="flex items-start gap-4 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-red-500/15 border border-red-500/30 flex items-center justify-center flex-shrink-0">
-                <AlertTriangle className="w-6 h-6 text-red-400" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white mb-1">
-                  Deconnecter {PLATFORM_INFO[account.platform].label} ?
-                </h3>
-                <p className="text-sm text-white/60">
-                  Tu ne pourras plus publier automatiquement sur ce reseau jusqu&apos;a une
-                  nouvelle connexion.
-                </p>
-              </div>
+        <>
+          <div className="flex items-start gap-4 mb-4">
+            <div className="w-12 h-12 rounded-xl bg-red-500/15 border border-red-500/30 flex items-center justify-center flex-shrink-0">
+              <AlertTriangle className="w-6 h-6 text-red-400" />
             </div>
-            <div className="flex gap-3 justify-end">
-              <Button variant="secondary" size="md" onClick={onCancel} data-testid="cancel-disconnect">
-                Annuler
-              </Button>
-              <Button
-                variant="danger"
-                size="md"
-                onClick={() => onConfirm(account)}
-                data-testid="confirm-disconnect"
-              >
-                Deconnecter
-              </Button>
+            <div>
+              <p className="text-sm text-white/60">
+                Tu ne pourras plus publier automatiquement sur ce reseau jusqu&apos;a une
+                nouvelle connexion.
+              </p>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+          <div className="flex gap-3 justify-end">
+            <Button ref={cancelRef} variant="secondary" size="md" onClick={onCancel} data-testid="cancel-disconnect">
+              Annuler
+            </Button>
+            <Button
+              variant="danger"
+              size="md"
+              onClick={() => onConfirm(account)}
+              data-testid="confirm-disconnect"
+            >
+              Deconnecter
+            </Button>
+          </div>
+        </>
       )}
-    </AnimatePresence>
+    </Modal>
   )
 }

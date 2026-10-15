@@ -1,0 +1,160 @@
+✖ SQL refuses invalid terminal result false without consuming quota (210.640125ms)
+✖ SQL refuses invalid terminal result true without consuming quota (2.532375ms)
+✖ SQL refuses invalid terminal result "" without consuming quota (1.658791ms)
+✖ SQL refuses invalid terminal result 0 without consuming quota (1.670875ms)
+✖ SQL refuses invalid terminal result [] without consuming quota (1.548708ms)
+✖ SQL refuses invalid terminal result {} without consuming quota (1.524583ms)
+✖ SQL refuses invalid terminal result {"videoUrl":"raw.mp4"} without consuming quota (1.16075ms)
+✖ generation RPC cannot enter social states without media or publication journal (1.702792ms)
+✖ retry has durable backoff shared by targeted and batch claims, including concurrent restart (1.704292ms)
+✔ uncertain operation is quarantined directly, with reservation and completed video retained (2.046917ms)
+✔ completed prior-month reservation is settled once, current-month budget untouched (10.503ms)
+✔ expired lease cannot cancel the new worker result through stale finish or checkpoint (9.515208ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 3
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 439.168167
+
+✖ failing tests:
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:1944
+✖ SQL refuses invalid terminal result false without consuming quota (210.640125ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:60:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:1944
+✖ SQL refuses invalid terminal result true without consuming quota (2.532375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:60:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:1944
+✖ SQL refuses invalid terminal result "" without consuming quota (1.658791ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:60:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:1944
+✖ SQL refuses invalid terminal result 0 without consuming quota (1.670875ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:60:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:1944
+✖ SQL refuses invalid terminal result [] without consuming quota (1.548708ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:60:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:1944
+✖ SQL refuses invalid terminal result {} without consuming quota (1.524583ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:60:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:1944
+✖ SQL refuses invalid terminal result {"videoUrl":"raw.mp4"} without consuming quota (1.16075ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:60:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:2336
+✖ generation RPC cannot enter social states without media or publication journal (1.702792ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:68:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /INVALID_VIDEO_TRANSITION/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:2799
+✖ retry has durable backoff shared by targeted and batch claims, including concurrent restart (1.704292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:76:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

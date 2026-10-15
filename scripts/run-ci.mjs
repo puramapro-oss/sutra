@@ -7,6 +7,11 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
+  'scripts/test-t03-final-durable.mts', 'qa/t03-final-durable-20261015/cancel-ack.test.mts',
+  'scripts/test-t02-final-security-grants.mts', 'scripts/test-t06-final-social.mts',
+  'qa/t04-final-providers-20261015/container.test.mjs', 'qa/t04-final-providers-20261015/context.test.mjs',
+  'qa/t04-final-providers-20261015/salad-read.test.mjs',
+  'qa/t08-final-candidate-20261015/cancellation.test.mts',
   'scripts/test-t06-social-validation.mts', 'qa/t04-provider-validation-20261014/probe.test.mjs',
   'scripts/test-t02-final-validation-media.mts',
   'qa/t02-final-validation-20261014/production-error.test.mts',
@@ -51,6 +56,9 @@ const profiles = {
   media: [
     ['retained-real-exports', ['--import', 'tsx', '--test', 'scripts/test-t05-real-export.mts']],
     ['composition-delta', ['--import', 'tsx', '--test', 'scripts/test-t05-composition-fix.mts']],
+    ['final-media', ['--import', 'tsx', '--test', 'scripts/test-t05-final-media.mts'],
+      { PATH: `${resolve(root, 'qa/t01-final-20261015/cpu-bin')}:${process.env.PATH || ''}`,
+        T05_FINAL_GROUP: 'media', T05_FINAL_STAMP: 'ci', FFMPEG_MAX_CONCURRENT_JOBS: '1' }],
     ['salad-media', ['--import', 'tsx', '--test', 'scripts/test-t05-salad-media.mts']],
     ['local-engine', ['--import', 'tsx', '--test', 'scripts/test-local-engine-e2e.mts']],
     ['compositor', ['--experimental-test-module-mocks', '--import', 'tsx', '--import', './scripts/helpers/local-media-fixture.mts', '--test', '--test-concurrency=1', 'src/lib/ffmpeg-compositor.test.ts', 'src/lib/ffmpeg-compositor-formats.test.ts', 'src/lib/media-validation.test.ts']],

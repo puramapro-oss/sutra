@@ -1,0 +1,39 @@
+(node:96031) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96031) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ private reference stays constant while authorized signatures renew (0.617583ms)
+✔ missing owner and cross-user access are refused before signing (0.26875ms)
+✔ worker authorities are isolated under concurrency (2.159958ms)
+✔ legacy ownership fails closed for ambiguous or missing inventory (0.156459ms)
+✔ route authenticates the owner and never caches redirects or failures (8.155916ms)
+✔ publication capability requires exact durable journal, owner and live profile (1.486083ms)
+✔ malformed references cannot escape their owner prefix (0.108375ms)
+(node:96032) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96032) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ private download: authorized owner signs once and fetches the signed object using pinned DNS (7.213167ms)
+✔ private download: missing context rejects before Storage, DNS or HTTPS (0.404917ms)
+✔ private download: Bob cannot download Alice media even with a valid owner context (0.218625ms)
+✔ private download: Storage error is constant and prevents all network activity (0.214709ms)
+✔ private download: invalid signed destination https://127.0.0.1/private cannot bypass SSRF checks (0.232125ms)
+✔ private download: invalid signed destination https://169.254.169.254/latest/meta-data/ cannot bypass SSRF checks (0.156ms)
+✔ private download: invalid signed destination http://storage.example.test/clip cannot bypass SSRF checks (0.109125ms)
+✔ private download: signed hostname resolving privately is denied before HTTPS (0.137959ms)
+✔ private download: malicious Storage redirect cannot reach metadata (0.246417ms)
+✔ private download: expired signed URL preserves a safe error and never retries the signature (0.243125ms)
+✔ private download: transport rejection cannot expose the signed query or backend diagnostic (0.158833ms)
+(node:96033) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96033) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ media reference: expired session cannot sign even if the auth result retains a user (9.649208ms)
+✔ media reference: valid session belonging to another user cannot sign (0.345833ms)
+✔ media reference: revocation after a success prevents the next signature (0.376209ms)
+✔ media reference: profile outage never yields a signature or provider diagnostic (0.208792ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 163.320166

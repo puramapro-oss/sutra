@@ -1,0 +1,96 @@
+{
+  "observedAt": "2026-10-15T01:13:47.345204+00:00",
+  "readOnly": true,
+  "rows": [
+    {
+      "tablename": "activity_logs",
+      "policyname": "t02_active_account",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "sutra.account_is_active()",
+      "with_check": "sutra.account_is_active()"
+    },
+    {
+      "tablename": "api_logs",
+      "policyname": "t02_active_account",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "sutra.account_is_active()",
+      "with_check": "sutra.account_is_active()"
+    },
+    {
+      "tablename": "contest_submissions",
+      "policyname": "own_contests",
+      "roles": [
+        "public"
+      ],
+      "cmd": "ALL",
+      "qual": "(auth.uid() = user_id)",
+      "with_check": null
+    },
+    {
+      "tablename": "contest_submissions",
+      "policyname": "t02_active_account",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "sutra.account_is_active()",
+      "with_check": "sutra.account_is_active()"
+    },
+    {
+      "tablename": "error_logs",
+      "policyname": "t02_active_account",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "sutra.account_is_active()",
+      "with_check": "sutra.account_is_active()"
+    },
+    {
+      "tablename": "referral_commissions",
+      "policyname": "own_commissions",
+      "roles": [
+        "public"
+      ],
+      "cmd": "ALL",
+      "qual": "((auth.uid() = referrer_id) OR (auth.uid() = referred_id))",
+      "with_check": null
+    },
+    {
+      "tablename": "referral_commissions",
+      "policyname": "t02_active_account",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "sutra.account_is_active()",
+      "with_check": "sutra.account_is_active()"
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "own_referrals",
+      "roles": [
+        "public"
+      ],
+      "cmd": "ALL",
+      "qual": "((auth.uid() = referrer_id) OR (auth.uid() = referred_id))",
+      "with_check": null
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "t02_active_account",
+      "roles": [
+        "authenticated"
+      ],
+      "cmd": "ALL",
+      "qual": "sutra.account_is_active()",
+      "with_check": "sutra.account_is_active()"
+    }
+  ]
+}

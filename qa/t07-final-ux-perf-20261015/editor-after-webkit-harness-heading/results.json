@@ -1,0 +1,67 @@
+{
+  "baseline": false,
+  "productionSuite": false,
+  "results": [
+    {
+      "name": "harness",
+      "status": "FAIL",
+      "message": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Bibliothèque', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 5000ms\n  - waiting for getByRole('heading', { name: 'Bibliothèque', exact: true })\n\n    at Proxy.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at enterTestSession (file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/session.mjs:18:82)\n    at async editorChecks (file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/editor-checks.mjs:6:3)\n    at async runScenario (file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/run.mjs:82:37)\n    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/run.mjs:133:5"
+    }
+  ],
+  "details": [],
+  "errors": [],
+  "blocked": [],
+  "mutations": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

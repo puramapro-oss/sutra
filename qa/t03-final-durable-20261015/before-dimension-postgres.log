@@ -1,0 +1,55 @@
+✔ SQL refuses invalid terminal result false without consuming quota (83.820042ms)
+✔ SQL refuses invalid terminal result true without consuming quota (6.427125ms)
+✔ SQL refuses invalid terminal result "" without consuming quota (5.982291ms)
+✔ SQL refuses invalid terminal result 0 without consuming quota (6.442417ms)
+✔ SQL refuses invalid terminal result [] without consuming quota (7.011334ms)
+✔ SQL refuses invalid terminal result {} without consuming quota (6.153709ms)
+✔ SQL refuses invalid terminal result {"videoUrl":"raw.mp4"} without consuming quota (5.924833ms)
+✔ generation RPC cannot enter social states without media or publication journal (16.620708ms)
+✔ retry has durable backoff shared by targeted and batch claims, including concurrent restart (13.5485ms)
+✔ uncertain operation is quarantined directly, with reservation and completed video retained (3.059291ms)
+✔ completed prior-month reservation is settled once, current-month budget untouched (3.739209ms)
+✔ expired lease cannot cancel the new worker result through stale finish or checkpoint (11.541334ms)
+✔ valid measured results finish once for every generation kind and production assembly (9.757208ms)
+✔ substep results agree with their complete checkpoint; invalid string sentinels are refused (20.631ms)
+✔ SQL rejects missing stages, missing required tracks, raw or unmeasured final output (54.20025ms)
+✔ quota SQL failure rolls back done, preserves acquired result and permits settlement-only retry (9.110708ms)
+✔ legacy compositing_failed is refused; generation states remain SQL-compatible and acquired data survives failure (13.396541ms)
+✔ backoff grows on retry and exhausted jobs are quarantined without releasing uncertain budget (3.195917ms)
+✔ ready rejects malformed scene receipts and missing audio for an acquired optional track (16.127291ms)
+✖ SQL finalization and ready reject fractional measured dimensions (5.3785ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 19
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 475.503542
+
+✖ failing tests:
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:13526
+✖ SQL finalization and ready reject fractional measured dimensions (5.3785ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /FINAL_MEDIA_PROOF_REQUIRED/. Input:
+
+  'error: invalid input syntax for type integer: "720.5"'
+
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:234:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: error: invalid input syntax for type integer: "720.5"
+        at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async waitForActual (node:assert:615:5)
+        at async strict.rejects (node:assert:738:25)
+        at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:234:5)
+        at async Test.run (node:internal/test_runner/test:1208:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:831:7),
+    expected: /FINAL_MEDIA_PROOF_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

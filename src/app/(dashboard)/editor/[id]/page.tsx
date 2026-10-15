@@ -124,19 +124,19 @@ export default function EditorPage() {
 
       // Generate subtitle entries from narration
       const narration = v.script_data?.narration ?? ''
+      let initialSubtitles: SubtitleEntry[] = []
       if (narration) {
         const sentences = narration.split(/[.!?]+/).filter((s) => s.trim())
         const totalDur = v.duration ?? sentences.length * 4
         const perSentence = totalDur / Math.max(sentences.length, 1)
-        setSubtitles(
-          sentences.map((s, i) => ({
+        initialSubtitles = sentences.map((s, i) => ({
             id: `sub-${i}`,
             text: s.trim(),
             start: Math.round(i * perSentence * 10) / 10,
             end: Math.round((i + 1) * perSentence * 10) / 10,
           }))
-        )
       }
+      setSubtitles(initialSubtitles)
 
       // Determine max quality for plan
       const limits = PLAN_LIMITS[plan]
@@ -148,7 +148,7 @@ export default function EditorPage() {
       pushHistory({
         script: v.script_data?.narration ?? '',
         scenes: recoveredScenes,
-        subtitles: [],
+        subtitles: initialSubtitles,
         voiceVolume: 80,
         musicVolume: 50,
       })

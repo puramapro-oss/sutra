@@ -1,0 +1,21 @@
+✔ SQL done rejects legacy null result and retains reservation; only explicit music skip succeeds (209.190292ms)
+✔ duplicate final result is idempotent; conflicting result cannot replace the completed output (17.741292ms)
+✔ conflicting concurrent results elect one durable winner without overwriting it (6.177375ms)
+✔ completed stages and scenes survive conflicting late delivery, while provider journal can advance (10.633542ms)
+✔ paid outputs and remote identities are immutable before aggregate stage completion (75.825959ms)
+✔ targeted exhausted claim quarantines atomically and retains uncertain work and budget (12.083833ms)
+✔ canonical SQL CHECKs accept orchestrator states; rejected state rolls back business write (6.602833ms)
+✔ canonical auto ready and pending_approval require final proof, complete stages and requested tracks (7.444667ms)
+✔ separate worker process exits after durable remote ID; replacement polls once and replay does nothing (228.793458ms)
+✔ worker restart after provider ACK lost reconciles persisted ID once, preserves all independent stages (16.786208ms)
+✔ provider response without durable ID never resubmits after restart; completed video survives music failure (4.010458ms)
+✔ SQL checkpoint rollback before paid intent prevents any provider call and allows a safe retry (3.937375ms)
+✔ cancellation during remote execution fences late results and releases reservation exactly once (6.494667ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 798.538375

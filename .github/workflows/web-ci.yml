@@ -37,11 +37,13 @@ jobs:
             test-results/t08
             qa/t05-real-export-20261014/exports
             qa/t05-real-export-20261014/measurements.json
+            qa/t05-final-media-20261015/exports
+            qa/t05-final-media-20261015/media-ci.json
           if-no-files-found: warn
 
   quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -50,15 +52,17 @@ jobs:
         with:
           smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
       - run: npm run check
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit
       - run: node qa/t08/run.mjs browser-redteam
       - name: Library pagination and consent contrast regressions
         run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
-      - name: Integrated legal consent and desktop/mobile journeys (synthetic identity)
-        run: node qa/t07-frontend-journey-20261014/run.mjs --production-suite
+      - name: Integrated desktop/mobile Chromium and WebKit journeys (synthetic identity, one build)
+        run: node qa/t07-final-ux-perf-20261015/run.mjs --final-integrated
       - run: node scripts/run-ci.mjs legacy
       - run: python3 -m unittest discover -s deploy -p 'test_*.py'
       - run: python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'
+      - name: Atomic social history transition and retained rollback simulations
+        run: python3 qa/t01-final-20261015/social-history-transition-test.py
       - name: Exact candidate promotion and rollback simulations
         run: |
           python3 - <<'PY'
@@ -83,7 +87,7 @@ jobs:
             test-results/legacy
             test-results/t08
             qa/t07-frontend-fixes-20261014/evidence/after
-            qa/t07-frontend-journey-20261014/production-suite
+            qa/t01-final-20261015/browser-final
           if-no-files-found: warn
 
   disposable-database:
@@ -122,6 +126,10 @@ jobs:
           PGPASSWORD: fixture
       - name: Account and integrated migration permissions on a private cluster
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-security-rls.mjs
+      - name: Client write permissions and atomic social history
+        run: |
+          SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-final-write-permissions.mjs
+          SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-final-social-history.mjs
       - name: Salad isolated journal, concurrency and immutable artifacts
         run: node --import tsx --test scripts/test-salad-persistence.mts
         env:
@@ -131,7 +139,7 @@ jobs:
           PGUSER: fixture
           PGPASSWORD: fixture
       - name: Lost completion acknowledgement and OAuth revocation races
-        run: node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t03-durable-reliability-20261014/postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts
+        run: node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t03-durable-reliability-20261014/postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts qa/t01-final-20261015/durable-postgres.test.mts
         env:
           SUTRA_DISPOSABLE_DB: '1'
           PGHOST: 127.0.0.1

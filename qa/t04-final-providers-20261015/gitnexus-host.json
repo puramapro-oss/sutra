@@ -1,0 +1,75 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/lib/salad/host.ts:startSaladHost",
+    "name": "startSaladHost",
+    "kind": "Function",
+    "filePath": "src/lib/salad/host.ts",
+    "startLine": 67,
+    "endLine": 87
+  },
+  "epistemic": "exact",
+  "incoming": {
+    "calls": [
+      {
+        "uid": "File:scripts/test-salad-host.mts",
+        "name": "test-salad-host.mts",
+        "filePath": "scripts/test-salad-host.mts"
+      },
+      {
+        "uid": "File:src/lib/salad/serve.mts",
+        "name": "serve.mts",
+        "filePath": "src/lib/salad/serve.mts"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Class:src/lib/salad/contracts.ts:SaladError",
+        "name": "SaladError",
+        "filePath": "src/lib/salad/contracts.ts"
+      },
+      {
+        "uid": "Function:src/lib/salad/config.ts:saladWorkerConfig",
+        "name": "saladWorkerConfig",
+        "filePath": "src/lib/salad/config.ts"
+      },
+      {
+        "uid": "Function:src/lib/salad/engine.ts:createComfyBridge",
+        "name": "createComfyBridge",
+        "filePath": "src/lib/salad/engine.ts"
+      },
+      {
+        "uid": "Function:src/lib/salad/host.ts:saladHttpServer",
+        "name": "saladHttpServer",
+        "filePath": "src/lib/salad/host.ts"
+      },
+      {
+        "uid": "Function:src/lib/salad/inspection.ts:prepareSaladInspection",
+        "name": "prepareSaladInspection",
+        "filePath": "src/lib/salad/inspection.ts"
+      },
+      {
+        "uid": "Function:src/lib/salad/worker.ts:createSaladWorker",
+        "name": "createSaladWorker",
+        "filePath": "src/lib/salad/worker.ts"
+      }
+    ],
+    "accesses": [
+      {
+        "uid": "Function:src/lib/salad/host.ts:canonicalPersistence",
+        "name": "canonicalPersistence",
+        "filePath": "src/lib/salad/host.ts"
+      }
+    ],
+    "uses": [
+      {
+        "uid": "Interface:src/lib/salad/host.ts:WorkerDatabase",
+        "name": "WorkerDatabase",
+        "filePath": "src/lib/salad/host.ts"
+      }
+    ]
+  },
+  "processes": []
+}

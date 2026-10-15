@@ -1,4 +1,6 @@
 import { isDeepStrictEqual } from 'node:util'
+import { assertFinalMedia } from '@/lib/pipeline-state'
+import type { AssembleResult } from '@/lib/shotstack'
 import { createServiceClient } from '@/lib/supabase'
 import { PLAN_LIMITS } from '@/lib/constants'
 import { isAdmin } from '@/lib/utils'
@@ -34,15 +36,57 @@ export interface VideoJob {
   idempotency_key: string
 }
 
-/** A null result is legitimate only for explicitly disabled production music. */
+/** A terminal receipt must agree with its durable stage outputs, including on replay. */
 export function hasCompletedJobResult(job: Pick<VideoJob, 'kind' | 'payload' | 'progress'>): boolean {
-  if (job.progress.result === undefined) return false
-  if (job.progress.result !== null) return true
-  const input = job.payload.input as { step?: unknown; musicStyle?: unknown } | undefined
+  const result = job.progress.result
+  const input = job.payload.input as { step?: unknown; musicStyle?: unknown; requiredTracks?: { voice?: boolean; music?: boolean }; config?: { default_voice_enabled?: boolean; default_music_genre?: string } } | undefined
   const steps = job.progress.steps as Record<string, { status?: unknown; value?: unknown }> | undefined
   const music = steps?.['stage:music']
-  return job.kind === 'production' && input?.step === 'music' && input.musicStyle === 'none'
-    && music?.status === 'skipped' && music.value === null
+  if (result === null) return job.kind === 'production' && input?.step === 'music' && input.musicStyle === 'none'
+      && music?.status === 'skipped' && music.value === null
+  if (result === undefined || !steps) return false
+  const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
+  const url = (value: unknown): value is string => typeof value === 'string' && !!value.trim() && value !== 'null'
+  if (job.kind === 'production') {
+    const stage = input?.step === 'video' ? 'scenes' : input?.step
+    if (['script', 'scenes', 'voice', 'music'].includes(String(stage))) {
+      const checkpoint = steps[`stage:${stage}`]
+      if (checkpoint?.status !== 'complete') return false
+      if (stage === 'music') return url(result) && result === checkpoint.value
+      if (stage === 'voice') return record(result) && url(result.url) && result.url === checkpoint.value
+      if (stage === 'scenes') return Array.isArray(result) && result.length > 0
+        && result.every(item => record(item) && url(item.url)) && isDeepStrictEqual(result, checkpoint.value)
+      return record(result) && Array.isArray(result.scenes) && result.scenes.length > 0 && isDeepStrictEqual(result, checkpoint.value)
+    }
+    if (input?.step !== 'all' && input?.step !== 'assembly') return false
+  }
+  if (!record(result)) return false
+  for (const stage of ['script', 'scenes', 'images', 'voice', 'music', 'subtitles', 'composition', 'export']) {
+    if (!['complete', 'skipped'].includes(String(steps[`stage:${stage}`]?.status))) return false
+  }
+  if (['scenes', 'composition', 'export'].some(stage => steps[`stage:${stage}`].status !== 'complete')) return false
+  const scenes = steps['stage:scenes'].value
+  if (!Array.isArray(scenes) || !scenes.length) return false
+  const raw = scenes.map(scene => typeof scene === 'string' ? scene : record(scene) ? scene.url : undefined)
+  if (!raw.every(url)) return false
+  const voice = steps['stage:voice'], script = steps['stage:script'].value
+  const voiceRequired = job.kind === 'auto' ? input?.config?.default_voice_enabled === true
+    : job.kind === 'export' ? input?.requiredTracks?.voice !== false
+    : record(script) && typeof script.narration === 'string' && !!script.narration.trim()
+  const musicRequired = job.kind === 'auto' ? !!input?.config?.default_music_genre && input.config.default_music_genre !== 'none'
+    : job.kind === 'export' ? input?.requiredTracks?.music !== false
+    : job.kind === 'create' ? record(script) && typeof script.music_style === 'string' && !['', 'none'].includes(script.music_style)
+    : job.kind === 'production' && input?.musicStyle !== 'none'
+  if ((voiceRequired && (voice.status !== 'complete' || !url(voice.value)))
+    || (musicRequired && (music?.status !== 'complete' || !url(music.value)))) return false
+  const media = steps['stage:export'].value
+  if (!record(media)) return false
+  try { assertFinalMedia(media as unknown as AssembleResult, raw, url(voice.value) || url(music?.value)) }
+  catch { return false }
+  const output = job.kind === 'create' ? result.videoUrl : job.kind === 'auto' ? result.videoFinalUrl
+    : job.kind === 'production' && input?.step === 'all' ? (record(result.assembly) ? result.assembly.url : undefined) : result.url
+  return output === media.url && (job.kind !== 'auto'
+    || (['ready', 'pending_approval'].includes(String(result.status)) && result.assemblyError === null))
 }
 
 /**
@@ -193,10 +237,16 @@ export async function getJobByKey(idempotencyKey: string): Promise<VideoJob | nu
  * réservée orpheline après annulation.
  */
 export async function cancelJobByKey(idempotencyKey: string): Promise<boolean> {
-  const supabase = createServiceClient()
-  const { data, error } = await supabase.rpc('cancel_video_job', { p_key: idempotencyKey })
-  if (error) throw new Error(`Annulation impossible : ${error.message}`)
-  return data === true
+  try {
+    const supabase = createServiceClient()
+    const { data, error } = await supabase.rpc('cancel_video_job', { p_key: idempotencyKey })
+    if (error || typeof data !== 'boolean') throw new Error('SUTRA_CANCEL_FAILED')
+    return data
+  } catch {
+    // A lost or malformed ACK is not proof of cancellation. Repeating this
+    // idempotent RPC is safe; never expose SQL/transport diagnostics to HTTP.
+    throw new Error('SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.')
+  }
 }
 
 /**

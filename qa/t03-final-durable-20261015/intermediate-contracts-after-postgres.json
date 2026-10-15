@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+    "--import",
+    "tsx",
+    "--test",
+    "/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts"
+  ],
+  "exit_code": 1,
+  "environment": "private disposable loopback PostgreSQL; no ambient credentials; external sockets and secrets denied",
+  "proposal_applied_only_to_fixture": true,
+  "source_sha256": {
+    "migrations/v10_durable_jobs_quota.sql": "a112552d0479dc7e54c50231fddb43c8675da639ebaeecc786b3382cad00a73d",
+    "migrations/v11_pipeline_checkpoints.sql": "704bcad695215f7892aea0cc3ae34591864a17353100417ae2a8f9ff42e9b6fc",
+    "src/data/setup-schema.ts": "ab74eb544e1ae8f01911c27f30a2fce00b14428b09de51a5dbbf95db124ff48d",
+    "migrations/sutra_auto.sql": "c49dcf28c9fd58ec7d2e84b33e15c0e29f35b4a54cb158ea71dd35faf8663c1c",
+    "migrations/20261006_auto_occurrence_integrity.sql": "0ce30341243c9a87add6c6ef8a07c02a82b34aef64c9010cd00b6b8b29d6b6b5",
+    "qa/t03-final-durable-20261015/postgres.test.mts": "173dca90c3e3542f3f6aa58f28eff31d881633effe569c4f62b41c21d8288919",
+    "migrations/20261014_durable_checkpoint_integrity.sql": "93b96256c604baaa857efe8064519ad552ccaaff2305628c139294f34579882c",
+    "src/lib/pipeline-state.ts": "be88e636733523e9e0499febe000b02882966b39d618b42f5fceb4fdce3d0e35",
+    "qa/t03-final-durable-20261015/proposal-final-durable.sql": "085980941beedf0d2afd3c9d27af600a4f4f56e962b9e90cd2916011ccefeb96"
+  }
+}

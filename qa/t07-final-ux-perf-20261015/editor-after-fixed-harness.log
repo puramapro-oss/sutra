@@ -1,0 +1,15 @@
+FAIL 375: subtitle add/edit/delete undo redo preserves initial narration: page.goto: Navigation to "http://127.0.0.1:51669/editor/33333333-3333-4333-8333-333333333333" is interrupted by another navigation to "http://127.0.0.1:51669/library"
+Call log:
+[2m  - navigating to "http://127.0.0.1:51669/editor/33333333-3333-4333-8333-333333333333", waiting until "load"[22m
+
+PASS 375: script edit after undo replaces future history
+PASS 1440: subtitle add/edit/delete undo redo preserves initial narration
+PASS 1440: script edit after undo replaces future history
+FAIL no unexpected mutation, uncaught error or hydration mismatch: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   '/127.0.0.1:51669/_next/static/webpack/972c32733a623eeb.webpack.hot-update.json due to access control checks.'
++ ]
+- []
+

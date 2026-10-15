@@ -1,0 +1,299 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-10-15T01:25:17.943973+00:00",
+  "branch": "codex/sutra-t04-final-providers-20261015",
+  "base": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "integrated_app_candidate": "3855665fa79e3cc2171124d864a834214d6ac617",
+  "node": "24.21.0",
+  "unique_new_tests": 30,
+  "checks": [
+    {
+      "name": "offline_contracts",
+      "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node --require ./qa/t08/offline.cjs --import tsx --test qa/t04-final-providers-20261015/*.test.mjs",
+      "status": "PASS",
+      "exit_code": 0,
+      "pass": 30,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "offline-final.txt"
+    },
+    {
+      "name": "context_after_final_lock",
+      "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node --require ./qa/t08/offline.cjs --import tsx --test qa/t04-final-providers-20261015/context.test.mjs",
+      "status": "PASS",
+      "exit_code": 0,
+      "pass": 3,
+      "fail": 0,
+      "included_in_30": true,
+      "evidence": "context-final.txt"
+    },
+    {
+      "name": "worker_typecheck",
+      "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node node_modules/typescript/bin/tsc --noEmit --incremental false --target es2022 --module esnext --moduleResolution bundler --allowImportingTsExtensions --skipLibCheck --strict --types node src/lib/salad/serve.mts",
+      "status": "PASS",
+      "exit_code": 0,
+      "evidence": "typecheck-worker.txt"
+    },
+    {
+      "name": "lint_new_modules",
+      "reproduction_command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node node_modules/eslint/bin/eslint.js src/lib/salad/container/*.mjs qa/t04-final-providers-20261015/*.mjs",
+      "status": "PASS",
+      "exit_code": 0,
+      "evidence": "lint.txt"
+    },
+    {
+      "name": "npm_runtime_audit",
+      "reproduction_command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node /opt/homebrew/lib/node_modules/npm/bin/npm-cli.js audit --package-lock-only --json --prefix src/lib/salad/container",
+      "status": "PASS",
+      "exit_code": 0,
+      "vulnerabilities": 0,
+      "evidence": "npm-audit.json"
+    },
+    {
+      "name": "python_hash_lock",
+      "command": "uv pip compile src/lib/salad/container/requirements.txt --python-version 3.12 --python-platform x86_64-manylinux_2_28 --no-python-downloads --only-binary :all: --generate-hashes --output-file src/lib/salad/container/requirements.lock",
+      "status": "PASS",
+      "exit_code": 0,
+      "evidence": "python-resolve.txt",
+      "installed_runtime_packages": false
+    },
+    {
+      "name": "python_dependency_audit",
+      "command": "uvx pip-audit --disable-pip --no-deps --progress-spinner off --timeout 15 --format json --output qa/t04-final-providers-20261015/python-audit.json -r src/lib/salad/container/requirements.lock",
+      "status": "PASS",
+      "exit_code": 0,
+      "dependencies": 103,
+      "vulnerabilities": 0,
+      "skipped": 0,
+      "evidence": [
+        "python-audit.json",
+        "python-audit.txt"
+      ]
+    },
+    {
+      "name": "salad_master_read",
+      "reproduction_command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node qa/t04-final-providers-20261015/salad-read.mjs --read-only-master",
+      "status": "BLOQUE",
+      "reason": "MASTER_SALAD_KEY_SYNTAX_REQUIRES_LITERAL_VALUE",
+      "requests": 0,
+      "evidence": "salad-live.json"
+    },
+    {
+      "name": "gitleaks_container",
+      "command": "gitleaks dir --redact --no-banner --no-color --report-format json --report-path qa/t04-final-providers-20261015/gitleaks-container.json src/lib/salad/container",
+      "status": "PASS",
+      "exit_code": 0,
+      "findings": 0,
+      "evidence": [
+        "gitleaks-container.json",
+        "gitleaks-container.txt"
+      ]
+    },
+    {
+      "name": "gitleaks_qa",
+      "command": "gitleaks dir --redact --no-banner --no-color --report-format json --report-path qa/t04-final-providers-20261015/gitleaks-qa.json qa/t04-final-providers-20261015",
+      "status": "PASS",
+      "exit_code": 0,
+      "findings": 0,
+      "evidence": [
+        "gitleaks-qa.json",
+        "gitleaks-qa.txt"
+      ]
+    },
+    {
+      "name": "gitleaks_staged",
+      "command": "git diff --cached --no-ext-diff | gitleaks stdin --redact --no-banner --no-color --report-format json --report-path qa/t04-final-providers-20261015/gitleaks-staged.json",
+      "status": "PASS",
+      "exit_code": 0,
+      "findings": 0,
+      "evidence": [
+        "gitleaks-staged.json",
+        "gitleaks-staged.txt"
+      ]
+    },
+    {
+      "name": "diff_check",
+      "command": "git diff --cached --check",
+      "status": "PASS",
+      "exit_code": 0
+    },
+    {
+      "name": "input_sha_and_ownership",
+      "status": "PASS",
+      "inputs": 13,
+      "existing_product_files_modified": 0,
+      "existing_docs_modified": [
+        "BATON.md",
+        "ERRORS.md",
+        "task_plan.md"
+      ],
+      "method": "SHA256 equality and exact staged path allowlist; docs append only"
+    }
+  ],
+  "input_sha256": [
+    {
+      "path": "qa/t04-final-providers-20261015/container.test.mjs",
+      "sha256": "b3a2c481528dfa79611f41d1217a98a38bdd7683c9996a55a01dcc01f828d4c2"
+    },
+    {
+      "path": "qa/t04-final-providers-20261015/context.test.mjs",
+      "sha256": "2f19dc012d2bb85e81fec9d1c6e26316486de67b7dbfa370137b9783c43b2a02"
+    },
+    {
+      "path": "qa/t04-final-providers-20261015/salad-read.mjs",
+      "sha256": "a7a4e21088b027b455fdedb5ee06e5defbac3e74736f90fce35220fac1c1de6d"
+    },
+    {
+      "path": "qa/t04-final-providers-20261015/salad-read.test.mjs",
+      "sha256": "ae6ea8d2d931c845f123ea37c3b5d9ac155694af78d76ee5c25ae37deb2ff6d0"
+    },
+    {
+      "path": "src/lib/salad/container/Dockerfile",
+      "sha256": "34be1b6d352046979014246b61fe50d47a37a11f53e57121c394b81f369f2d78"
+    },
+    {
+      "path": "src/lib/salad/container/disabled.example.json",
+      "sha256": "4a30c9be3f878a9b2ecf59f5e0ada934c9d7e390f09c232597a46d5b4e929a50"
+    },
+    {
+      "path": "src/lib/salad/container/health.mjs",
+      "sha256": "529001a6ffc45ee75c094e91691e5faae26231c90142f37344f54469b03c43f8"
+    },
+    {
+      "path": "src/lib/salad/container/launch.mjs",
+      "sha256": "5bc85aead74d16a5444b7637f558c28ecb4a08015339bd19a9687a53b67e3629"
+    },
+    {
+      "path": "src/lib/salad/container/package-lock.json",
+      "sha256": "1be3b8ecd37d849db88dabe89a18b87040fab3385175ac33ba058de2a2ac5049"
+    },
+    {
+      "path": "src/lib/salad/container/package.json",
+      "sha256": "dd024bb8402c749895d471e2f39de0da26bf21a8a8d089b1f3b5d81a67fe1132"
+    },
+    {
+      "path": "src/lib/salad/container/prepare-context.mjs",
+      "sha256": "75007ea413fd1a457d0ecc7c85c94a49460fa38e903dbdef5f3ff684533d05fb"
+    },
+    {
+      "path": "src/lib/salad/container/requirements.lock",
+      "sha256": "f94b265db4236014d6a1f0d4647882d7248feb3cb0896a611f98eae3892a0f9a"
+    },
+    {
+      "path": "src/lib/salad/container/requirements.txt",
+      "sha256": "5b6470e9ae0f69cd0f32062f4fa979cbb0adc3bdfcb7a3292d5408ea8717b586"
+    }
+  ],
+  "reuse": {
+    "status": "PASS",
+    "unchanged_inputs": 36,
+    "prior_tests": 91,
+    "rerun": false,
+    "evidence": "reuse.json",
+    "previous_live_read_utc": "2026-10-14T13:58:12.735Z",
+    "live_authentication_refreshed": false
+  },
+  "draft_corrections": [
+    {
+      "issue": "two probes accepting HTTP200 without validated schema and missing transitive media-probe COPY",
+      "red": "container-red.txt",
+      "red_pass": 10,
+      "red_fail": 3,
+      "green": "container-green.txt",
+      "green_pass": 13
+    },
+    {
+      "issue": "PyTorch initial pin advisories",
+      "red": "python-audit-red.json",
+      "advisories": [
+        "PYSEC-2026-139",
+        "PYSEC-2025-194"
+      ],
+      "green": "python-audit.json",
+      "resolution": "official torch2.13.0/torchvision0.28.0 pair; GPU not qualified"
+    },
+    {
+      "issue": "test fixture missing application/json content type",
+      "classification": "TEST_FIXTURE_ONLY",
+      "red": "fixture-content-type-red.txt",
+      "green": "offline-final.txt"
+    }
+  ],
+  "blocked": [
+    "master Salad key syntax",
+    "SALAD_ORGANIZATION and SALAD_PROJECT missing",
+    "Docker/Podman absent; Linux builder required",
+    "GPU trial and budget not authorized"
+  ],
+  "not_tested": [
+    "image build and OS/image scan",
+    "runtime wheel installation and CUDA imports",
+    "actual GPU model and VRAM qualification",
+    "actual provider generation/cancel/billing",
+    "Salad management authentication, scope, group image/GPU config",
+    "actual replica interruption/restart",
+    "production integration/deployment"
+  ],
+  "safety": {
+    "paid_calls": 0,
+    "salad_authenticated_calls": 0,
+    "remote_mutations": 0,
+    "gpu_executions": 0,
+    "models_downloaded": 0,
+    "secrets_logged": false,
+    "fallback": false,
+    "salad_enabled": false
+  },
+  "gitnexus": {
+    "final_index": "gitnexus-final-index.txt",
+    "index_scope": "isolated worktree",
+    "exhaustive": false,
+    "dropped_entrypoints": 1187,
+    "dropped_callees": 664,
+    "budget_cut_walks": 3,
+    "impact_host": {
+      "risk": "LOW",
+      "direct": 2,
+      "evidence": "gitnexus-impact-host.json"
+    },
+    "impact_health": {
+      "risk": "LOW",
+      "direct": 1,
+      "bound": "lower-bound; 2 receiver calls lost",
+      "evidence": "gitnexus-impact-probe-exact.json"
+    },
+    "impact_readiness": {
+      "risk": "UNKNOWN",
+      "direct_review": "supervise and owned tests",
+      "evidence": "gitnexus-impact-readiness.json"
+    },
+    "detect_changes": {
+      "status": "EXECUTED_PARTIAL",
+      "staged": {
+        "evidence": "gitnexus-staged.txt",
+        "scope": "staged",
+        "files": 52,
+        "symbols": 54,
+        "affected_processes": 0,
+        "risk": "LOW",
+        "listing": "CLI capped at15 despite limit200; exact Git paths manually reviewed"
+      },
+      "compare_main": {
+        "evidence": "gitnexus-compare-main.txt",
+        "files": 2716,
+        "symbols": 6248,
+        "affected_processes": 229,
+        "risk": "CRITICAL",
+        "reason": "includes T01 integrated history, not this isolated delta; user warned"
+      },
+      "cli_prefix": "GITNEXUS_STORAGE_PATH=/Users/matissdornier/purama-worktrees/sutra-t04-final-providers-20261015/test-results/gitnexus /Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node /Users/matissdornier/purama/.gitnexus/run.cjs",
+      "arguments": [
+        "detect-changes --scope staged --repo /Users/matissdornier/purama-worktrees/sutra-t04-final-providers-20261015 --limit 200",
+        "detect-changes --scope compare --base-ref main --repo /Users/matissdornier/purama-worktrees/sutra-t04-final-providers-20261015 --limit 200"
+      ]
+    }
+  },
+  "evidence_formatting": "Trailing whitespace and terminal control sequences normalized in five owned logs; diagnostics preserved.",
+  "t01_head_reconfirmed_precommit": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "t01_foreign_wip": "present and preserved; integration remains T01"
+}

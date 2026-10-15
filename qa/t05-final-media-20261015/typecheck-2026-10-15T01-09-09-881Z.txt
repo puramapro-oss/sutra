@@ -1,0 +1,23 @@
+scripts/test-t05-final-media.mts(199,3): error TS2322: Type '() => Promise<{ url: string; timeline: {}; validation: MediaValidation | undefined; duration: number; outputQuality: "720p"; outputSize: { width: number; height: number; }; outputVerified: true; }>' is not assignable to type '(params: AssembleParams, deps?: { measureAudio?: ((contract: CompositionContract, signal?: AbortSignal | undefined) => Promise<{ voice: MediaProbe | null; music: MediaProbe | null; }>) | undefined; }) => Promise<...>'.
+  Type 'Promise<{ url: string; timeline: {}; validation: MediaValidation | undefined; duration: number; outputQuality: "720p"; outputSize: { width: number; height: number; }; outputVerified: true; }>' is not assignable to type 'Promise<AssembleResult>'.
+    Type '{ url: string; timeline: {}; validation: MediaValidation | undefined; duration: number; outputQuality: "720p"; outputSize: { width: number; height: number; }; outputVerified: true; }' is not assignable to type 'AssembleResult'.
+      Types of property 'outputQuality' are incompatible.
+        Type '"720p"' is not assignable to type 'ShotstackQuality'.
+        0.88 real         1.43 user         0.11 sys
+           360448000  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               22326  page reclaims
+                  83  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   1  messages sent
+                   0  messages received
+                   0  signals received
+                1612  voluntary context switches
+                4712  involuntary context switches
+         17510316909  instructions retired
+          6065974925  cycles elapsed
+           346232344  peak memory footprint

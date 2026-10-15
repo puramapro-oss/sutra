@@ -1,0 +1,247 @@
+{
+  "base": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "scope": "local mock browser proof; raw FAIL kept; no global PASS",
+  "reports": {
+    "after-chromium/results.json": {
+      "pass": 22,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "before-chromium/results.json": {
+      "pass": 12,
+      "fail": 6,
+      "failedChecks": [
+        "signup 375: password visibility reachable by keyboard",
+        "signup 375: duplicate form submission produces one auth request",
+        "signup 1440: password visibility reachable by keyboard",
+        "signup 1440: duplicate form submission produces one auth request",
+        "login 375: duplicate form submission produces one auth request",
+        "login 1440: duplicate form submission produces one auth request"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "delta-production-chromium/chromium/editor/results.json": {
+      "pass": 5,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "delta-production-chromium/chromium/navigation/results.json": {
+      "pass": 3,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "delta-production-chromium/chromium/visual/results.json": {
+      "pass": 3,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "delta-production-chromium/webkit/editor/results.json": {
+      "pass": 5,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "delta-production-chromium/webkit/navigation/results.json": {
+      "pass": 2,
+      "fail": 1,
+      "failedChecks": [
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "delta-production-chromium/webkit/visual/results.json": {
+      "pass": 2,
+      "fail": 1,
+      "failedChecks": [
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "dialog-before-chromium/results.json": {
+      "pass": 1,
+      "fail": 2,
+      "failedChecks": [
+        "disconnect dialog is named",
+        "disconnect dialog traps focus, Escape restores trigger"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "editor-after-webkit-harness-heading/results.json": {
+      "pass": 0,
+      "fail": 1,
+      "failedChecks": [
+        "harness"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "editor-after-webkit/results.json": {
+      "pass": 3,
+      "fail": 2,
+      "failedChecks": [
+        "375: subtitle add/edit/delete undo redo preserves initial narration",
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "editor-before-webkit/results.json": {
+      "pass": 0,
+      "fail": 5,
+      "failedChecks": [
+        "375: subtitle add/edit/delete undo redo preserves initial narration",
+        "375: script edit after undo replaces future history",
+        "1440: subtitle add/edit/delete undo redo preserves initial narration",
+        "1440: script edit after undo replaces future history",
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "keyboard-webkit-regression/results.json": {
+      "pass": 4,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "planning-after-chromium/results.json": {
+      "pass": 5,
+      "fail": 4,
+      "failedChecks": [
+        "375: schedule labels, state and contrast",
+        "1440: schedule labels, state and contrast",
+        "failed delete preserves schedule and manual retry deletes once",
+        "lost save response has bounded wait, no automatic retry and stable draft ID"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "planning-before-chromium/results.json": {
+      "pass": 0,
+      "fail": 3,
+      "failedChecks": [
+        "375: schedule labels, state and contrast",
+        "375: failed schedule save preserves draft and rejects duplicate submissions",
+        "harness"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/chromium/final/results.json": {
+      "pass": 22,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/chromium/planning/results.json": {
+      "pass": 9,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/chromium/social/results.json": {
+      "pass": 10,
+      "fail": 0,
+      "failedChecks": [],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/webkit/extra/results.json": {
+      "pass": 28,
+      "fail": 3,
+      "failedChecks": [
+        "375: subtitle edit, delete and undo preserve draft",
+        "1440: subtitle edit, delete and undo preserve draft",
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/webkit/final/results.json": {
+      "pass": 18,
+      "fail": 4,
+      "failedChecks": [
+        "signup 375: password visibility reachable by keyboard",
+        "signup 1440: password visibility reachable by keyboard",
+        "login 375: password visibility reachable by keyboard",
+        "login 1440: password visibility reachable by keyboard"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/webkit/journey/results.json": {
+      "pass": 33,
+      "fail": 1,
+      "failedChecks": [
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/webkit/planning/results.json": {
+      "pass": 8,
+      "fail": 1,
+      "failedChecks": [
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/webkit/private-download/results.json": {
+      "pass": 8,
+      "fail": 1,
+      "failedChecks": [
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "production-chromium/webkit/social/results.json": {
+      "pass": 9,
+      "fail": 1,
+      "failedChecks": [
+        "no unexpected mutation, uncaught error or hydration mismatch"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "social-after-chromium/results.json": {
+      "pass": 8,
+      "fail": 1,
+      "failedChecks": [
+        "disconnect dialog is named, traps focus, Escape restores trigger"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    },
+    "social-before-chromium/results.json": {
+      "pass": 1,
+      "fail": 5,
+      "failedChecks": [
+        "375: social unavailable is persistent, never a disconnected summary",
+        "375: explicit retry recovers and ignores duplicate requests",
+        "1440: social unavailable is persistent, never a disconnected summary",
+        "1440: explicit retry recovers and ignores duplicate requests",
+        "social slow response recovers within 12 seconds without late overwrite"
+      ],
+      "blockedOrigins": [],
+      "unexpectedMutations": []
+    }
+  }
+}

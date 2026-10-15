@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "incremental": false },
+  "files": ["../../node_modules/next/types/global.d.ts"],
+  "include": ["./cancellation.test.mts", "../../src/types/*.d.ts"],
+  "exclude": ["../../node_modules"]
+}

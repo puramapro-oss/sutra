@@ -134,7 +134,7 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
     outroUrl,
     timeoutMs = DEFAULT_TIMEOUT_MS,
     jobId,
-    signal,
+    signal: callerSignal,
   } = params
 
   if (clips.length === 0) {
@@ -153,11 +153,18 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
     )
   }
 
+  if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 2_147_483_647) {
+    throw new FfmpegCompositorError('Budget temps de composition invalide', 'validation')
+  }
+  // One budget covers discovery, queueing, downloads, every pass and final decoding.
+  const deadline = Date.now() + timeoutMs
+  const budget = AbortSignal.timeout(timeoutMs)
+  const signal = callerSignal ? AbortSignal.any([callerSignal, budget]) : budget
+  if (signal.aborted) throw new FfmpegCompositorError('Composition annulee', 'cancelled')
   const resolution = getResolution(format, quality)
   const [width, height] = resolution.split('x').map(Number)
   const ffmpegBin = resolveFfmpegBinary()
-  const encoder = await detectVideoEncoder(ffmpegBin)
-  const deadline = Date.now() + timeoutMs
+  const encoder = await detectVideoEncoder(ffmpegBin, signal)
 
 
 
@@ -167,7 +174,7 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
   // atteint — le slot de concurrence resterait perdu pour toujours (fuite
   // qui finit par bloquer tous les jobs futurs). D'ou ce `finally` englobant
   // separe, garanti d'etre execute quelle que soit l'etape qui echoue.
-  const release = await acquireFfmpegSlot()
+  const release = await acquireFfmpegSlot(signal)
   try {
     // jobId stable -> dossier deterministe conserve en cas d'echec (reprise
     // mid-render au prochain retry). Sans jobId, comportement historique :

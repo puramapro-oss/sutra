@@ -50,7 +50,7 @@ const input: ProductionJobInput = { step: 'script', userId: USER, userEmail: nul
   qualityCap: '720p', mediaFormat: '16:9', idea: 'Fixture', template: null, format: '16:9', voice: null,
   musicStyle: 'cinematic', tone: null, previousData: { script: SCRIPT }, brandKit: null, requestKey: 'fixture-job' }
 function job(): VideoJob { return { id: JOB, video_id: VIDEO, user_id: USER, kind: 'production', payload: { input: structuredClone(input) },
-  progress: { steps: { script: structuredClone(SCRIPT) }, result: structuredClone(SCRIPT) }, provider_job_ids: {},
+  progress: { steps: { script: structuredClone(SCRIPT), 'stage:script': { status: 'complete', value: structuredClone(SCRIPT) } }, result: structuredClone(SCRIPT) }, provider_job_ids: {},
   status: 'processing', attempts: 2, max_attempts: 3, locked_by: WORKER, last_error: null, idempotency_key: 'fixture-job' } }
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json' } })
 
@@ -134,7 +134,22 @@ for (const kind of ['production', 'create', 'export', 'auto'] as const) {
     const h = db(t); h.row.kind = kind
     Object.assign(h.row.payload.input as object, { videoId: VIDEO, videoRowId: VIDEO })
     if (kind === 'auto' || kind === 'production') h.row.video_id = null
-    assert.deepEqual(await runVideoJob(h.row, WORKER), SCRIPT)
+    if (kind !== 'production') {
+      const media = { url: 'https://media.fixture.invalid/final.mp4', duration: 5, outputVerified: true,
+        outputSize: { width: 720, height: 1280 }, verification: { url: 'https://media.fixture.invalid/final.mp4',
+          sha256: 'a'.repeat(64), duration: 5, width: 720, height: 1280, fps: 30, hasAudio: true } }
+      Object.assign(h.row.progress.steps as object, {
+        'stage:scenes': { status: 'complete', value: [{ url: 'https://media.fixture.invalid/raw.mp4' }] },
+        'stage:images': { status: 'skipped', value: [] }, 'stage:subtitles': { status: 'complete', value: [] },
+        'stage:voice': { status: 'complete', value: 'https://media.fixture.invalid/voice.mp3' },
+        'stage:music': { status: 'complete', value: 'https://media.fixture.invalid/music.mp3' },
+        'stage:composition': { status: 'complete', value: media }, 'stage:export': { status: 'complete', value: media },
+      })
+      h.row.progress.result = kind === 'create' ? { videoUrl: media.url, duration: 5, actualQuality: '720p' }
+        : kind === 'export' ? { url: media.url, quality: '720p' }
+          : { videoFinalUrl: media.url, status: 'ready', assemblyError: null }
+    }
+    assert.deepEqual(await runVideoJob(h.row, WORKER), h.row.progress.result)
     assert.deepEqual(h.calls, ['heartbeat_video_job_v2'])
   })
 }
