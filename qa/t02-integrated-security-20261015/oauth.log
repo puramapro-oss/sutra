@@ -1,0 +1,482 @@
+TAP version 13
+# (node:30728) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:30728) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T02 account list omits private metadata/tokens and another user account
+ok 1 - T02 account list omits private metadata/tokens and another user account
+  ---
+  duration_ms: 2.081125
+  type: 'test'
+  ...
+# Subtest: T02 account list redacts error diagnostics
+ok 2 - T02 account list redacts error diagnostics
+  ---
+  duration_ms: 0.242875
+  type: 'test'
+  ...
+# Subtest: T02 account list redacts throw diagnostics
+ok 3 - T02 account list redacts throw diagnostics
+  ---
+  duration_ms: 0.19925
+  type: 'test'
+  ...
+# Subtest: T02 anonymous account list does not reach the privileged database
+ok 4 - T02 anonymous account list does not reach the privileged database
+  ---
+  duration_ms: 0.121334
+  type: 'test'
+  ...
+# Subtest: T02 callback without verified session never consumes or exchanges state
+ok 5 - T02 callback without verified session never consumes or exchanges state
+  ---
+  duration_ms: 2.08475
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a different user without burning the owner state
+ok 6 - T02 callback rejects a different user without burning the owner state
+  ---
+  duration_ms: 0.897167
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a platform switch
+ok 7 - T02 callback rejects a platform switch
+  ---
+  duration_ms: 0.238542
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects a missing or forged browser secret
+ok 8 - T02 callback rejects a missing or forged browser secret
+  ---
+  duration_ms: 0.421125
+  type: 'test'
+  ...
+# Subtest: T02 callback rejects an expired state before token exchange
+ok 9 - T02 callback rejects an expired state before token exchange
+  ---
+  duration_ms: 0.211291
+  type: 'test'
+  ...
+# Subtest: T02 concurrent callbacks verify only once and never store or expose tokens
+ok 10 - T02 concurrent callbacks verify only once and never store or expose tokens
+  ---
+  duration_ms: 0.361667
+  type: 'test'
+  ...
+# Subtest: T02 database outage during callback cannot authorize an exchange
+ok 11 - T02 database outage during callback cannot authorize an exchange
+  ---
+  duration_ms: 0.18075
+  type: 'test'
+  ...
+# Subtest: T02 uncertain exchange is sanitized and consumed state cannot be replayed
+ok 12 - T02 uncertain exchange is sanitized and consumed state cannot be replayed
+  ---
+  duration_ms: 0.219792
+  type: 'test'
+  ...
+# Subtest: T02 callback from another login session cannot consume the current state
+ok 13 - T02 callback from another login session cannot consume the current state
+  ---
+  duration_ms: 0.129625
+  type: 'test'
+  ...
+# Subtest: T02 callback cannot change server profile or use an unrelated provider account without verification
+ok 14 - T02 callback cannot change server profile or use an unrelated provider account without verification
+  ---
+  duration_ms: 0.115958
+  type: 'test'
+  ...
+# (node:30729) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:30729) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06 FINAL callback rejects profile reassigned while provider GET is pending
+ok 15 - T06 FINAL callback rejects profile reassigned while provider GET is pending
+  ---
+  duration_ms: 6.131708
+  type: 'test'
+  ...
+# Subtest: T06 FINAL callback rejects profile removed while provider GET is pending
+ok 16 - T06 FINAL callback rejects profile removed while provider GET is pending
+  ---
+  duration_ms: 0.918791
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on reassigned but retains local fence
+ok 17 - T06 FINAL revoke blocks remote DELETE on reassigned but retains local fence
+  ---
+  duration_ms: 1.753083
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on removed but retains local fence
+ok 18 - T06 FINAL revoke blocks remote DELETE on removed but retains local fence
+  ---
+  duration_ms: 0.852084
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on invalid-binding but retains local fence
+ok 19 - T06 FINAL revoke blocks remote DELETE on invalid-binding but retains local fence
+  ---
+  duration_ms: 0.723958
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on missing-provenance but retains local fence
+ok 20 - T06 FINAL revoke blocks remote DELETE on missing-provenance but retains local fence
+  ---
+  duration_ms: 0.619833
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on foreign-profile but retains local fence
+ok 21 - T06 FINAL revoke blocks remote DELETE on foreign-profile but retains local fence
+  ---
+  duration_ms: 0.62275
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on foreign-custodian but retains local fence
+ok 22 - T06 FINAL revoke blocks remote DELETE on foreign-custodian but retains local fence
+  ---
+  duration_ms: 0.526792
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke blocks remote DELETE on after-claim but retains local fence
+ok 23 - T06 FINAL revoke blocks remote DELETE on after-claim but retains local fence
+  ---
+  duration_ms: 0.6235
+  type: 'test'
+  ...
+# Subtest: T06 FINAL unchanged tenant can connect, revoke and personally reconnect
+ok 24 - T06 FINAL unchanged tenant can connect, revoke and personally reconnect
+  ---
+  duration_ms: 1.294292
+  type: 'test'
+  ...
+# Subtest: T06 FINAL provider refusal keeps revocation fenced and does not repeat DELETE
+ok 25 - T06 FINAL provider refusal keeps revocation fenced and does not repeat DELETE
+  ---
+  duration_ms: 0.523
+  type: 'test'
+  ...
+# Subtest: T06 FINAL confirmed revocation is idempotent without a second remote DELETE
+ok 26 - T06 FINAL confirmed revocation is idempotent without a second remote DELETE
+  ---
+  duration_ms: 0.532333
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke erases legacy token fields (already confirmed=false)
+ok 27 - T06 FINAL revoke erases legacy token fields (already confirmed=false)
+  ---
+  duration_ms: 1.058958
+  type: 'test'
+  ...
+# Subtest: T06 FINAL revoke erases legacy token fields (already confirmed=true)
+ok 28 - T06 FINAL revoke erases legacy token fields (already confirmed=true)
+  ---
+  duration_ms: 0.612833
+  type: 'test'
+  ...
+# Subtest: T06 FINAL pending revocation clears legacy credentials without retrying the provider
+ok 29 - T06 FINAL pending revocation clears legacy credentials without retrying the provider
+  ---
+  duration_ms: 0.535542
+  type: 'test'
+  ...
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# (node:30732) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:30732) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: tiktok
+ok 30 - T06-FINAL OAuth route + adapter + atomic state: tiktok
+  ---
+  duration_ms: 6.446583
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: youtube
+ok 31 - T06-FINAL OAuth route + adapter + atomic state: youtube
+  ---
+  duration_ms: 1.011709
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: instagram
+ok 32 - T06-FINAL OAuth route + adapter + atomic state: instagram
+  ---
+  duration_ms: 0.755541
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: facebook
+ok 33 - T06-FINAL OAuth route + adapter + atomic state: facebook
+  ---
+  duration_ms: 0.579375
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: x
+ok 34 - T06-FINAL OAuth route + adapter + atomic state: x
+  ---
+  duration_ms: 0.571875
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: linkedin
+ok 35 - T06-FINAL OAuth route + adapter + atomic state: linkedin
+  ---
+  duration_ms: 0.472916
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: pinterest
+ok 36 - T06-FINAL OAuth route + adapter + atomic state: pinterest
+  ---
+  duration_ms: 0.365583
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: reddit
+ok 37 - T06-FINAL OAuth route + adapter + atomic state: reddit
+  ---
+  duration_ms: 0.369833
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: threads
+ok 38 - T06-FINAL OAuth route + adapter + atomic state: threads
+  ---
+  duration_ms: 0.3795
+  type: 'test'
+  ...
+# Subtest: T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+ok 39 - T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+  ---
+  duration_ms: 0.465417
+  type: 'test'
+  ...
+# Subtest: T06-FINAL session rotation during hosted consent requires fresh state
+ok 40 - T06-FINAL session rotation during hosted consent requires fresh state
+  ---
+  duration_ms: 0.35375
+  type: 'test'
+  ...
+# Subtest: T06-FINAL expired hosted consent never reaches identity lookup
+ok 41 - T06-FINAL expired hosted consent never reaches identity lookup
+  ---
+  duration_ms: 0.293917
+  type: 'test'
+  ...
+# Subtest: T06-FINAL atomic duplicate callback invokes real identity adapter only once
+ok 42 - T06-FINAL atomic duplicate callback invokes real identity adapter only once
+  ---
+  duration_ms: 0.389125
+  type: 'test'
+  ...
+# Subtest: T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+ok 43 - T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+  ---
+  duration_ms: 0.342667
+  type: 'test'
+  ...
+# Subtest: T06-FINAL lost POST response uses identical persisted wire request, then GET only
+ok 44 - T06-FINAL lost POST response uses identical persisted wire request, then GET only
+  ---
+  duration_ms: 3.184
+  type: 'test'
+  ...
+# Subtest: T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+ok 45 - T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+  ---
+  duration_ms: 1.44075
+  type: 'test'
+  ...
+# Subtest: T06-FINAL reconnect replaces local identity but requires explicit new account selection
+ok 46 - T06-FINAL reconnect replaces local identity but requires explicit new account selection
+  ---
+  duration_ms: 1.674291
+  type: 'test'
+  ...
+# Subtest: T06-FINAL separate productions on same account receive distinct keys and histories
+ok 47 - T06-FINAL separate productions on same account receive distinct keys and histories
+  ---
+  duration_ms: 1.050291
+  type: 'test'
+  ...
+# Subtest: T06-FINAL another session user cannot revoke the bound account
+ok 48 - T06-FINAL another session user cannot revoke the bound account
+  ---
+  duration_ms: 0.726083
+  type: 'test'
+  ...
+# Subtest: T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+ok 49 - T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+  ---
+  duration_ms: 1.403375
+  type: 'test'
+  ...
+# Subtest: T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+ok 50 - T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+  ---
+  duration_ms: 1.3945
+  type: 'test'
+  ...
+# Subtest: T06-FINAL wrong remote account cannot confirm or retry a known post
+ok 51 - T06-FINAL wrong remote account cannot confirm or retry a known post
+  ---
+  duration_ms: 1.038708
+  type: 'test'
+  ...
+# Subtest: T06-FINAL revoked during claim never reaches real POST adapter
+ok 52 - T06-FINAL revoked during claim never reaches real POST adapter
+  ---
+  duration_ms: 0.729042
+  type: 'test'
+  ...
+# Subtest: T06-FINAL unverified media and missing approval never reach real POST adapter
+ok 53 - T06-FINAL unverified media and missing approval never reach real POST adapter
+  ---
+  duration_ms: 0.552708
+  type: 'test'
+  ...
+# Subtest: T06-FINAL UI regression: a revoked account must expose Se connecter again
+ok 54 - T06-FINAL UI regression: a revoked account must expose Se connecter again
+  ---
+  duration_ms: 9.658125
+  type: 'test'
+  ...
+# Subtest: T06-DELTA denied consent consumes the bound state even without account identity
+ok 55 - T06-DELTA denied consent consumes the bound state even without account identity
+  ---
+  duration_ms: 0.496334
+  type: 'test'
+  ...
+# Subtest: T06-DELTA a forged denial cannot consume another session state
+ok 56 - T06-DELTA a forged denial cannot consume another session state
+  ---
+  duration_ms: 0.263
+  type: 'test'
+  ...
+# Subtest: T06-DELTA consent issued before revocation must not reconnect the revoked account
+ok 57 - T06-DELTA consent issued before revocation must not reconnect the revoked account
+  ---
+  duration_ms: 0.636459
+  type: 'test'
+  ...
+# Subtest: T06-DELTA revocation while identity lookup is in flight must win over callback
+ok 58 - T06-DELTA revocation while identity lookup is in flight must win over callback
+  ---
+  duration_ms: 0.722958
+  type: 'test'
+  ...
+# Subtest: T06-DELTA X denial accepts the documented provider platform alias and consumes state
+ok 59 - T06-DELTA X denial accepts the documented provider platform alias and consumes state
+  ---
+  duration_ms: 0.343916
+  type: 'test'
+  ...
+# Subtest: T06-DELTA unknown provider error remains generic and still consumes state
+ok 60 - T06-DELTA unknown provider error remains generic and still consumes state
+  ---
+  duration_ms: 0.37225
+  type: 'test'
+  ...
+# Subtest: T06-DELTA fresh consent after completed revoke can reconnect without reviving old state
+ok 61 - T06-DELTA fresh consent after completed revoke can reconnect without reviving old state
+  ---
+  duration_ms: 1.121541
+  type: 'test'
+  ...
+# Subtest: T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion
+ok 62 - T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion
+  ---
+  duration_ms: 1.110792
+  type: 'test'
+  ...
+# Subtest: T06-DELTA two initial consent callbacks cannot overwrite the winning account
+ok 63 - T06-DELTA two initial consent callbacks cannot overwrite the winning account
+  ---
+  duration_ms: 0.665125
+  type: 'test'
+  ...
+# Subtest: T06-DELTA account snapshot read error fails closed before state consumption or provider GET
+ok 64 - T06-DELTA account snapshot read error fails closed before state consumption or provider GET
+  ---
+  duration_ms: 0.292042
+  type: 'test'
+  ...
+# Subtest: T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish
+ok 65 - T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish
+  ---
+  duration_ms: 0.585375
+  type: 'test'
+  ...
+# Subtest: T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke
+ok 66 - T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke
+  ---
+  duration_ms: 0.803
+  type: 'test'
+  ...
+# Subtest: T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke
+ok 67 - T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke
+  ---
+  duration_ms: 0.636541
+  type: 'test'
+  ...
+# [sutra:cron] refused: invalid authorization
+# (node:30733) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:30733) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06 routes: session absente ne modifie ni compte ni production
+ok 68 - T06 routes: session absente ne modifie ni compte ni production
+  ---
+  duration_ms: 2.812417
+  type: 'test'
+  ...
+# Subtest: T06 routes: partiel ne peut pas etre remis a ready ou supprime
+ok 69 - T06 routes: partiel ne peut pas etre remis a ready ou supprime
+  ---
+  duration_ms: 1.012708
+  type: 'test'
+  ...
+# Subtest: T06 routes: occurrence non publiee conserve son identite de deduplication
+ok 70 - T06 routes: occurrence non publiee conserve son identite de deduplication
+  ---
+  duration_ms: 0.247292
+  type: 'test'
+  ...
+# Subtest: T06 routes: journal reserve avant projection interdit reset et suppression
+ok 71 - T06 routes: journal reserve avant projection interdit reset et suppression
+  ---
+  duration_ms: 0.313
+  type: 'test'
+  ...
+# Subtest: T06 routes: transition concurrente preserve publishing et refuse un faux acquittement
+ok 72 - T06 routes: transition concurrente preserve publishing et refuse un faux acquittement
+  ---
+  duration_ms: 0.252958
+  type: 'test'
+  ...
+# Subtest: T06 routes: panne revoke distante rend 202 avec etat local revoque
+ok 73 - T06 routes: panne revoke distante rend 202 avec etat local revoque
+  ---
+  duration_ms: 1.63475
+  type: 'test'
+  ...
+# Subtest: T06 routes: compte absent rend 404 et panne DB rend 503 sans revoke distant
+ok 74 - T06 routes: compte absent rend 404 et panne DB rend 503 sans revoke distant
+  ---
+  duration_ms: 0.306709
+  type: 'test'
+  ...
+# Subtest: T06 routes: cron desactive reconcilie en lecture seule sans travail de generation
+ok 75 - T06 routes: cron desactive reconcilie en lecture seule sans travail de generation
+  ---
+  duration_ms: 0.423167
+  type: 'test'
+  ...
+# Subtest: T06 routes: cron sans autorisation ne lit ni ne soumet rien
+ok 76 - T06 routes: cron sans autorisation ne lit ni ne soumet rien
+  ---
+  duration_ms: 0.380625
+  type: 'test'
+  ...
+1..76
+# tests 76
+# suites 0
+# pass 76
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 644.395584

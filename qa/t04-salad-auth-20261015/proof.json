@@ -1,0 +1,51 @@
+{
+  "base": "d5d49a458e9e630ffbc1a433a7693a8cecd7dad5",
+  "branch": "codex/sutra-t04-salad-auth-20261015",
+  "localTests": {
+    "pass": 30,
+    "fail": 0,
+    "skip": 0
+  },
+  "live": "BLOQUE_INPUT",
+  "masterWritten": false,
+  "providerRequests": 0,
+  "paidRequests": 0,
+  "gpuRuns": 0,
+  "productionChanges": 0,
+  "secretsInProof": false,
+  "sources": [
+    {
+      "path": "qa/t04-salad-access-20261015/secure_setup.py",
+      "sha256": "74aed6709107a94e3354c9e1c375e4486392e21457b9c0f8309eaedfd8b86cd3"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/test_secure_setup.py",
+      "sha256": "b978fc55d6cdcb5c7f890fd8a1fde17e6e5cc11b851371ec03eaefdb8e1f02ea"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/validate-access.mjs",
+      "sha256": "5bfe890a8d4027a51fadbf0c00530e8c1f21f4fbe03708117e6348bfd3c558cb"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/validate-access.test.mjs",
+      "sha256": "2ee591852c01e78b853c6032fa92877f4c3f89bbcdab9d52c1e0be23cc7c31b3"
+    },
+    {
+      "path": "qa/t04-final-providers-20261015/salad-read.mjs",
+      "sha256": "a7a4e21088b027b455fdedb5ee06e5defbac3e74736f90fce35220fac1c1de6d"
+    },
+    {
+      "path": "qa/t04-salad-auth-20261015/test_input_diagnostic.py",
+      "sha256": "9e27f0e04ea43ab19742ac1af48f7ca122aefc18e129fb7e19bce2e77b9512cc"
+    },
+    {
+      "path": "qa/t04-salad-auth-20261015/Saisie-Salad.command",
+      "sha256": "87e2c3a18bf53d9c077894a130376e09f91af5f95c1a1bf3cf4d2df586bc8386"
+    }
+  ],
+  "liveProof": "final-access.json",
+  "observedAt": "2026-10-15T18:15:17.625627+00:00",
+  "blocker": "MASTER_LITERAL_INPUT_REQUIRED",
+  "secretScan": "PASS",
+  "gpuQualification": "NON_TESTE"
+}

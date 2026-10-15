@@ -1,0 +1,34 @@
+Changes: 137 files, 55 symbols
+Affected processes: 367
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 — 2026-10-15T15:02:31.852012+00:00 — consolidation c7 et CI exacte verte → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T07 — FRONTEND-JOURNEY, 2026-10-14 → ERRORS.md
+  Function checks → qa/t07-scheduler-cancel-20261015/checks-before.mjs
+  Const require → qa/t07-scheduler-cancel-20261015/checks.mjs
+  Const userId → qa/t07-scheduler-cancel-20261015/client-contracts.test.mts
+  Const requestId → qa/t07-scheduler-cancel-20261015/client-contracts.test.mts
+  Const intent → qa/t07-scheduler-cancel-20261015/client-contracts.test.mts
+  Const store → qa/t07-scheduler-cancel-20261015/client-contracts.test.mts
+  Const jobId → qa/t07-scheduler-cancel-20261015/production-checks.mjs
+  Const resume → qa/t07-scheduler-cancel-20261015/production-checks.mjs
+  Const count → qa/t07-scheduler-cancel-20261015/production-checks.mjs
+  Const id → qa/t07-scheduler-cancel-20261015/production-checks.mjs
+  Const original → qa/t07-scheduler-cancel-20261015/production-checks.mjs
+... and 40 more
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: checks, checks, checks, checks
+  • CommunityScreen → ApiFetch (3 steps) — changed: checks, checks, checks
+  • AdminContestPage → FetchData (3 steps) — changed: checks, checks, checks
+  • AdminUsersPage → FetchUsers (3 steps) — changed: checks, checks, checks
+  • AutoPage → RequestClientJson (3 steps) — changed: checks, checks, checks
+  • CommunityPage → FetchBuddy (3 steps) — changed: checks, checks, checks
+  • CommunityPage → FetchCircles (3 steps) — changed: checks, checks, checks
+  • CommunityPage → FetchWall (3 steps) — changed: checks, checks, checks
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: checks, checks, checks
+  • JeuCreatifPage → Load (3 steps) — changed: checks, checks, checks
+... and 357 more

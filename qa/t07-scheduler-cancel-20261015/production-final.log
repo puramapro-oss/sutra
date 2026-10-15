@@ -1,0 +1,46 @@
+PASS 375: scheduler load and keyboard double activation persist one absolute preference
+PASS 375: scheduler pause through keyboard does not invoke cron or generation
+PASS 375: lost activation acknowledgement reconciles by GET without another PATCH
+PASS 375: unavailable API retries the same pause, preserving all scheduling fields
+PASS 375: contradictory 200 response is not activation success
+PASS 375: loading failure has an inline error and manual recovery, never false inactive
+PASS 375: stalled read stops loading within deadline and can recover
+PASS 375: malformed configuration stays unknown; accessible responsive controls
+PASS 375: production double submission has one UUID and a successful step result
+PASS 375: cancel queued task once using original requestId and target; strict server ACK
+PASS 375: false and malformed cancellation do not clear the receipt; reload retains intent
+PASS 375: lost cancel acknowledgement is recoverable with identical cancellation
+PASS 375: GET reconciles completion racing with a refused cancellation without POST replay
+PASS 375: lost submission ACK resumes immutable request after reload, no new identity
+PASS 375: cancelled request without jobId can only retry cancellation, not generation
+PASS 375: late inline success never overwrites confirmed cancellation
+PASS 375: acknowledged task resumes with GET after reload and handles server reconciliation
+PASS 375: provider unavailable and credits absent release only rejected pre-submission intent
+PASS 375: submission timeout releases loader but retains immutable intent for recovery
+PASS 375: cancellation timeout never claims success and retry keeps same identity
+PASS 375: complete pipeline keeps UUID and normal successful navigation
+PASS 375: storage write failure prevents submission and exposes an actionable error
+PASS 375: corrupt receipt blocks generation without deleting recovery evidence
+PASS 1440: scheduler load and keyboard double activation persist one absolute preference
+PASS 1440: scheduler pause through keyboard does not invoke cron or generation
+PASS 1440: lost activation acknowledgement reconciles by GET without another PATCH
+PASS 1440: unavailable API retries the same pause, preserving all scheduling fields
+PASS 1440: contradictory 200 response is not activation success
+PASS 1440: loading failure has an inline error and manual recovery, never false inactive
+PASS 1440: stalled read stops loading within deadline and can recover
+PASS 1440: malformed configuration stays unknown; accessible responsive controls
+PASS 1440: production double submission has one UUID and a successful step result
+PASS 1440: cancel queued task once using original requestId and target; strict server ACK
+PASS 1440: false and malformed cancellation do not clear the receipt; reload retains intent
+PASS 1440: lost cancel acknowledgement is recoverable with identical cancellation
+PASS 1440: GET reconciles completion racing with a refused cancellation without POST replay
+PASS 1440: lost submission ACK resumes immutable request after reload, no new identity
+PASS 1440: cancelled request without jobId can only retry cancellation, not generation
+PASS 1440: late inline success never overwrites confirmed cancellation
+PASS 1440: acknowledged task resumes with GET after reload and handles server reconciliation
+PASS 1440: provider unavailable and credits absent release only rejected pre-submission intent
+PASS 1440: complete pipeline keeps UUID and normal successful navigation
+PASS 1440: storage write failure prevents submission and exposes an actionable error
+PASS 1440: corrupt receipt blocks generation without deleting recovery evidence
+PASS production recovery remains scoped to the authenticated user
+PASS loopback only; no unexpected mutation, runtime or hydration error

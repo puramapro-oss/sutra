@@ -1,0 +1,260 @@
+{
+  "baseCommit": "d5d49a458e9e630ffbc1a433a7693a8cecd7dad5",
+  "serverMode": "production",
+  "results": [
+    {
+      "name": "375: production double submission has one UUID and a successful step result",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancel queued task once using original requestId and target; strict server ACK",
+      "status": "PASS"
+    },
+    {
+      "name": "375: false and malformed cancellation do not clear the receipt; reload retains intent",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost cancel acknowledgement is recoverable with identical cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: GET reconciles completion racing with a refused cancellation without POST replay",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost submission ACK resumes immutable request after reload, no new identity",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancelled request without jobId can reconcile absence but never replay generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: late inline success never overwrites confirmed cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: acknowledged task resumes with GET after reload and handles server reconciliation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: provider unavailable and credits absent release only rejected pre-submission intent",
+      "status": "PASS"
+    },
+    {
+      "name": "375: submission timeout releases loader but retains immutable intent for recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancellation timeout never claims success and retry keeps same identity",
+      "status": "PASS"
+    },
+    {
+      "name": "375: complete pipeline keeps UUID and normal successful navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: storage write failure prevents submission and exposes an actionable error",
+      "status": "PASS"
+    },
+    {
+      "name": "375: corrupt receipt blocks generation without deleting recovery evidence",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancelled intent without receipt recovers done by GET, double click sends one read",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup 400 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup 401 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup 404 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup 503 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup lost retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup bad-id retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: retry after lookup error restores cancellation status without POST",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup processing persists recovered jobId, polling resumes by job after reload",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost submission without cancel first recovers result by GET, no duplicate POST",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup timeout releases loader; retry GET succeeds without creating a task",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: production double submission has one UUID and a successful step result",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: cancel queued task once using original requestId and target; strict server ACK",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: false and malformed cancellation do not clear the receipt; reload retains intent",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost cancel acknowledgement is recoverable with identical cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: GET reconciles completion racing with a refused cancellation without POST replay",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost submission ACK resumes immutable request after reload, no new identity",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: cancelled request without jobId can reconcile absence but never replay generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: late inline success never overwrites confirmed cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: acknowledged task resumes with GET after reload and handles server reconciliation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: provider unavailable and credits absent release only rejected pre-submission intent",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: complete pipeline keeps UUID and normal successful navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: storage write failure prevents submission and exposes an actionable error",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: corrupt receipt blocks generation without deleting recovery evidence",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: cancelled intent without receipt recovers done by GET, double click sends one read",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup 400 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup 401 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup 404 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup 503 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup lost retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup bad-id retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: retry after lookup error restores cancellation status without POST",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup processing persists recovered jobId, polling resumes by job after reload",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost submission without cancel first recovers result by GET, no duplicate POST",
+      "status": "PASS"
+    },
+    {
+      "name": "375: unreadable receipt shows unknown status and visible error, with generation blocked",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: unreadable receipt shows unknown status and visible error, with generation blocked",
+      "status": "PASS"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "width": 375,
+      "measure": "cancellation_ack_ms_300ms_fixture",
+      "value": 359
+    },
+    {
+      "width": 375,
+      "measure": "submission_timeout_ms",
+      "value": 31458
+    },
+    {
+      "width": 375,
+      "measure": "cancellation_timeout_ms",
+      "value": 10896
+    },
+    {
+      "width": 375,
+      "measure": "lost_receipt_reconcile_ms_200ms_fixture",
+      "value": 365
+    },
+    {
+      "width": 375,
+      "measure": "lookup_timeout_ms",
+      "value": 10907
+    },
+    {
+      "width": 1440,
+      "measure": "cancellation_ack_ms_300ms_fixture",
+      "value": 363
+    },
+    {
+      "width": 1440,
+      "measure": "lost_receipt_reconcile_ms_200ms_fixture",
+      "value": 367
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

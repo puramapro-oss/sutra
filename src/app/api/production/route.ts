@@ -25,6 +25,35 @@ export const maxDuration = 300
  *  double génération ni double débit — checkpoint par résultat, audit #10/#14). */
 const COST_STEPS = new Set<ProductionStep>(['script', 'video', 'voice', 'music', 'assembly', 'all'])
 
+/** Recover a lost submission receipt without replaying a cancelled intent.
+ * Absence is not cancellation: the original request may still be in flight. */
+export async function GET(req: Request) {
+  const headers = { 'Cache-Control': 'private, no-store' }
+  try {
+    const session = await createServerClient()
+    const { data: { user }, error: authError } = await session.auth.getUser()
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401, headers })
+    const query = new URL(req.url).searchParams
+    const parsed = productionSchema.pick({ requestId: true, targetStep: true }).required().safeParse({
+      requestId: query.get('requestId'), targetStep: query.get('targetStep'),
+    })
+    if (!parsed.success || query.getAll('requestId').length !== 1 || query.getAll('targetStep').length !== 1) {
+      return NextResponse.json({ error: 'Identite de tache invalide' }, { status: 400, headers })
+    }
+    const { requestId, targetStep } = parsed.data
+    const { data: job, error } = await createServiceClient().from('video_jobs')
+      .select('id,status,progress').eq('user_id', user.id).eq('kind', 'production')
+      .eq('idempotency_key', `production-${user.id}-${targetStep}-${requestId}`).maybeSingle()
+    if (error) return NextResponse.json({ error: 'Statut indisponible' }, { status: 503, headers })
+    if (!job) return NextResponse.json({ error: 'Tache introuvable' }, { status: 404, headers })
+    return NextResponse.json({ jobId: job.id, status: job.status,
+      ...(job.status === 'done' ? { data: job.progress?.result } : {}),
+    }, { headers })
+  } catch {
+    return NextResponse.json({ error: 'Statut indisponible' }, { status: 503, headers })
+  }
+}
+
 /** Validations AVANT réservation de quota : une erreur client ne doit jamais
  *  consommer de place ni partir en worker-retry (400 immédiat). */
 function validateStepInputs(step: string, previousData: Record<string, unknown>): string | null {

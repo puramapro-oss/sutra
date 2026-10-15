@@ -1,0 +1,47 @@
+test_each_invalid_field_is_identified_without_disclosing_input (test_input_diagnostic.InputDiagnosticTests) ... test_terminal_reports_field_name_and_keeps_input_private (test_input_diagnostic.InputDiagnosticTests) ... FAIL
+test_terminal_reports_http_refusal_without_raw_body (test_input_diagnostic.InputDiagnosticTests) ... FAIL
+
+======================================================================
+FAIL: test_each_invalid_field_is_identified_without_disclosing_input (test_input_diagnostic.InputDiagnosticTests) (name='SALAD_API_KEY')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/matissdornier/purama-worktrees/sutra-t04-salad-auth-20261015/qa/t04-salad-auth-20261015/test_input_diagnostic.py", line 30, in test_each_invalid_field_is_identified_without_disclosing_input
+    self.assertEqual(reports[-1].get('invalidName'), name)
+AssertionError: None != 'SALAD_API_KEY'
+
+======================================================================
+FAIL: test_each_invalid_field_is_identified_without_disclosing_input (test_input_diagnostic.InputDiagnosticTests) (name='SALAD_ORGANIZATION')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/matissdornier/purama-worktrees/sutra-t04-salad-auth-20261015/qa/t04-salad-auth-20261015/test_input_diagnostic.py", line 30, in test_each_invalid_field_is_identified_without_disclosing_input
+    self.assertEqual(reports[-1].get('invalidName'), name)
+AssertionError: None != 'SALAD_ORGANIZATION'
+
+======================================================================
+FAIL: test_each_invalid_field_is_identified_without_disclosing_input (test_input_diagnostic.InputDiagnosticTests) (name='SALAD_PROJECT')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/matissdornier/purama-worktrees/sutra-t04-salad-auth-20261015/qa/t04-salad-auth-20261015/test_input_diagnostic.py", line 30, in test_each_invalid_field_is_identified_without_disclosing_input
+    self.assertEqual(reports[-1].get('invalidName'), name)
+AssertionError: None != 'SALAD_PROJECT'
+
+======================================================================
+FAIL: test_terminal_reports_field_name_and_keeps_input_private (test_input_diagnostic.InputDiagnosticTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/matissdornier/purama-worktrees/sutra-t04-salad-auth-20261015/qa/t04-salad-auth-20261015/test_input_diagnostic.py", line 42, in test_terminal_reports_field_name_and_keeps_input_private
+    self.assertIn('Champ refuse : SALAD_PROJECT', output.getvalue())
+AssertionError: 'Champ refuse : SALAD_PROJECT' not found in 'SUTRA — saisie locale masquee Salad. Deux GET gratuits uniquement.\nPortail https://portal.salad.com : API Access > Current API Key (pas AI Gateway).\nOrganisation et projet : noms techniques dans le portail, pas leurs libelles affiches.\nAucune modification du master avant les deux lectures authentifiees valides.\nBLOQUE — consulter live-status.json expurge; aucune relance automatique.\n'
+
+======================================================================
+FAIL: test_terminal_reports_http_refusal_without_raw_body (test_input_diagnostic.InputDiagnosticTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/matissdornier/purama-worktrees/sutra-t04-salad-auth-20261015/qa/t04-salad-auth-20261015/test_input_diagnostic.py", line 51, in test_terminal_reports_http_refusal_without_raw_body
+    self.assertIn('organization : HTTP 403', output.getvalue())
+AssertionError: 'organization : HTTP 403' not found in 'SUTRA — saisie locale masquee Salad. Deux GET gratuits uniquement.\nPortail https://portal.salad.com : API Access > Current API Key (pas AI Gateway).\nOrganisation et projet : noms techniques dans le portail, pas leurs libelles affiches.\nAucune modification du master avant les deux lectures authentifiees valides.\nBLOQUE — consulter live-status.json expurge; aucune relance automatique.\n'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.004s
+
+FAILED (failures=5)

@@ -27,8 +27,8 @@ const ALLOWED_FIELDS = [
 export async function GET() {
   try {
     const supabase = await createServerClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
 
     const service = createServiceClient()
     const { data, error } = await service
@@ -51,17 +51,16 @@ export async function GET() {
     }
 
     return NextResponse.json({ config: data })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur config', details: message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Erreur config' }, { status: 500 })
   }
 }
 
 export async function PATCH(req: Request) {
   try {
     const supabase = await createServerClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
 
     const body = await req.json().catch(() => ({}))
     const updates: Record<string, unknown> = {}
@@ -81,8 +80,7 @@ export async function PATCH(req: Request) {
 
     if (error) throw error
     return NextResponse.json({ config: data })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur mise a jour config', details: message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Erreur mise a jour config' }, { status: 500 })
   }
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
-import { Sparkles, Play, Pause, Loader2, Film, Eye, Heart, TrendingUp } from 'lucide-react'
+import { Sparkles, Film, Eye, Heart, TrendingUp, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import Link from 'next/link'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -10,15 +10,9 @@ import Button from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
-
-interface AutoConfig {
-  id: string
-  is_active: boolean
-  schedules: Array<{ id: string; name: string; frequency: string; time: string }>
-  publish_platforms: string[]
-  auto_publish: boolean
-  require_approval_before_publish: boolean
-}
+import { useAutoScheduler } from '@/hooks/useAutoScheduler'
+import AutoSchedulerControl from '@/components/auto/AutoSchedulerControl'
+import { requestClientJson } from '@/lib/production-intent-client'
 
 interface AutoVideo {
   id: string
@@ -47,52 +41,28 @@ const STATUS_LABELS: Record<string, { label: string; variant: 'success' | 'warni
 }
 
 export default function AutoPage() {
-  const [config, setConfig] = useState<AutoConfig | null>(null)
+  const scheduler = useAutoScheduler()
+  const { config } = scheduler
   const [videos, setVideos] = useState<AutoVideo[]>([])
   const [loading, setLoading] = useState(true)
   const [generating, setGenerating] = useState(false)
-  const [toggling, setToggling] = useState(false)
+  const [videoError, setVideoError] = useState(false)
 
   const fetchAll = useCallback(async () => {
     setLoading(true)
     try {
-      const [cfgRes, vidRes] = await Promise.all([
-        fetch('/api/auto/config'),
-        fetch('/api/auto/videos?limit=20'),
-      ])
-      const cfgJson = await cfgRes.json()
-      const vidJson = await vidRes.json()
-      if (cfgJson.config) setConfig(cfgJson.config)
-      if (vidJson.videos) setVideos(vidJson.videos)
+      const result = await requestClientJson('/api/auto/videos?limit=20')
+      if (!result.ok || !Array.isArray(result.body.videos)) throw new Error('Vidéos indisponibles')
+      setVideos(result.body.videos as AutoVideo[])
+      setVideoError(false)
     } catch {
-      toast.error('Erreur de chargement')
+      setVideoError(true)
     } finally {
       setLoading(false)
     }
   }, [])
 
   useEffect(() => { fetchAll() }, [fetchAll])
-
-  const toggleActive = useCallback(async () => {
-    if (!config) return
-    setToggling(true)
-    try {
-      const res = await fetch('/api/auto/config', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ is_active: !config.is_active }),
-      })
-      const json = await res.json()
-      if (json.config) {
-        setConfig(json.config)
-        toast.success(json.config.is_active ? 'Mode autonome active' : 'Mode autonome desactive')
-      }
-    } catch {
-      toast.error('Erreur')
-    } finally {
-      setToggling(false)
-    }
-  }, [config])
 
   const generateNow = useCallback(async () => {
     setGenerating(true)
@@ -119,6 +89,7 @@ export default function AutoPage() {
   if (loading) {
     return (
       <div className="space-y-6" data-testid="auto-loading">
+        <AutoSchedulerControl scheduler={scheduler} />
         <Skeleton width="100%" height={140} rounded="xl" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Array.from({ length: 3 }).map((_, i) => (
@@ -149,58 +120,22 @@ export default function AutoPage() {
       transition={{ duration: 0.4 }}
       className="space-y-6"
     >
-      {/* Master toggle */}
-      <Card>
-        <CardContent className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-4">
-            <div className={`h-12 w-12 rounded-2xl flex items-center justify-center border ${
-              config?.is_active
-                ? 'bg-violet-500/20 border-violet-500/40'
-                : 'bg-white/[0.04] border-white/[0.08]'
-            }`}>
-              <Sparkles className={`h-5 w-5 ${config?.is_active ? 'text-violet-300' : 'text-white/40'}`} />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold text-white" data-testid="auto-status">
-                {config?.is_active ? 'Actif' : 'Inactif'}
-              </h2>
-              <p className="text-sm text-white/40">
-                {config?.is_active
-                  ? 'SUTRA produit selon ton planning.'
-                  : 'Active pour lancer la production automatique.'}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant="secondary"
-              onClick={generateNow}
-              loading={generating}
-              data-testid="auto-generate-now"
-            >
-              <Film className="h-4 w-4" />
-              Generer maintenant
-            </Button>
-            <Button
-              onClick={toggleActive}
-              loading={toggling}
-              data-testid="auto-toggle"
-            >
-              {config?.is_active ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-              {config?.is_active ? 'Mettre en pause' : 'Activer'}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <AutoSchedulerControl scheduler={scheduler} />
+      <Button variant="secondary" onClick={generateNow} loading={generating} data-testid="auto-generate-now">
+        <Film className="h-4 w-4" /> Generer maintenant
+      </Button>
+      {videoError && <div role="alert" className="rounded-xl border border-red-400/30 p-4 text-sm text-red-200">
+        Liste des vidéos indisponible. Les compteurs ne sont pas disponibles.
+        <Button variant="secondary" onClick={fetchAll} className="mt-3">Réessayer la liste</Button>
+      </div>}
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {!videoError && <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard icon={Film} label="Videos generees" value={stats.total} />
         <StatCard icon={Sparkles} label="Publiees" value={stats.published} />
         <StatCard icon={Eye} label="Vues totales" value={stats.totalViews.toLocaleString('fr-FR')} />
         <StatCard icon={TrendingUp} label="Engagement moy." value={`${stats.avgEngagement}%`} />
-      </div>
+      </div>}
 
       {/* Schedules summary */}
       <Card>
@@ -224,7 +159,7 @@ export default function AutoPage() {
               ))}
             </div>
           ) : (
-            <p className="text-xs text-white/40">Aucun planning configure.</p>
+            <p className="text-xs text-white/70">{config ? 'Aucun planning configure.' : 'Plannings non disponibles.'}</p>
           )}
         </CardContent>
       </Card>
@@ -238,7 +173,7 @@ export default function AutoPage() {
           </Link>
         </div>
 
-        {videos.length === 0 ? (
+        {videoError ? <p className="text-sm text-white/70">Réessaie le chargement de la liste ci-dessus.</p> : videos.length === 0 ? (
           <EmptyState
             icon={Film}
             title="Aucune video generee"

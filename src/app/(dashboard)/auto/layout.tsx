@@ -22,7 +22,7 @@ export default function AutoLayout({ children }: { children: React.ReactNode }) 
       <div>
         <h1 className="text-2xl font-bold text-white" data-testid="auto-title">Mode Autonome</h1>
         <p className="text-sm text-white/70 mt-1">
-          SUTRA cree, edite et publie tes videos automatiquement.
+          Prépare tes plannings et leurs règles de validation. Leur exécution dépend du service serveur.
         </p>
       </div>
 

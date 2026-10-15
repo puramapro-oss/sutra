@@ -1,0 +1,42 @@
+[
+  {
+    "name": "integrated-unit",
+    "command": [
+      "--import",
+      "tsx",
+      "--test",
+      "qa/t07-scheduler-cancel-20261015/client-contracts.test.mts",
+      "qa/t07-scheduler-cancel-20261015/status-panel.test.tsx"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "integrated-typecheck",
+    "command": [
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "integrated-lint",
+    "command": [
+      "node_modules/eslint/bin/eslint.js",
+      "src/hooks/useProductionGeneration.ts",
+      "src/hooks/useAutoScheduler.ts",
+      "src/components/production/ProductionRequestStatus.tsx",
+      "src/components/auto/AutoSchedulerControl.tsx",
+      "src/lib/production-intent-client.ts",
+      "src/app/(dashboard)/auto/layout.tsx",
+      "src/app/(dashboard)/auto/page.tsx",
+      "src/app/(dashboard)/production/page.tsx",
+      "src/app/api/production/route.ts",
+      "src/app/api/auto/config/route.ts",
+      "scripts/run-ci.mjs",
+      "qa/t07-final-ux-perf-20261015/run.mjs"
+    ],
+    "exitCode": 0
+  }
+]

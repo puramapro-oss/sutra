@@ -1,0 +1,45 @@
+{
+  "baseCommit": "d5d49a458e9e630ffbc1a433a7693a8cecd7dad5",
+  "results": [
+    {
+      "name": "375: scheduler double click sends one explicit preference",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "375: saved preference never claims running scheduler",
+      "status": "FAIL",
+      "message": "expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('SUTRA produit selon ton planning.', { exact: true })\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.have.count\" with timeout 5000ms\n  - waiting for getByText('SUTRA produit selon ton planning.', { exact: true })\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n"
+    },
+    {
+      "name": "375: production exposes durable request cancellation",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('production-request-status')\nExpected: visible\nTimeout: 2000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 2000ms\n  - waiting for getByTestId('production-request-status')\n"
+    },
+    {
+      "name": "harness",
+      "status": "FAIL",
+      "message": "Error: expect(locator).toBeEnabled() failed\n\nLocator: getByTestId('auto-toggle')\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.enabled\" with timeout 5000ms\n  - waiting for getByTestId('auto-toggle')\n\n    at Proxy.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright/lib/matchers/expect.js:213:24)\n    at checks (file:///Users/matissdornier/purama-worktrees/sutra-t07-scheduler-cancel-20261015/qa/t07-scheduler-cancel-20261015/checks.mjs:16:26)\n    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-scheduler-cancel-20261015/qa/t07-scheduler-cancel-20261015/run.mjs:69:3"
+    }
+  ],
+  "details": [
+    {
+      "width": 375,
+      "calls": 2
+    }
+  ],
+  "blocked": [],
+  "mutations": [
+    {
+      "path": "/api/legal/cookie-consent",
+      "method": "POST"
+    }
+  ],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "processes": [
+    {
+      "id": "proc_186_autopilotscreen",
+      "summary": "AutopilotScreen → ApiFetch",
+      "priority": 0.098,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_14_get",
+      "summary": "GET → CreateServiceClient",
+      "priority": 0.084,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 6
+    },
+    {
+      "id": "proc_15_get",
+      "summary": "GET → Origin",
+      "priority": 0.084,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 6
+    },
+    {
+      "id": "proc_22_get",
+      "summary": "GET → Signature",
+      "priority": 0.084,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_23_get",
+      "summary": "GET → ContentWithTags",
+      "priority": 0.084,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:mobile/app/autopilot/index.tsx:AutopilotScreen.fetchConfig@40:2",
+      "name": "fetchConfig",
+      "filePath": "mobile/app/autopilot/index.tsx",
+      "startLine": 41,
+      "endLine": 52,
+      "module": "Autopilot",
+      "process_id": "proc_186_autopilotscreen",
+      "step_index": 2
+    },
+    {
+      "id": "Function:src/lib/auto-publication.ts:publishAutoVideoRecord",
+      "name": "publishAutoVideoRecord",
+      "filePath": "src/lib/auto-publication.ts",
+      "startLine": 87,
+      "endLine": 158,
+      "module": "Publish",
+      "process_id": "proc_14_get",
+      "step_index": 2
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:src/lib/local-engine.ts:localEngineMode",
+      "name": "localEngineMode",
+      "filePath": "src/lib/local-engine.ts",
+      "startLine": 24,
+      "endLine": 24
+    },
+    {
+      "id": "Function:src/lib/local-engine.ts:probeLocalEngine",
+      "name": "probeLocalEngine",
+      "filePath": "src/lib/local-engine.ts",
+      "startLine": 90,
+      "endLine": 100,
+      "module": "Salad"
+    },
+    {
+      "id": "File:src/lib/local-engine.ts",
+      "name": "local-engine.ts",
+      "filePath": "src/lib/local-engine.ts"
+    },
+    {
+      "id": "Function:src/app/(dashboard)/auto/schedules/page.tsx:SchedulesPage.fetchSchedules@45:2",
+      "name": "fetchSchedules",
+      "filePath": "src/app/(dashboard)/auto/schedules/page.tsx",
+      "startLine": 46,
+      "endLine": 69,
+      "module": "Hooks"
+    },
+    {
+      "id": "Function:src/app/(dashboard)/auto/schedules/page.tsx:SchedulesPage.saveSchedules@80:2",
+      "name": "saveSchedules",
+      "filePath": "src/app/(dashboard)/auto/schedules/page.tsx",
+      "startLine": 81,
+      "endLine": 112,
+      "module": "Hooks"
+    },
+    {
+      "id": "File:src/app/(dashboard)/auto/schedules/page.tsx",
+      "name": "page.tsx",
+      "filePath": "src/app/(dashboard)/auto/schedules/page.tsx"
+    },
+    {
+      "id": "Function:src/app/api/account/delete/route.ts:POST",
+      "name": "POST",
+      "filePath": "src/app/api/account/delete/route.ts",
+      "startLine": 13,
+      "endLine": 48,
+      "module": "Delete"
+    },
+    {
+      "id": "Function:src/app/api/account/delete/route.ts:DELETE",
+      "name": "DELETE",
+      "filePath": "src/app/api/account/delete/route.ts",
+      "startLine": 50,
+      "endLine": 70,
+      "module": "Delete"
+    },
+    {
+      "id": "File:src/app/api/account/delete/route.ts",
+      "name": "route.ts",
+      "filePath": "src/app/api/account/delete/route.ts"
+    },
+    {
+      "id": "Function:src/lib/auto-publication.ts:publishAutoVideoRecord.verify@104:2",
+      "name": "verify",
+      "filePath": "src/lib/auto-publication.ts",
+      "startLine": 105,
+      "endLine": 124,
+      "module": "Publish"
+    },
+    {
+      "id": "File:src/lib/auto-publication.ts",
+      "name": "auto-publication.ts",
+      "filePath": "src/lib/auto-publication.ts"
+    },
+    {
+      "id": "Const:qa/t03-final-durable-20261015/cancellation.test.mts:aliceKey",
+      "name": "aliceKey",
+      "filePath": "qa/t03-final-durable-20261015/cancellation.test.mts",
+      "startLine": 12,
+      "endLine": 12
+    },
+    {
+      "id": "Const:qa/t03-final-durable-20261015/cancellation.test.mts:cancelled",
+      "name": "cancelled",
+      "filePath": "qa/t03-final-durable-20261015/cancellation.test.mts",
+      "startLine": 15,
+      "endLine": 15
+    },
+    {
+      "id": "Function:qa/t03-final-durable-20261015/cancellation.test.mts:call",
+      "name": "call",
+      "filePath": "qa/t03-final-durable-20261015/cancellation.test.mts",
+      "startLine": 39,
+      "endLine": 45,
+      "module": "Scripts"
+    },
+    {
+      "id": "Const:qa/t08-final-candidate-20261015/cancellation.test.mts:aliceKey",
+      "name": "aliceKey",
+      "filePath": "qa/t08-final-candidate-20261015/cancellation.test.mts",
+      "startLine": 12,
+      "endLine": 12
+    },
+    {
+      "id": "Const:qa/t08-final-candidate-20261015/cancellation.test.mts:cancelled",
+      "name": "cancelled",
+      "filePath": "qa/t08-final-candidate-20261015/cancellation.test.mts",
+      "startLine": 15,
+      "endLine": 15
+    },
+    {
+      "id": "Function:qa/t08-final-candidate-20261015/cancellation.test.mts:call",
+      "name": "call",
+      "filePath": "qa/t08-final-candidate-20261015/cancellation.test.mts",
+      "startLine": 39,
+      "endLine": 45,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:qa/t07-final-ux-perf-20261015/planning-checks.mjs:planningChecks",
+      "name": "planningChecks",
+      "filePath": "qa/t07-final-ux-perf-20261015/planning-checks.mjs",
+      "startLine": 8,
+      "endLine": 104,
+      "module": "Ui-isolated"
+    },
+    {
+      "id": "Const:qa/t07-final-ux-perf-20261015/planning-checks.mjs:planningChecks.schedules@9:2",
+      "name": "schedules",
+      "filePath": "qa/t07-final-ux-perf-20261015/planning-checks.mjs",
+      "startLine": 10,
+      "endLine": 10
+    },
+    {
+      "id": "Const:qa/t07-final-ux-perf-20261015/planning-checks.mjs:planningChecks.save@28:4",
+      "name": "save",
+      "filePath": "qa/t07-final-ux-perf-20261015/planning-checks.mjs",
+      "startLine": 29,
+      "endLine": 29
+    }
+  ],
+  "timing": {
+    "vector": 2.6,
+    "bm25": 155.4,
+    "merge": 0.1,
+    "symbol_lookup": 12.2,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 168.5
+  }
+}

@@ -166,6 +166,7 @@ def configure(path, ask=hidden, verify=validate_remote, report=lambda value: Non
         if not valid(name, value):
             value = ask(name + " (saisie masquee; Ctrl-C annule) : ")
         if not valid(name, value):
+            report({"status": "BLOQUE", "invalidName": name})
             raise SetupBlocked("INVALID_LITERAL_INPUT")
         values[name] = value
     proof = verify(values)
@@ -184,6 +185,7 @@ def main():
     print("SUTRA — saisie locale masquee Salad. Deux GET gratuits uniquement.")
     print("Portail https://portal.salad.com : API Access > Current API Key (pas AI Gateway).")
     print("Organisation et projet : noms techniques dans le portail, pas leurs libelles affiches.")
+    print("Collez uniquement la valeur demandee, sans nom de variable, commande, guillemets ni espaces.")
     print("Aucune modification du master avant les deux lectures authentifiees valides.")
     receipt = {}
     def report(value):
@@ -208,7 +210,14 @@ def main():
     finally:
         if sys.stdin.isatty():
             termios.tcflush(sys.stdin.fileno(), termios.TCIFLUSH)
-    print("BLOQUE — consulter live-status.json expurge; aucune relance automatique.")
+    print("BLOQUE — " + receipt.get("reason", "SETUP_FAILED_REDACTED"))
+    if receipt.get("invalidName") in NAMES:
+        print("Champ refuse : " + receipt["invalidName"])
+    for scope in ("organization", "project"):
+        http = receipt.get("proof", {}).get(scope, {}).get("http")
+        if type(http) is int and 100 <= http <= 599:
+            print(scope + " : HTTP " + str(http))
+    print("Consulter live-status.json expurge; aucune relance automatique.")
     return 1
 
 

@@ -1,0 +1,127 @@
+TAP version 13
+# (node:30699) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:30699) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: production denies anonymous before privileged reads and RPCs
+ok 1 - production denies anonymous before privileged reads and RPCs
+  ---
+  duration_ms: 2.516042
+  type: 'test'
+  ...
+# Subtest: production denies expired before privileged reads and RPCs
+ok 2 - production denies expired before privileged reads and RPCs
+  ---
+  duration_ms: 0.258084
+  type: 'test'
+  ...
+# Subtest: production denies revoked before privileged reads and RPCs
+ok 3 - production denies revoked before privileged reads and RPCs
+  ---
+  duration_ms: 0.298833
+  type: 'test'
+  ...
+# Subtest: two users with the same client intent get distinct user-scoped jobs and server-derived plans
+ok 4 - two users with the same client intent get distinct user-scoped jobs and server-derived plans
+  ---
+  duration_ms: 8.09125
+  type: 'test'
+  ...
+# Subtest: client cannot inject another user or an elevated plan
+ok 5 - client cannot inject another user or an elevated plan
+  ---
+  duration_ms: 0.379833
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at submit_video_job
+ok 6 - diagnostic redaction at submit_video_job
+  ---
+  duration_ms: 0.313292
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at submit_video_job:throw
+ok 7 - diagnostic redaction at submit_video_job:throw
+  ---
+  duration_ms: 0.343041
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at claim_video_job_by_key
+ok 8 - diagnostic redaction at claim_video_job_by_key
+  ---
+  duration_ms: 0.240958
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at claim_video_job_by_key:throw
+ok 9 - diagnostic redaction at claim_video_job_by_key:throw
+  ---
+  duration_ms: 0.248584
+  type: 'test'
+  ...
+# Subtest: diagnostic redaction at profile
+ok 10 - diagnostic redaction at profile
+  ---
+  duration_ms: 0.170792
+  type: 'test'
+  ...
+# Subtest: exact public submission code remains 403: SUTRA_QUOTA_EXHAUSTED
+ok 11 - exact public submission code remains 403: SUTRA_QUOTA_EXHAUSTED
+  ---
+  duration_ms: 0.229584
+  type: 'test'
+  ...
+# Subtest: embedded public code cannot expose a claim diagnostic: SUTRA_QUOTA_EXHAUSTED
+ok 12 - embedded public code cannot expose a claim diagnostic: SUTRA_QUOTA_EXHAUSTED
+  ---
+  duration_ms: 0.199625
+  type: 'test'
+  ...
+# Subtest: exact public submission code remains 409: SUTRA_IDEMPOTENCY_CONFLICT
+ok 13 - exact public submission code remains 409: SUTRA_IDEMPOTENCY_CONFLICT
+  ---
+  duration_ms: 0.150292
+  type: 'test'
+  ...
+# Subtest: embedded public code cannot expose a claim diagnostic: SUTRA_IDEMPOTENCY_CONFLICT
+ok 14 - embedded public code cannot expose a claim diagnostic: SUTRA_IDEMPOTENCY_CONFLICT
+  ---
+  duration_ms: 0.153542
+  type: 'test'
+  ...
+# Subtest: exact public submission code remains 400: SUTRA_INVALID_REQUEST_ID
+ok 15 - exact public submission code remains 400: SUTRA_INVALID_REQUEST_ID
+  ---
+  duration_ms: 0.118375
+  type: 'test'
+  ...
+# Subtest: embedded public code cannot expose a claim diagnostic: SUTRA_INVALID_REQUEST_ID
+ok 16 - embedded public code cannot expose a claim diagnostic: SUTRA_INVALID_REQUEST_ID
+  ---
+  duration_ms: 0.113625
+  type: 'test'
+  ...
+# Subtest: worker diagnostic is redacted both from the response and the durable last_error
+ok 17 - worker diagnostic is redacted both from the response and the durable last_error
+  ---
+  duration_ms: 0.213292
+  type: 'test'
+  ...
+# Subtest: unconfirmed durable error write stays fail-closed
+ok 18 - unconfirmed durable error write stays fail-closed
+  ---
+  duration_ms: 0.167167
+  type: 'test'
+  ...
+# Subtest: non-Error throw cannot escape diagnostic values
+ok 19 - non-Error throw cannot escape diagnostic values
+  ---
+  duration_ms: 0.123667
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 666.821208

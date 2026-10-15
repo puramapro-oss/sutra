@@ -1,0 +1,562 @@
+TAP version 13
+# Subtest: Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence
+ok 1 - Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence
+  ---
+  duration_ms: 2.488958
+  type: 'test'
+  ...
+# Subtest: Zernio accepte 201 programme sans jamais annoncer publie
+ok 2 - Zernio accepte 201 programme sans jamais annoncer publie
+  ---
+  duration_ms: 0.292792
+  type: 'test'
+  ...
+# Subtest: Zernio convertit x en twitter et transmet chaque caption propre
+ok 3 - Zernio convertit x en twitter et transmet chaque caption propre
+  ---
+  duration_ms: 0.093958
+  type: 'test'
+  ...
+# Subtest: Zernio refuse une echeance passee au lieu de publier immediatement
+ok 4 - Zernio refuse une echeance passee au lieu de publier immediatement
+  ---
+  duration_ms: 0.2005
+  type: 'test'
+  ...
+# Subtest: Zernio refuse UUID local, plateforme indisponible et cle absente avant appel
+ok 5 - Zernio refuse UUID local, plateforme indisponible et cle absente avant appel
+  ---
+  duration_ms: 0.194875
+  type: 'test'
+  ...
+# Subtest: Zernio succes pour un autre compte reste inconnu
+ok 6 - Zernio succes pour un autre compte reste inconnu
+  ---
+  duration_ms: 0.074709
+  type: 'test'
+  ...
+# Subtest: Zernio resultat partiel conserve toutes les destinations demandees
+ok 7 - Zernio resultat partiel conserve toutes les destinations demandees
+  ---
+  duration_ms: 0.072333
+  type: 'test'
+  ...
+# Subtest: Zernio ancienne reponse success=true sans preuve n'est pas acceptee
+ok 8 - Zernio ancienne reponse success=true sans preuve n'est pas acceptee
+  ---
+  duration_ms: 0.059208
+  type: 'test'
+  ...
+# Subtest: Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable
+ok 9 - Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable
+  ---
+  duration_ms: 0.284916
+  type: 'test'
+  ...
+# Subtest: Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien
+ok 10 - Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien
+  ---
+  duration_ms: 0.519041
+  type: 'test'
+  ...
+# Subtest: Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien
+ok 11 - Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien
+  ---
+  duration_ms: 2.458375
+  type: 'test'
+  ...
+# Subtest: Publication: timeout laisse une reservation, reprise exacte apres le bail
+ok 12 - Publication: timeout laisse une reservation, reprise exacte apres le bail
+  ---
+  duration_ms: 1.131792
+  type: 'test'
+  ...
+# Subtest: Publication: succes partiel, GET puis retry du seul compte en echec
+ok 13 - Publication: succes partiel, GET puis retry du seul compte en echec
+  ---
+  duration_ms: 0.942458
+  type: 'test'
+  ...
+# Subtest: Publication: programmation puis reconciliation utilise GET sans POST supplementaire
+ok 14 - Publication: programmation puis reconciliation utilise GET sans POST supplementaire
+  ---
+  duration_ms: 0.411333
+  type: 'test'
+  ...
+# Subtest: Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation
+ok 15 - Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation
+  ---
+  duration_ms: 0.551292
+  type: 'test'
+  ...
+# Subtest: Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee
+ok 16 - Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee
+  ---
+  duration_ms: 0.20675
+  type: 'test'
+  ...
+# Subtest: Publication: historique secondaire reparable sans nouvelle publication
+ok 17 - Publication: historique secondaire reparable sans nouvelle publication
+  ---
+  duration_ms: 0.339208
+  type: 'test'
+  ...
+# Subtest: Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme
+ok 18 - Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme
+  ---
+  duration_ms: 0.265917
+  type: 'test'
+  ...
+# Subtest: Publication: les trois routes historiques partagent le handler
+ok 19 - Publication: les trois routes historiques partagent le handler
+  ---
+  duration_ms: 34.15725
+  type: 'test'
+  ...
+# Subtest: Zernio reconciliation refuse les destinations supplementaires avant tout retry
+ok 20 - Zernio reconciliation refuse les destinations supplementaires avant tout retry
+  ---
+  duration_ms: 0.389666
+  type: 'test'
+  ...
+# Subtest: Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible
+ok 21 - Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible
+  ---
+  duration_ms: 1257.331625
+  type: 'test'
+  ...
+# Subtest: Zernio retry vise le post original une seule fois et ne recree jamais de post
+ok 22 - Zernio retry vise le post original une seule fois et ne recree jamais de post
+  ---
+  duration_ms: 0.580917
+  type: 'test'
+  ...
+# Subtest: Zernio revoke 404 est idempotent et erreur sensible jamais loggee
+ok 23 - Zernio revoke 404 est idempotent et erreur sensible jamais loggee
+  ---
+  duration_ms: 0.486125
+  type: 'test'
+  ...
+# Subtest: T06: une production peut cibler deux comptes distincts sans reposter au premier
+ok 24 - T06: une production peut cibler deux comptes distincts sans reposter au premier
+  ---
+  duration_ms: 4.11275
+  type: 'test'
+  ...
+# Subtest: T06: compte manquant conserve le partiel puis reprend uniquement cette destination
+ok 25 - T06: compte manquant conserve le partiel puis reprend uniquement cette destination
+  ---
+  duration_ms: 0.753333
+  type: 'test'
+  ...
+# Subtest: T06: compte revoked refuse avant POST
+ok 26 - T06: compte revoked refuse avant POST
+  ---
+  duration_ms: 0.242041
+  type: 'test'
+  ...
+# Subtest: T06: compte disconnected refuse avant POST
+ok 27 - T06: compte disconnected refuse avant POST
+  ---
+  duration_ms: 0.132083
+  type: 'test'
+  ...
+# Subtest: T06: compte expired refuse avant POST
+ok 28 - T06: compte expired refuse avant POST
+  ---
+  duration_ms: 0.138083
+  type: 'test'
+  ...
+# Subtest: T06: compte invalid-expiry refuse avant POST
+ok 29 - T06: compte invalid-expiry refuse avant POST
+  ---
+  duration_ms: 0.127125
+  type: 'test'
+  ...
+# Subtest: T06: revocation apres reservation empeche le POST
+ok 30 - T06: revocation apres reservation empeche le POST
+  ---
+  duration_ms: 0.46025
+  type: 'test'
+  ...
+# Subtest: T06: revocation locale precedente a la panne distante; historique conserve et aucune repetition aveugle
+ok 31 - T06: revocation locale precedente a la panne distante; historique conserve et aucune repetition aveugle
+  ---
+  duration_ms: 0.690792
+  type: 'test'
+  ...
+# Subtest: T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST
+ok 32 - T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST
+  ---
+  duration_ms: 0.768333
+  type: 'test'
+  ...
+# Subtest: T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay
+ok 33 - T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay
+  ---
+  duration_ms: 0.511125
+  type: 'test'
+  ...
+# Subtest: T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate
+ok 34 - T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate
+  ---
+  duration_ms: 0.479625
+  type: 'test'
+  ...
+# Subtest: T06: replay refuse si revoked a change
+ok 35 - T06: replay refuse si revoked a change
+  ---
+  duration_ms: 1.342292
+  type: 'test'
+  ...
+# Subtest: T06: replay refuse si external-id a change
+ok 36 - T06: replay refuse si external-id a change
+  ---
+  duration_ms: 0.439125
+  type: 'test'
+  ...
+# Subtest: T06: replay refuse si media-hash a change
+ok 37 - T06: replay refuse si media-hash a change
+  ---
+  duration_ms: 0.451208
+  type: 'test'
+  ...
+# Subtest: T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed
+ok 38 - T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed
+  ---
+  duration_ms: 0.837625
+  type: 'test'
+  ...
+# Subtest: T06: panne de projection reparee depuis journal sans creation distante
+ok 39 - T06: panne de projection reparee depuis journal sans creation distante
+  ---
+  duration_ms: 0.297208
+  type: 'test'
+  ...
+# Subtest: T06: succes video ne valide pas un nouvel export url
+ok 40 - T06: succes video ne valide pas un nouvel export url
+  ---
+  duration_ms: 0.279625
+  type: 'test'
+  ...
+# Subtest: T06: succes video ne valide pas un nouvel export sha256
+ok 41 - T06: succes video ne valide pas un nouvel export sha256
+  ---
+  duration_ms: 0.204834
+  type: 'test'
+  ...
+# Subtest: T06: succes auto ne valide pas un nouvel export url
+ok 42 - T06: succes auto ne valide pas un nouvel export url
+  ---
+  duration_ms: 0.465
+  type: 'test'
+  ...
+# Subtest: T06: succes auto ne valide pas un nouvel export sha256
+ok 43 - T06: succes auto ne valide pas un nouvel export sha256
+  ---
+  duration_ms: 0.442666
+  type: 'test'
+  ...
+# Subtest: T06: import PR3 multi-destination conserve le succes et les identifiants historiques
+ok 44 - T06: import PR3 multi-destination conserve le succes et les identifiants historiques
+  ---
+  duration_ms: 0.387709
+  type: 'test'
+  ...
+# Subtest: T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication
+ok 45 - T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication
+  ---
+  duration_ms: 0.131791
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse inactive
+ok 46 - T06: autonomie refuse inactive
+  ---
+  duration_ms: 0.112084
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse approval
+ok 47 - T06: autonomie refuse approval
+  ---
+  duration_ms: 0.084667
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse not-due
+ok 48 - T06: autonomie refuse not-due
+  ---
+  duration_ms: 0.089208
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse invalid-date
+ok 49 - T06: autonomie refuse invalid-date
+  ---
+  duration_ms: 0.103667
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse no-proof
+ok 50 - T06: autonomie refuse no-proof
+  ---
+  duration_ms: 0.04925
+  type: 'test'
+  ...
+# Subtest: T06: approbation explicite autorise le media verifie meme avec mode automatique arrete
+ok 51 - T06: approbation explicite autorise le media verifie meme avec mode automatique arrete
+  ---
+  duration_ms: 0.413625
+  type: 'test'
+  ...
+# Subtest: T06: autorisation retiree entre reservation et envoi ferme toute destination
+ok 52 - T06: autorisation retiree entre reservation et envoi ferme toute destination
+  ---
+  duration_ms: 0.2355
+  type: 'test'
+  ...
+# Subtest: T06: controle service isole utilisateur et production, sans nouvelle requete
+ok 53 - T06: controle service isole utilisateur et production, sans nouvelle requete
+  ---
+  duration_ms: 0.251042
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si revoked change
+ok 54 - T06: replay reautorise apres claim si revoked change
+  ---
+  duration_ms: 0.689875
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si disconnected change
+ok 55 - T06: replay reautorise apres claim si disconnected change
+  ---
+  duration_ms: 0.592292
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si external-id change
+ok 56 - T06: replay reautorise apres claim si external-id change
+  ---
+  duration_ms: 0.526667
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si media-hash change
+ok 57 - T06: replay reautorise apres claim si media-hash change
+  ---
+  duration_ms: 0.717834
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si profile-revoked change
+ok 58 - T06: replay reautorise apres claim si profile-revoked change
+  ---
+  duration_ms: 1.189166
+  type: 'test'
+  ...
+# Subtest: T06: autonomie replay refuse une approbation retiree apres claim
+ok 59 - T06: autonomie replay refuse une approbation retiree apres claim
+  ---
+  duration_ms: 0.471708
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si revoked change
+ok 60 - T06: retry reautorise apres claim si revoked change
+  ---
+  duration_ms: 0.588875
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si disconnected change
+ok 61 - T06: retry reautorise apres claim si disconnected change
+  ---
+  duration_ms: 0.5435
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si external-id change
+ok 62 - T06: retry reautorise apres claim si external-id change
+  ---
+  duration_ms: 0.50975
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si media-hash change
+ok 63 - T06: retry reautorise apres claim si media-hash change
+  ---
+  duration_ms: 0.498
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si profile-revoked change
+ok 64 - T06: retry reautorise apres claim si profile-revoked change
+  ---
+  duration_ms: 0.54575
+  type: 'test'
+  ...
+# Subtest: T06: autonomie retry refuse une approbation retiree apres claim
+ok 65 - T06: autonomie retry refuse une approbation retiree apres claim
+  ---
+  duration_ms: 0.397209
+  type: 'test'
+  ...
+# Subtest: T06: profil banned refuse la publication video service-role
+ok 66 - T06: profil banned refuse la publication video service-role
+  ---
+  duration_ms: 0.156083
+  type: 'test'
+  ...
+# Subtest: T06: profil revoked refuse la publication video service-role
+ok 67 - T06: profil revoked refuse la publication video service-role
+  ---
+  duration_ms: 0.138666
+  type: 'test'
+  ...
+# Subtest: T06: profil missing refuse la publication video service-role
+ok 68 - T06: profil missing refuse la publication video service-role
+  ---
+  duration_ms: 0.092083
+  type: 'test'
+  ...
+# Subtest: T06: profil unreadable refuse la publication video service-role
+ok 69 - T06: profil unreadable refuse la publication video service-role
+  ---
+  duration_ms: 0.113125
+  type: 'test'
+  ...
+# Subtest: T06: profil banned refuse la publication auto service-role
+ok 70 - T06: profil banned refuse la publication auto service-role
+  ---
+  duration_ms: 0.21275
+  type: 'test'
+  ...
+# Subtest: T06: profil revoked refuse la publication auto service-role
+ok 71 - T06: profil revoked refuse la publication auto service-role
+  ---
+  duration_ms: 0.155459
+  type: 'test'
+  ...
+# Subtest: T06: profil missing refuse la publication auto service-role
+ok 72 - T06: profil missing refuse la publication auto service-role
+  ---
+  duration_ms: 0.142667
+  type: 'test'
+  ...
+# Subtest: T06: profil unreadable refuse la publication auto service-role
+ok 73 - T06: profil unreadable refuse la publication auto service-role
+  ---
+  duration_ms: 0.148375
+  type: 'test'
+  ...
+# Subtest: T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET
+ok 74 - T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET
+  ---
+  duration_ms: 0.581291
+  type: 'test'
+  ...
+# Subtest: T06 tenant: first refuses profile-changed
+ok 75 - T06 tenant: first refuses profile-changed
+  ---
+  duration_ms: 2.69475
+  type: 'test'
+  ...
+# Subtest: T06 tenant: first refuses binding-removed
+ok 76 - T06 tenant: first refuses binding-removed
+  ---
+  duration_ms: 0.345625
+  type: 'test'
+  ...
+# Subtest: T06 tenant: first refuses metadata-absent
+ok 77 - T06 tenant: first refuses metadata-absent
+  ---
+  duration_ms: 0.26875
+  type: 'test'
+  ...
+# Subtest: T06 tenant: first refuses revocation-pending
+ok 78 - T06 tenant: first refuses revocation-pending
+  ---
+  duration_ms: 0.184166
+  type: 'test'
+  ...
+# Subtest: T06 tenant: replay refuses profile-changed
+ok 79 - T06 tenant: replay refuses profile-changed
+  ---
+  duration_ms: 1.210208
+  type: 'test'
+  ...
+# Subtest: T06 tenant: replay refuses binding-removed
+ok 80 - T06 tenant: replay refuses binding-removed
+  ---
+  duration_ms: 0.642041
+  type: 'test'
+  ...
+# Subtest: T06 tenant: replay refuses metadata-absent
+ok 81 - T06 tenant: replay refuses metadata-absent
+  ---
+  duration_ms: 0.643584
+  type: 'test'
+  ...
+# Subtest: T06 tenant: replay refuses revocation-pending
+ok 82 - T06 tenant: replay refuses revocation-pending
+  ---
+  duration_ms: 0.520542
+  type: 'test'
+  ...
+# Subtest: T06 tenant: retry refuses profile-changed
+ok 83 - T06 tenant: retry refuses profile-changed
+  ---
+  duration_ms: 0.677084
+  type: 'test'
+  ...
+# Subtest: T06 tenant: retry refuses binding-removed
+ok 84 - T06 tenant: retry refuses binding-removed
+  ---
+  duration_ms: 0.621208
+  type: 'test'
+  ...
+# Subtest: T06 tenant: retry refuses metadata-absent
+ok 85 - T06 tenant: retry refuses metadata-absent
+  ---
+  duration_ms: 0.416625
+  type: 'test'
+  ...
+# Subtest: T06 tenant: retry refuses revocation-pending
+ok 86 - T06 tenant: retry refuses revocation-pending
+  ---
+  duration_ms: 0.446042
+  type: 'test'
+  ...
+# Subtest: T06 tenant: binding removed after durable claim prevents first POST
+ok 87 - T06 tenant: binding removed after durable claim prevents first POST
+  ---
+  duration_ms: 0.258666
+  type: 'test'
+  ...
+# Subtest: T06 tenant: automatic publication uses the same current profile authority
+ok 88 - T06 tenant: automatic publication uses the same current profile authority
+  ---
+  duration_ms: 0.442333
+  type: 'test'
+  ...
+# Subtest: T06 tenant: read-only reconciliation preserves historical success after reassignment
+ok 89 - T06 tenant: read-only reconciliation preserves historical success after reassignment
+  ---
+  duration_ms: 1.310209
+  type: 'test'
+  ...
+# Subtest: T06 tenant: fresh consent in current profile permits one send and no duplicate
+ok 90 - T06 tenant: fresh consent in current profile permits one send and no duplicate
+  ---
+  duration_ms: 0.308291
+  type: 'test'
+  ...
+# Subtest: T06 CAS: real Supabase serializer preserves ownership and NULL predicates
+ok 91 - T06 CAS: real Supabase serializer preserves ownership and NULL predicates
+  ---
+  duration_ms: 2.561375
+  type: 'test'
+  ...
+# Subtest: T06 CAS: real Supabase serializer preserves ownership and JSONB predicates
+ok 92 - T06 CAS: real Supabase serializer preserves ownership and JSONB predicates
+  ---
+  duration_ms: 0.412208
+  type: 'test'
+  ...
+1..92
+# tests 92
+# suites 0
+# pass 92
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1493.375084

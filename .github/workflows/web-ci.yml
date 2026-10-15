@@ -27,6 +27,10 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
       - run: npm run test:contracts
       - run: npm run test:media
+      - name: Salad secure setup and redacted input diagnostics (synthetic inputs only)
+        run: |
+          python3 -m unittest discover -s qa/t04-salad-access-20261015 -p test_secure_setup.py -v
+          python3 -m unittest discover -s qa/t04-salad-auth-20261015 -p test_input_diagnostic.py -v
       - run: node qa/t08/run.mjs redteam
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()

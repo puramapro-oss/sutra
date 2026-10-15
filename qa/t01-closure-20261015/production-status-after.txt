@@ -1,0 +1,74 @@
+(node:45849) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45849) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ lookup denies anonymous before privileged read (2.310541ms)
+✔ lookup denies expired before privileged read (0.258833ms)
+✔ lookup denies revoked before privileged read (0.274583ms)
+✔ lookup rejects invalid or ambiguous identity:  (1.044209ms)
+✔ lookup rejects invalid or ambiguous identity: targetStep=script (0.433ms)
+✔ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009 (0.347583ms)
+✔ lookup rejects invalid or ambiguous identity: requestId=bad&targetStep=script (0.273416ms)
+✔ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=cancel (0.224292ms)
+✔ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=thumbnail (0.216209ms)
+✔ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=script&targetStep=video (0.29525ms)
+✔ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&requestId=12000000-0000-4000-8000-000000000009&targetStep=script (0.17225ms)
+✔ lookup scopes script to authenticated owner and production kind (1.076458ms)
+✔ lookup scopes video to authenticated owner and production kind (0.330709ms)
+✔ lookup scopes voice to authenticated owner and production kind (0.292584ms)
+✔ lookup scopes music to authenticated owner and production kind (0.282042ms)
+✔ lookup scopes assembly to authenticated owner and production kind (0.283459ms)
+✔ lookup scopes all to authenticated owner and production kind (0.223792ms)
+✔ lookup returns stored queued without resubmitting (0.1415ms)
+✔ lookup returns stored processing without resubmitting (0.125167ms)
+✔ lookup returns stored cancelled without resubmitting (0.128708ms)
+✔ lookup returns stored failed without resubmitting (0.121ms)
+✔ lookup returns stored uncertain without resubmitting (0.109334ms)
+✔ lookup returns stored done without resubmitting (0.16525ms)
+✔ a missing row remains 404, never falsely cancelled or created (0.189ms)
+✔ lookup redacts session failure (0.144958ms)
+✔ lookup redacts service failure (0.121333ms)
+✔ lookup redacts throw failure (0.112792ms)
+✔ lookup redacts database failure (0.132541ms)
+✔ lost submit ACK then unconfirmed cancel can observe terminal completion without a new POST (0.205708ms)
+(node:45850) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45850) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ cancel transport failure is scrubbed and never acknowledged (0.530625ms)
+✔ cancel malformed ACK null requires reconciliation (0.068667ms)
+✔ cancel malformed ACK undefined requires reconciliation (0.044333ms)
+✔ cancel malformed ACK "true" requires reconciliation (0.041959ms)
+✔ cancel malformed ACK "false" requires reconciliation (0.048709ms)
+✔ cancel malformed ACK 0 requires reconciliation (0.039125ms)
+✔ cancel malformed ACK {} requires reconciliation (0.053292ms)
+✔ cancel malformed ACK [] requires reconciliation (0.043458ms)
+✔ cancel literal boolean ACK remains authoritative (0.065583ms)
+(node:45851) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45851) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ production denies anonymous before privileged reads and RPCs (3.237542ms)
+✔ production denies expired before privileged reads and RPCs (0.275417ms)
+✔ production denies revoked before privileged reads and RPCs (0.290792ms)
+✔ two users with the same client intent get distinct user-scoped jobs and server-derived plans (15.925209ms)
+✔ client cannot inject another user or an elevated plan (0.379875ms)
+✔ diagnostic redaction at submit_video_job (0.331958ms)
+✔ diagnostic redaction at submit_video_job:throw (0.258875ms)
+✔ diagnostic redaction at claim_video_job_by_key (0.236875ms)
+✔ diagnostic redaction at claim_video_job_by_key:throw (0.25525ms)
+✔ diagnostic redaction at profile (0.179917ms)
+✔ exact public submission code remains 403: SUTRA_QUOTA_EXHAUSTED (0.2295ms)
+✔ embedded public code cannot expose a claim diagnostic: SUTRA_QUOTA_EXHAUSTED (0.322ms)
+✔ exact public submission code remains 409: SUTRA_IDEMPOTENCY_CONFLICT (0.211708ms)
+✔ embedded public code cannot expose a claim diagnostic: SUTRA_IDEMPOTENCY_CONFLICT (0.190083ms)
+✔ exact public submission code remains 400: SUTRA_INVALID_REQUEST_ID (0.137709ms)
+✔ embedded public code cannot expose a claim diagnostic: SUTRA_INVALID_REQUEST_ID (0.1245ms)
+✔ worker diagnostic is redacted both from the response and the durable last_error (0.213416ms)
+✔ unconfirmed durable error write stays fail-closed (0.170583ms)
+✔ non-Error throw cannot escape diagnostic values (0.132125ms)
+ℹ tests 57
+ℹ suites 0
+ℹ pass 57
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 451.536875

@@ -1,0 +1,28 @@
+{
+  "binaryDiffScan": "2 findings in PNG binary patch sections",
+  "textDiffScan": "PASS, no findings",
+  "findings": [
+    {
+      "reportedLine": 59033,
+      "diffHeader": "diff --git a/qa/t07-scheduler-cancel-20261015/reconcile-final/receipt-unknown-1440.png b/qa/t07-scheduler-cancel-20261015/reconcile-final/receipt-unknown-1440.png",
+      "sectionStartLine": 59031,
+      "sectionEndLine": 62395,
+      "containsGitBinaryPatch": true,
+      "rule": "sourcegraph-access-token",
+      "reportedLineSha256": "dd404e2f5a440470170ead9700540954d131facb17f7ed9181332ad024b9cbab",
+      "classification": "binary PNG patch encoding; textual source scan has no findings",
+      "redacted": true
+    },
+    {
+      "reportedLine": 69538,
+      "diffHeader": "diff --git a/qa/t07-scheduler-cancel-20261015/reconcile-optimized/receipt-unknown-1440.png b/qa/t07-scheduler-cancel-20261015/reconcile-optimized/receipt-unknown-1440.png",
+      "sectionStartLine": 69536,
+      "sectionEndLine": 72858,
+      "containsGitBinaryPatch": true,
+      "rule": "sourcegraph-access-token",
+      "reportedLineSha256": "9940a726325f2404ae722a1c791f4a313b20ccc8844ad0b87c3a5aad3850b874",
+      "classification": "binary PNG patch encoding; textual source scan has no findings",
+      "redacted": true
+    }
+  ]
+}

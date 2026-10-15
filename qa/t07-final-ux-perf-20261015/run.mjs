@@ -9,6 +9,9 @@ import { editorChecks } from './editor-checks.mjs'
 import { visualChecks } from './visual-checks.mjs'
 import { navigationChecks } from './navigation-checks.mjs'
 import { planningChecks } from './planning-checks.mjs'
+import { checks as schedulerCancellationChecks } from '../t07-scheduler-cancel-20261015/checks.mjs'
+import { reconcileChecks } from '../t07-scheduler-cancel-20261015/reconcile-checks.mjs'
+import { enterTestSession } from './session.mjs'
 import assert from 'node:assert/strict'
 import { createServer } from 'node:http'
 import { once } from 'node:events'
@@ -91,7 +94,12 @@ async function runScenario(options, scenarioOutput) {
   page.setDefaultTimeout(15000)
   runtimeSnapshot = await observeRuntimeErrors(page, { engine: browser.browserType().name(), nativeControl: engineControl, fixtureOrigin: fixture.url })
   if (options.includes('--social')) fixtureReadSnapshot = installFixtureReadBarrier(page, { appOrigin: base, fixtureOrigin: fixture.url, userId: fixture.user.id })
-  if (options.includes('--visual')) await visualChecks({ page, context, base, fixture, output, check, details })
+  if (options.includes('--scheduler-cancellation') || options.includes('--production-reconcile')) {
+    await enterTestSession({ page, base, fixture })
+    const run = options.includes('--production-reconcile') ? reconcileChecks : schedulerCancellationChecks
+    await run({ page, context, base, fixture, output, check, details, before: false })
+  }
+  else if (options.includes('--visual')) await visualChecks({ page, context, base, fixture, output, check, details })
   else if (options.includes('--navigation')) await navigationChecks({ page, context, base, fixture, output, check, details, runtimeSnapshot })
   else if (options.includes('--editor')) await editorChecks({ page, context, base, fixture, output, check, details })
   else if (options.includes('--extra')) await extraChecks({ page, context, base, fixture, output, check, details })
@@ -144,10 +152,14 @@ try {
       const cases = finalIntegrated ? [['final', ['--final']], ['social', ['--social']], ['planning', ['--planning']], ['legal', ['--legal']], ['journey', ['--journeys']], ['private-download', ['--journeys', '--private-download']], ['extra', ['--extra']], ['editor', ['--editor']], ['visual', ['--visual']], ['navigation', ['--navigation']]] : productionDelta ? [['editor', ['--editor']], ['visual', ['--visual']], ['navigation', ['--navigation']]] : browserName === 'webkit'
         ? [['final', ['--final']], ['social', ['--social']], ['planning', ['--planning']], ['journey', ['--journeys']], ['private-download', ['--journeys', '--private-download']], ['extra', ['--extra']]]
         : [['final', ['--final']], ['social', ['--social']], ['planning', ['--planning']]]
+      if (finalIntegrated && browserName === 'chromium') cases.push(
+        ['scheduler-cancellation', ['--scheduler-cancellation']],
+        ['production-reconcile', ['--production-reconcile']],
+      )
       for (const [name, options] of cases) await runScenario(options, resolve(output, browserName, name))
       await browser.close(); browser = null
     }
-    if (finalIntegrated) assert.equal(summaries.length, 20, 'all ten scenarios ran in both engines')
+    if (finalIntegrated) assert.equal(summaries.length, 22, 'ten scenarios in both engines and two targeted Chromium closure scenarios')
   } else {
     browser = await ({ chromium, webkit }[engine]).launch({ headless: true })
     engineControl = await nativeRuntimeControls(browser)

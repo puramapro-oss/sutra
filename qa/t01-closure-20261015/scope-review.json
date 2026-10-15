@@ -1,0 +1,24 @@
+{
+  "time": "2026-10-15T18:49:32.568619+00:00",
+  "detectChanges": "EXECUTED; CRITICAL; partial/truncated graph contains foreign application associations",
+  "directProductScope": [
+    "src/app/(dashboard)/auto/layout.tsx",
+    "src/app/(dashboard)/auto/page.tsx",
+    "src/app/(dashboard)/production/page.tsx",
+    "src/app/api/auto/config/route.ts",
+    "src/app/api/production/route.ts",
+    "src/components/auto/AutoSchedulerControl.tsx",
+    "src/components/production/ProductionRequestStatus.tsx",
+    "src/hooks/useAutoScheduler.ts",
+    "src/hooks/useProductionGeneration.ts",
+    "src/lib/production-intent-client.ts"
+  ],
+  "review": "10 product files only: 8 exact T07 frontend blobs; 2 T01 HTTP routes. No SQL, provider dispatch, quota or POST production delta in this commit. Public diagnostics redacted; production lookup user/kind/idempotency scoped. Exact-route tests and UI contracts cover touched boundaries. Graph is not exhaustive certification.",
+  "foreignApplicationsModified": false,
+  "targetedTypecheck": "PASS",
+  "targetedLint": "PASS, two existing warnings",
+  "t07UnitTests": "7 PASS",
+  "autoConfig": "22 PASS after 15 reproduced failures",
+  "productionStatusAndRegressions": "57 PASS",
+  "finalExactShaCi": "PENDING"
+}

@@ -1,5 +1,5 @@
 {
-  "base": "56754679abed9aa1e51323c29aed5bef38bc17d0",
+  "base": "d5d49a458e9e630ffbc1a433a7693a8cecd7dad5",
   "status": "CANDIDATE_AWAITING_EXACT_SHA_CI",
   "scope": "Committed application, migrations, delivery tooling, configuration and executable validation sources; no secrets or mutable receipts",
   "files": [
@@ -13,7 +13,7 @@
     },
     {
       "path": ".github/workflows/web-ci.yml",
-      "sha256": "60576cd723803e47b75395db4058ba2461af60df87e1715f41490e508d9fb39b"
+      "sha256": "bb2be535a1e40fc0ee8498ed42da981da09bdc13c7513b4954579e2881972a1b"
     },
     {
       "path": "deploy/README.md",
@@ -400,6 +400,14 @@
       "sha256": "36fa03e479dc8a5e974b63c22c6eee572c46acbecabf76ff7a7e60faa8bcd149"
     },
     {
+      "path": "qa/t01-closure-20261015/auto-config.test.mts",
+      "sha256": "69664e218475b57f8e45aab6328b211bc69a4a8cc28e003ac1f01fdd821a8189"
+    },
+    {
+      "path": "qa/t01-closure-20261015/production-status.test.mts",
+      "sha256": "26595a3e6e4f382f2b265c782834434133db810bb3b1e5e1e6efaae41b60f541"
+    },
+    {
       "path": "qa/t01-consolidation-20261014/checkpoint-transition.py",
       "sha256": "918aa8b032359c59393c307040543e737d339a01d37a19d7be0b2474bc19230a"
     },
@@ -550,6 +558,14 @@
     {
       "path": "qa/t02-final/run-local-db-gates.mjs",
       "sha256": "cf93fc4bfbb17953a769621cbab7552de866ca7eead5a91e7ca3d9e0f2d05920"
+    },
+    {
+      "path": "qa/t02-integrated-security-20261015/evidence-output.cjs",
+      "sha256": "ecc9adf1c30c6868745e69027beb2610fd66ce139757784aa5a13e6c2c06ab45"
+    },
+    {
+      "path": "qa/t02-integrated-security-20261015/run.py",
+      "sha256": "e9a0593b96af740cda293a149303688d025dad4609b671e0a1922625b2be5de4"
     },
     {
       "path": "qa/t02-rpc-security-20261015/framework.d.ts",
@@ -729,7 +745,7 @@
     },
     {
       "path": "qa/t04-salad-access-20261015/secure_setup.py",
-      "sha256": "b563770010de3f54b21ae54e7888dfb90796b4b23c9cd55e7886bafa21ec9feb"
+      "sha256": "74aed6709107a94e3354c9e1c375e4486392e21457b9c0f8309eaedfd8b86cd3"
     },
     {
       "path": "qa/t04-salad-access-20261015/test_secure_setup.py",
@@ -742,6 +758,14 @@
     {
       "path": "qa/t04-salad-access-20261015/validate-access.test.mjs",
       "sha256": "2ee591852c01e78b853c6032fa92877f4c3f89bbcdab9d52c1e0be23cc7c31b3"
+    },
+    {
+      "path": "qa/t04-salad-auth-20261015/Saisie-Salad.command",
+      "sha256": "87e2c3a18bf53d9c077894a130376e09f91af5f95c1a1bf3cf4d2df586bc8386"
+    },
+    {
+      "path": "qa/t04-salad-auth-20261015/test_input_diagnostic.py",
+      "sha256": "9e27f0e04ea43ab19742ac1af48f7ca122aefc18e129fb7e19bce2e77b9512cc"
     },
     {
       "path": "qa/t05-composition-fix-20261014/run-targeted.mjs",
@@ -865,7 +889,7 @@
     },
     {
       "path": "qa/t07-final-ux-perf-20261015/run.mjs",
-      "sha256": "7fc17d0a9f7292dc3fd31e45c62ba84372d99a7fffa68a3efb01758730f37e39"
+      "sha256": "4e75a3a6064da801b11eee48a25b840e8a7d21161b773dbc53ecdc9151ca7ee5"
     },
     {
       "path": "qa/t07-final-ux-perf-20261015/session.mjs",
@@ -942,6 +966,42 @@
     {
       "path": "qa/t07-modes-20261014/generation-fixtures.mjs",
       "sha256": "331b8a11387203e389f181fad9e1ca02284e96572f012fd8a4533a1cc81f20f2"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/checks-before.mjs",
+      "sha256": "ce5ef56c1f496d5ba038e26500086663bc9442d58ee868a5a9ef075a15fa34bd"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/checks.mjs",
+      "sha256": "db3c4216aeead3a694f344a1b159a6cd576e95d5874fb95f06fd6a5a8bb023ff"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/client-contracts.test.mts",
+      "sha256": "eb75a35609efd7705c7e8f5bb9dca6cbcc195c573155df0fecf332467989a4e7"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/production-checks.mjs",
+      "sha256": "b66bce03faa9fc5a30173da88bfcea81ea8e7bca10fb629835a4c214edbe754e"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/reconcile-checks.mjs",
+      "sha256": "9508c74659adb1a5795200349529c925fd09e847b888cc6b197a74fda367f991"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/run.mjs",
+      "sha256": "2208bf09004926210c14d599cfd78ce449763661156160eb33a587cecd502bc7"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/scheduler-checks.mjs",
+      "sha256": "05390876fb3cbba27a57ba2c37751ea4ff7a6f6e6d6be7f184d6cd5213244e6e"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/status-panel.test.tsx",
+      "sha256": "b2465538749e2b6bbb5756c6542455cea284950cdfd95d4840eaf178b4c5b816"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/storage-only.mjs",
+      "sha256": "76ff92b74fab6d8d16191b13fd35d6d11973a053cf2088019194b62a890bff69"
     },
     {
       "path": "qa/t08-acceptance-72f406b-20261015/build_matrix.py",
@@ -1089,7 +1149,7 @@
     },
     {
       "path": "scripts/run-ci.mjs",
-      "sha256": "c00f66b4cef89b89de8db82270921b08959d32b4858bd2ad912aa240fafecc2d"
+      "sha256": "a10968fd2ade80d909d3114d81ec90bd78beac6b16284554e6aa545484214d1d"
     },
     {
       "path": "scripts/screenshot-landing.mjs",
@@ -1529,7 +1589,7 @@
     },
     {
       "path": "src/app/(dashboard)/auto/layout.tsx",
-      "sha256": "57a94b8b68e39c61e5f18583931a4e8633a425faf3a65c51b305a0b25ba21389"
+      "sha256": "6b037d49ca4eeb5cb0ec82f94dea44c86692c4dd38698fa8fbf7ec1b02f36665"
     },
     {
       "path": "src/app/(dashboard)/auto/memory/page.tsx",
@@ -1537,7 +1597,7 @@
     },
     {
       "path": "src/app/(dashboard)/auto/page.tsx",
-      "sha256": "9044a60e4f5c4ed1964070e6ba733ce62bcbf2a90dcafbe61deabca25f85db45"
+      "sha256": "5b28ad67b96d5832534ee98473bca595f49a795a142475fd47daebe6db0d0ddc"
     },
     {
       "path": "src/app/(dashboard)/auto/schedules/page.tsx",
@@ -1737,7 +1797,7 @@
     },
     {
       "path": "src/app/(dashboard)/production/page.tsx",
-      "sha256": "fb1cb39a8ecdbe13a1f68649067d96b46b0d817387e095981e6c098bf4ef71e5"
+      "sha256": "0a31f72d6a3005976ac8b246850771b03cfb9123626aa0aadee470c00add73bd"
     },
     {
       "path": "src/app/(dashboard)/profile/page.tsx",
@@ -1853,7 +1913,7 @@
     },
     {
       "path": "src/app/api/auto/config/route.ts",
-      "sha256": "3b1beec701f765c3c19cfd6a2041e97d09b50105c14641a4e249971bf24e1089"
+      "sha256": "7c722042cc7beaf967c778790023b5de56fc9abd0338c789c6c1090fd1b21444"
     },
     {
       "path": "src/app/api/auto/generate/route.ts",
@@ -2185,7 +2245,7 @@
     },
     {
       "path": "src/app/api/production/route.ts",
-      "sha256": "b16a97c07d43811a3b193e17c9bb3bfdb90b2c07c009dfb7aac1906d02a34f85"
+      "sha256": "9e0d5b5bc953f35327a3648867333ee1a16a10ef97b0a0a02a5989fdd891d5a1"
     },
     {
       "path": "src/app/api/publish/route.ts",
@@ -2614,6 +2674,10 @@
     {
       "path": "src/components/analytics/TopVideos.tsx",
       "sha256": "01fdcc21bf82abfc7c02489109e070fa1a940f01a96b36554bfa425c235e642e"
+    },
+    {
+      "path": "src/components/auto/AutoSchedulerControl.tsx",
+      "sha256": "324d96146193d85f9a28c01b0f74cbd32b49366726eb7087edaf0d2af6e015ce"
     },
     {
       "path": "src/components/autopilot/AutopilotSeriesCard.tsx",
@@ -3052,6 +3116,10 @@
       "sha256": "af001c8ecdb087358705fc888f214bd2aab8a3f2977ad10061f014678c4ae1f8"
     },
     {
+      "path": "src/components/production/ProductionRequestStatus.tsx",
+      "sha256": "e589b0f02f7c859ce58d9d08fb7810583cc428fc0c1e1624e6cdcd58fce2d877"
+    },
+    {
       "path": "src/components/production/ScriptStep.tsx",
       "sha256": "07147d3bbb034dd4e964b60265f92a5bd027e596b06776ac725b5bf39a735b3d"
     },
@@ -3480,6 +3548,10 @@
       "sha256": "8d6b02f09abd3ecd76df92170a685f7ab7ea40466f4576972aa4fa0d278c257e"
     },
     {
+      "path": "src/hooks/useAutoScheduler.ts",
+      "sha256": "f93e3c9d76112b42a240b389ef95448624174ae7f61e562b2d4281ff6bf58138"
+    },
+    {
       "path": "src/hooks/useAwakening.ts",
       "sha256": "6097360d9b573157ead4c95c6cc350c0d0fac8e0b57b251431fcef2f6d771cc3"
     },
@@ -3537,7 +3609,7 @@
     },
     {
       "path": "src/hooks/useProductionGeneration.ts",
-      "sha256": "f92ebc5e66003aa9af587d1b258cfd27006bd39b7b17d006ae47800c6f769516"
+      "sha256": "f5d69f9f3e3b6dfb1bcd6bad2623bf263a8ac62d72f7dbfa950ea8a7785f2d05"
     },
     {
       "path": "src/hooks/usePublish.ts",
@@ -3930,6 +4002,10 @@
     {
       "path": "src/lib/production-constants.ts",
       "sha256": "2c60c89a12d2c45d832d8b1a761c5b1b29cf93134f3b36a6b51b99cdf242c218"
+    },
+    {
+      "path": "src/lib/production-intent-client.ts",
+      "sha256": "e6e8945578c5d8fc744c91be8bec892f6e7db18f2835d218a578c7b6c75284d0"
     },
     {
       "path": "src/lib/production-persistence.ts",

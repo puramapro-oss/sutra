@@ -1,0 +1,2329 @@
+{
+  "target": {
+    "name": "ProductionRequestStatus",
+    "type": "",
+    "filePath": "src/components/production/ProductionRequestStatus.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 476,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "CRITICAL",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 243,
+    "processes_affected": 4,
+    "modules_affected": 17
+  },
+  "byDepthCounts": {
+    "1": 243,
+    "2": 192,
+    "3": 41
+  },
+  "affected_processes": [
+    {
+      "name": "GET → CreateServiceClient",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 3,
+      "total_hits": 4,
+      "earliest_broken_step": 4
+    },
+    {
+      "name": "GET → Origin",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "NotificationsScreen",
+      "type": "Function",
+      "filePath": "mobile/app/notifications/index.tsx",
+      "affected_process_count": 1,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "Submit → Blocked",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 19,
+      "impact": "direct"
+    },
+    {
+      "name": "T01-final-20261015",
+      "hits": 15,
+      "impact": "direct"
+    },
+    {
+      "name": "Salad",
+      "hits": 9,
+      "impact": "direct"
+    },
+    {
+      "name": "[reference]",
+      "hits": 5,
+      "impact": "direct"
+    },
+    {
+      "name": "Hooks",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Notifications",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Callback",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_456",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_487",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_488",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "T01-consolidation-20261014",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Browser-harness",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_450",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_457",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_485",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "T03-salad-recovery-20261014",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "T07-final-ux-perf-20261015",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "truncated": true
+  },
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Class:scripts/test-t03-salad-recovery.mts:Transport",
+        "name": "Transport",
+        "filePath": "scripts/test-t03-salad-recovery.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:deploy/candidate.py",
+        "name": "candidate.py",
+        "filePath": "deploy/candidate.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:deploy/ovh.py",
+        "name": "ovh.py",
+        "filePath": "deploy/ovh.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:deploy/scheduler_observer.py",
+        "name": "scheduler_observer.py",
+        "filePath": "deploy/scheduler_observer.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:mobile/metro.config.js",
+        "name": "metro.config.js",
+        "filePath": "mobile/metro.config.js",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:mobile/scripts/generate-icons.mjs",
+        "name": "generate-icons.mjs",
+        "filePath": "mobile/scripts/generate-icons.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:mobile/tailwind.config.js",
+        "name": "tailwind.config.js",
+        "filePath": "mobile/tailwind.config.js",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/final-delta-20261014/authenticated-browser.cjs",
+        "name": "authenticated-browser.cjs",
+        "filePath": "qa/final-delta-20261014/authenticated-browser.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/final-delta-20261014/media-smoke.mjs",
+        "name": "media-smoke.mjs",
+        "filePath": "qa/final-delta-20261014/media-smoke.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/final-delta-20261014/promote.py",
+        "name": "promote.py",
+        "filePath": "qa/final-delta-20261014/promote.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/final-delta-20261014/public-browser.cjs",
+        "name": "public-browser.cjs",
+        "filePath": "qa/final-delta-20261014/public-browser.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/final-delta-20261014/run-postgres.mjs",
+        "name": "run-postgres.mjs",
+        "filePath": "qa/final-delta-20261014/run-postgres.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/final-delta-20261014/security-probe.py",
+        "name": "security-probe.py",
+        "filePath": "qa/final-delta-20261014/security-probe.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/final-integration-20261013/social-ui-check.mjs",
+        "name": "social-ui-check.mjs",
+        "filePath": "qa/final-integration-20261013/social-ui-check.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/ovh-final-providers-20261014/media-smoke.mjs",
+        "name": "media-smoke.mjs",
+        "filePath": "qa/ovh-final-providers-20261014/media-smoke.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/ovh-final-providers-20261014/promote.py",
+        "name": "promote.py",
+        "filePath": "qa/ovh-final-providers-20261014/promote.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/ovh-final-providers-20261014/public-browser.cjs",
+        "name": "public-browser.cjs",
+        "filePath": "qa/ovh-final-providers-20261014/public-browser.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/ovh-final-providers-20261014/security-probe.py",
+        "name": "security-probe.py",
+        "filePath": "qa/ovh-final-providers-20261014/security-probe.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+        "name": "free-runtime-probes.mjs",
+        "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/postdeploy-20261013/security/probe.py",
+        "name": "probe.py",
+        "filePath": "qa/postdeploy-20261013/security/probe.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/provider-activation-20261014/run.py",
+        "name": "run.py",
+        "filePath": "qa/provider-activation-20261014/run.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/provider-final-audit-20261013/audit.py",
+        "name": "audit.py",
+        "filePath": "qa/provider-final-audit-20261013/audit.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/release-20261012/run-postgres.mjs",
+        "name": "run-postgres.mjs",
+        "filePath": "qa/release-20261012/run-postgres.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/salad-integration-20261014/promote.py",
+        "name": "promote.py",
+        "filePath": "qa/salad-integration-20261014/promote.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/salad-integration-20261014/run-postgres.mjs",
+        "name": "run-postgres.mjs",
+        "filePath": "qa/salad-integration-20261014/run-postgres.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-consolidation-20261014/checkpoint-transition.py",
+        "name": "checkpoint-transition.py",
+        "filePath": "qa/t01-consolidation-20261014/checkpoint-transition.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-consolidation-20261014/navigation-diagnostic.mjs",
+        "name": "navigation-diagnostic.mjs",
+        "filePath": "qa/t01-consolidation-20261014/navigation-diagnostic.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-consolidation-20261014/promote.py",
+        "name": "promote.py",
+        "filePath": "qa/t01-consolidation-20261014/promote.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-consolidation-20261014/verify-checkpoint-concurrency.py",
+        "name": "verify-checkpoint-concurrency.py",
+        "filePath": "qa/t01-consolidation-20261014/verify-checkpoint-concurrency.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-final-20261015/browser-harness/cross-origin-reproduction.mjs",
+        "name": "cross-origin-reproduction.mjs",
+        "filePath": "qa/t01-final-20261015/browser-harness/cross-origin-reproduction.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-final-20261015/browser-harness/profile-reproduction.mjs",
+        "name": "profile-reproduction.mjs",
+        "filePath": "qa/t01-final-20261015/browser-harness/profile-reproduction.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-final-20261015/client-permissions.py",
+        "name": "client-permissions.py",
+        "filePath": "qa/t01-final-20261015/client-permissions.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-final-20261015/social-history-transition.py",
+        "name": "social-history-transition.py",
+        "filePath": "qa/t01-final-20261015/social-history-transition.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t01-promotion-20261015/public-browser.mjs",
+        "name": "public-browser.mjs",
+        "filePath": "qa/t01-promotion-20261015/public-browser.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t02-rpc-security-20261015/evidence-output.cjs",
+        "name": "evidence-output.cjs",
+        "filePath": "qa/t02-rpc-security-20261015/evidence-output.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t02-salad-security-20261014/run-t02-salad-security.py",
+        "name": "run-t02-salad-security.py",
+        "filePath": "qa/t02-salad-security-20261014/run-t02-salad-security.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "name": "test-t02-salad-security-contract.mts",
+        "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t02-security-fixes-20261014/probe-request-redirect.cjs",
+        "name": "probe-request-redirect.cjs",
+        "filePath": "qa/t02-security-fixes-20261014/probe-request-redirect.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t03-durable-closure-20261015/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t03-durable-closure-20261015/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t03-durable-reliability-20261014/postgres.mjs",
+        "name": "postgres.mjs",
+        "filePath": "qa/t03-durable-reliability-20261014/postgres.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t03-durable-reliability-20261014/restart-worker.mts",
+        "name": "restart-worker.mts",
+        "filePath": "qa/t03-durable-reliability-20261014/restart-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t03-final-durable-20261015/postgres.mjs",
+        "name": "postgres.mjs",
+        "filePath": "qa/t03-final-durable-20261015/postgres.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t03-orchestration-fixes-20261014/postgres.mjs",
+        "name": "postgres.mjs",
+        "filePath": "qa/t03-orchestration-fixes-20261014/postgres.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t03-orchestration-fixes-20261014/typecheck-with-t04.mjs",
+        "name": "typecheck-with-t04.mjs",
+        "filePath": "qa/t03-orchestration-fixes-20261014/typecheck-with-t04.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t03-salad-recovery-20261014/offline.cjs",
+        "name": "offline.cjs",
+        "filePath": "qa/t03-salad-recovery-20261014/offline.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t03-salad-recovery-20261014/verify.py",
+        "name": "verify.py",
+        "filePath": "qa/t03-salad-recovery-20261014/verify.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t04-final-providers-20261015/salad-read.mjs",
+        "name": "salad-read.mjs",
+        "filePath": "qa/t04-final-providers-20261015/salad-read.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t04-salad-access-20261015/secure_setup.py",
+        "name": "secure_setup.py",
+        "filePath": "qa/t04-salad-access-20261015/secure_setup.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t04-salad-access-20261015/validate-access.mjs",
+        "name": "validate-access.mjs",
+        "filePath": "qa/t04-salad-access-20261015/validate-access.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t05-integrated-retest-20261015/retest.mts",
+        "name": "retest.mts",
+        "filePath": "qa/t05-integrated-retest-20261015/retest.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t06-final-social-20261015/run-postgres.mjs",
+        "name": "run-postgres.mjs",
+        "filePath": "qa/t06-final-social-20261015/run-postgres.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t06-social-recovery-20261014/test-postgres.mts",
+        "name": "test-postgres.mts",
+        "filePath": "qa/t06-social-recovery-20261014/test-postgres.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-final-ux-perf-20261015/keyboard-regression.mjs",
+        "name": "keyboard-regression.mjs",
+        "filePath": "qa/t07-final-ux-perf-20261015/keyboard-regression.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-final-ux-perf-20261015/native-safari-server.mjs",
+        "name": "native-safari-server.mjs",
+        "filePath": "qa/t07-final-ux-perf-20261015/native-safari-server.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-final-ux-perf-20261015/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t07-final-ux-perf-20261015/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-final-ux-perf-20261015/webkit-navigation-probe.mjs",
+        "name": "webkit-navigation-probe.mjs",
+        "filePath": "qa/t07-final-ux-perf-20261015/webkit-navigation-probe.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-frontend-fixes-20261014/browser.mjs",
+        "name": "browser.mjs",
+        "filePath": "qa/t07-frontend-fixes-20261014/browser.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-frontend-journey-20261014/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t07-frontend-journey-20261014/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-integrated-retest-20261015/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t07-integrated-retest-20261015/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-modes-20261014/browser.mjs",
+        "name": "browser.mjs",
+        "filePath": "qa/t07-modes-20261014/browser.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-modes-20261014/capabilities-fixtures.mjs",
+        "name": "capabilities-fixtures.mjs",
+        "filePath": "qa/t07-modes-20261014/capabilities-fixtures.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t07-scheduler-cancel-20261015/run.mjs",
+        "name": "run.mjs",
+        "filePath": "qa/t07-scheduler-cancel-20261015/run.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t08-acceptance-72f406b-20261015/build_matrix.py",
+        "name": "build_matrix.py",
+        "filePath": "qa/t08-acceptance-72f406b-20261015/build_matrix.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t08-acceptance-72f406b-20261015/evidence-output.cjs",
+        "name": "evidence-output.cjs",
+        "filePath": "qa/t08-acceptance-72f406b-20261015/evidence-output.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t08-acceptance-72f406b-20261015/run-postgres.mjs",
+        "name": "run-postgres.mjs",
+        "filePath": "qa/t08-acceptance-72f406b-20261015/run-postgres.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t08-acceptance-72f406b-20261015/verify_ci.py",
+        "name": "verify_ci.py",
+        "filePath": "qa/t08-acceptance-72f406b-20261015/verify_ci.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t08-acceptance-72f406b-20261015/verify_sources.py",
+        "name": "verify_sources.py",
+        "filePath": "qa/t08-acceptance-72f406b-20261015/verify_sources.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t08-acceptance-d21b7b4-20261015/verify_evidence.py",
+        "name": "verify_evidence.py",
+        "filePath": "qa/t08-acceptance-d21b7b4-20261015/verify_evidence.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t08-final-candidate-20261015/verify_provenance.py",
+        "name": "verify_provenance.py",
+        "filePath": "qa/t08-final-candidate-20261015/verify_provenance.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t08/offline.cjs",
+        "name": "offline.cjs",
+        "filePath": "qa/t08/offline.cjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/helpers/local-media-fixture.mts",
+        "name": "local-media-fixture.mts",
+        "filePath": "scripts/helpers/local-media-fixture.mts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/screenshot-landing.mjs",
+        "name": "screenshot-landing.mjs",
+        "filePath": "scripts/screenshot-landing.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-api-contracts.mts",
+        "name": "test-api-contracts.mts",
+        "filePath": "scripts/test-api-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-auth-session.mts",
+        "name": "test-auth-session.mts",
+        "filePath": "scripts/test-auth-session.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-auto-export-queue.mts",
+        "name": "test-auto-export-queue.mts",
+        "filePath": "scripts/test-auto-export-queue.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-connect.mjs",
+        "name": "test-connect.mjs",
+        "filePath": "scripts/test-connect.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-editor-export.mts",
+        "name": "test-editor-export.mts",
+        "filePath": "scripts/test-editor-export.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-env-contracts.mts",
+        "name": "test-env-contracts.mts",
+        "filePath": "scripts/test-env-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-export-integration.mts",
+        "name": "test-export-integration.mts",
+        "filePath": "scripts/test-export-integration.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-final-social-history.mjs",
+        "name": "test-final-social-history.mjs",
+        "filePath": "scripts/test-final-social-history.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-final-write-permissions.mjs",
+        "name": "test-final-write-permissions.mjs",
+        "filePath": "scripts/test-final-write-permissions.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-integration.mts",
+        "name": "test-integration.mts",
+        "filePath": "scripts/test-integration.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-karma-split.mjs",
+        "name": "test-karma-split.mjs",
+        "filePath": "scripts/test-karma-split.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-local-engine-e2e.mts",
+        "name": "test-local-engine-e2e.mts",
+        "filePath": "scripts/test-local-engine-e2e.mts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-local-engine.mts",
+        "name": "test-local-engine.mts",
+        "filePath": "scripts/test-local-engine.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-ltx-v2-contracts.mts",
+        "name": "test-ltx-v2-contracts.mts",
+        "filePath": "scripts/test-ltx-v2-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-ltx-v2-media.mts",
+        "name": "test-ltx-v2-media.mts",
+        "filePath": "scripts/test-ltx-v2-media.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-migration-local.mjs",
+        "name": "test-migration-local.mjs",
+        "filePath": "scripts/test-migration-local.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-opentimestamps.mjs",
+        "name": "test-opentimestamps.mjs",
+        "filePath": "scripts/test-opentimestamps.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-pipeline-interruptions.mts",
+        "name": "test-pipeline-interruptions.mts",
+        "filePath": "scripts/test-pipeline-interruptions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-pipeline-postgres.mts",
+        "name": "test-pipeline-postgres.mts",
+        "filePath": "scripts/test-pipeline-postgres.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-private-media.mts",
+        "name": "test-private-media.mts",
+        "filePath": "scripts/test-private-media.mts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-production-queue.mts",
+        "name": "test-production-queue.mts",
+        "filePath": "scripts/test-production-queue.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-provider-safety.mts",
+        "name": "test-provider-safety.mts",
+        "filePath": "scripts/test-provider-safety.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-public-origin.mts",
+        "name": "test-public-origin.mts",
+        "filePath": "scripts/test-public-origin.mts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-release-oauth.mts",
+        "name": "test-release-oauth.mts",
+        "filePath": "scripts/test-release-oauth.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-release-regressions.mts",
+        "name": "test-release-regressions.mts",
+        "filePath": "scripts/test-release-regressions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-host.mts",
+        "name": "test-salad-host.mts",
+        "filePath": "scripts/test-salad-host.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-persistence.mts",
+        "name": "test-salad-persistence.mts",
+        "filePath": "scripts/test-salad-persistence.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-worker.mts",
+        "name": "test-salad-worker.mts",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:scripts/helpers/social-database.mts",
+        "name": "social-database.mts",
+        "filePath": "scripts/helpers/social-database.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(auth)/login/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(auth)/login/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(auth)/reset-password/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(auth)/reset-password/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(auth)/signup/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(auth)/signup/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/achievements/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/achievements/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/admin/layout.tsx",
+        "name": "layout.tsx",
+        "filePath": "src/app/(dashboard)/admin/layout.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/analytics/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/analytics/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/batch/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/batch/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/boutique/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/boutique/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/classement-points/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/classement-points/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/classement/engagement/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/classement/engagement/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/community/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/community/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/create/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/create/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/fiscal/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/fiscal/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/gratitude/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/gratitude/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/invoices/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/invoices/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/library/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/library/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/lottery/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/lottery/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/partenaire/coach/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/partenaire/coach/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/partenaire/outils/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/partenaire/outils/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/partenaire/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/partenaire/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/production/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/production/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/publish/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/publish/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/referral/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/referral/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/settings/abonnement/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/settings/abonnement/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/settings/notifications/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/settings/notifications/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/settings/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/settings/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/settings/paiement/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/settings/paiement/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/settings/social/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/settings/social/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/storyboard/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/storyboard/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/styles/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/styles/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/voices/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/voices/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/wallet/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/wallet/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/achievements/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/achievements/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/admin/stats/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/admin/stats/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/admin/users/[id]/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/admin/users/[id]/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/admin/users/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/admin/users/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/ai/chat/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/ai/chat/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/auto/config/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/config/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/auto/generate/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/generate/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/auto/memory/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/memory/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/auto/themes/[id]/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/themes/[id]/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/auto/themes/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/themes/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/auto/videos/[id]/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/videos/[id]/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/auto/videos/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/auto/videos/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/boutique/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/boutique/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/community/buddy/checkin/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/community/buddy/checkin/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/community/buddy/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/community/buddy/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/community/circles/join/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/community/circles/join/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/community/circles/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/community/circles/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/community/wall/react/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/community/wall/react/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/community/wall/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/community/wall/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/create/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/account-deletion/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/account-deletion/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/ambassador-check/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/ambassador-check/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/asso-transfer/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/asso-transfer/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/auto-learn/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/auto-learn/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/auto-trends/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/auto-trends/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/contest-judge/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/contest-judge/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/contest-monthly/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/contest-monthly/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/contest-weekly/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/contest-weekly/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/email-sequences/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/email-sequences/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/fiscal-palier/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/fiscal-palier/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/karma-defi/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/karma-defi/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/karma-lightning/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/karma-lightning/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/karma-split-distribute/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/karma-split-distribute/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/karma-tournoi/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/karma-tournoi/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/smart-split/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/smart-split/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/streak-update/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/streak-update/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/sutra-auto/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/sutra-auto/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/cron/upgrade-ots-proofs/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/upgrade-ots-proofs/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/daily-gift/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/daily-gift/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/drafts/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/drafts/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/dream-goals/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/dream-goals/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/feedback/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/feedback/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/fiscal/status/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/fiscal/status/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/fiscal/summary/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/fiscal/summary/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/flywheel/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/flywheel/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/gratitude/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/gratitude/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/health/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/health/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/creatif/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/creatif/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/creatif/vote/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/creatif/vote/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/defi/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/defi/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/dharma/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/dharma/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/lightning/claim/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/lightning/claim/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/lightning/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/lightning/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/quete/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/quete/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/tournoi/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/tournoi/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/games/vague/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/games/vague/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/missions/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/missions/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/karma/seeds/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/karma/seeds/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/lottery/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/lottery/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/magic-moment/ack/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/magic-moment/ack/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/magic-moment/check/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/magic-moment/check/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/notifications/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/notifications/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/partner/coach/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/partner/coach/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/partner/commissions/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/partner/commissions/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/partner/payout/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/partner/payout/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/partner/qr/[code]/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/partner/qr/[code]/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/partner/referrals/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/partner/referrals/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:qa/t08-integration-journey-20261014/database.mts",
+        "name": "database.mts",
+        "filePath": "qa/t08-integration-journey-20261014/database.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-pipeline-submit.mts",
+        "name": "test-pipeline-submit.mts",
+        "filePath": "scripts/test-pipeline-submit.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-security-storage.mts",
+        "name": "test-security-storage.mts",
+        "filePath": "scripts/test-security-storage.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/(dashboard)/layout.tsx",
+        "name": "layout.tsx",
+        "filePath": "src/app/(dashboard)/layout.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/chatbot/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/chatbot/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/connect/account-session/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/connect/account-session/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/connect/onboard/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/connect/onboard/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/cron/auto-plan/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/auto-plan/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/cron/video-worker/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/cron/video-worker/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/internal/stripe-fulfillment/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/internal/stripe-fulfillment/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/media/[reference]/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/media/[reference]/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/music/generate/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/music/generate/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/purama-score/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/purama-score/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/social/accounts/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/social/accounts/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/social/callback/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/social/callback/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/social/connect/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/social/connect/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/social/publish/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/social/publish/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/stripe/webhook/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/stripe/webhook/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/sutra/auto/generate/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/sutra/auto/generate/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/video/capabilities/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/video/capabilities/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/voice/generate/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/voice/generate/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/create/AutoForm.tsx",
+        "name": "AutoForm.tsx",
+        "filePath": "src/components/create/AutoForm.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/create/wizard/ManualFormStep4.tsx",
+        "name": "ManualFormStep4.tsx",
+        "filePath": "src/components/create/wizard/ManualFormStep4.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/production/IdeaStep.tsx",
+        "name": "IdeaStep.tsx",
+        "filePath": "src/components/production/IdeaStep.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/wallet/SmartSplit.tsx",
+        "name": "SmartSplit.tsx",
+        "filePath": "src/components/wallet/SmartSplit.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/hooks/useEmpowerment.ts",
+        "name": "useEmpowerment.ts",
+        "filePath": "src/hooks/useEmpowerment.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/hooks/useProductionGeneration.ts",
+        "name": "useProductionGeneration.ts",
+        "filePath": "src/hooks/useProductionGeneration.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/hooks/useVideoGeneration.ts",
+        "name": "useVideoGeneration.ts",
+        "filePath": "src/hooks/useVideoGeneration.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/create-utils.ts",
+        "name": "create-utils.ts",
+        "filePath": "src/lib/create-utils.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/local-engine.ts",
+        "name": "local-engine.ts",
+        "filePath": "src/lib/local-engine.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx-utils.ts",
+        "name": "ltx-utils.ts",
+        "filePath": "src/lib/ltx-utils.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/media-download.ts",
+        "name": "media-download.ts",
+        "filePath": "src/lib/media-download.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/music-checkpoint.ts",
+        "name": "music-checkpoint.ts",
+        "filePath": "src/lib/music-checkpoint.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/production-pipeline.ts",
+        "name": "production-pipeline.ts",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/shotstack.ts",
+        "name": "shotstack.ts",
+        "filePath": "src/lib/shotstack.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/stripe/webhook-checkout.ts",
+        "name": "webhook-checkout.ts",
+        "filePath": "src/lib/stripe/webhook-checkout.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/stripe/webhook-connect.ts",
+        "name": "webhook-connect.ts",
+        "filePath": "src/lib/stripe/webhook-connect.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/stripe/webhook-subscriptions.ts",
+        "name": "webhook-subscriptions.ts",
+        "filePath": "src/lib/stripe/webhook-subscriptions.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/sutra-auto.ts",
+        "name": "sutra-auto.ts",
+        "filePath": "src/lib/sutra-auto.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/video-compositor.ts",
+        "name": "video-compositor.ts",
+        "filePath": "src/lib/video-compositor.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/private-media.ts:resolveMediaTree",
+        "name": "resolveMediaTree",
+        "filePath": "src/lib/private-media.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

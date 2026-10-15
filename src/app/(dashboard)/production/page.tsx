@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -16,15 +16,17 @@ import { VIDEO_ENGINES } from '@/lib/constants'
 import { TEMPLATES, STEPS } from '@/lib/production-constants'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
+import ProductionRequestStatus from '@/components/production/ProductionRequestStatus'
 import StepProgressBar from '@/components/production/StepProgressBar'
 import IdeaStep from '@/components/production/IdeaStep'
-import { ExecutionModeNotice, GenerationErrorNotice } from '@/components/create/ExecutionModeNotice'
+import { ExecutionModeNotice } from '@/components/create/ExecutionModeNotice'
 import ScriptStep from '@/components/production/ScriptStep'
 import StepGenerateCard from '@/components/production/StepGenerateCard'
 import VoiceStep from '@/components/production/VoiceStep'
 import MusicStep from '@/components/production/MusicStep'
 import ThumbnailStep from '@/components/production/ThumbnailStep'
 import type { Plan } from '@/types'
+import type { DurableStep } from '@/lib/production-intent-client'
 import type { VideoEngine } from '@/lib/ltx'
 import type { TemplateId } from '@/types/production'
 
@@ -51,7 +53,20 @@ export default function ProductionPage() {
 
   const selectedTemplate = TEMPLATES.find((t) => t.id === template) ?? TEMPLATES[0]
 
-  const { stepStatus, generatedData, error, isGenerating, generateStep, generateAll } = useProductionGeneration({
+  const restoreRequest = useCallback((body: string, step: DurableStep) => {
+    const saved = JSON.parse(body)
+    setIdea(saved.idea)
+    if (TEMPLATES.some(item => item.id === saved.template)) setTemplate(saved.template)
+    if (saved.engine) setEngine(saved.engine)
+    if (saved.voice) setVoice(saved.voice)
+    if (saved.musicStyle) setMusicStyle(saved.musicStyle)
+    if (saved.tone) setTone(saved.tone)
+    setCurrentStep(step === 'all' ? 0 : Math.max(0, STEPS.findIndex(item => item.id === step)))
+  }, [])
+
+  const { stepStatus, generatedData, error, isGenerating, generateStep, generateAll, intent, message, isCancelling, requestLocked, cancel, resume } = useProductionGeneration({
+    userId: profile?.id,
+    onRestore: restoreRequest,
     idea,
     template,
     format: selectedTemplate.format,
@@ -90,7 +105,7 @@ export default function ProductionPage() {
       </div>
 
       <ExecutionModeNotice isGenerating={isGenerating} />
-      {error && <GenerationErrorNotice error={error} />}
+      <ProductionRequestStatus intent={intent} busy={isGenerating} cancelling={isCancelling} message={message} error={error} onResume={resume} onCancel={cancel} />
 
       {/* Step Progress Bar */}
       <StepProgressBar
@@ -100,6 +115,7 @@ export default function ProductionPage() {
       />
 
       {/* Step Content */}
+      <fieldset disabled={requestLocked} className="min-w-0">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentStep}
@@ -208,6 +224,7 @@ export default function ProductionPage() {
           )}
         </motion.div>
       </AnimatePresence>
+      </fieldset>
 
       {/* Navigation + Generate All */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
@@ -226,7 +243,7 @@ export default function ProductionPage() {
             data-testid="generate-all"
             variant="primary"
             size="lg"
-            disabled={!idea.trim()}
+            disabled={!idea.trim() || requestLocked}
             loading={isGenerating}
             onClick={generateAll}
           >
