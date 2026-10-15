@@ -518,3 +518,8 @@ Candidat48eb91a non promouvable :2FAIL contrats, PG PASS, qualité/navigateur en
 ### T01 2026-10-15T02:33:33.830617+00:00 — CI WebKit et qualification native
 
 CI48eb91a :5gardes WebKit FAIL, fonctions attendues PASS ; requetes _rsc non observees et reload attribue a un goto ancien. Harnais seul corrige,22PASS/0FAIL/0SKIP dont controles HTML Chromium/WebKit et vraies erreurs negatives. Controle pagehide reproduit5diagnostics WebKit qualifies ; essais beforeunload seul ne reproduisant pas le diagnostic conserves. Aucune suppression de garde/erreur brute ni modification produit. Nouveau manifeste exact,7WIP et lots conserves. Rejeu CI du nouveau commit requis, ACK T08 toujours absent, production86d04c8 inchangee.
+
+
+### T01 2026-10-15T03:02:58.952579+00:00 — qualification navigateur cross-origin bornee
+
+CIed12d9c38671657736 FAIL : seul garde social WebKit rouge ; contrats/medias/PG/TS/lint/build PASS. Aucun produit corrige sur cette seule trace. Reproduction HTML independante, lecture CORS ordinaire PASS et vrai refus CORS toujours detecte ; nouveau harnais45PASS/0FAIL/0SKIP, lint cible PASS. Qualification uniquement sur requete fixture exacte observee pendant unload + controle natif courant + absence erreur DOM. Erreurs brutes et rouge CI conserves. Nouveau SHA/CI exacte requis ; ACK T08 absent, production86d04c8 inchangee.

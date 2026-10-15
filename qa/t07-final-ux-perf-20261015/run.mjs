@@ -84,7 +84,7 @@ async function runScenario(options, scenarioOutput) {
   page = await context.newPage()
   navigationSnapshot = observeNavigation(page)
   page.setDefaultTimeout(15000)
-  runtimeSnapshot = await observeRuntimeErrors(page, { engine: browser.browserType().name(), nativeControl: engineControl })
+  runtimeSnapshot = await observeRuntimeErrors(page, { engine: browser.browserType().name(), nativeControl: engineControl, fixtureOrigin: fixture.url })
   if (options.includes('--visual')) await visualChecks({ page, context, base, fixture, output, check, details })
   else if (options.includes('--navigation')) await navigationChecks({ page, context, base, fixture, output, check, details, runtimeSnapshot })
   else if (options.includes('--editor')) await editorChecks({ page, context, base, fixture, output, check, details })

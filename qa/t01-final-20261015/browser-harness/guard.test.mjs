@@ -5,7 +5,7 @@ import { chromium, webkit } from '@playwright/test'
 import { classifyRuntimeErrors } from './runtime-guard.mjs'
 import { nativeRuntimeControls } from './native-controls.mjs'
 
-const output = await mkdtemp('qa/t01-final-20261015/browser-harness/reload-rsc-results-')
+const output = await mkdtemp('qa/t01-final-20261015/browser-harness/cross-origin-guard-results-')
 const base = 'https://127.0.0.1:1234'
 const seed = () => ({ engine: 'webkit', nativeControl: { caughtUnloadDiagnostic: true },
   errors: [{ kind: 'pageerror', navigation: 1, at: 120, message: 'engine diagnostic', stack: `Fetch API cannot load ${base}/slow due to access control checks.\n    at unknown (${base}/caught:1:1)` }],
@@ -46,6 +46,50 @@ for (const query of ['?token=private', '?_rsc=valid&token=private', '?_rsc=one&_
   state.events[0].url += query
   assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
 })
+const syntheticSeed = () => {
+  const state = seed(), origin = 'https://127.0.0.1:5678'
+  state.fixtureOrigin = origin
+  state.nativeControl.crossOriginCaughtUnloadDiagnostic = true
+  state.events[0].method = 'GET'
+  state.events[0].url = origin + '/rest/v1/affirmations?select=*&category=eq.abundance'
+  state.errors[0].stack = `Fetch API cannot load ${state.events[0].url} due to access control checks.`
+  return state
+}
+for (const method of ['goto', 'reload']) for (const category of ['abundance', 'power', 'wisdom']) test(`synthetic cross-origin ${method}/${category} needs exact observed GET`, () => {
+  const state = syntheticSeed(); state.navigations[0].method = method
+  state.events[0].url = state.events[0].url.replace('abundance', category)
+  state.errors[0].stack = `Fetch API cannot load ${state.events[0].url} due to access control checks.`
+  const result = classifyRuntimeErrors(state)
+  assert.equal(result.qualified.length, 1); assert.equal(result.errors.length, 1); assert.equal(result.unexpected.length, 0)
+})
+for (const [name, mutate] of [
+  ['native proof missing', state => { state.nativeControl.crossOriginCaughtUnloadDiagnostic = false }],
+  ['fixture absent', state => { delete state.fixtureOrigin }],
+  ['wrong fixture', state => { state.fixtureOrigin = 'https://127.0.0.1:4321' }],
+  ['production fixture', state => { state.fixtureOrigin = 'https://provider.invalid' }],
+  ['non-GET', state => { state.events[0].method = 'POST' }],
+  ['unobserved method', state => { delete state.events[0].method }],
+  ['unobserved request', state => { state.events = [] }],
+  ['different query', state => { state.events[0].url = state.events[0].url.replace('abundance', 'power') }],
+  ['navigation to another origin', state => { state.navigations[0].to = 'https://other.invalid/next' }],
+  ['real DOM CORS failure', state => { state.domErrors.push({ navigation: 1, at: 120, message: 'TypeError: Load failed' }) }],
+]) test(`cross-origin fail closed: ${name}`, () => {
+  const state = syntheticSeed(); mutate(state)
+  assert.ok(classifyRuntimeErrors(state).unexpected.length > 0)
+})
+for (const url of [
+  'http://127.0.0.1:5678/rest/v1/affirmations?select=*&category=eq.abundance',
+  'https://fixture.invalid/rest/v1/affirmations?select=*&category=eq.abundance',
+  'https://127.0.0.1:5678/rest/v1/affirmations?select=*&category=eq.unknown',
+  'https://127.0.0.1:5678/rest/v1/affirmations?select=*&category=eq.abundance&token=private',
+  'https://127.0.0.1:5678/rest/v1/other?select=*&category=eq.abundance',
+  'https://fixture:private@127.0.0.1:5678/rest/v1/affirmations?select=*&category=eq.abundance',
+  'https://127.0.0.1:5678/rest/v1/affirmations?select=*&category=eq.abundance#fragment',
+]) test(`cross-origin fail closed: unsupported synthetic URL ${url}`, () => {
+  const state = syntheticSeed(); state.events[0].url = url
+  state.errors[0].stack = `Fetch API cannot load ${url} due to access control checks.`
+  assert.equal(classifyRuntimeErrors(state).qualified.length, 0)
+})
 for (const [engine, type] of Object.entries({ chromium, webkit })) test(`${engine}: real native HTML controls without SUTRA or build`, async () => {
   const browser = await type.launch({ headless: true })
   try {
@@ -53,5 +97,7 @@ for (const [engine, type] of Object.entries({ chromium, webkit })) test(`${engin
     await writeFile(`${output}/native-${engine}.json`, JSON.stringify(result, null, 2) + '\n', { flag: 'wx' })
     assert.equal(result.negativeControls.realExceptionDetected, true)
     assert.equal(result.negativeControls.unhandledRejectionDetected, true)
+    assert.equal(result.crossOrigin.normalCrossOriginRead, 'PASS')
+    assert.equal(result.crossOrigin.realCorsDenialDetected, true)
   } finally { await browser.close() }
 })

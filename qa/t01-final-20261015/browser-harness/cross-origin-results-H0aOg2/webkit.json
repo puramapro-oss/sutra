@@ -1,0 +1,143 @@
+{
+  "engine": "webkit",
+  "browserVersion": "26.0",
+  "normalCrossOriginGet": "PASS",
+  "denialDetected": true,
+  "caughtTeardownDiagnostics": [
+    {
+      "phase": "caught-goto",
+      "kind": "pageerror",
+      "message": "/127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (https://127.0.0.1:62934/caught:9:14)",
+      "at": 1792032056620
+    },
+    {
+      "phase": "caught-reload",
+      "kind": "pageerror",
+      "message": "/127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (https://127.0.0.1:62934/caught:9:14)",
+      "at": 1792032057130
+    }
+  ],
+  "events": [
+    {
+      "phase": "caught-goto",
+      "kind": "console-warning",
+      "message": "synthetic-event:beforeunload",
+      "at": 1792032056616
+    },
+    {
+      "phase": "caught-goto",
+      "kind": "console-warning",
+      "message": "synthetic-event:pagehide",
+      "at": 1792032056619
+    },
+    {
+      "phase": "caught-goto",
+      "kind": "pageerror",
+      "message": "/127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (https://127.0.0.1:62934/caught:9:14)",
+      "at": 1792032056620
+    },
+    {
+      "phase": "caught-reload",
+      "kind": "console-warning",
+      "message": "synthetic-event:beforeunload",
+      "at": 1792032057128
+    },
+    {
+      "phase": "caught-reload",
+      "kind": "console-warning",
+      "message": "synthetic-event:pagehide",
+      "at": 1792032057130
+    },
+    {
+      "phase": "caught-reload",
+      "kind": "pageerror",
+      "message": "/127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (https://127.0.0.1:62934/caught:9:14)",
+      "at": 1792032057130
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-warning",
+      "message": "synthetic-event:beforeunload",
+      "at": 1792032057634
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-warning",
+      "message": "synthetic-event:pagehide",
+      "at": 1792032057637
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "pageerror",
+      "message": "/127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:62933/rest/v1/affirmations?select=*&category=eq.wisdom due to access control checks.\n    at unknown (https://127.0.0.1:62934/caught:9:14)",
+      "at": 1792032057637
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-error",
+      "message": "Origin https://127.0.0.1:62934 is not allowed by Access-Control-Allow-Origin. Status code: 200",
+      "at": 1792032057641
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "pageerror",
+      "message": "/127.0.0.1:62933/denied due to access control checks.",
+      "stack": "",
+      "at": 1792032057641
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-error",
+      "message": "Failed to load resource: Origin https://127.0.0.1:62934 is not allowed by Access-Control-Allow-Origin. Status code: 200",
+      "at": 1792032057641
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-warning",
+      "message": "synthetic-dom-rejection:TypeError: Load failed",
+      "at": 1792032057641
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "pageerror",
+      "message": "TypeError: Load failed",
+      "stack": "",
+      "at": 1792032057641
+    }
+  ],
+  "requests": [
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032052894
+    },
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032053207
+    },
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032053726
+    },
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032054238
+    },
+    {
+      "path": "/denied",
+      "at": 1792032054244
+    },
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032056306
+    },
+    {
+      "path": "/denied",
+      "at": 1792032057640
+    }
+  ]
+}

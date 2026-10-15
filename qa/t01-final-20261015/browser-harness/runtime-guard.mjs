@@ -26,14 +26,18 @@ export async function calibrateKeyboard(browser) {
 // The only admissible engine diagnostic requires a matching fetch STARTED by
 // the departing document during lifecycle teardown under an explicit goto/reload.
 // No general string allowlist: every other pageerror remains a gate failure.
-export function classifyRuntimeErrors({ engine, nativeControl, errors, events, navigations, domErrors }) {
+export function classifyRuntimeErrors({ engine, nativeControl, errors, events, navigations, domErrors, fixtureOrigin }) {
   const qualified = [], unexpected = []
   for (const error of errors) {
     const match = /^Fetch API cannot load (https?:\/\/[^\s]+) due to access control checks\.$/.exec(error.stack?.split('\n')[0] ?? '')
     const navigation = navigations.find(row => row.id === error.navigation && ['goto', 'reload'].includes(row.method))
-    let allowedResource = false
+    let allowedResource = false, syntheticRead = false
     try {
       const url = new URL(match?.[1]), query = [...url.searchParams]
+      const fixture = fixtureOrigin && new URL(fixtureOrigin)
+      syntheticRead = Boolean(fixture && fixture.origin === fixtureOrigin && fixture.protocol === 'https:' && fixture.hostname === '127.0.0.1' && fixture.port
+        && url.origin === fixtureOrigin && !url.username && !url.password && !url.hash && url.pathname === '/rest/v1/affirmations'
+        && /^\?select=\*&category=eq\.(abundance|power|wisdom)$/.test(url.search))
       allowedResource = !url.hash && (!url.search || (query.length === 1 && query[0][0] === '_rsc' && /^[a-zA-Z0-9_-]{1,128}$/.test(query[0][1])))
     } catch { /* Malformed/unknown query is never qualified. */ }
     const fetch = match && events.find(row => row.kind === 'unload-fetch' && row.url === match[1]
@@ -41,11 +45,15 @@ export function classifyRuntimeErrors({ engine, nativeControl, errors, events, n
       && Math.abs(row.at - error.at) <= 1000)
     let sameOrigin = false
     try { sameOrigin = Boolean(navigation && match && new URL(match[1]).origin === new URL(navigation.from).origin && new URL(navigation.to).origin === new URL(navigation.from).origin) } catch { /* unknown remains a failure */ }
+    let syntheticOriginProof = false
+    try { syntheticOriginProof = Boolean(syntheticRead && fetch?.method === 'GET' && nativeControl?.crossOriginCaughtUnloadDiagnostic === true
+      && new URL(navigation.to).origin === new URL(navigation.from).origin && new URL(navigation.from).origin !== fixtureOrigin) } catch { /* unknown remains a failure */ }
     const domFailure = domErrors.some(row => row.navigation === error.navigation && Math.abs(row.at - error.at) <= 1000)
-    if (engine === 'webkit' && nativeControl?.caughtUnloadDiagnostic === true && error.kind === 'pageerror'
-      && allowedResource && sameOrigin && fetch && !domFailure && navigation && error.at >= navigation.startedAt
+    if (engine === 'webkit' && error.kind === 'pageerror'
+      && ((nativeControl?.caughtUnloadDiagnostic === true && allowedResource && sameOrigin) || syntheticOriginProof)
+      && fetch && !domFailure && navigation && error.at >= navigation.startedAt
       && error.at <= (navigation.finishedAt ?? error.at) + 1000) {
-      qualified.push({ ...error, qualification: 'native-webkit-caught-fetch-during-explicit-document-teardown', matchingFetch: fetch })
+      qualified.push({ ...error, qualification: syntheticOriginProof ? 'native-webkit-synthetic-cross-origin-fetch-during-explicit-document-teardown' : 'native-webkit-caught-fetch-during-explicit-document-teardown', matchingFetch: fetch })
     } else unexpected.push(error)
   }
   // DOM errors are retained independently even if the engine omitted pageerror.
@@ -53,7 +61,7 @@ export function classifyRuntimeErrors({ engine, nativeControl, errors, events, n
   return { errors, qualified, unexpected, events, navigations, domErrors }
 }
 
-export async function observeRuntimeErrors(page, { engine, nativeControl }) {
+export async function observeRuntimeErrors(page, { engine, nativeControl, fixtureOrigin }) {
   const marker = 'sutra-harness-' + randomUUID()
   const errors = [], events = [], navigations = [], domErrors = []
   let activeNavigation = null
@@ -70,7 +78,7 @@ export async function observeRuntimeErrors(page, { engine, nativeControl }) {
     }
   })
   page.on('pageerror', error => errors.push({ kind: 'pageerror', message: error.message, stack: error.stack, navigation: activeNavigation?.id, at: Date.now() }))
-  await page.addInitScript(({ marker }) => {
+  await page.addInitScript(({ marker, fixtureOrigin }) => {
     let unloading = false
     const emit = row => console.warn(marker + JSON.stringify({ ...row, document: location.origin + location.pathname }))
     addEventListener('beforeunload', () => { unloading = true }, true)
@@ -82,18 +90,23 @@ export async function observeRuntimeErrors(page, { engine, nativeControl }) {
       if (unloading) {
         try {
           const url = new URL(typeof args[0] === 'string' || args[0] instanceof URL ? args[0] : args[0].url, location.href)
-          // Only the synthetic fixture's Next cache token is permitted. Unknown
-          // query/header/body data is never collected or qualified.
+          // Only bounded synthetic Next-cache / affirmation queries are observed.
+          // Unknown query/header/body data is never collected or qualified.
           const query = [...url.searchParams]
           const nextRsc = query.length === 1 && query[0][0] === '_rsc' && /^[a-zA-Z0-9_-]{1,128}$/.test(query[0][1])
-          if (url.origin === location.origin && !url.hash && (!url.search || nextRsc)) {
-            emit({ kind: 'unload-fetch', url: url.origin + url.pathname + url.search })
+          const fixture = fixtureOrigin && new URL(fixtureOrigin)
+          const method = String(args[1]?.method ?? (args[0] instanceof Request ? args[0].method : 'GET')).toUpperCase()
+          const syntheticRead = fixture && fixture.origin === fixtureOrigin && fixture.protocol === 'https:' && fixture.hostname === '127.0.0.1' && fixture.port
+            && url.origin === fixtureOrigin && !url.username && !url.password && url.pathname === '/rest/v1/affirmations' && method === 'GET'
+            && /^\?select=\*&category=eq\.(abundance|power|wisdom)$/.test(url.search)
+          if (!url.hash && ((url.origin === location.origin && (!url.search || nextRsc)) || syntheticRead)) {
+            emit({ kind: 'unload-fetch', url: url.origin + url.pathname + url.search, method })
           }
         } catch { /* Original fetch determines success/failure unchanged. */ }
       }
       return Reflect.apply(originalFetch, this, args)
     }
-  }, { marker })
+  }, { marker, fixtureOrigin })
   for (const method of ['goto', 'reload']) {
     const original = page[method].bind(page)
     page[method] = async (...args) => {
@@ -103,5 +116,5 @@ export async function observeRuntimeErrors(page, { engine, nativeControl }) {
       try { return await original(...args) } finally { row.finishedAt = Date.now() }
     }
   }
-  return () => classifyRuntimeErrors({ engine, nativeControl, errors, events, navigations, domErrors })
+  return () => classifyRuntimeErrors({ engine, nativeControl, errors, events, navigations, domErrors, fixtureOrigin })
 }
