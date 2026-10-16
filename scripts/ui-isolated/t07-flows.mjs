@@ -14,7 +14,10 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
   // Detailed flow checks use the same real browser, with deterministic service fixtures.
   for (const width of widths) {
     await page.setViewportSize({ width, height: 812 })
-    await page.goto(base + '/create', { waitUntil: 'networkidle' })
+    // Sidebar prefetches may remain in flight after the current screen is ready.
+    // Keep the navigation deadline and prove readiness through this screen's controls.
+    assert.equal((await page.goto(base + '/create', { waitUntil: 'domcontentloaded' })).status(), 200)
+    await expect(page.getByTestId('mode-manual')).toBeEnabled()
     await page.getByTestId('mode-manual').click()
     for (let step = 0; step < 6; step++) {
       await check(`${width}px manual creation step ${step + 1}`, async () => {
@@ -27,7 +30,8 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
       })
     }
     if (width === 320) await screenshot(page, 'manual-confirmation-320')
-    await page.goto(base + '/production', { waitUntil: 'networkidle' })
+    assert.equal((await page.goto(base + '/production', { waitUntil: 'domcontentloaded' })).status(), 200)
+    await expect(page.getByRole('navigation', { name: 'Étapes de production' })).toBeVisible()
     for (let step = 1; step < 7; step++) {
       await check(`${width}px production step ${step + 1}`, async () => {
         await page.getByRole('navigation', { name: 'Étapes de production' }).getByRole('button').nth(step).click()
@@ -37,7 +41,8 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
         await page.waitForTimeout(300); await auditAccessibility(page, `production-step-${step + 1}-${width}`)
       })
     }
-    await page.goto(base + '/settings', { waitUntil: 'networkidle' })
+    assert.equal((await page.goto(base + '/settings', { waitUntil: 'domcontentloaded' })).status(), 200)
+    await expect(page.getByRole('tab', { name: 'Profil', exact: true })).toBeEnabled()
     for (const name of ['Compte', 'Abonnement', 'Notifications', 'Apparence', 'Donnees']) {
       await check(`${width}px settings ${name}`, async () => {
         await page.getByRole('tab', { name, exact: true }).click(); await auditAccessibility(page, `settings-${name}-${width}`)
@@ -58,14 +63,15 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
     fixture.delay = 1200; await page.goto(base + '/library')
     await expect(page.getByRole('status', { name: 'Chargement de la bibliothèque' })).toBeVisible(); await noOverflow(page)
     await expect(page.getByTestId('empty-library')).toBeVisible(); fixture.delay = 0
-    fixture.videosFail = true; await page.reload({ waitUntil: 'networkidle' })
+    fixture.videosFail = true; await page.reload({ waitUntil: 'domcontentloaded' })
     await expect(page.getByTestId('library-error')).toBeVisible(); await expect(page.getByTestId('empty-library')).toHaveCount(0)
     fixture.videosFail = false; await page.getByRole('button', { name: 'Réessayer', exact: true }).click(); await expect(page.getByTestId('empty-library')).toBeVisible()
   })
   fixture.videos = Array.from({ length: 25 }, (_, index) => ({ id: `22222222-2222-4222-8222-${String(index).padStart(12, '0')}`, user_id: user.id, title: `${index === 0 ? 'Ancien' : 'Nouveau'} film ${index} — un titre long pour vérifier la bibliothèque`, status: ['draft', 'ready', 'published', 'generating', 'failed'][index % 5], quality: '720p', format: '9:16', created_at: '2026-10-12T12:00:00Z', duration: 65, thumbnail_url: null, video_url: null, script_data: { scenes: [] } }))
   const firstId = fixture.videos[0].id
   for (const width of widths) {
-    await page.setViewportSize({ width, height: 812 }); await page.goto(base + '/library', { waitUntil: 'networkidle' })
+    await page.setViewportSize({ width, height: 812 }); await page.goto(base + '/library', { waitUntil: 'domcontentloaded' })
+    await expect(page.getByTestId('view-grid')).toBeEnabled()
     for (const view of ['grid', 'list']) {
       await check(`${width}px populated library ${view}`, async () => {
         await page.getByTestId(`view-${view}`).click(); await expect(page.getByTestId(`video-${view === 'grid' ? 'card' : 'list'}-${firstId}`)).toBeVisible()
@@ -95,7 +101,9 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
     await expect(page.getByTestId('library-error')).toContainText('Impossible de supprimer'); await expect(page.getByTestId(`video-card-${firstId}`)).toBeVisible(); fixture.deleteFails = false
   })
   await check('library pagination ignores same-frame duplicate requests and preserves rows on failure', async () => {
-    await page.reload({ waitUntil: 'networkidle' }); fixture.delay = 350
+    await page.reload({ waitUntil: 'domcontentloaded' })
+    await expect(page.locator('[data-testid^="video-card-"]')).toHaveCount(12)
+    await expect(page.getByTestId('load-more')).toBeEnabled(); fixture.delay = 350
     const before = requests.filter(item => item.path === '/rest/v1/videos' && item.query.includes('offset=12')).length
     await page.getByTestId('load-more').evaluate(button => { button.click(); button.click() })
     await expect(page.locator('[data-testid^="video-card-"]')).toHaveCount(24)
@@ -112,7 +120,8 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
     await page.waitForTimeout(1500); await expect(search).toBeFocused(); await expect(page.getByTestId(`video-card-${firstId}`)).toHaveCount(0); fixture.staleDelay = 0
   })
   fixture.videos = []
-  await page.goto(base + '/production', { waitUntil: 'networkidle' })
+  await page.goto(base + '/production', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByTestId('production-idea')).toBeEnabled()
   await check('production announces an uncertain outcome without raw diagnostics or automatic retry', async () => {
     let submissions = 0
     let originalRequest, reconciliations = 0
@@ -183,7 +192,8 @@ export async function runT07Flows({ page, base, widths, check, noOverflow, audit
     await page.unroute(`**/api/video/status/${jobId}`)
   })
   await runEditorFlow({ page, base, check, auditAccessibility, screenshot, fixture, requests, user })
-  await page.goto(base + '/settings', { waitUntil: 'networkidle' })
+  await page.goto(base + '/settings', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('tab', { name: 'Profil', exact: true })).toBeEnabled()
 }
 
 async function runEditorFlow({ page, base, check, auditAccessibility, screenshot, fixture, requests, user }) {

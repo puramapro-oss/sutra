@@ -590,3 +590,7 @@ Remaining fixtures: CI38819672945 red preserved. Private remaining-run.mjs befor
 
 ## T01 R74/R94 — 2026-10-15T23:49:19.184896+00:00
 Annulation create durable livree via queue/control existants; aucun second moteur. 11 navigateur+PG et10 contrats PASS, TS/lint PASS; pertes ACK,404 initial,reload/restart,late worker,quota/audit unique. R94 en-tete WebKit facultatif sans retirer les assertions stream/abort. Details qa/t01-create-cancel-20261016/README.md. CI exacte/T08 encore requis; runtime86d04c85 inchange, aucun apply/deploy.
+
+
+## T01 R99 readiness navigateur — 2026-10-16
+CI38825902111 rouge networkidle/create; document20072ms, prefetchs sidebar suspendus, aucune erreur navigateur. Harnais seul corrige: DOM+controle pret, assertions/deadlines intactes; lint/syntaxe PASS, E2E exact prochainSHA requis. qa/t01-browser-readiness-20261016/README.md. Produit7d96 identique, runtime86d04c85 inchange, aucun apply/deploy.
