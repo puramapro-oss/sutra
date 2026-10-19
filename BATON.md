@@ -411,3 +411,7 @@ CI38825902111 rouge networkidle/create; document20072ms, prefetchs sidebar suspe
 
 ## T01 — intégration de clôture du 20/10
 Base79cd ; T03 R1075fbdb23, T04 musiquea87fefe, T06 OAuth773fafef importés à blobs validés. T01 raccord titre locale, deux moteurs navigateur production et gate migrations partenaire/ordonnanceur. Contrats1302PASS0FAIL7SKIP hérités, PG19PASS, TS/lint/buildPASS, navigateur15PASS par moteur, promotion77+5+8 et transitions25PASS (groupes recouvrants). Premier banc multi-moteur rouge conservé puis isolation fixture corrigée. Détails qa/t01-closure-20261020/README.md ; manifeste exact,3108WIP historiques inchangés. Nouveau SHA/CI/ACK individuels à consigner registre partagé après commit ; aucun ACK79cd transféré. OVH non modifié, migrations distantes non appliquées, aucun paid/publication/GPU. Prochaine tâche : CI exacte et contre-avis T02–T08, pas de redéploiement.
+
+
+## T01 — raccord CI social du 20/10
+CI39341713461 sur1d63 rouge : quatre ReferenceError du harnais VM historique après livraison T06. Reproduit4FAIL, contexte QA corrigé sans changement produit,4PASS ; campagne contrats finale1302PASS0FAIL7SKIP après intégration T06. ESLint cibléPASS ; aucune assertion/skip retirée. Preuves qa/t01-closure-20261020/ci-social-harness ; manifeste1203 actualisé,1160historiques conservés,32modifiés43ajoutés. Nouvelle CI et ACK exacts requis après commit, aucune disponibilité T09 ni production autorisée.

@@ -33,7 +33,7 @@ Node canonique 24.22.0 ; variables de fixture uniquement. Les groupes se recouvr
 
 | Commande | Résultat / preuve |
 |---|---|
-| `node scripts/run-ci.mjs contracts` | **1302 PASS / 0 FAIL / 7 SKIP** ; plus sous-processus durable18 PASS et schedule/composition/publication PASS. `campaign-contracts-scheduler.json`, journal canonique `test-results/ci/contracts/contracts.log`. |
+| `node scripts/run-ci.mjs contracts` | **1302 PASS / 0 FAIL / 7 SKIP** après raccord du harnais social au delta T06 ; plus sous-processus durable18 PASS et schedule/composition/publication PASS. `ci-social-harness/result.json` et journaux `*-detail.log`. La première campagne `campaign-contracts-scheduler.json` précédait T06 et ne certifiait pas ce raccord. |
 | `SUTRA_TEST_PG_BIN=/opt/homebrew/opt/postgresql@18/bin node qa/t03-closure-20261020/run.mjs t01-integrated-node24 recovery` | **19 PASS / 0 FAIL / 0 SKIP**, PG18 privé arrêté, reçu dans dossier du label. |
 | `python3 qa/t01-closure-20261020/verify_catalogue.py qa/t03-closure-20261020/t01-integrated-node24/receipt.json` | PASS : vraie requête catalogue sur même cluster privé, trois fonctions/tables et garde-fous validés, cluster arrêté. Aucun accès distant. |
 | `node node_modules/typescript/bin/tsc --noEmit --incremental false` | PASS, `quality.json`. |
@@ -62,3 +62,9 @@ GitNexus : impacts avant édition, graphe partiel ; détection staged/compare av
 Détection GitNexus staged : HIGH,62symboles/13flux ; comparaison main plafonnée. Entrées create/social/cron et fonctions génériques QA rapprochées, couverture partielle explicite. Aucun nouveau symbole produit édité après cette analyse.
 
 Scan gitleaks staged expurgé : exit1,245alertes qualifiées individuellement (233valeurs SHA256 de reçus,12UUID d'idempotence synthétiques navigateur), zéro alerte non résolue. Ce n'est pas un exit0 du scanner ; classifications dans secret-scan-review.json.
+
+## Contre-preuve CI et correction du harnais social
+
+La CI39341713461 sur1d63ade échoue à quatre contrats sociaux : `ReferenceError: connectRequest is not defined`. Le test VM historique extrayait le nouveau handler T06 sans fournir ses dépendances React/ref/AbortController/timers. Reproduction locale **0PASS/4FAIL**, correction du seul contexte QA puis **4PASS/0FAIL/0SKIP** ; aucune assertion retirée, contrôles ajoutés sur erreur persistante et maintien/libération de la garde. Aucun fichier produit modifié.
+
+Commande ciblée : `node --import tsx --test qa/final-delta-20261014/social-feedback.test.mts`. ESLint ciblé PASS. Campagne complète contrats rejouée après T06 et correction QA : **1302PASS/0FAIL/7SKIP**. Preuves dans `ci-social-harness/`, source exacte liée au manifeste. Les preuves produit/PG/navigateurs de1d63 restent applicables à leurs blobs inchangés, mais CI et ACK exacts sont renouvelés sur le prochain SHA. GitNexus impact handleConnect UNKNOWN, zéro appelant résolu et index en retard ; revue directe du contexte QA, aucune conclusion exhaustive.
