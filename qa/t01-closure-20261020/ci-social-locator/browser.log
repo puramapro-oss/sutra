@@ -1,0 +1,25 @@
+PASS first visit: cookie acceptance text meets contrast and keyboard focus
+PASS 375px consent dark: button contrast and visible focus
+PASS 375px consent light: button contrast and visible focus
+PASS 375px consent oled: button contrast and visible focus
+PASS 1440px consent dark: button contrast and visible focus
+PASS 1440px consent light: button contrast and visible focus
+PASS 1440px consent oled: button contrast and visible focus
+PASS all/favorites toggles reuse identical server result without requests
+PASS 375px favorites: incomplete page keeps honest state and pagination
+PASS 375px folder: incomplete page keeps honest state and pagination
+PASS 1440px favorites: incomplete page keeps honest state and pagination
+PASS 1440px folder: incomplete page keeps honest state and pagination
+PASS server filters and search still fetch; fast search retains latest result
+PASS pagination failure remains an error; retry recovers, no false empty result
+PASS rapid pagination clicks issue only one append
+PASS local filter changes preserve loaded and in-flight second pages
+PASS server filter failure clears old pagination; retry restores current query
+PASS initial error: truthful state, layout and contrast
+PASS initial empty: truthful state, layout and contrast
+PASS 375px social 409: safe actionable feedback without navigation
+PASS 375px social 503: safe actionable feedback without navigation
+PASS 1440px social 409: safe actionable feedback without navigation
+PASS 1440px social 503: safe actionable feedback without navigation
+PASS no unexpected mutation API reached
+PASS no JS or hydration errors

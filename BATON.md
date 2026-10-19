@@ -415,3 +415,10 @@ Base79cd ; T03 R1075fbdb23, T04 musiquea87fefe, T06 OAuth773fafef importés à b
 
 ## T01 — raccord CI social du 20/10
 CI39341713461 sur1d63 rouge : quatre ReferenceError du harnais VM historique après livraison T06. Reproduit4FAIL, contexte QA corrigé sans changement produit,4PASS ; campagne contrats finale1302PASS0FAIL7SKIP après intégration T06. ESLint cibléPASS ; aucune assertion/skip retirée. Preuves qa/t01-closure-20261020/ci-social-harness ; manifeste1203 actualisé,1160historiques conservés,32modifiés43ajoutés. Nouvelle CI et ACK exacts requis après commit, aucune disponibilité T09 ni production autorisée.
+
+
+## Contre-preuve CI du sélecteur social
+
+CI39341713461 quality sur1d63 : quatre FAIL409/503 aux375/1440, ancien sélecteur textuel ambigu entre toast et alerte persistante T06. Helper historique T01 `socialFeedbackChecks` corrigé pour vérifier identifiant, rôle alert, texte exact et visibilité de l’alerte. Les assertions de navigation, bouton réactivé et absence de diagnostic fournisseur restent intactes. Aucun produit changé. GitNexus LOW, un appelant QA, zéro processus; index deux commits en retard, revue directe bornée.
+
+`SUTRA_T07_OUTPUT=qa/t01-closure-20261020/ci-social-locator node qa/t07-frontend-fixes-20261014/browser.mjs --production` : build PASS, **25PASS/0FAIL/0SKIP**, dont quatre contrôles sociaux, pagination, contraste, zéro mutation inattendue et zéro erreur JS/hydration. ESLint ciblé PASS. Preuves avant/après `ci-social-locator/`; environnement isolé, toutes connexions sociales simulées, aucun compte connecté. Manifeste1203,1160historiques conservés,33modifiés43ajoutés. La CI39341713461 reste rouge et conservée; CI et ACK exacts requis sur prochain SHA.

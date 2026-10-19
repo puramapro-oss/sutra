@@ -1,0 +1,417 @@
+{
+  "observedAt": "2026-10-19T23:45:15.898Z",
+  "runtime": "v24.22.0",
+  "baseline": false,
+  "production": true,
+  "delayMs": 400,
+  "childExit": {
+    "code": 143,
+    "signal": null
+  },
+  "results": [
+    {
+      "name": "first visit: cookie acceptance text meets contrast and keyboard focus",
+      "status": "PASS"
+    },
+    {
+      "name": "375px consent dark: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "375px consent light: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "375px consent oled: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px consent dark: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px consent light: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px consent oled: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "all/favorites toggles reuse identical server result without requests",
+      "status": "PASS"
+    },
+    {
+      "name": "375px favorites: incomplete page keeps honest state and pagination",
+      "status": "PASS"
+    },
+    {
+      "name": "375px folder: incomplete page keeps honest state and pagination",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px favorites: incomplete page keeps honest state and pagination",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px folder: incomplete page keeps honest state and pagination",
+      "status": "PASS"
+    },
+    {
+      "name": "server filters and search still fetch; fast search retains latest result",
+      "status": "PASS"
+    },
+    {
+      "name": "pagination failure remains an error; retry recovers, no false empty result",
+      "status": "PASS"
+    },
+    {
+      "name": "rapid pagination clicks issue only one append",
+      "status": "PASS"
+    },
+    {
+      "name": "local filter changes preserve loaded and in-flight second pages",
+      "status": "PASS"
+    },
+    {
+      "name": "server filter failure clears old pagination; retry restores current query",
+      "status": "PASS"
+    },
+    {
+      "name": "initial error: truthful state, layout and contrast",
+      "status": "PASS"
+    },
+    {
+      "name": "initial empty: truthful state, layout and contrast",
+      "status": "PASS"
+    },
+    {
+      "name": "375px social 409: safe actionable feedback without navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "375px social 503: safe actionable feedback without navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px social 409: safe actionable feedback without navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px social 503: safe actionable feedback without navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation API reached",
+      "status": "PASS"
+    },
+    {
+      "name": "no JS or hydration errors",
+      "status": "PASS"
+    }
+  ],
+  "metrics": [
+    {
+      "filter": "favorites",
+      "iteration": 1,
+      "requests": 0,
+      "committedMs": 10,
+      "readyMs": 10
+    },
+    {
+      "filter": "all",
+      "iteration": 1,
+      "requests": 0,
+      "committedMs": 9,
+      "readyMs": 10
+    },
+    {
+      "filter": "favorites",
+      "iteration": 2,
+      "requests": 0,
+      "committedMs": 12,
+      "readyMs": 12
+    },
+    {
+      "filter": "all",
+      "iteration": 2,
+      "requests": 0,
+      "committedMs": 15,
+      "readyMs": 15
+    },
+    {
+      "filter": "favorites",
+      "iteration": 3,
+      "requests": 0,
+      "committedMs": 12,
+      "readyMs": 12
+    },
+    {
+      "filter": "all",
+      "iteration": 3,
+      "requests": 0,
+      "committedMs": 9,
+      "readyMs": 9
+    }
+  ],
+  "requests": [
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 402
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 402
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 400
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=12&limit=12",
+      "mode": "normal",
+      "offset": 12,
+      "durationMs": 402
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 402
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=12&limit=12",
+      "mode": "normal",
+      "offset": 12,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 402
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=12&limit=12",
+      "mode": "normal",
+      "offset": 12,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 403
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=12&limit=12",
+      "mode": "normal",
+      "offset": 12,
+      "durationMs": 403
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&status=eq.ready&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 400
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&title=ilike.%25seconde%25&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 400
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=12&limit=12",
+      "mode": "append-error",
+      "offset": 12,
+      "durationMs": 400
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=12&limit=12",
+      "mode": "normal",
+      "offset": 12,
+      "durationMs": 406
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=12&limit=12",
+      "mode": "normal",
+      "offset": 12,
+      "durationMs": 400
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=12&limit=12",
+      "mode": "normal",
+      "offset": 12,
+      "durationMs": 400
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&status=eq.ready&order=created_at.desc&offset=0&limit=12",
+      "mode": "error",
+      "offset": 0,
+      "durationMs": 400
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&status=eq.ready&order=created_at.desc&offset=0&limit=12",
+      "mode": "normal",
+      "offset": 0,
+      "durationMs": 401
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "error",
+      "offset": 0,
+      "durationMs": 402
+    },
+    {
+      "query": "?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+      "mode": "empty",
+      "offset": 0,
+      "durationMs": 401
+    }
+  ],
+  "errors": [],
+  "violations": [
+    {
+      "name": "login-first-visit",
+      "violations": []
+    },
+    {
+      "name": "375-favorites-pending",
+      "violations": []
+    },
+    {
+      "name": "375-favorites-loaded",
+      "violations": []
+    },
+    {
+      "name": "375-folder-pending",
+      "violations": []
+    },
+    {
+      "name": "375-folder-loaded",
+      "violations": []
+    },
+    {
+      "name": "1440-favorites-pending",
+      "violations": []
+    },
+    {
+      "name": "1440-favorites-loaded",
+      "violations": []
+    },
+    {
+      "name": "1440-folder-pending",
+      "violations": []
+    },
+    {
+      "name": "1440-folder-loaded",
+      "violations": []
+    },
+    {
+      "name": "search-result",
+      "violations": []
+    },
+    {
+      "name": "append-error",
+      "violations": []
+    },
+    {
+      "name": "initial-error",
+      "violations": []
+    },
+    {
+      "name": "initial-empty",
+      "violations": []
+    }
+  ],
+  "mockedConsents": [
+    {
+      "path": "/api/legal/cookie-consent",
+      "method": "POST"
+    }
+  ],
+  "unexpectedMutations": [],
+  "themeColors": [
+    {
+      "width": 375,
+      "theme": "dark",
+      "accept": 5.894955945733233,
+      "link": 4.849118887629971
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "accept": 5.894955945733233,
+      "link": 5.698586217871195
+    },
+    {
+      "width": 375,
+      "theme": "oled",
+      "accept": 5.894955945733233,
+      "link": 7.35917756777737
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "accept": 5.894955945733233,
+      "link": 4.849118887629971
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "accept": 5.894955945733233,
+      "link": 5.698586217871195
+    },
+    {
+      "width": 1440,
+      "theme": "oled",
+      "accept": 5.894955945733233,
+      "link": 7.35917756777737
+    }
+  ],
+  "blockedExternalOrigins": [],
+  "proof": "LOCAL_CHROMIUM_FIXTURES_ONLY; no secret/provider/publication"
+}
