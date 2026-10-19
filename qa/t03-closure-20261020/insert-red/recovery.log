@@ -1,0 +1,50 @@
+(node:74384) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:74384) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ R107: the actual cron recovers noon after a 20-hour interruption (899.161417ms)
+✔ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (307.368125ms)
+✔ lost commit response reconciles from durable cursor without a second job or quota (8.998708ms)
+✔ invalid receipt never claims success; subsequent read reconciles its committed jobs (5.340542ms)
+✔ SQL job, cursor and quota errors roll back the entire window before retry (107.654667ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (88.486167ms)
+✔ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (495.440791ms)
+✔ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (11.182208ms)
+✔ missing migration fails closed without falling back to the old lossy window (0.641125ms)
+✔ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (593.8195ms)
+✔ suppressed SQL cursor update cannot return success or retain partial jobs (71.480542ms)
+✔ malformed legacy schedules cannot silently advance a calendar (4.701459ms)
+✔ thrown transport exception is redacted and leaves the cursor retryable (3.988958ms)
+✔ service role runs the real scheduler RPC and partner migration/rollback leaves durable functions intact (27.559334ms)
+✔ corrupt job receipt status is not accepted as scheduling success (11.162583ms)
+✔ known reconciliation-required receipt is not an overall success (4.659584ms)
+✔ DST fold and adjoining catch-up windows produce one logical occurrence (7.319458ms)
+✔ schedule edit and reactivation preserve materialised work and reset only the new calendar (21.108792ms)
+✖ new config cannot inject a retroactive scheduler cursor through historical client INSERT rights (10.089209ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 18
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3883.676583
+
+✖ failing tests:
+
+test at qa/t03-closure-20261020/recovery.test.mts:11:13269
+✖ new config cannot inject a retroactive scheduler cursor through historical client INSERT rights (10.089209ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(result.rows[0].scheduler_cursor.getTime()>Date.parse('2026-01-01T00:00:00Z'))
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:260:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

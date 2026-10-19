@@ -93,6 +93,10 @@ def main():
     social_proof = json.loads((proof_dir / 'social-history-restore.json').read_text())
     social_applied = json.loads((proof_dir / 'social-history-apply.json').read_text())
     guards.validate_social_history_proofs(backup, social_proof, social_applied, args.source_ref, social_migration)
+    additional = json.loads((proof_dir / 'additional-migrations.json').read_text())
+    additional_migrations = {path: subprocess.check_output(['git', 'show', args.source_ref + ':' + path], cwd=ROOT)
+                             for path in guards.ADDITIONAL_MIGRATIONS}
+    guards.validate_additional_migration_proofs(backup, additional, args.source_ref, additional_migrations)
     assert before['health'] == 'healthy' and before['saladEnabled'] is False
     assert re.fullmatch('[0-9a-f]{40}', before['source'])
     assert re.fullmatch('[a-zA-Z0-9_.:/-]+', candidate['image'])
@@ -112,6 +116,7 @@ def main():
         'DEFINITIONS': checkpoint['DEFINITIONS'], 'SQL_HASH': sql_proof['afterDefinitionsSha256'],
         'PERMISSION_MODULE': permission_source, 'PERMISSION_HASH': permission_proof['afterStateSha256'],
         'SOCIAL_MODULE': social_source, 'SOCIAL_HASH': social_proof['afterStateSha256'],
+        'ADDITIONAL_HASH': additional['afterStateSha256'],
     }.items()) + '\n'
     common = Path(guards.__file__).read_text() + '\n' + '''
 import pathlib,shutil
@@ -136,6 +141,9 @@ def check_sql():
  assert sha256(json.dumps(json.loads(r.stdout),sort_keys=True).encode())==SQL_HASH,'SQL_DEFINITION_DRIFT'
  assert permissions['digest'](permissions['state']('postgres'))==PERMISSION_HASH,'PERMISSION_STATE_DRIFT'
  assert social['digest'](social['state']('postgres'))==SOCIAL_HASH,'SOCIAL_STATE_DRIFT'
+ r=subprocess.run(['docker','exec','-i','supabase-db','psql','-U','supabase_admin','-d','postgres','-X','-A','-t','-q','-v','ON_ERROR_STOP=1'],input=ADDITIONAL_SCHEMA_SQL,text=True,capture_output=True,timeout=30)
+ assert r.returncode==0,'ADDITIONAL_SQL_READ_UNCONFIRMED'
+ validate_additional_state(json.loads(r.stdout),ADDITIONAL_HASH)
 '''
     receipt = remote(constants + common + '''x=inspect('purama-sutra')
 assert x['Image']==OLD_IMAGE and x['Config']['Labels']['dev.purama.commit']==PREVIOUS

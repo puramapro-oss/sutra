@@ -1,30 +1,12 @@
-// ---------------------------------------------------------------------------
-// Stable Audio 2.5 (Stability AI) via Replicate REST API.
-//
-// Used as **tertiary** music provider in fallbacks.ts when Suno + Riffusion
-// are both down.
-//
-// Endpoint: POST https://api.replicate.com/v1/models/stability-ai/stable-audio-2.5/predictions
-//   with `Prefer: wait` header for synchronous response (up to 60s).
-// Reference: https://replicate.com/docs/reference/http
-//
-// Env: REPLICATE_API_TOKEN (optional — provider gracefully skipped when unset)
-// ---------------------------------------------------------------------------
+import { musicResponse, MusicProviderJobError, validMusicJobId, validMusicUrl, type MusicJobContext } from './music-provider-job'
 
+// Explicitly selected Stable Audio 2.5 via Replicate; never an automatic fallback.
+// https://replicate.com/stability-ai/stable-audio-2.5/api/schema
+// Prefer: wait=60 is an HTTP wait, not proof that the prediction completed.
 const REPLICATE_BASE_URL = 'https://api.replicate.com/v1'
 const STABLE_AUDIO_MODEL = 'stability-ai/stable-audio-2.5'
 
-export type StableAudioResult = {
-  audio_url: string
-  provider: 'stable-audio'
-}
-
-interface PredictionResponse {
-  id?: string
-  status?: 'starting' | 'processing' | 'succeeded' | 'failed' | 'canceled' | string
-  output?: string | string[] | null
-  error?: string | null
-}
+export type StableAudioResult = { id: string; audio_url: string; provider: 'stable-audio' }
 
 export function isStableAudioConfigured(): boolean {
   return Boolean(process.env.REPLICATE_API_TOKEN)
@@ -32,48 +14,28 @@ export function isStableAudioConfigured(): boolean {
 
 export async function generateStableAudio(params: {
   prompt: string
-  duration?: number // seconds, default 30
+  duration?: number // seconds, default 30; documented range 1..190
 }): Promise<StableAudioResult> {
   const token = process.env.REPLICATE_API_TOKEN
   if (!token) throw new Error('REPLICATE_API_TOKEN not configured')
-
   const { prompt, duration = 30 } = params
-
-  const res = await fetch(
-    `${REPLICATE_BASE_URL}/models/${STABLE_AUDIO_MODEL}/predictions`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        Prefer: 'wait=60',
-      },
-      body: JSON.stringify({
-        input: {
-          prompt,
-          duration,
-        },
-      }),
-      signal: AbortSignal.timeout(70_000),
-    },
-  )
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => '')
-    throw new Error(`Stable Audio failed: HTTP ${res.status} ${text.slice(0, 200)}`)
+  if (!prompt.trim() || !Number.isInteger(duration) || duration < 1 || duration > 190) {
+    throw new Error('STABLE_AUDIO_INVALID_REQUEST')
   }
-
-  const data = (await res.json()) as PredictionResponse
-
-  if (data.status === 'failed' || data.status === 'canceled') {
-    throw new Error(`Stable Audio: ${data.error ?? data.status}`)
+  const context: MusicJobContext = { provider: 'stable-audio', timeoutMs: 70_000, jobId: null, remoteStatus: 'unknown' }
+  const data = await musicResponse(`${REPLICATE_BASE_URL}/models/${STABLE_AUDIO_MODEL}/predictions`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', Prefer: 'wait=60' },
+    body: JSON.stringify({ input: { prompt, duration } }), signal: AbortSignal.timeout(context.timeoutMs),
+  }, context)
+  if (!validMusicJobId(data.id)) throw new MusicProviderJobError('INVALID_RESPONSE', context)
+  context.jobId = data.id
+  if (data.status !== 'starting' && data.status !== 'processing' && data.status !== 'succeeded' && data.status !== 'failed' && data.status !== 'canceled') {
+    throw new MusicProviderJobError('INVALID_RESPONSE', context)
   }
-
-  // Output is typically a single URL (string) or array — normalize.
+  context.remoteStatus = data.status
+  if (data.status !== 'succeeded') throw new MusicProviderJobError('NOT_COMPLETED', context)
   const output = Array.isArray(data.output) ? data.output[0] : data.output
-  if (!output || typeof output !== 'string') {
-    throw new Error('Stable Audio: no output URL (still processing — increase Prefer: wait?)')
-  }
-
-  return { audio_url: output, provider: 'stable-audio' }
+  if (!validMusicUrl(output)) throw new MusicProviderJobError('INVALID_RESPONSE', context)
+  return { id: data.id, audio_url: output, provider: 'stable-audio' }
 }

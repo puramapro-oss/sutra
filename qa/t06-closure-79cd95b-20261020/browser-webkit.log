@@ -1,0 +1,39 @@
+PASS modal: named dialog, initial focus, focus trap, Escape and focus restoration
+PASS revoked account cannot be selected; unavailable accounts have accessible connect links
+PASS schedule: accessible name, selected state, browser IANA timezone and local minimum
+PASS 320px: publish modal fits, controls reachable, axe WCAG AA
+PASS 375px: publish modal fits, controls reachable, axe WCAG AA
+PASS 768px: publish modal fits, controls reachable, axe WCAG AA
+PASS 1280px: publish modal fits, controls reachable, axe WCAG AA
+PASS 1440px: publish modal fits, controls reachable, axe WCAG AA
+PASS editing and resizing neither refetch accounts nor submit a draft
+PASS unknown: safe useful response, uncertain submission cannot be retried
+PASS lost: safe useful response, uncertain submission cannot be retried
+PASS error: safe useful response, uncertain submission cannot be retried
+PASS partial: successful destinations retained, retry targets only failed destinations, no raw diagnostic
+PASS partial retry response lost: previous success retained and uncertain account not retried
+PASS uncertain result survives close/reopen; reopening never resubmits
+PASS targeted retry accepts full journal without duplicating a successful account
+PASS accounts empty: safe state, no phantom destination, bounded request
+PASS accounts expired: safe state, no phantom destination, bounded request
+PASS accounts ambiguous: safe state, no phantom destination, bounded request
+PASS accounts error: safe state, no phantom destination, bounded request
+PASS accounts slow: safe state, no phantom destination, bounded request
+PASS draft cancel preserves text; empty caption and past date send nothing
+PASS Honolulu local time converts exactly to UTC; scheduled is not published
+PASS Paris DST gap rejected; autumn fold displays and sends chosen UTC offset
+PASS rapid double click sends one request and cannot dismiss an in-flight submission
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: Navigation to "http://127.0.0.1:63293/create" is interrupted by another navigation to "http://127.0.0.1:63293/library"
+Call log:
+  - navigating to "http://127.0.0.1:63293/create", waiting until "load"
+
+    at page.<computed> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t01-final-20261015/browser-harness/runtime-guard.mjs:125:26)
+    at /Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-ux-social-ab935-20261019/browser.mjs:269:16 {
+  name: 'Error'
+}
+
+Node.js v26.0.0

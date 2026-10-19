@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 209 files, 62 symbols
+Affected processes: 13
+Risk level: high
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 R99 readiness navigateur — 2026-10-16 → BATON.md
+  Function sha256 → deploy/promotion_guards.py
+  Function validate_release_proofs → deploy/promotion_guards.py
+  Function validate_permission_proofs → deploy/promotion_guards.py
+  Function validate_social_history_proofs → deploy/promotion_guards.py
+  Function remote_json → deploy/promotion_guards.py
+  Function acquire_lock → deploy/promotion_guards.py
+  Function write_private → deploy/promotion_guards.py
+  Class LocalScriptCase → deploy/test_salad_promotion.py
+  Method setUp → deploy/test_salad_promotion.py
+  Class PromotionInterruptionTests → deploy/test_salad_promotion.py
+  Method setUp → deploy/test_salad_promotion.py
+  Method docker_inspect → deploy/test_salad_promotion.py
+  Method remote_check_output → deploy/test_salad_promotion.py
+... and 47 more
+
+Affected execution flows:
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: CreatePage
+  • GET → Blocked (7 steps) — changed: GET
+  • GET → Query (7 steps) — changed: GET
+  • GET → CreateServiceClient (6 steps) — changed: GET
+  • GET → Origin (6 steps) — changed: GET
+  • CreatePage → ProductionJobId (5 steps) — changed: CreatePage
+  • CreatePage → ParsePublicCapabilities (4 steps) — changed: CreatePage
+  • GET → PublicationOutcome (4 steps) — changed: GET
+  • CreatePage → GetPipelineSteps (3 steps) — changed: CreatePage
+  • SocialAccountsPage → IsAutopilotConfig (3 steps) — changed: fetchAccounts, SocialAccountsPage, isAutopilotConfig
+... and 3 more

@@ -1,0 +1,142 @@
+{
+  "connectOnly": true,
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "engine": "chromium",
+  "checks": [
+    {
+      "name": "different platforms in the same turn share one pending OAuth request",
+      "status": "PASS"
+    },
+    {
+      "name": "timeout is bounded; manual retry sends exactly one fresh request",
+      "status": "PASS"
+    },
+    {
+      "name": "SPA unmount aborts a pending connection and prevents its late redirect",
+      "status": "PASS"
+    },
+    {
+      "name": "reconnection opens only simulated consent once, with no automatic acceptance",
+      "status": "PASS"
+    },
+    {
+      "name": "runtime: zero unexpected hydration/client errors; no external or real publication",
+      "status": "PASS"
+    }
+  ],
+  "axes": [],
+  "observations": [],
+  "runtime": [
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:51701/library",
+          "navigation": 1,
+          "at": 1792450953691
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:51701/login",
+          "startedAt": 1792450946670,
+          "finishedAt": 1792450947375
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:51701/create",
+          "navigation": 1,
+          "at": 1792450966448
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:51701/settings/social",
+          "startedAt": 1792450953815,
+          "finishedAt": 1792450954689
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:51701/settings/social",
+          "navigation": 1,
+          "at": 1792450967556
+        },
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:51701/mock-consent",
+          "navigation": 1,
+          "at": 1792450967571
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:51701/settings/social",
+          "startedAt": 1792450966535,
+          "finishedAt": 1792450967439
+        }
+      ],
+      "domErrors": []
+    }
+  ],
+  "blocked": [],
+  "writes": [
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "body": {
+        "platform": "youtube"
+      }
+    },
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "body": {
+        "platform": "instagram"
+      }
+    },
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "body": {
+        "platform": "youtube"
+      }
+    },
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "body": {
+        "platform": "youtube"
+      }
+    }
+  ],
+  "realPublications": 0,
+  "realConnections": 0
+}

@@ -1,0 +1,48 @@
+(node:62130) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:62130) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ R107: the actual cron recovers noon after a 20-hour interruption (689.962416ms)
+✔ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (391.660083ms)
+✔ lost commit response reconciles from durable cursor without a second job or quota (14.248167ms)
+✔ invalid receipt never claims success; subsequent read reconciles its committed jobs (12.576292ms)
+✔ SQL job, cursor and quota errors roll back the entire window before retry (83.04025ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (12.469792ms)
+✔ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (494.463084ms)
+✔ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (21.313292ms)
+✔ missing migration fails closed without falling back to the old lossy window (1.458916ms)
+✔ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (586.882042ms)
+✔ suppressed SQL cursor update cannot return success or retain partial jobs (100.872334ms)
+✔ malformed legacy schedules cannot silently advance a calendar (6.873833ms)
+✔ thrown transport exception is redacted and leaves the cursor retryable (6.872791ms)
+✔ service role runs the real scheduler RPC and partner migration/rollback leaves durable functions intact (23.240917ms)
+✖ corrupt job receipt status is not accepted as scheduling success (8.020042ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3835.219708
+
+✖ failing tests:
+
+test at qa/t03-closure-20261020/recovery.test.mts:11:11277
+✖ corrupt job receipt status is not accepted as scheduling success (8.020042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ok'
+  - 'partial_failure'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:224:81)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ok',
+    expected: 'partial_failure',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

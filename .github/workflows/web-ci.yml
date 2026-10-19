@@ -64,8 +64,13 @@ jobs:
         run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
       - name: Integrated desktop/mobile Chromium and WebKit journeys (synthetic identity, one build)
         run: node qa/t07-final-ux-perf-20261015/run.mjs --final-integrated
+      - name: OAuth connection, recovery and creation modes in production browsers
+        run: |
+          node --test qa/t06-closure-79cd95b-20261020/callback-errors.mjs
+          node qa/t06-closure-79cd95b-20261020/journeys.mjs --production --both-engines --out=ci-production
       - run: node scripts/run-ci.mjs legacy
       - run: python3 -m unittest discover -s deploy -p 'test_*.py'
+      - run: python3 -m unittest discover -s qa/t01-closure-20261020 -p 'test_*.py'
       - run: python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'
       - name: Atomic social history transition and retained rollback simulations
         run: python3 qa/t01-final-20261015/social-history-transition-test.py
@@ -95,6 +100,7 @@ jobs:
             qa/t07-frontend-fixes-20261014/evidence/after
             qa/t01-final-20261015/browser-final
             qa/t01-final-20261015/browser-harness/method-boundary-20261015
+            qa/t06-closure-79cd95b-20261020/ci-production
           if-no-files-found: warn
 
   disposable-database:
@@ -143,6 +149,10 @@ jobs:
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t01-closure-20261015/schedule-postgres-run.mjs
       - name: Atomic partner quota, historical compatibility, backup and rollback
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t01-certification-20261019/partner-pg-run.mjs partner-pg-ci
+      - name: Atomic scheduler catch-up, cursor permissions, backup and rollback
+        run: |
+          SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t03-closure-20261020/run.mjs ci-r107 recovery
+          python3 qa/t01-closure-20261020/verify_catalogue.py qa/t03-closure-20261020/ci-r107/receipt.json
       - name: Durable HTTP route acknowledgement loss against disposable PostgreSQL
         run: node --experimental-test-module-mocks --import tsx --test --test-concurrency=1 qa/t03-final-candidate-20261015/api-postgres.test.mts
         env:
@@ -175,3 +185,11 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: https://sutra-test.invalid
           NEXT_PUBLIC_SUPABASE_ANON_KEY: fixture-anon
           SUPABASE_SERVICE_ROLE_KEY: fixture-service
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sutra-database-results
+          path: |
+            qa/t03-closure-20261020/ci-r107
+            qa/t01-certification-20261019/partner-pg-ci
+          if-no-files-found: warn

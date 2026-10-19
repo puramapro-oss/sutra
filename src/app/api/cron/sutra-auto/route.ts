@@ -1,11 +1,8 @@
-import { randomUUID } from 'node:crypto'
 import { NextResponse } from 'next/server'
 import { assertCronAuth } from '@/lib/cron-auth'
 import { createServiceClient } from '@/lib/supabase'
-import { autoOccurrences } from '@/lib/sutra-auto-utils'
-import { publishAutoVideoRecord, type AutoConfig } from '@/lib/sutra-auto'
-import { submissionIdentity, submitVideoJob } from '@/lib/pipeline-submit'
-import type { AutoJobInput } from '@/lib/auto-pipeline'
+import { publishAutoVideoRecord } from '@/lib/sutra-auto'
+import { scheduleAutoWindow, type ScheduledConfig } from '@/lib/auto-scheduler'
 import type { Profile } from '@/types'
 
 export const maxDuration = 300
@@ -20,7 +17,7 @@ export async function GET(request: Request) {
   if (error) return NextResponse.json({ error: 'Lecture des planifications impossible' }, { status: 503 })
   const processed: Array<{ user_id: string; status: string; error?: string }> = []
 
-  for (const config of (configs ?? []) as AutoConfig[]) {
+  for (const config of (configs ?? []) as ScheduledConfig[]) {
     try {
       // Reconcile in-flight/partial records even when generation or auto-publish
       // has been disabled. This mode makes GET calls only, never POST/retry.
@@ -52,31 +49,15 @@ export async function GET(request: Request) {
         }
       }
 
-      // Recover one missed hourly interval and prepare the next three hours.
-      const from = new Date(now.getTime() - 60 * 60 * 1000 - 1)
-      const through = new Date(now.getTime() + 3 * 60 * 60 * 1000)
-      const occurrences = autoOccurrences(config.schedules ?? [], from, through)
-      if (!occurrences.length) continue
       const { data: profile, error: profileError } = await service.from('profiles').select('*').eq('id', config.user_id).single()
       if (profileError || !profile) throw new Error('Profil et quota non verifiables')
-
-      for (const { schedule, at } of occurrences) {
-        const input: AutoJobInput = {
-          userId: config.user_id, videoRowId: randomUUID(), scheduleId: schedule.id,
-          userEmail: profile.email ?? null, planTier: profile.plan ?? 'free', config,
-          generationStartedAt: now.toISOString(),
-        }
-        const identity = submissionIdentity(`auto-occurrence-${config.user_id}`, { scheduleId: schedule.id, at: at.toISOString() })
-        const job = await submitVideoJob(profile as Profile, {
-          kind: 'auto', videoId: null, input, ...identity,
-          initialVideo: { schedule_id: schedule.id, scheduled_for: at.toISOString(), generation_started_at: now.toISOString() },
-        })
-        processed.push({ user_id: config.user_id, status: job.status })
-      }
+      const window = await scheduleAutoWindow(service, config, profile as Profile, now)
+      for (const job of window.jobs) processed.push({ user_id: config.user_id, status: job.status })
+      if (window.backlog) processed.push({ user_id: config.user_id, status: 'scheduling_catchup_pending' })
     } catch (err) {
       processed.push({ user_id: config.user_id, status: 'error', error: err instanceof Error ? err.message : 'Erreur' })
     }
   }
-  const hasErrors = processed.some(item => ['error', 'failed', 'partially_published', 'publication_unconfirmed'].includes(item.status))
+  const hasErrors = processed.some(item => ['error', 'failed', 'partially_published', 'publication_unconfirmed', 'reconciliation_required', 'scheduling_catchup_pending'].includes(item.status))
   return NextResponse.json({ status: hasErrors ? 'partial_failure' : 'ok', processed_count: processed.length, processed })
 }

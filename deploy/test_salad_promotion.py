@@ -51,7 +51,9 @@ class LocalScriptCase(unittest.TestCase):
                 'qa/t01-final-20261015/social-history-transition.py',
                 'migrations/20261015_final_durable_integrity.sql',
                 'migrations/20261015_client_write_permissions.sql',
-                'migrations/20261015_social_authorization_history.sql']:
+                'migrations/20261015_social_authorization_history.sql',
+                'migrations/20261019_partner_scan_atomic.sql',
+                'migrations/20261020_t03_auto_scheduler.sql']:
             dest = self.root / path
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(Path(__file__).resolve().parents[1] / path, dest)
@@ -186,6 +188,28 @@ class PromotionInterruptionTests(LocalScriptCase):
         self.fixtures['social-history-apply'] = {'status': 'PASS', 'mode': 'apply', 'source': SHA,
             'migrationSha256': social_hash, 'stateVerified': True, 'stateSha256': social_state_hash,
             'observedAt': datetime.datetime.now(datetime.timezone.utc).isoformat()}
+        import promotion_guards as guards
+        self.additional_state = {'version': 'sutra-additional-migrations-v1',
+            'functions': [{'name': name, 'anon': False, 'authenticated': False, 'service': True}
+                for name in ('record_partner_scan', 'schedule_auto_video_jobs', 't03_reset_auto_cursor')],
+            'tables': [{'name': 'partners'}, {'name': 'partner_scans',
+                'indexes': [{'name': 'idx_partner_scans_window', 'valid': True}]},
+                {'name': 'sutra_auto_config', 'columns': [{'name': 'scheduler_cursor',
+                    'type': 'timestamp with time zone', 'notNull': True}],
+                 'triggers': [{'name': 't03_auto_cursor', 'enabled': 'O'}]}]}
+        self.fixtures['additional-migrations'] = {'source': SHA, 'status': 'PASS',
+            'backupDirectory': self.fixtures['backup-restore']['directory'],
+            'backupArtifacts': self.fixtures['backup-restore']['artifacts'],
+            'migrations': {path: guards.sha256((self.root / path).read_bytes()) for path in guards.ADDITIONAL_MIGRATIONS},
+            'dataPreserved': True, 'replaySafe': True, 'rollbackPreservesData': True,
+            'restoredStateVerified': True, 'productionChangedByRehearsal': False,
+            'rehearsedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'appliedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'protectedRollback': '/opt/purama/apps/sutra/backup-fixture/additional-fixture',
+            'beforeStateSha256': '1' * 64, 'rollbackStateSha256': '2' * 64,
+            'afterStateSha256': guards.sha256(json.dumps(self.additional_state, sort_keys=True).encode()),
+            'stateQuerySha256': guards.sha256(guards.ADDITIONAL_SCHEMA_SQL.encode()),
+            'afterState': self.additional_state}
         for name, value in self.fixtures.items():
             (self.proof / (name + '.json')).write_text(json.dumps(value))
         helper_path = self.root / 'helper.py'
@@ -222,7 +246,9 @@ class PromotionInterruptionTests(LocalScriptCase):
     def remote_run(self, argv, **kwargs):
         if argv[:4] == ['docker', 'exec', '-i', 'supabase-db']:
             sql = kwargs['input']
-            if 'social_authorization_history' in sql:
+            if 'sutra-additional-migrations-v1' in sql:
+                data = self.additional_state
+            elif 'social_authorization_history' in sql:
                 data = self.social_state
             else:
                 data = self.permission_state if 'AS grants' in sql else self.definitions

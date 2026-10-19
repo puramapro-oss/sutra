@@ -1,0 +1,29 @@
+(node:72946) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:72946) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ R107: the actual cron recovers noon after a 20-hour interruption (375.882167ms)
+✔ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (176.748583ms)
+✔ lost commit response reconciles from durable cursor without a second job or quota (10.015459ms)
+✔ invalid receipt never claims success; subsequent read reconciles its committed jobs (4.827667ms)
+✔ SQL job, cursor and quota errors roll back the entire window before retry (103.635875ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (57.364625ms)
+✔ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (471.29275ms)
+✔ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (6.256666ms)
+✔ missing migration fails closed without falling back to the old lossy window (0.793875ms)
+✔ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (507.943375ms)
+✔ suppressed SQL cursor update cannot return success or retain partial jobs (58.408583ms)
+✔ malformed legacy schedules cannot silently advance a calendar (4.749417ms)
+✔ thrown transport exception is redacted and leaves the cursor retryable (4.677333ms)
+✔ service role runs the real scheduler RPC and partner migration/rollback leaves durable functions intact (23.711458ms)
+✔ corrupt job receipt status is not accepted as scheduling success (8.515334ms)
+✔ known reconciliation-required receipt is not an overall success (5.227375ms)
+✔ DST fold and adjoining catch-up windows produce one logical occurrence (8.679542ms)
+✔ schedule edit and reactivation preserve materialised work and reset only the new calendar (9.971875ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2937.320958

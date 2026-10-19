@@ -1,0 +1,33 @@
+[
+  {
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "node_modules/typescript/bin/tsc",
+      "-p",
+      "qa/t03-closure-20261020/tsconfig.json",
+      "--pretty",
+      "false"
+    ],
+    "exit_code": 0,
+    "log": "typecheck-rls.log"
+  },
+  {
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings",
+      "0",
+      "src/lib/auto-scheduler.ts",
+      "src/app/api/cron/sutra-auto/route.ts",
+      "qa/t03-closure-20261020/recovery.test.mts",
+      "qa/t03-closure-20261020/run.mjs",
+      "qa/t03-closure-20261020/reproduce.mjs"
+    ],
+    "exit_code": 0,
+    "log": "lint-rls.log"
+  }
+]

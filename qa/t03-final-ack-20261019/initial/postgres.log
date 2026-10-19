@@ -1,0 +1,61 @@
+✔ cumulative canonical migration upgrades v11 directly and replays without changing live jobs or budgets (158.713958ms)
+✔ 12 simultaneous deliveries of one logical request create one job and one reservation, conflicting intent is refused (15.94425ms)
+✔ distinct concurrent submissions contend on one budget; initial video SQL failure rolls back its reservation (11.526792ms)
+✔ SQL write failure at each of ten stage boundaries never advances memory; restart preserves all acknowledged stages (57.442042ms)
+✔ intent SQL failure prevents submission; lost result ACK is recovered from SQL after worker restart (7.586208ms)
+✔ music timeout after acquired video keeps budget and outputs; restart cannot submit again before reconciliation (4.412792ms)
+✔ missing cancellation ledger is SQL failure, never success; repair plus 12 cancellations settle once (20.549375ms)
+✔ prior-month cancellation releases only the original reservation while another current-month job remains reserved (3.686792ms)
+✔ invalidated terminal output cannot become ready or done and cannot erase acquired checkpoints (6.303ms)
+✔ expired owner cannot acknowledge or overwrite results; restarted owner settles disabled music once (9.991459ms)
+T03_FIXTURE_SETTLEMENT {"reserved":0,"consumed":2,"released":10,"syntheticCancellations":7}
+✔ SQL done rejects legacy null result and retains reservation; only explicit music skip succeeds (199.989417ms)
+✔ duplicate final result is idempotent; conflicting result cannot replace the completed output (14.447333ms)
+✔ conflicting concurrent results elect one durable winner without overwriting it (6.697833ms)
+✔ completed stages and scenes survive conflicting late delivery, while provider journal can advance (11.481584ms)
+✔ paid outputs and remote identities are immutable before aggregate stage completion (61.030458ms)
+✔ targeted exhausted claim quarantines atomically and retains uncertain work and budget (11.602292ms)
+✔ canonical SQL CHECKs accept orchestrator states; rejected state rolls back business write (6.650333ms)
+✔ canonical auto ready and pending_approval require final proof, complete stages and requested tracks (7.861458ms)
+✔ separate worker process exits after durable remote ID; replacement polls once and replay does nothing (358.661541ms)
+✔ worker restart after provider ACK lost reconciles persisted ID once, preserves all independent stages (16.028875ms)
+✔ provider response without durable ID never resubmits after restart; completed video survives music failure (4.237458ms)
+✔ SQL checkpoint rollback before paid intent prevents any provider call and allows a safe retry (3.890834ms)
+✔ cancellation during remote execution fences late results and releases reservation exactly once (6.65425ms)
+✔ synthetic pre-migration dump restores into a second private DB with exact rows, functions, ACL and CHECKs (435.583083ms)
+✔ v11 upgrade and double replay preserve data; guarded function rollback retains writes made after migration (181.323666ms)
+✔ T01 guard rejects definition drift; SQL error halfway through migration rolls back all replacements (74.255292ms)
+✔ cancel audit insert failure cannot release quota or acknowledge cancellation; concurrent retry writes one receipt (14.4645ms)
+T03_BACKUP_FIXTURE_SETTLED { reserved: 0, cancellations: 0 }
+T03_BACKUP_FIXTURE_SETTLED { reserved: 0, cancellations: 1 }
+(node:86970) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86970) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ lost submission ACK is reconciled by GET, then cancelled without a second logical job (176.262875ms)
+✔ a still-uncommitted submission remains absent; false cancel is not evidence of cancellation (9.128625ms)
+✔ lost cancel ACK after commit stays 503 until the durable receipt is read (8.630167ms)
+✔ malformed cancel ACK after commit stays 503 until the durable receipt is read (3.242583ms)
+✔ SQL cancellation failure rolls back quota release and job state; the same intent can cancel later (3.605667ms)
+✔ an SQL read error is 503 without a mutation; user binding prevents observing another owner (71.402417ms)
+✔ cancellation wins between a persisted checkpoint and finish: no success, no reacquisition (13.063625ms)
+✔ finish wins before cancellation; disabled music null is a valid reusable terminal receipt (5.1645ms)
+✔ 12 concurrent HTTP deliveries share one worker, checkpoint and reservation (13.234208ms)
+✔ 12 cancellations after lease expiry release once and fence the obsolete worker checkpoint (7.973084ms)
+✔ an uncertain remote intention stays quarantined on HTTP redelivery and keeps acquired output (4.758083ms)
+✔ lost finish ACK is recovered from a valid SQL receipt without a second quota mutation (3.141791ms)
+✔ SQL failure during finish never returns success or consumes quota despite the acquired checkpoint (4.915541ms)
+T03_FINAL_SETTLEMENT {"reserved":0,"consumed":3,"released":10,"teardownCancellations":2,"providerCalls":0}
+✔ lost finish response plus 12 duplicate completions: one completed debit, read reconciliation only (145.778584ms)
+✔ expired lease after final checkpoint: new owner finishes; old owner cannot alter result or budget (10.306541ms)
+✔ cancel races finish: exactly one quota settlement, cancellation can never reconcile as done (38.219917ms)
+✔ quota settlement DB failure rolls back done, retains result; restoring ledger allows safe finish (8.042416ms)
+✔ explicitly skipped music reconciles its committed null result after a lost ACK (5.976416ms)
+✔ failed outcome with lost ACK and duplicate callbacks releases exactly one reservation (12.19525ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3790.585916

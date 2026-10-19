@@ -1,0 +1,25 @@
+✔ cumulative canonical migration upgrades v11 directly and replays without changing live jobs or budgets (187.406ms)
+✔ 12 simultaneous deliveries of one logical request create one job and one reservation, conflicting intent is refused (12.699209ms)
+✔ distinct concurrent submissions contend on one budget; initial video SQL failure rolls back its reservation (13.096417ms)
+✔ SQL write failure at each of ten stage boundaries never advances memory; restart preserves all acknowledged stages (84.7855ms)
+✔ intent SQL failure prevents submission; lost result ACK is recovered from SQL after worker restart (9.186083ms)
+✔ music timeout after acquired video keeps budget and outputs; restart cannot submit again before reconciliation (9.957333ms)
+✔ missing cancellation ledger is SQL failure, never success; repair plus 12 cancellations settle once (16.149083ms)
+✔ prior-month cancellation releases only the original reservation while another current-month job remains reserved (3.896417ms)
+✔ invalidated terminal output cannot become ready or done and cannot erase acquired checkpoints (7.4895ms)
+✔ expired owner cannot acknowledge or overwrite results; restarted owner settles disabled music once (10.2045ms)
+T03_FIXTURE_SETTLEMENT {"reserved":0,"consumed":2,"released":10,"syntheticCancellations":7}
+✔ synthetic pre-migration dump restores into a second private DB with exact rows, functions, ACL and CHECKs (743.4885ms)
+✔ v11 upgrade and double replay preserve data; guarded function rollback retains writes made after migration (524.589625ms)
+✔ T01 guard rejects definition drift; SQL error halfway through migration rolls back all replacements (252.477708ms)
+✔ cancel audit insert failure cannot release quota or acknowledge cancellation; concurrent retry writes one receipt (355.225416ms)
+{"fixture":"T03_BACKUP_FIXTURE_SETTLED","reserved":0,"cancellations":0}
+{"fixture":"T03_BACKUP_FIXTURE_SETTLED","reserved":0,"cancellations":1}
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2598.70725

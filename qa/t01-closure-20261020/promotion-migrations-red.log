@@ -1,0 +1,14 @@
+F...
+======================================================================
+FAIL: test_missing_new_migration_receipts_prevent_any_remote_action (test_migration_promotion.NewMigrationBoundaryTests.test_missing_new_migration_receipts_prevent_any_remote_action)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-closure-20261020/test_migration_promotion.py", line 21, in test_missing_new_migration_receipts_prevent_any_remote_action
+    with self.assertRaises((AssertionError, FileNotFoundError)):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (<class 'AssertionError'>, <class 'FileNotFoundError'>) not raised
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.141s
+
+FAILED (failures=1)

@@ -13,6 +13,92 @@ class RemoteOutcomeUnknown(RuntimeError):
     """Transport completion does not prove completion of the remote mutation."""
 
 
+ADDITIONAL_MIGRATIONS = (
+    'migrations/20261019_partner_scan_atomic.sql',
+    'migrations/20261020_t03_auto_scheduler.sql',
+)
+
+# Catalogue only: no user rows, configuration values or credentials. Names and
+# ordering are canonical so restored databases need not preserve object OIDs.
+ADDITIONAL_SCHEMA_SQL = """
+SELECT jsonb_build_object('version','sutra-additional-migrations-v1',
+ 'schema',(SELECT jsonb_build_object('owner',pg_get_userbyid(nspowner),'acl',nspacl::text)
+   FROM pg_namespace WHERE nspname='sutra'),
+ 'functions',(SELECT jsonb_agg(jsonb_build_object('name',p.proname,
+   'arguments',pg_get_function_identity_arguments(p.oid),'definition',pg_get_functiondef(p.oid),
+   'owner',pg_get_userbyid(p.proowner),'acl',p.proacl::text,
+   'service',has_function_privilege('service_role',p.oid,'EXECUTE'),
+   'anon',has_function_privilege('anon',p.oid,'EXECUTE'),
+   'authenticated',has_function_privilege('authenticated',p.oid,'EXECUTE')) ORDER BY p.proname)
+   FROM pg_proc p WHERE p.pronamespace='sutra'::regnamespace
+   AND p.proname IN ('record_partner_scan','schedule_auto_video_jobs','t03_reset_auto_cursor')),
+ 'tables',(SELECT jsonb_agg(jsonb_build_object('name',c.relname,
+   'owner',pg_get_userbyid(c.relowner),'acl',c.relacl::text,
+   'rls',c.relrowsecurity,'forceRls',c.relforcerowsecurity,
+   'columns',(SELECT jsonb_agg(jsonb_build_object('name',a.attname,
+     'type',format_type(a.atttypid,a.atttypmod),'notNull',a.attnotnull,
+     'default',pg_get_expr(d.adbin,d.adrelid)) ORDER BY a.attnum)
+     FROM pg_attribute a LEFT JOIN pg_attrdef d ON d.adrelid=a.attrelid AND d.adnum=a.attnum
+     WHERE a.attrelid=c.oid AND a.attnum>0 AND NOT a.attisdropped),
+   'constraints',(SELECT jsonb_agg(pg_get_constraintdef(oid) ORDER BY conname)
+     FROM pg_constraint WHERE conrelid=c.oid),
+   'policies',(SELECT jsonb_agg(to_jsonb(pol) ORDER BY policyname) FROM pg_policies pol
+     WHERE schemaname='sutra' AND tablename=c.relname),
+   'indexes',(SELECT jsonb_agg(jsonb_build_object('name',ic.relname,
+     'definition',pg_get_indexdef(i.indexrelid),'valid',i.indisvalid) ORDER BY ic.relname)
+     FROM pg_index i JOIN pg_class ic ON ic.oid=i.indexrelid WHERE i.indrelid=c.oid),
+   'triggers',(SELECT jsonb_agg(jsonb_build_object('name',tgname,'enabled',tgenabled,
+     'definition',pg_get_triggerdef(oid)) ORDER BY tgname)
+     FROM pg_trigger WHERE tgrelid=c.oid AND NOT tgisinternal)) ORDER BY c.relname)
+   FROM pg_class c WHERE c.relnamespace='sutra'::regnamespace
+     AND c.relname IN ('partners','partner_scans','sutra_auto_config')));
+"""
+
+
+def validate_additional_state(state, expected_hash):
+    """Refuse absent objects and disabled guards as well as catalogue drift."""
+    assert state['version'] == 'sutra-additional-migrations-v1'
+    functions = {item['name']: item for item in state['functions']}
+    assert len(state['functions']) == len(functions) == 3
+    assert set(functions) == {'record_partner_scan', 'schedule_auto_video_jobs', 't03_reset_auto_cursor'}
+    for name, item in functions.items():
+        assert item['anon'] is False and item['authenticated'] is False, 'ADDITIONAL_RPC_CLIENT_ACCESS'
+        if name != 't03_reset_auto_cursor':
+            assert item['service'] is True, 'ADDITIONAL_RPC_SERVICE_ACCESS'
+    tables = {item['name']: item for item in state['tables']}
+    assert len(state['tables']) == len(tables) == 3
+    assert set(tables) == {'partners', 'partner_scans', 'sutra_auto_config'}
+    cursor = [c for c in tables['sutra_auto_config']['columns'] if c['name'] == 'scheduler_cursor']
+    assert len(cursor) == 1 and cursor[0]['type'] == 'timestamp with time zone' and cursor[0]['notNull'] is True
+    triggers = [t for t in tables['sutra_auto_config']['triggers'] if t['name'] == 't03_auto_cursor']
+    assert len(triggers) == 1 and triggers[0]['enabled'] in ('O', 'A'), 'SCHEDULER_CURSOR_GUARD_DISABLED'
+    indexes = [i for i in tables['partner_scans']['indexes'] if i['name'] == 'idx_partner_scans_window']
+    assert len(indexes) == 1 and indexes[0]['valid'] is True
+    assert sha256(json.dumps(state, sort_keys=True).encode()) == expected_hash, 'ADDITIONAL_SCHEMA_DRIFT'
+
+
+def validate_additional_migration_proofs(backup, receipt, source, migrations, now=None):
+    """A source-bound, fresh restore/replay/rollback proof is mandatory for both deltas."""
+    now = now or datetime.datetime.now(datetime.timezone.utc)
+    start = datetime.datetime.fromisoformat(backup['observedAt'])
+    assert start.tzinfo is not None and datetime.timedelta(0) <= now-start <= datetime.timedelta(hours=4), 'BACKUP_STALE'
+    assert receipt['source'] == source and receipt['status'] == 'PASS'
+    assert receipt['backupDirectory'] == backup['directory']
+    assert receipt['backupArtifacts'] == backup['artifacts'], 'ADDITIONAL_BACKUP_MISMATCH'
+    assert set(migrations) == set(ADDITIONAL_MIGRATIONS)
+    assert receipt['migrations'] == {p: sha256(migrations[p]) for p in ADDITIONAL_MIGRATIONS}, 'ADDITIONAL_MIGRATION_MISMATCH'
+    assert all(receipt[key] is True for key in ('dataPreserved', 'replaySafe', 'rollbackPreservesData', 'restoredStateVerified'))
+    assert receipt['productionChangedByRehearsal'] is False
+    rehearsal = datetime.datetime.fromisoformat(receipt['rehearsedAt'])
+    applied = datetime.datetime.fromisoformat(receipt['appliedAt'])
+    assert start <= rehearsal <= applied <= now, 'ADDITIONAL_PROOF_TIME_INVALID'
+    assert Path(receipt['protectedRollback']).parent == Path(backup['directory'])
+    for key in ('beforeStateSha256', 'afterStateSha256', 'rollbackStateSha256'):
+        assert re.fullmatch('[0-9a-f]{64}', receipt[key])
+    assert receipt['stateQuerySha256'] == sha256(ADDITIONAL_SCHEMA_SQL.encode())
+    validate_additional_state(receipt['afterState'], receipt['afterStateSha256'])
+
+
 def sha256(data):
     return hashlib.sha256(data).hexdigest()
 

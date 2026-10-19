@@ -1,0 +1,144 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "target": {
+    "id": "Function:src/lib/ltx-workflow.ts:durableLtxJob",
+    "name": "durableLtxJob",
+    "type": "Function",
+    "filePath": "src/lib/ltx-workflow.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 11,
+  "risk": "MEDIUM",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 5,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 5,
+    "2": 3,
+    "3": 3
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 8,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:scripts/test-api-contracts.mts",
+        "name": "test-api-contracts.mts",
+        "filePath": "scripts/test-api-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-worker.mts",
+        "name": "test-salad-worker.mts",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/production-pipeline.ts:executeProductionStep.visual@133:2",
+        "name": "visual",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/sutra-auto.ts:generateAutoVideoAssets",
+        "name": "generateAutoVideoAssets",
+        "filePath": "src/lib/sutra-auto.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob.resolveSceneClip@159:2",
+        "name": "resolveSceneClip",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/auto-pipeline.ts:buildAutoProviders.assets@172:4",
+        "name": "assets",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/production-pipeline.ts:executeProductionStep",
+        "name": "executeProductionStep",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob",
+        "name": "executeCreateJob",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t03-final-durable.mts",
+        "name": "test-t03-final-durable.mts",
+        "filePath": "scripts/test-t03-final-durable.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/auto-pipeline.ts:executeAutoJob",
+        "name": "executeAutoJob",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/video-worker.ts:runVideoJob",
+        "name": "runVideoJob",
+        "filePath": "src/lib/video-worker.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

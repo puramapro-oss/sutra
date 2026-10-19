@@ -1,0 +1,15 @@
+Changes: 1 files, 6 symbols
+Affected processes: 2
+Risk level: medium
+
+Changed symbols:
+  Const PLATFORMS_ORDER → src/app/(dashboard)/settings/social/page.tsx
+  Function isAutopilotConfig → src/app/(dashboard)/settings/social/page.tsx
+  Function SocialAccountsPage → src/app/(dashboard)/settings/social/page.tsx
+  Function fetchAccounts → src/app/(dashboard)/settings/social/page.tsx
+  Function handleConnect → src/app/(dashboard)/settings/social/page.tsx
+  Function handleDisconnect → src/app/(dashboard)/settings/social/page.tsx
+
+Affected execution flows:
+  • SocialAccountsPage → IsAutopilotConfig (3 steps) — changed: fetchAccounts, SocialAccountsPage, isAutopilotConfig
+  • SocialAccountsPage → Cn (4 steps) — changed: SocialAccountsPage

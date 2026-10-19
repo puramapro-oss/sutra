@@ -1,0 +1,41 @@
+✓ export : interruption→reprise sans double rendu, re-reprise 100% en cache
+✓ auto : crash assets → plan conservé, chaque étape payée une fois au total
+✓ auto : échec montage tracé, aucune URL finale publiable
+✓ voix 7 Mo : checkpointée et jamais resynthétisée après interruption
+✓ voix 24 Mo : 3 morceaux checkpointés, jamais resynthétisée après interruption
+✔ EXPORT : crash pendant le rendu → reprise SANS re-rendu de l'acquis (3.409625ms)
+✔ AUTO : crash pendant les assets → plan conservé, assets/assemblage une seule fois (1.957125ms)
+✔ AUTO : échec de montage → aucun résultat final, erreur transmise au worker (0.442125ms)
+✔ VOIX >5 Mo : buffer checkpointé — interruption ne régénère PAS la voix (16.70725ms)
+✔ VOIX 24 Mo : morceaux checkpointés — interruption ne régénère PAS (66.23125ms)
+✔ Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence (3.497ms)
+✔ Zernio accepte 201 programme sans jamais annoncer publie (0.276375ms)
+✔ Zernio convertit x en twitter et transmet chaque caption propre (0.115541ms)
+✔ Zernio refuse une echeance passee au lieu de publier immediatement (0.208959ms)
+✔ Zernio refuse UUID local, plateforme indisponible et cle absente avant appel (0.231875ms)
+✔ Zernio succes pour un autre compte reste inconnu (0.076833ms)
+✔ Zernio resultat partiel conserve toutes les destinations demandees (0.074ms)
+✔ Zernio ancienne reponse success=true sans preuve n'est pas acceptee (0.059583ms)
+✔ Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable (0.268ms)
+✔ Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien (0.574417ms)
+✔ Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien (2.666459ms)
+✔ Publication: timeout laisse une reservation, reprise exacte apres le bail (0.9035ms)
+✔ Publication: succes partiel, GET puis retry du seul compte en echec (1.02075ms)
+✔ Publication: programmation puis reconciliation utilise GET sans POST supplementaire (1.044625ms)
+✔ Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation (0.757916ms)
+✔ Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee (0.229458ms)
+✔ Publication: historique secondaire reparable sans nouvelle publication (0.387ms)
+✔ Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme (0.254541ms)
+✔ Publication: les trois routes historiques partagent le handler (33.753667ms)
+✔ Zernio reconciliation refuse les destinations supplementaires avant tout retry (0.303084ms)
+✔ Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible (1332.06925ms)
+✔ Zernio retry vise le post original une seule fois et ne recree jamais de post (0.520334ms)
+✔ Zernio revoke 404 est idempotent et erreur sensible jamais loggee (0.326125ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2159.297458

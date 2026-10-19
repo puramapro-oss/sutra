@@ -1,0 +1,14 @@
+✔ synthetic pre-migration dump restores into a second private DB with exact rows, functions, ACL and CHECKs (336.491958ms)
+✔ v11 upgrade and double replay preserve data; guarded function rollback retains writes made after migration (205.55275ms)
+✔ T01 guard rejects definition drift; SQL error halfway through migration rolls back all replacements (80.864583ms)
+✔ cancel audit insert failure cannot release quota or acknowledge cancellation; concurrent retry writes one receipt (16.188916ms)
+{"fixture":"T03_BACKUP_FIXTURE_SETTLED","reserved":0,"cancellations":0}
+{"fixture":"T03_BACKUP_FIXTURE_SETTLED","reserved":0,"cancellations":1}
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 899.126208

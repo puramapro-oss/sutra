@@ -1,0 +1,394 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "target": {
+    "id": "Function:src/lib/pipeline-state.ts:pipelineSteps",
+    "name": "pipelineSteps",
+    "type": "Function",
+    "filePath": "src/lib/pipeline-state.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 19,
+  "risk": "HIGH",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 11,
+    "processes_affected": 4,
+    "modules_affected": 4
+  },
+  "byDepthCounts": {
+    "1": 11,
+    "2": 2,
+    "3": 6
+  },
+  "affected_processes": [
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/production/route.ts",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/video/export/route.ts",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/create/route.ts",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/auto/generate/route.ts",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 7,
+      "impact": "direct"
+    },
+    {
+      "name": "Production",
+      "hits": 4,
+      "impact": "indirect"
+    },
+    {
+      "name": "T03-durable-reliability-20261014",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "T08-integration-journey-20261014",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:qa/t03-durable-reliability-20261014/restart-worker.mts",
+        "name": "restart-worker.mts",
+        "filePath": "qa/t03-durable-reliability-20261014/restart-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-pipeline-interruptions.mts",
+        "name": "test-pipeline-interruptions.mts",
+        "filePath": "scripts/test-pipeline-interruptions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-t03-final-durable.mts",
+        "name": "test-t03-final-durable.mts",
+        "filePath": "scripts/test-t03-final-durable.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-pipeline-interruptions.mts:fn@32:44.run@34:4",
+        "name": "run",
+        "filePath": "scripts/test-pipeline-interruptions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-pipeline-interruptions.mts:fn@50:69.run@52:2",
+        "name": "run",
+        "filePath": "scripts/test-pipeline-interruptions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-pipeline-interruptions.mts:fn@8:94.run@11:4",
+        "name": "run",
+        "filePath": "scripts/test-pipeline-interruptions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/auto-pipeline.ts:executeAutoJob",
+        "name": "executeAutoJob",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/export-pipeline.ts:executeExportJob",
+        "name": "executeExportJob",
+        "filePath": "src/lib/export-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/production-pipeline.ts:executeProductionStep",
+        "name": "executeProductionStep",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/sutra-auto.ts:generateAutoVideoAssets",
+        "name": "generateAutoVideoAssets",
+        "filePath": "src/lib/sutra-auto.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob",
+        "name": "executeCreateJob",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/auto-pipeline.ts:buildAutoProviders.assets@172:4",
+        "name": "assets",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/video-worker.ts:runVideoJob",
+        "name": "runVideoJob",
+        "filePath": "src/lib/video-worker.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t03-durable-reliability.mts",
+        "name": "test-t03-durable-reliability.mts",
+        "filePath": "scripts/test-t03-durable-reliability.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/auto/generate/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/auto/generate/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_253_post",
+            "label": "POST → Blocked",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_254_post",
+            "label": "POST → Query",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_175_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_231_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/create/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_308_post",
+            "label": "POST → Blocked",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_309_post",
+            "label": "POST → Query",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_74_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_295_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_160_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/cron/video-worker/route.ts:GET",
+        "name": "GET",
+        "filePath": "src/app/api/cron/video-worker/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/production/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/production/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_406_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_414_post",
+            "label": "POST → Query",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_419_post",
+            "label": "POST → Blocked",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_39_post",
+            "label": "POST → Ok",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_38_post",
+            "label": "POST → Failure",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_221_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/video/export/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/video/export/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_452_post",
+            "label": "POST → Blocked",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_87_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_171_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_439_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_447_post",
+            "label": "POST → Query",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_118_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+(node:86341) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86341) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ R107: the actual cron recovers noon after a 20-hour interruption (542.589208ms)
+✔ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (320.851208ms)
+✔ lost commit response reconciles from durable cursor without a second job or quota (10.385417ms)
+✔ invalid receipt never claims success; subsequent read reconciles its committed jobs (6.714958ms)
+✔ SQL job, cursor and quota errors roll back the entire window before retry (52.729333ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (7.254084ms)
+✔ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (427.913666ms)
+✔ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (5.798708ms)
+✔ missing migration fails closed without falling back to the old lossy window (0.5455ms)
+✔ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (306.387708ms)
+✔ suppressed SQL cursor update cannot return success or retain partial jobs (10.617416ms)
+✔ malformed legacy schedules cannot silently advance a calendar (5.524958ms)
+✔ thrown transport exception is redacted and leaves the cursor retryable (5.447416ms)
+✔ service role runs the real scheduler RPC and partner migration/rollback leaves durable functions intact (25.047666ms)
+✔ corrupt job receipt status is not accepted as scheduling success (11.708166ms)
+✔ known reconciliation-required receipt is not an overall success (9.570042ms)
+✔ DST fold and adjoining catch-up windows produce one logical occurrence (11.112916ms)
+✔ schedule edit and reactivation preserve materialised work and reset only the new calendar (7.898292ms)
+✔ owner RLS INSERT and DELETE/reinsert cannot choose past or future cursors (52.259584ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2692.72075

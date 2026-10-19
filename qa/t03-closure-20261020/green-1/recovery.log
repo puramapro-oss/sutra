@@ -1,0 +1,201 @@
+(node:53510) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53510) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ R107: the actual cron recovers noon after a 20-hour interruption (505.78175ms)
+✖ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (600.023458ms)
+✖ lost commit response reconciles from durable cursor without a second job or quota (65.638542ms)
+✖ invalid receipt never claims success; subsequent read reconciles its committed jobs (165.920041ms)
+✖ SQL job, cursor and quota errors roll back the entire window before retry (200.385375ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (95.124709ms)
+✖ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (48.0125ms)
+✖ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (12.233917ms)
+✔ missing migration fails closed without falling back to the old lossy window (1.062125ms)
+✖ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (349.368833ms)
+✖ /Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts (0.39325ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 2
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12933.150542
+
+✖ failing tests:
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:1069
+✖ R107: the actual cron recovers noon after a 20-hour interruption (505.78175ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'partial_failure'
+  - 'ok'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:104:66)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'partial_failure',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:1599
+✖ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (600.023458ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(results.some(r=>r.status==='ok'))
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:111:72)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:2169
+✖ lost commit response reconciles from durable cursor without a second job or quota (65.638542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:119:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:2634
+✖ invalid receipt never claims success; subsequent read reconciles its committed jobs (165.920041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'partial_failure'
+  - 'ok'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:124:19)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'partial_failure',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:2955
+✖ SQL job, cursor and quota errors roll back the entire window before retry (200.385375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'partial_failure'
+  - 'ok'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:132:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'partial_failure',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:4283
+✖ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (48.0125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:144:64)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:5073
+✖ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (12.233917ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /CURSOR_FORBIDDEN/. Input:
+  
+  'error: permission denied for table fixture_faults'
+  
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:159:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: error: permission denied for table fixture_faults
+        at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg/lib/client.js:631:17
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async waitForActual (node:assert:615:5)
+        at async strict.rejects (node:assert:738:25)
+        at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:159:5)
+        at async Test.run (node:internal/test_runner/test:1208:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:831:7),
+    expected: /CURSOR_FORBIDDEN/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:6632
+✖ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (349.368833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  null !== 0
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:181:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:10:638
+✖ /Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts (0.39325ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  null !== 0
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:98:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async after (node:internal/test_runner/test:1159:9)
+      at async Test.run (node:internal/test_runner/test:1227:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,65 @@
+{
+  "owner": "T06",
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "branch": "codex/sutra-t06-closure-79cd95b-20261020",
+  "verdict": "ACK_LOCAL_DELTA_WITH_RESERVES; NACK_GLOBAL_UX_ON_CANDIDATE",
+  "productFiles": [
+    "src/app/(dashboard)/settings/social/page.tsx"
+  ],
+  "fixed": [
+    "duplicate OAuth initiation",
+    "unbounded OAuth initiation wait and late redirect",
+    "untrusted callback error reflection"
+  ],
+  "freshEvidence": {
+    "canonicalWebkit": {
+      "pass": 25,
+      "complete": false,
+      "exitCode": 1
+    },
+    "journeysBefore": {
+      "pass": 11,
+      "fail": 4
+    },
+    "journeysAfter": {
+      "pass": 13,
+      "fail": 2
+    },
+    "connectChromium": {
+      "pass": 5,
+      "fail": 0
+    },
+    "connectWebkit": {
+      "pass": 6,
+      "fail": 0
+    },
+    "callback": {
+      "beforeFail": 6,
+      "afterPass": 6
+    }
+  },
+  "remaining": {
+    "FAIL": [
+      "English creation heading on candidate, T01 owns correction",
+      "development hydration/navigation qualification T01"
+    ],
+    "BLOQUE": [
+      "integration and exact production recipe T01",
+      "personal consent for requested real accounts"
+    ],
+    "NON_TESTE": [
+      "real OAuth and tokens/scopes",
+      "real publication/generation",
+      "screen reader and physical device",
+      "production option of this new harness"
+    ]
+  },
+  "realConnections": 0,
+  "realPublications": 0,
+  "paidCalls": 0,
+  "productionChanges": 0,
+  "consentGuide": "README.md#actions-personnelles-restantes",
+  "qualityEvidence": "validation.json",
+  "integrationProof": "integration.json",
+  "globalScope": "owner UI delta only; full candidate UX remains NACK"
+}

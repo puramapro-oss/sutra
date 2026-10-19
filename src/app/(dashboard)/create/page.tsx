@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Sparkles,
@@ -44,6 +45,7 @@ interface SceneStockState {
 }
 
 export default function CreatePage() {
+  const t = useTranslations('create')
   const router = useRouter()
   const { profile, loading: authLoading } = useAuth()
 
@@ -133,7 +135,7 @@ export default function CreatePage() {
       {/* Header */}
       <div className="text-center">
         <h1 className="text-2xl lg:text-3xl font-bold text-white font-[var(--font-display)]">
-          Creer une video
+          {t('title')}
         </h1>
         <p className="text-sm text-white/50 mt-1">
           Prépare ta vidéo. Le délai de génération dépend du mode et des ressources disponibles.

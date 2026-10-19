@@ -1,0 +1,39 @@
+{
+  "observedAt": "2026-10-19T23:01:25.392287+00:00",
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "tests": {
+    "regressions": {
+      "pass": 119,
+      "fail": 0,
+      "skip": 0,
+      "receipt": "targeted-contracts.json"
+    },
+    "finalNewContracts": {
+      "pass": 41,
+      "fail": 0,
+      "skip": 0,
+      "receipt": "music-final.json",
+      "overlap": "40 cases in regressions; do not sum"
+    }
+  },
+  "typecheck": "PASS",
+  "targetedLint": "PASS",
+  "diffCheck": "PASS",
+  "gitleaks": {
+    "status": "PASS",
+    "secrets": 0,
+    "scope": "staged diff; redacted log; archive contains unchanged previously scanned output"
+  },
+  "gitnexus": {
+    "impact": "LOW",
+    "staged": "LOW",
+    "compareMain": "CRITICAL shared integration lineage; not isolated T04 blast radius",
+    "graphCompleteness": "PARTIAL"
+  },
+  "liveProviderCalls": 0,
+  "masterReads": 0,
+  "paidCalls": 0,
+  "gpuCalls": 0,
+  "build": "not repeated; exact candidate CI reused for unchanged code",
+  "finalIntegration": "NOT_TESTED; T01 integration and T08 retest required"
+}

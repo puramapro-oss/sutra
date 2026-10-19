@@ -1,0 +1,1883 @@
+{
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "reviewedAt": "2026-10-19T23:12:22.750747+00:00",
+  "verdict": "NON PRÊT",
+  "definition": {
+    "PASS": "Preuve exécutée dans le périmètre décrit; execution directe, CI ou propriétaire explicitement distinguées.",
+    "FAIL": "Échec reproductible, y compris banc QA; sévérité et impact produit qualifiés séparément.",
+    "BLOCKED": "Dépendance externe/configuration précise empêche preuve ou activation.",
+    "NOT TESTED": "Aucune preuve réelle pour cette exigence."
+  },
+  "historicalUserCounts": {
+    "PASS": 82,
+    "FAIL": 0,
+    "BLOCKED": 5,
+    "NOT TESTED": 12
+  },
+  "previousAuditCommit": "97c288e37cfd6c2e53d971d1ef2b14ad805f1798",
+  "previousAuditCounts": {
+    "PASS": 79,
+    "NON TESTÉ": 12,
+    "BLOQUÉ": 6,
+    "FAIL": 12
+  },
+  "counts": {
+    "PASS": 89,
+    "NOT TESTED": 12,
+    "BLOCKED": 6,
+    "FAIL": 12
+  },
+  "requirements": [
+    {
+      "id": "R01",
+      "requirement": "Session absente refusée avant travail",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R02",
+      "requirement": "Connexion navigateur OAuth réelle complète",
+      "owner": "T01/utilisateur",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "personal-consent",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Connexion OAuth personnelle réelle non effectuée; seuls comptes/sessions synthétiques validés."
+    },
+    {
+      "id": "R03",
+      "requirement": "GET authentifiés et redirections de connexion existants",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R04",
+      "requirement": "Création projet client avec quota autorisé",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R05",
+      "requirement": "Quota refusé ou DB indisponible avant soumission",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R06",
+      "requirement": "Budget/autorisation propriétaire Salad et client normal",
+      "owner": "T01/T02/T03",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R07",
+      "requirement": "Coût réel, solde fournisseur et budget GPU consommé",
+      "owner": "T01/utilisateur",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "budget-absent-or-unauthorized",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Aucune dépense ni réservation GPU réelle; simulation du devis/réservation seule. Pas de solde fournisseur suffisant inféré."
+    },
+    {
+      "id": "R08",
+      "requirement": "Double clic création et conflit même clé/autre contenu",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R09",
+      "requirement": "Statut queue vers polling frontend",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R10",
+      "requirement": "Génération simulée et checkpoints ordonnés",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R11",
+      "requirement": "Timeout rendu puis reprise ID existant",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R12",
+      "requirement": "Perte reçu après soumission de rendu",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R13",
+      "requirement": "Erreur partielle upload puis reprise",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R14",
+      "requirement": "Échec DB après vérification finale",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R15",
+      "requirement": "Reprise Suno après timeout avec taskId",
+      "owner": "T04/T03",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R16",
+      "requirement": "Montage vers export et média vérifié",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R17",
+      "requirement": "Export rejoué et refus validation",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R18",
+      "requirement": "Qualité réelle image/audio/sous-titres exporté",
+      "owner": "T05/T01",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "paid-generation-not-executed",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Qualité artistique/image/audio IA réelle non évaluée; médias CPU synthétiques et probe réels validés R48."
+    },
+    {
+      "id": "R19",
+      "requirement": "Validation médias locale CPU intégrée",
+      "owner": "T05/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "REAL_CPU_SYNTHETIC_MEDIA",
+      "proofs": [
+        "receipts/T05-reconciliation.json",
+        "receipts/T05-delivery-manifest.json",
+        "ci-summary.json"
+      ],
+      "evidence": "Six groupes média CI exacts, FFmpeg/probe réels sur médias synthétiques. ACK T05 c63464a parent79cd,82 fichiers/42 producteurs/37 exports préservés par empreintes; mesures historiques réutilisées seulement sur code inchangé. Aucun GPU ni qualité artistique IA réelle."
+    },
+    {
+      "id": "R20",
+      "requirement": "Isolation utilisateur aux frontières projet/job/export/publication",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R21",
+      "requirement": "Preuve finale absente et accès révoqué",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R22",
+      "requirement": "OAuth : scénarios replay/ancien consentement/révocation du lot14oct",
+      "owner": "T06",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R23",
+      "requirement": "Stockage et preuve publique : gardes du lot14oct",
+      "owner": "T02",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R24",
+      "requirement": "Planification future sans faux published",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R25",
+      "requirement": "Publication simulée et projections cohérentes",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R26",
+      "requirement": "Publication double clic concurrente",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R27",
+      "requirement": "Échec partiel multi-réseaux",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R28",
+      "requirement": "Export modifié après planification",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R29",
+      "requirement": "Date passée ne déclenche aucune publication immédiate",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R30",
+      "requirement": "Ordonnanceur autonome/cron OVH et reprise sans requête",
+      "owner": "T01",
+      "status": "BLOCKED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "BLOQUÉ",
+      "evidenceKind": "CONFIGURATION_INACTIVE",
+      "proofs": [
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json",
+        "receipts/T07-final-ACK-T07.json"
+      ],
+      "evidence": "Dispatch cron OFF; observateur UNAVAILABLE, app/DB stoppées. Activation T01 non autorisée et R107 non corrigé. Absence de déclenchement autonome réel ne vaut pas défaut supplémentaire du cron."
+    },
+    {
+      "id": "R31",
+      "requirement": "SSRF/IDOR/CSRF/XSS, gardes déjà intégrées",
+      "owner": "T02/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct. Diagnostic UI callback R118 distinct, aucun PASS générique transféré."
+    },
+    {
+      "id": "R32",
+      "requirement": "Redirections dépendance OTS et sécurité exhaustive",
+      "owner": "T02",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "exhaustive-proof-impossible",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Aucune preuve exhaustive de sécurité. OTS redirects et attaques ciblées sont PASS R31/R53; absence universelle de vulnérabilité non affirmée."
+    },
+    {
+      "id": "R33",
+      "requirement": "Transactions/RLS PostgreSQL multi-session existantes",
+      "owner": "T01/T03",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_REAL_PRIVATE_POSTGRES",
+      "proofs": [
+        "receipts/ci-job-logs-independent.json",
+        "receipts/T01-CI-79CD-disposable-database-20261019.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI PostgreSQL privée exacte: migrations, permissions, concurrence, CAS planning, annulation/audit atomique, ACK perdu et reprise. SQL réel, identité et fournisseurs synthétiques, aucune DDL distante."
+    },
+    {
+      "id": "R34",
+      "requirement": "Parcours continu sur DB réelle avec rendu et publication",
+      "owner": "T01",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "real-end-to-end-not-executed",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Aucun parcours continu navigateur→base réelle→fournisseur réel→publication publique. Parcours mocks et SQL réel isolé sont des preuves distinctes."
+    },
+    {
+      "id": "R35",
+      "requirement": "Observabilité états/progrès/erreurs récupérables",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R36",
+      "requirement": "Alertes bout en bout et diagnostics exploitation",
+      "owner": "T01",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "runtime-unavailable",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Alertes opérationnelles de bout en bout non exercées; runtime arrêté. États et erreurs simulés couverts R35."
+    },
+    {
+      "id": "R37",
+      "requirement": "Charge concurrente bornée isolée",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R38",
+      "requirement": "Performance réelle/SLA et charge distante",
+      "owner": "T01",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "remote-runtime-unavailable",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Pas de SLA/charge distante/endurance24h; charge bornée isolée12concurrents et CI réelle seulement."
+    },
+    {
+      "id": "R39",
+      "requirement": "Navigateur/accessibilité de la base, contrôles déjà passés",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R40",
+      "requirement": "Pagination/filtre UI et contraste bouton consentement",
+      "owner": "T07",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R41",
+      "requirement": "Clavier/lecteur écran et parcours visuel complet T08",
+      "owner": "T07/T01",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "physical-accessibility-not-executed",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Pas de mobile physique/VoiceOver ni inspection visuelle exhaustive. Clavier/focus/axe et viewports natifs synthétiques exécutés; deux captures effectivement examinées320/1440."
+    },
+    {
+      "id": "R42",
+      "requirement": "Absence secrets/requête payante/génération Mac/publication réelle",
+      "owner": "T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "PROCESS_BOUNDARY",
+      "proofs": [
+        "counterexamples.json",
+        "journey.json",
+        "social-boundaries-execution.json"
+      ],
+      "evidence": "Configuration synthétique allowlist et garde offline. Aucun master/.env lu, appel payant, IA Mac, publication ou déploiement exécuté par T08. Ce constat borné ne prouve pas absence universelle de secrets anciens."
+    },
+    {
+      "id": "R43",
+      "requirement": "RunPod/Shotstack accès non génératif existant",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_FREE_READ_ONLY",
+      "proofs": [
+        "receipts/T04-free-reads.json"
+      ],
+      "evidence": "T0419Oct19:44UTC: RunPod health200 (0worker prêt), Shotstack stage/v1 templates200. Lecture authentifiée non générative uniquement, provenance master attestée par propriétaire; aucune génération ni disponibilité GPU validée."
+    },
+    {
+      "id": "R44",
+      "requirement": "GPU Salad/RunPod, modèle 24Go, rendu facturé",
+      "owner": "T01/utilisateur",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "paid-gpu-not-authorized",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Aucun GPU Salad/RunPod/WanGP/LTX réel ni preuveVRAM24Go. Aucun calcul IA Mac."
+    },
+    {
+      "id": "R45",
+      "requirement": "Publication réelle et consentements sociaux",
+      "owner": "T01/utilisateur",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "personal-consent-and-real-publication",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Aucun compte social personnel connecté, consentement accordé ou publication publique; mocks uniquement."
+    },
+    {
+      "id": "R46",
+      "requirement": "TS/lint delta T08 et gates produit inchangées",
+      "owner": "T08/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CLEAN_CI",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/ci-job-logs-independent.json",
+        "ci-summary.json"
+      ],
+      "evidence": "Installation propre CI npm ci --ignore-scripts --no-audit --no-fund sous Node24.21; typecheck/lint/build PASS sur79cd. Contrats/legacy/media/PG passent dans leurs périmètres,7+25SKIP conservés, audit2low5moderate. Aucune nouvelle installation/build identique sur Mac."
+    },
+    {
+      "id": "R47",
+      "requirement": "Régressions des nouveaux correctifs T02–T07 intégrés",
+      "owner": "T01/T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "BOUNDED_INTEGRATED_FIXES",
+      "proofs": [
+        "counterexamples.json",
+        "security-delta.json",
+        "stock-delta.json",
+        "publication-current-chromium/results.json",
+        "publication-current-webkit/results.json"
+      ],
+      "evidence": "Dix anciennes corrections ciblées R80/100–106/108/109 contre-vérifiées sur79cd. Ce PASS concerne ce lot intégré uniquement; R107 et nouvelles anomalies R110–R117 restent FAIL indépendants."
+    },
+    {
+      "id": "R48",
+      "requirement": "Exports CPU synthétiques image/audio/sous-titres vérifiables",
+      "owner": "T05",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "REAL_CPU_SYNTHETIC_MEDIA",
+      "proofs": [
+        "receipts/T05-reconciliation.json",
+        "receipts/T05-delivery-manifest.json",
+        "ci-summary.json"
+      ],
+      "evidence": "Six groupes média CI exacts, FFmpeg/probe réels sur médias synthétiques. ACK T05 c63464a parent79cd,82 fichiers/42 producteurs/37 exports préservés par empreintes; mesures historiques réutilisées seulement sur code inchangé. Aucun GPU ni qualité artistique IA réelle."
+    },
+    {
+      "id": "R49",
+      "requirement": "Réponse production expurgée en panne RPC",
+      "owner": "T03 (signalement T02)",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R50",
+      "requirement": "Intégrité résultat durable/checkpoint sous reprise et ACK perdu",
+      "owner": "T03/T01 SQL",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R51",
+      "requirement": "Publication refuse compte lié à un ancien profil ou révocation pending",
+      "owner": "T06",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R52",
+      "requirement": "Lecteur : états honnêtes et commandes selon média vérifié",
+      "owner": "T07",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R53",
+      "requirement": "Transport OTS refuse les redirections dangereuses",
+      "owner": "T02",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R54",
+      "requirement": "Panne SQL à l'annulation : réponse publique expurgée",
+      "owner": "T03/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R55",
+      "requirement": "Capacité privée invalidée après revoke/changement de profil",
+      "owner": "T02/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R56",
+      "requirement": "Autorité OAuth revalidée après attente et avant DELETE",
+      "owner": "T06/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R57",
+      "requirement": "Annulation : session/isolation/double clic/quota SQL",
+      "owner": "T08/T03/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R58",
+      "requirement": "Estimation simulée : devis/plafond avant réservation",
+      "owner": "T04/T03",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R59",
+      "requirement": "Sauvegarde/restauration isolée bornée",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXECUTED_HISTORICAL_RESTORE",
+      "proofs": [
+        "receipts/T01-FINAL-PRESERVATION-20261019.json",
+        "receipts/T01-OVH-RESTART-DECISION-20261019.json"
+      ],
+      "evidence": "Preuve propriétaire de restauration isolée des6artefacts/141tables conservée et relue; exécution historique15Oct22:40UTC, pas restauration de79cd ni preuve fraîche de production. Fraîcheur échoue R61; identité/blob complet R62 non testé."
+    },
+    {
+      "id": "R60",
+      "requirement": "Migration/rollback isolés et concurrence DDL",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "REAL_PRIVATE_SQL_AND_SIMULATED_RELEASE",
+      "proofs": [
+        "receipts/T01-CI-79CD-disposable-database-20261019.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "Migrations/rollback SQL isolés et préservation historique de quota partenaire dans CI79cd; tests Python promotion/rollback simulés. Aucun rollback production, ni application distante de la migration partenaire. R63 séparé. Couverture de la gate de promotion incomplète séparée R119."
+    },
+    {
+      "id": "R61",
+      "requirement": "Reçu de sauvegarde fraîche au snapshot de recette",
+      "owner": "T01",
+      "status": "BLOCKED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "BLOQUÉ",
+      "evidenceKind": "STALE_OPERATIONAL_RECEIPT",
+      "proofs": [
+        "receipts/T01-OVH-RESTART-DECISION-20261019.json"
+      ],
+      "evidence": "Sauvegarde/restauration précédente valide seulement jusqu’au16Oct02:40UTC; aucun reçu récent exploitable avant reprise OVH. T01 seul propriétaire, pas de redémarrage/backup distant lancé par T08."
+    },
+    {
+      "id": "R62",
+      "requirement": "Restauration complète identités/sessions/blobs cohérents",
+      "owner": "T01",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "full-restore-not-executed",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Pas de restauration atomique complète identités/sessions/blobs ni preuve cohérence externe; restauration SQL historique bornée R59."
+    },
+    {
+      "id": "R63",
+      "requirement": "Migration/rollback réellement appliqués en production",
+      "owner": "T01",
+      "status": "NOT TESTED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NON TESTÉ",
+      "evidenceKind": "production-operation-not-authorized",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json"
+      ],
+      "evidence": "Aucune migration ou rollback production appliqués par T08; simulation CI et SQL privé seulement, migration partenaire reste locale."
+    },
+    {
+      "id": "R64",
+      "requirement": "Révocation confirmée rejouée sans second DELETE",
+      "owner": "T06/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R65",
+      "requirement": "Révocation purge les anciens champs tokens",
+      "owner": "T06/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R66",
+      "requirement": "Droits clients : colonnes financières/statuts protégés",
+      "owner": "T01 SQL",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_REAL_PRIVATE_POSTGRES",
+      "proofs": [
+        "receipts/ci-job-logs-independent.json",
+        "receipts/T01-CI-79CD-disposable-database-20261019.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI PostgreSQL privée exacte: migrations, permissions, concurrence, CAS planning, annulation/audit atomique, ACK perdu et reprise. SQL réel, identité et fournisseurs synthétiques, aucune DDL distante."
+    },
+    {
+      "id": "R67",
+      "requirement": "Historique OAuth durable après révocation et reconnexion",
+      "owner": "T06/T01 SQL",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R68",
+      "requirement": "Export CPU : concurrence et délai total bornés",
+      "owner": "T05/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "REAL_CPU_SYNTHETIC_MEDIA",
+      "proofs": [
+        "receipts/T05-reconciliation.json",
+        "receipts/T05-delivery-manifest.json",
+        "ci-summary.json"
+      ],
+      "evidence": "Six groupes média CI exacts, FFmpeg/probe réels sur médias synthétiques. ACK T05 c63464a parent79cd,82 fichiers/42 producteurs/37 exports préservés par empreintes; mesures historiques réutilisées seulement sur code inchangé. Aucun GPU ni qualité artistique IA réelle."
+    },
+    {
+      "id": "R69",
+      "requirement": "UI sociale : panne/timeout explicites et reprise",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117. Scope: messages des réglages/autopilot déjà couverts; nouvelles frontières connexion OAuth enFAIL R113–R115."
+    },
+    {
+      "id": "R70",
+      "requirement": "Dialogue de révocation : nom accessible et focus",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R71",
+      "requirement": "Formulaires connexion/inscription : double soumission et clavier",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R72",
+      "requirement": "Reprise : validation terminale et intégrité checkpoints voix",
+      "owner": "T03/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R73",
+      "requirement": "Harnais navigateur : ne pas masquer mutation/issue inconnue par preuve native GET",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R74",
+      "requirement": "Commande UI create reliée à l’annulation durable serveur",
+      "owner": "T01/T03/T07",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R75",
+      "requirement": "Configuration ordonnanceur : droits et diagnostics publics",
+      "owner": "T01/T02",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R76",
+      "requirement": "Production : reçu durable, reprise GET et annulation UI",
+      "owner": "T01/T07",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "DIRECT_SIMULATED",
+      "proofs": [
+        "journey.json",
+        "journey.log"
+      ],
+      "evidence": "13/13 exécutés par T08 sur ce SHA, Node24.22, routes/file/worker/pipeline/export/journal réels, identité/SQL/fournisseurs/stockage simulés. Reprise, ACK perdu, droits, erreurs et concurrence12 bornée. Aucun média fournisseur ni post réel."
+    },
+    {
+      "id": "R77",
+      "requirement": "Ordonnanceur : préférence active/pause sans double écriture",
+      "owner": "T07",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R78",
+      "requirement": "Salad : saisie authentifiée et accès organisation/projet",
+      "owner": "Utilisateur/T04/T01",
+      "status": "BLOCKED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "BLOQUÉ",
+      "evidenceKind": "MALFORMED_CONFIGURATION",
+      "proofs": [
+        "receipts/T04-free-reads.json"
+      ],
+      "evidence": "SALAD_API_KEY présente mais format local impropre au transport, noms organisation/projet absents; zéro requête envoyée. Ce n’est pas un refus HTTP ni un manque de crédit démontré. Paramétrage/récupération personnelle puis GET uniquement sous T01."
+    },
+    {
+      "id": "R79",
+      "requirement": "Admin et webhook Stripe : diagnostics privés en erreurs",
+      "owner": "T02",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "OWNER_EXECUTED_AND_EXACT_CI",
+      "proofs": [
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T02-final-invariants.json",
+        "ci-summary.json"
+      ],
+      "evidence": "ACK personnel T02 sur79cd,320 exécutions ciblées sans FAIL/SKIP (comptages recouvrants), contrôles SSRF/IDOR/CSRF/XSS/OAuth. Empreintes et CI exacte réconciliées. Pas de certification exhaustive, inter-organisations native, secrets historiques ou stockage distant. R111 distinct."
+    },
+    {
+      "id": "R80",
+      "requirement": "Pexels : erreurs HTTP et schéma ne deviennent pas stock vide",
+      "owner": "T04",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_INDEPENDENT_COUNTEREXAMPLES",
+      "proofs": [
+        "counterexamples.json",
+        "security-delta.json",
+        "stock-delta.json"
+      ],
+      "evidence": "5 contre-exemples T08 PASS: setup anonyme401 avant accès privilégié; health503 expurgé; stock panne et URL exécutable rejetés; Coverr absent non configuré. Sécurité23/23 et Coverr4/4 réexécutés. VM et frontières simulées, sources exactes Git."
+    },
+    {
+      "id": "R81",
+      "requirement": "ElevenLabs : identités, schéma et bornes de réponse",
+      "owner": "T04",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R82",
+      "requirement": "Salad : alias organisation/projet et conflits de configuration",
+      "owner": "T04",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R83",
+      "requirement": "Autopilot : erreurs publiques et plateformes sans doublons",
+      "owner": "T06",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R84",
+      "requirement": "Planning UI : fuseau, pause, réponse perdue et CAS",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R85",
+      "requirement": "Réglages sociaux : rechargement de la configuration canonique",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R86",
+      "requirement": "Mode stock : aucun repli IA implicite après vide ou erreur",
+      "owner": "T01/T04",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R87",
+      "requirement": "LTX : annulation et deadline pendant lecture du corps",
+      "owner": "T04",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R88",
+      "requirement": "Shotstack : annulation pendant corps de reprise GET",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CONTRACT_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/T01-CI-79CD-CONTRACT-MEDIA-20261019.json"
+      ],
+      "evidence": "Contrats intégrés CI1261PASS/0FAIL/7SKIP. Reprise taskId, ACK/checkpoint, ElevenLabs identité, Salad aliases, autopilot, stock sans repli IA, LTX/Shotstack deadlines/corps. Fournisseurs simulés; contrats secondaires musique nouveaux en FAIL R110–R112."
+    },
+    {
+      "id": "R89",
+      "requirement": "Planning : CAS SQL et récupération après ACK perdu",
+      "owner": "T01/T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_REAL_PRIVATE_POSTGRES",
+      "proofs": [
+        "receipts/ci-job-logs-independent.json",
+        "receipts/T01-CI-79CD-disposable-database-20261019.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI PostgreSQL privée exacte: migrations, permissions, concurrence, CAS planning, annulation/audit atomique, ACK perdu et reprise. SQL réel, identité et fournisseurs synthétiques, aucune DDL distante."
+    },
+    {
+      "id": "R90",
+      "requirement": "Pexels : configuration permettant authentification réelle",
+      "owner": "Utilisateur/T04",
+      "status": "BLOCKED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "BLOQUÉ",
+      "evidenceKind": "MALFORMED_CONFIGURATION",
+      "proofs": [
+        "receipts/T04-free-reads.json"
+      ],
+      "evidence": "PEXELS_API_KEY présente, représentation locale non transportable; zéro GET envoyé. Correction de saisie par propriétaire/utilisateur nécessaire; ne pas classer mauvaise clé distante ou quota sans preuve."
+    },
+    {
+      "id": "R91",
+      "requirement": "ElevenLabs : accès lecture des voix",
+      "owner": "Utilisateur/T04",
+      "status": "BLOCKED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "BLOQUÉ",
+      "evidenceKind": "AUTHENTICATION_REJECTED",
+      "proofs": [
+        "receipts/T04-free-reads.json"
+      ],
+      "evidence": "GET ElevenLabs401 invalid_api_key. Correctif code6d7d75a déjà intégré à blob identique; vérifier clé existante/workspace/droits via propriétaire. Aucun crédit insuffisant démontré."
+    },
+    {
+      "id": "R92",
+      "requirement": "OVH : provenance déployée, health et HTTPS en lecture seule",
+      "owner": "T01",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "OPERATIONAL_FAILURE_NOT_CANDIDATE_CODE",
+      "proofs": [
+        "receipts/T01-OVH-FINAL-READONLY-20261019.json",
+        "receipts/T01-OVH-RESTART-DECISION-20261019.json"
+      ],
+      "evidence": "T01lecture seule19Oct21:52UTC: app etDB arrêtées17Oct07:23, exits143/0 sansOOM, arrêt manuel; login/health404. Installationab935, pas79cd. Correctif minimal: décision et remise en service contrôlée T01 après sauvegarde/ACL/migration; aucune action autorisée ici."
+    },
+    {
+      "id": "R93",
+      "requirement": "Installation propre et gates intégrées lint/TypeScript/tests/build",
+      "owner": "T01/T08",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CLEAN_CI",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/ci-job-logs-independent.json",
+        "ci-summary.json"
+      ],
+      "evidence": "Installation propre CI npm ci --ignore-scripts --no-audit --no-fund sous Node24.21; typecheck/lint/build PASS sur79cd. Contrats/legacy/media/PG passent dans leurs périmètres,7+25SKIP conservés, audit2low5moderate. Aucune nouvelle installation/build identique sur Mac."
+    },
+    {
+      "id": "R94",
+      "requirement": "Téléchargement privé : corps suspendu, timeout et retry",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R95",
+      "requirement": "Annulation durable : audit canonique transactionnel et idempotent",
+      "owner": "T01/T03/T07",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_REAL_PRIVATE_POSTGRES",
+      "proofs": [
+        "receipts/ci-job-logs-independent.json",
+        "receipts/T01-CI-79CD-disposable-database-20261019.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI PostgreSQL privée exacte: migrations, permissions, concurrence, CAS planning, annulation/audit atomique, ACK perdu et reprise. SQL réel, identité et fournisseurs synthétiques, aucune DDL distante."
+    },
+    {
+      "id": "R96",
+      "requirement": "Erreur signalée failed to load workspace requirements",
+      "owner": "Utilisateur/T01/T08",
+      "status": "BLOCKED",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "BLOQUÉ",
+      "evidenceKind": "MISSING_EXTERNAL_REPRODUCTION",
+      "proofs": [
+        "receipts/T01-MATRIX-RECONCILIATION-20261019.json"
+      ],
+      "evidence": "«failed to load workspace requirements»: origine/écran/horodatage/manipulation initiale manquants. Ancien initialize/configRequirements/read avait répondu sans erreur; POLICY_OK actuel et commandes repo fonctionnent. Aucun défaut SUTRA reproduit et aucun correctif inventé; contexte exact externe requis."
+    },
+    {
+      "id": "R97",
+      "requirement": "Harnais final : lint du diagnostic de redirection",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_CLEAN_CI",
+      "proofs": [
+        "receipts/ci-live.json",
+        "receipts/ci-job-logs-independent.json",
+        "ci-summary.json"
+      ],
+      "evidence": "Installation propre CI npm ci --ignore-scripts --no-audit --no-fund sous Node24.21; typecheck/lint/build PASS sur79cd. Contrats/legacy/media/PG passent dans leurs périmètres,7+25SKIP conservés, audit2low5moderate. Aucune nouvelle installation/build identique sur Mac."
+    },
+    {
+      "id": "R98",
+      "requirement": "Fixtures SQL finales : dépendance audit canonique",
+      "owner": "T01/T03",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_REAL_PRIVATE_POSTGRES",
+      "proofs": [
+        "receipts/ci-job-logs-independent.json",
+        "receipts/T01-CI-79CD-disposable-database-20261019.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI PostgreSQL privée exacte: migrations, permissions, concurrence, CAS planning, annulation/audit atomique, ACK perdu et reprise. SQL réel, identité et fournisseurs synthétiques, aucune DDL distante."
+    },
+    {
+      "id": "R99",
+      "requirement": "Navigation navigateur /create : disponibilité réelle de l’écran",
+      "owner": "T01",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "PASS",
+      "evidenceKind": "EXACT_CANDIDATE_BROWSER_CI",
+      "proofs": [
+        "ci-summary.json",
+        "receipts/artifacts-independent.json",
+        "receipts/ci-live.json"
+      ],
+      "evidence": "CI39328438907 exacte:26 familles Chromium/WebKit optimisées, contrôles GET/auth, bibliothèque, lecture, focus/axe, planning CAS et annulation. PASS limité aux assertions archivées. Nouveaux défauts connect/langue/runtime et banc local séparés R113–R117."
+    },
+    {
+      "id": "R100",
+      "requirement": "Setup doit refuser l'anonyme avant service-role",
+      "owner": "T02",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_INDEPENDENT_COUNTEREXAMPLES",
+      "proofs": [
+        "counterexamples.json",
+        "security-delta.json",
+        "stock-delta.json"
+      ],
+      "evidence": "5 contre-exemples T08 PASS: setup anonyme401 avant accès privilégié; health503 expurgé; stock panne et URL exécutable rejetés; Coverr absent non configuré. Sécurité23/23 et Coverr4/4 réexécutés. VM et frontières simulées, sources exactes Git."
+    },
+    {
+      "id": "R101",
+      "requirement": "Health public ne divulgue pas les exceptions privées",
+      "owner": "T02",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_INDEPENDENT_COUNTEREXAMPLES",
+      "proofs": [
+        "counterexamples.json",
+        "security-delta.json",
+        "stock-delta.json"
+      ],
+      "evidence": "5 contre-exemples T08 PASS: setup anonyme401 avant accès privilégié; health503 expurgé; stock panne et URL exécutable rejetés; Coverr absent non configuré. Sécurité23/23 et Coverr4/4 réexécutés. VM et frontières simulées, sources exactes Git."
+    },
+    {
+      "id": "R102",
+      "requirement": "Stock refuse les URLs de média non sûres",
+      "owner": "T04",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_INDEPENDENT_COUNTEREXAMPLES",
+      "proofs": [
+        "counterexamples.json",
+        "security-delta.json",
+        "stock-delta.json"
+      ],
+      "evidence": "5 contre-exemples T08 PASS: setup anonyme401 avant accès privilégié; health503 expurgé; stock panne et URL exécutable rejetés; Coverr absent non configuré. Sécurité23/23 et Coverr4/4 réexécutés. VM et frontières simulées, sources exactes Git."
+    },
+    {
+      "id": "R103",
+      "requirement": "Dialogue publication accessible desktop/mobile",
+      "owner": "T06",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_NATIVE_BROWSER_SIMULATED_API",
+      "proofs": [
+        "publication-current-chromium/results.json",
+        "publication-current-webkit/results.json",
+        "publication-current-chromium-execution.json",
+        "publication-current-webkit-execution.json"
+      ],
+      "evidence": "25 contrôles publication PASS dans chacun des deux moteurs natifs: focus/axe320–1440, état incertain/partiel/pending, compte révoqué, doubles clics, dates. API interceptée. Suites complètes non vertes à cause des modes/navigation dev, consignées R113; pas de publication publique."
+    },
+    {
+      "id": "R104",
+      "requirement": "Publication UI conserve états incertains et succès partiels",
+      "owner": "T06",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_NATIVE_BROWSER_SIMULATED_API",
+      "proofs": [
+        "publication-current-chromium/results.json",
+        "publication-current-webkit/results.json",
+        "publication-current-chromium-execution.json",
+        "publication-current-webkit-execution.json"
+      ],
+      "evidence": "25 contrôles publication PASS dans chacun des deux moteurs natifs: focus/axe320–1440, état incertain/partiel/pending, compte révoqué, doubles clics, dates. API interceptée. Suites complètes non vertes à cause des modes/navigation dev, consignées R113; pas de publication publique."
+    },
+    {
+      "id": "R105",
+      "requirement": "Compte révoqué non sélectionnable dans la publication UI",
+      "owner": "T06",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_NATIVE_BROWSER_SIMULATED_API",
+      "proofs": [
+        "publication-current-chromium/results.json",
+        "publication-current-webkit/results.json",
+        "publication-current-chromium-execution.json",
+        "publication-current-webkit-execution.json"
+      ],
+      "evidence": "25 contrôles publication PASS dans chacun des deux moteurs natifs: focus/axe320–1440, état incertain/partiel/pending, compte révoqué, doubles clics, dates. API interceptée. Suites complètes non vertes à cause des modes/navigation dev, consignées R113; pas de publication publique."
+    },
+    {
+      "id": "R106",
+      "requirement": "Contact limite les abus et conserve erreurs honnêtes",
+      "owner": "T02",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_REEXECUTED_OWNER_CONTRACT",
+      "proofs": [
+        "security-delta.json",
+        "receipts/T02-final-ACK-T02.json"
+      ],
+      "evidence": "Contact/limitation/CSRF et diagnostic expurgé réexécutés T08 dans les23PASS; ACK sécurité T02 exact et frais. Livraison extérieure de message non exécutée."
+    },
+    {
+      "id": "R107",
+      "requirement": "Reprise longue panne sans occurrence silencieusement perdue",
+      "owner": "T03/T01",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "REAL_PRIVATE_POSTGRES_OWNER_COUNTEREXAMPLE",
+      "proofs": [
+        "receipts/T07-results.json",
+        "receipts/T07-final-results.json",
+        "receipts/T07-final-database.json",
+        "receipts/T07-final-ACK-T07.json"
+      ],
+      "evidence": "Planning12hUTC; tick00h; véritable redémarragePostgreSQL; reprise20h. HTTP200 processed0 aux deux ticks, aucune occurrence12h ni job/quota. Attendu rattrapage exactement une fois. T03 réserve curseur durable/CAS/RPC; pas intégré. Doubles ticks après rattrapage NON TESTÉ faute d’occurrence, pas succès sur ensemble vide."
+    },
+    {
+      "id": "R108",
+      "requirement": "Routes partenaires refusent erreurs SQL sans divulgation",
+      "owner": "T02",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_CONTRACT_AND_REAL_PG_CI",
+      "proofs": [
+        "security-delta.json",
+        "receipts/T02-final-ACK-T02.json",
+        "receipts/T01-CI-79CD-disposable-database-20261019.json"
+      ],
+      "evidence": "Route partenaire9cas dans lot23T08, SQL atomique10cas CI/T02:20concurrents à99 donnent1insertion; erreurs SQL expurgées et quota préservé. Migration partenaire encore locale, pas preuve OVH."
+    },
+    {
+      "id": "R109",
+      "requirement": "Coverr absent ne doit pas être déclaré configuré",
+      "owner": "T01/T04",
+      "status": "PASS",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "FAIL",
+      "evidenceKind": "DIRECT_INDEPENDENT_COUNTEREXAMPLES",
+      "proofs": [
+        "counterexamples.json",
+        "security-delta.json",
+        "stock-delta.json"
+      ],
+      "evidence": "5 contre-exemples T08 PASS: setup anonyme401 avant accès privilégié; health503 expurgé; stock panne et URL exécutable rejetés; Coverr absent non configuré. Sécurité23/23 et Coverr4/4 réexécutés. VM et frontières simulées, sources exactes Git."
+    },
+    {
+      "id": "R110",
+      "requirement": "StableAudio ne termine pas sur processing + output",
+      "owner": "T04",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NEW",
+      "severity": "MAJOR",
+      "evidenceKind": "CURRENT_EXECUTED_COUNTEREXAMPLE",
+      "proofs": [
+        "music-counterexamples.json"
+      ],
+      "evidence": "Réponse simulée processing contenant output acceptée comme résultat terminal; attendu conserverpending/ID et réconcilier GET, aucun nouveauPOST ou fallback."
+    },
+    {
+      "id": "R111",
+      "requirement": "StableAudio expurge ses exceptions fournisseur",
+      "owner": "T04",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NEW",
+      "severity": "MAJOR_ADAPTER_BOUNDARY",
+      "evidenceKind": "CURRENT_EXECUTED_COUNTEREXAMPLE",
+      "proofs": [
+        "music-counterexamples.json",
+        "receipts/T02-final-ACK-T02.json"
+      ],
+      "evidence": "401 synthétique exposePRIVATE_BODY_MARKER dans exception adaptateur. Attendu erreur typée/expurgée. Le wrapper expurge actuellement sa réponse: aucune fuite HTTP publique démontrée par ce seul cas."
+    },
+    {
+      "id": "R112",
+      "requirement": "Riffusion accepte le résultat terminé du contrat supporté",
+      "owner": "T04",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NEW",
+      "severity": "MAJOR",
+      "evidenceKind": "CURRENT_EXECUTED_COUNTEREXAMPLE",
+      "proofs": [
+        "music-counterexamples.json"
+      ],
+      "evidence": "Réponse completed data.data[0].stream_audio_url ignorée; résultat déclaré absent. Attendu validation stricte puis récupérationURL terminale, jamais relancerPOST payant."
+    },
+    {
+      "id": "R113",
+      "requirement": "Banc navigateur dev achève modes et navigation",
+      "owner": "T06/T01",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NEW",
+      "severity": "QA_FAILURE_UNQUALIFIED_PRODUCT_IMPACT",
+      "evidenceKind": "CURRENT_EXECUTED_COUNTEREXAMPLE",
+      "proofs": [
+        "publication-current-chromium-execution.json",
+        "publication-current-webkit-execution.json",
+        "social-boundaries/results.json",
+        "social-boundaries-execution.json"
+      ],
+      "evidence": "Chromium28PASS/1FAIL: panneau mode ready absent5s. WebKit25PASS puis exit1: goto/create interrompu par/library. Suites complètes NON PASS, pas de retry masquant; CIoptimisée distincte verte. Harnais neuf T06 passe les modes, sans fermer automatiquement échec du banc initial. Harnais neuf T06 repris sans modification parT08:9PASS/5FAIL, ready absent encore et première réponse503 sans message social-connect-error5s; cause produit/readiness à qualifier. DoublePOST/timeout/langue comptés séparémentR114–R116."
+    },
+    {
+      "id": "R114",
+      "requirement": "Connexion sociale ne double pas sa requête OAuth",
+      "owner": "T06",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NEW",
+      "severity": "MAJOR",
+      "evidenceKind": "DIRECT_INDEPENDENT_NATIVE_BROWSER",
+      "proofs": [
+        "receipts/T06-journeys-before.json",
+        "social-boundaries-execution.json",
+        "social-boundaries/results.json"
+      ],
+      "evidence": "Deux activations synchrones connect-youtube produisent2POST au lieu1 avant disabled. Attendu garde synchrone et uneintention; backend OAuth n’est pas déclaré compromis."
+    },
+    {
+      "id": "R115",
+      "requirement": "Connexion sociale expire avec reprise manuelle",
+      "owner": "T06",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NEW",
+      "severity": "MAJOR",
+      "evidenceKind": "DIRECT_INDEPENDENT_NATIVE_BROWSER",
+      "proofs": [
+        "receipts/T06-journeys-before.json",
+        "social-boundaries-execution.json",
+        "social-boundaries/results.json"
+      ],
+      "evidence": "POSTintercepté suspendu: bouton disabled/aria-busy au-delà11s, aucune reprise. Attendu délai borné/abort local et action manuelle, sans retryautomatique."
+    },
+    {
+      "id": "R116",
+      "requirement": "Langue de création cohérente avec locale anglaise",
+      "owner": "T07/T01",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NEW",
+      "severity": "MINOR",
+      "evidenceKind": "DIRECT_INDEPENDENT_NATIVE_BROWSER",
+      "proofs": [
+        "receipts/T06-journeys-before.json",
+        "social-boundaries-execution.json",
+        "social-boundaries/results.json"
+      ],
+      "evidence": "html lang=en mais titre Creer une video. Attendu titre traduit; page inchangée depuisab935, antériorité ne ferme pas défaut."
+    },
+    {
+      "id": "R117",
+      "requirement": "Création sans mismatch hydratation DashboardChrome",
+      "owner": "T01/T07",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:01:51.140214+00:00",
+      "previousStatus": "NEW",
+      "severity": "RUNTIME_FAILURE_PRODUCTION_IMPACT_UNQUALIFIED",
+      "evidenceKind": "CURRENT_EXECUTED_COUNTEREXAMPLE",
+      "proofs": [
+        "receipts/T06-journeys-before.json",
+        "publication/chromium/results.json",
+        "social-boundaries-execution.json"
+      ],
+      "evidence": "Hydration mismatch DashboardChrome reproduit en dev parT06 et ancienharnaisT08; garde conservepageerror. CIproduction verte, pas de preuve identique enproduction. Qualifier SSR/session/navigation et corriger propriétaire si cause produit confirmée, sans filtre large du diagnostic. NouveauharnaisT08: runtimeunexpected[]; la preuveT06/ancienneT08 demeure, aucun correctif intégré ni clôture."
+    },
+    {
+      "id": "R118",
+      "requirement": "Erreur callback OAuth bornée, explicable et persistante",
+      "owner": "T06",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:08:47.442929+00:00",
+      "previousStatus": "NEW",
+      "severity": "USER_VISIBLE_UNTRUSTED_DIAGNOSTIC_NO_XSS_EXECUTION_PROVEN",
+      "evidenceKind": "DIRECT_COMPILED_PRODUCT_EFFECT_SYNTHETIC",
+      "proofs": [
+        "callback-errors.json",
+        "callback-errors.log"
+      ],
+      "evidence": "6 contre-tests FAIL sur effet réel compilé : paramètre URL arbitraire transmis brut au toast, codes OAuth sans message sûr et erreur non persistante. Aucun HTML/XSS exécuté démontré. Le PASS DOM transitoire antérieur ne couvre pas cette frontière. Attendu allowlist de messages, alerte persistante, suppression ciblée du paramètre error; correctif exclusif T06 à intégrer puis retester."
+    },
+    {
+      "id": "R119",
+      "requirement": "Promotion exige la migration RPC partenaire du candidat",
+      "owner": "T01",
+      "status": "FAIL",
+      "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "reviewedAt": "2026-10-19T23:12:22.750747+00:00",
+      "previousStatus": "NEW",
+      "severity": "MAJOR_RELEASE_GATE",
+      "evidenceKind": "EXECUTED_STATIC_AST_AND_COMMITTED_SOURCE_REVIEW",
+      "proofs": [
+        "promotion-gate-gap.json"
+      ],
+      "evidence": "Route partenaire appelle record_partner_scan mais promote.py ne valide que checkpoint, permissions et historique social; absence de reçu/catalogue de la migration20261019. Analyse AST et chaîne SQL du commit, aucune promotion exécutée. T01 corrige exclusivement; contre-test négatif intégré requis."
+    }
+  ],
+  "realPaidGeneration": false,
+  "realPublicPublication": false,
+  "productEdits": 0,
+  "unchangedPasses": "Revalidated by exact current CI and candidate blob hashes; not blindly rerun. Historical restore explicitly dated.",
+  "newCandidateRule": "No ACK/status transfers to an unannounced SHA. Retest integrated affected deltas and final complete simulated journey."
+}

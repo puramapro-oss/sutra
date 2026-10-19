@@ -12,6 +12,7 @@ import { SaladError } from './salad/contracts'
 import type { LtxResult } from './ltx-types'
 import { LtxJobError, type LtxExecution } from './ltx-v2'
 import { RunpodJobError } from './runpod'
+import { MusicProviderJobError } from './music-provider-job'
 import type { MusicStyle, Plan } from '@/types'
 
 /**
@@ -142,7 +143,10 @@ export async function generateMusicWithProvenance(prompt: string, style: string,
       throw new Error('MUSIC_PROVIDER_NOT_CONFIGURED: fournisseur demande indisponible')
     }
     if (!song?.audio_url) throw new Error('missing output')
-  } catch { throw new ProviderOperationError(provider, timeoutMs) }
+  } catch (error) {
+    if (error instanceof MusicProviderJobError) throw error
+    throw new ProviderOperationError(provider, timeoutMs)
+  }
   return { url: song.audio_url, provider, jobId: song.id ?? null, remoteStatus: 'completed', timeoutMs,
     cost: { estimated: null, actual: null, status: 'not_reported' }, quota: { remaining: null }, contractStatus: 'legacy_not_live_verified' }
 }

@@ -32,20 +32,8 @@ const DEFAULT_AUTOPILOT: AutopilotConfig = {
 }
 
 const PLATFORMS_ORDER: SocialPlatform[] = [
-  'tiktok',
-  'youtube',
-  'instagram',
-  'facebook',
-  'x',
-  'linkedin',
-  'pinterest',
-  'reddit',
-  'threads',
-  'snapchat',
-  'tumblr',
-  'mastodon',
-  'bluesky',
-  'vimeo',
+  'tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest',
+  'reddit', 'threads', 'snapchat', 'tumblr', 'mastodon', 'bluesky', 'vimeo',
 ]
 
 const TOTAL_PLATFORMS = PLATFORMS_ORDER.length
@@ -70,7 +58,9 @@ export default function SocialAccountsPage() {
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const accountsRequest = useRef<AbortController | null>(null)
+  const connectRequest = useRef<AbortController | null>(null)
   const [connecting, setConnecting] = useState<SocialPlatform | null>(null)
+  const [connectError, setConnectError] = useState<string | null>(null)
   const [disconnectingId, setDisconnectingId] = useState<string | null>(null)
   const [savingAutopilot, setSavingAutopilot] = useState(false)
   const [confirmDisconnect, setConfirmDisconnect] = useState<SocialAccount | null>(null)
@@ -113,6 +103,8 @@ export default function SocialAccountsPage() {
     return () => {
       accountsRequest.current?.abort()
       accountsRequest.current = null
+      connectRequest.current?.abort()
+      connectRequest.current = null
     }
   }, [fetchAccounts])
 
@@ -134,7 +126,20 @@ export default function SocialAccountsPage() {
     }
 
     if (error) {
-      toast.error(`Connexion echouee : ${error}`)
+      // URL parameters are untrusted; only expose our safe callback contract.
+      const message = error === 'invalid_or_expired_state'
+        ? 'Ce lien a expiré ou a déjà été utilisé. Relance la connexion depuis cette page.'
+        : error === 'session_required'
+          ? 'Ta session a expiré. Reconnecte-toi à SUTRA, puis relance la connexion du compte.'
+          : error === 'oauth_denied'
+            ? 'Autorisation refusée. Aucun compte ajouté ; tu peux réessayer si tu le souhaites.'
+            : error === 'oauth_empty_profile'
+              ? 'Aucun compte autorisé trouvé. Relance la connexion et sélectionne le compte souhaité.'
+              : error === 'db_error'
+                ? 'Impossible d’enregistrer la connexion. Vérifie la liste des comptes avant de réessayer.'
+                : 'Connexion indisponible. Relance la connexion depuis cette page.'
+      toast.error(message)
+      setConnectError(message)
       params.delete('error')
       const newUrl =
         window.location.pathname + (params.toString() ? `?${params.toString()}` : '')
@@ -143,13 +148,23 @@ export default function SocialAccountsPage() {
   }, [])
 
   const handleConnect = useCallback(async (platform: SocialPlatform) => {
+    // React state alone cannot guard two activations in the same event turn.
+    if (connectRequest.current) return
+    const controller = new AbortController()
+    connectRequest.current = controller
+    const current = () => connectRequest.current === controller
+    const timeout = setTimeout(() => controller.abort(), 10_000)
+    let redirecting = false
     setConnecting(platform)
+    setConnectError(null)
     try {
       const res = await fetch('/api/social/connect', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ platform }),
+        signal: controller.signal,
       })
+      if (!current() || controller.signal.aborted) return
       if (!res.ok) {
         // These statuses are SUTRA's safe contract; never display provider error bodies.
         const message = res.status === 409
@@ -158,18 +173,31 @@ export default function SocialAccountsPage() {
             ? 'Profil social non attribué. Contactez votre administrateur.'
             : `Connexion ${PLATFORM_INFO[platform].label} indisponible`
         toast.error(message)
-        setConnecting(null)
+        setConnectError(message)
         return
       }
       const data = await res.json()
+      if (!current() || controller.signal.aborted) return
       if (data?.oauthUrl) {
         window.location.href = data.oauthUrl
+        redirecting = true
       } else {
         throw new Error('no_oauth_url')
       }
     } catch {
-      toast.error(`Connexion ${PLATFORM_INFO[platform].label} indisponible`)
-      setConnecting(null)
+      if (!current()) return // Unmounted: no late toast or redirect.
+      const message = controller.signal.aborted
+        ? 'Le lien de connexion n’a pas pu être récupéré à temps. Réessaie manuellement.'
+        : `Connexion ${PLATFORM_INFO[platform].label} indisponible`
+      toast.error(message)
+      setConnectError(message)
+    } finally {
+      clearTimeout(timeout)
+      // Hold the guard until navigation; an OAuth redirect must not be duplicated.
+      if (current() && !redirecting) {
+        connectRequest.current = null
+        setConnecting(null)
+      }
     }
   }, [])
 
@@ -271,6 +299,7 @@ export default function SocialAccountsPage() {
         />}
 
         {disconnectNotice && <p role="alert" className="mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200">{disconnectNotice}</p>}
+        {connectError && <p role="alert" data-testid="social-connect-error" className="mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200">{connectError}</p>}
 
         {!loadError && <PlatformGrid
           loading={loading}

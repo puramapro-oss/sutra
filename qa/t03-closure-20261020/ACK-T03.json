@@ -1,0 +1,79 @@
+{
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "previous_ack": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "candidate_verdict": "NACK_R107",
+  "local_delta_verdict": "PASS_TARGETED_PENDING_INTEGRATION",
+  "branch": "codex/sutra-t03-closure-20261020",
+  "tests": {
+    "distinct_pass": 134,
+    "fail_remaining_in_selections": 0,
+    "skipped": 0,
+    "groups": {
+      "final-rls/recovery.log": 19,
+      "final/postgres.log": 14,
+      "final/backoff.log": 2,
+      "final/contracts.log": 62,
+      "final/delivery.log": 37
+    }
+  },
+  "quality": [
+    {
+      "command": [
+        "node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "qa/t03-closure-20261020/tsconfig.json",
+        "--pretty",
+        "false"
+      ],
+      "exit_code": 0,
+      "log": "typecheck-rls.log"
+    },
+    {
+      "command": [
+        "node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "node_modules/eslint/bin/eslint.js",
+        "--max-warnings",
+        "0",
+        "src/lib/auto-scheduler.ts",
+        "src/app/api/cron/sutra-auto/route.ts",
+        "qa/t03-closure-20261020/recovery.test.mts",
+        "qa/t03-closure-20261020/run.mjs",
+        "qa/t03-closure-20261020/reproduce.mjs"
+      ],
+      "exit_code": 0,
+      "log": "lint-rls.log"
+    }
+  ],
+  "node": "v26.0.0",
+  "postgres": "18 private loopback",
+  "settlement": {
+    "budget": {
+      "reserved": 0,
+      "consumed": 0,
+      "released": 25
+    },
+    "submissions": 33,
+    "providerCalls": 0,
+    "publications": 0
+  },
+  "production_tested": false,
+  "paid_calls": 0,
+  "provider_calls": 0,
+  "publication_calls": 0,
+  "clusters_stopped": true,
+  "product_sha256": {
+    "src/app/api/cron/sutra-auto/route.ts": "6b49bfe4d07d701ba41b308875b1a40e67a88e6f28dc94dbcae8218dcf1d5fb0",
+    "src/lib/auto-scheduler.ts": "5b122d615dc1f3e8328598b77b53e2d2862f097603d2db4a217586fc6be76cc0",
+    "migrations/20261020_t03_auto_scheduler.sql": "5a42b7bc64b417753922bbbfcdc10323bd176c07023b188fe06c8900e795ea5c",
+    "migrations/20261020_t03_auto_scheduler.rollback.sql": "c4bb132f638ba686b20bde356761e2c2b493d8c35e814bb3bde36da29f416dfd"
+  },
+  "gitnexus": "partial graph, staged CRITICAL; product scope manually reviewed",
+  "gitleaks": "198 raw hash false positives verified; qualified re-scan zero",
+  "diff_check": "source/docs PASS; raw logs whitespace retained",
+  "external_blocker": "T1 integrated corrected candidate SHA not yet delivered"
+}
