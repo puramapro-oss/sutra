@@ -1,0 +1,60 @@
+{
+  "source": "public HTTPS GET without credentials",
+  "observedAt": "2026-10-19T19:51:26.026379+00:00",
+  "tests": [
+    {
+      "path": "/",
+      "status": 404,
+      "expected": 200,
+      "pass": false,
+      "seconds": 1.298
+    },
+    {
+      "path": "/login",
+      "status": 404,
+      "expected": 200,
+      "pass": false,
+      "seconds": 0.834
+    },
+    {
+      "path": "/api/social/accounts",
+      "status": 404,
+      "expected": 401,
+      "pass": false,
+      "seconds": 1.53
+    },
+    {
+      "path": "/api/cron/video-worker",
+      "status": 404,
+      "expected": 401,
+      "pass": false,
+      "seconds": 0.95
+    },
+    {
+      "path": "/api/cron/sutra-auto",
+      "status": 404,
+      "expected": 401,
+      "pass": false,
+      "seconds": 0.47
+    },
+    {
+      "path": "/api/cron/auto-plan",
+      "status": 404,
+      "expected": 401,
+      "pass": false,
+      "seconds": 0.634
+    }
+  ],
+  "tls": {
+    "verified": true,
+    "protocol": "TLSv1.3",
+    "notAfter": "Jan 10 22:26:54 2027 GMT",
+    "dnsNames": [
+      "sutra.purama.dev"
+    ]
+  },
+  "dnsAddresses": [
+    "144.217.14.210",
+    "64:ff9b::90d9:ed2"
+  ]
+}

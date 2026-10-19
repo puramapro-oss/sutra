@@ -1,0 +1,1441 @@
+{
+  "note": "Lexical inventory, not proof that every route authorization is correct. Three isolated corrections included; dynamic proof is separate.",
+  "routes": [
+    {
+      "path": "src/app/api/account/delete/route.ts",
+      "methods": [
+        "POST",
+        "DELETE"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "f9f7d3c9df2a76322dfde824c3ffa612cf2bffda8f6692100fabe204888589b8"
+    },
+    {
+      "path": "src/app/api/achievements/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "733e23aea1b5517ea3cc80e52536f6a417a377f34072e5bddf94347777d90bb7"
+    },
+    {
+      "path": "src/app/api/admin/health/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser",
+        "requireAdmin"
+      ],
+      "reexport": false,
+      "sha256": "b23446a861e209ac6925655735294b2eccaec60621bf95bc3c3b4de2584ca0cc"
+    },
+    {
+      "path": "src/app/api/admin/stats/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser",
+        "requireAdmin"
+      ],
+      "reexport": false,
+      "sha256": "acfb5fc9cc7d6c16cfeaf3a5bccfdb4043aa2c332f26debdf05ce4bd18f9ded7"
+    },
+    {
+      "path": "src/app/api/admin/users/[id]/route.ts",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "authMarkers": [
+        "getUser",
+        "requireAdmin"
+      ],
+      "reexport": false,
+      "sha256": "8072f104c5e89f69ebedee918bfef9c1dba5db05f6947bac648de7376d167cc1"
+    },
+    {
+      "path": "src/app/api/admin/users/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "29ea6cc19563039ba5c728de69df84eb570a4ac12d609b61b5a8cb3794d1bc55"
+    },
+    {
+      "path": "src/app/api/ai/chat/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "42e618c74546b5843ccabb940d23ba86e9e2ce5c9b29dbdb9d1bafa3ec59f02b"
+    },
+    {
+      "path": "src/app/api/auto/config/route.ts",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "5961645eacb18dcc2fa51a21a0ae9aaf4bb515235280b5cdae0b099bd390860c"
+    },
+    {
+      "path": "src/app/api/auto/generate/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "cf220afff2c33082bf84dab4e9c7109ec7031455a89f71a83aded802673eec60"
+    },
+    {
+      "path": "src/app/api/auto/memory/route.ts",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "6eb07a7163b279c339213f00a22f03b7d83b3c5395bccf5e99d936d7573d05fa"
+    },
+    {
+      "path": "src/app/api/auto/publish/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "b1e3f2bd6d3328a54d417239c8bd66beebef768e358b8902bc20c39ef6552b48"
+    },
+    {
+      "path": "src/app/api/auto/themes/[id]/route.ts",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "49f5f0dd9fd534fee774b47a5e7aeeefca502c03df6ccd31a8f79f828573eb3c"
+    },
+    {
+      "path": "src/app/api/auto/themes/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "cdec23b7105a98d069406637712a9a3c613b0d4c42959d4ec8ac9fb91dec418d"
+    },
+    {
+      "path": "src/app/api/auto/videos/[id]/route.ts",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "db6d279425bbcff7eb6715098993144161ebb33a53ba24eae64392fc8a604f32"
+    },
+    {
+      "path": "src/app/api/auto/videos/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "a967c90ff41278fe29a7485e9aeb99f3a2b24458fad22a2156ed393cc9ae73ae"
+    },
+    {
+      "path": "src/app/api/boutique/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "ef3c8b78fece626fabd225f0572b0f7e87a4bfd923aba77d6524671c43b938b2"
+    },
+    {
+      "path": "src/app/api/chatbot/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "5443f0767550a4a9243e8f92df7fbaf6d35c7051905bd599a3ac4407d5651748"
+    },
+    {
+      "path": "src/app/api/community/buddy/checkin/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "1c3daa6cb59d4df7e9d6e19427c99afe4630a3580065dd5d0991bcebf615266b"
+    },
+    {
+      "path": "src/app/api/community/buddy/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "2e5b94f126a7409bf053ae227de3a6767d86fccf2265480e37c7a5ccca79219f"
+    },
+    {
+      "path": "src/app/api/community/circles/join/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "9cf02774cf6baf990dc7742acf0b355b7b0353aa5eaae9e7bac856e516377492"
+    },
+    {
+      "path": "src/app/api/community/circles/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "1682cb4ad8eff6c52ada2fb5a6db0e642c83a6a8e68e1f4d4f9eef291e9b86e2"
+    },
+    {
+      "path": "src/app/api/community/wall/react/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "6b10292a4aea554e5b3fe04b3a78b147dd7ed1cedb2f3cf50c5dc7cc04e02f30"
+    },
+    {
+      "path": "src/app/api/community/wall/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "845c1c38c830ecd7b8a30cbcfc1532027ce144d8969da35145b8cf1a6679f2c5"
+    },
+    {
+      "path": "src/app/api/connect/account-session/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "d0a5ade1104d7757b266ff527962ff738837bc5e640aab5a688dbc7e0a1f2f10"
+    },
+    {
+      "path": "src/app/api/connect/onboard/route.ts",
+      "methods": [
+        "POST",
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "00df286509740c12ca834c4b625eb54ef3754e3692d6c2bcda96a45a1a51426e"
+    },
+    {
+      "path": "src/app/api/contact/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "40f3e61b7c800232ab9b6d1aa944824506bf690c5b82b5f150d982316bb57912"
+    },
+    {
+      "path": "src/app/api/create/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "29ebc4a9672f77f800c239ede82112b911eceb67dd2953dc6a9de2df94875754"
+    },
+    {
+      "path": "src/app/api/create/status/route.ts",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "b3586e76c196256bd1627533141d5df568b33cfb2c3bf28b2aa9c5956f0352db"
+    },
+    {
+      "path": "src/app/api/cron/account-deletion/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "9ebaf4cd02012cb27ee4c4782fe80161d762f560b2fb12240ed5cffcfbccc8cb"
+    },
+    {
+      "path": "src/app/api/cron/ambassador-check/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "1a3c4dc62b6f297aa9ee2cc3b3a98805c49d377be472b0e52a3d7be581c88963"
+    },
+    {
+      "path": "src/app/api/cron/asso-transfer/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "8a47e910fc38c7f15bbf7dc11f61ff40aa19a73d9930013fbdda088eb019ff5c"
+    },
+    {
+      "path": "src/app/api/cron/auto-learn/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "8c6b5124fa4b298a9c0b0e6b9a2b7e0283e38a57cde2000fd24e4f7969a102d7"
+    },
+    {
+      "path": "src/app/api/cron/auto-plan/route.ts",
+      "methods": [],
+      "authMarkers": [],
+      "reexport": true,
+      "sha256": "4cbc8562e12b35758c963855642ca6d5d9cfc478f158abe23227e23d4f3d88b4"
+    },
+    {
+      "path": "src/app/api/cron/auto-trends/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "b69fc07e4bdbb9415c698509c6bb779af404aad88a364b237d05b3112d55940e"
+    },
+    {
+      "path": "src/app/api/cron/contest-judge/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "1e178747be5cb7901b4a99763445bce04c02bd84e6e68a51048cd90456241f12"
+    },
+    {
+      "path": "src/app/api/cron/contest-monthly/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "cc860b225b420e93d10875289583603c85ba246bfce5890f46623254fdbd260f"
+    },
+    {
+      "path": "src/app/api/cron/contest-weekly/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "5157002393784bec6401731ad584605544fe03eb1660a60eaaf7908833b8ce5f"
+    },
+    {
+      "path": "src/app/api/cron/email-sequences/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "9921a48add8456ac1b2056c652dcb02f096f68763b09a4d5b710f994957ef0d0"
+    },
+    {
+      "path": "src/app/api/cron/fiscal-palier/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "7ae35bfdec47ca0d9f5ac8f0781a5d82eb20d1169bd59c94e6442c21935966d5"
+    },
+    {
+      "path": "src/app/api/cron/karma-defi/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "438baedf6e87c9deb76ecaefce99d4fe24befdef982f190e79feea2f321113b4"
+    },
+    {
+      "path": "src/app/api/cron/karma-lightning/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "ee4271ce1a59645af6205ec072d4f95f9d04b3310d5f0e942d1e057e74d7302e"
+    },
+    {
+      "path": "src/app/api/cron/karma-split-distribute/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "0d61e1093507e9ec624dd177076c8799f21f7a48d6a46b3806c4e98017284bdc"
+    },
+    {
+      "path": "src/app/api/cron/karma-tournoi/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "81a475470195067e45f4066bbca4e31748f5d3e1aefeba7ebd86627abfd26d0b"
+    },
+    {
+      "path": "src/app/api/cron/smart-split/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "be7750d3f6abcc56edb9aa9e671b73a513fa7f080175644f4ff210121f06364f"
+    },
+    {
+      "path": "src/app/api/cron/streak-update/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "94e7e0d3b716708ce108070b02c152c8f6dfcdc5980612375608d48e20ce91fc"
+    },
+    {
+      "path": "src/app/api/cron/sutra-auto/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "9b6001ba258486410f76b2307d7bd9c8e4589a45a22b10d3d09a6e9a8dd7fab0"
+    },
+    {
+      "path": "src/app/api/cron/upgrade-ots-proofs/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "745af64c61d9f02a3de6c8fe925a3c472930c5f821ea477e3da9b6176770ef6f"
+    },
+    {
+      "path": "src/app/api/cron/video-worker/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "assertCronAuth"
+      ],
+      "reexport": false,
+      "sha256": "323164032047d58a704bbb7f6df87f72acdd195cef84728502f6ec8d0aa3cc73"
+    },
+    {
+      "path": "src/app/api/daily-gift/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "d24861252debd8fe96973b9df077b9f01c744c2ef61eb54fc3643e7417115944"
+    },
+    {
+      "path": "src/app/api/drafts/route.ts",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "5deebc1bedeec797c156f0df49548b0f57a47f77f5c695149165bfaa7fee6b5b"
+    },
+    {
+      "path": "src/app/api/dream-goals/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "c4a35a247c0c998ef2ea166a2be5ea7ffcf82f49016837fb04a8c26a442f2364"
+    },
+    {
+      "path": "src/app/api/email/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "a640460487c652684e73003d036ebfc0f4c1fbd0cb922cd95d62e81e4c4eeb5b"
+    },
+    {
+      "path": "src/app/api/feedback/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "db53e406d3c88dd05e03bff7b9a2d5d2268150b4829f1126df0f007280f4ca04"
+    },
+    {
+      "path": "src/app/api/financer/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "1f1f0c0073f8fadded70c6b7206d92198f02d7d41cf4575ee9a94fa2abd8e5f4"
+    },
+    {
+      "path": "src/app/api/fiscal/status/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "c125d4c73563ecd1f2df96786a19a7a8764e908bc52ca74b880b721702170a27"
+    },
+    {
+      "path": "src/app/api/fiscal/summary/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "5050d28528e7affe0d313d565bd6622f2f1cfa60b9ab49a3d6e88011c8c9596f"
+    },
+    {
+      "path": "src/app/api/flywheel/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "2eddb6021f1f5cb509d207df7aee2c3b71fc8d311a01af1e31c4fc9f1c22c6dd"
+    },
+    {
+      "path": "src/app/api/gratitude/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "e4667d4bfd1735fc9d0775f1a899d3476fba65f49a129a70937ca238233851d8"
+    },
+    {
+      "path": "src/app/api/health/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "02423e354b05b4825c725d3c79f1467d24c643978a93709ba7157a0fcc2a33bc"
+    },
+    {
+      "path": "src/app/api/internal/stripe-fulfillment/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "constructEvent"
+      ],
+      "reexport": false,
+      "sha256": "308a2f30548e2c31eb645485bdc9811875dfe52b982e6bbe7e706dc64f448ca3"
+    },
+    {
+      "path": "src/app/api/karma/games/creatif/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "740696d86a47d86dcf0cad3916526fcada62507681e3e9e831b30b08fccf3b4d"
+    },
+    {
+      "path": "src/app/api/karma/games/creatif/vote/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "e4b843801abdc29d8f53b661d4e35f2b3d0d07c25c0d029ab85e15ce3a5b7b77"
+    },
+    {
+      "path": "src/app/api/karma/games/defi/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "e3e26fee75c3614bdf0ef471c47625263df210d20560e0550d35f2aadb2cf55e"
+    },
+    {
+      "path": "src/app/api/karma/games/dharma/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "3aa85d7806da21610ef3e074c63e7c306f8cffe8fde25f3dadbd4485d10c64f9"
+    },
+    {
+      "path": "src/app/api/karma/games/lightning/claim/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "4dac1a9cc0acad89cf88572a5f8326471b95d9cf7e0f1289ed9c7b6af789f632"
+    },
+    {
+      "path": "src/app/api/karma/games/lightning/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "872cfdf1c6dfa7b5bd4173a3c0d6411d2d7f3365a88e2160a15b9916ad5f0148"
+    },
+    {
+      "path": "src/app/api/karma/games/quete/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "264bc03a440dcf1613c2f54262eb1467d946405a9c4248ab770ae39d7694ccc0"
+    },
+    {
+      "path": "src/app/api/karma/games/tournoi/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "5fa1bd49a66ed07655542b61145f6f696da6307c2e2c8319d5b232d468368390"
+    },
+    {
+      "path": "src/app/api/karma/games/vague/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "8ee8953a681b97c31e79cc22e8fe4e0a9e60bef389ac290beee6b9faf9e6e607"
+    },
+    {
+      "path": "src/app/api/karma/missions/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "2e8f4b0f4b2fc93a8dd54f460f18e0508793d0af1df62db9a45327d5f1359304"
+    },
+    {
+      "path": "src/app/api/karma/seeds/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "dea50d5e980517a60aa9456e3957e60b5983663cb121ffe5c345c570a767248d"
+    },
+    {
+      "path": "src/app/api/legal/accept/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "c910fa0678b126c2aa93333743a92e333f6034e5033c580294e9e567107e70c1"
+    },
+    {
+      "path": "src/app/api/legal/cookie-consent/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "ee55dc543e38f80eaba89e045bae5a0ab0fa7b8c625bbee5dba28fd263e69c12"
+    },
+    {
+      "path": "src/app/api/legal/my-data/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "56b2b168fc309f13dfa8554869f0ab78cbeef98e32030436f28d6e7d0a95d48d"
+    },
+    {
+      "path": "src/app/api/locale/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "a019a7944d6afac4728a4c3a4c14b71c2c86e3687a2fdc595900dcd3e85ec937"
+    },
+    {
+      "path": "src/app/api/lottery/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "02c372141ea40865b683e1132c385206e8ead9c6c28ffc2a5c415b16d217cac4"
+    },
+    {
+      "path": "src/app/api/magic-moment/ack/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "720b12a77369754e292bd6a01db559d1ccd9d5709fff621065600d19c7a86408"
+    },
+    {
+      "path": "src/app/api/magic-moment/check/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "b93880929921954e0ead15958c0c57addf3aaa1ef8dd33ffbb983edde451677e"
+    },
+    {
+      "path": "src/app/api/media/[reference]/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "7b65590e1bcb72c1e7ddedc2a5f2c60bea770e207fb20bfefd663bbfbaa9b53a"
+    },
+    {
+      "path": "src/app/api/music/generate/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "60f459ba63d7a1db7845ac5c934f388e41472bcf6e061f40aab035119ec735fa"
+    },
+    {
+      "path": "src/app/api/notifications/route.ts",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "43591af097074092a290c9ce33e5e4cdb4d6f832dedc2d541e35862ddff6c7e3"
+    },
+    {
+      "path": "src/app/api/partner/coach/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "2b0c8b0ea1374e08ac06a03e171bd6cd595875ba09c371576fb3bd6272fd2479"
+    },
+    {
+      "path": "src/app/api/partner/commissions/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "a1ed35bc009464c9ac59da497960abcc2d67081a20a9d3e00f3f2c1d3c01b095"
+    },
+    {
+      "path": "src/app/api/partner/payout/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "8bfc38bd4b7cbe41c5d6fe15bbe08f9557fadad5527bc0c147dea9f87c05c829"
+    },
+    {
+      "path": "src/app/api/partner/qr/[code]/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "628e293a4605f9025698921f473028eb9ac3d8a8e6d0695226e89ac4619f987d"
+    },
+    {
+      "path": "src/app/api/partner/referrals/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "aa2f3b02be6836bf6923c0bd0020f4f3480ea91bda9459d7007dea3fd66f10f6"
+    },
+    {
+      "path": "src/app/api/partner/register/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "278d5b98df7a4024b741eccfa06973d56bbaa43cf7639737a5a6f417311dff66"
+    },
+    {
+      "path": "src/app/api/partner/scan/[code]/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "1a81e2457fbd3ac432df97c9fa4319857f9d15f323f531ea898a82ef6c829b15"
+    },
+    {
+      "path": "src/app/api/partner/stats/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "9c76c287686d267bc975de579a628b522bd2414155a2db9476a880ef9f556c19"
+    },
+    {
+      "path": "src/app/api/points/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "b5b0320a619e55c7b85b54c144f456d4d0d82049d130131567d1f0c805254b83"
+    },
+    {
+      "path": "src/app/api/production/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "9e0d5b5bc953f35327a3648867333ee1a16a10ef97b0a0a02a5989fdd891d5a1"
+    },
+    {
+      "path": "src/app/api/publish/route.ts",
+      "methods": [],
+      "authMarkers": [],
+      "reexport": true,
+      "sha256": "a0ba9e11f11f89594a1f2a70d9b0a3920b2422439f053bccd9eb6b89b158f861"
+    },
+    {
+      "path": "src/app/api/publish/social/route.ts",
+      "methods": [],
+      "authMarkers": [],
+      "reexport": true,
+      "sha256": "a0ba9e11f11f89594a1f2a70d9b0a3920b2422439f053bccd9eb6b89b158f861"
+    },
+    {
+      "path": "src/app/api/purama-score/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "cbdbf238e8e093587e886b47da1e987c38f003b4470c1070af9af2402bc6affc"
+    },
+    {
+      "path": "src/app/api/referral/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "40cf46d6d8dc147bb8ab2008d1ead25ae289d9d31afd338fe0f9d268ba2d82df"
+    },
+    {
+      "path": "src/app/api/settings/route.ts",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "1db4ccfa9c287f74b759a8d450515766b3ab584ee3fe53bbc9dc73fdbf5bc4d7"
+    },
+    {
+      "path": "src/app/api/setup/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "6aa99f65d6a6afbc938a544a60c80dee08c79cb934ed07b1a8bf9796962cea68"
+    },
+    {
+      "path": "src/app/api/share/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "f9571f1404be20f52b2121b25d6e41dfebbb3ae5e66dac3e4617a0fd64a53eab"
+    },
+    {
+      "path": "src/app/api/social/accounts/route.ts",
+      "methods": [
+        "GET",
+        "DELETE"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "867709a4a2f76d20e6664982c4b67cfb884e8977ba5ac91c47e9b48eb3665fcf"
+    },
+    {
+      "path": "src/app/api/social/autopilot/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "84b6d6f2e3063952b31cd8c7edb6556c171b53f361832feedc78e0938204ad34"
+    },
+    {
+      "path": "src/app/api/social/callback/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "consumeSocialOAuthState",
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "a7f032ff4b3bdb70d0bcb59dbc134ededfc3a25dedc7b51c5f818ee989274252"
+    },
+    {
+      "path": "src/app/api/social/connect/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "d5cfa502aed2f91c071892f2f9b5509c4fcc1c99356437395c30a1020eefd2fa"
+    },
+    {
+      "path": "src/app/api/social/publish/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "7a055c08e84244e7713aaac7f66b41d9c06403b9cfc859cd5031b01ff9626aca"
+    },
+    {
+      "path": "src/app/api/social-feed/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "b3f17fa745fc3ad47b17b3936ea5b43c90dd001a033fb48717dcce882692c56a"
+    },
+    {
+      "path": "src/app/api/status/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "3db4606dd750de656c8340e58eb02f7be3e0193b0b7e1a9eaf43730fd5fd418f"
+    },
+    {
+      "path": "src/app/api/stock/keywords/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "3dd4262387df4b126b1c7d2a1ca1eb8cd5606688565cb204bc56f9f0b3532411"
+    },
+    {
+      "path": "src/app/api/stock/search/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "6a321a0cf2508a85d6501da6a4f62f8f05d6154e805ad422e70450f7e1f4596f"
+    },
+    {
+      "path": "src/app/api/storyboard/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "cdec890146bf739d594124e502bd5c7c5bac3b8f31f4705ad026b70823dad681"
+    },
+    {
+      "path": "src/app/api/stripe/checkout/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "30406b462935a9375aaae3b213d81835b0de8aad8486d5978e667aa116ba46b6"
+    },
+    {
+      "path": "src/app/api/stripe/portal/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "1f8084991ea49e3b0b02a4f4126c768a641af41e9d23ab4b698211c1e6deebb6"
+    },
+    {
+      "path": "src/app/api/stripe/subscription/cancel/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "3b09812d84491bc580b707de821d705b6212cd96fb8ab154e50f463dab0c8a79"
+    },
+    {
+      "path": "src/app/api/stripe/subscription/pause/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "70a725bbe2727237b5cf2d5a22a114b9927ad54053e4d12b4494f5eecdca2912"
+    },
+    {
+      "path": "src/app/api/stripe/webhook/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "constructEvent"
+      ],
+      "reexport": false,
+      "sha256": "f4c903f732f2e13cb469796518a3aab750513eda57f953d656a50116a21e782b"
+    },
+    {
+      "path": "src/app/api/subtitles/export/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "7dab4081f12de81e5d84b43e4d54ac4bbb2914b8288800c37b2677d3ad2b6274"
+    },
+    {
+      "path": "src/app/api/subtitles/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "fa9a5c5a48a0f661d888d41f32fabece53947a47dfb2df3120fa6297d599119e"
+    },
+    {
+      "path": "src/app/api/subtitles/translate/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "50c36200a101034c1fbe330bb39aa2ffcd2d4a7b8128713e9bc172a72ea9c922"
+    },
+    {
+      "path": "src/app/api/sutra/auto/generate/route.ts",
+      "methods": [],
+      "authMarkers": [],
+      "reexport": true,
+      "sha256": "d88d0c27ed13cc8ae0d5ade820f517a0ab385a3ca7d11f3aee1e220c37604e57"
+    },
+    {
+      "path": "src/app/api/templates/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "7191f47397bc215645a698516731175e84984b603be1b045390c380b217d227c"
+    },
+    {
+      "path": "src/app/api/verify/[videoId]/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "fc2959bcfd43df16e49b6bcd704f31cbb32ebb5b8e03115f38dfcd23b9ea3d33"
+    },
+    {
+      "path": "src/app/api/verify-siret/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "e9cd02844151484c569f1e5573ba431de07849464cd80a1f5ab34ab3b5d0952d"
+    },
+    {
+      "path": "src/app/api/video/capabilities/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "ff9c057c590930e9ec05f889bdbbb4dc9207f6a687f2dedbb0193a62d96913ca"
+    },
+    {
+      "path": "src/app/api/video/export/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "dedc420f5ca51afb0137f5ff7ab0cd7cefa8894f339512d3e1443553d12c0259"
+    },
+    {
+      "path": "src/app/api/video/status/[jobId]/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "cd825d03668890fa2227b712c02e9d601aa2b35cb3671b13cef33a25f369d344"
+    },
+    {
+      "path": "src/app/api/voice/clone/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "d5c1b1b3c9e3719c596ff6586e2d91c273c345de99406f30a13354716927c3ae"
+    },
+    {
+      "path": "src/app/api/voice/generate/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "366b158af5e5ff8ec608513c7a7b576f5e8c492e7748c3fb50fddf4c7c75b7c4"
+    },
+    {
+      "path": "src/app/api/voice/list/route.ts",
+      "methods": [
+        "GET"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "ef7d842e6276868534940949c5b3bb4601aac37eb9029de53667777bae571a19"
+    },
+    {
+      "path": "src/app/api/wallet/route.ts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "bcae02b2f019abdf1a0cb7e2785192f8ca6ef128b905cfae639e24818d435217"
+    },
+    {
+      "path": "src/app/api/wallet/withdraw/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "8b82917ee7f712f4444b40c32444994af607451e2468ff080ab8179f91c91911"
+    },
+    {
+      "path": "src/app/api/wallet/withdraw/stripe/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [
+        "getUser"
+      ],
+      "reexport": false,
+      "sha256": "804f9016fc2d2f234452e6b9ec81b4758c6143f0a99cfd386ee60db012101c93"
+    },
+    {
+      "path": "src/app/api/webhooks/suno/route.ts",
+      "methods": [
+        "POST"
+      ],
+      "authMarkers": [],
+      "reexport": false,
+      "sha256": "68d2a84f48907dbcc72a608d040c32a9a83a04d6f35c7c7170224c9f1edd8675"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+
+  GitNexus Detect Changes (1.6.12)
+LISTING CAPPED: the changed-symbol list was capped, so it does not name every changed symbol. The counts and risk level still cover all of them.
+
+Changes: 5457 files, 6613 symbols
+Affected processes: 485
+Risk level: critical
+
+Changed symbols:
+  Section This is NOT the Next.js you know → AGENTS.md
+  Section SUTRA — jalon intégration Salad désactivée, 2026-10-14 → BATON.md
+  Section SUTRA — reprise apres verification finale, 2026-10-13 → BATON.md
+  Section BATON — SUTRA T01, OVH en production → BATON.md
+  Section Archive antérieure au déploiement final → BATON.md
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-13 — livraison T04 fournisseurs, sans déploiement → BATON.md
+  Section Livraison 47e49ee → BATON.md
+  Section Livraison 312522a → BATON.md
+  Section Livraison 460acd3 → BATON.md
+  Section Livraison 0e38a92 → BATON.md
+  Section 2026-10-13 — T08 reprise fournisseurs (delta QA) → BATON.md
+  Section 2026-10-13 — T01 reprise finale fournisseurs intégrée et testée → BATON.md
+  Section 2026-10-14 — T01 mise en service OVH finale (autorisation 23h55) → BATON.md
+  Section 2026-10-14 — T01 activation fournisseurs après autorisation 01h25–01h26 → BATON.md
+... and 6598 more
+
+Affected execution flows:
+  • CommunityScreen → ApiFetch (3 steps) — changed: BASE, BASE, BASE
+  • AdminContestPage → FetchData (3 steps) — changed: BASE, BASE, BASE
+  • AdminUsersPage → FetchUsers (3 steps) — changed: BASE, BASE, BASE
+  • CommunityPage → FetchBuddy (3 steps) — changed: BASE, BASE, BASE
+  • CommunityPage → FetchCircles (3 steps) — changed: BASE, BASE, BASE
+  • CommunityPage → FetchWall (3 steps) — changed: BASE, BASE, BASE
+  • JeuCreatifPage → Load (3 steps) — changed: BASE, BASE, BASE
+  • LightningPage → Load (3 steps) — changed: BASE, BASE, BASE
+  • POST → CreateIntentKey (8 steps) — changed: BASE, BASE, BASE, BASE, cloneVoice, providerRecord, providerBytes
+  • GET → Blocked (7 steps) — changed: result, blocked, GET, runPublicationJournal, publicationMediaUrl, assertMediaOwner, publishAutoVideoRecord
+... and 475 more

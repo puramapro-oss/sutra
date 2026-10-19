@@ -1,0 +1,60 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "target": {
+    "id": "Function:src/lib/stock.ts:pexelsPhotos",
+    "name": "pexelsPhotos",
+    "type": "Function",
+    "filePath": "src/lib/stock.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Search",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/stock.ts:searchStock",
+        "name": "searchStock",
+        "filePath": "src/lib/stock.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/app/api/stock/search/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/stock/search/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

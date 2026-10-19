@@ -1,0 +1,27 @@
+{
+  "head": "2b69a8feabb0e82e34939d96cb5176116baa244d",
+  "testedTree": "isolated partner correction; not integrated",
+  "command": [
+    "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+    "--experimental-test-module-mocks",
+    "--experimental-vm-modules",
+    "--require",
+    "./qa/t08/offline.cjs",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-reporter=tap",
+    "--test-concurrency=2",
+    "qa/t02-final-ab935e5-20261019/partner-boundary.test.mts"
+  ],
+  "exitCode": 0,
+  "logSha256": "308b3ccea40f5813635e55bca2fc190dd0adc385c8a8b5c8b46e85649a6cbaff",
+  "productFiles": {
+    "src/app/api/partner/qr/[code]/route.ts": "f48d9d28915e98937744d95f2ce9bc0d6d5eb33b9bd8db299ffd1142cebddc83",
+    "src/app/api/partner/scan/[code]/route.ts": "ee4658094093935348f74db754a3ec4ea336b8a0257f550af402332b5174c2e3"
+  },
+  "tests": 8,
+  "pass": 8,
+  "fail": 0,
+  "skipped": 0
+}

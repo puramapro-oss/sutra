@@ -1,0 +1,27 @@
+{
+  "owner": "T02",
+  "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "timestamp": "2026-10-19T19:56:19.550584+00:00",
+  "verdict": "FAIL",
+  "localCorrection": "PASS",
+  "integratedRetest": "BLOCKED_T01_INTEGRATION",
+  "branch": "codex/sutra-t02-security-ab935e5-20261019",
+  "productFiles": [
+    "src/app/api/setup/route.ts",
+    "src/app/api/health/route.ts",
+    "src/app/api/contact/route.ts",
+    "src/app/api/partner/qr/[code]/route.ts",
+    "src/app/api/partner/scan/[code]/route.ts"
+  ],
+  "proof": "qa/t02-final-ab935e5-20261019/README.md",
+  "wangpApproval": false,
+  "notes": [
+    "No native organisation isolation proof",
+    "No live provider or production verification",
+    "Dependency alerts retained with reachability triage",
+    "GitNexus incomplete graph; impact UNKNOWN"
+  ],
+  "blockingFailures": [
+    "Partner scan quota SELECT/INSERT is not atomic; T01 SQL ownership; partner-atomicity-red.json"
+  ]
+}

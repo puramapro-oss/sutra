@@ -141,6 +141,8 @@ jobs:
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t06-integrated-retest-20261015/run-postgres.mjs history
       - name: Schedule compare-and-swap through the actual route and query builder
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t01-closure-20261015/schedule-postgres-run.mjs
+      - name: Atomic partner quota, historical compatibility, backup and rollback
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t01-certification-20261019/partner-pg-run.mjs partner-pg-ci
       - name: Durable HTTP route acknowledgement loss against disposable PostgreSQL
         run: node --experimental-test-module-mocks --import tsx --test --test-concurrency=1 qa/t03-final-candidate-20261015/api-postgres.test.mts
         env:

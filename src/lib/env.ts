@@ -114,7 +114,7 @@ export const PROVIDERS: Record<ProviderId, ProviderSpec> = {
   pexels: { label: 'Pexels', env: ['PEXELS_API_KEY'], cost: 'quota-gratuit', probe: true, role: 'banque vidéo/photo' },
   pixabay: { label: 'Pixabay', env: ['PIXABAY_API_KEY'], cost: 'quota-gratuit', probe: true, role: 'banque vidéo (qualité filtrée)' },
   unsplash: { label: 'Unsplash', env: ['UNSPLASH_ACCESS_KEY'], cost: 'quota-gratuit', probe: true, role: 'banque photo' },
-  coverr: { label: 'Coverr', env: [], cost: 'gratuit', probe: true, role: 'banque vidéo (sans clé)' },
+  coverr: { label: 'Coverr', env: ['COVERR_API_KEY'], cost: 'quota-gratuit', probe: true, role: 'banque vidéo (clé requise)' },
   resend: { label: 'Resend', env: ['RESEND_API_KEY'], cost: 'quota-gratuit', probe: true, role: 'emails transactionnels' },
   upstash: { label: 'Upstash Redis', env: ['UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN'], cost: 'quota-gratuit', probe: true, role: 'cache + rate-limit' },
   posthog: { label: 'PostHog', env: ['NEXT_PUBLIC_POSTHOG_KEY'], cost: 'quota-gratuit', probe: false, role: 'analytics produit' },

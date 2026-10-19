@@ -1,0 +1,133 @@
+{
+  "commands": [
+    {
+      "name": "init",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/initdb",
+        "-D",
+        "/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-partner-OPyVU6/data",
+        "--auth=trust",
+        "--username=fixture",
+        "--no-locale",
+        "--encoding=UTF8",
+        "-c",
+        "shared_memory_type=mmap",
+        "-c",
+        "dynamic_shared_memory_type=posix",
+        "-c",
+        "max_connections=24",
+        "-c",
+        "shared_buffers=16MB"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "start",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/pg_ctl",
+        "-D",
+        "/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-partner-OPyVU6/data",
+        "-l",
+        "/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-partner-OPyVU6/server.log",
+        "-o",
+        "-h 127.0.0.1 -k /var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-partner-OPyVU6 -p 62846",
+        "-w",
+        "start"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "create",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/createdb",
+        "sutra_ci_partner_local"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "tests",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.0.0/bin/node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "qa/t01-certification-20261019/partner-postgres.test.mts"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "backup",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/pg_dump",
+        "--format=custom",
+        "--file=/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-pg-corrected/private.dump"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "create-restore",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/createdb",
+        "sutra_ci_partner_restored"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "restore",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/pg_restore",
+        "--exit-on-error",
+        "--dbname=sutra_ci_partner_restored",
+        "/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-pg-corrected/private.dump"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "rows-before",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/psql",
+        "-AtX",
+        "-c",
+        "SELECT count(*), md5(string_agg(row_to_json(s)::text,',' ORDER BY id)) FROM sutra.partner_scans s"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "rows-restored",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/psql",
+        "--dbname=sutra_ci_partner_restored",
+        "-AtX",
+        "-c",
+        "SELECT count(*), md5(string_agg(row_to_json(s)::text,',' ORDER BY id)) FROM sutra.partner_scans s"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "stop",
+      "command": [
+        "/opt/homebrew/opt/postgresql@18/bin/pg_ctl",
+        "-D",
+        "/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-partner-OPyVU6/data",
+        "-m",
+        "fast",
+        "-w",
+        "stop"
+      ],
+      "exit": 0
+    }
+  ],
+  "hashes": {
+    "migrations/20261019_partner_scan_atomic.sql": "3708e35ab4f22ce2d774c1d965d647f6df793650dc1e88138c11b8808f6aeeca",
+    "migrations/20261019_partner_scan_atomic.rollback.sql": "9692b31174ba391bd26c93b1f8a00d00abb1b2c7e191e92e28a74a0362c81679",
+    "src/app/api/partner/scan/[code]/route.ts": "c7a01040da220616465aac68923abdf2b4e09c1e5fa063e3282c66e0472f36a1",
+    "qa/t01-certification-20261019/partner-postgres.test.mts": "ebf4f00505f2aa112f1fd3c581cadfbbd2e2c9674741cc023043bea3bc81dacd"
+  },
+  "cluster": "/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-partner-OPyVU6",
+  "stopped": true,
+  "providerCalls": 0,
+  "remoteChanges": 0,
+  "result": "PASS"
+}

@@ -1,9 +1,21 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
+import { createServerClient } from '@/lib/supabase-server'
+import { isSuperAdmin } from '@/lib/utils'
 import { setupSchema } from '@/data/setup-schema'
 
 export async function GET() {
+  const headers = { 'Cache-Control': 'no-store' }
   try {
+    const session = await createServerClient()
+    const { data: { user }, error } = await session.auth.getUser()
+    if (error || !user) {
+      return NextResponse.json({ error: 'Non autorise' }, { status: 401, headers })
+    }
+    if (!isSuperAdmin(user.email)) {
+      return NextResponse.json({ error: 'Acces refuse' }, { status: 403, headers })
+    }
+
     const supabase = createServiceClient()
 
     // Check if profiles table exists
@@ -18,7 +30,7 @@ export async function GET() {
         message: 'Tables need to be created. Run the SQL below in Supabase SQL Editor.',
         sql_url: `${process.env.NEXT_PUBLIC_SUPABASE_URL}`,
         sql: setupSchema,
-      })
+      }, { headers })
     }
 
     // Verify key tables
@@ -41,11 +53,11 @@ export async function GET() {
       status: 'ok',
       tables: results,
       super_admin: admin ? 'exists' : 'not_found',
-    })
-  } catch (error) {
+    }, { headers })
+  } catch {
     return NextResponse.json(
-      { error: 'Setup failed', details: error instanceof Error ? error.message : 'Unknown' },
-      { status: 500 }
+      { error: 'Setup failed' },
+      { status: 500, headers }
     )
   }
 }

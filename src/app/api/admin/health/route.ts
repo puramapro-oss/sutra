@@ -121,12 +121,17 @@ async function runProbes(): Promise<ProbeResult[]> {
     ))
   }
 
-  // Coverr — API publique sans clé
-  jobs.push(probe('coverr', () =>
-    fetch('https://api.coverr.co/videos?query=nature&page_size=1', {
-      signal: AbortSignal.timeout(PROBE_TIMEOUT_MS),
-    })
-  ))
+  // Coverr — catalogue authentifié, aucune génération.
+  if (isEnvSet('COVERR_API_KEY')) {
+    const key = requireEnv('COVERR_API_KEY')
+    jobs.push(probe('coverr', () =>
+      fetch('https://api.coverr.co/videos?query=nature&page_size=1', {
+        headers: { Authorization: `Bearer ${key}` },
+        redirect: 'error',
+        signal: AbortSignal.timeout(PROBE_TIMEOUT_MS),
+      })
+    ))
+  }
 
   // Resend — liste des domaines (gratuit)
   if (isEnvSet('RESEND_API_KEY')) {

@@ -1,0 +1,4721 @@
+{
+  "base": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "ciRun": 38827288351,
+  "ciUrl": "https://github.com/puramapro-oss/sutra/actions/runs/38827288351",
+  "sourceEvidenceDirectory": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-browser-readiness-20261016",
+  "ciReceiptSha256": "66d5d167b02a52a37a44aa2847be9c9ddaecc2e9ef014a30f7cc6f4bee7c6452",
+  "jobs": [
+    {
+      "name": "quality",
+      "conclusion": "success"
+    },
+    {
+      "name": "contracts",
+      "conclusion": "success"
+    },
+    {
+      "name": "disposable-database",
+      "conclusion": "success"
+    }
+  ],
+  "contracts": [
+    {
+      "path": "test-results/t08/redteam/output.txt",
+      "counts": [
+        "# tests 14",
+        "# pass 14",
+        "# fail 0",
+        "# skipped 0"
+      ],
+      "sha256": "9a84e42b30b1e53677c0485c80e27081ed845dcb5754e0b1a9f2a6cd5238b055"
+    },
+    {
+      "path": "test-results/ci/contracts/contracts.log",
+      "counts": [
+        "\u2139 tests 1216",
+        "\u2139 pass 1209",
+        "\u2139 fail 0",
+        "\u2139 skipped 7"
+      ],
+      "sha256": "44236e932e7997826c3cf8f1313265fd65e8c41f37f40f6f2bdd791a0b280e1d"
+    },
+    {
+      "path": "test-results/ci/contracts/durable-submission.log",
+      "counts": [
+        "\u2139 tests 18",
+        "\u2139 pass 18",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "sha256": "f63a2f1cd46e72d79c9c17b71ef34a251d6d004c682b3c9192656b1799ad3240"
+    },
+    {
+      "path": "test-results/ci/media/final-media.log",
+      "counts": [
+        "\u2139 tests 32",
+        "\u2139 pass 32",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "sha256": "9f565c81245cc18b98ef145392be5a538802218c4d6ad85414d52f195f528de6"
+    },
+    {
+      "path": "test-results/ci/media/composition-delta.log",
+      "counts": [
+        "\u2139 tests 12",
+        "\u2139 pass 12",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "sha256": "4dbc9ea23fc3fc3e9af81a86462669dc2cda34f81800afbe01f50d3b5d345b3d"
+    },
+    {
+      "path": "test-results/ci/media/retained-real-exports.log",
+      "counts": [
+        "\u2139 tests 49",
+        "\u2139 pass 49",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "sha256": "22c15d7171f80238f0b6b6332dcfe91c29838604e7c9426e5b7ece52ee9f12cc"
+    },
+    {
+      "path": "test-results/ci/media/salad-media.log",
+      "counts": [
+        "\u2139 tests 25",
+        "\u2139 pass 25",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "sha256": "76be27a83390b4504ec72fc89db77509fd97a4a3ddd3d73f575a0650f9b74eda"
+    },
+    {
+      "path": "test-results/ci/media/compositor.log",
+      "counts": [
+        "\u2139 tests 31",
+        "\u2139 pass 31",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "sha256": "7c452c75ae3b5d92eec5b8e370b61a8ca144cda690fbe65bf9277459f4ac594a"
+    },
+    {
+      "path": "test-results/ci/media/local-engine.log",
+      "counts": [
+        "\u2139 tests 3",
+        "\u2139 pass 3",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "sha256": "6801d6173c14070be7ae368399011d501f013854572b1173b43dd4d77764d151"
+    }
+  ],
+  "commands": [
+    {
+      "name": "contracts",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=2",
+        "qa/t01-create-cancel-20261016/control.test.mts",
+        "qa/t01-create-cancel-20261016/client.test.mts",
+        "qa/t01-create-cancel-20261016/submission.test.mts",
+        "qa/t04-providers-final-20261015/contracts.test.mts",
+        "qa/t04-providers-final-20261015/ltx-body.test.mts",
+        "qa/t02-final-sha-security-20261015/admin-webhook.test.mts",
+        "qa/t06-final-integration-20261015/autopilot.test.mts",
+        "qa/t07-final-two-20261015/contracts.test.mjs",
+        "qa/t01-closure-20261015/schedule-cas.test.mts",
+        "qa/t01-closure-20261015/stock-boundary.test.mts",
+        "qa/t01-closure-20261015/shotstack-boundary.test.mts",
+        "qa/t07-scheduler-cancel-20261015/client-contracts.test.mts",
+        "qa/t07-scheduler-cancel-20261015/status-panel.test.tsx",
+        "qa/t01-closure-20261015/production-status.test.mts",
+        "qa/t01-closure-20261015/auto-config.test.mts",
+        "qa/t04-salad-access-20261015/validate-access.test.mjs",
+        "scripts/test-t02-rpc-security-production.mts",
+        "scripts/test-t02-rpc-security-dependencies.mts",
+        "scripts/test-t03-final-durable.mts",
+        "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+        "scripts/test-t02-final-security-grants.mts",
+        "scripts/test-t06-final-social.mts",
+        "qa/t04-final-providers-20261015/container.test.mjs",
+        "qa/t04-final-providers-20261015/context.test.mjs",
+        "qa/t04-final-providers-20261015/salad-read.test.mjs",
+        "qa/t08-final-candidate-20261015/cancellation.test.mts",
+        "scripts/test-t06-social-validation.mts",
+        "qa/t04-provider-validation-20261014/probe.test.mjs",
+        "scripts/test-t02-final-validation-media.mts",
+        "qa/t02-final-validation-20261014/production-error.test.mts",
+        "qa/final-delta-20261014/social-feedback.test.mts",
+        "scripts/test-t03-orchestration-fixes.mts",
+        "scripts/test-t03-suno-recovery.mts",
+        "scripts/test-t04-provider-fixes.mts",
+        "scripts/test-t04-pollinations.mts",
+        "scripts/test-t02-security-fixes-storage.mts",
+        "scripts/test-t02-security-fixes-proof.mts",
+        "scripts/test-t02-security-fixes-session-media.mts",
+        "scripts/test-t02-security-fixes-ots.mts",
+        "scripts/test-t08-integration-journey.mts",
+        "scripts/test-salad-worker.mts",
+        "scripts/test-salad-host.mts",
+        "scripts/test-t03-salad-recovery.mts",
+        "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+        "scripts/test-t06-social-final.mts",
+        "scripts/test-t08-final-modes.mts",
+        "scripts/test-insee.mjs",
+        "scripts/test-editor-export.mts",
+        "scripts/test-export-integration.mts",
+        "scripts/test-integration.mts",
+        "scripts/test-ltx-tiers.mjs",
+        "scripts/test-karma-split.mjs",
+        "scripts/test-api-contracts.mts",
+        "scripts/test-env-contracts.mts",
+        "scripts/test-suno-contract.mts",
+        "qa/t03-provider-complement-20261013/music-recovery.test.mts",
+        "qa/t08/providers-20261013/provider-contract-redteam.test.mts",
+        "scripts/test-local-engine.mts",
+        "scripts/test-shotstack-contracts.mts",
+        "scripts/test-production-queue.mts",
+        "scripts/test-auto-export-queue.mts",
+        "scripts/test-release-regressions.mts",
+        "scripts/test-video-contracts.mjs",
+        "scripts/test-opentimestamps.mjs",
+        "scripts/test-ltx-v2-media.mts",
+        "scripts/test-social-publication.mts",
+        "scripts/test-auth-session.mts",
+        "scripts/test-public-origin.mts",
+        "tooling/disposable-database.test.mjs",
+        "scripts/test-pipeline-interruptions.mts",
+        "scripts/test-pipeline-submit.mts",
+        "scripts/test-release-oauth.mts",
+        "scripts/test-zernio-oauth-contracts.mts",
+        "scripts/test-security-account.mts",
+        "scripts/test-t02-oauth-boundaries.mts",
+        "scripts/test-private-media.mts",
+        "scripts/test-security-media.mts",
+        "scripts/test-security-routes.mts",
+        "scripts/test-security-storage.mts",
+        "scripts/test-t06-social-autonomy.mts",
+        "scripts/test-t06-social-routes.mts",
+        "scripts/test-ltx-v2-contracts.mts",
+        "scripts/test-provider-safety.mts",
+        "src/lib/video-compositor.test.mts",
+        "src/lib/ffmpeg-concurrency.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 26098
+    },
+    {
+      "name": "durable-submission",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t03-durable-reliability.mts",
+        "qa/t03-durable-reliability-20261014/submission.test.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 962
+    },
+    {
+      "name": "schedule",
+      "command": [
+        "node",
+        "scripts/test-auto-schedule.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 83
+    },
+    {
+      "name": "composition",
+      "command": [
+        "node",
+        "scripts/test-auto-composition.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 61
+    },
+    {
+      "name": "publication",
+      "command": [
+        "node",
+        "scripts/test-auto-publication.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 63
+    }
+  ],
+  "unchangedFileCount": 1070,
+  "unchangedFiles": [
+    {
+      "path": ".github/workflows/mobile-build.yml",
+      "gitBlob": "b48e056762c0fa0f4de6d8f83727c9eb92e8c200"
+    },
+    {
+      "path": ".github/workflows/web-ci.yml",
+      "gitBlob": "19dd1b76a96d41c5d76d7efbf449df4e74109e74"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "gitBlob": "bbcb4f568974a41cd0f175762bf6ad90e6ee196f"
+    },
+    {
+      "path": "package-lock.json",
+      "gitBlob": "234d084957b6554239158da59d5e2b75befa6dba"
+    },
+    {
+      "path": "package.json",
+      "gitBlob": "c1e36a2dc6f6c5e62da44786f088b7d5241ca099"
+    },
+    {
+      "path": "qa/deployment-20261013/supabase-readonly-smoke.mjs",
+      "gitBlob": "69635cb9e44810b51805595577002f27c3ebba7d"
+    },
+    {
+      "path": "qa/final-delta-20261014/affirmations-database.py",
+      "gitBlob": "8c01af8c741727a7027909b7b0bc75de53b85786"
+    },
+    {
+      "path": "qa/final-delta-20261014/apply-affirmations.py",
+      "gitBlob": "a6376216b502ce3501d7a3e9afb37d7d9d098dc9"
+    },
+    {
+      "path": "qa/final-delta-20261014/authenticated-browser.cjs",
+      "gitBlob": "c4a2ad279259d0f4225d1f22952d625b1d269000"
+    },
+    {
+      "path": "qa/final-delta-20261014/authenticated-free-media.mjs",
+      "gitBlob": "524122315f372ad868b56f619eabd459f9c98566"
+    },
+    {
+      "path": "qa/final-delta-20261014/browser-session.mjs",
+      "gitBlob": "4af015b1bac895d433460890b8d58eb1eb0d802b"
+    },
+    {
+      "path": "qa/final-delta-20261014/dns-tls-final.py",
+      "gitBlob": "3dd6b475a6a467b883bfdcd5b1c9317248cc7956"
+    },
+    {
+      "path": "qa/final-delta-20261014/media-smoke.mjs",
+      "gitBlob": "0ffa1fd082c959e69548d30cb45f399938627e2e"
+    },
+    {
+      "path": "qa/final-delta-20261014/promote.py",
+      "gitBlob": "27ebaed0d7e46fb2ec7124ad087f974edc6cc83d"
+    },
+    {
+      "path": "qa/final-delta-20261014/public-browser.cjs",
+      "gitBlob": "77909b2efafa257018094d979f7386b3b84d8208"
+    },
+    {
+      "path": "qa/final-delta-20261014/run-authenticated.py",
+      "gitBlob": "6e5a25600530143d57fe99491c1669a13b605c9c"
+    },
+    {
+      "path": "qa/final-delta-20261014/run-free-media.py",
+      "gitBlob": "dbe8bf79cbd5799ba12cfc156aa28704bb62ec5f"
+    },
+    {
+      "path": "qa/final-delta-20261014/run-postgres.mjs",
+      "gitBlob": "698503939fcbb0b83364d434c8fca5b9f786278a"
+    },
+    {
+      "path": "qa/final-delta-20261014/run-runtime-providers.py",
+      "gitBlob": "d707ef6bee97dc811f60eed3ac91441661b33b66"
+    },
+    {
+      "path": "qa/final-delta-20261014/runtime-final.py",
+      "gitBlob": "8c09e2b377eacb3f6f79753b0e5b7962ea229f11"
+    },
+    {
+      "path": "qa/final-delta-20261014/security-probe.py",
+      "gitBlob": "03aeab863017de953b177e63f64ac0df43d4e72d"
+    },
+    {
+      "path": "qa/final-delta-20261014/social-browser.mjs",
+      "gitBlob": "64bf2ec221f8689a133d237e3d54b40fd78957a3"
+    },
+    {
+      "path": "qa/final-delta-20261014/social-feedback.test.mts",
+      "gitBlob": "bc8eb35f8d00c501df9f716a4f757eb0d93e0b9e"
+    },
+    {
+      "path": "qa/final-integration-20261013/free-gates.py",
+      "gitBlob": "abf88b433f1b5483869abed75732427174b7e90a"
+    },
+    {
+      "path": "qa/final-integration-20261013/social-ui-check.mjs",
+      "gitBlob": "914cee6e6b393758f81d969bf395b730e562381f"
+    },
+    {
+      "path": "qa/ovh-final-providers-20261014/dns-tls.py",
+      "gitBlob": "3cc8a1c697fd655b1d2019068d7d396e7dd6036e"
+    },
+    {
+      "path": "qa/ovh-final-providers-20261014/media-smoke.mjs",
+      "gitBlob": "3c0ff0b80a3aacaeb55cfd8a5568c2da67df5c6a"
+    },
+    {
+      "path": "qa/ovh-final-providers-20261014/promote.py",
+      "gitBlob": "3a84329d50d08a34c21e1d7a5a9a49d320c7d79d"
+    },
+    {
+      "path": "qa/ovh-final-providers-20261014/public-browser.cjs",
+      "gitBlob": "f6470b75d61c02c554e956b718d70a7381a87d4a"
+    },
+    {
+      "path": "qa/ovh-final-providers-20261014/security-probe.py",
+      "gitBlob": "88e90fd5e0bb17eff5b8c266c6673f1e1cef4809"
+    },
+    {
+      "path": "qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "gitBlob": "e3ce4eac05504f2545272e5d7baae6d0968e1557"
+    },
+    {
+      "path": "qa/postdeploy-20261013/security/origin-probe.py",
+      "gitBlob": "a499b5014d28891eb6300d081cfe0cbdc10b312f"
+    },
+    {
+      "path": "qa/postdeploy-20261013/security/probe.py",
+      "gitBlob": "4783bd5b9aa6f33a39010b5385e572c4546e02b4"
+    },
+    {
+      "path": "qa/production-20261012/backup-restore-remote.py",
+      "gitBlob": "95c2c9698e7af52cbcc58002f9e6ba57a23e568d"
+    },
+    {
+      "path": "qa/provider-activation-20261014/authenticated-smoke.mjs",
+      "gitBlob": "44d4b4ce8b126ef0edcea50f4f3928bd4f94ae0a"
+    },
+    {
+      "path": "qa/provider-activation-20261014/remote.py",
+      "gitBlob": "14a8733856e6094aeeb9447527a0a89b9d6fc85c"
+    },
+    {
+      "path": "qa/provider-activation-20261014/run-authenticated.py",
+      "gitBlob": "8ba12dd1960a3145c5a6d586bd4011b8af08f36c"
+    },
+    {
+      "path": "qa/provider-activation-20261014/run.py",
+      "gitBlob": "d7af631af1c202dbbe645c208b30855c50176e6a"
+    },
+    {
+      "path": "qa/provider-activation-20261014/runtime-probe.mjs",
+      "gitBlob": "d4710e70cfdb7cfccb70ff8b6a04f5e17c485170"
+    },
+    {
+      "path": "qa/provider-activation-20261014/test_activation.py",
+      "gitBlob": "1a62c63134abbd26d3fcee48e05387946e3cf297"
+    },
+    {
+      "path": "qa/provider-final-audit-20261013/audit.py",
+      "gitBlob": "50442aa2d316508147e5aa852e6d359b1ee777e2"
+    },
+    {
+      "path": "qa/provider-final-audit-20261013/test_audit.py",
+      "gitBlob": "eb6a1745b19081a49f19f99d0845b3d2439d06e8"
+    },
+    {
+      "path": "qa/release-20261012/run-postgres.mjs",
+      "gitBlob": "ca016d075c83ccce49ead2ad55584345d2e9d148"
+    },
+    {
+      "path": "qa/salad-integration-20261014/authenticated-smoke.mjs",
+      "gitBlob": "ed9761745723f43f9124ac00a60951e647e083b4"
+    },
+    {
+      "path": "qa/salad-integration-20261014/promote.py",
+      "gitBlob": "d7de37769c274e0389833989b41bf948a928151a"
+    },
+    {
+      "path": "qa/salad-integration-20261014/run-authenticated.py",
+      "gitBlob": "6e5a25600530143d57fe99491c1669a13b605c9c"
+    },
+    {
+      "path": "qa/salad-integration-20261014/run-postgres.mjs",
+      "gitBlob": "4587d052fe99e54a2af42c53dcc250ea4c39847e"
+    },
+    {
+      "path": "qa/t01-cancel-audit-20261016/api-run.mjs",
+      "gitBlob": "6db664baacc38caf37c3472661cced5ffe196d3a"
+    },
+    {
+      "path": "qa/t01-cancel-audit-20261016/remaining-run.mjs",
+      "gitBlob": "d1c7571caa96de00169e0e1c1b41da019d2a070e"
+    },
+    {
+      "path": "qa/t01-cancel-audit-20261016/run.mjs",
+      "gitBlob": "5046c3516a2e514959fe5e629cd4cf141b1e974f"
+    },
+    {
+      "path": "qa/t01-closure-20261015/auto-config.test.mts",
+      "gitBlob": "28b8ddb39f504dc218ec57e717bdfc869be43d19"
+    },
+    {
+      "path": "qa/t01-closure-20261015/integrated-counterproof.mjs",
+      "gitBlob": "b2a66ed1ec3dec61ec7a97d121c036c6b456b8ef"
+    },
+    {
+      "path": "qa/t01-closure-20261015/production-status.test.mts",
+      "gitBlob": "770b51b920b7ed26bda7af6ddca0a3dd9bbc1de1"
+    },
+    {
+      "path": "qa/t01-closure-20261015/schedule-cas.test.mts",
+      "gitBlob": "cc47b2aa47320d7007334891e17afa72198c9966"
+    },
+    {
+      "path": "qa/t01-closure-20261015/schedule-postgres-run.mjs",
+      "gitBlob": "d53d1c33ee8a526123aa87b74315722b269fa51f"
+    },
+    {
+      "path": "qa/t01-closure-20261015/schedule-postgres.test.mts",
+      "gitBlob": "1570fe2b3b3e09d94a5618014c4fb0ddaeccda60"
+    },
+    {
+      "path": "qa/t01-closure-20261015/shotstack-boundary.test.mts",
+      "gitBlob": "88a7b23b1688d21997240e96196b89206f41562a"
+    },
+    {
+      "path": "qa/t01-closure-20261015/signup-repro.mjs",
+      "gitBlob": "3a0ee84cade5f491807e64cc687d63a60c64c6b2"
+    },
+    {
+      "path": "qa/t01-closure-20261015/social-reload-checks.mjs",
+      "gitBlob": "a03515239599d80f7c3465955db174c440722f60"
+    },
+    {
+      "path": "qa/t01-closure-20261015/social-reload-run.mjs",
+      "gitBlob": "f268d37cc516e3a00c8271e3c4b0565574e2ca71"
+    },
+    {
+      "path": "qa/t01-closure-20261015/stock-boundary.test.mts",
+      "gitBlob": "5d43b6f314a53e36cbf9ab676d303c8b4745b27f"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/checkpoint-transition.py",
+      "gitBlob": "5531e4f5199845195c9fc92e9ec148afc69d823d"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/navigation-checks.mjs",
+      "gitBlob": "28facc2b1acf77b7e9f6289786b9c02ab96e223d"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/navigation-diagnostic.mjs",
+      "gitBlob": "cfe6e638f2cec2e822d2461ab7ee1c3fca495322"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/promote.py",
+      "gitBlob": "961b6883fac63c7642ed29c51f7d127274afed5a"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/run-authenticated.py",
+      "gitBlob": "6e5a25600530143d57fe99491c1669a13b605c9c"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/run-postgres.py",
+      "gitBlob": "d269f2edde589201ad9b117153d78111c4fa3534"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/scheduler-inventory.py",
+      "gitBlob": "7bba7d51681445a9ff44208db7dad3ea1c8a85f5"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/test_checkpoint_transition.py",
+      "gitBlob": "82845075911494cc939a938dc4730c617f78fb82"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/verify-checkpoint-concurrency.py",
+      "gitBlob": "b6d2341913a7054290cecee2c8769e62ec847e42"
+    },
+    {
+      "path": "qa/t01-consolidation-20261014/verify-checkpoint-restore.py",
+      "gitBlob": "29737e2fb39a6221f7a4594cf60c4e2e4d2e8d13"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/browser.mjs",
+      "gitBlob": "dde395b6890ead3cb9700e9165b64db1fb8b118f"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/checks.mjs",
+      "gitBlob": "77e969f83b8990456437826773030bd4a9c37e36"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/client.test.mts",
+      "gitBlob": "5aaff83b4f13fcbd9db33623dee6c12e96af00a0"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/control.test.mts",
+      "gitBlob": "b37491425707852e8db2b4a6a9b7f00676f8ce1d"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/run.mjs",
+      "gitBlob": "85580706a0f7fb37735a33e7bdf1e7e39061ebb9"
+    },
+    {
+      "path": "qa/t01-create-cancel-20261016/submission.test.mts",
+      "gitBlob": "0ce5148f037feb26986447b22ba1b03e28f77fba"
+    },
+    {
+      "path": "qa/t01-final-20261015/backup-restore.py",
+      "gitBlob": "90dc34643bd329b81f71f987890e086d96a871d6"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/cross-origin-controls.mjs",
+      "gitBlob": "8f60f61c81c70cb6c9f88ea4257763793d0feb95"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/cross-origin-reproduction.mjs",
+      "gitBlob": "aacabdc38f6f53ebfedddf28c941bc20670301ea"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/guard.test.mjs",
+      "gitBlob": "b6f7e9c9759ac750761ece16af086c81fc70e936"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/method-boundary-20261015/t08-boundaries.test.mjs",
+      "gitBlob": "6157c24cfd103227079a7a937bcf412d58a19ee7"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/native-controls.mjs",
+      "gitBlob": "74d691a912a9d0e6e548faf7ac0861d8795e94d9"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/profile-reproduction.mjs",
+      "gitBlob": "d42146c604908bac6934c8658e526c154967297f"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/runtime-guard.mjs",
+      "gitBlob": "f63477e877e243df42f3cb407dfcc25dc4ec9b1f"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs",
+      "gitBlob": "1409eb2d38f1d30273504f5808b183325f0528e8"
+    },
+    {
+      "path": "qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs",
+      "gitBlob": "47ec70d1bea4f234bafe50424242cc335efabb9d"
+    },
+    {
+      "path": "qa/t01-final-20261015/client-permissions.py",
+      "gitBlob": "db89c4ced7927aeebb7b1d50bcaa0d89385505ab"
+    },
+    {
+      "path": "qa/t01-final-20261015/durable-postgres.test.mts",
+      "gitBlob": "8ec6394f9acc27ae455718df7da5a57312ee6c66"
+    },
+    {
+      "path": "qa/t01-final-20261015/ovh-preflight.py",
+      "gitBlob": "b3025369c3b3cd3ee5527461f3c8fee7dfa43b5a"
+    },
+    {
+      "path": "qa/t01-final-20261015/rls-metadata.py",
+      "gitBlob": "6b773edc9ed46498f0d0ecdcdc8fee114890219b"
+    },
+    {
+      "path": "qa/t01-final-20261015/rls-write-probe.py",
+      "gitBlob": "1b97a52a199b96bc3957f919ce3d58829ad22821"
+    },
+    {
+      "path": "qa/t01-final-20261015/social-history-transition-test.py",
+      "gitBlob": "c73ba28181f60cd2dc35add1422d75e34b6e418a"
+    },
+    {
+      "path": "qa/t01-final-20261015/social-history-transition.py",
+      "gitBlob": "feca6cfa23a1ce1d0edcf54d392ea627d8287241"
+    },
+    {
+      "path": "qa/t01-final-boundaries-20261016/redirect-probe.mjs",
+      "gitBlob": "5da726d4d8b20ab976c56bfc8dcd679b4e8fb47c"
+    },
+    {
+      "path": "qa/t01-promotion-20261015/install-observer.py",
+      "gitBlob": "46c204f4359b816650ce51dc0f9b931b4685cbbb"
+    },
+    {
+      "path": "qa/t01-promotion-20261015/public-browser.mjs",
+      "gitBlob": "9253fe5c4b614d4bf85aed734eaa7a3e3c210ba1"
+    },
+    {
+      "path": "qa/t01-promotion-20261015/runtime-providers.py",
+      "gitBlob": "96527d7b6041264939bd62709f385d7490c7f0fc"
+    },
+    {
+      "path": "qa/t02-final-integration-proof-20261015/run.py",
+      "gitBlob": "dd332a9d8744bfe67d1461574054085549412d42"
+    },
+    {
+      "path": "qa/t02-final-security-20261015/run.py",
+      "gitBlob": "1910733c5a0dc90357cbfbeb93c407e64d51bd15"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/admin-webhook.test.mts",
+      "gitBlob": "b667029ec504153fc71b1594e06c528e9ead7c58"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/evidence-output.cjs",
+      "gitBlob": "af5b08c164ae3a17cde2cd4bc5c9e3181742f624"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/run.py",
+      "gitBlob": "7ebc44726bc878761e9cfac87fe08794068ea2c3"
+    },
+    {
+      "path": "qa/t02-final-validation-20261014/production-error.test.mts",
+      "gitBlob": "fb5f525b98bc607dabdee90f781ce8e507541c93"
+    },
+    {
+      "path": "qa/t02-final-validation-20261014/run.py",
+      "gitBlob": "36eb399dcd5edd438fbee5d72338ae9baf8d70de"
+    },
+    {
+      "path": "qa/t02-final/run-free-gates.mjs",
+      "gitBlob": "67c71cf9a2ad8e9273a3911307f269a38d6d9552"
+    },
+    {
+      "path": "qa/t02-final/run-local-db-gates.mjs",
+      "gitBlob": "e655885f289d2aecc48507706168d90c7cd17186"
+    },
+    {
+      "path": "qa/t02-integrated-security-20261015/evidence-output.cjs",
+      "gitBlob": "af5b08c164ae3a17cde2cd4bc5c9e3181742f624"
+    },
+    {
+      "path": "qa/t02-integrated-security-20261015/run.py",
+      "gitBlob": "f42ffca787b6dda55b17170d94c0664faf41ebc9"
+    },
+    {
+      "path": "qa/t02-rpc-security-20261015/evidence-output.cjs",
+      "gitBlob": "d55db503e45582cf0ccb55f2e5c3aae1596d790d"
+    },
+    {
+      "path": "qa/t02-rpc-security-20261015/framework.d.ts",
+      "gitBlob": "6080addc2d9595896fa4440b16cf51a41bfcfef8"
+    },
+    {
+      "path": "qa/t02-rpc-security-20261015/run.py",
+      "gitBlob": "9cd32e3ae094a31a1803d9cb6e9191f726384971"
+    },
+    {
+      "path": "qa/t02-salad-security-20261014/run-t02-salad-security.py",
+      "gitBlob": "a9e18a777f31c196b65140af44a169382eaa301c"
+    },
+    {
+      "path": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "gitBlob": "f5f62ee394f97bc8b236b483992eee6f13ca9c66"
+    },
+    {
+      "path": "qa/t02-security-fixes-20261014/probe-request-redirect.cjs",
+      "gitBlob": "ff89fc7bcbc3d51c8af62ab380339a43f8ca9d2d"
+    },
+    {
+      "path": "qa/t02-security-fixes-20261014/run.py",
+      "gitBlob": "158195d879f4f4bc11607c858778a26087a2c57d"
+    },
+    {
+      "path": "qa/t03-durable-closure-20261015/postgres.test.mts",
+      "gitBlob": "96bc45d0bf1b78d2227882b3a53b79891166fcac"
+    },
+    {
+      "path": "qa/t03-durable-closure-20261015/run.mjs",
+      "gitBlob": "aaf9d3c17c45ea98bcf5fbbfe77576d02a877622"
+    },
+    {
+      "path": "qa/t03-durable-closure-20261015/settle.mjs",
+      "gitBlob": "2fbd6f208497bb378bab8abb33da75770cff871b"
+    },
+    {
+      "path": "qa/t03-durable-reliability-20261014/postgres.mjs",
+      "gitBlob": "a61fc9b127491292d505d876caac4918b9cb49bf"
+    },
+    {
+      "path": "qa/t03-durable-reliability-20261014/postgres.test.mts",
+      "gitBlob": "001b777c7686d449497076f61cc23bb0d974d6d6"
+    },
+    {
+      "path": "qa/t03-durable-reliability-20261014/production-error.test.mts",
+      "gitBlob": "fb5f525b98bc607dabdee90f781ce8e507541c93"
+    },
+    {
+      "path": "qa/t03-durable-reliability-20261014/restart-worker.mts",
+      "gitBlob": "a7ad26ea9af5176ce2fe6a047fdca907506ff022"
+    },
+    {
+      "path": "qa/t03-durable-reliability-20261014/submission.test.mts",
+      "gitBlob": "b8e710ffe9861f7331e892e8018c7e2f833f88f1"
+    },
+    {
+      "path": "qa/t03-durable-reliability-20261014/verify.py",
+      "gitBlob": "b5476c17595a5bae4691eb1c67417206a862cfee"
+    },
+    {
+      "path": "qa/t03-final-candidate-20261015/api-postgres.test.mts",
+      "gitBlob": "9e2526da5926f50bcb32afe7c05b3d379420359d"
+    },
+    {
+      "path": "qa/t03-final-candidate-20261015/run.mjs",
+      "gitBlob": "888814a6b5fe22b74120a806720605ff7e11b3d1"
+    },
+    {
+      "path": "qa/t03-final-candidate-20261015/settle.mjs",
+      "gitBlob": "11c05d1b3fce0e38f02a9338f527d54c5d405ebb"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+      "gitBlob": "3757ffcb4cf75b4aa2163916a205b138479d335c"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/cancellation.test.mts",
+      "gitBlob": "6a79d7d6761c8e533a0e759e08d0912df8b51dd9"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/postgres.mjs",
+      "gitBlob": "1115e5e00cff84b534ed246e735aecc722f646a8"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/postgres.test.mts",
+      "gitBlob": "e67a13ff45908b399a2150eeb8aee2ce8e508dad"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/verify.py",
+      "gitBlob": "b4da261d24593bc77714ab952e3002beaee9f52c"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts",
+      "gitBlob": "bbf91e81b05e54cbb8f7031702324342f712b16e"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/postgres.mjs",
+      "gitBlob": "ed3f4b56bd16a5c606e96df05b618fb2d3023c25"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/typecheck-with-t04.mjs",
+      "gitBlob": "7874636d1807586264836e4cd57e80a704ce810b"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/verify.py",
+      "gitBlob": "0c5dcae02208d11432cec5bea4cc50bc6ab538b5"
+    },
+    {
+      "path": "qa/t03-provider-complement-20261013/music-recovery.test.mts",
+      "gitBlob": "d7955b589502fb06e5419c3c6a8fbf7eb167cff0"
+    },
+    {
+      "path": "qa/t03-provider-complement-20261013/verify.py",
+      "gitBlob": "9b846b075272498f2b5f58d16e990c45446ced0c"
+    },
+    {
+      "path": "qa/t03-resume/run-gate.mjs",
+      "gitBlob": "15b5d834c2fd808be031c93fe130ba98c3aab000"
+    },
+    {
+      "path": "qa/t03-resume/run-postgres.mjs",
+      "gitBlob": "cc5251ea31d3fc2da18b3c9ac62e23adaeae93e1"
+    },
+    {
+      "path": "qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+      "gitBlob": "fcf442e4eff17f18aefad6a1de2b22f85802e500"
+    },
+    {
+      "path": "qa/t03-salad-recovery-20261014/offline.cjs",
+      "gitBlob": "db7a192f18afd8f5b94536e398b4daea4febcab4"
+    },
+    {
+      "path": "qa/t03-salad-recovery-20261014/verify.py",
+      "gitBlob": "8efb2dd4b8dcbbb0074f59a2c76b7a6b62b87ac7"
+    },
+    {
+      "path": "qa/t04-auth-final-20261016/diagnostic.mjs",
+      "gitBlob": "057e41849ae773711848d5fa77907a4efb8a1dfc"
+    },
+    {
+      "path": "qa/t04-auth-final-20261016/diagnostic.test.mjs",
+      "gitBlob": "9668421571a102dfadb27985dfb3efea1546741e"
+    },
+    {
+      "path": "qa/t04-auth-final-20261016/read.mts",
+      "gitBlob": "791126dc6b5fde4ffb53c996dfe523f7232c246b"
+    },
+    {
+      "path": "qa/t04-auth-final-20261016/read.py",
+      "gitBlob": "abdd5a0a88ff3ad3811423d2f03ab7df106197fa"
+    },
+    {
+      "path": "qa/t04-auth-final-20261016/reuse.py",
+      "gitBlob": "cde7aabbf97e352570a733ccfbf9db5079b464a9"
+    },
+    {
+      "path": "qa/t04-final-providers-20261015/container.test.mjs",
+      "gitBlob": "586a2c91fd574adc2fdfe125e7cde97c0d1b9485"
+    },
+    {
+      "path": "qa/t04-final-providers-20261015/context.test.mjs",
+      "gitBlob": "14b55c1e9bfea9db9bd9fe6494e1c4b7d9f21697"
+    },
+    {
+      "path": "qa/t04-final-providers-20261015/salad-read.mjs",
+      "gitBlob": "f9cf4fb7e0551c15e29d1c397a7e55f7fcefebbb"
+    },
+    {
+      "path": "qa/t04-final-providers-20261015/salad-read.test.mjs",
+      "gitBlob": "54888548a4e4291a5b4bd70b0a6b62278b61ce44"
+    },
+    {
+      "path": "qa/t04-provider-fixes-20261014/run.py",
+      "gitBlob": "03ec9292e1b444f601ecd77dab0c7043a23d5422"
+    },
+    {
+      "path": "qa/t04-provider-validation-20261014/probe.mjs",
+      "gitBlob": "9320f52cc5a55295a2b7d2155160009f44af6fc7"
+    },
+    {
+      "path": "qa/t04-provider-validation-20261014/probe.test.mjs",
+      "gitBlob": "dfc9a95f075da39fbc32a8c434ddef72be5589ef"
+    },
+    {
+      "path": "qa/t04-providers-final-20261015/contracts.test.mts",
+      "gitBlob": "1ae40aefa521b7788e124d08a57177cb7cfd779a"
+    },
+    {
+      "path": "qa/t04-providers-final-20261015/ltx-body.test.mts",
+      "gitBlob": "d5ec7156fcefa2808b55ef130fd8956a2d39bfe8"
+    },
+    {
+      "path": "qa/t04-providers-final-20261015/read-master.py",
+      "gitBlob": "60ab3546b12eb009ee17924601a0a3b11ca498e4"
+    },
+    {
+      "path": "qa/t04-providers-final-20261015/read-providers.mts",
+      "gitBlob": "3db8249867f4e34a38d8a774431af8b344cd2ef0"
+    },
+    {
+      "path": "qa/t04-providers-final-20261015/read-salad.py",
+      "gitBlob": "d0a6c0bce8e018c2c736acd0dc6e270cb0fe0b59"
+    },
+    {
+      "path": "qa/t04-providers-final-20261015/run.py",
+      "gitBlob": "7ceab9408423a2854835fcee8a786a0eae444653"
+    },
+    {
+      "path": "qa/t04-providers-final-20261015/shotstack-owner-repro.mts",
+      "gitBlob": "56acbe5b2c0b5ad7cc6bba6940c7a29ae9d30954"
+    },
+    {
+      "path": "qa/t04-salad-20261014/run.py",
+      "gitBlob": "40c12ef4df7cd03379dc7bcbbaf55cfd3ce767c4"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/secure_setup.py",
+      "gitBlob": "020d45cffefd59b7f1a17abddcda9d85f600e527"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/test_secure_setup.py",
+      "gitBlob": "cadca9454d936ee0c26a338e0ddda7945a77894e"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/validate-access.mjs",
+      "gitBlob": "27a17f8d2c08aebc53d761224e615a338f83e1d7"
+    },
+    {
+      "path": "qa/t04-salad-access-20261015/validate-access.test.mjs",
+      "gitBlob": "fbb93ad415c915ddbb234fbe202a3a1f62804eb3"
+    },
+    {
+      "path": "qa/t04-salad-auth-20261015/test_input_diagnostic.py",
+      "gitBlob": "584b232b141c48db9084521c94006f508d960056"
+    },
+    {
+      "path": "qa/t05-composition-fix-20261014/run-targeted.mjs",
+      "gitBlob": "4617cc25be402cda89d63fbe917b5fefb1eee4ba"
+    },
+    {
+      "path": "qa/t05-final-candidate-20261015/reconcile.py",
+      "gitBlob": "29c42988878cf5c65035a11bf3dd1807e70fc6e9"
+    },
+    {
+      "path": "qa/t05-final-candidate-20261015/retest.mts",
+      "gitBlob": "e789908ceae1ac10d8d8cce4d69be617c5ae1b2f"
+    },
+    {
+      "path": "qa/t05-final-candidate-20261015/run.mjs",
+      "gitBlob": "ab12e8d85894b3d9269ea57d95780f46064ee300"
+    },
+    {
+      "path": "qa/t05-final-f360-20261016/reconcile.py",
+      "gitBlob": "6460e8f47faeca9034672c296dce27b9bf9ecbc2"
+    },
+    {
+      "path": "qa/t05-final-f360-20261016/retest.mts",
+      "gitBlob": "14977d315826640e13da1a5656a6884c7e311d8a"
+    },
+    {
+      "path": "qa/t05-final-f360-20261016/run.mjs",
+      "gitBlob": "a333cfc03659f26aaa2456f8d3329a26ace6abda"
+    },
+    {
+      "path": "qa/t05-final-media-20261015/helpers.mts",
+      "gitBlob": "5b608c8dfea4f125384d9cb6c24ff598f9f9fa69"
+    },
+    {
+      "path": "qa/t05-final-media-20261015/run-targeted.mjs",
+      "gitBlob": "a1f2c577101c0e07e9c365c0a230d92dbb217239"
+    },
+    {
+      "path": "qa/t05-integrated-retest-20261015/retest.mts",
+      "gitBlob": "2679e50a00e2fdd12e66641499a205fc4ebc5c6e"
+    },
+    {
+      "path": "qa/t05-integrated-retest-20261015/run.mjs",
+      "gitBlob": "5d842697cc1a7302972f8dabb8751c7af31dee8d"
+    },
+    {
+      "path": "qa/t05-real-export-20261014/helpers.mts",
+      "gitBlob": "fc93ab6e58babf775db556615bae88e0787d3bb3"
+    },
+    {
+      "path": "qa/t05-real-export-20261014/run-targeted.mjs",
+      "gitBlob": "9c07fd6c50529fabbbd6bb4e4c48b4c91d4f3c43"
+    },
+    {
+      "path": "qa/t05-salad-media-20261014/fixtures.mts",
+      "gitBlob": "7831ce9747e531e4b6e8b712fd96c1bf80a2f1ad"
+    },
+    {
+      "path": "qa/t05/providers-20261013/build.py",
+      "gitBlob": "f7cdd63f580db977b67a7d207e2b5abb8e7654d2"
+    },
+    {
+      "path": "qa/t06-final-f360-20261016/verify.py",
+      "gitBlob": "ccfb42d419cb07a661d88bca7a25c2dc738f8be9"
+    },
+    {
+      "path": "qa/t06-final-integration-20261015/autopilot.test.mts",
+      "gitBlob": "7992d044399081aff84e74a610cde20b0ba8b335"
+    },
+    {
+      "path": "qa/t06-final-integration-20261015/run.py",
+      "gitBlob": "f8c99f35dbea56228fd0d24dd1cf8b9535b38303"
+    },
+    {
+      "path": "qa/t06-final-integration-20261015/verify.py",
+      "gitBlob": "4483b6de5df148e58470cf5882ab9ef4994c9245"
+    },
+    {
+      "path": "qa/t06-final-social-20261015/history-contract.test.mts",
+      "gitBlob": "692baee5885ebea80c1dfc127c489adb73f171bf"
+    },
+    {
+      "path": "qa/t06-final-social-20261015/run-postgres.mjs",
+      "gitBlob": "fada7ff90291b9240f477a1e42aed0b7c77af018"
+    },
+    {
+      "path": "qa/t06-final-social-20261015/run.mjs",
+      "gitBlob": "08770c4aa2e25133f8a553bba0385b17962dd13b"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/history-routes.test.mts",
+      "gitBlob": "0cf5eb02b21602f06827f2ecfb2e6c85d8beff66"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/run-postgres.mjs",
+      "gitBlob": "301b888783990c43758c7270fd1b239f405f5f56"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/run.mjs",
+      "gitBlob": "ff20cb8e4cb15ba3a21c4fdc97f60fa65b07fa57"
+    },
+    {
+      "path": "qa/t06-social-recovery-20261014/run-postgres.mjs",
+      "gitBlob": "bb49ab34afece579f2bfb615b85de886bdf1ccb1"
+    },
+    {
+      "path": "qa/t06-social-recovery-20261014/run.mjs",
+      "gitBlob": "ed571650ea2f72ed3511d5f7d78dbe2290491955"
+    },
+    {
+      "path": "qa/t06-social-recovery-20261014/test-postgres.mts",
+      "gitBlob": "874089fc5e3675ddcde80c5b61f7f8c5fe0c9be5"
+    },
+    {
+      "path": "qa/t06-social-validation-20261014/run.mjs",
+      "gitBlob": "3509c7c2e0b43728d3eaa688cf57de91658f11c2"
+    },
+    {
+      "path": "qa/t07-final-two-20261015/cas-checks.mjs",
+      "gitBlob": "47a49891c0fcc041eeda8be06be32ea983d6c509"
+    },
+    {
+      "path": "qa/t07-final-two-20261015/checks.mjs",
+      "gitBlob": "6477e244117804dbaaadf8e9ccf6d95be4a05b86"
+    },
+    {
+      "path": "qa/t07-final-two-20261015/contracts.test.mjs",
+      "gitBlob": "155a6b972ddff748c86f345e014d6f911f7a393e"
+    },
+    {
+      "path": "qa/t07-final-two-20261015/full-checks.mjs",
+      "gitBlob": "a932307208c137349ff0e10645edbd322ec92de5"
+    },
+    {
+      "path": "qa/t07-final-two-20261015/run.mjs",
+      "gitBlob": "69674999d1f92507a71b84fdca0bcc14224af70c"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/checks.mjs",
+      "gitBlob": "269675a95335ed386469fabe177142657389eda3"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/editor-checks.mjs",
+      "gitBlob": "211f09df22a316b045c4d4bf9bff51e884b7e9f9"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/extra-checks.mjs",
+      "gitBlob": "f6f3bc4044d77a6dd2dc188711feaca169c0a3d8"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/keyboard-probe.mjs",
+      "gitBlob": "b11f999273eb721ea6aa7e2144e3595a25e01279"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/keyboard-regression.mjs",
+      "gitBlob": "9b3e3a939c2d0b3ac96157a357a11d122e1ffd9a"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/native-safari-server.mjs",
+      "gitBlob": "c72b31055fa2c0b491f029e587f2d051d13cae28"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/navigation-checks.mjs",
+      "gitBlob": "2a83d979ea46a096c08bd336fa1999f9aea10409"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/planning-checks.mjs",
+      "gitBlob": "36ce8ccaab7bab6a5562d4ceb75fc095689fb81d"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/run.mjs",
+      "gitBlob": "fe3226a87bd1fb8fde6d4664a7f11812e60ed71e"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/session.mjs",
+      "gitBlob": "1f6d153833edc76914bbd8aed461c4383955a36a"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/social-checks.mjs",
+      "gitBlob": "5b35b71a6b52279739c7d50ae5345a70c47395a9"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/visual-checks.mjs",
+      "gitBlob": "0f349a8edea1aa02b564ff0aa06cf0d708340e3f"
+    },
+    {
+      "path": "qa/t07-final-ux-perf-20261015/webkit-navigation-probe.mjs",
+      "gitBlob": "7ae038e2cd3f97f4f0d27ff2e98715bee7cbf9d2"
+    },
+    {
+      "path": "qa/t07-final-wire-20261016/audit.mjs",
+      "gitBlob": "f450d95dfd0449df9b435f2b8d7e326f253f131b"
+    },
+    {
+      "path": "qa/t07-final-wire-20261016/browser.mjs",
+      "gitBlob": "e13dce7bb3fdaeba247101217299cc94de714aa2"
+    },
+    {
+      "path": "qa/t07-final-wire-20261016/checks.mjs",
+      "gitBlob": "191b9bcf22a514a5e4ab6ffba2d68f5fb1a36c1a"
+    },
+    {
+      "path": "qa/t07-final-wire-20261016/run.mjs",
+      "gitBlob": "34e685a8acbe9d97f564e670d2a0378b7ec588cf"
+    },
+    {
+      "path": "qa/t07-final-wire-20261016/settle.mjs",
+      "gitBlob": "af6daa7c69ee83344811db4a9f57bfc66041a48f"
+    },
+    {
+      "path": "qa/t07-final-wire-20261016/wire.mjs",
+      "gitBlob": "f477f82d7c68b1bc8d56f82ceeb97b7e86517bac"
+    },
+    {
+      "path": "qa/t07-frontend-fixes-20261014/browser.mjs",
+      "gitBlob": "35ac55121ea827fcd96e6c7085fc1fe65414f1b3"
+    },
+    {
+      "path": "qa/t07-frontend-fixes-20261014/consent-contrast.mjs",
+      "gitBlob": "4f0555124c97c4dac1604cc88a6c68cf5aa02255"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/fixture.mjs",
+      "gitBlob": "651b588e65ebce3465761319bec37500e135c63b"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/journey-checks.mjs",
+      "gitBlob": "974ec079d5416632bb24fafd3cb92f4c2c1b4257"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/legal-checks.mjs",
+      "gitBlob": "dd0b56867da914d52ccae240e14131e4303939fc"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/player-checks.mjs",
+      "gitBlob": "ba0399762dcd6c69cab8e78176d4bfd497ec0bc1"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/private-download-checks.mjs",
+      "gitBlob": "f7ccd01b06560ba9c0a41aa4cbd924c6149fdf39"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/retry-checks.mjs",
+      "gitBlob": "1e2ff84d1eb879fe55a692e59d5fdf3e9b212d44"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/run.mjs",
+      "gitBlob": "fcf0c0cbbf1dbfa380eaa0a2185db508497f4bc6"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/tls-fixture.mjs",
+      "gitBlob": "705adc7ca3aa2c24dc1d206211ef28a590bff9e8"
+    },
+    {
+      "path": "qa/t07-frontend-journey-20261014/visual-checks.mjs",
+      "gitBlob": "d4dfc5069db12cfcbedccfab100496b9dff632cf"
+    },
+    {
+      "path": "qa/t07-integrated-retest-20261015/run.mjs",
+      "gitBlob": "e36c100238b2229bf1593d13536ff998a022dc45"
+    },
+    {
+      "path": "qa/t07-modes-20261014/browser.mjs",
+      "gitBlob": "51f7c3cbe42cd3d5d4ae669e89560c98a059f6d0"
+    },
+    {
+      "path": "qa/t07-modes-20261014/capabilities-fixtures.mjs",
+      "gitBlob": "6a92d481ad8e30eb5642833a958930ca1a0d23ac"
+    },
+    {
+      "path": "qa/t07-modes-20261014/generation-fixtures.mjs",
+      "gitBlob": "f034bec1898e75447181e49f50e8c191e9528427"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/checks-before.mjs",
+      "gitBlob": "421ccc6e37c24bc9ccd5600e1226052f5721eeb8"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/checks.mjs",
+      "gitBlob": "5b97a5b28cae12b51e37dfaa8bb2b86d86740390"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/client-contracts.test.mts",
+      "gitBlob": "7eb99293fa94803735271e70716e43a93a8d2866"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/production-checks.mjs",
+      "gitBlob": "d6087dc84f078eea966b85a1d5a4d5628ae6e773"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/reconcile-checks.mjs",
+      "gitBlob": "84b7bdcfd813d9f209eedbb5dbe19c9719b15b21"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/run.mjs",
+      "gitBlob": "746501872dc15b81766bc0241ad643496c78cb1e"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/scheduler-checks.mjs",
+      "gitBlob": "68e752d59a2c7456b515d12a20254b738af976ae"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/status-panel.test.tsx",
+      "gitBlob": "09a62bf5d3d7a124cf0582aa10b84d51df84a1d9"
+    },
+    {
+      "path": "qa/t07-scheduler-cancel-20261015/storage-only.mjs",
+      "gitBlob": "97ee38cef670d7fea4b10cbeda53603bb3e538f2"
+    },
+    {
+      "path": "qa/t08-acceptance-72f406b-20261015/build_matrix.py",
+      "gitBlob": "1c663389a9f5a2318092fd12f22e2fd7ce991f35"
+    },
+    {
+      "path": "qa/t08-acceptance-72f406b-20261015/evidence-output.cjs",
+      "gitBlob": "d55db503e45582cf0ccb55f2e5c3aae1596d790d"
+    },
+    {
+      "path": "qa/t08-acceptance-72f406b-20261015/harness-boundaries.test.mjs",
+      "gitBlob": "b822137b9cc6d09b26593bc7061746cc7e479d23"
+    },
+    {
+      "path": "qa/t08-acceptance-72f406b-20261015/run-postgres.mjs",
+      "gitBlob": "301b888783990c43758c7270fd1b239f405f5f56"
+    },
+    {
+      "path": "qa/t08-acceptance-72f406b-20261015/run.py",
+      "gitBlob": "ddc371f52dd8e67625627a744086e03bbc63885c"
+    },
+    {
+      "path": "qa/t08-acceptance-72f406b-20261015/verify_ci.py",
+      "gitBlob": "ae81af0ce1222a5b7a2a05e0cfb414cc522a638c"
+    },
+    {
+      "path": "qa/t08-acceptance-72f406b-20261015/verify_receipts.py",
+      "gitBlob": "92314c25eecedda72877ca4d6d747904f1897e4f"
+    },
+    {
+      "path": "qa/t08-acceptance-72f406b-20261015/verify_sources.py",
+      "gitBlob": "22344e023b229d7a9eccb707d3078cabc7cbb48b"
+    },
+    {
+      "path": "qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs",
+      "gitBlob": "b822137b9cc6d09b26593bc7061746cc7e479d23"
+    },
+    {
+      "path": "qa/t08-acceptance-d21b7b4-20261015/run.py",
+      "gitBlob": "b984e462115102632cfb9e1ff97b573522b30dca"
+    },
+    {
+      "path": "qa/t08-acceptance-d21b7b4-20261015/verify_evidence.py",
+      "gitBlob": "2b10ae1ff1b61feca636498e122eb5d02d513ec1"
+    },
+    {
+      "path": "qa/t08-closure-20261014/production-error.test.mts",
+      "gitBlob": "fb5f525b98bc607dabdee90f781ce8e507541c93"
+    },
+    {
+      "path": "qa/t08-closure-20261014/run.py",
+      "gitBlob": "51b78ecea1e76132a018b931d4f4394ae873a21f"
+    },
+    {
+      "path": "qa/t08-final-candidate-20261015/build_matrix.py",
+      "gitBlob": "3fedee22b327c7a9e0988161a5183b6e23f1cf62"
+    },
+    {
+      "path": "qa/t08-final-candidate-20261015/cancellation.test.mts",
+      "gitBlob": "6a79d7d6761c8e533a0e759e08d0912df8b51dd9"
+    },
+    {
+      "path": "qa/t08-final-candidate-20261015/run.py",
+      "gitBlob": "e36f48471defe59949b4368049b259930675fb8a"
+    },
+    {
+      "path": "qa/t08-final-candidate-20261015/verify_provenance.py",
+      "gitBlob": "29f2e40f0a82e0479e7254c1b5ce11bf0daa223e"
+    },
+    {
+      "path": "qa/t08-final-modes/run.mjs",
+      "gitBlob": "632aaa3c37cbe2cc0b060663a1b8ba02b930830c"
+    },
+    {
+      "path": "qa/t08-integration-journey-20261014/database.mts",
+      "gitBlob": "8fafb604a0bfe1f4223a94747b1f6aa886a243fb"
+    },
+    {
+      "path": "qa/t08-integration-journey-20261014/run.mjs",
+      "gitBlob": "46d6a37ad68ebf5193d448f5314ce4a9d268044a"
+    },
+    {
+      "path": "qa/t08/fake-db.mts",
+      "gitBlob": "c4c55b13504995bf3069b40eead63a69f8915ac8"
+    },
+    {
+      "path": "qa/t08/integrated/browser-extension.mjs",
+      "gitBlob": "0c21707487533db5bedad18314ce3b27272acc7f"
+    },
+    {
+      "path": "qa/t08/integrated/font-cache.mjs",
+      "gitBlob": "2234b89b8b0a303cbd6749243c0ec093739ccb65"
+    },
+    {
+      "path": "qa/t08/integrated/load.test.mts",
+      "gitBlob": "df68514b605dc3e437c312d5516513effb1f9bb3"
+    },
+    {
+      "path": "qa/t08/integrated/offline.test.mjs",
+      "gitBlob": "af6886ae86662572669d644d34ed5148355a8beb"
+    },
+    {
+      "path": "qa/t08/offline.cjs",
+      "gitBlob": "053d6b59a516b72f61f88f52d0fd426e62323921"
+    },
+    {
+      "path": "qa/t08/playwright.config.ts",
+      "gitBlob": "ebfe01d44eadef5f7d5dc03beee7f0ab623565fb"
+    },
+    {
+      "path": "qa/t08/providers-20261013/provider-contract-redteam.test.mts",
+      "gitBlob": "be9ca09b878ead472dce633fb60c27fa389428fe"
+    },
+    {
+      "path": "qa/t08/providers-20261013/run.mjs",
+      "gitBlob": "a802928d715708dc21fe04236b8730670b71f61f"
+    },
+    {
+      "path": "qa/t08/run.mjs",
+      "gitBlob": "351283dca862d451e7c8de13d963a54bea5ab661"
+    },
+    {
+      "path": "scripts/apply-migration.mjs",
+      "gitBlob": "dbd70266ff32b1b31cc33f3148cc1d6085bbca0d"
+    },
+    {
+      "path": "scripts/comfyui-engine-server.mjs",
+      "gitBlob": "d6e3de4b7abccf939d654b6e020bc13667b46462"
+    },
+    {
+      "path": "scripts/helpers/local-media-fixture.mts",
+      "gitBlob": "0e45bd042d90d65ddbc21bff3188c5f1583a093c"
+    },
+    {
+      "path": "scripts/helpers/media-validation-fixture.ts",
+      "gitBlob": "b39c56f5e6000a2cb74aa91753d3bb2e1d85be19"
+    },
+    {
+      "path": "scripts/helpers/social-database.mts",
+      "gitBlob": "455eb6b653ab1e03be8091383cef2e05ddf2a4fe"
+    },
+    {
+      "path": "scripts/local-engine-stub-server.mjs",
+      "gitBlob": "6949eaaa4244c3e563e3670f999b1633a40e35df"
+    },
+    {
+      "path": "scripts/run-ci.mjs",
+      "gitBlob": "ff9547b82ae129b2485adf409489bc9df04ac6e1"
+    },
+    {
+      "path": "scripts/screenshot-landing.mjs",
+      "gitBlob": "ea0d44e36048df283e3f89b5a33fd047d8f2e854"
+    },
+    {
+      "path": "scripts/test-api-contracts.mts",
+      "gitBlob": "5cfe5f3fd07eb677469c8669f1ea33b1f57260b9"
+    },
+    {
+      "path": "scripts/test-auth-session.mts",
+      "gitBlob": "61166b7f0185544bcb0661087b2842ce34afdd9e"
+    },
+    {
+      "path": "scripts/test-auto-composition.mjs",
+      "gitBlob": "a5492621be84e8cc46f176fb39ebb648f126bb54"
+    },
+    {
+      "path": "scripts/test-auto-export-queue.mts",
+      "gitBlob": "c2b5e1627a7cc5b8b6ee59c562c7bf2c2e2580b4"
+    },
+    {
+      "path": "scripts/test-auto-publication.mjs",
+      "gitBlob": "0542490c9e308004f918e118d73d9385a54c4460"
+    },
+    {
+      "path": "scripts/test-auto-schedule.mjs",
+      "gitBlob": "095bc649688669db94f2b4ad6b18d48ea0d3acc9"
+    },
+    {
+      "path": "scripts/test-connect.mjs",
+      "gitBlob": "a662e2e25dbed13a9f6004366947b0ca1549fb4c"
+    },
+    {
+      "path": "scripts/test-editor-export.mts",
+      "gitBlob": "289437ee4b5b04ea01e79d3b15ffb8e7c5b60ec3"
+    },
+    {
+      "path": "scripts/test-env-contracts.mts",
+      "gitBlob": "57fa422c907044f1294ea0989378bea07459fcb3"
+    },
+    {
+      "path": "scripts/test-export-integration.mts",
+      "gitBlob": "0bfaca7cca63d48460bea26362b89aae127c9652"
+    },
+    {
+      "path": "scripts/test-final-social-history.mjs",
+      "gitBlob": "85cbe3a2a4b87420053db97d35e3d4fc39798923"
+    },
+    {
+      "path": "scripts/test-final-write-permissions.mjs",
+      "gitBlob": "bf4583414c29882b2b51cbd1b7b8d8b341ca53e5"
+    },
+    {
+      "path": "scripts/test-insee.mjs",
+      "gitBlob": "bcdbae5c5ac27579b4ff36c3a897bdb009a143c2"
+    },
+    {
+      "path": "scripts/test-integration.mts",
+      "gitBlob": "6061dcd41163834f97156160ea63d51b742d4ebc"
+    },
+    {
+      "path": "scripts/test-karma-split.mjs",
+      "gitBlob": "58ca89b0309f80e18e1db99e7a312a07bd31838a"
+    },
+    {
+      "path": "scripts/test-local-engine-e2e.mts",
+      "gitBlob": "b938872c1bb1850a34d72f9665aca78a7e2c6a34"
+    },
+    {
+      "path": "scripts/test-local-engine.mts",
+      "gitBlob": "aa0ec4624264a3efbdfbe88652979949e2b900a5"
+    },
+    {
+      "path": "scripts/test-ltx-tiers.mjs",
+      "gitBlob": "da60ea4cfa4d1bdaa9744aa79167ab7957236034"
+    },
+    {
+      "path": "scripts/test-ltx-v2-contracts.mts",
+      "gitBlob": "1c8290839555115ecf082df1c139cb74567368ff"
+    },
+    {
+      "path": "scripts/test-ltx-v2-media.mts",
+      "gitBlob": "eef3f53f5dc180a7e5300e29061c002f0499bd19"
+    },
+    {
+      "path": "scripts/test-migration-local.mjs",
+      "gitBlob": "72e691b0c1b62e7371cdc548871eaab82919ad6f"
+    },
+    {
+      "path": "scripts/test-opentimestamps.mjs",
+      "gitBlob": "257af28efb8a06a1000f0e5f11cc0da5df04d7b1"
+    },
+    {
+      "path": "scripts/test-pipeline-interruptions.mts",
+      "gitBlob": "0fd02b832a25d9d6b1fca863946aa1b1dff308a5"
+    },
+    {
+      "path": "scripts/test-pipeline-postgres.mts",
+      "gitBlob": "a1e6f6bd566e0d988cadb75f9ebdedf837502d9e"
+    },
+    {
+      "path": "scripts/test-pipeline-submit.mts",
+      "gitBlob": "97f499e8bc0c9b5da1bee96d030c9b29321c3292"
+    },
+    {
+      "path": "scripts/test-private-media.mts",
+      "gitBlob": "3feac3adbc35d20e09f72a11c085a943d1fee0de"
+    },
+    {
+      "path": "scripts/test-production-queue.mts",
+      "gitBlob": "fa7d2cb068e08a4d836b8d949e79425db2d513ab"
+    },
+    {
+      "path": "scripts/test-provider-safety.mts",
+      "gitBlob": "2989c7bbb3555df6b05aff11c7a1046b9aeb67a1"
+    },
+    {
+      "path": "scripts/test-public-origin.mts",
+      "gitBlob": "8675cff3e9361c7fb62d0449fb92ea00eab5254c"
+    },
+    {
+      "path": "scripts/test-release-oauth.mts",
+      "gitBlob": "cc3ccf375f2f3bcf8d635d03f6d1db44758c2483"
+    },
+    {
+      "path": "scripts/test-release-regressions.mts",
+      "gitBlob": "5be4e1fb544ad528c929d8515fd803f4895df51d"
+    },
+    {
+      "path": "scripts/test-salad-host.mts",
+      "gitBlob": "f1554c27ec0e69ef785ff896fe54dc2e2628c123"
+    },
+    {
+      "path": "scripts/test-salad-persistence.mts",
+      "gitBlob": "2d637c0888303da11cf7c672d7b57fba362f003b"
+    },
+    {
+      "path": "scripts/test-salad-worker.mts",
+      "gitBlob": "1291e0df5fefb7743d66f7188b5a61f96c863503"
+    },
+    {
+      "path": "scripts/test-security-account.mts",
+      "gitBlob": "37c5ba36aa217bf4a7e32a061f29bd311fde9c6e"
+    },
+    {
+      "path": "scripts/test-security-media.mts",
+      "gitBlob": "36978487d50f1fdbe46e3e8e8cb2c563203f9e85"
+    },
+    {
+      "path": "scripts/test-security-points.mts",
+      "gitBlob": "3da04e56489f6ed025f3555aae06c61116436832"
+    },
+    {
+      "path": "scripts/test-security-rls.mjs",
+      "gitBlob": "c16d0acf64598394c2b3578dc346b4b219086313"
+    },
+    {
+      "path": "scripts/test-security-routes.mts",
+      "gitBlob": "cede71c90f5c9ffa54a3a242e1944a8ed2ad4c60"
+    },
+    {
+      "path": "scripts/test-security-storage.mts",
+      "gitBlob": "ebecb243896c01b90d9a413626cbce4bc7ea8277"
+    },
+    {
+      "path": "scripts/test-shotstack-contracts.mts",
+      "gitBlob": "07d420f4d2f2525546aef6e0f51e4accd0c064ec"
+    },
+    {
+      "path": "scripts/test-social-publication.mts",
+      "gitBlob": "817c680289cec6e8cc096ba8e8a2bd78e8a7cb11"
+    },
+    {
+      "path": "scripts/test-storage-video-proofs.mjs",
+      "gitBlob": "65be459148b4797e44a19cf6bb07b730e7cd8b48"
+    },
+    {
+      "path": "scripts/test-suno-contract.mts",
+      "gitBlob": "bc5b39eb3501a752cef89617cbccc9d314427733"
+    },
+    {
+      "path": "scripts/test-t02-final-security-grants.mts",
+      "gitBlob": "69a77ce6fd187d58cf11c72b48b56df88a99c61a"
+    },
+    {
+      "path": "scripts/test-t02-final-validation-media.mts",
+      "gitBlob": "7c9f9e636680f6756fc1d96f3728c5e6c73cab9d"
+    },
+    {
+      "path": "scripts/test-t02-oauth-boundaries.mts",
+      "gitBlob": "65a1b6a7e43adcca134567a95222cc6535b01d56"
+    },
+    {
+      "path": "scripts/test-t02-rpc-security-dependencies.mts",
+      "gitBlob": "40006f1bc819de7931970923e0ab92d5ba78081a"
+    },
+    {
+      "path": "scripts/test-t02-rpc-security-production.mts",
+      "gitBlob": "e293d91547a4993f317dd768d3080f12934867b0"
+    },
+    {
+      "path": "scripts/test-t02-salad-security.mts",
+      "gitBlob": "45018cbbdedfbb34bb23c88ed707142bb7e098a1"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-ots.mts",
+      "gitBlob": "27819d379f0235e4bc642f88af49f1afd27ac573"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-proof.mts",
+      "gitBlob": "61b9672f2e2f86a61a2316001962759200fd06a3"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-session-media.mts",
+      "gitBlob": "358a71ca9b2c8a3f852c5450e9d8d0fb58e92e20"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-storage.mts",
+      "gitBlob": "93c9f3a2608d26432928a3a7fc8c5291d7ff32e9"
+    },
+    {
+      "path": "scripts/test-t03-durable-reliability.mts",
+      "gitBlob": "7d2c23ea388acb3d00d68245b4a9354eb037366d"
+    },
+    {
+      "path": "scripts/test-t03-final-durable.mts",
+      "gitBlob": "dcffa975a8f76e062595ada09d38719edb886c2b"
+    },
+    {
+      "path": "scripts/test-t03-orchestration-fixes.mts",
+      "gitBlob": "8089dfb2b84bd6fa1a70f676ba92cbb7fcf275b5"
+    },
+    {
+      "path": "scripts/test-t03-salad-recovery.mts",
+      "gitBlob": "3a2ed983ffbb9f0cacc2215ea1e7c6a73f4d9f08"
+    },
+    {
+      "path": "scripts/test-t03-suno-recovery.mts",
+      "gitBlob": "1b8b697b9c67ed5924b0b2cd53f858c0e7410d7a"
+    },
+    {
+      "path": "scripts/test-t04-pollinations.mts",
+      "gitBlob": "5324c465fbb065ec3c602c4c2dff4d893c229d5d"
+    },
+    {
+      "path": "scripts/test-t04-provider-fixes.mts",
+      "gitBlob": "1d6a19255b3f1156296250d61e79b63e2b6ac68e"
+    },
+    {
+      "path": "scripts/test-t05-composition-fix.mts",
+      "gitBlob": "fba579b116ab70da7228ef735efb16c37ff0b067"
+    },
+    {
+      "path": "scripts/test-t05-final-media.mts",
+      "gitBlob": "f0b33bfd6bca531bae17e776a9e2c6bdbd0440dc"
+    },
+    {
+      "path": "scripts/test-t05-real-export.mts",
+      "gitBlob": "4bfb4605c37bd6aced227f24c55ca26c8e3e515f"
+    },
+    {
+      "path": "scripts/test-t05-salad-media.mts",
+      "gitBlob": "07eb34ba09dce309b26bc1e3262166c6c31af055"
+    },
+    {
+      "path": "scripts/test-t06-final-social.mts",
+      "gitBlob": "5f1ed14b8657842600758b69669e4b3fbed72cd4"
+    },
+    {
+      "path": "scripts/test-t06-gate.mjs",
+      "gitBlob": "e71faacf0b31fb5a967bd03557bf472bc7af1d83"
+    },
+    {
+      "path": "scripts/test-t06-social-autonomy.mts",
+      "gitBlob": "c0887de48d11a2652d27afa7ee11a142d8bd86ff"
+    },
+    {
+      "path": "scripts/test-t06-social-final.mts",
+      "gitBlob": "b998a8a0efb4e75b2a22be7428d0780007c76b9d"
+    },
+    {
+      "path": "scripts/test-t06-social-routes.mts",
+      "gitBlob": "0dd610b4bdba620b40ca0a8dec488f1d2f335e7e"
+    },
+    {
+      "path": "scripts/test-t06-social-validation.mts",
+      "gitBlob": "323b2d0f68e912f3f19699f5e3da5f78bc5780ca"
+    },
+    {
+      "path": "scripts/test-t08-final-modes.mts",
+      "gitBlob": "29ed4f351e405e8e8070bd176b8319798c3bcc43"
+    },
+    {
+      "path": "scripts/test-t08-integration-journey.mts",
+      "gitBlob": "49f48be798cbc5254742932366dc07a21969665d"
+    },
+    {
+      "path": "scripts/test-ui-isolated.mjs",
+      "gitBlob": "810f535e94691037e60b60feb12ee38e5d08e1e8"
+    },
+    {
+      "path": "scripts/test-video-contracts.mjs",
+      "gitBlob": "367726d580f0d329378ce7c0e74f5cf39e3a6efc"
+    },
+    {
+      "path": "scripts/test-zernio-oauth-contracts.mts",
+      "gitBlob": "704f66a2076aac1b770965459c5c9acf37645715"
+    },
+    {
+      "path": "scripts/ui-isolated/navigation-diagnostics.mjs",
+      "gitBlob": "ee3216c42b4ca6d41f4db12137d3b68ad315970a"
+    },
+    {
+      "path": "scripts/ui-isolated/production-server.mjs",
+      "gitBlob": "e1f81240806042616563726625742142f8c5f819"
+    },
+    {
+      "path": "scripts/ui-isolated/t07-flows.mjs",
+      "gitBlob": "5b51da051beef3747f5e67f191e51bbb1537e8c3"
+    },
+    {
+      "path": "scripts/ui-isolated/t07-reprise.mjs",
+      "gitBlob": "3ef3b77dc0fd33c2c03c1bce55dd3cc25c87be8c"
+    },
+    {
+      "path": "scripts/ui-isolated/t07-runtime.mjs",
+      "gitBlob": "a603b1b9791562b2e290a91c55849132356f5961"
+    },
+    {
+      "path": "src/app/(auth)/forgot-password/layout.tsx",
+      "gitBlob": "88eea0a403ea78f2c7c510fc3ab15dcec7843449"
+    },
+    {
+      "path": "src/app/(auth)/forgot-password/page.tsx",
+      "gitBlob": "d4547a6e5be095313716088d5acb749995605f4f"
+    },
+    {
+      "path": "src/app/(auth)/login/layout.tsx",
+      "gitBlob": "3299e26816815c330ef99ee14f1bde0a3f5d963a"
+    },
+    {
+      "path": "src/app/(auth)/login/page.tsx",
+      "gitBlob": "83f7b1434564434bbf0ffe98f931ea59150474b7"
+    },
+    {
+      "path": "src/app/(auth)/reset-password/layout.tsx",
+      "gitBlob": "1864c19f022def8de8dc8eb9f01ab9fa07aaef82"
+    },
+    {
+      "path": "src/app/(auth)/reset-password/page.tsx",
+      "gitBlob": "502033b451af6cda6577b0c417d5b6fc998b7b76"
+    },
+    {
+      "path": "src/app/(auth)/signup/SuccessScreen.tsx",
+      "gitBlob": "25f7c2cd4f10fbd9227861dc98257d76f5f235e4"
+    },
+    {
+      "path": "src/app/(auth)/signup/layout.tsx",
+      "gitBlob": "df6de6239ce795cc0e08e03fe4c34a475625dcc7"
+    },
+    {
+      "path": "src/app/(auth)/signup/page.tsx",
+      "gitBlob": "7da4a35832169a52f902e040bada043f3e5b0319"
+    },
+    {
+      "path": "src/app/(dashboard)/achievements/page.tsx",
+      "gitBlob": "9b6526a3af22dac04902d734a4ec65d384e506b0"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/api-usage/page.tsx",
+      "gitBlob": "1673018228ae985c1561c8389ba7bdcdeedcf038"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/classement/page.tsx",
+      "gitBlob": "0f1c0a94878f79ac7d46838dca961cdea5829b14"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/config/defaultConfig.ts",
+      "gitBlob": "48e00ad1094cc6b49b13847ef9fff6e03d497691"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/config/page.tsx",
+      "gitBlob": "be988c9692793086231f667008b9d234b8be699c"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/config/types.ts",
+      "gitBlob": "b3c7f295d5d63e782e40ce1384575ceafa06f8b4"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/contest/page.tsx",
+      "gitBlob": "f343be4829402ff16299d037371730bc3d76e967"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/finances/page.tsx",
+      "gitBlob": "686faf1bcac7648ccbdbf027fbde1ba7136ce6a4"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/health/health-config.tsx",
+      "gitBlob": "09f5be673ef77f3717be07d0f78d5cccfb03e3ec"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/health/page.tsx",
+      "gitBlob": "e47a35233739660bd59351901d56116d2579a9a8"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/layout.tsx",
+      "gitBlob": "194f0365bceb01106a65b0a0549b31d666a6acab"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/page.tsx",
+      "gitBlob": "1687908785845cfb1ac5935389f8c0637c3cf88c"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/users/page.tsx",
+      "gitBlob": "7a9fe622032368e54c7730b96da9243f4ca81059"
+    },
+    {
+      "path": "src/app/(dashboard)/admin/withdrawals/page.tsx",
+      "gitBlob": "0bee04d8be6e30ea89c1395ba830e2ec9a71f19e"
+    },
+    {
+      "path": "src/app/(dashboard)/ambassadeur/page.tsx",
+      "gitBlob": "f4083c98e44025aa24ad271687aa302b5e6c2d2a"
+    },
+    {
+      "path": "src/app/(dashboard)/analytics/page.tsx",
+      "gitBlob": "0dfaab3d3d1af585a10ae669e591368ad17efc11"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/layout.tsx",
+      "gitBlob": "7179bb568cdc063a3894e399c443d2120d217457"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/memory/page.tsx",
+      "gitBlob": "0b9bfc3e9d5187bf1d929ef06eeb695116ad6c40"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/page.tsx",
+      "gitBlob": "34256c4d0936b7a4e4e4c56f3ea88fdce3860715"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/schedules/page.tsx",
+      "gitBlob": "a1d58c89e00a75069b315288d4a45b05c9c3981e"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/settings/page.tsx",
+      "gitBlob": "57861512a640381dba4177b1b36daaefb02a37a7"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/themes/page.tsx",
+      "gitBlob": "2f75755d5de4ea679345b745d2e493e68286614c"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/videos/page.tsx",
+      "gitBlob": "27219265ba0555c699163f3ba4c474c11b04c557"
+    },
+    {
+      "path": "src/app/(dashboard)/autopilot/page.tsx",
+      "gitBlob": "50a42382e4eec98551d3d8ef94fc0271d3f6cc40"
+    },
+    {
+      "path": "src/app/(dashboard)/batch/page.tsx",
+      "gitBlob": "80320e32de7c42975f63dba807a9ef8ea608b76d"
+    },
+    {
+      "path": "src/app/(dashboard)/boutique/page.tsx",
+      "gitBlob": "b8386cf2d53970498a690046e86e23b3d32a978a"
+    },
+    {
+      "path": "src/app/(dashboard)/breathe/constants.ts",
+      "gitBlob": "a4ccee78494be78bac11b3b30ace26a1720cc176"
+    },
+    {
+      "path": "src/app/(dashboard)/breathe/page.tsx",
+      "gitBlob": "69c4beb2efa292cba8ada4821e8fe33b7fcb1eeb"
+    },
+    {
+      "path": "src/app/(dashboard)/chat/[id]/page.tsx",
+      "gitBlob": "085c28583e7a99aebe92d0349954aa312b5f3eec"
+    },
+    {
+      "path": "src/app/(dashboard)/chat/page.tsx",
+      "gitBlob": "21f8051eb8ad6965587190dde3a6fa84d9268d31"
+    },
+    {
+      "path": "src/app/(dashboard)/classement-points/page.tsx",
+      "gitBlob": "99d9383bc773d7fa4394642c9e87caf36bee2712"
+    },
+    {
+      "path": "src/app/(dashboard)/classement/engagement/page.tsx",
+      "gitBlob": "85e38ff962a9a2d0bf9c1ee5464197bf61bb1094"
+    },
+    {
+      "path": "src/app/(dashboard)/classement/page.tsx",
+      "gitBlob": "f8f924fe84a118d20569c4fd81bc335350788e0b"
+    },
+    {
+      "path": "src/app/(dashboard)/community/page.tsx",
+      "gitBlob": "0c0af406d56714307011fe54135dc859084bd59d"
+    },
+    {
+      "path": "src/app/(dashboard)/contest/page.tsx",
+      "gitBlob": "0483d9b27f66e475e69edb5ea5e44f3c2f09c2a8"
+    },
+    {
+      "path": "src/app/(dashboard)/create/page.tsx",
+      "gitBlob": "8a275ced61b5d476b74166ff31fb16353cb6c140"
+    },
+    {
+      "path": "src/app/(dashboard)/dashboard/DashboardSkeleton.tsx",
+      "gitBlob": "a76426eef9f657e6d3be0f0b47e518f2efc32df7"
+    },
+    {
+      "path": "src/app/(dashboard)/dashboard/page.tsx",
+      "gitBlob": "a10f179bdd38aa4dc396be7837f5a4a154ef4399"
+    },
+    {
+      "path": "src/app/(dashboard)/editor/[id]/page.tsx",
+      "gitBlob": "0463216258cd53b5d0a8f76ee573dec8a266a528"
+    },
+    {
+      "path": "src/app/(dashboard)/fiscal/FiscalClient.tsx",
+      "gitBlob": "27e6a0721ee597b9271221bce1bd772ceddb5213"
+    },
+    {
+      "path": "src/app/(dashboard)/fiscal/page.tsx",
+      "gitBlob": "3ec4b1211ead2f2ac1ff36f4eb9e6bf39964569d"
+    },
+    {
+      "path": "src/app/(dashboard)/gratitude/page.tsx",
+      "gitBlob": "d83454c1ba3184da5e922254ad042aef45283095"
+    },
+    {
+      "path": "src/app/(dashboard)/influencer/page.tsx",
+      "gitBlob": "1e48c22354693847b55fe4353f7c6f2ebca779b1"
+    },
+    {
+      "path": "src/app/(dashboard)/invoices/page.tsx",
+      "gitBlob": "5aa27c37f3eb95260d89d0db6ce57cae2ec47e06"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/defi-collectif/page.tsx",
+      "gitBlob": "a31eb49bbb3da9dda459a2d2775946b4e569c8b0"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/dharma/page.tsx",
+      "gitBlob": "f70dcc5b70ffffe13ab97fe5aa9c841e98b21213"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/jeu-creatif/page.tsx",
+      "gitBlob": "5cd5a99ddef21630ea7f4526d232ffa9a153365d"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/lightning/page.tsx",
+      "gitBlob": "0ab3812cc19de3408ec00c046631a4da7497b96b"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/missions/page.tsx",
+      "gitBlob": "9499e55fbc7da736327d6feb87106405a211876f"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/page.tsx",
+      "gitBlob": "c707493c695534f4db6b00bd7018052a603e2d25"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/quete-rare/page.tsx",
+      "gitBlob": "b2da32d59863de3a6230450eb448cce3983e496c"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/tournoi/page.tsx",
+      "gitBlob": "3c3bb851576c621ed5fe16a8ddca21e0e0373cdd"
+    },
+    {
+      "path": "src/app/(dashboard)/karma/vague/page.tsx",
+      "gitBlob": "2b6336a410faed9039a3c42f0fa3fd551df67b91"
+    },
+    {
+      "path": "src/app/(dashboard)/layout.tsx",
+      "gitBlob": "92030959d93dc56cdde723969e5a17d596f20e0d"
+    },
+    {
+      "path": "src/app/(dashboard)/library/[id]/page.tsx",
+      "gitBlob": "54cd3bfe42432722105e91dff9415668898fc741"
+    },
+    {
+      "path": "src/app/(dashboard)/library/page.tsx",
+      "gitBlob": "15bbc94da5797ca07aa75c00d1a25a1bf69afc1d"
+    },
+    {
+      "path": "src/app/(dashboard)/lottery/page.tsx",
+      "gitBlob": "dc7590c029eb8ebe1b7cbf1be2daad6aef27adf8"
+    },
+    {
+      "path": "src/app/(dashboard)/ma-memoire/page.tsx",
+      "gitBlob": "a8c176fb489c93e1052a35ba6b2cf23d5bb86c78"
+    },
+    {
+      "path": "src/app/(dashboard)/notifications/page.tsx",
+      "gitBlob": "7b74ecb8c2016d93f9b36c28019eed9d11922a91"
+    },
+    {
+      "path": "src/app/(dashboard)/partenaire/coach/page.tsx",
+      "gitBlob": "e4d427991a03cceeeb907e56da8faefd92dba265"
+    },
+    {
+      "path": "src/app/(dashboard)/partenaire/outils/page.tsx",
+      "gitBlob": "8367410cad5c333a1abb43e37ea9b1680b025c45"
+    },
+    {
+      "path": "src/app/(dashboard)/partenaire/page.tsx",
+      "gitBlob": "de80990370e0e13b9c6b6850d5f8ab369d0e89f5"
+    },
+    {
+      "path": "src/app/(dashboard)/production/page.tsx",
+      "gitBlob": "53f5a331e514003a1fc33e77bd4275267f8faf77"
+    },
+    {
+      "path": "src/app/(dashboard)/profile/page.tsx",
+      "gitBlob": "ecbd5fd62cc469cd39673abcbc00123b4b9bc1f0"
+    },
+    {
+      "path": "src/app/(dashboard)/publish/page.tsx",
+      "gitBlob": "d6a27be07acd263f1306af94be1321c8c7067dcc"
+    },
+    {
+      "path": "src/app/(dashboard)/referral/page.tsx",
+      "gitBlob": "acdd20b456b2eb424f857fefc76e6ba0ac4bde23"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/abonnement/AbonnementClient.tsx",
+      "gitBlob": "2c0d89ac753a7a3d4bd1be1020d81045a0badc45"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/abonnement/page.tsx",
+      "gitBlob": "aae5450167f5f49e44dcf41266198ff410d0bc3d"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/notifications/page.tsx",
+      "gitBlob": "84f753787981703b3b7c6d48303deb704498c2b7"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/page.tsx",
+      "gitBlob": "f973a033973b0e344130d52f2718403ec3f16ed1"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/paiement/PaiementClient.tsx",
+      "gitBlob": "8f87d87917c4bc432200544d8c577de986d00896"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/paiement/WalletSummary.tsx",
+      "gitBlob": "7b9e95da61cfb83d05364315b83e8541896c27ae"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/paiement/WithdrawForm.tsx",
+      "gitBlob": "a68f1864387e0f52cf7805fc1adffab29915f45c"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/paiement/page.tsx",
+      "gitBlob": "7948b5a68dfca6220a4804e9a39204ee3a2587ad"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/paiement/types.ts",
+      "gitBlob": "ade623835f71f99c24b1d17d45c7b80b03b8efac"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/social/page.tsx",
+      "gitBlob": "f90cb48ab3b786cb72a00afaa154e457d57aa97a"
+    },
+    {
+      "path": "src/app/(dashboard)/storyboard/page.tsx",
+      "gitBlob": "d01903c0317dacbec2d0bd8509361d5276e3088e"
+    },
+    {
+      "path": "src/app/(dashboard)/styles/page.tsx",
+      "gitBlob": "ad02cdb0d0817daf6b454f8c60f4029394bab840"
+    },
+    {
+      "path": "src/app/(dashboard)/templates/page.tsx",
+      "gitBlob": "04e2b18dc3288bc314d4bf4f19cd5bf1e6de21ba"
+    },
+    {
+      "path": "src/app/(dashboard)/voices/page.tsx",
+      "gitBlob": "c9c459ad0c855a17a22f9364cab26d196f7c0096"
+    },
+    {
+      "path": "src/app/(dashboard)/wallet/page.tsx",
+      "gitBlob": "466d81252075785a2e702344ff7b890f4eb840ab"
+    },
+    {
+      "path": "src/app/aide/EscaladeForm.tsx",
+      "gitBlob": "5d9ff062178de5de3a137a89f03075ac3f818b25"
+    },
+    {
+      "path": "src/app/aide/aide-data.ts",
+      "gitBlob": "73616b5c637b316b497dfb217f2428a0ef6c6589"
+    },
+    {
+      "path": "src/app/aide/page.tsx",
+      "gitBlob": "5f5eca5278d8b73f1d22be32647e00889b608e53"
+    },
+    {
+      "path": "src/app/api/account/delete/route.ts",
+      "gitBlob": "6b4b6b89b1815f90a59fd4b3fadfff62668bc490"
+    },
+    {
+      "path": "src/app/api/achievements/route.ts",
+      "gitBlob": "9ab218ebadd1b9491e50d222af32780370c15ef7"
+    },
+    {
+      "path": "src/app/api/admin/health/route.ts",
+      "gitBlob": "32dc936797b6762deaff5a8798f999326354105e"
+    },
+    {
+      "path": "src/app/api/admin/stats/route.ts",
+      "gitBlob": "5ab8ac29dacd469fdd954bc619e8e91efd5e9ac2"
+    },
+    {
+      "path": "src/app/api/admin/users/[id]/route.ts",
+      "gitBlob": "734d0cd28da62939126be3aa2cf382d7a452c293"
+    },
+    {
+      "path": "src/app/api/admin/users/route.ts",
+      "gitBlob": "72cf012a4791ad1f9a6c5b9f880edd79baf0d6a8"
+    },
+    {
+      "path": "src/app/api/ai/chat/route.ts",
+      "gitBlob": "ba8795cfb3bbae68a66fe8cd3169fba1c7ecb4bd"
+    },
+    {
+      "path": "src/app/api/auto/config/route.ts",
+      "gitBlob": "4003ec8653c9013d62d75d8d763ed07d3f4d4674"
+    },
+    {
+      "path": "src/app/api/auto/generate/route.ts",
+      "gitBlob": "ea7c29e4e37b58f8bbbf7fed435a2d61dbfb223c"
+    },
+    {
+      "path": "src/app/api/auto/memory/route.ts",
+      "gitBlob": "ace1d314ff54771ad3906a6476e279981e3cac12"
+    },
+    {
+      "path": "src/app/api/auto/publish/route.ts",
+      "gitBlob": "524fe0b332912cbc2dae9f1b1fdbb58e1489789d"
+    },
+    {
+      "path": "src/app/api/auto/themes/[id]/route.ts",
+      "gitBlob": "e511d209f995599b62e9ee449873b6c451155e49"
+    },
+    {
+      "path": "src/app/api/auto/themes/route.ts",
+      "gitBlob": "2b91b28144de66d00aeb72c6e48dfb8590205727"
+    },
+    {
+      "path": "src/app/api/auto/videos/[id]/route.ts",
+      "gitBlob": "e4fcb964cce69421537113516aff49b0d59acad8"
+    },
+    {
+      "path": "src/app/api/auto/videos/route.ts",
+      "gitBlob": "69324b9a5827290746240bb05f6b05c7e77a094c"
+    },
+    {
+      "path": "src/app/api/boutique/route.ts",
+      "gitBlob": "d2ead6cd3f1dbaec582289de8d78a714cb4e392e"
+    },
+    {
+      "path": "src/app/api/chatbot/route.ts",
+      "gitBlob": "8119704c1d62d7855118105d77842687940802a4"
+    },
+    {
+      "path": "src/app/api/community/buddy/checkin/route.ts",
+      "gitBlob": "c9af3588a7122f807258b96d7f56ff06e91fc7c1"
+    },
+    {
+      "path": "src/app/api/community/buddy/route.ts",
+      "gitBlob": "f7e7ccfe19798cb77cee9271dc21911012b08acd"
+    },
+    {
+      "path": "src/app/api/community/circles/join/route.ts",
+      "gitBlob": "ccabefedae1a1506f6db41cfb3ef06169f719d8b"
+    },
+    {
+      "path": "src/app/api/community/circles/route.ts",
+      "gitBlob": "8b57dabf8b6f3bad8d8cb24fd1c42fa79f2b0d1a"
+    },
+    {
+      "path": "src/app/api/community/wall/react/route.ts",
+      "gitBlob": "0b7d1d7a19705c2927d90acc877d95c35c3d5d5f"
+    },
+    {
+      "path": "src/app/api/community/wall/route.ts",
+      "gitBlob": "ba5d4506e842bedc3e77d319a4a6327e9a35b647"
+    },
+    {
+      "path": "src/app/api/connect/account-session/route.ts",
+      "gitBlob": "1f5cddf708583341635a7235533ea03e3a5a8536"
+    },
+    {
+      "path": "src/app/api/connect/onboard/route.ts",
+      "gitBlob": "a1919fc4c97d4d957bc3bef780e121ff2d6ecd28"
+    },
+    {
+      "path": "src/app/api/contact/route.ts",
+      "gitBlob": "f771be371328cc6fe56f0eb5d517b861676af953"
+    },
+    {
+      "path": "src/app/api/create/route.ts",
+      "gitBlob": "dd0eb6f6b0952e4aa1275d994859538c335d110c"
+    },
+    {
+      "path": "src/app/api/create/status/route.ts",
+      "gitBlob": "5fa54741fb6098d1acc986e8db7ee0fe1fe92d52"
+    },
+    {
+      "path": "src/app/api/cron/account-deletion/route.ts",
+      "gitBlob": "977fc1adfc78b3d3b2e0cac9639eb559e20034f9"
+    },
+    {
+      "path": "src/app/api/cron/ambassador-check/route.ts",
+      "gitBlob": "02b19c4a9dff45c3b3cb5d263d657264895a14b9"
+    },
+    {
+      "path": "src/app/api/cron/asso-transfer/route.ts",
+      "gitBlob": "93f84b933e289ac749c5a6cf5705f590dd61672a"
+    },
+    {
+      "path": "src/app/api/cron/auto-learn/route.ts",
+      "gitBlob": "45d3ded65651aaca28f6397ba9b500c15dd0f75e"
+    },
+    {
+      "path": "src/app/api/cron/auto-plan/route.ts",
+      "gitBlob": "d2d41ad06df372d486254c91df0857bf2f6e7645"
+    },
+    {
+      "path": "src/app/api/cron/auto-trends/route.ts",
+      "gitBlob": "79d87423ad5d20391a309d8ef58f5d0111d0786c"
+    },
+    {
+      "path": "src/app/api/cron/contest-judge/route.ts",
+      "gitBlob": "835b80a8a1322fac294e19fc942066c33b66e066"
+    },
+    {
+      "path": "src/app/api/cron/contest-monthly/route.ts",
+      "gitBlob": "9b839db6393a472fb79e97f99b21884dd2299aa8"
+    },
+    {
+      "path": "src/app/api/cron/contest-weekly/route.ts",
+      "gitBlob": "0e07679208c22f5e4928a728b3d0664107b807ec"
+    },
+    {
+      "path": "src/app/api/cron/email-sequences/route.ts",
+      "gitBlob": "0b948b4b9ea601ee1837a5555002db76e0cf0d79"
+    },
+    {
+      "path": "src/app/api/cron/fiscal-palier/route.ts",
+      "gitBlob": "322abd117c220aa5f9eae628fe00c728163b4358"
+    },
+    {
+      "path": "src/app/api/cron/karma-defi/route.ts",
+      "gitBlob": "1756c22129c7bb3f0aa0c641908d11f027b1f61e"
+    },
+    {
+      "path": "src/app/api/cron/karma-lightning/route.ts",
+      "gitBlob": "b2605a5f12d675a1567c13e69a3ed1fa05d2586f"
+    },
+    {
+      "path": "src/app/api/cron/karma-split-distribute/route.ts",
+      "gitBlob": "36ace9bf1d961d213c07b0b2c7829bc5846f072b"
+    },
+    {
+      "path": "src/app/api/cron/karma-tournoi/route.ts",
+      "gitBlob": "2d502e0e4b40e8a76ac937e5f1baba9c684c621d"
+    },
+    {
+      "path": "src/app/api/cron/smart-split/route.ts",
+      "gitBlob": "62971adec11fd83bd110d05bb67307378c6c2104"
+    },
+    {
+      "path": "src/app/api/cron/streak-update/route.ts",
+      "gitBlob": "26d661b02bcf1489eb47c199e345e570a20aade7"
+    },
+    {
+      "path": "src/app/api/cron/sutra-auto/route.ts",
+      "gitBlob": "4b4e911e52baf475f44528690963d8d25e2d85bc"
+    },
+    {
+      "path": "src/app/api/cron/upgrade-ots-proofs/route.ts",
+      "gitBlob": "8e09bedcb710dcceabfd24c062ca7654257aefbb"
+    },
+    {
+      "path": "src/app/api/cron/video-worker/route.ts",
+      "gitBlob": "e8cbe67adae3edccb7fd8d1b5c1c6b93d640d8fd"
+    },
+    {
+      "path": "src/app/api/daily-gift/route.ts",
+      "gitBlob": "63588c0cd66a1f1c5851ecbe4a371e326b659f1d"
+    },
+    {
+      "path": "src/app/api/drafts/route.ts",
+      "gitBlob": "b88759296b7d7d7d9baff84c8c5a4a36ca3e9108"
+    },
+    {
+      "path": "src/app/api/dream-goals/route.ts",
+      "gitBlob": "86620b88a5debaf0be09f7a39a62013563917e6c"
+    },
+    {
+      "path": "src/app/api/email/route.ts",
+      "gitBlob": "3a37f96cd3ed376e259603e87a088cdbaff33f2f"
+    },
+    {
+      "path": "src/app/api/feedback/route.ts",
+      "gitBlob": "cb2803727ac24f25478debdd3b63f6c7f13ec413"
+    },
+    {
+      "path": "src/app/api/financer/route.ts",
+      "gitBlob": "cf9d09b1a3db575ac82fbe35e0629e9e79837345"
+    },
+    {
+      "path": "src/app/api/fiscal/status/route.ts",
+      "gitBlob": "876564a6ea02cd8129e08760fecafb481cb7238a"
+    },
+    {
+      "path": "src/app/api/fiscal/summary/route.ts",
+      "gitBlob": "45391516d30c523d2d8d69ab57d482cf37e6cb45"
+    },
+    {
+      "path": "src/app/api/flywheel/route.ts",
+      "gitBlob": "572b85a679470597bba725a8855db0613478973e"
+    },
+    {
+      "path": "src/app/api/gratitude/route.ts",
+      "gitBlob": "c803ba314f1fc65436b3b99163a5bcfb3fd8c80d"
+    },
+    {
+      "path": "src/app/api/health/route.ts",
+      "gitBlob": "c807756443a03b6e1525b8ac27e54d59ffe1b9df"
+    },
+    {
+      "path": "src/app/api/internal/stripe-fulfillment/route.ts",
+      "gitBlob": "e71c628407d6d8ad69458764d7af89954d536c29"
+    },
+    {
+      "path": "src/app/api/karma/games/creatif/route.ts",
+      "gitBlob": "a9c6f22f5ae30b0d3a9ae819d78ab8bf422e8480"
+    },
+    {
+      "path": "src/app/api/karma/games/creatif/vote/route.ts",
+      "gitBlob": "418050c9e45f36a586babf1e8e7b07227d204fea"
+    },
+    {
+      "path": "src/app/api/karma/games/defi/route.ts",
+      "gitBlob": "3c03d68cb76ba451f73ad3e37a278eb45c3630d1"
+    },
+    {
+      "path": "src/app/api/karma/games/dharma/route.ts",
+      "gitBlob": "62e8bce9dbe80883197c68495516868f2bfbfb1e"
+    },
+    {
+      "path": "src/app/api/karma/games/lightning/claim/route.ts",
+      "gitBlob": "105087fd3e5ab12e88ccf015d9851cb5386a09ae"
+    },
+    {
+      "path": "src/app/api/karma/games/lightning/route.ts",
+      "gitBlob": "63245ac59a7a8a28d95ea59f0826a1905467e4bc"
+    },
+    {
+      "path": "src/app/api/karma/games/quete/route.ts",
+      "gitBlob": "3adb45ecd620f2db227e5eb9d9dbfc585186e4b3"
+    },
+    {
+      "path": "src/app/api/karma/games/tournoi/route.ts",
+      "gitBlob": "d39673580a60bcb10be149e7ff12d907b634fbe0"
+    },
+    {
+      "path": "src/app/api/karma/games/vague/route.ts",
+      "gitBlob": "b7399962c7538b558b2846a942abe45d5d3f1d15"
+    },
+    {
+      "path": "src/app/api/karma/missions/route.ts",
+      "gitBlob": "0546b42270bc66076e66a848629dd9f87e1c6080"
+    },
+    {
+      "path": "src/app/api/karma/seeds/route.ts",
+      "gitBlob": "ba203b3d3fcd70928d33cfce715d8aa8031fb2e2"
+    },
+    {
+      "path": "src/app/api/legal/accept/route.ts",
+      "gitBlob": "74ca24c0dd7a4f5f2e677e8b1afe65f49d26c34b"
+    },
+    {
+      "path": "src/app/api/legal/cookie-consent/route.ts",
+      "gitBlob": "05238b6a9d00d0a887f3a9feefdb97df8416eaa3"
+    },
+    {
+      "path": "src/app/api/legal/my-data/route.ts",
+      "gitBlob": "a483d09f75e3265d87f664c3d5c2ad1bba3ce011"
+    },
+    {
+      "path": "src/app/api/locale/route.ts",
+      "gitBlob": "6e72a1b93209bf6fc321a26d4181431b7198a8b5"
+    },
+    {
+      "path": "src/app/api/lottery/route.ts",
+      "gitBlob": "4a17dce478f66d021f7ceee158ea3259bebf175e"
+    },
+    {
+      "path": "src/app/api/magic-moment/ack/route.ts",
+      "gitBlob": "9ad80aa531ea1f9199726bb9332565fdec30f40e"
+    },
+    {
+      "path": "src/app/api/magic-moment/check/route.ts",
+      "gitBlob": "4aafce94d61d378ab6644edc8261d4953ac62483"
+    },
+    {
+      "path": "src/app/api/media/[reference]/route.ts",
+      "gitBlob": "110b0c2a7bdd1f7f71f92e099b383b24622d9e1f"
+    },
+    {
+      "path": "src/app/api/music/generate/route.ts",
+      "gitBlob": "ecc8ca296f4c4fb6f98f7fa8b3fa27990926919b"
+    },
+    {
+      "path": "src/app/api/notifications/route.ts",
+      "gitBlob": "461f175e173f91f48bc231d1602712f9af2ab80a"
+    },
+    {
+      "path": "src/app/api/og/route.tsx",
+      "gitBlob": "ef3d1705a4d3de8822adaadffa84b4078da34ab3"
+    },
+    {
+      "path": "src/app/api/partner/coach/route.ts",
+      "gitBlob": "2efbf6f95ae7a31dbd5490ab2fd004a7a30dc973"
+    },
+    {
+      "path": "src/app/api/partner/commissions/route.ts",
+      "gitBlob": "7588e4dbea4642b960135065d2dc22af355a276c"
+    },
+    {
+      "path": "src/app/api/partner/payout/route.ts",
+      "gitBlob": "21c5b2382dd25b4b6700cb564c623a2215f02ada"
+    },
+    {
+      "path": "src/app/api/partner/qr/[code]/route.ts",
+      "gitBlob": "61e695aa98f59462b6e833bd6629495cd7955983"
+    },
+    {
+      "path": "src/app/api/partner/referrals/route.ts",
+      "gitBlob": "d411f9337f636c92fc51814ad4124dec0692c723"
+    },
+    {
+      "path": "src/app/api/partner/register/route.ts",
+      "gitBlob": "3d8566cc4cc1f0c8321af5528c9679f979ae3401"
+    },
+    {
+      "path": "src/app/api/partner/scan/[code]/route.ts",
+      "gitBlob": "00b562d56dd6089ddf8f40e05a1a49409114becc"
+    },
+    {
+      "path": "src/app/api/partner/stats/route.ts",
+      "gitBlob": "438e221ae863c6514f3bcdb73bc15e63790f562d"
+    },
+    {
+      "path": "src/app/api/points/route.ts",
+      "gitBlob": "3ce66e0921f02bb9c61132e1cc00a8220c4398b6"
+    },
+    {
+      "path": "src/app/api/production/route.ts",
+      "gitBlob": "52dd75f1c2e12017719c36aff74b5a6a2c8e595a"
+    },
+    {
+      "path": "src/app/api/publish/route.ts",
+      "gitBlob": "1f2011266cb5cb87422d305a7a35d09e78a749c5"
+    },
+    {
+      "path": "src/app/api/publish/social/route.ts",
+      "gitBlob": "1f2011266cb5cb87422d305a7a35d09e78a749c5"
+    },
+    {
+      "path": "src/app/api/purama-score/route.ts",
+      "gitBlob": "fd46d1497c4367dc58c8bc6bd7e63025d16062ff"
+    },
+    {
+      "path": "src/app/api/referral/route.ts",
+      "gitBlob": "11da6702a981cbcb8ef07426b1bc5b831727fde8"
+    },
+    {
+      "path": "src/app/api/settings/route.ts",
+      "gitBlob": "13c6df0092a1b643526e7472f4a7008e9816c1cb"
+    },
+    {
+      "path": "src/app/api/setup/route.ts",
+      "gitBlob": "f57857ff43eb56f81e20a49179b9da232fe4ac86"
+    },
+    {
+      "path": "src/app/api/share/route.ts",
+      "gitBlob": "aa587f60f2aa72c3a0b0660901ecab2a11472fed"
+    },
+    {
+      "path": "src/app/api/social-feed/route.ts",
+      "gitBlob": "6c5f9f6a4d6f2b7cd8a7974d54fd26123ad6044e"
+    },
+    {
+      "path": "src/app/api/social/accounts/route.ts",
+      "gitBlob": "3d1d96a2bf59e9c91496fc762cd90fa4f399b542"
+    },
+    {
+      "path": "src/app/api/social/autopilot/route.ts",
+      "gitBlob": "d68c0a25e170f55db8738b836a332a696f95a4f6"
+    },
+    {
+      "path": "src/app/api/social/callback/route.ts",
+      "gitBlob": "df23f35456c894c4359341a3db2a3269c717e1cd"
+    },
+    {
+      "path": "src/app/api/social/connect/route.ts",
+      "gitBlob": "4021479e2dff7425869805cf9d835a2492ee5c73"
+    },
+    {
+      "path": "src/app/api/social/publish/route.ts",
+      "gitBlob": "ae6f6c81078fa69c1ff165414768e36efdb1d5b5"
+    },
+    {
+      "path": "src/app/api/status/route.ts",
+      "gitBlob": "6f6b9f7c658e7afd61212a8a3aea9ebb843add68"
+    },
+    {
+      "path": "src/app/api/stock/keywords/route.ts",
+      "gitBlob": "184ec1d097b071dbeeadb1d5a6a49f25cf0e30aa"
+    },
+    {
+      "path": "src/app/api/stock/search/route.ts",
+      "gitBlob": "aecdba737f0751c005c02906a36bd90fed435076"
+    },
+    {
+      "path": "src/app/api/storyboard/route.ts",
+      "gitBlob": "a1b4c39e1eb62a71361139ae0b83c95160203933"
+    },
+    {
+      "path": "src/app/api/stripe/checkout/route.ts",
+      "gitBlob": "a3d3ea60c0171b4e0ca5ba48118bfdfe02567c94"
+    },
+    {
+      "path": "src/app/api/stripe/portal/route.ts",
+      "gitBlob": "6189d159e621e3183c7dabed8b63bfa5f7407569"
+    },
+    {
+      "path": "src/app/api/stripe/subscription/cancel/route.ts",
+      "gitBlob": "5b4192f22719374758b6df51d3dbf655aa169951"
+    },
+    {
+      "path": "src/app/api/stripe/subscription/pause/route.ts",
+      "gitBlob": "d2754e4ce471e9f173394fd61a834e56d4f914e8"
+    },
+    {
+      "path": "src/app/api/stripe/webhook/route.ts",
+      "gitBlob": "5ff7f56f93d8d714735450ed07bfdc1b2dd82379"
+    },
+    {
+      "path": "src/app/api/subtitles/export/route.ts",
+      "gitBlob": "d52e113a00f28f56896fa8a7edc2dd4432aa08c4"
+    },
+    {
+      "path": "src/app/api/subtitles/route.ts",
+      "gitBlob": "01f80236b1e732b0cd4a7ee9aa8357e1bf5c5de6"
+    },
+    {
+      "path": "src/app/api/subtitles/translate/route.ts",
+      "gitBlob": "e7560c83d3b650a4a44b00aa0ffc6edd5c779b4b"
+    },
+    {
+      "path": "src/app/api/sutra/auto/generate/route.ts",
+      "gitBlob": "7c6399b16a44d63964e6bd1642d39d37ee993b9f"
+    },
+    {
+      "path": "src/app/api/templates/route.ts",
+      "gitBlob": "fbae29078d11279a91ae1e40a0a9f71ad7448b63"
+    },
+    {
+      "path": "src/app/api/verify-siret/route.ts",
+      "gitBlob": "83c72ad404b4a1d9a17b5516536be33678ad0430"
+    },
+    {
+      "path": "src/app/api/verify/[videoId]/route.ts",
+      "gitBlob": "1339c10606868a0d0f291d4b6bed5c1ff222a57e"
+    },
+    {
+      "path": "src/app/api/video/capabilities/route.ts",
+      "gitBlob": "7c0b674f4904e192244ca80a8454d1cb8dc05484"
+    },
+    {
+      "path": "src/app/api/video/export/route.ts",
+      "gitBlob": "0a107a0a65dc3f6093661c378e62acf1dcc7704d"
+    },
+    {
+      "path": "src/app/api/video/status/[jobId]/route.ts",
+      "gitBlob": "a680ae158074b4537d96ec29cbf90ab6395be5b1"
+    },
+    {
+      "path": "src/app/api/voice/clone/route.ts",
+      "gitBlob": "627f97bdde4b953247904c93f4b9bde93336a8b7"
+    },
+    {
+      "path": "src/app/api/voice/generate/route.ts",
+      "gitBlob": "9393d6e5c9583ab78d7def58e63816c9a4fe3180"
+    },
+    {
+      "path": "src/app/api/voice/list/route.ts",
+      "gitBlob": "11ff296b9658429b35039dbc17b815c87021bfc6"
+    },
+    {
+      "path": "src/app/api/wallet/route.ts",
+      "gitBlob": "ac4440a9d3b5597bae5c46d3dfe7c989a010b652"
+    },
+    {
+      "path": "src/app/api/wallet/withdraw/route.ts",
+      "gitBlob": "692f4f32d1a591503b6c6911d89959979007b9e4"
+    },
+    {
+      "path": "src/app/api/wallet/withdraw/stripe/route.ts",
+      "gitBlob": "980c167cc0aedfaca474e4378812e678207da9fe"
+    },
+    {
+      "path": "src/app/api/webhooks/suno/route.ts",
+      "gitBlob": "c96362c2fb788e9b5fdbbb53a6675c2b7f66a567"
+    },
+    {
+      "path": "src/app/auth/callback/route.ts",
+      "gitBlob": "023e7dfe7be5e705633d65375df7f7e8236ec269"
+    },
+    {
+      "path": "src/app/cgu/page.tsx",
+      "gitBlob": "a8ce77103bb9129e4b89013490c4cc957469cb46"
+    },
+    {
+      "path": "src/app/cgv/page.tsx",
+      "gitBlob": "c44844cadef0c28366eef6eeaf82a7fdb2775853"
+    },
+    {
+      "path": "src/app/changelog/page.tsx",
+      "gitBlob": "3d34d8ecf74cd878822310e9ee0938ba789b213c"
+    },
+    {
+      "path": "src/app/confidentialite/page.tsx",
+      "gitBlob": "782de579be2e970b866be11db6bee7f651455034"
+    },
+    {
+      "path": "src/app/confirmation/page.tsx",
+      "gitBlob": "231d39110ded5e28a1fb10014858bbeb66dff738"
+    },
+    {
+      "path": "src/app/contact/page.tsx",
+      "gitBlob": "f7222def01527b358ab4e5b61e56038b5557d903"
+    },
+    {
+      "path": "src/app/devenir-ambassadeur/DevenirAmbassadeurClient.tsx",
+      "gitBlob": "ba00b06c7c37affb0051845616557636ff13df96"
+    },
+    {
+      "path": "src/app/devenir-ambassadeur/page.tsx",
+      "gitBlob": "3de90b83fc7b54b91f4fb9c33559384c1f2f266c"
+    },
+    {
+      "path": "src/app/devenir-influenceur/page.tsx",
+      "gitBlob": "3d5ee087c22ffc64af5c41809d590c64f1fb2a2f"
+    },
+    {
+      "path": "src/app/ecosystem/page.tsx",
+      "gitBlob": "48ecf0a4447d6e2253434b41791d7809f798bc94"
+    },
+    {
+      "path": "src/app/error.tsx",
+      "gitBlob": "60511353ecd89c04a7902430150267a320623177"
+    },
+    {
+      "path": "src/app/financer/page.tsx",
+      "gitBlob": "3c1b179cd09f05aa6975132b470fe2f16f8603e6"
+    },
+    {
+      "path": "src/app/go/[slug]/route.ts",
+      "gitBlob": "3074855f4d9a0340a819b1869b27a3e4ae7233e2"
+    },
+    {
+      "path": "src/app/guide/page.tsx",
+      "gitBlob": "923292f3ec9a6ba258700ce4678373d9246657e3"
+    },
+    {
+      "path": "src/app/help/layout.tsx",
+      "gitBlob": "ec38b447101d2614c1bc826077f99b2d93ccc429"
+    },
+    {
+      "path": "src/app/help/page.tsx",
+      "gitBlob": "90ca3d1fc27a0eb348eb121d6e4f65630dc42626"
+    },
+    {
+      "path": "src/app/how-it-works/page.tsx",
+      "gitBlob": "8d101efafda5fa0aad1cd8f0244823bd50f25d28"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "gitBlob": "364cf55755b8978692bbe1e229437e2aca411156"
+    },
+    {
+      "path": "src/app/legal/cgv/page.tsx",
+      "gitBlob": "fe4d828c2c259ffde8898732476aa678278d9998"
+    },
+    {
+      "path": "src/app/legal/cookies/page.tsx",
+      "gitBlob": "ad2fc89e92accc6dd9b965bb4c558c9977e956ae"
+    },
+    {
+      "path": "src/app/legal/mentions/page.tsx",
+      "gitBlob": "f258bf4a45061a2de9b14e1d4810fdd471a95c3b"
+    },
+    {
+      "path": "src/app/legal/page.tsx",
+      "gitBlob": "533911a19991a14b9c4eae6fb298d708fdd52967"
+    },
+    {
+      "path": "src/app/legal/privacy/page.tsx",
+      "gitBlob": "89726f6ab30a815650770facb1fdfdc33c62be7d"
+    },
+    {
+      "path": "src/app/legal/terms/page.tsx",
+      "gitBlob": "da45a8ef98a5f9551495d2c96a8a0590b8f0ce62"
+    },
+    {
+      "path": "src/app/mentions-legales/page.tsx",
+      "gitBlob": "fa6a2b7b17c1c8594d37118dcebc9bc81a490976"
+    },
+    {
+      "path": "src/app/not-found.tsx",
+      "gitBlob": "7c6074dbd239a8d77f9b8c6c7f4d884b33a168d6"
+    },
+    {
+      "path": "src/app/offline/layout.tsx",
+      "gitBlob": "bf3c2a722e0927cbe25f2079ddc82cd02bae1fe2"
+    },
+    {
+      "path": "src/app/offline/page.tsx",
+      "gitBlob": "a9e62262fa5b1343a3b85d015dd1a1a61c6ad4e0"
+    },
+    {
+      "path": "src/app/page.tsx",
+      "gitBlob": "5c16860b7f78d4d4e2c411621a40d536f56da958"
+    },
+    {
+      "path": "src/app/partenariat/[canal]/page.tsx",
+      "gitBlob": "18b9cb0a772b4d9c2822edab8c90aadea31f3b8b"
+    },
+    {
+      "path": "src/app/partenariat/page.tsx",
+      "gitBlob": "ff5c11f50d746aafb0288995f01a85b6ea72f0a3"
+    },
+    {
+      "path": "src/app/politique-confidentialite/page.tsx",
+      "gitBlob": "dc46891c688c1aed33bc6d69884507e172f463ce"
+    },
+    {
+      "path": "src/app/pricing/page.tsx",
+      "gitBlob": "458e18d251558025eeb95f84f33e71792056e894"
+    },
+    {
+      "path": "src/app/robots.ts",
+      "gitBlob": "7f7e5f4cd2947a10eca1379de5fbcd94364ed359"
+    },
+    {
+      "path": "src/app/scan/[code]/page.tsx",
+      "gitBlob": "e47293e81f42fc5cc5a12c659b2c1e7c07cd972e"
+    },
+    {
+      "path": "src/app/sitemap.ts",
+      "gitBlob": "bdac9167eaf47815b9e2237f31131cc75fb11f87"
+    },
+    {
+      "path": "src/app/status/layout.tsx",
+      "gitBlob": "e7d80789292d755881a9927f093c4584d57de4e8"
+    },
+    {
+      "path": "src/app/status/page.tsx",
+      "gitBlob": "6e695d135cc6c4462d23737b39215ef50e2658ab"
+    },
+    {
+      "path": "src/components/admin/ActivityFeed.tsx",
+      "gitBlob": "1aee6f2a08ccffbbd2b8f29fc0a182e7a243fda6"
+    },
+    {
+      "path": "src/components/admin/AdminComponents.tsx",
+      "gitBlob": "340ff710c470e92e39e4f190f6663d074e91a6af"
+    },
+    {
+      "path": "src/components/admin/AdminContestActive.tsx",
+      "gitBlob": "c98b2eaa3bb6981e761ff5257369e20e8645ab34"
+    },
+    {
+      "path": "src/components/admin/AdminContestHallOfFame.tsx",
+      "gitBlob": "2a5366aeaa843f6db66a98948ad4ffc26d5fea7a"
+    },
+    {
+      "path": "src/components/admin/AdminContestPast.tsx",
+      "gitBlob": "4cabca5dbac87fcde0f3fc849c8a754c4ff02cd4"
+    },
+    {
+      "path": "src/components/admin/AdminContestSubmissions.tsx",
+      "gitBlob": "12eb3ebbc141ae77049997f00fd91f133759ff31"
+    },
+    {
+      "path": "src/components/admin/AdminRevenueChart.tsx",
+      "gitBlob": "3e38d05b86885388d996f8e84c63f07d8e27c3f0"
+    },
+    {
+      "path": "src/components/admin/AdminUsersFilters.tsx",
+      "gitBlob": "b5f6ea10d918f380eda72890262ffd06756792c0"
+    },
+    {
+      "path": "src/components/admin/AdminUsersTable.tsx",
+      "gitBlob": "056d3a3f1983237feb230b9e811476373bff0768"
+    },
+    {
+      "path": "src/components/admin/CostsStation.tsx",
+      "gitBlob": "37bcd55da454b3a9f081ce79e85cef61d72c80d4"
+    },
+    {
+      "path": "src/components/admin/GoldCard.tsx",
+      "gitBlob": "a6a1b84524d859f3a0aef2af184ee04cb784f9e4"
+    },
+    {
+      "path": "src/components/admin/MRRCard.tsx",
+      "gitBlob": "efc78c7b12fc0916a4e3cab53450c355ad0efbd3"
+    },
+    {
+      "path": "src/components/admin/ReferralStation.tsx",
+      "gitBlob": "0a134a1256450ca897dd6fdbc84a376903209c4e"
+    },
+    {
+      "path": "src/components/admin/RefreshButton.tsx",
+      "gitBlob": "284c634674d5a6dac7ef2743597d38bec79a54aa"
+    },
+    {
+      "path": "src/components/admin/RevenueStation.tsx",
+      "gitBlob": "15a18fa7b45ed6463ae72fbaed3015055c59868d"
+    },
+    {
+      "path": "src/components/admin/SaveButton.tsx",
+      "gitBlob": "fd97299967eddaf5c7f71ad2816cfed9ca8a2761"
+    },
+    {
+      "path": "src/components/admin/UserDetailModal.tsx",
+      "gitBlob": "8991f8f69239cd6e753eb1e777bb9914128ab151"
+    },
+    {
+      "path": "src/components/admin/UsersStation.tsx",
+      "gitBlob": "a276d533f8c82e5a3be9e1052f04f6c4b0b3dad8"
+    },
+    {
+      "path": "src/components/analytics/DailyChart.tsx",
+      "gitBlob": "e2bf74b2d9ec13bff545b214e73c1bd15e804488"
+    },
+    {
+      "path": "src/components/analytics/EngineStats.tsx",
+      "gitBlob": "6f8df9ccdae83077bf5afbc2413c4bf263c6f0ca"
+    },
+    {
+      "path": "src/components/analytics/KpiCards.tsx",
+      "gitBlob": "8227584497689181a57081050034332364b61a5b"
+    },
+    {
+      "path": "src/components/analytics/PromptHistory.tsx",
+      "gitBlob": "959a288a926bc1b046709c5435e5a559c69578b9"
+    },
+    {
+      "path": "src/components/analytics/TopVideos.tsx",
+      "gitBlob": "6746223c6a4614555f56b109d25aaac40b900978"
+    },
+    {
+      "path": "src/components/auto/AutoSchedulerControl.tsx",
+      "gitBlob": "6f2c4cb01371ca8c744f700512488eeaefadcffd"
+    },
+    {
+      "path": "src/components/autopilot/AutopilotSeriesCard.tsx",
+      "gitBlob": "6260bdf9472e9ea5e201fa36548dab05b1afab15"
+    },
+    {
+      "path": "src/components/autopilot/AutopilotSeriesForm.tsx",
+      "gitBlob": "437a5b46fb52a925289d9fae6cae29ba9a27a4ca"
+    },
+    {
+      "path": "src/components/autopilot/AutopilotUpgradePrompt.tsx",
+      "gitBlob": "e5a4e9dfeaa8a71b42fd7fd074d3582a1aa2f319"
+    },
+    {
+      "path": "src/components/batch/BatchActions.tsx",
+      "gitBlob": "95019e9d1379d1b189a60ed2d0bea1e8244a184e"
+    },
+    {
+      "path": "src/components/batch/BatchGlobalConfig.tsx",
+      "gitBlob": "7542523c628df41d9d0441a62fa6e4f8f2c7ee50"
+    },
+    {
+      "path": "src/components/batch/BatchHeader.tsx",
+      "gitBlob": "fded68b7d34d4aa4892a6cd235fffa5101e6bc2a"
+    },
+    {
+      "path": "src/components/batch/BatchInputMode.tsx",
+      "gitBlob": "19c3c30f45d43ff6677171e17327cd6c16613708"
+    },
+    {
+      "path": "src/components/batch/BatchPreviewTable.tsx",
+      "gitBlob": "41e1133c8a22c5993c99e72f6723566ad08619b5"
+    },
+    {
+      "path": "src/components/batch/BatchSummary.tsx",
+      "gitBlob": "5f856dd999d5134a5afe01deb0f882be3bdb7335"
+    },
+    {
+      "path": "src/components/batch/BatchTableRow.tsx",
+      "gitBlob": "dd047e529d777619cd05cf00c32709a1fc9038e0"
+    },
+    {
+      "path": "src/components/boutique/DailyGiftChest.tsx",
+      "gitBlob": "b3542949eae6c8ab362bc52c84663ccefe3be25b"
+    },
+    {
+      "path": "src/components/boutique/ShopItemCard.tsx",
+      "gitBlob": "a1821ad63877a48108920952aefdf34a6cfda135"
+    },
+    {
+      "path": "src/components/breathe/BreathingCircle.tsx",
+      "gitBlob": "698247b85de25e2407ae29a110923ce5f8734471"
+    },
+    {
+      "path": "src/components/breathe/SessionCompleted.tsx",
+      "gitBlob": "7d8fc01b05c1dd04e5edc237caa32366046eb7bc"
+    },
+    {
+      "path": "src/components/community/CommunityBuddyTab.tsx",
+      "gitBlob": "3b4fc261b39adfc717ae66809778593495efcf3b"
+    },
+    {
+      "path": "src/components/community/CommunityCirclesTab.tsx",
+      "gitBlob": "08cd7d6b6cdfe656c074d89a6d9154f7b1724a1c"
+    },
+    {
+      "path": "src/components/community/CommunityMissionsTab.tsx",
+      "gitBlob": "d9222c2cf8192e766beb53296ad9f4d0051ec551"
+    },
+    {
+      "path": "src/components/community/CommunityTabs.tsx",
+      "gitBlob": "5076518de4cae6acd21e3082d334edbdb0ddfb85"
+    },
+    {
+      "path": "src/components/community/CommunityWallTab.tsx",
+      "gitBlob": "bc7865ba3cbb78e70554098eac535766721ba54a"
+    },
+    {
+      "path": "src/components/contest/ContestBanner.tsx",
+      "gitBlob": "d967d7876ec67afe1c18a424ed1efb2c5b6da813"
+    },
+    {
+      "path": "src/components/contest/ContestLeaderboard.tsx",
+      "gitBlob": "e71a8448e834a4192d5d69a1af89d6d4bbdb5890"
+    },
+    {
+      "path": "src/components/contest/ContestSubmissionForm.tsx",
+      "gitBlob": "d5e2e8d8397b529dbf0b4805773a54b49163b3e3"
+    },
+    {
+      "path": "src/components/contest/HallOfFame.tsx",
+      "gitBlob": "c9a04737ebe939979cca0f6a3a2deef8f78a7b88"
+    },
+    {
+      "path": "src/components/contest/PastContestsSection.tsx",
+      "gitBlob": "216bae4c60542c75d187b90d593114653b76e73a"
+    },
+    {
+      "path": "src/components/create/AutoForm.tsx",
+      "gitBlob": "54a9c77baa642380af7979d6bd2c975833fb1844"
+    },
+    {
+      "path": "src/components/create/CreateHelpers.tsx",
+      "gitBlob": "7e5c16a58d0b73921c4763e4f0003ad8d0aa6cc7"
+    },
+    {
+      "path": "src/components/create/ExecutionModeNotice.tsx",
+      "gitBlob": "9587f9efda47addba91f5c33bb2c57ba2b14c5ea"
+    },
+    {
+      "path": "src/components/create/ManualForm.tsx",
+      "gitBlob": "95b31cfb92216c6243b26eac138643930ed1dc49"
+    },
+    {
+      "path": "src/components/create/MediaModeCards.tsx",
+      "gitBlob": "6b53c406949b59c57b41e3549a9b74184568bf53"
+    },
+    {
+      "path": "src/components/create/ModeToggle.tsx",
+      "gitBlob": "1cdff6e4e0d604fa280da9a80e76401381742b15"
+    },
+    {
+      "path": "src/components/create/PipelineProgress.tsx",
+      "gitBlob": "992863bd703120004bc4c0de1cb015c9161f37c9"
+    },
+    {
+      "path": "src/components/create/StockPicker.tsx",
+      "gitBlob": "bc31b627223a8ca98ca9f983367b40ebf273b8ca"
+    },
+    {
+      "path": "src/components/create/wizard/ManualFormStep1.tsx",
+      "gitBlob": "93d3050f99827cb73db5fd5d0343eaecd6a2156a"
+    },
+    {
+      "path": "src/components/create/wizard/ManualFormStep3.tsx",
+      "gitBlob": "3c1a1ba0960dcd1784f0b7bbf55f1175c954e2b4"
+    },
+    {
+      "path": "src/components/create/wizard/ManualFormStep4.tsx",
+      "gitBlob": "bf447e8d36a6e526695ddcfd79f847011edd1ea1"
+    },
+    {
+      "path": "src/components/dashboard/KPICard.tsx",
+      "gitBlob": "c2915cdcc324c3c41ab0bba27a242e53d632bf5c"
+    },
+    {
+      "path": "src/components/dashboard/VideoCard.tsx",
+      "gitBlob": "dfe5b5363620e986e7450438ffd2af0e1629b9e3"
+    },
+    {
+      "path": "src/components/editor/EditorHeader.tsx",
+      "gitBlob": "bfe93ddeb686041f0ed8cede86d79b2e09b94bc0"
+    },
+    {
+      "path": "src/components/editor/EditorSidebar.tsx",
+      "gitBlob": "b1bc18998f2313603657c2c375619c6420c37ca2"
+    },
+    {
+      "path": "src/components/editor/EditorStates.tsx",
+      "gitBlob": "74bb833eaf9f3a3539cd35bab52335e4cd1bad5e"
+    },
+    {
+      "path": "src/components/editor/EditorTabs.tsx",
+      "gitBlob": "bd2d9ef50c086f7c6c058182d5901b5c0f43d652"
+    },
+    {
+      "path": "src/components/editor/EditorTimeline.tsx",
+      "gitBlob": "cbde25bdd76635bc33f73697c4a76d5ab5cd6b9d"
+    },
+    {
+      "path": "src/components/editor/VideoPlayerPanel.tsx",
+      "gitBlob": "cd758da7febd0f5da7bb1fe62c450259a0c421c7"
+    },
+    {
+      "path": "src/components/editor/tabs/BrandKitTab.tsx",
+      "gitBlob": "2a9b15c1e788c6401c2f649fc2a300e8247d4701"
+    },
+    {
+      "path": "src/components/engagement/AmbassadorTierBadge.tsx",
+      "gitBlob": "1507103f8a0970d8982569f64ae2aaad23339b73"
+    },
+    {
+      "path": "src/components/engagement/Flywheel.tsx",
+      "gitBlob": "9adb77f8da5aee217dc1808ef193bbf44595eaaa"
+    },
+    {
+      "path": "src/components/engagement/ImpactDashboard.tsx",
+      "gitBlob": "88567bd8af14f88812693d19c07c04f17c3b4c0e"
+    },
+    {
+      "path": "src/components/engagement/MagicMoment.tsx",
+      "gitBlob": "c43d59b3e0ca5083444495ac4e17f4d99fa5b55c"
+    },
+    {
+      "path": "src/components/engagement/PuramaScoreCard.tsx",
+      "gitBlob": "22cee823e7c5574d4ba987171c0c072e890ef8df"
+    },
+    {
+      "path": "src/components/engagement/SeasonBanner.tsx",
+      "gitBlob": "dd5b7ca637d911e1cb1ddc42ee1eca3557c81986"
+    },
+    {
+      "path": "src/components/engagement/SocialFeed.tsx",
+      "gitBlob": "ce417ce4e3e8c0ed928128e0d7bb2cf1f1c3765e"
+    },
+    {
+      "path": "src/components/financer/BackgroundAndNav.tsx",
+      "gitBlob": "66d3207d160a6b51965b1b8a05b443ce3f2f475d"
+    },
+    {
+      "path": "src/components/financer/Step1.tsx",
+      "gitBlob": "6a4c116026ce6f0e7e2a63891265634862088fed"
+    },
+    {
+      "path": "src/components/financer/Step2.tsx",
+      "gitBlob": "1329dc1ad0918f97ce0da56d8f1b952078f72d9b"
+    },
+    {
+      "path": "src/components/financer/Step3.tsx",
+      "gitBlob": "e9d764143c9508c5b69f500ce91a5c40f21f1a26"
+    },
+    {
+      "path": "src/components/financer/Step4.tsx",
+      "gitBlob": "f7553d23c29bea15932acb5ef93bcbecf8630b69"
+    },
+    {
+      "path": "src/components/help/ContactForm.tsx",
+      "gitBlob": "707a53948aac91e86a9e2cb8a92e4a46053d7c61"
+    },
+    {
+      "path": "src/components/help/FAQAccordionItem.tsx",
+      "gitBlob": "9a082fa0e0d00872e05cdc90249270e419cd4258"
+    },
+    {
+      "path": "src/components/help/GuideSection.tsx",
+      "gitBlob": "e16e3264dd66ab52b1b5c2ecf1994d7dcd94feb3"
+    },
+    {
+      "path": "src/components/home/AmbassadorBlock.tsx",
+      "gitBlob": "509b6c788c32066a91042d837eac6d52c5939e94"
+    },
+    {
+      "path": "src/components/home/CrossPromoBlock.tsx",
+      "gitBlob": "bcbbbd8be343de51eee2e3f2997fc565b77190ea"
+    },
+    {
+      "path": "src/components/home/ReferralBlock.tsx",
+      "gitBlob": "c07f4c7e21d9d63bcb7f5fa53d001b9db966c9e1"
+    },
+    {
+      "path": "src/components/karma/SeedsBalance.tsx",
+      "gitBlob": "63e1899bc6a83a3f574fec15e2d764f7a8e38f8c"
+    },
+    {
+      "path": "src/components/landing/AppWelcome.tsx",
+      "gitBlob": "4980507588283473c5e95d005d18dd0266b51c66"
+    },
+    {
+      "path": "src/components/landing/CTASection.tsx",
+      "gitBlob": "c768a415e07e66d7e261d06b97edefe97f20443b"
+    },
+    {
+      "path": "src/components/landing/FAQ.tsx",
+      "gitBlob": "bd9ef12dd2f38c90141c872a8ad9473ffba83086"
+    },
+    {
+      "path": "src/components/landing/Features.tsx",
+      "gitBlob": "bf5677ff8540ed25112d771abe6b64feee152162"
+    },
+    {
+      "path": "src/components/landing/Footer.tsx",
+      "gitBlob": "b1256f3d5b600229a104930aa32f1d460648e435"
+    },
+    {
+      "path": "src/components/landing/Hero.tsx",
+      "gitBlob": "ae908973f70c679594104a181abf665ca86751f2"
+    },
+    {
+      "path": "src/components/landing/Hero3D.tsx",
+      "gitBlob": "e77f7880c7206d40215753c6302a53704ce1487e"
+    },
+    {
+      "path": "src/components/landing/HowItWorks.tsx",
+      "gitBlob": "0b60bece2f3edb8d823cecf2e01efeee88fedcef"
+    },
+    {
+      "path": "src/components/landing/LandingCTA.tsx",
+      "gitBlob": "91ecc4819e285190906cde9bb92faa1aa51bc876"
+    },
+    {
+      "path": "src/components/landing/LandingFeatures.tsx",
+      "gitBlob": "38cb4e94d10dee94ee57bc148176d7c2cd1ebec2"
+    },
+    {
+      "path": "src/components/landing/LandingFooter.tsx",
+      "gitBlob": "b47a5a0d2a3f1fdc69ffc5a981a6f97ea0be332a"
+    },
+    {
+      "path": "src/components/landing/LandingHero.tsx",
+      "gitBlob": "4d1b75ce74de92b91cd6e5458ed42a8c7c1d8249"
+    },
+    {
+      "path": "src/components/landing/LandingHowItWorks.tsx",
+      "gitBlob": "fb2bdea0cefd01ce052dd4582fcda919768e303f"
+    },
+    {
+      "path": "src/components/landing/LandingNav.tsx",
+      "gitBlob": "2862dd6508857a3f21e0496127f844a223bde853"
+    },
+    {
+      "path": "src/components/landing/PricingSection.tsx",
+      "gitBlob": "8f7c3506aa88d44f107e279eb80ba222c7a8ad2e"
+    },
+    {
+      "path": "src/components/landing/Stats.tsx",
+      "gitBlob": "a8c14feaa774b96dd27a8e2f702c3daaa4c639f1"
+    },
+    {
+      "path": "src/components/landing/Testimonials.tsx",
+      "gitBlob": "0bbc93d390665abfe8b0dbe371dfe08c3d332e3b"
+    },
+    {
+      "path": "src/components/layout/AppClientProviders.tsx",
+      "gitBlob": "a1f64977a7719e22f532066ab1301d0fb967480c"
+    },
+    {
+      "path": "src/components/layout/DashboardChrome.tsx",
+      "gitBlob": "1852a887d86c7d423741530fb3d970820c63d416"
+    },
+    {
+      "path": "src/components/layout/Header.tsx",
+      "gitBlob": "ea6f63e2898fdba6ae3b5aa4b89910472c65be54"
+    },
+    {
+      "path": "src/components/layout/MobileNav.tsx",
+      "gitBlob": "a67b16f6750dc2d1b229898fa7bc61fdc4ad9de5"
+    },
+    {
+      "path": "src/components/layout/NotificationBell.tsx",
+      "gitBlob": "74fe54fa3779ea8dbab7a82a5fc4fb2b0aaf0dbe"
+    },
+    {
+      "path": "src/components/layout/SearchModal.tsx",
+      "gitBlob": "5c998c3ea29a2117c0842b943b2f1357f7234038"
+    },
+    {
+      "path": "src/components/layout/Sidebar.tsx",
+      "gitBlob": "c446df7e6317cda6b8091696108caf44ede981f0"
+    },
+    {
+      "path": "src/components/legal/ContactSection.tsx",
+      "gitBlob": "420b1dc421cfd195a5b8c2a33c5c33dc56b16ead"
+    },
+    {
+      "path": "src/components/legal/CookieConsentBannerMount.tsx",
+      "gitBlob": "6ce2a26e4841e22852a96d8a212808dcf3e04fcf"
+    },
+    {
+      "path": "src/components/legal/LegalFooter.tsx",
+      "gitBlob": "3bb819f537e3483108effa4a5fe6d73c8f815882"
+    },
+    {
+      "path": "src/components/legal/LegalNav.tsx",
+      "gitBlob": "5e573634886af2907d7fb3eae318491147248922"
+    },
+    {
+      "path": "src/components/legal/LegalReacceptanceGateMount.tsx",
+      "gitBlob": "b58d38e8db463e7422391fb405a54ea84797694c"
+    },
+    {
+      "path": "src/components/legal/LegalSection.tsx",
+      "gitBlob": "fdf3d3aaaf238204d626aca2197619557dcbf166"
+    },
+    {
+      "path": "src/components/library/FolderModal.tsx",
+      "gitBlob": "f6445cfe44af5b71d7f999b299e010058ec101f1"
+    },
+    {
+      "path": "src/components/library/FolderPills.tsx",
+      "gitBlob": "06622523328e59d916d432fce8a43571f9b7bd44"
+    },
+    {
+      "path": "src/components/library/LibraryFilters.tsx",
+      "gitBlob": "21761e67aa3ee6766f3e53a153038da44ccb4f69"
+    },
+    {
+      "path": "src/components/library/LibraryHeader.tsx",
+      "gitBlob": "347d76e834b45e1dd6d32356c5eaf0a98bd79215"
+    },
+    {
+      "path": "src/components/library/LibrarySkeleton.tsx",
+      "gitBlob": "a8b21a65a2a13a580e3e0b3da2622fdbb7e15d02"
+    },
+    {
+      "path": "src/components/library/VideoGrid.tsx",
+      "gitBlob": "71dd0c506e1a71a9b67da6af7b8c684b21f48334"
+    },
+    {
+      "path": "src/components/library/VideoList.tsx",
+      "gitBlob": "49f1ac4ebd70ee0e141485c04da957280a62cfc7"
+    },
+    {
+      "path": "src/components/onboarding/OnboardingFlow.tsx",
+      "gitBlob": "377c8cfa0e61de654b6f503b384ba1c13c066de2"
+    },
+    {
+      "path": "src/components/partner/PartnerCommissionsChart.tsx",
+      "gitBlob": "b73f48e5de1f4b14c9c94091f2d82cd72a496c44"
+    },
+    {
+      "path": "src/components/production/IdeaStep.tsx",
+      "gitBlob": "283b0190af16ced02282e933c7b4c622fd31d3f1"
+    },
+    {
+      "path": "src/components/production/MusicStep.tsx",
+      "gitBlob": "01314a6fa3710f81a0c3f743875eb0051e3b0505"
+    },
+    {
+      "path": "src/components/production/ProductionRequestStatus.tsx",
+      "gitBlob": "3cd6c28c21ba22d970270aac351c9450c3c1195d"
+    },
+    {
+      "path": "src/components/production/ScriptStep.tsx",
+      "gitBlob": "3cd1a11ea8e6c7a3883e90cf837dab1097466214"
+    },
+    {
+      "path": "src/components/production/SectionCard.tsx",
+      "gitBlob": "560d43797ae83ba2c5d5b9df205005a9e242c011"
+    },
+    {
+      "path": "src/components/production/StepGenerateCard.tsx",
+      "gitBlob": "cbc70eaeab1e7c47c2160e02ace938e2d49f6689"
+    },
+    {
+      "path": "src/components/production/StepProgressBar.tsx",
+      "gitBlob": "88d4c3a55cc3c93f99d3f6b9a6ad67614468f067"
+    },
+    {
+      "path": "src/components/production/ThumbnailStep.tsx",
+      "gitBlob": "e85de5acc1f610d945b43f83bf818106632cd3dd"
+    },
+    {
+      "path": "src/components/production/VoiceStep.tsx",
+      "gitBlob": "24a021b7f6bd58a7d29837a683cfea973c64ddee"
+    },
+    {
+      "path": "src/components/publish/PastPostsList.tsx",
+      "gitBlob": "fb1025a71ad4174cfd4b9c1aadfe561fe0399eed"
+    },
+    {
+      "path": "src/components/publish/ScheduledPostsTable.tsx",
+      "gitBlob": "57d08af254f11450681a5622c59e8e8ef6974235"
+    },
+    {
+      "path": "src/components/publish/VideoPublishCard.tsx",
+      "gitBlob": "64fb4c10533ed8eb472b99aa7834668b71e55e73"
+    },
+    {
+      "path": "src/components/publish/constants.tsx",
+      "gitBlob": "cc14eda1ef336fee7475b6aa106ce63ac4a58de3"
+    },
+    {
+      "path": "src/components/referral/CommissionsHistory.tsx",
+      "gitBlob": "03cbfbb0de2050dfe5707789579fc2b71fd58759"
+    },
+    {
+      "path": "src/components/referral/FilleulsList.tsx",
+      "gitBlob": "465933e266c7107f598e46eab25a19971e228a1a"
+    },
+    {
+      "path": "src/components/referral/ReferralCodeCard.tsx",
+      "gitBlob": "71d8a83a404816576c69a2f7db42331f6921d7ef"
+    },
+    {
+      "path": "src/components/referral/ReferralStats.tsx",
+      "gitBlob": "21080a37469f1f19a9c7975c94623cad71d20408"
+    },
+    {
+      "path": "src/components/referral/ReferralTiers.tsx",
+      "gitBlob": "f837e2d25b6c6c8540d636a0849c5ede73d8ada6"
+    },
+    {
+      "path": "src/components/referral/WalletCard.tsx",
+      "gitBlob": "28829584fe1d020a56ba731a58770902ff4fde11"
+    },
+    {
+      "path": "src/components/settings/AbonnementTab.tsx",
+      "gitBlob": "260167b41fd98728b57dc10381c0064c7afc759a"
+    },
+    {
+      "path": "src/components/settings/ApparenceTab.tsx",
+      "gitBlob": "4621e5121a4901bdeb522713ed96e7fdc00a7105"
+    },
+    {
+      "path": "src/components/settings/CompteTab.tsx",
+      "gitBlob": "26b26fb2a334ab5c1a7539209840ed8826d7f730"
+    },
+    {
+      "path": "src/components/settings/DonneesTab.tsx",
+      "gitBlob": "b2816426ee7bca8a4e493fc58abc20ac54f16dca"
+    },
+    {
+      "path": "src/components/settings/NotificationsTab.tsx",
+      "gitBlob": "6c90852a6d3fac0c046a0e6b26ec494b1639a7b1"
+    },
+    {
+      "path": "src/components/settings/ProfilTab.tsx",
+      "gitBlob": "3652965d4d7720597f9a473b614b7ac7d287f3fc"
+    },
+    {
+      "path": "src/components/settings/ReseauxTab.tsx",
+      "gitBlob": "d54a3cb623c4e3ede888cf4dc28baa29e7b82523"
+    },
+    {
+      "path": "src/components/settings/social/AutopilotSection.tsx",
+      "gitBlob": "8e654cf386600696f91a1f7f724bc6e14562de1e"
+    },
+    {
+      "path": "src/components/settings/social/ConnectionSummary.tsx",
+      "gitBlob": "803ce10209dc89056a513e8dd829b3951df7faba"
+    },
+    {
+      "path": "src/components/settings/social/DisconnectConfirmModal.tsx",
+      "gitBlob": "ca62d599a0efe115fc471344029e7159cbde07d7"
+    },
+    {
+      "path": "src/components/settings/social/PageHeader.tsx",
+      "gitBlob": "f5db8ffafd29863284e4372622af9bbbc23cfafa"
+    },
+    {
+      "path": "src/components/settings/social/PlatformGrid.tsx",
+      "gitBlob": "78d46dcb935b10b87ad29b248fa929054c9513cb"
+    },
+    {
+      "path": "src/components/settings/social/ToggleRow.tsx",
+      "gitBlob": "1c38bff22e68d2c3b850b636db57cb68b5f727cf"
+    },
+    {
+      "path": "src/components/shared/ChatBot.tsx",
+      "gitBlob": "93d73060e6212f930e28752689ec71f030040db5"
+    },
+    {
+      "path": "src/components/shared/CinematicIntro.tsx",
+      "gitBlob": "096bd4d2c9aec0ac3de53c70cd17c58122366845"
+    },
+    {
+      "path": "src/components/shared/Confetti.tsx",
+      "gitBlob": "2bcf9374500d79c8091a44d8e02bbcf0db587b53"
+    },
+    {
+      "path": "src/components/shared/ConversionPopup.tsx",
+      "gitBlob": "a166126572deff76e1205f0457ae8ef293ad5f28"
+    },
+    {
+      "path": "src/components/shared/CosmicParticles.tsx",
+      "gitBlob": "a7755a99d9b56d011d024ac5e32154ec6e45dc11"
+    },
+    {
+      "path": "src/components/shared/CosmicParticlesWrapper.tsx",
+      "gitBlob": "18404f2356c155c25f2113c5a8b6eddfc57bb785"
+    },
+    {
+      "path": "src/components/shared/ErrorBoundary.tsx",
+      "gitBlob": "497f13451810ba933ddefc27866901dc976894e9"
+    },
+    {
+      "path": "src/components/shared/FiscalBanner.tsx",
+      "gitBlob": "5875af5d231a7192ff2d93bfe13104d35848136a"
+    },
+    {
+      "path": "src/components/shared/Providers.tsx",
+      "gitBlob": "f60fcc8027156531bee2195e94ce84df55a2226d"
+    },
+    {
+      "path": "src/components/shared/ShareableCard.tsx",
+      "gitBlob": "3a5c41de0e3f6def823bb0d10e92af71d46fa1a4"
+    },
+    {
+      "path": "src/components/shared/SpiritualLayer.tsx",
+      "gitBlob": "4e56fe030221f51294e45d76103c55855704ea83"
+    },
+    {
+      "path": "src/components/shared/SubconsciousEngine.tsx",
+      "gitBlob": "6def1fa50f96536951d62d22cb36fc7ff067dd97"
+    },
+    {
+      "path": "src/components/shared/TutorialOverlay.tsx",
+      "gitBlob": "c8954f0fc287b524bde65d62378ee230b1d29896"
+    },
+    {
+      "path": "src/components/shared/TutorialSteps.ts",
+      "gitBlob": "096f5c2a43fdef27254d275cbab8941323b82329"
+    },
+    {
+      "path": "src/components/social/PublishEverywhereButton.tsx",
+      "gitBlob": "6bf8cfae41f222fc7e1f0a14e4a1fd3505eecd53"
+    },
+    {
+      "path": "src/components/social/publish/PublishCaptionSection.tsx",
+      "gitBlob": "5ecea5a7f082f581e1b1d55dde5ab2064be28829"
+    },
+    {
+      "path": "src/components/social/publish/PublishModalFooter.tsx",
+      "gitBlob": "26aabcc9ae03c7d4f764fc97a2ba3042d691317b"
+    },
+    {
+      "path": "src/components/social/publish/PublishModalHeader.tsx",
+      "gitBlob": "48c384d5b2ec38b9a0b94225ec98f4691bc8d809"
+    },
+    {
+      "path": "src/components/social/publish/PublishPlatformGrid.tsx",
+      "gitBlob": "d500e46c76cb744a3d85898a9c6dbf9fb0cc344f"
+    },
+    {
+      "path": "src/components/social/publish/PublishResultsSection.tsx",
+      "gitBlob": "6a90ecc1051a2156b0e1edca2828ba574c1fb649"
+    },
+    {
+      "path": "src/components/social/publish/PublishScheduleSection.tsx",
+      "gitBlob": "f61951fb4c1af996139ffe3c810dcbeed7f2245d"
+    },
+    {
+      "path": "src/components/social/publish/PublishTriggerButton.tsx",
+      "gitBlob": "6a93b76ab49dafe6ff7513e3fc06de1cd810e9fa"
+    },
+    {
+      "path": "src/components/social/publish/PublishVideoPreview.tsx",
+      "gitBlob": "071137059048fd79e8e1572d48213cd55c0f9a82"
+    },
+    {
+      "path": "src/components/storyboard/SceneCard.tsx",
+      "gitBlob": "65051c4e575a5ea6d2d583ae32392de70f601afd"
+    },
+    {
+      "path": "src/components/storyboard/StoryboardInput.tsx",
+      "gitBlob": "fb82a585011feac3014b7d8228930bf23a5e3e01"
+    },
+    {
+      "path": "src/components/templates/CategoryTabs.tsx",
+      "gitBlob": "c1cf53618246312c6dd4e709e1b914e2cfdab02d"
+    },
+    {
+      "path": "src/components/templates/CommunityTemplateCard.tsx",
+      "gitBlob": "923a5e25b949bee24bd3448c7b0b09c22378781a"
+    },
+    {
+      "path": "src/components/templates/TemplateCard.tsx",
+      "gitBlob": "af6359ff5df02863a4f846a2911c6f41aad9d4dc"
+    },
+    {
+      "path": "src/components/templates/TemplateSearch.tsx",
+      "gitBlob": "439adc44e33d9d5865d912aefa90f8753b094b95"
+    },
+    {
+      "path": "src/components/templates/UserTemplateCard.tsx",
+      "gitBlob": "26fabcfd5b4c2595c1e6319424d0f806f2b8d9b0"
+    },
+    {
+      "path": "src/components/templates/index.tsx",
+      "gitBlob": "c42ed1d641f43592056faf5a616bc596c3c72543"
+    },
+    {
+      "path": "src/components/ui/AnimatedCounter.tsx",
+      "gitBlob": "76fd69dfe0ea58cac49d02019c05748ca580dca8"
+    },
+    {
+      "path": "src/components/ui/Avatar.tsx",
+      "gitBlob": "15c9f15831c1296b7de122ab6a25237fed5d3794"
+    },
+    {
+      "path": "src/components/ui/Badge.tsx",
+      "gitBlob": "cabc121b7e857c95b3c83a859648bb567df2c74d"
+    },
+    {
+      "path": "src/components/ui/Button.tsx",
+      "gitBlob": "98e05a5930688bb1fd10c264e693c81195eaaafb"
+    },
+    {
+      "path": "src/components/ui/Card.tsx",
+      "gitBlob": "849f0865bb9d3c29cf8e7461e83df785e76cfeff"
+    },
+    {
+      "path": "src/components/ui/EmptyState.tsx",
+      "gitBlob": "988fcc376b6d45f23dc43ba989bfe3c55fed208a"
+    },
+    {
+      "path": "src/components/ui/Input.tsx",
+      "gitBlob": "53efe6f2322c4822ba067767615c641770f39b7a"
+    },
+    {
+      "path": "src/components/ui/LoadingTimeout.tsx",
+      "gitBlob": "111b12c55b1f23ffeb4e2d084eebc1ce27eeada4"
+    },
+    {
+      "path": "src/components/ui/Modal.tsx",
+      "gitBlob": "c0a06ef86c193f673cf01966cc718cf79594d187"
+    },
+    {
+      "path": "src/components/ui/ProgressBar.tsx",
+      "gitBlob": "94974f6cf012bac1d43fb4339af5e448e6283619"
+    },
+    {
+      "path": "src/components/ui/SiretInput.tsx",
+      "gitBlob": "78d811f2cb8c99fc1ee17ce5aefa3a393ee2f01b"
+    },
+    {
+      "path": "src/components/ui/Skeleton.tsx",
+      "gitBlob": "9cde857ac8fc896a4315e38f5ca5deccb6977f5d"
+    },
+    {
+      "path": "src/components/ui/SortIcon.tsx",
+      "gitBlob": "a4ebbf775903a9888c8d29d9daf7e9dc7872d4bd"
+    },
+    {
+      "path": "src/components/ui/Tabs.tsx",
+      "gitBlob": "337cba522ee7a3f63b111bd1ed039d75702032b0"
+    },
+    {
+      "path": "src/components/ui/VerifiedSiretCard.tsx",
+      "gitBlob": "de84779ed744e81971f2783bfc913c3e148a8299"
+    },
+    {
+      "path": "src/components/ui/siret-utils.ts",
+      "gitBlob": "66434cfecf1ecae0acbbdd8544df21ecee8983df"
+    },
+    {
+      "path": "src/components/video/BlockchainProofBadge.tsx",
+      "gitBlob": "840a691edb7851eede085d7f1d03b62dcbf91249"
+    },
+    {
+      "path": "src/components/voices/VoiceCard.tsx",
+      "gitBlob": "05517eb8096dc36f9032ac3ba674eb1bf39325ea"
+    },
+    {
+      "path": "src/components/wallet/SmartSplit.tsx",
+      "gitBlob": "3e3fc4429419db59b3647fe8176ea8bb9279f7f1"
+    },
+    {
+      "path": "src/data/achievements.ts",
+      "gitBlob": "46096195501e5b7add8e55b627a6299d530b680b"
+    },
+    {
+      "path": "src/data/faq-data.ts",
+      "gitBlob": "2dc2d867421af7a33e5d52a365abb7bb71933433"
+    },
+    {
+      "path": "src/data/financer-data.ts",
+      "gitBlob": "fb48f878053b6dc9cbd85ef0b1485cf90763da1b"
+    },
+    {
+      "path": "src/data/guide.ts",
+      "gitBlob": "6068fd1c628ac445b4de0587996bf0529a2aaad3"
+    },
+    {
+      "path": "src/data/help-constants.ts",
+      "gitBlob": "274776e7a3ae6f7e0bc95e2b1344500a9d3d6a0b"
+    },
+    {
+      "path": "src/data/help-data.ts",
+      "gitBlob": "b5fe672b674c63ebcd7e4584a29421971b230018"
+    },
+    {
+      "path": "src/data/help-guides-data.ts",
+      "gitBlob": "0d31a968d41f2fb511959f30de8d3ac2d3915806"
+    },
+    {
+      "path": "src/data/pricing.ts",
+      "gitBlob": "6dcbe8468e5da4b0d2dc10e1be0df009fc57b9ca"
+    },
+    {
+      "path": "src/data/setup-schema.ts",
+      "gitBlob": "320ff317897e83ede76c5d2f5688ac774f208c5c"
+    },
+    {
+      "path": "src/data/sidebar-nav.ts",
+      "gitBlob": "7dca1d2167e67679edbb16f301fb9365af265ee8"
+    },
+    {
+      "path": "src/data/template-data.ts",
+      "gitBlob": "56febcef5d74b4f2591e80221b5a52c358c5adf9"
+    },
+    {
+      "path": "src/data/templates/avant-apres.ts",
+      "gitBlob": "18e5fdf50eb803cb33a8482ca0daaed66a13ac23"
+    },
+    {
+      "path": "src/data/templates/categories.ts",
+      "gitBlob": "f1092f41b99b8fa10aae8473c23e3785ed88df61"
+    },
+    {
+      "path": "src/data/templates/clip-musical.ts",
+      "gitBlob": "19dd8561e23fe77e3d58057d94103298ad761ce3"
+    },
+    {
+      "path": "src/data/templates/documentaire.ts",
+      "gitBlob": "1b5036ae34f7e5c201b8c2b1d428b4a394b8ace1"
+    },
+    {
+      "path": "src/data/templates/index.ts",
+      "gitBlob": "619248322bf8a6aec15a9719b22e36febd727875"
+    },
+    {
+      "path": "src/data/templates/presentation.ts",
+      "gitBlob": "04bb45b95fbfd16f897ea66fb60eb55edf39bbd1"
+    },
+    {
+      "path": "src/data/templates/pub-produit.ts",
+      "gitBlob": "84c89ae54f0d5908695a28906d34c56a54c7ac58"
+    },
+    {
+      "path": "src/data/templates/stories-reels.ts",
+      "gitBlob": "eaa0ef234f13897dca65dd0fd6e112b16777f845"
+    },
+    {
+      "path": "src/data/templates/teaser.ts",
+      "gitBlob": "d97c9ec2400c1e68fac286ee3c3cdd45436f1ac6"
+    },
+    {
+      "path": "src/data/templates/tutoriel.ts",
+      "gitBlob": "5d208978a44c0b37288cd485182f50e8a6b1a061"
+    },
+    {
+      "path": "src/data/templates/types.ts",
+      "gitBlob": "6601526198f8bb7d1769b3213a445d55d9f17b2a"
+    },
+    {
+      "path": "src/data/templates/ugc.ts",
+      "gitBlob": "19f4315cb7eb41619155bbe60e4d69bac0670e2b"
+    },
+    {
+      "path": "src/data/templates/youtube-faceless.ts",
+      "gitBlob": "1326df6d36f88df02da9e48c72640d833a0624fa"
+    },
+    {
+      "path": "src/hooks/useAdminContest.ts",
+      "gitBlob": "299f4f00cefde1369afac03dcf8492d8fbec77bd"
+    },
+    {
+      "path": "src/hooks/useAdminUsers.ts",
+      "gitBlob": "524ad06a4661361b3ca590264303361cda4211c8"
+    },
+    {
+      "path": "src/hooks/useAnalytics.ts",
+      "gitBlob": "f106082c47ba8a87eff7488c10c334c83c5eae17"
+    },
+    {
+      "path": "src/hooks/useAuth.ts",
+      "gitBlob": "c1c9027d82d83da989e9a8f4d1001ad0ee65691a"
+    },
+    {
+      "path": "src/hooks/useAutoScheduler.ts",
+      "gitBlob": "5be648a4b2eb29443915918b93b5f4df12fe3850"
+    },
+    {
+      "path": "src/hooks/useAwakening.ts",
+      "gitBlob": "195b02122a617b0c1cc406b40782a2244a4f7cdb"
+    },
+    {
+      "path": "src/hooks/useBatch.ts",
+      "gitBlob": "3e81309b5078a45c60314c5f37b8459e8e08f753"
+    },
+    {
+      "path": "src/hooks/useBreathingSession.ts",
+      "gitBlob": "e073734b3cb9fd4dc2f7060e020b55e22c30bf5c"
+    },
+    {
+      "path": "src/hooks/useCommunity.ts",
+      "gitBlob": "eeefb8a317990b4198c6c41be62268794831701e"
+    },
+    {
+      "path": "src/hooks/useCountdown.ts",
+      "gitBlob": "0913bc7797774e106dae7f04d9dc23dc00d89527"
+    },
+    {
+      "path": "src/hooks/useCreateRequest.ts",
+      "gitBlob": "abd47e2a0296a82c898fbd59b12f65d489302c51"
+    },
+    {
+      "path": "src/hooks/useEditorHandlers.ts",
+      "gitBlob": "99bc4c61db1d382cb987c2d85817b65ca2f80cc5"
+    },
+    {
+      "path": "src/hooks/useEditorHistory.ts",
+      "gitBlob": "bbd399ca9c822e7cfa643dfb0039ad0685bd13d6"
+    },
+    {
+      "path": "src/hooks/useEmpowerment.ts",
+      "gitBlob": "9630e6b2065aeea67c3956d19eabc25d6fff6200"
+    },
+    {
+      "path": "src/hooks/useHydrated.ts",
+      "gitBlob": "c3ba32df95447d0040298dfed37b25dc932b2218"
+    },
+    {
+      "path": "src/hooks/useLibraryActions.ts",
+      "gitBlob": "12e935bd73ed17f8dafd1a9fa5e33d720b0cfe04"
+    },
+    {
+      "path": "src/hooks/useLibraryFavorites.ts",
+      "gitBlob": "35ad3bd51831ffd9cb2400f6c70a3aa2d1ad60d1"
+    },
+    {
+      "path": "src/hooks/useLibraryFolders.ts",
+      "gitBlob": "86964b31e92c819756305e6b59e8b1eec37500f7"
+    },
+    {
+      "path": "src/hooks/useLibraryState.ts",
+      "gitBlob": "0f471979664fa62879a1a8c70688e7a424f5c217"
+    },
+    {
+      "path": "src/hooks/useLibraryVideos.ts",
+      "gitBlob": "1a4f35b1aa11976b0e8c052b3475c2b6437e4811"
+    },
+    {
+      "path": "src/hooks/useProductionGeneration.ts",
+      "gitBlob": "484c37aa1dfeebb62d678972b5b884045a88084b"
+    },
+    {
+      "path": "src/hooks/usePublish.ts",
+      "gitBlob": "661d3192023ea0e8e9e1cd6c818dedf3b7480562"
+    },
+    {
+      "path": "src/hooks/useReferralData.ts",
+      "gitBlob": "c59a1c864dbfa760abb4c2679f6a06564ebcc317"
+    },
+    {
+      "path": "src/hooks/useSeeds.ts",
+      "gitBlob": "106b8c71d477e8e6c930d6abd6ba0de8555dc8a4"
+    },
+    {
+      "path": "src/hooks/useSettingsState.ts",
+      "gitBlob": "b95f3ab940068bf604a67b95b5b4c6a66c26a240"
+    },
+    {
+      "path": "src/hooks/useStoryboard.ts",
+      "gitBlob": "84da85487f1613969ee18dd703ea85f6282dd5cf"
+    },
+    {
+      "path": "src/hooks/useTemplates.ts",
+      "gitBlob": "bfbfc4dbabce055ed92c7ffef88aba6ccb97ab8d"
+    },
+    {
+      "path": "src/hooks/useTheme.ts",
+      "gitBlob": "8f64af1ebc9f3cc0c7fa6ee4a514bec98b5dc4b4"
+    },
+    {
+      "path": "src/hooks/useVideoGeneration.ts",
+      "gitBlob": "7f1b74f162e8fa6e6e556c7870fc2c57bcba5222"
+    },
+    {
+      "path": "src/hooks/useVideoPlayer.ts",
+      "gitBlob": "e2d86dfa58d7f74719b692404c170e8d4d8d3bb6"
+    },
+    {
+      "path": "src/hooks/useVoices.ts",
+      "gitBlob": "8a42d6b7b622a172efbbdee2cc82b483224d384d"
+    },
+    {
+      "path": "src/i18n/request.ts",
+      "gitBlob": "c7c30117f0198673938466a8ee266e1212cdf4c3"
+    },
+    {
+      "path": "src/lib/account-access.ts",
+      "gitBlob": "32d3274c905c316d7758f806b106b0cdbb1b4d68"
+    },
+    {
+      "path": "src/lib/admin-utils.ts",
+      "gitBlob": "b8411cd181e09463c1a005b2a787d4e552bc23d7"
+    },
+    {
+      "path": "src/lib/ai/social-caption.ts",
+      "gitBlob": "a80f7fda1cf0bf9d29533e4c8cee94559253f57f"
+    },
+    {
+      "path": "src/lib/ambassador.ts",
+      "gitBlob": "0ee20cc46be6dc35de4bf099e51d28e398850afb"
+    },
+    {
+      "path": "src/lib/analytics.ts",
+      "gitBlob": "1c831b8c7d4258bc5955beea983c47c7e6825c52"
+    },
+    {
+      "path": "src/lib/auth-navigation.ts",
+      "gitBlob": "487a37f905fa222eb402b8f0c869225ea53fded7"
+    },
+    {
+      "path": "src/lib/auth-session-store.ts",
+      "gitBlob": "2d68f360e64f2c4f88d8d3bd51b4539987a8841f"
+    },
+    {
+      "path": "src/lib/auto-pipeline.ts",
+      "gitBlob": "fbac203e7d2ea7364297cca17ed24e13d98e6c8f"
+    },
+    {
+      "path": "src/lib/auto-publication.ts",
+      "gitBlob": "e1dcb7465c65f0cac8e36d2db3bd17c4a1fee738"
+    },
+    {
+      "path": "src/lib/auto-schedule-client.ts",
+      "gitBlob": "fac4f781a7d58c35bdbc8aa328debf3d0bfad3a0"
+    },
+    {
+      "path": "src/lib/auto-schedule-validation.ts",
+      "gitBlob": "5dedca334d6fdcef595e464090c88712598d394c"
+    },
+    {
+      "path": "src/lib/awakening.ts",
+      "gitBlob": "8d1f32e2a462f93c7fc3d67d66c50e9d01fc90dc"
+    },
+    {
+      "path": "src/lib/batch-utils.ts",
+      "gitBlob": "f4d7d2106b7ea07fddc63a6285cb8e997f1a4a28"
+    },
+    {
+      "path": "src/lib/claude.ts",
+      "gitBlob": "432bc63521365f10b3a62d0856bdd91ce878a5c2"
+    },
+    {
+      "path": "src/lib/composition-contract.ts",
+      "gitBlob": "1bda5530608284c04f45f6c5f6154529a87dbb16"
+    },
+    {
+      "path": "src/lib/connect.ts",
+      "gitBlob": "c55e3b152fbf604cb8d136a5ef3791414a9e62f7"
+    },
+    {
+      "path": "src/lib/constants.ts",
+      "gitBlob": "f193915b9e887a1d05ba8455dfe11314747d57ff"
+    },
+    {
+      "path": "src/lib/create-constants.tsx",
+      "gitBlob": "812dbca6b6e5da750a1496b0381997e5ae6981c1"
+    },
+    {
+      "path": "src/lib/create-intent-client.ts",
+      "gitBlob": "10c4321991a6b60f4aa042442307645a4a317995"
+    },
+    {
+      "path": "src/lib/create-utils.ts",
+      "gitBlob": "4d13c74643ebd57dba602ec22f712e3e45a9da0a"
+    },
+    {
+      "path": "src/lib/cron-auth.ts",
+      "gitBlob": "1d30128af1ba2623b0dc1d471b9c91fc04ed9b58"
+    },
+    {
+      "path": "src/lib/editor-export.ts",
+      "gitBlob": "de1eead5e0a7428352122401d23ce8065227342c"
+    },
+    {
+      "path": "src/lib/editor-utils.ts",
+      "gitBlob": "472cf4593753a6caefaf80f011c8592f50b7cd46"
+    },
+    {
+      "path": "src/lib/elevenlabs.ts",
+      "gitBlob": "ea5fcdfca79859e79c7bac9dea85eb0dfe78a2c0"
+    },
+    {
+      "path": "src/lib/emails.ts",
+      "gitBlob": "ac0b2fc2a6ca123b09e0c7248865b1349287afc4"
+    },
+    {
+      "path": "src/lib/env.ts",
+      "gitBlob": "ed5c99087c6649df565f07e960f6f8f3b05e5fbf"
+    },
+    {
+      "path": "src/lib/export-pipeline.ts",
+      "gitBlob": "1e9429de2e18ff630d6f1d67f77c38ed861b04ea"
+    },
+    {
+      "path": "src/lib/fallbacks.ts",
+      "gitBlob": "850411950e72f20748780aa79f4fde4b86980090"
+    },
+    {
+      "path": "src/lib/ffmpeg-compositor-formats.test.ts",
+      "gitBlob": "c8d9f4ebc01ed6e1c4e0037a73661654ea6fdb86"
+    },
+    {
+      "path": "src/lib/ffmpeg-compositor.test.ts",
+      "gitBlob": "ed206e5666dd4cc8a5dfa99f743c62e21a2e42e2"
+    },
+    {
+      "path": "src/lib/ffmpeg-compositor.ts",
+      "gitBlob": "64213da5f5e8478a97389d47d1b544dd29ac1d47"
+    },
+    {
+      "path": "src/lib/ffmpeg-concurrency.test.ts",
+      "gitBlob": "2eb57f2e7e8e88480e949c14c2a9e92ed769b8f8"
+    },
+    {
+      "path": "src/lib/ffmpeg-concurrency.ts",
+      "gitBlob": "c4ecdb7ea84f9a93250a412de52cec25f06ee44a"
+    },
+    {
+      "path": "src/lib/ffmpeg-encoder.ts",
+      "gitBlob": "777b832b6fdf9486efb6a5ddf3309dde07d54a7a"
+    },
+    {
+      "path": "src/lib/ffmpeg-filters.ts",
+      "gitBlob": "816ca72fadb06ef061a0f328aa7dca55cf67599a"
+    },
+    {
+      "path": "src/lib/ffmpeg-io.ts",
+      "gitBlob": "f58612257a2d70c69455b2dc255c31b937027028"
+    },
+    {
+      "path": "src/lib/final-composition.ts",
+      "gitBlob": "90233bbf329153f5ba3a9df12b216a0da38eb9e9"
+    },
+    {
+      "path": "src/lib/financer-utils.ts",
+      "gitBlob": "076f58852243e79fbee8a6c76b04f7e9c8567111"
+    },
+    {
+      "path": "src/lib/generation-client.ts",
+      "gitBlob": "f0c1e787b12a7af1425d3ce77490e3d0be7b43c9"
+    },
+    {
+      "path": "src/lib/iban.ts",
+      "gitBlob": "5c095937fdd074b19327f8fe97c3964f94df3b60"
+    },
+    {
+      "path": "src/lib/insee.ts",
+      "gitBlob": "f04acb65bded5820c267559531da049602c8fb35"
+    },
+    {
+      "path": "src/lib/karma-level.ts",
+      "gitBlob": "bab576c7e23d5460dc12b9103bdabeae24a633ef"
+    },
+    {
+      "path": "src/lib/karma-piliers.ts",
+      "gitBlob": "0a83af5196be80cddbf9a8815f988f68169df9c0"
+    },
+    {
+      "path": "src/lib/karma-split.ts",
+      "gitBlob": "4470d319e0ebd7ee0e876e5d59e67a017630057c"
+    },
+    {
+      "path": "src/lib/legal/company.ts",
+      "gitBlob": "8f31aa168ca7c2307bdfbdd4a28781d8ad45b653"
+    },
+    {
+      "path": "src/lib/legal/components/AIDisclosure.tsx",
+      "gitBlob": "0d78f1322199d5223664aa92d9e4d4fd3c6263ea"
+    },
+    {
+      "path": "src/lib/legal/components/AccountDeletionButton.tsx",
+      "gitBlob": "d612bd90f7aac964bc7b686b24b18e6f32ff9549"
+    },
+    {
+      "path": "src/lib/legal/components/CookieConsentBanner.tsx",
+      "gitBlob": "2b893b7d0e5f7b883a562737c8fdfd528ce873cf"
+    },
+    {
+      "path": "src/lib/legal/components/LegalAcceptanceNotice.tsx",
+      "gitBlob": "7ca80616fe193b89f708d3209fd30f153107eb06"
+    },
+    {
+      "path": "src/lib/legal/components/LegalPage.tsx",
+      "gitBlob": "685a39cc1c36d17fb5f959b9541dd7445e486611"
+    },
+    {
+      "path": "src/lib/legal/components/LegalReacceptanceGate.tsx",
+      "gitBlob": "731b3e0121e914ef7033c0c6dc789dbd2c0d90e1"
+    },
+    {
+      "path": "src/lib/legal/components/MaMemoirePage.tsx",
+      "gitBlob": "713c8a56e09d7fb67177943355a0d3992649977b"
+    },
+    {
+      "path": "src/lib/legal/content/cgu.ts",
+      "gitBlob": "d6bf646628cdacd9a669c0f92f253e87ba80d1ca"
+    },
+    {
+      "path": "src/lib/legal/content/cgv.ts",
+      "gitBlob": "94696f9abc040d422feb6d8c31457aa6345efb64"
+    },
+    {
+      "path": "src/lib/legal/content/mentions-legales.ts",
+      "gitBlob": "535d6c56368630474ad4ba0134fd881dc1cb2f06"
+    },
+    {
+      "path": "src/lib/legal/content/politique-confidentialite.ts",
+      "gitBlob": "b149e31aac2cbafcea64f3f553d74f38d5a92ac7"
+    },
+    {
+      "path": "src/lib/legal/hooks/useCookieConsent.ts",
+      "gitBlob": "fdf5ca1c6d7544f0223ed1e3ea226f26d9862a81"
+    },
+    {
+      "path": "src/lib/legal/index.ts",
+      "gitBlob": "6bca6851d48ec4eb715856e12eedea0bedd12a69"
+    },
+    {
+      "path": "src/lib/legal/processors.ts",
+      "gitBlob": "3e0afedbfe556e38a67a17f792656ca615cc48cd"
+    },
+    {
+      "path": "src/lib/legal/types.ts",
+      "gitBlob": "225111f49f41c35e8025f2d321a617deba9f7c5b"
+    },
+    {
+      "path": "src/lib/legal/versions.ts",
+      "gitBlob": "b75433217970e83a055b26c6fd62432abdbb63b7"
+    },
+    {
+      "path": "src/lib/library-constants.ts",
+      "gitBlob": "04aa9dfc363d6392bd615466d9c63b1986f34186"
+    },
+    {
+      "path": "src/lib/library-helpers.ts",
+      "gitBlob": "88c7856f19e3e781b8a2a0924143996a3a095586"
+    },
+    {
+      "path": "src/lib/limits.ts",
+      "gitBlob": "6541ce10b8d556f258fe10bada9ad8edbefb69ee"
+    },
+    {
+      "path": "src/lib/local-engine.ts",
+      "gitBlob": "12773acc8792beb34ca1125cfd350750260d6466"
+    },
+    {
+      "path": "src/lib/logger.ts",
+      "gitBlob": "a988ebe192139e8b774c71637874a5693bfc674f"
+    },
+    {
+      "path": "src/lib/ltx-checkpoint.ts",
+      "gitBlob": "d7bfe25be3865a3c6c734ad735761a523b6aa214"
+    },
+    {
+      "path": "src/lib/ltx-helpers.ts",
+      "gitBlob": "b28ce82942254592cee4ddece3996c557dea4352"
+    },
+    {
+      "path": "src/lib/ltx-types.ts",
+      "gitBlob": "7ecb9dc4f49673f844a23a6f7289f86f325a0cea"
+    },
+    {
+      "path": "src/lib/ltx-utils.ts",
+      "gitBlob": "c612d33120787d962dd523eca1a8a5aac7320aab"
+    },
+    {
+      "path": "src/lib/ltx-v2-contract.ts",
+      "gitBlob": "68384da1dc8b047e934231d80de4ffcb03188372"
+    },
+    {
+      "path": "src/lib/ltx-v2.ts",
+      "gitBlob": "5074de580ca0d234923597bbc80ec7b3b301a6a5"
+    },
+    {
+      "path": "src/lib/ltx-workflow.ts",
+      "gitBlob": "bb65710d28d312cf451d10f42744263eb4a43e63"
+    },
+    {
+      "path": "src/lib/ltx.ts",
+      "gitBlob": "e8a008e68c099dc70a279c73035a71db9e8e8a37"
+    },
+    {
+      "path": "src/lib/media-download.ts",
+      "gitBlob": "a54d7030b0363f7e7b13f5dca3fe8effd5d65601"
+    },
+    {
+      "path": "src/lib/media-inspection.ts",
+      "gitBlob": "34d9a5f1708efb49999d91bb16fc18986af56eca"
+    },
+    {
+      "path": "src/lib/media-probe.ts",
+      "gitBlob": "72955ec25f5b6efda1fb6c8dd4431dc31a02c58f"
+    },
+    {
+      "path": "src/lib/media-validation.test.ts",
+      "gitBlob": "6edb0f44013909e6bc53926e18d071c2597f88ab"
+    },
+    {
+      "path": "src/lib/media-validation.ts",
+      "gitBlob": "29eb81b94d788aca070d1c40df1c110109b98a52"
+    },
+    {
+      "path": "src/lib/music-checkpoint.ts",
+      "gitBlob": "1f9507169ed3b045c7c81da70b23e809d85f5b52"
+    },
+    {
+      "path": "src/lib/nama-muse.ts",
+      "gitBlob": "4b967d27e6916616a3eb10abb3b9ea6dfc08f54d"
+    },
+    {
+      "path": "src/lib/opentimestamps.ts",
+      "gitBlob": "c33b0fec6756c761988d8b818385c983050ac204"
+    },
+    {
+      "path": "src/lib/ots-transport.ts",
+      "gitBlob": "48ffe1ac0b28671e70bc967a483f47998691d5c6"
+    },
+    {
+      "path": "src/lib/password-utils.ts",
+      "gitBlob": "6ac3b55309fab5ab650c43d1249bd753c4409359"
+    },
+    {
+      "path": "src/lib/pexels.ts",
+      "gitBlob": "902331c7264c355723d2c60b5b2c94e052ccd922"
+    },
+    {
+      "path": "src/lib/phase.ts",
+      "gitBlob": "e8d4d8d106bd18f034aaf4aa3dbdcafc5f108b17"
+    },
+    {
+      "path": "src/lib/pipeline-state.ts",
+      "gitBlob": "4b462b4ae8369e403653b1b3bac4300e1820487e"
+    },
+    {
+      "path": "src/lib/pipeline-submit.ts",
+      "gitBlob": "8465b8dcb750d956f58e9a71bb1b515ea2aa6470"
+    },
+    {
+      "path": "src/lib/private-media.ts",
+      "gitBlob": "88af7a6aa703c101bbebd506b3a704ab285c3ad0"
+    },
+    {
+      "path": "src/lib/production-constants.ts",
+      "gitBlob": "42dee42cdd71706144929553d42366bfba5bc4ce"
+    },
+    {
+      "path": "src/lib/production-intent-client.ts",
+      "gitBlob": "3de57ff4fd2dd67175bd4a8cb46952675211fb7f"
+    },
+    {
+      "path": "src/lib/production-persistence.ts",
+      "gitBlob": "503d44f84dad79c496869a59e144cf174492fd13"
+    },
+    {
+      "path": "src/lib/production-pipeline.ts",
+      "gitBlob": "7abf106b5fa53e131c692fb94225c3dcb90d307c"
+    },
+    {
+      "path": "src/lib/production-schema.ts",
+      "gitBlob": "6d68fb32829010c4fa6d9bc639c8b212e56ee2d2"
+    },
+    {
+      "path": "src/lib/profile-image.ts",
+      "gitBlob": "50cb07a0d2388df5c22031c584e33d66bedb0611"
+    },
+    {
+      "path": "src/lib/provider-json.ts",
+      "gitBlob": "363fd4e1ca73af6d6c28a9895adcac4b709602cd"
+    },
+    {
+      "path": "src/lib/provider-pricing.ts",
+      "gitBlob": "235a8821569e85ed3d48568d572d6e058717c12e"
+    },
+    {
+      "path": "src/lib/provider-response.ts",
+      "gitBlob": "1541ccc84fe6594ec29355ae189a744431dc64db"
+    },
+    {
+      "path": "src/lib/public-origin.ts",
+      "gitBlob": "0336e6a69504ea8abd842e5246f4185c02bf2316"
+    },
+    {
+      "path": "src/lib/publication-journal.ts",
+      "gitBlob": "d43388c38f6b91f71571d55f9ace9ec64163b0b9"
+    },
+    {
+      "path": "src/lib/purama-score.ts",
+      "gitBlob": "862f775fe2204920e657c8d7a299f57a94f80fa3"
+    },
+    {
+      "path": "src/lib/rate-limit.ts",
+      "gitBlob": "f05e7f979580c6e1cc3a169e54b85afce79cf83a"
+    },
+    {
+      "path": "src/lib/redis.ts",
+      "gitBlob": "60f67a4c8d0c2b72c34ca82497248b30499a45ea"
+    },
+    {
+      "path": "src/lib/riffusion.ts",
+      "gitBlob": "b255b7f79f5f44a8d61fae23b7d8c35ae685c347"
+    },
+    {
+      "path": "src/lib/runpod.ts",
+      "gitBlob": "8780f846813943772077e275e50c5c8176070e43"
+    },
+    {
+      "path": "src/lib/salad-persistence.ts",
+      "gitBlob": "785f42c5b3cd29e852fa989836017203d5abeff7"
+    },
+    {
+      "path": "src/lib/salad/application.ts",
+      "gitBlob": "3d87b7031f2da6b503631b48988246a879b60763"
+    },
+    {
+      "path": "src/lib/salad/checkpoint.ts",
+      "gitBlob": "ebc17c6f3b88dcb1704d5130b0a8d588ba9a099c"
+    },
+    {
+      "path": "src/lib/salad/client.ts",
+      "gitBlob": "b817ee65df5a531560e474590d47731a78441be2"
+    },
+    {
+      "path": "src/lib/salad/config.ts",
+      "gitBlob": "aca0bfb37bcdde2610e9310b782a48c7c143c1ec"
+    },
+    {
+      "path": "src/lib/salad/container/Dockerfile",
+      "gitBlob": "23ecfee2a53931a50dd5800d554167933fd54265"
+    },
+    {
+      "path": "src/lib/salad/container/health.mjs",
+      "gitBlob": "bbb48ab690e2fb68693f9b5b41179c7166daf0e4"
+    },
+    {
+      "path": "src/lib/salad/container/launch.mjs",
+      "gitBlob": "a9166533bfa2a10a1eb7b753bd76af73ae795f49"
+    },
+    {
+      "path": "src/lib/salad/container/package-lock.json",
+      "gitBlob": "4bc53a37e985b5e492fe33130cb1f55417fc5704"
+    },
+    {
+      "path": "src/lib/salad/container/package.json",
+      "gitBlob": "80efa48cd049914ae5fcf076c424a9d731d65684"
+    },
+    {
+      "path": "src/lib/salad/container/prepare-context.mjs",
+      "gitBlob": "1c39b62466a6a2c78d529045e90d566b660494dd"
+    },
+    {
+      "path": "src/lib/salad/container/requirements.lock",
+      "gitBlob": "828afce938567466f99e7f980ed2ff0bb92617a7"
+    },
+    {
+      "path": "src/lib/salad/contracts.ts",
+      "gitBlob": "46db66656d6f0d94471548c5077ae4725bcdaa1b"
+    },
+    {
+      "path": "src/lib/salad/engine.ts",
+      "gitBlob": "2d2fc65b63ae36e2a30ffdc10a8cc3f0b47de344"
+    },
+    {
+      "path": "src/lib/salad/host.ts",
+      "gitBlob": "fbcdb152f7ab823e505318892569ed9d9b2516b4"
+    },
+    {
+      "path": "src/lib/salad/http.ts",
+      "gitBlob": "beb07eacfe22e08fda3b98d12a662b0f47d633eb"
+    },
+    {
+      "path": "src/lib/salad/inspection.ts",
+      "gitBlob": "6f89d7a8a155978601b62688debb355b64609345"
+    },
+    {
+      "path": "src/lib/salad/serve.mts",
+      "gitBlob": "e158eacbf5ef18881cb86cd3f6cc2b30bb6e7b86"
+    },
+    {
+      "path": "src/lib/salad/worker.ts",
+      "gitBlob": "1e728c1fa4f86be1190e3442d21726cd2aa93413"
+    },
+    {
+      "path": "src/lib/salad/workflow-contract.ts",
+      "gitBlob": "228ece8168c13cff92c9438141ba204e8641b9e6"
+    },
+    {
+      "path": "src/lib/seasons.ts",
+      "gitBlob": "f5d92524ade6a959c63ef9f2934b13c0f6cae453"
+    },
+    {
+      "path": "src/lib/shotstack-timeline.ts",
+      "gitBlob": "19de4891cda776dca550c602c02a65a3ae04a4d2"
+    },
+    {
+      "path": "src/lib/shotstack.ts",
+      "gitBlob": "0744244c853d25512859149444316f98b6e4a731"
+    },
+    {
+      "path": "src/lib/smart-split.ts",
+      "gitBlob": "110323ec69f350761fe049217ee5eb757c550518"
+    },
+    {
+      "path": "src/lib/social-account-revocation.ts",
+      "gitBlob": "559f14c88e6285963e0da0bcfcc728f0b3ca403b"
+    },
+    {
+      "path": "src/lib/social-oauth-account.ts",
+      "gitBlob": "03a4c1b108e305c61ab175b221c224b0e4387b0e"
+    },
+    {
+      "path": "src/lib/social-oauth-state.ts",
+      "gitBlob": "c71c389d3249b579a19cb578eb64e3c149c7269a"
+    },
+    {
+      "path": "src/lib/social-publication.ts",
+      "gitBlob": "642a63cabdab8c32e6dd4ca4d6c2494cf8cffcfb"
+    },
+    {
+      "path": "src/lib/stable-audio.ts",
+      "gitBlob": "da886c80c98eafa174f1b13e128ae9a283cddac7"
+    },
+    {
+      "path": "src/lib/storage.ts",
+      "gitBlob": "90c5097409ef0b4e7ef333cf9cdea38c4c51e01e"
+    },
+    {
+      "path": "src/lib/storyboard.ts",
+      "gitBlob": "e1948a5ed5f0c2770bc66ebce25beb75b8b85bdb"
+    },
+    {
+      "path": "src/lib/stripe.ts",
+      "gitBlob": "f4d5e8157716cd1c7a631947b33057615e9574a9"
+    },
+    {
+      "path": "src/lib/stripe/webhook-checkout.ts",
+      "gitBlob": "069b0ff8312be378d32dded1b3e55e60b2212fba"
+    },
+    {
+      "path": "src/lib/stripe/webhook-connect.ts",
+      "gitBlob": "a346ab8540208122d7ef89e483fc8bd7a625d77b"
+    },
+    {
+      "path": "src/lib/stripe/webhook-dispatch.ts",
+      "gitBlob": "5988ffa973f771867be0b0bddcf4b69f7cdb886e"
+    },
+    {
+      "path": "src/lib/stripe/webhook-invoices.ts",
+      "gitBlob": "3ba7810f2fa60636461883db7f2686ba69081bb5"
+    },
+    {
+      "path": "src/lib/stripe/webhook-subscriptions.ts",
+      "gitBlob": "cdc87ccbec6a8331b058d3aff5f9840718da7e83"
+    },
+    {
+      "path": "src/lib/stripe/webhook-types.ts",
+      "gitBlob": "8c2018461d246e2f9cd6617e339f0d93dcd574b8"
+    },
+    {
+      "path": "src/lib/styles.ts",
+      "gitBlob": "32b2b5df7bfce4e3faa7c6fff4049d50eee0f189"
+    },
+    {
+      "path": "src/lib/subtitles.ts",
+      "gitBlob": "a992f112fe2b511f8ed2c7c9ba9e2455496a62e0"
+    },
+    {
+      "path": "src/lib/suno-config.ts",
+      "gitBlob": "600f73d0979a2783c8486efbb48d00af04106db2"
+    },
+    {
+      "path": "src/lib/suno.ts",
+      "gitBlob": "66341a8c7da79e67807a3a3e91f3fd10303ef2d7"
+    },
+    {
+      "path": "src/lib/supabase-server.ts",
+      "gitBlob": "97e50c9e01bd240cfd6301795427ef936ecf806b"
+    },
+    {
+      "path": "src/lib/supabase.ts",
+      "gitBlob": "7bcdf8042b98cbcfeedaec2e48d00d082a0c1541"
+    },
+    {
+      "path": "src/lib/sutra-auto-helpers.ts",
+      "gitBlob": "eb7c7c60a2ed4dca473be323a66087a5c1c8aec7"
+    },
+    {
+      "path": "src/lib/sutra-auto-types.ts",
+      "gitBlob": "06df71f60aefbf0a4fd37dd78bea4e1ddbe49310"
+    },
+    {
+      "path": "src/lib/sutra-auto-utils.ts",
+      "gitBlob": "30f68af51119c6129375afe79d764cf86c0a9bf7"
+    },
+    {
+      "path": "src/lib/sutra-auto.ts",
+      "gitBlob": "c59a7ec62400ad46fc5562a4877f1d37df612786"
+    },
+    {
+      "path": "src/lib/template-helpers.ts",
+      "gitBlob": "ab8f31d572e0696b9f04ebda8d291436505654cd"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "gitBlob": "ef3e3901cea9f24c5565cf9376bd8dc47232b131"
+    },
+    {
+      "path": "src/lib/utils/api.ts",
+      "gitBlob": "21d8f63933956278074dec7bdf2f28e7190ae4b9"
+    },
+    {
+      "path": "src/lib/validators.ts",
+      "gitBlob": "74b1ff261c7e55ffe2dde34d3e183421a7ea434c"
+    },
+    {
+      "path": "src/lib/video-compositor.test.mts",
+      "gitBlob": "d330f50ebde840329ab40e1b15dfd0d626e1b0fe"
+    },
+    {
+      "path": "src/lib/video-compositor.ts",
+      "gitBlob": "22a38ea4206773eb9bc05519ef11e1f874363dee"
+    },
+    {
+      "path": "src/lib/video-pipeline.ts",
+      "gitBlob": "baad458ed1670dea82c7285a0c4e0a929a357064"
+    },
+    {
+      "path": "src/lib/video-proofs.ts",
+      "gitBlob": "922a574d3118dd63bd1b1c75be531f5039d698ca"
+    },
+    {
+      "path": "src/lib/video-queue.ts",
+      "gitBlob": "a9a50e15017c9542b7ef94d6c46f4029aca2244e"
+    },
+    {
+      "path": "src/lib/video-worker.ts",
+      "gitBlob": "ea966af30257c60eee9d924d53174b20c03d7991"
+    },
+    {
+      "path": "src/lib/wan.ts",
+      "gitBlob": "e2ed24afad170810bb6c49f3548bfac70c2d4e45"
+    },
+    {
+      "path": "src/lib/zernio.ts",
+      "gitBlob": "94d50b0e7b4cc4455fa65e3af0e96cebdbd74807"
+    },
+    {
+      "path": "src/middleware.ts",
+      "gitBlob": "78cc632b660e4cbcc7c0b9681d62d9f596cde67a"
+    },
+    {
+      "path": "src/types/batch.ts",
+      "gitBlob": "7a6051a1a0608537add65ab0105843e3ac9a01fe"
+    },
+    {
+      "path": "src/types/connect.ts",
+      "gitBlob": "ac5212797f79ed752235957242037d7826ae7fa4"
+    },
+    {
+      "path": "src/types/database.ts",
+      "gitBlob": "fc4ff9780dc3a4f4d75558d178b1a83530f4e2bf"
+    },
+    {
+      "path": "src/types/editor.ts",
+      "gitBlob": "6f2806e13dbfdacd8eb92bf3ae11903eba2dc77b"
+    },
+    {
+      "path": "src/types/financer.ts",
+      "gitBlob": "c17b77caaf00fbe41d2b4e9cb672273bc13729ba"
+    },
+    {
+      "path": "src/types/index.ts",
+      "gitBlob": "3d1155ca4589a55ed80a7ddf5d702cda4b4b0463"
+    },
+    {
+      "path": "src/types/javascript-opentimestamps.d.ts",
+      "gitBlob": "b2183125a8e3c0dd740cb5805dbcba62fb2e9839"
+    },
+    {
+      "path": "src/types/library.ts",
+      "gitBlob": "f0de03ea3d66e0405705600eba9faac9373136f3"
+    },
+    {
+      "path": "src/types/partner.ts",
+      "gitBlob": "082abcf90a03bf65f3fdaa48e0626471de204808"
+    },
+    {
+      "path": "src/types/production.ts",
+      "gitBlob": "dce5fc27a3444e0367c7db126f78e435bbca1666"
+    },
+    {
+      "path": "src/types/stock.ts",
+      "gitBlob": "7e99cf9c22215c09b063729f11a681f60b6495be"
+    },
+    {
+      "path": "tsconfig.json",
+      "gitBlob": "6c860cd723b71ca8261d4a67f2535a7c849ab9c5"
+    }
+  ],
+  "providerNamedAssertions": [
+    "\u2714 Shotstack resumed polling must reject a body completed after local cancellation (21.412096ms)",
+    "\u2714 Shotstack cancelled submission retains a late remote ID without accepting completion or resubmitting (122.104456ms)",
+    "\u2714 T02-C01 Salad disabled by default, no network or implicit credentials (2.508638ms)",
+    "\u2714 T02-C02 Salad URL rejects http (4.426326ms)",
+    "\u2714 T02-C02 Salad URL rejects metadata (0.482737ms)",
+    "\u2714 T02-C02 Salad URL rejects loopback (0.375365ms)",
+    "\u2714 T02-C02 Salad URL rejects ipv6 (2.480666ms)",
+    "\u2714 T02-C02 Salad URL rejects numeric (0.209666ms)",
+    "\u2714 T02-C02 Salad URL rejects suffixSpoof (0.170437ms)",
+    "\u2714 T02-C02 Salad URL rejects credentials (0.159099ms)",
+    "\u2714 T02-C02 Salad URL rejects query (0.223586ms)",
+    "\u2714 T02-C02 Salad URL rejects fragment (0.266631ms)",
+    "\u2714 T02-C02 Salad URL rejects customPort (0.22586ms)",
+    "\u2714 T02-C02 Salad URL rejects path (0.124938ms)",
+    "\u2714 default Suno production adapter: submit-network cannot cause a second paid submission (3.504698ms)",
+    "\u2714 default Suno production adapter: submit-503 cannot cause a second paid submission (1.988054ms)",
+    "\u2714 default Suno production adapter: poll-network cannot cause a second paid submission (7.853376ms)",
+    "\u2714 default Suno production adapter: poll-403 cannot cause a second paid submission (1.242151ms)",
+    "\u2714 default Suno production adapter: result-write cannot cause a second paid submission (1.689405ms)",
+    "\u2714 default Suno production adapter: result-ack cannot cause a second paid submission (1.255431ms)",
+    "\u2714 default Suno production adapter: stage-ack cannot cause a second paid submission (0.934297ms)",
+    "\u2714 default Suno production adapter: success cannot cause a second paid submission (0.986236ms)",
+    "\u2714 default Suno adapter: unconfirmed intent never reaches HTTP (0.359492ms)",
+    "\u2714 Suno configured variable precedence matches application; malformed preferred URL never falls back (0.228024ms)",
+    "\u2714 RunPod health validates read access with zero ready workers, not generation permission or credit (0.316777ms)",
+    "\u2714 Shotstack empty templates valid, HTML or success=false invalid (0.195484ms)",
+    "\u2714 Suno separates successful authentication from zero/positive credits; rejects malformed credit and HTTP200 API error (0.226511ms)",
+    "\u2714 Suno API 429 means insufficient credits, distinct from HTTP429 and API405/430 rate limits (0.231388ms)",
+    "\u2714 Pexels video: HTTP 401 is an explicit failure, one GET (22.546354ms)",
+    "\u2714 Pexels video: HTTP 403 is an explicit failure, one GET (0.897122ms)",
+    "\u2714 Pexels video: HTTP 404 is an explicit failure, one GET (0.655988ms)",
+    "\u2714 Pexels video: HTTP 429 is an explicit failure, one GET (0.832774ms)",
+    "\u2714 Pexels video: HTTP 500 is an explicit failure, one GET (0.738682ms)",
+    "\u2714 Pexels video: malformed schema is not an empty search (9.379095ms)",
+    "\u2714 Pexels video: missing credential is explicit and never calls network (0.681937ms)",
+    "\u2714 Pexels video: real empty result remains empty; transport is bounded (1.087478ms)",
+    "\u2714 Pexels video: unsafe result cannot escape as usable media (6.685338ms)",
+    "\u2714 Pexels video: success preserves provenance and never fabricates cost (3.417877ms)",
+    "\u2714 Pexels image: HTTP 401 is an explicit failure, one GET (0.69766ms)",
+    "\u2714 Pexels image: HTTP 403 is an explicit failure, one GET (3.655415ms)",
+    "\u2714 Pexels image: HTTP 404 is an explicit failure, one GET (0.335045ms)",
+    "\u2714 Pexels image: HTTP 429 is an explicit failure, one GET (0.289526ms)",
+    "\u2714 Pexels image: HTTP 500 is an explicit failure, one GET (2.399925ms)",
+    "\u2714 Pexels image: malformed schema is not an empty search (0.870771ms)",
+    "\u2714 Pexels image: missing credential is explicit and never calls network (0.252941ms)",
+    "\u2714 Pexels image: real empty result remains empty; transport is bounded (0.45103ms)",
+    "\u2714 Pexels image: unsafe result cannot escape as usable media (1.386758ms)",
+    "\u2714 Pexels image: success preserves provenance and never fabricates cost (0.602007ms)",
+    "\u2714 ElevenLabs clone: malformed voice ID cannot become success (1.06211ms)",
+    "\u2714 ElevenLabs list: malformed entry cannot become a selectable voice (0.752383ms)",
+    "\u2714 ElevenLabs clone/list: reject redirects and bound body parsing (0.845794ms)",
+    "\u2714 Salad exact requested NAME fields work for free scoped reads (1.412187ms)",
+    "\u2714 Salad conflicting legacy and NAME scopes fail before any request (0.244137ms)",
+    "\u2714 Pexels keeps MP4 variants while ignoring legitimate dimensionless HLS variants (0.635156ms)",
+    "\u2714 Pexels video: malformed JSON and oversized bodies reject (1.179696ms)",
+    "\u2714 Pexels video: body timeout survives a stream ignoring the fetch signal (15.815167ms)",
+    "\u2714 Pexels image: malformed JSON and oversized bodies reject (0.715558ms)",
+    "\u2714 Pexels image: body timeout survives a stream ignoring the fetch signal (10.237071ms)",
+    "\u2714 ElevenLabs clone: malformed JSON and oversized bodies reject (0.944583ms)",
+    "\u2714 ElevenLabs clone: body timeout survives a stream ignoring the fetch signal (10.198518ms)",
+    "\u2714 ElevenLabs list: malformed JSON and oversized bodies reject (0.768428ms)",
+    "\u2714 ElevenLabs list: body timeout survives a stream ignoring the fetch signal (10.029865ms)",
+    "\u2714 LTX aborted submission body remains uncertain, never a new paid POST (18.671839ms)",
+    "\u2714 LTX polling body respects local cancellation and keeps same ID (11.232906ms)",
+    "\u2714 LTX polling body respects remaining deadline and keeps same ID (11.611036ms)",
+    "\u2714 ElevenLabs generateVoice: succes (7.27746ms)",
+    "\u2714 ElevenLabs generateVoice: 401 remonte explicitement (0.808047ms)",
+    "\u2714 ElevenLabs generateVoice: 429 non rejoue, erreur explicite (0.530409ms)",
+    "\u2714 ElevenLabs generateVoice: cle absente -> erreur SUTRA_ENV_MISSING explicite (0.209786ms)",
+    "\u2714 ElevenLabs listVoices: 403 refuse + reponse invalide detectee (1.574591ms)",
+    "\u2714 Suno: succes apres polling (3007.586585ms)",
+    "\u2714 Suno: POST 500 = UNE SEULE tentative (pas de rejeu g\u00e9n\u00e9ratif payant) (0.791902ms)",
+    "\u2714 Suno: 401 au poll -> abandon immediat (pas de boucle 2 min) (0.636239ms)",
+    "\u2714 Suno: reponse invalide (id absent) -> detail fournisseur expurge (0.45858ms)",
+    "\u2714 Suno: cle absente -> erreur explicite (0.2589ms)",
+    "\u2714 RunPod submit: succes avec jobId (0.667456ms)",
+    "\u2714 RunPod submit: 401 explicite (0.315786ms)",
+    "\u2714 RunPod submit: reponse invalide (pas de job ID) (0.415716ms)",
+    "\u2714 RunPod: endpoint absent -> erreur explicite (pas de crash import) (0.125238ms)",
+    "\u2714 LTX: une reponse binaire V1 n'est plus acceptee comme succes V2 (7.949923ms)",
+    "\u2714 LTX: 4xx avec corps erreur JSON -> message remonte (pas de retry sur 4xx) (0.457078ms)",
+    "\u2714 LTX: cle absente -> erreur explicite (0.270007ms)",
+    "\u2714 Pexels searchVideos: succes + format portrait dans la requ\u00eate (1.62015ms)",
+    "\u2714 Pexels searchVideos: 404 -> erreur explicite sans faux stock vide (0.194643ms)",
+    "\u2714 Pexels searchVideos: cl\u00e9 absente -> erreur explicite sans appel r\u00e9seau (0.107232ms)",
+    "\u2714 estimateCost: grille officielle LTX 2.3 (fast 1080p = 0.06 USD/s) (0.439542ms)",
+    "\u2714 snapLtxDuration: dur\u00e9es ramen\u00e9es aux valeurs admises par LTX 2.3 (0.219811ms)",
+    "\u2714 ltxCompatibleFormat: le carr\u00e9 part en 16:9 (recadr\u00e9 au montage) (0.186982ms)",
+    "\u2714 env: Shotstack diagnostic selects the configured environment without substituting credentials (0.514385ms)",
+    "\u2714 super_admin \u2192 ltx-2-3-pro (tous plans) (0.815608ms)",
+    "\u2714 enterprise + admin \u2192 ltx-2-3-pro (0.124677ms)",
+    "\u2714 starter/creator/empire \u2192 ltx-2-3-fast (0.125179ms)",
+    "\u2714 free \u2192 wan-2.2 direct (pas de LTX) (0.129114ms)",
+    "\u2714 free sans email \u2192 wan-2.2 (0.093641ms)",
+    "\u2714 LTX V2 soumet 202, sauvegarde ID, poll GET et telecharge sans token (14.49516ms)",
+    "\u2714 LTX image conserve references, camera et endpoint lors du polling (1.576023ms)",
+    "\u2714 LTX reprise apres reponse de download perdue ne refait aucun POST (1.586079ms)",
+    "\u2714 LTX le meme objet de reprise conserve aussi son identifiant apres succes (1.501381ms)",
+    "\u2714 LTX reponse POST perdue bloque la deuxieme soumission (0.594205ms)",
+    "\u2714 LTX erreur du checkpoint ID interdit polling et nouvelle soumission (1.204855ms)",
+    "\u2714 LTX echec terminal reste terminal sans regeneration (0.888418ms)",
+    "\u2714 LTX requete modifiee sous le meme checkpoint refusee avant reseau (0.953015ms)",
+    "\u2714 LTX rejette une reponse incomplete {\"status\":\"completed\",\"result\":{\"video_url\":\"https://media.invalid/x\"}} (0.57158ms)",
+    "\u2714 LTX rejette une reponse incomplete {\"id\":\"other\",\"status\":\"completed\"} (0.433823ms)",
+    "\u2714 LTX rejette une reponse incomplete {\"id\":\"job-1\",\"created_at\":\"2026-10-12T10:00:00Z\",\"completed_at\":\"2026-10-12T10:00:01Z\",\"status\":\"unknown\"} (0.568406ms)",
+    "\u2714 LTX rejette une reponse incomplete {\"id\":\"job-1\",\"created_at\":\"2026-10-12T10:00:00Z\",\"completed_at\":\"2026-10-12T10:00:01Z\",\"status\":\"completed\",\"result\":{}} (0.474514ms)",
+    "\u2714 LTX requete acceptee puis erreur ne declenche pas de fallback payant WAN (0.965173ms)",
+    "\u2714 LTX circuit ouvert ne perd ni image de reference ni contrainte camera (0.323387ms)",
+    "\u2714 Suno ambiguous submission never reflects provider payload or resubmits (7.915505ms)",
+    "\u2714 Suno polling bounds and redacts malformed responses without resubmission (3.911222ms)",
+    "\u2714 smart paid timeout never invokes WAN and restart reuses submission barrier (7.026346ms)",
+    "\u2714 visual fallback never converts an uncertain paid outcome to stock or WAN (0.558962ms)",
+    "\u2714 existing LTX intent or execution never becomes stock when credentials or plan change (0.946115ms)",
+    "\u2714 a configured WAN cannot replace an explicit LTX execution (0.202866ms)",
+    "\u2714 RunPod: terminal FAILED retains job and never invokes retry/cancel (0.548446ms)",
+    "\u2714 RunPod: terminal CANCELLED retains job and never invokes retry/cancel (0.223937ms)",
+    "\u2714 RunPod: terminal TIMED_OUT retains job and never invokes retry/cancel (0.252912ms)",
+    "\u2714 RunPod: network/unknown status/404/local timeout retain remote identity for explicit resumption (0.625092ms)",
+    "\u2714 RunPod: uncertain submit is one request with explicit unknown outcome (0.368515ms)",
+    "\u2714 WAN: success carries job/status/unknown GPU cost; download failure resumes that job (1.21462ms)",
+    "\u2714 visual: storage failure after paid WAN/LTX success retains job, never generates a fallback (1.644607ms)",
+    "\u2714 SHOTSTACK: apres interruption du polling, reprise par ID sans nouveau POST (6.674856ms)",
+    "\u2714 SHOTSTACK: soumission sans ID confirme bloque un second rendu (0.131869ms)",
+    "\u2714 foreign provider checkpoint is never overwritten or interpreted as Salad (0.355666ms)",
+    "\u2714 real smart routing: owner never contacts Mac/API when Salad disabled; customer remains API (3.509477ms)",
+    "\u2714 owner without API credentials cannot fall back to stock; Salad never gets a fabricated fixed price (14.33411ms)",
+    "\u2714 Shotstack: 4K autorisee \u2014 preset demande, fichier encore non verifie (17.632364ms)",
+    "\u2714 Shotstack: 1080p 16:9 exporte en 1920\u00d71080 (3.07285ms)",
+    "\u2714 Shotstack: horloge de montage \u2014 intro d\u00e9cale voix et sous-titres, dur\u00e9es par clip (1.873783ms)",
+    "\u2714 Shotstack: une PHOTO devient un asset image, pas vid\u00e9o (1.179948ms)",
+    "\u2714 Shotstack: transition fade demand\u00e9e = fade appliqu\u00e9e (pas none) (1.262992ms)",
+    "\u2714 Shotstack: 429 au submit -> erreur explicite (0.742409ms)",
+    "\u2714 Shotstack: rendu failed -> erreur explicite (0.67742ms)",
+    "\u2714 Shotstack: cle absente -> erreur explicite (0.201053ms)",
+    "\u2714 Shotstack: environnement et cle restent lies au submit et au polling (4.175982ms)",
+    "\u2714 SunoAPI explicit V6 custom instrumental contract and authenticated task polling (25.167971ms)",
+    "\u2714 SunoAPI config rejects unsupported/credentialed URLs before sending a key (0.947928ms)",
+    "\u2714 SunoAPI explicit current URL wins over legacy alias without mutating it (0.855038ms)",
+    "\u2714 SunoAPI bounds input before any submission (0.613163ms)",
+    "\u2714 SunoAPI body-level rejection and uncertain transport never resubmit or reflect diagnostics (1.83832ms)",
+    "\u2714 SunoAPI task mismatch, failed/unknown status and untrusted media fail closed (4.169872ms)",
+    "\u2714 SunoAPI callback is acknowledgement only and has no body/storage/provider dependency (0.775849ms)",
+    "\u2714 create: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (7.103898ms)",
+    "\u2714 production: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (0.990377ms)",
+    "\u2714 auto: timeout after accepted Suno ID resumes GET only; acquired results never regenerated (15.645858ms)",
+    "\u2714 duplicate Suno submission callbacks are coalesced; a competing task identity cannot replace the binding (0.704742ms)",
+    "\u2714 Pollinations helper preserves ratios and encoding, excludes public feed and unsupported options (1.668032ms)",
+    "\u2714 Salad shutdown waits for an in-flight durable reservation and its execution (46.568452ms)",
+    "\u2714 RunPod rejects missing/coerced job identity and malformed media (2.725715ms)",
+    "\u2714 RunPod rejects numeric submission IDs without retry (1.424054ms)",
+    "\u2714 Suno checkpoints accepted task before polling; ACK failure preserves ID and blocks GET (1.99229ms)",
+    "\u2714 Suno resumes a durable task with GET only (0.83049ms)",
+    "\u2714 RunPod accepts only matching completed jobs and valid worker media envelopes (1.02927ms)",
+    "\u2714 RunPod poll errors and deadlines retain job identity without resubmission (11.261731ms)",
+    "\u2714 Suno awaits durable ACK before GET and returns unchanged legacy result shape (6.191294ms)",
+    "\u2714 Suno recovery validates checkpoint before I/O and retains ID on timeout or malformed replies (11.468502ms)",
+    "\u2714 Suno pending recovery stops at its deadline without resubmission or fallback (10.563379ms)",
+    "\u2714 T08 MODE-04: legacy Mac/auto flags cannot activate Salad or paid fallback (1.596404ms)",
+    "\u2714 WAN preserves landscape, portrait and square formats (0.986626ms)",
+    "\u2714 Pexels uses the current video endpoint and keeps provenance (0.161323ms)",
+    "\u2714 stock search includes cached Pixabay and Pexels sources (0.15937ms)"
+  ],
+  "notAdditive": true,
+  "excludedChangedSource": [
+    "src/lib/stock.ts"
+  ],
+  "newDeltaTests": "stock-after.txt; separate from reused CI",
+  "limitations": [
+    "Local artifact provenance is T01 downloaded evidence; hashes recorded at this read.",
+    "No new global build/CI/runtime/provider generation proof.",
+    "Live master diagnostics are separate from synthetic CI configuration."
+  ]
+}

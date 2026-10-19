@@ -7,6 +7,13 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
+  'qa/t01-certification-20261019/coverr.test.mts',
+  'qa/t01-certification-20261019/partner-route.test.mts',
+  'qa/t02-final-ab935e5-20261019/diagnostics.test.mts',
+  'qa/t02-final-ab935e5-20261019/contact.test.mts',
+  'qa/t02-final-ab935e5-20261019/csrf-replay.test.mts',
+  'qa/t04-ack-ab935-20261019/stock-contracts.test.mts',
+  'qa/t04-ack-ab935-20261019/stock-route.test.mts',
   'qa/t01-create-cancel-20261016/control.test.mts',
   'qa/t01-create-cancel-20261016/client.test.mts',
   'qa/t01-create-cancel-20261016/submission.test.mts',

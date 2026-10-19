@@ -1,0 +1,108 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "target": {
+    "id": "Function:src/lib/stock.ts:rejectBadStatus",
+    "name": "rejectBadStatus",
+    "type": "Function",
+    "filePath": "src/lib/stock.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 7,
+  "risk": "MEDIUM",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 5,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 5,
+    "2": 1,
+    "3": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Search",
+      "hits": 7,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/stock.ts:coverrVideos",
+        "name": "coverrVideos",
+        "filePath": "src/lib/stock.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/stock.ts:pexelsPhotos",
+        "name": "pexelsPhotos",
+        "filePath": "src/lib/stock.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/stock.ts:pexelsVideos",
+        "name": "pexelsVideos",
+        "filePath": "src/lib/stock.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/stock.ts:pixabayVideos",
+        "name": "pixabayVideos",
+        "filePath": "src/lib/stock.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/stock.ts:unsplashPhotos",
+        "name": "unsplashPhotos",
+        "filePath": "src/lib/stock.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/stock.ts:searchStock",
+        "name": "searchStock",
+        "filePath": "src/lib/stock.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/stock/search/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/stock/search/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

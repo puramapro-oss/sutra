@@ -1,0 +1,213 @@
+{
+  "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "engine": "chromium",
+  "baseline": true,
+  "checks": [
+    {
+      "name": "modal: named dialog, initial focus, focus trap, Escape and focus restoration",
+      "status": "FAIL",
+      "error": "expect(locator).toHaveAttribute(expected) failed\n\nLocator:  getByTestId('publish-everywhere-modal')\nExpected: \"dialog\"\nReceived: \"\"\nTimeout:  1500ms\n\nCall log:\n  - Expect \"to.have.attribute.value\" with timeout 1500ms\n  - waiting for getByTestId('publish-everywhere-modal')\n    5 × locator resolved to <div data-testid=\"publish-everywhere-modal\" class=\"fixed inset-0 z-[1000] flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4\">…</div>\n      - unexpected value \"null\"\n"
+    },
+    {
+      "name": "revoked account cannot be selected; unavailable accounts have accessible connect links",
+      "status": "FAIL",
+      "error": "expect(locator).toBeDisabled() failed\n\nLocator:  getByTestId('publish-platform-x')\nExpected: disabled\nReceived: enabled\nTimeout:  1500ms\n\nCall log:\n  - Expect \"to.be.disabled\" with timeout 1500ms\n  - waiting for getByTestId('publish-platform-x')\n    5 × locator resolved to <button type=\"button\" data-testid=\"publish-platform-x\" class=\"relative flex flex-col items-start gap-1 p-3 rounded-xl border transition-all duration-200 text-left bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.12]\">…</button>\n      - unexpected value \"enabled\"\n"
+    },
+    {
+      "name": "schedule: accessible name, selected state, browser IANA timezone and local minimum",
+      "status": "FAIL",
+      "error": "expect(locator).toHaveAccessibleName(expected) failed\n\nLocator: getByTestId('scheduled-at-input')\nExpected pattern: /date|heure/i\nReceived string:  \"\"\nTimeout: 1500ms\n\nCall log:\n  - Expect \"to.have.accessible.name\" with timeout 1500ms\n  - waiting for getByTestId('scheduled-at-input')\n    5 × locator resolved to <input value=\"\" type=\"datetime-local\" min=\"2026-10-19T19:46\" data-testid=\"scheduled-at-input\" class=\"w-full px-3 py-2 rounded-xl bg-white/[0.02] border border-white/[0.06] text-sm text-white/90 focus:outline-none focus:border-violet-500/50\"/>\n      - unexpected value \"\"\n"
+    },
+    {
+      "name": "320px: publish modal fits, controls reachable, axe WCAG AA",
+      "status": "FAIL",
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'label',\n+     targets: [\n+       [\n+         'input[data-testid=\"scheduled-at-input\"]'\n+       ]\n+     ]\n+   },\n+   {\n+     id: 'nested-interactive',\n+     targets: [\n+       [\n+         'button[data-testid=\"publish-platform-tiktok\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-facebook\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-linkedin\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-pinterest\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-reddit\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-threads\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-snapchat\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-tumblr\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-mastodon\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-bluesky\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-vimeo\"]'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "768px: publish modal fits, controls reachable, axe WCAG AA",
+      "status": "FAIL",
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     targets: [\n+       [\n+         '.max-w-\\\\[200px\\\\]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-youtube\"] > .min-w-0.w-full > p:nth-child(2)'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-instagram\"] > .min-w-0.w-full > p:nth-child(2)'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-x\"] > .min-w-0.w-full > p:nth-child(2)'\n+       ]\n+     ]\n+   },\n+   {\n+     id: 'label',\n+     targets: [\n+       [\n+         'input[data-testid=\"scheduled-at-input\"]'\n+       ]\n+     ]\n+   },\n+   {\n+     id: 'nested-interactive',\n+     targets: [\n+       [\n+         'button[data-testid=\"publish-platform-tiktok\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-facebook\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-linkedin\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-pinterest\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-reddit\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-threads\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-snapchat\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-tumblr\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-mastodon\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-bluesky\"]'\n+       ],\n+       [\n+         'button[data-testid=\"publish-platform-vimeo\"]'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "unknown: safe useful response, uncertain submission cannot be retried",
+      "status": "FAIL",
+      "error": "expect(locator).toBeDisabled() failed\n\nLocator:  getByTestId('publish-submit')\nExpected: disabled\nReceived: enabled\nTimeout:  1500ms\n\nCall log:\n  - Expect \"to.be.disabled\" with timeout 1500ms\n  - waiting for getByTestId('publish-submit')\n    5 × locator resolved to <button tabindex=\"0\" type=\"button\" data-testid=\"publish-submit\" class=\"relative inline-flex items-center justify-center font-medium transition-all duration-200 overflow-hidden select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06050e] disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-lg shadow-violet-500/25 hover:s…>…</button>\n      - unexpected value \"enabled\"\n"
+    },
+    {
+      "name": "lost: safe useful response, uncertain submission cannot be retried",
+      "status": "FAIL",
+      "error": "expect(locator).toBeDisabled() failed\n\nLocator:  getByTestId('publish-submit')\nExpected: disabled\nReceived: enabled\nTimeout:  1500ms\n\nCall log:\n  - Expect \"to.be.disabled\" with timeout 1500ms\n  - waiting for getByTestId('publish-submit')\n    5 × locator resolved to <button tabindex=\"0\" type=\"button\" data-testid=\"publish-submit\" class=\"relative inline-flex items-center justify-center font-medium transition-all duration-200 overflow-hidden select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06050e] disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-lg shadow-violet-500/25 hover:s…>…</button>\n      - unexpected value \"enabled\"\n"
+    },
+    {
+      "name": "error: safe useful response, uncertain submission cannot be retried",
+      "status": "FAIL",
+      "error": "expect(locator).toBeDisabled() failed\n\nLocator:  getByTestId('publish-submit')\nExpected: disabled\nReceived: enabled\nTimeout:  1500ms\n\nCall log:\n  - Expect \"to.be.disabled\" with timeout 1500ms\n  - waiting for getByTestId('publish-submit')\n    5 × locator resolved to <button tabindex=\"0\" type=\"button\" data-testid=\"publish-submit\" class=\"relative inline-flex items-center justify-center font-medium transition-all duration-200 overflow-hidden select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06050e] disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none bg-gradient-to-r from-violet-600 to-purple-600 text-white shadow-lg shadow-violet-500/25 hover:s…>…</button>\n      - unexpected value \"enabled\"\n"
+    },
+    {
+      "name": "partial: successful destinations retained, retry targets only failed destinations, no raw diagnostic",
+      "status": "FAIL",
+      "error": "expect(locator).toHaveCount(expected) failed\n\nLocator:  getByText('fixture_private_token_never_display')\nExpected: 0\nReceived: 1\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.have.count\" with timeout 5000ms\n  - waiting for getByText('fixture_private_token_never_display')\n    9 × locator resolved to 1 element\n      - unexpected value \"1\"\n"
+    },
+    {
+      "name": "runtime: no hydration/client error and no unmocked publication",
+      "status": "PASS"
+    }
+  ],
+  "axes": [
+    {
+      "width": 320,
+      "violations": [
+        {
+          "id": "label",
+          "targets": [
+            [
+              "input[data-testid=\"scheduled-at-input\"]"
+            ]
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "targets": [
+            [
+              "button[data-testid=\"publish-platform-tiktok\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-facebook\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-linkedin\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-pinterest\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-reddit\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-threads\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-snapchat\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-tumblr\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-mastodon\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-bluesky\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-vimeo\"]"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".max-w-\\[200px\\]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-youtube\"] > .min-w-0.w-full > p:nth-child(2)"
+            ],
+            [
+              "button[data-testid=\"publish-platform-instagram\"] > .min-w-0.w-full > p:nth-child(2)"
+            ],
+            [
+              "button[data-testid=\"publish-platform-x\"] > .min-w-0.w-full > p:nth-child(2)"
+            ]
+          ]
+        },
+        {
+          "id": "label",
+          "targets": [
+            [
+              "input[data-testid=\"scheduled-at-input\"]"
+            ]
+          ]
+        },
+        {
+          "id": "nested-interactive",
+          "targets": [
+            [
+              "button[data-testid=\"publish-platform-tiktok\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-facebook\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-linkedin\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-pinterest\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-reddit\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-threads\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-snapchat\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-tumblr\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-mastodon\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-bluesky\"]"
+            ],
+            [
+              "button[data-testid=\"publish-platform-vimeo\"]"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "accountReads": 6,
+  "publications": [
+    {
+      "videoId": "33333333-3333-4333-8333-333333333333",
+      "platforms": [
+        "youtube"
+      ],
+      "autoCaption": true
+    },
+    {
+      "videoId": "33333333-3333-4333-8333-333333333333",
+      "platforms": [
+        "youtube"
+      ],
+      "autoCaption": true
+    },
+    {
+      "videoId": "33333333-3333-4333-8333-333333333333",
+      "platforms": [
+        "youtube"
+      ],
+      "autoCaption": true
+    },
+    {
+      "videoId": "33333333-3333-4333-8333-333333333333",
+      "platforms": [
+        "youtube",
+        "instagram",
+        "x"
+      ],
+      "autoCaption": true
+    }
+  ],
+  "realPublications": 0
+}

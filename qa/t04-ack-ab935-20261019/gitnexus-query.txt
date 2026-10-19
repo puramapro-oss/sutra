@@ -1,0 +1,215 @@
+
+  GitNexus Query (1.6.12)
+{
+  "processes": [
+    {
+      "id": "proc_32_get",
+      "summary": "GET → MissingEnvError",
+      "priority": 0.087,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_71_get",
+      "summary": "GET → Probe",
+      "priority": 0.087,
+      "symbol_count": 2,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_72_get",
+      "summary": "GET → IsEnvSet",
+      "priority": 0.087,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_124_get",
+      "summary": "GET → Blocked",
+      "priority": 0.077,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 6
+    },
+    {
+      "id": "proc_125_get",
+      "summary": "GET → Query",
+      "priority": 0.077,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 6
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/app/api/admin/health/route.ts:runProbes",
+      "name": "runProbes",
+      "filePath": "src/app/api/admin/health/route.ts",
+      "startLine": 66,
+      "endLine": 156,
+      "module": "Health",
+      "process_id": "proc_32_get",
+      "step_index": 2
+    },
+    {
+      "id": "Function:src/app/api/admin/health/route.ts:GET",
+      "name": "GET",
+      "filePath": "src/app/api/admin/health/route.ts",
+      "startLine": 158,
+      "endLine": 189,
+      "module": "Health",
+      "process_id": "proc_32_get",
+      "step_index": 1
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:src/lib/ltx.ts:callLtxApi",
+      "name": "callLtxApi",
+      "filePath": "src/lib/ltx.ts",
+      "startLine": 44,
+      "endLine": 49,
+      "module": "Cluster_516"
+    },
+    {
+      "id": "Function:src/lib/ltx.ts:generateVideoSmart",
+      "name": "generateVideoSmart",
+      "filePath": "src/lib/ltx.ts",
+      "startLine": 82,
+      "endLine": 166,
+      "module": "Cluster_513"
+    },
+    {
+      "id": "File:src/lib/ltx.ts",
+      "name": "ltx.ts",
+      "filePath": "src/lib/ltx.ts"
+    },
+    {
+      "id": "Property:src/lib/env.ts:PROVIDERS.pixabay",
+      "name": "pixabay",
+      "filePath": "src/lib/env.ts",
+      "startLine": 115,
+      "endLine": 115
+    },
+    {
+      "id": "Function:src/lib/env.ts:providerConfigStatus",
+      "name": "providerConfigStatus",
+      "filePath": "src/lib/env.ts",
+      "startLine": 128,
+      "endLine": 155,
+      "module": "Cluster_497"
+    },
+    {
+      "id": "File:src/lib/env.ts",
+      "name": "env.ts",
+      "filePath": "src/lib/env.ts"
+    },
+    {
+      "id": "Function:src/lib/ltx-utils.ts:selectEngine",
+      "name": "selectEngine",
+      "filePath": "src/lib/ltx-utils.ts",
+      "startLine": 53,
+      "endLine": 72,
+      "module": "Cluster_499"
+    },
+    {
+      "id": "Const:src/lib/ltx-utils.ts:RATES_PER_SECOND",
+      "name": "RATES_PER_SECOND",
+      "filePath": "src/lib/ltx-utils.ts",
+      "startLine": 132,
+      "endLine": 140
+    },
+    {
+      "id": "File:src/lib/ltx-utils.ts",
+      "name": "ltx-utils.ts",
+      "filePath": "src/lib/ltx-utils.ts"
+    },
+    {
+      "id": "Function:src/lib/fallbacks.ts:generateVisualWithFallback",
+      "name": "generateVisualWithFallback",
+      "filePath": "src/lib/fallbacks.ts",
+      "startLine": 38,
+      "endLine": 94,
+      "module": "Cluster_499"
+    },
+    {
+      "id": "Class:src/lib/fallbacks.ts:ProviderOperationError",
+      "name": "ProviderOperationError",
+      "filePath": "src/lib/fallbacks.ts",
+      "startLine": 99,
+      "endLine": 110,
+      "module": "Cluster_6"
+    },
+    {
+      "id": "File:src/lib/fallbacks.ts",
+      "name": "fallbacks.ts",
+      "filePath": "src/lib/fallbacks.ts"
+    },
+    {
+      "id": "Variable:qa/t04-salad-20261014/run.py:scope",
+      "name": "scope",
+      "filePath": "qa/t04-salad-20261014/run.py",
+      "startLine": 13,
+      "endLine": 15
+    },
+    {
+      "id": "Variable:qa/t04-salad-20261014/run.py:commands",
+      "name": "commands",
+      "filePath": "qa/t04-salad-20261014/run.py",
+      "startLine": 16,
+      "endLine": 23
+    },
+    {
+      "id": "File:qa/t04-salad-20261014/run.py",
+      "name": "run.py",
+      "filePath": "qa/t04-salad-20261014/run.py"
+    },
+    {
+      "id": "Function:src/lib/ltx-helpers.ts:generateWanVideoWithTracking",
+      "name": "generateWanVideoWithTracking",
+      "filePath": "src/lib/ltx-helpers.ts",
+      "startLine": 6,
+      "endLine": 82,
+      "module": "Cluster_513"
+    },
+    {
+      "id": "Function:src/lib/ltx-helpers.ts:logVideoGeneration",
+      "name": "logVideoGeneration",
+      "filePath": "src/lib/ltx-helpers.ts",
+      "startLine": 84,
+      "endLine": 124,
+      "module": "Cluster_513"
+    },
+    {
+      "id": "File:src/lib/ltx-helpers.ts",
+      "name": "ltx-helpers.ts",
+      "filePath": "src/lib/ltx-helpers.ts"
+    },
+    {
+      "id": "TypeAlias:src/lib/ltx-types.ts:VideoEngine",
+      "name": "VideoEngine",
+      "filePath": "src/lib/ltx-types.ts",
+      "startLine": 11,
+      "endLine": 11
+    },
+    {
+      "id": "Interface:src/lib/ltx-types.ts:LtxResult",
+      "name": "LtxResult",
+      "filePath": "src/lib/ltx-types.ts",
+      "startLine": 37,
+      "endLine": 44
+    }
+  ],
+  "timing": {
+    "vector": 3.1,
+    "bm25": 191.4,
+    "merge": 0.1,
+    "symbol_lookup": 12.9,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 205.4
+  }
+}

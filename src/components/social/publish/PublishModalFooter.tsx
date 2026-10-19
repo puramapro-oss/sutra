@@ -7,6 +7,7 @@ export interface PublishModalFooterProps {
   publishing: boolean
   selectedPlatforms: Set<SocialPlatform>
   schedule: 'now' | 'later'
+  retry?: boolean
 }
 
 export function PublishModalFooter({
@@ -15,9 +16,10 @@ export function PublishModalFooter({
   publishing,
   selectedPlatforms,
   schedule,
+  retry = false,
 }: PublishModalFooterProps) {
   return (
-    <div className="sticky bottom-0 z-10 flex items-center justify-end gap-2 px-5 py-4 border-t border-white/[0.06] bg-[#0c0b14]/95 backdrop-blur-xl">
+    <div className="flex flex-wrap items-center justify-end gap-2 py-4 border-t border-white/[0.06] bg-[#0c0b14]/95">
       <Button
         variant="ghost"
         size="md"
@@ -25,7 +27,7 @@ export function PublishModalFooter({
         onClick={onCancel}
         disabled={publishing}
       >
-        Annuler
+        {retry ? 'Fermer' : 'Annuler'}
       </Button>
       <Button
         variant="primary"
@@ -37,6 +39,7 @@ export function PublishModalFooter({
       >
         {publishing
           ? 'Publication...'
+          : retry ? `Reprendre les échecs (${selectedPlatforms.size})`
           : schedule === 'later'
             ? 'Programmer'
             : `Publier (${selectedPlatforms.size})`}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "--require",
+    "./qa/t08/offline.cjs",
+    "--experimental-test-module-mocks",
+    "--import",
+    "tsx",
+    "--test",
+    "qa/t02-final-ab935e5-20261019/partner-quota-atomicity.test.mts"
+  ],
+  "exitCode": 1,
+  "expected": "FAIL; concurrent insert > 100"
+}

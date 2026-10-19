@@ -32,7 +32,8 @@ mock.module('../../src/lib/supabase.ts', { namedExports: { createServiceClient: 
 mock.module('../../src/lib/utils.ts', { namedExports: { isSuperAdmin: (email: string) => email === 'admin@test.invalid' } })
 mock.module('../../src/lib/redis.ts', { namedExports: { cached: async (_key: string, fn: () => Promise<unknown>) => fn() } })
 mock.module('../../src/lib/env.ts', { namedExports: {
-  isEnvSet: () => false, allProviderConfigStatus: () => [], optionalEnv: () => 'test', requireEnv: () => assert.fail('no real provider configuration'),
+  isEnvSet: (name: string) => name === 'COVERR_API_KEY', allProviderConfigStatus: () => [], optionalEnv: () => 'test',
+  requireEnv: (name: string) => { assert.equal(name, 'COVERR_API_KEY'); return 'synthetic-coverr-fixture' },
 } })
 mock.module('../../src/lib/utils/api.ts', { namedExports: { getBreakerStatus: () => [] } })
 const stripe = new Stripe('sk_test_synthetic_fixture_only')

@@ -57,31 +57,35 @@ export function PublishPlatformGrid({
         <button
           type="button"
           data-testid="publish-toggle-all"
+          disabled={accountsLoading || !!accountsError || connectedPlatforms.size === 0}
           onClick={allSelected ? onDeselectAll : onSelectAll}
           className="text-xs text-violet-400 hover:text-violet-300 transition-colors"
         >
-          {allSelected ? 'Tout deselectionner' : 'Tout selectionner'}
+          {allSelected ? 'Tout désélectionner' : 'Tout sélectionner'}
         </button>
       </div>
 
       {accountsLoading && (
-        <div className="flex items-center justify-center py-8 text-white/40">
+        <div role="status" className="flex items-center justify-center gap-2 py-8 text-white/70">
+          Vérification des comptes…
           <Loader2 className="h-5 w-5 animate-spin" />
         </div>
       )}
 
       {accountsError && (
-        <div className="rounded-xl bg-red-500/10 border border-red-500/20 p-3 text-xs text-red-400 flex items-start gap-2">
+        <div role="alert" className="rounded-xl bg-red-500/10 border border-red-500/20 p-3 text-xs text-red-400 flex items-start gap-2">
           <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
           <div className="flex-1">
             <p>{accountsError}</p>
             <button type="button" onClick={onRetryFetch} className="mt-1 underline hover:text-red-300">
-              Reessayer
+              Réessayer
             </button>
           </div>
         </div>
       )}
 
+      <Link href="/settings/social" className="inline-block text-xs text-violet-300 underline">Connecter ou vérifier mes comptes</Link>
+      {!accountsLoading && !accountsError && connectedPlatforms.size === 0 && <p role="status" className="text-sm text-white/70">Aucun compte connecté et disponible. Vérifie les connexions et les autorisations dans les paramètres sociaux.</p>}
       {!accountsLoading && !accountsError && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {ALL_PLATFORMS.map((platform) => {
@@ -94,6 +98,7 @@ export function PublishPlatformGrid({
                 key={platform}
                 type="button"
                 data-testid={`publish-platform-${platform}`}
+                aria-pressed={selected}
                 onClick={() => onTogglePlatform(platform)}
                 disabled={!connected}
                 className={cn(
@@ -116,15 +121,9 @@ export function PublishPlatformGrid({
                 <div className="w-full min-w-0">
                   <p className="text-xs font-medium text-white/90 truncate">{info.label}</p>
                   {connected ? (
-                    <p className="text-[10px] text-white/40 truncate">@{account?.username}</p>
+                    <p className="text-[10px] text-white/70 truncate">@{account?.username}</p>
                   ) : (
-                    <Link
-                      href="/settings/social"
-                      onClick={(e) => e.stopPropagation()}
-                      className="text-[10px] text-violet-400/80 hover:text-violet-300 underline pointer-events-auto"
-                    >
-                      Connecter
-                    </Link>
+                    <p className="text-[10px] text-white/70">Non disponible</p>
                   )}
                 </div>
               </button>

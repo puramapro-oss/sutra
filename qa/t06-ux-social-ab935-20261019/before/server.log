@@ -1,0 +1,39 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:55711
+- Network:       http://127.0.0.1:55711
+✓ Ready in 419ms
+✓ Running next.config.ts took 24ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+(node:89866) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ GET /login 200 in 2.1s (next.js: 1638ms, proxy.ts: 92ms, application-code: 377ms)
+ GET /login 200 in 89ms (next.js: 3ms, proxy.ts: 15ms, application-code: 71ms)
+ GET /login?next=/library 200 in 29ms (next.js: 1.5ms, proxy.ts: 3ms, application-code: 25ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 1409ms (next.js: 1337ms, proxy.ts: 16ms, application-code: 56ms)
+ GET /library 200 in 31ms (next.js: 1.3ms, proxy.ts: 5ms, application-code: 25ms)
+ POST /api/legal/accept 200 in 706ms (next.js: 375ms, proxy.ts: 3ms, application-code: 328ms)
+ POST /api/legal/accept 200 in 261ms (next.js: 1.0ms, proxy.ts: 2ms, application-code: 258ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.9ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 261ms (next.js: 0.8ms, proxy.ts: 1.9ms, application-code: 259ms)
+ GET /library 200 in 293ms (next.js: 38ms, proxy.ts: 5ms, application-code: 251ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 53ms (next.js: 1.1ms, proxy.ts: 5ms, application-code: 46ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 25ms (next.js: 1.3ms, proxy.ts: 6ms, application-code: 18ms)
+ GET /library 200 in 49ms (next.js: 1.0ms, proxy.ts: 4ms, application-code: 44ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 56ms (next.js: 1.1ms, proxy.ts: 5ms, application-code: 50ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 47ms (next.js: 1.0ms, proxy.ts: 5ms, application-code: 42ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 49ms (next.js: 1.1ms, proxy.ts: 4ms, application-code: 44ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[?25h

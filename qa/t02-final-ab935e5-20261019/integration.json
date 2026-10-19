@@ -1,0 +1,63 @@
+{
+  "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "previous": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+  "correction": "6d4d72993c44233807d847228255a28dafdb1d30",
+  "checks": [
+    {
+      "path": "src/app/api/admin/health/route.ts",
+      "sha256": "b23446a861e209ac6925655735294b2eccaec60621bf95bc3c3b4de2584ca0cc",
+      "actual": "b23446a861e209ac6925655735294b2eccaec60621bf95bc3c3b4de2584ca0cc",
+      "status": "MATCH"
+    },
+    {
+      "path": "src/app/api/admin/stats/route.ts",
+      "sha256": "acfb5fc9cc7d6c16cfeaf3a5bccfdb4043aa2c332f26debdf05ce4bd18f9ded7",
+      "actual": "acfb5fc9cc7d6c16cfeaf3a5bccfdb4043aa2c332f26debdf05ce4bd18f9ded7",
+      "status": "MATCH"
+    },
+    {
+      "path": "src/app/api/admin/users/[id]/route.ts",
+      "sha256": "8072f104c5e89f69ebedee918bfef9c1dba5db05f6947bac648de7376d167cc1",
+      "actual": "8072f104c5e89f69ebedee918bfef9c1dba5db05f6947bac648de7376d167cc1",
+      "status": "MATCH"
+    },
+    {
+      "path": "src/app/api/admin/users/route.ts",
+      "sha256": "29ea6cc19563039ba5c728de69df84eb570a4ac12d609b61b5a8cb3794d1bc55",
+      "actual": "29ea6cc19563039ba5c728de69df84eb570a4ac12d609b61b5a8cb3794d1bc55",
+      "status": "MATCH"
+    },
+    {
+      "path": "src/app/api/stripe/webhook/route.ts",
+      "sha256": "f4c903f732f2e13cb469796518a3aab750513eda57f953d656a50116a21e782b",
+      "actual": "f4c903f732f2e13cb469796518a3aab750513eda57f953d656a50116a21e782b",
+      "status": "MATCH"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/admin-webhook.test.mts",
+      "sha256": "038ad51d2f45960b10098ea107b8f06b100c44608e8f629a402c06d08a90672c",
+      "actual": "038ad51d2f45960b10098ea107b8f06b100c44608e8f629a402c06d08a90672c",
+      "status": "MATCH"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/run.py",
+      "sha256": "c3f9e57b92aad60afd4eabbbdfa31167a8f88e030e7103cc755bee6ccd45f956",
+      "actual": "c3f9e57b92aad60afd4eabbbdfa31167a8f88e030e7103cc755bee6ccd45f956",
+      "status": "MATCH"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/tsconfig.json",
+      "sha256": "d77016ff4a6c8a033d986bec550f1d59c6b0b04b06229235c0749fe5686273e2",
+      "actual": "d77016ff4a6c8a033d986bec550f1d59c6b0b04b06229235c0749fe5686273e2",
+      "status": "MATCH"
+    },
+    {
+      "path": "qa/t08/offline.cjs",
+      "sha256": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+      "actual": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+      "status": "MATCH"
+    }
+  ],
+  "delta": "M\tmigrations/20261015_final_durable_integrity.sql\nM\tscripts/run-ci.mjs\nM\tscripts/ui-isolated/t07-flows.mjs\nM\tsrc/app/(dashboard)/create/page.tsx\nM\tsrc/app/api/create/route.ts\nA\tsrc/app/api/create/status/route.ts\nM\tsrc/components/production/ProductionRequestStatus.tsx\nA\tsrc/hooks/useCreateRequest.ts\nM\tsrc/hooks/useVideoGeneration.ts\nA\tsrc/lib/create-intent-client.ts\nM\tsrc/lib/salad/container/README.md\n",
+  "lockSha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+}

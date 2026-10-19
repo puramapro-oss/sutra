@@ -17,6 +17,7 @@ export function PublishTriggerButton({ videoId, variant, onClick }: PublishTrigg
         data-testid={`publish-everywhere-${videoId}`}
         onClick={(e) => {
           e.stopPropagation()
+          e.currentTarget.focus() // WebKit does not focus buttons on pointer activation.
           onClick()
         }}
         aria-label={triggerLabel}
@@ -35,6 +36,7 @@ export function PublishTriggerButton({ videoId, variant, onClick }: PublishTrigg
       data-testid={`publish-everywhere-${videoId}`}
       onClick={(e) => {
         e.stopPropagation()
+        e.currentTarget.focus() // Let Modal restore the actual opening trigger.
         onClick()
       }}
     >

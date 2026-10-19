@@ -1,0 +1,53 @@
+
+  GitNexus Context (1.6.12)
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/lib/stock.ts:searchStock",
+    "name": "searchStock",
+    "kind": "Function",
+    "filePath": "src/lib/stock.ts",
+    "startLine": 296,
+    "endLine": 336
+  },
+  "epistemic": "exact",
+  "incoming": {
+    "calls": [
+      {
+        "uid": "Function:src/app/api/stock/search/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/stock/search/route.ts"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Function:src/lib/stock.ts:coverrVideos",
+        "name": "coverrVideos",
+        "filePath": "src/lib/stock.ts"
+      },
+      {
+        "uid": "Function:src/lib/stock.ts:pexelsPhotos",
+        "name": "pexelsPhotos",
+        "filePath": "src/lib/stock.ts"
+      },
+      {
+        "uid": "Function:src/lib/stock.ts:pexelsVideos",
+        "name": "pexelsVideos",
+        "filePath": "src/lib/stock.ts"
+      },
+      {
+        "uid": "Function:src/lib/stock.ts:pixabayVideos",
+        "name": "pixabayVideos",
+        "filePath": "src/lib/stock.ts"
+      },
+      {
+        "uid": "Function:src/lib/stock.ts:unsplashPhotos",
+        "name": "unsplashPhotos",
+        "filePath": "src/lib/stock.ts"
+      }
+    ]
+  },
+  "processes": []
+}

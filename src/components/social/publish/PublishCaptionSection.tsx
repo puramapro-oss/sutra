@@ -25,6 +25,7 @@ export function PublishCaptionSection({
         <button
           type="button"
           data-testid="caption-mode-auto"
+          aria-pressed={captionMode === 'auto'}
           onClick={() => onCaptionModeChange('auto')}
           className={cn(
             'flex items-center gap-2 p-3 rounded-xl border transition-all',
@@ -39,6 +40,7 @@ export function PublishCaptionSection({
         <button
           type="button"
           data-testid="caption-mode-custom"
+          aria-pressed={captionMode === 'custom'}
           onClick={() => onCaptionModeChange('custom')}
           className={cn(
             'flex items-center gap-2 p-3 rounded-xl border transition-all',
@@ -55,12 +57,13 @@ export function PublishCaptionSection({
       {captionMode === 'custom' && (
         <textarea
           data-testid="custom-caption-input"
+          aria-label="Légende personnalisée"
           value={customCaption}
           onChange={(e) => onCustomCaptionChange(e.target.value)}
           placeholder="Ecris ta caption..."
           rows={3}
           maxLength={2200}
-          className="w-full px-3 py-2 rounded-xl bg-white/[0.02] border border-white/[0.06] text-sm text-white/90 placeholder:text-white/30 focus:outline-none focus:border-violet-500/50 resize-none"
+          className="w-full px-3 py-2 rounded-xl bg-white/[0.02] border border-white/[0.06] text-sm text-white/90 placeholder:text-white/60 focus:outline-none focus:border-violet-500/50 resize-none"
         />
       )}
 

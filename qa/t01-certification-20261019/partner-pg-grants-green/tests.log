@@ -1,0 +1,21 @@
+(node:14402) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:14402) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ 20 concurrent real handlers at 99 scans admit exactly one, independent DB sessions (45.479667ms)
+✔ 20 concurrent same-IP requests record only once and keep idempotent redirect (7.456875ms)
+✔ expired history does not consume rolling quota and is preserved (2.922792ms)
+✔ inactive and unknown partners do not record or set attribution cookie (2.338291ms)
+✔ anon cannot execute service-only RPC (2.720458ms)
+✔ authenticated cannot execute service-only RPC (1.659208ms)
+✔ malformed address and network prefix fail closed, no DB diagnostic or cookie (2.977209ms)
+✔ read-only transaction and missing RPC both fail closed (2.852458ms)
+✔ non-default snapshot isolation explicitly rejects instead of accepting stale quota (1.725375ms)
+✔ apply replay and rollback preserve historical rows, RLS and least privileges (4.716916ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 394.96525

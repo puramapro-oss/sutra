@@ -1,3 +1,11 @@
+# SUTRA T01 — état prioritaire du 19 octobre 2026
+
+**CANDIDAT INTÉGRÉ / CERTIFICATION BLOQUÉE.** Worktree isolé `sutra-certification-integration-20261019`, descendant de ab935. Rapport exact : `qa/t01-certification-20261019/README.md`, handoff `HANDOFF-SUTRA-T01-20261019.md`. Les 1160 blobs initiaux ont été vérifiés ; aucun WIP historique écrasé. Corrections propriétaires T02/T04/T06 intégrées, quota partenaire atomique SQL, Coverr et focus WebKit corrigés. Les preuves et ACK historiques restent datés et bornés, pas transférés.
+
+Prochaine tâche non vérifiée : CI et ACK personnels T02–T08 sur le SHA exact annoncé après commit dans le registre partagé ; T03 doit qualifier R107 (reprise cron après longue panne). OVH porte encore ab935 mais app et DB sont arrêtées depuis17/10 ; HTTP404. Nouvelle migration partenaire locale seulement, backup/restore synthétiques PASS, sauvegarde production périmée pour promotion. Aucun redéploiement sans validation explicite ; aucun GPU, appel payant ou publication. T09 reste BLOQUÉ.
+
+Les sections suivantes sont des archives et ne remplacent pas cet état.
+
 # SUTRA — jalon intégration Salad désactivée, 2026-10-14
 
 Candidat intégré et gates locales PASS : `qa/salad-integration-20261014/README.md`. Sept lots T02–T08 vérifiés ; défauts modes, reprise durable production, média et reconnexion corrigés. Contrats666/7skip, médias59, PostgreSQL7, promotion24, TS/lint/build verts. Aucun GPU activé ni migration distante. Configuration RunPod/Shotstack et binding Zernio déjà vérifiés ; consentements sociaux et qualification GPU restent externes. Prochaine étape autorisée : commit exact, CI complète, candidat OVH isolé, sauvegarde/restauration puis promotion SUTRA seule. Aucun déploiement de ce candidat encore attesté. Les sections suivantes sont historiques.

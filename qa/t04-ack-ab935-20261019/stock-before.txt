@@ -1,0 +1,140 @@
+[stock:pexels:photos] HTTP 401
+[stock:unsplash:photos] HTTP 401
+[stock:pexels:photos] HTTP 403
+[stock:unsplash:photos] HTTP 403
+[stock:pexels:photos] HTTP 429
+[stock:unsplash:photos] HTTP 429
+[stock:pexels:photos] HTTP 500
+[stock:unsplash:photos] HTTP 500
+[stock:unsplash:photos] HTTP 401
+✖ HTTP 401 cannot become a successful empty search or retry (15.183458ms)
+✖ HTTP 403 cannot become a successful empty search or retry (0.232291ms)
+✖ HTTP 429 cannot become a successful empty search or retry (0.141209ms)
+✖ HTTP 500 cannot become a successful empty search or retry (0.132625ms)
+✖ malformed HTTP 200 is not an empty catalogue (0.6875ms)
+✖ one failed configured source does not disappear behind successful sources (0.1785ms)
+✖ Pixabay unsafe media URL is rejected (0.262833ms)
+✖ GET transport has a finite deadline, forbids redirects and adds Coverr auth/urls (0.682ms)
+✔ valid empty catalogues remain empty (0.181292ms)
+✔ valid media keeps dimensions, provenance and quality (0.183958ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 2
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 150.455667
+
+✖ failing tests:
+
+test at qa/t04-ack-ab935-20261019/stock-contracts.test.mts:1:1122
+✖ HTTP 401 cannot become a successful empty search or retry (15.183458ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-ack-ab935-20261019/qa/t04-ack-ab935-20261019/stock-contracts.test.mts:22:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-ack-ab935-20261019/stock-contracts.test.mts:1:1122
+✖ HTTP 403 cannot become a successful empty search or retry (0.232291ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-ack-ab935-20261019/qa/t04-ack-ab935-20261019/stock-contracts.test.mts:22:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-ack-ab935-20261019/stock-contracts.test.mts:1:1122
+✖ HTTP 429 cannot become a successful empty search or retry (0.141209ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-ack-ab935-20261019/qa/t04-ack-ab935-20261019/stock-contracts.test.mts:22:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-ack-ab935-20261019/stock-contracts.test.mts:1:1122
+✖ HTTP 500 cannot become a successful empty search or retry (0.132625ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-ack-ab935-20261019/qa/t04-ack-ab935-20261019/stock-contracts.test.mts:22:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-ack-ab935-20261019/stock-contracts.test.mts:1:1515
+✖ malformed HTTP 200 is not an empty catalogue (0.6875ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-ack-ab935-20261019/qa/t04-ack-ab935-20261019/stock-contracts.test.mts:32:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-ack-ab935-20261019/stock-contracts.test.mts:1:1690
+✖ one failed configured source does not disappear behind successful sources (0.1785ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-ack-ab935-20261019/qa/t04-ack-ab935-20261019/stock-contracts.test.mts:38:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-ack-ab935-20261019/stock-contracts.test.mts:1:1973
+✖ Pixabay unsafe media URL is rejected (0.262833ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-ack-ab935-20261019/qa/t04-ack-ab935-20261019/stock-contracts.test.mts:44:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-ack-ab935-20261019/stock-contracts.test.mts:1:2259
+✖ GET transport has a finite deadline, forbids redirects and adds Coverr auth/urls (0.682ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  undefined !== 'GET'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-ack-ab935-20261019/qa/t04-ack-ab935-20261019/stock-contracts.test.mts:56:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'GET',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

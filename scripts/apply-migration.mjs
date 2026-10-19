@@ -19,10 +19,16 @@ if (!fileName) {
   process.exit(1)
 }
 
-const VPS_HOST = process.env.VPS_IP || '72.62.191.111'
+const VPS_HOST = process.env.VPS_IP
 const VPS_USER = 'root'
-const VPS_PASS = process.env.VPS_SSH_PASS || '+Awy3cwg;NoutOTH'
+const VPS_PASS = process.env.VPS_SSH_PASS
 const DB_CONTAINER = 'supabase-db'
+
+// Legacy explicit invocation only. Never infer a target or embedded credential.
+if (!VPS_HOST || !VPS_PASS) {
+  console.error('SUTRA_LEGACY_MIGRATION_DISABLED: explicit target and credentials required; use the reviewed OVH migration and backup procedure.')
+  process.exit(1)
+}
 
 const sqlPath = resolve(rootDir, 'migrations', fileName)
 const sql = readFileSync(sqlPath, 'utf8')
@@ -35,7 +41,7 @@ const remotePath = `/tmp/purama-migration-${Date.now()}-${basename(fileName)}`
 console.warn(`[migration] scp → ${VPS_HOST}:${remotePath}`)
 const scp = spawnSync(
   'sshpass',
-  ['-p', VPS_PASS, 'scp', '-o', 'StrictHostKeyChecking=no', sqlPath, `${VPS_USER}@${VPS_HOST}:${remotePath}`],
+  ['-p', VPS_PASS, 'scp', '-o', 'StrictHostKeyChecking=yes', sqlPath, `${VPS_USER}@${VPS_HOST}:${remotePath}`],
   { stdio: 'inherit' }
 )
 if (scp.status !== 0) {
@@ -48,7 +54,7 @@ console.warn(`[migration] docker cp → ${DB_CONTAINER}${remotePath}`)
 const dockerCp = spawnSync(
   'sshpass',
   [
-    '-p', VPS_PASS, 'ssh', '-o', 'StrictHostKeyChecking=no', `${VPS_USER}@${VPS_HOST}`,
+    '-p', VPS_PASS, 'ssh', '-o', 'StrictHostKeyChecking=yes', `${VPS_USER}@${VPS_HOST}`,
     `docker cp ${remotePath} ${DB_CONTAINER}:${remotePath} && rm ${remotePath}`,
   ],
   { stdio: 'inherit' }
@@ -64,7 +70,7 @@ console.warn(`[migration] psql -f ${remotePath}`)
 const psql = spawnSync(
   'sshpass',
   [
-    '-p', VPS_PASS, 'ssh', '-o', 'StrictHostKeyChecking=no', `${VPS_USER}@${VPS_HOST}`,
+    '-p', VPS_PASS, 'ssh', '-o', 'StrictHostKeyChecking=yes', `${VPS_USER}@${VPS_HOST}`,
     `docker exec -e PGOPTIONS='-c search_path=sutra,public' ${DB_CONTAINER} psql -U supabase_admin -d postgres -v ON_ERROR_STOP=1 -f ${remotePath} && docker exec ${DB_CONTAINER} rm ${remotePath}`,
   ],
   { stdio: 'inherit' }
