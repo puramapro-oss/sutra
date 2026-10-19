@@ -9,3 +9,5 @@ Les 1160 blobs de référence ont été vérifiés, les 3108 chemins WIP T01 his
 OVH : ab935 toujours identifié mais app et DB arrêtées, URL404, catalogue SQL inaccessible. Trois migrations historiques prouvées ; migration partenaire additive locale seulement, testée sur PostgreSQL privé avec backup/restore/rollback. Backup production intègre mais périmé pour une promotion. Aucune mutation distante ni redéploiement autorisé implicitement par ce handoff.
 
 Prochaine étape non vérifiée : ACK personnels T02–T08 sur le SHA exact et qualification R107 par T03. T09 reste BLOQUÉ. Ne pas relancer de build global concurrent ; limiter les retests aux deltas et aux contre-preuves, réutiliser les preuves invariantes après comparaison.
+
+Correctif QA post-CI f953 : voir qa/t01-certification-20261019/ci-legal-read-sequencing/README.md. Produit inchangé ; nouveau SHA et CI/ACK exacts dans registre partagé.

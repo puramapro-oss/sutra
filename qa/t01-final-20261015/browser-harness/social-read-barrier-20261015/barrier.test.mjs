@@ -9,10 +9,13 @@ import { observeRuntimeErrors } from '../runtime-guard.mjs'
 import { installFixtureReadBarrier } from './fixture-read-barrier.mjs'
 
 const userId = '11111111-1111-4111-8111-111111111111'
-const query = `?select=*&user_id=eq.${userId}&order=created_at.desc&limit=10`
-const path = '/rest/v1/user_notifications' + query
 const appOrigin = 'https://127.0.0.1:1234', fixtureOrigin = 'https://127.0.0.1:5678'
 const output = await mkdtemp('qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/results-')
+for (const scope of ['social', 'library']) {
+const documentPath = scope === 'social' ? '/settings/social' : '/library'
+const path = scope === 'social'
+  ? `/rest/v1/user_notifications?select=*&user_id=eq.${userId}&order=created_at.desc&limit=10`
+  : `/rest/v1/videos?select=*&user_id=eq.${userId}&order=created_at.desc&offset=0&limit=12`
 function fakePage() {
   const page = new EventEmitter()
   let url = 'about:blank'
@@ -32,48 +35,51 @@ function read(page, { method = 'GET', url = fixtureOrigin + path, status = 200, 
 }
 async function setup() {
   const page = fakePage()
-  const snapshot = installFixtureReadBarrier(page, { appOrigin, fixtureOrigin, userId, timeout: 40 })
-  await page.goto(appOrigin + '/settings/social')
+  const snapshot = installFixtureReadBarrier(page, { appOrigin, fixtureOrigin, userId, includeLibrary: scope === 'library', timeout: 40 })
+  await page.goto(appOrigin + documentPath)
   return { page, snapshot }
 }
-test('waits for an exact current-document GET and its complete body, not just response headers', async () => {
+test(`${scope}: waits for an exact current-document GET and its complete body, not just response headers`, async () => {
   const { page, snapshot } = await setup()
   const moving = page.goto(appOrigin + '/next')
   const request = read(page, { finish: false })
   await Promise.resolve()
-  assert.equal(page.url(), appOrigin + '/settings/social')
+  assert.equal(page.url(), appOrigin + documentPath)
   page.emit('requestfinished', request); await moving
   assert.equal(snapshot().waits[0].status, 'PASS')
 })
-test('a read completed before goto is retained', async () => {
+test(`${scope}: a read completed before goto is retained`, async () => {
   const { page, snapshot } = await setup(); read(page)
   await page.goto(appOrigin + '/next'); assert.equal(snapshot().waits[0].status, 'PASS')
 })
-for (const method of ['POST', 'PATCH', 'DELETE', 'HEAD']) test(`${method} never satisfies the GET barrier`, async () => {
+for (const method of ['POST', 'PATCH', 'DELETE', 'HEAD']) test(`${scope}: ${method} never satisfies the GET barrier`, async () => {
   const { page, snapshot } = await setup(); read(page, { method })
   await assert.rejects(page.goto(appOrigin + '/next'), /exact GET did not complete/)
-  assert.equal(snapshot().waits[0].status, 'FAIL'); assert.ok(page.url().endsWith('/settings/social'))
+  assert.equal(snapshot().waits[0].status, 'FAIL'); assert.ok(page.url().endsWith(documentPath))
 })
-for (const suffix of ['missing', 'origin', 'query', 'duplicate']) test(`${suffix} read cannot satisfy the barrier`, async () => {
+for (const suffix of ['missing', 'origin', 'query', 'duplicate', 'identity', 'path']) test(`${scope}: ${suffix} read cannot satisfy the barrier`, async () => {
   const { page } = await setup()
-  if (suffix !== 'missing') read(page, { url: suffix === 'origin' ? appOrigin + path : fixtureOrigin + path + (suffix === 'duplicate' ? '&limit=10' : '&extra=1') })
+  if (suffix !== 'missing') read(page, { url: suffix === 'origin' ? appOrigin + path
+    : suffix === 'identity' ? fixtureOrigin + path.replace(userId, '22222222-2222-4222-8222-222222222222')
+    : suffix === 'path' ? fixtureOrigin + path.replace('/rest/v1/', '/wrong/v1/')
+    : fixtureOrigin + path + (suffix === 'duplicate' ? '&limit=10' : '&extra=1') })
   await assert.rejects(page.goto(appOrigin + '/next'), /exact GET did not complete/)
 })
-for (const options of [{ status: 503 }, { fail: true }]) test(`failed read ${JSON.stringify(options)} prevents navigation`, async () => {
+for (const options of [{ status: 503 }, { fail: true }]) test(`${scope}: failed read ${JSON.stringify(options)} prevents navigation`, async () => {
   const { page } = await setup(); read(page, options)
   await assert.rejects(page.goto(appOrigin + '/next'), /read failed/)
 })
-test('a previous document success cannot satisfy the next document', async () => {
+test(`${scope}: a previous document success cannot satisfy the next document`, async () => {
   const { page } = await setup(); read(page)
-  await page.goto(appOrigin + '/settings/social')
+  await page.goto(appOrigin + documentPath)
   await assert.rejects(page.goto(appOrigin + '/next'), /exact GET did not complete/)
 })
-test('completion of an old document request cannot satisfy the new document', async () => {
+test(`${scope}: completion of an old document request cannot satisfy the new document`, async () => {
   const { page } = await setup(); const request = read(page, { finish: false })
   page.emit('framenavigated', page.mainFrame()); page.emit('requestfinished', request)
   await assert.rejects(page.goto(appOrigin + '/next'), /exact GET did not complete/)
 })
-test('an exact GET from a child frame cannot satisfy the main-document barrier', async () => {
+test(`${scope}: an exact GET from a child frame cannot satisfy the main-document barrier`, async () => {
   const { page } = await setup()
   const request = { url: () => fixtureOrigin + path, method: () => 'GET', frame: () => ({}) }
   page.emit('request', request)
@@ -81,14 +87,14 @@ test('an exact GET from a child frame cannot satisfy the main-document barrier',
   page.emit('requestfinished', request)
   await assert.rejects(page.goto(appOrigin + '/next'), /exact GET did not complete/)
 })
-test('a document change during the wait fails instead of navigating from stale state', async () => {
+test(`${scope}: a document change during the wait fails instead of navigating from stale state`, async () => {
   const { page } = await setup()
   const moving = page.goto(appOrigin + '/next')
   const rejected = assert.rejects(moving, /source document changed/)
   page.emit('framenavigated', page.mainFrame()); await rejected
 })
 
-test('reload waits for the current exact GET body, then requires a new read in the new document', async () => {
+test(`${scope}: reload waits for the current exact GET body, then requires a new read in the new document`, async () => {
   const { page, snapshot } = await setup()
   const moving = page.reload()
   const request = read(page, { finish: false })
@@ -99,13 +105,13 @@ test('reload waits for the current exact GET body, then requires a new read in t
   assert.equal(snapshot().documents.length, 2)
   await assert.rejects(page.reload(), /exact GET did not complete/)
 })
-for (const options of [{ status: 503 }, { fail: true }]) test(`reload preserves failed read ${JSON.stringify(options)}`, async () => {
+for (const options of [{ status: 503 }, { fail: true }]) test(`${scope}: reload preserves failed read ${JSON.stringify(options)}`, async () => {
   const { page, snapshot } = await setup(); read(page, options)
   await assert.rejects(page.reload(), /read failed/)
   assert.equal(snapshot().documents.length, 1)
 })
 
-for (const engine of ['chromium', 'webkit']) test(`${engine}: native deferred read, barrier, genuine CORS and JS failures`, async () => {
+for (const engine of ['chromium', 'webkit']) test(`${scope} ${engine}: native deferred read, barrier, genuine CORS and JS failures`, async () => {
   const tls = await prepareTLS(), browser = await ({ chromium, webkit }[engine]).launch({ headless: true })
   let origin, held, denyCors = false
   const api = createServer(tls.options, (_request, response) => {
@@ -120,7 +126,7 @@ for (const engine of ['chromium', 'webkit']) test(`${engine}: native deferred re
     response.end(`<h1>Native deferred fixture read</h1><script>
       window.settled = false;
       window.runRead = () => fetch(${JSON.stringify(endpoint)}).then(r => r.json()).then(() => { window.settled = true; });
-      if (location.pathname === '/settings/social') for (const lifecycle of ['beforeunload', 'pagehide']) {
+      if (location.pathname === ${JSON.stringify(documentPath)}) for (const lifecycle of ['beforeunload', 'pagehide']) {
         addEventListener(lifecycle, () => { if (!window.settled) window.runRead().catch(() => {}); });
       }
     </script>`)
@@ -133,8 +139,8 @@ for (const engine of ['chromium', 'webkit']) test(`${engine}: native deferred re
       await context.route('**/*', route => [origin, fixture].includes(new URL(route.request().url()).origin) ? route.continue() : route.abort())
       const page = await context.newPage()
       const runtime = await observeRuntimeErrors(page, { engine, fixtureOrigin: fixture, nativeControl: {} })
-      const reads = barrier ? installFixtureReadBarrier(page, { appOrigin: origin, fixtureOrigin: fixture, userId, timeout: 1500 }) : null
-      await page.goto(origin + '/settings/social')
+      const reads = barrier ? installFixtureReadBarrier(page, { appOrigin: origin, fixtureOrigin: fixture, userId, includeLibrary: scope === 'library', timeout: 1500 }) : null
+      await page.goto(origin + documentPath)
       return { context, page, runtime, reads }
     }
     // Exact unknown query remains blocking if a read starts during teardown.
@@ -147,11 +153,11 @@ for (const engine of ['chromium', 'webkit']) test(`${engine}: native deferred re
 
     const after = await fresh(true)
     const moving = after.page.goto(origin + '/next')
-    assert.ok(after.page.url().endsWith('/settings/social'), 'missing read prevents immediate navigation')
+    assert.ok(after.page.url().endsWith(documentPath), 'missing read prevents immediate navigation')
     const requestSeen = after.page.waitForRequest(request => request.url() === endpoint)
     await after.page.evaluate(() => { window.runRead().catch(() => {}) })
     const request = await requestSeen; await request.response()
-    assert.ok(after.page.url().endsWith('/settings/social'), 'headers alone do not release the barrier')
+    assert.ok(after.page.url().endsWith(documentPath), 'headers alone do not release the barrier')
     assert.ok(held); held.end(']')
     await moving
     receipts.after = { runtime: after.runtime(), barrier: after.reads() }
@@ -165,7 +171,7 @@ for (const engine of ['chromium', 'webkit']) test(`${engine}: native deferred re
     await negative.page.evaluate(() => { window.runRead() })
     await rejectedNavigation
     await negative.page.waitForTimeout(100)
-    assert.ok(negative.page.url().endsWith('/settings/social'), 'CORS failure must not navigate away')
+    assert.ok(negative.page.url().endsWith(documentPath), 'CORS failure must not navigate away')
     assert.ok(negative.runtime().unexpected.length > 0, 'genuine CORS remains visible')
     await negative.page.evaluate(() => { setTimeout(() => { throw new Error('BARRIER_REAL_EXCEPTION') }, 0); Promise.reject(new Error('BARRIER_REAL_REJECTION')) })
     await negative.page.waitForTimeout(100)
@@ -175,8 +181,10 @@ for (const engine of ['chromium', 'webkit']) test(`${engine}: native deferred re
     assert.deepEqual(receipts.negative.runtime.qualified, [])
     await negative.context.close()
   } finally {
-    await writeFile(`${output}/${engine}.json`, JSON.stringify(receipts, null, 2) + '\n')
+    await writeFile(`${output}/${scope}-${engine}.json`, JSON.stringify(receipts, null, 2) + '\n')
     await browser.close()
     for (const server of [app, api]) { server.closeAllConnections(); await new Promise(done => server.close(done)) }
   }
 })
+
+}

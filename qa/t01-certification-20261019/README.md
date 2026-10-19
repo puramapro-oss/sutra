@@ -6,7 +6,7 @@
 
 Worktree isolé : `sutra-certification-integration-20261019`, branche `codex/sutra-certification-integration-20261019`. Le worktree T01 historique est resté sur ab935. `wip-preserved.json` vérifie ses 3108 chemins WIP : aucun manquant ni modifié. Les worktrees, branches et cinq ancêtres historiques protégés sont conservés. Aucun reset, stash, clean, merge forcé ou fermeture de terminal.
 
-`baseline/manifest-verification.json` : **1160 chemins uniques, 1160 blobs conformes à ab935 et au produit initial, zéro écart**. Le champ historique `base=7d96b38` est antérieur au commit, mais les empreintes correspondent à ab935. `tested-source-manifest.json` et `baseline-delta.json` décrivent le nouveau contenu ; les 19 modifications de chemins du manifeste historique sont expliquées ci-dessous, aucun fichier historique ne manque. Les nouveaux tests et la migration sont ajoutés au manifeste, les reçus mutables en sont exclus.
+`baseline/manifest-verification.json` : **1160 chemins uniques, 1160 blobs conformes à ab935 et au produit initial, zéro écart**. Le champ historique `base=7d96b38` est antérieur au commit, mais les empreintes correspondent à ab935. `tested-source-manifest.json` et `baseline-delta.json` décrivent le nouveau contenu ; les 22 modifications de chemins du manifeste historique sont expliquées ci-dessous, aucun fichier historique ne manque. Les nouveaux tests et la migration sont ajoutés au manifeste, les reçus mutables en sont exclus.
 
 `integrated-owners.json` conserve chaque SHA, parent, chemin, blob Git et SHA256 livré. Les fichiers ont été rapprochés manuellement des contrats puis intégrés depuis les blobs committés, jamais depuis un WIP tiers.
 
@@ -84,4 +84,8 @@ Actions minimales, sans envoyer de valeur :
 
 GitNexus : impacts exécutés, risques HIGH signalés, détection des changements avant commit. Index partiel/tronqué (entrée, branchement, budget de parcours), certains handlers UNKNOWN ; revue directe complémentaire et aucune prétention de couverture exhaustive. Les preuves post-commit et la CI exacte sont dans le registre partagé, pas dans un faux ACK propriétaire.
 
-Détection finale GitNexus : **CRITICAL**, 379 chemins préparés,258 symboles,219 flux annoncés. Comparaison main : CRITICAL, liste plafonnée. Revue directe :19 chemins produit/config/validation historiques modifiés,2 SQL ajoutés ; aucun moteur/cron/dépendance média changé. Les rapprochements de noms communs QA (`root`) limitent la précision ; ce signal reste conservé et impose la revue propriétaire, il ne devient pas un PASS exhaustif. Gitleaks staged expurgé :0détection.
+Détection finale GitNexus : **CRITICAL**, 387 chemins préparés,257 symboles,219 flux annoncés. Comparaison main : CRITICAL, liste plafonnée. Revue directe :19 chemins produit/config/validation historiques modifiés,2 SQL ajoutés ; aucun moteur/cron/dépendance média changé. Les rapprochements de noms communs QA (`root`) limitent la précision ; ce signal reste conservé et impose la revue propriétaire, il ne devient pas un PASS exhaustif. Gitleaks staged expurgé :0détection.
+
+## Correction QA après CI f953
+
+CI39323751415 : contrats et PostgreSQL PASS, qualité FAIL sur un rechargement légal WebKit. Défaut de séquencement reproduit et corrigé dans le harnais existant ; garde runtime inchangé. Retest : barrière46/46, légal Chromium15/15 etWebKit15/15, build production etlint ciblé PASS. Voir `ci-legal-read-sequencing/README.md`. Trois fichiers QA supplémentaires expliquent le passage de19à22écarts historiques ; les1188blobs sont manifestés, aucun des1160initiaux supprimé. La CI et les ACK doivent viser le prochain SHA, jamais f953.

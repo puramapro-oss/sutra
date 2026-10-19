@@ -30,14 +30,15 @@ import { observeNavigation } from '../../scripts/ui-isolated/navigation-diagnost
 import { startProductionServer } from '../../scripts/ui-isolated/production-server.mjs'
 
 const finalIntegrated = process.argv.includes('--final-integrated')
+const productionLegal = process.argv.includes('--production-legal')
 const productionDelta = process.argv.includes('--production-delta')
-const productionSuite = process.argv.includes('--production-suite') || productionDelta || finalIntegrated
+const productionSuite = process.argv.includes('--production-suite') || productionDelta || productionLegal || finalIntegrated
 const baseline = process.argv.includes('--baseline')
 const privateDownload = process.argv.includes('--private-download')
 const engine = process.argv.includes('--webkit') ? 'webkit' : 'chromium'
-const output = finalIntegrated ? resolve('qa/t01-final-20261015/browser-final') : resolve('qa/t07-final-ux-perf-20261015', `${productionDelta ? 'delta-' : process.argv.includes('--editor') ? 'editor-' : process.argv.includes('--planning') ? 'planning-' : process.argv.includes('--dialog-only') ? 'dialog-' : process.argv.includes('--social') ? 'social-' : ''}${baseline ? 'before' : productionSuite ? 'production' : 'after'}-${engine}`)
+const output = finalIntegrated ? resolve('qa/t01-final-20261015/browser-final') : resolve('qa/t07-final-ux-perf-20261015', `${productionLegal ? 'legal-' : productionDelta ? 'delta-' : process.argv.includes('--editor') ? 'editor-' : process.argv.includes('--planning') ? 'planning-' : process.argv.includes('--dialog-only') ? 'dialog-' : process.argv.includes('--social') ? 'social-' : ''}${baseline ? 'before' : productionSuite ? 'production' : 'after'}-${engine}`)
 // A final campaign must never overwrite a previous receipt.
-await mkdir(output, { recursive: !finalIntegrated })
+await mkdir(output, { recursive: !finalIntegrated && !productionLegal })
 const tls = privateDownload || productionSuite ? await prepareTLS() : null
 const fixture = await startFixture(tls?.options)
 const probe = createServer(); probe.listen(0, '127.0.0.1'); await once(probe, 'listening')
@@ -99,7 +100,7 @@ async function runScenario(options, scenarioOutput) {
   navigationSnapshot = observeNavigation(page)
   page.setDefaultTimeout(15000)
   runtimeSnapshot = await observeRuntimeErrors(page, { engine: browser.browserType().name(), nativeControl: engineControl, fixtureOrigin: fixture.url })
-  if (options.includes('--social') || options.includes('--social-reload')) fixtureReadSnapshot = installFixtureReadBarrier(page, { appOrigin: base, fixtureOrigin: fixture.url, userId: fixture.user.id })
+  if (options.includes('--social') || options.includes('--social-reload') || options.includes('--legal')) fixtureReadSnapshot = installFixtureReadBarrier(page, { appOrigin: base, fixtureOrigin: fixture.url, userId: fixture.user.id, includeLibrary: options.includes('--legal') })
   if (options.includes('--schedule-cas') || options.includes('--social-reload')) {
     await enterTestSession({ page, base, fixture })
     const run = options.includes('--schedule-cas') ? casChecks : socialReloadChecks
@@ -160,7 +161,7 @@ try {
       browser = await ({ chromium, webkit }[browserName]).launch({ headless: true })
       engineControl = await nativeRuntimeControls(browser)
       await writeFile(resolve(output, `native-${browserName}.json`), JSON.stringify(engineControl, null, 2) + '\n')
-      const cases = finalIntegrated ? [['final', ['--final']], ['social', ['--social']], ['planning', ['--planning']], ['legal', ['--legal']], ['journey', ['--journeys']], ['private-download', ['--journeys', '--private-download']], ['extra', ['--extra']], ['editor', ['--editor']], ['visual', ['--visual']], ['navigation', ['--navigation']]] : productionDelta ? [['editor', ['--editor']], ['visual', ['--visual']], ['navigation', ['--navigation']]] : browserName === 'webkit'
+      const cases = productionLegal ? [['legal', ['--legal']]] : finalIntegrated ? [['final', ['--final']], ['social', ['--social']], ['planning', ['--planning']], ['legal', ['--legal']], ['journey', ['--journeys']], ['private-download', ['--journeys', '--private-download']], ['extra', ['--extra']], ['editor', ['--editor']], ['visual', ['--visual']], ['navigation', ['--navigation']]] : productionDelta ? [['editor', ['--editor']], ['visual', ['--visual']], ['navigation', ['--navigation']]] : browserName === 'webkit'
         ? [['final', ['--final']], ['social', ['--social']], ['planning', ['--planning']], ['journey', ['--journeys']], ['private-download', ['--journeys', '--private-download']], ['extra', ['--extra']]]
         : [['final', ['--final']], ['social', ['--social']], ['planning', ['--planning']]]
       if (finalIntegrated && browserName === 'chromium') cases.push(

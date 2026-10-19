@@ -1,0 +1,267 @@
+{
+  "engine": "webkit",
+  "browserVersion": "26.0",
+  "nativeSafari": false,
+  "scope": "HTML scheduling control only, not a reproduction of React effect timing",
+  "before": {
+    "errors": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:50215/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:50215/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:50216/library:3:35)\n    at unknown (https://127.0.0.1:50216/library:5:80)",
+        "navigation": 2,
+        "at": 1792445385416
+      }
+    ],
+    "qualified": [],
+    "unexpected": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:50215/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12 due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:50215/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12 due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (https://127.0.0.1:50216/library:3:35)\n    at unknown (https://127.0.0.1:50216/library:5:80)",
+        "navigation": 2,
+        "at": 1792445385416
+      }
+    ],
+    "events": [
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:50216/library",
+        "navigation": 2,
+        "at": 1792445385416
+      }
+    ],
+    "navigations": [
+      {
+        "id": 1,
+        "method": "goto",
+        "from": "nullblank",
+        "to": "https://127.0.0.1:50216/library",
+        "startedAt": 1792445385391,
+        "finishedAt": 1792445385410
+      },
+      {
+        "id": 2,
+        "method": "goto",
+        "from": "https://127.0.0.1:50216/library",
+        "to": "https://127.0.0.1:50216/next",
+        "startedAt": 1792445385410,
+        "finishedAt": 1792445385417
+      }
+    ],
+    "domErrors": []
+  },
+  "after": {
+    "runtime": {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:50216/library",
+          "navigation": 2,
+          "at": 1792445385700
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "https://127.0.0.1:50216/library",
+          "startedAt": 1792445385673,
+          "finishedAt": 1792445385688
+        },
+        {
+          "id": 2,
+          "method": "goto",
+          "from": "https://127.0.0.1:50216/library",
+          "to": "https://127.0.0.1:50216/next",
+          "startedAt": 1792445385696,
+          "finishedAt": 1792445385701
+        }
+      ],
+      "domErrors": []
+    },
+    "barrier": {
+      "documents": [
+        {
+          "id": 1,
+          "url": "https://127.0.0.1:50216/library",
+          "reads": [
+            {
+              "url": "https://127.0.0.1:50215/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+              "method": "GET",
+              "startedAt": 1792445385689,
+              "state": "finished",
+              "status": 200,
+              "finishedAt": 1792445385696
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "url": "https://127.0.0.1:50216/next",
+          "reads": []
+        }
+      ],
+      "waits": [
+        {
+          "document": 1,
+          "from": "https://127.0.0.1:50216/library",
+          "startedAt": 1792445385688,
+          "status": "PASS",
+          "finishedAt": 1792445385696
+        }
+      ]
+    }
+  },
+  "negative": {
+    "runtime": {
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:50215/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12 due to access control checks.",
+          "stack": "",
+          "navigation": 1,
+          "at": 1792445385807
+        },
+        {
+          "kind": "pageerror",
+          "message": "TypeError: Load failed",
+          "stack": "Unhandled Promise Rejection: TypeError: Load failed\n",
+          "navigation": 1,
+          "at": 1792445385808
+        },
+        {
+          "kind": "pageerror",
+          "message": "BARRIER_REAL_EXCEPTION",
+          "stack": "Error: BARRIER_REAL_EXCEPTION\n    at unknown (undefined:1:43)",
+          "navigation": 1,
+          "at": 1792445385910
+        },
+        {
+          "kind": "pageerror",
+          "message": "Error: BARRIER_REAL_REJECTION",
+          "stack": "",
+          "navigation": 1,
+          "at": 1792445385910
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "/127.0.0.1:50215/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12 due to access control checks.",
+          "stack": "",
+          "navigation": 1,
+          "at": 1792445385807
+        },
+        {
+          "kind": "pageerror",
+          "message": "TypeError: Load failed",
+          "stack": "Unhandled Promise Rejection: TypeError: Load failed\n",
+          "navigation": 1,
+          "at": 1792445385808
+        },
+        {
+          "kind": "pageerror",
+          "message": "BARRIER_REAL_EXCEPTION",
+          "stack": "Error: BARRIER_REAL_EXCEPTION\n    at unknown (undefined:1:43)",
+          "navigation": 1,
+          "at": 1792445385910
+        },
+        {
+          "kind": "pageerror",
+          "message": "Error: BARRIER_REAL_REJECTION",
+          "stack": "",
+          "navigation": 1,
+          "at": 1792445385910
+        },
+        {
+          "kind": "dom-uncaught",
+          "message": "TypeError: Load failed",
+          "document": "https://127.0.0.1:50216/library",
+          "navigation": 1,
+          "at": 1792445385808
+        },
+        {
+          "kind": "dom-uncaught",
+          "message": "Error: BARRIER_REAL_EXCEPTION",
+          "document": "https://127.0.0.1:50216/library",
+          "navigation": 1,
+          "at": 1792445385910
+        },
+        {
+          "kind": "dom-uncaught",
+          "message": "Error: BARRIER_REAL_REJECTION",
+          "document": "https://127.0.0.1:50216/library",
+          "navigation": 1,
+          "at": 1792445385910
+        }
+      ],
+      "events": [],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "https://127.0.0.1:50216/library",
+          "startedAt": 1792445385792,
+          "finishedAt": 1792445385801
+        }
+      ],
+      "domErrors": [
+        {
+          "kind": "unhandledrejection",
+          "message": "TypeError: Load failed",
+          "document": "https://127.0.0.1:50216/library",
+          "navigation": 1,
+          "at": 1792445385808
+        },
+        {
+          "kind": "uncaught",
+          "message": "Error: BARRIER_REAL_EXCEPTION",
+          "document": "https://127.0.0.1:50216/library",
+          "navigation": 1,
+          "at": 1792445385910
+        },
+        {
+          "kind": "unhandledrejection",
+          "message": "Error: BARRIER_REAL_REJECTION",
+          "document": "https://127.0.0.1:50216/library",
+          "navigation": 1,
+          "at": 1792445385910
+        }
+      ]
+    },
+    "barrier": {
+      "documents": [
+        {
+          "id": 1,
+          "url": "https://127.0.0.1:50216/library",
+          "reads": [
+            {
+              "url": "https://127.0.0.1:50215/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+              "method": "GET",
+              "startedAt": 1792445385803,
+              "state": "failed",
+              "failure": "Origin https://127.0.0.1:50216 is not allowed by Access-Control-Allow-Origin. Status code: 200"
+            }
+          ]
+        }
+      ],
+      "waits": [
+        {
+          "document": 1,
+          "from": "https://127.0.0.1:50216/library",
+          "startedAt": 1792445385801,
+          "status": "FAIL",
+          "message": "fixture read barrier: read failed",
+          "finishedAt": 1792445385807
+        }
+      ]
+    }
+  }
+}

@@ -1,3 +1,7 @@
+# SUTRA T01 — correctif CI légal, candidat successeur de f953
+
+Séquençage du harnais légal WebKit corrigé après CI39323751415 :46tests de barrière et15contrôles par moteur PASS, build production etlint ciblé PASS. Aucun changement produit supplémentaire. Source/manifeste et preuve rouge conservés dans qa/t01-certification-20261019/ci-legal-read-sequencing/. Prochaine vérification : CI puis ACK personnels T02–T08 sur le nouveau SHA exact consigné dans le registre partagé. R107 réservé T03 ; OVH/DB arrêtés, aucun redéploiement sans validation explicite. Les états suivants restent historiques.
+
 # SUTRA T01 — état prioritaire du 19 octobre 2026
 
 **CANDIDAT INTÉGRÉ / CERTIFICATION BLOQUÉE.** Worktree isolé `sutra-certification-integration-20261019`, descendant de ab935. Rapport exact : `qa/t01-certification-20261019/README.md`, handoff `HANDOFF-SUTRA-T01-20261019.md`. Les 1160 blobs initiaux ont été vérifiés ; aucun WIP historique écrasé. Corrections propriétaires T02/T04/T06 intégrées, quota partenaire atomique SQL, Coverr et focus WebKit corrigés. Les preuves et ACK historiques restent datés et bornés, pas transférés.

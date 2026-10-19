@@ -1,0 +1,35 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 39 files, 15 symbols
+Affected processes: 213
+Risk level: critical
+
+Changed symbols:
+  Section SUTRA T01 — état prioritaire du 19 octobre 2026 → BATON.md
+  Section T01 → T02–T08 / T09 — nouveau candidat, certification bloquée → HANDOFF-SUTRA-T01-20261019.md
+  Section SUTRA T01 — candidat de certification du 19 octobre 2026 → qa/t01-certification-20261019/README.md
+  Section Intégration et conservation → qa/t01-certification-20261019/README.md
+  Section Fournisseurs et blocages humains → qa/t01-certification-20261019/README.md
+  Const userId → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Property browserVersion → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Property engine → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Property nativeSafari → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Property scope → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+  Property method → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs
+  Property startedAt → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs
+  Property state → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs
+  Property url → qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs
+  Section SUTRA T01 — état prioritaire du 19 octobre 2026 → task_plan.md
+
+Affected execution flows:
+  • CommunityScreen → ApiFetch (3 steps) — changed: userId, userId, userId
+  • AdminContestPage → FetchData (3 steps) — changed: userId, userId, userId
+  • AdminUsersPage → FetchUsers (3 steps) — changed: userId, userId, userId
+  • CommunityPage → FetchBuddy (3 steps) — changed: userId, userId, userId
+  • CommunityPage → FetchCircles (3 steps) — changed: userId, userId, userId
+  • CommunityPage → FetchWall (3 steps) — changed: userId, userId, userId
+  • JeuCreatifPage → Load (3 steps) — changed: userId, userId, userId
+  • LightningPage → Load (3 steps) — changed: userId, userId, userId
+  • POST → CreateIntentKey (8 steps) — changed: userId, userId, userId, userId
+  • AdminDashboard → Cn (5 steps) — changed: userId, userId, userId
+... and 203 more

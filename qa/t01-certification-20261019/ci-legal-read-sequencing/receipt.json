@@ -1,0 +1,39 @@
+{
+  "parent": "f9537e5f9c2de2cdba75d564665fefc3fcccbc23",
+  "observedAt": "2026-10-19T21:32:41.594426+00:00",
+  "scope": "QA sequencing only; no product, consent, runtime guard or external service changed",
+  "checks": [
+    {
+      "command": "node --test qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs",
+      "runtime": "Node 24",
+      "pass": 46,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "node qa/t07-final-ux-perf-20261015/run.mjs --production-legal",
+      "runtime": "Node 24",
+      "build": "PASS",
+      "chromium": {
+        "pass": 15,
+        "fail": 0
+      },
+      "webkit": {
+        "pass": 15,
+        "fail": 0
+      },
+      "skip": 0,
+      "nativeSafari": false
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js qa/t07-final-ux-perf-20261015/run.mjs qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs",
+      "exitCode": 0,
+      "warnings": 0
+    }
+  ],
+  "sourceHashes": {
+    "qa/t07-final-ux-perf-20261015/run.mjs": "4166ea429a5818a4d35e5d97c68fe2c92c68aebbff9b5f4c5f9820409c6149c4",
+    "qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs": "51daf8fdddced12e3210a6af7786b010fbed02dd18cbc4f38529134200578fbc",
+    "qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs": "ad04a46e4ce7fdd92fc2855ec37446e8f51b7127973c468f707a5621f29b2b58"
+  }
+}
