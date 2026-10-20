@@ -1,0 +1,74 @@
+{
+  "candidate": "0f32bf0b84b51ad82e9ae5bf47d93f3e63442506",
+  "source": "src/lib/legal/components/MaMemoirePage.tsx",
+  "sourceSha256": "61ce5efffe458d4a40a8aabff0afb85503af298e7dbf3afa6d391870536c55ab",
+  "harnessSha256": "51d81a052b5dc61f0f00ed7b4c3b28211887079ee89bba03ceb4705efbbf30e1",
+  "phase": "before",
+  "mode": "DEV loopback synthetic identity; no production proof",
+  "results": [
+    {
+      "name": "WCAG AA 375px",
+      "status": "FAIL",
+      "colors": {
+        "foreground": "rgb(255, 255, 255)",
+        "background": "rgb(168, 85, 247)",
+        "fontSize": "14px"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".bg-primary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.95 (foreground color: #ffffff, background color: #a855f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "No horizontal overflow 375px",
+      "status": "PASS"
+    },
+    {
+      "name": "WCAG AA 1440px",
+      "status": "FAIL",
+      "colors": {
+        "foreground": "rgb(255, 255, 255)",
+        "background": "rgb(168, 85, 247)",
+        "fontSize": "14px"
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".bg-primary"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.95 (foreground color: #ffffff, background color: #a855f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "No horizontal overflow 1440px",
+      "status": "PASS"
+    },
+    {
+      "name": "No unexpected mutation or uncaught browser error",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "blocked": [],
+  "exportRequests": 0,
+  "downloads": 0,
+  "remoteCalls": 0
+}

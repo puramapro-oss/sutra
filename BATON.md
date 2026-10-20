@@ -453,3 +453,7 @@ GitNexus KpiCards/BatchGlobalConfig UNKNOWN, index4commitsderrière ; impacts pr
 
 
 Précommit UI : GitNexus staged CRITICAL79symboles45parcours (722fichiers préparés), revue du périmètre pages/publication/QA ; comparemain historique plafonné6576fichiers12458symboles418parcours. Sources/SQL hors lot inchangés. Scan texte332fichiers Gitleaks exit1, six alertes UUID idempotence synthétiques avec provenance HEAD confirmée, zéro alerte non résolue ; scan brut expurgé conservé. Retest final R113WebKit29PASS/0FAIL/0SKIP, toutes erreurs des deux pages surveillées. Lint intégré0erreur108avertissements, TypeScriptPASS.
+
+
+## 2026-10-20 — T01 intégration du correctif R121 livré par T02
+Base 0f32bf0b84b51ad82e9ae5bf47d93f3e63442506 ; livraison validée365f437b2dfccef174439690c10dd3ca95d7683e, claim libéré. Import45fichiers exacts, BATON/task_plan T02 exclus ; une classe couleur produit. Preuves et nouveau manifeste : qa/t01-final-memoire-integration-20261020/README.md. Gate locale puis CI/navigateur sur SHA final, reçus partagés T01-FINAL-MEMOIRE-INTEGRATION-20261020. Aucun ACK ancien transféré, T08 verdict à renouveler, R113/R92 et T09 restent ouverts. Aucun déploiement/paid/publication/secret/worktree tiers.

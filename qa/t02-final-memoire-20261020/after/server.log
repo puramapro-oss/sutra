@@ -1,0 +1,28 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:63801
+- Network:       http://127.0.0.1:63801
+✓ Ready in 187ms
+✓ Running next.config.ts took 81ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ GET /login 200 in 373ms (next.js: 5ms, proxy.ts: 43ms, application-code: 325ms)
+ GET /login?next=/library 200 in 28ms (next.js: 1.9ms, proxy.ts: 3ms, application-code: 23ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 2.1s (next.js: 2.0s, proxy.ts: 18ms, application-code: 46ms)
+ GET /library 200 in 26ms (next.js: 1.3ms, proxy.ts: 5ms, application-code: 20ms)
+ POST /api/legal/accept 200 in 688ms (next.js: 385ms, proxy.ts: 3ms, application-code: 301ms)
+ POST /api/legal/accept 200 in 259ms (next.js: 0.7ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 261ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 256ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.8ms, proxy.ts: 2.0ms, application-code: 257ms)
+ GET /ma-memoire 200 in 474ms (next.js: 309ms, proxy.ts: 4ms, application-code: 160ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /ma-memoire 200 in 24ms (next.js: 1.4ms, proxy.ts: 5ms, application-code: 18ms)
+ GET /ma-memoire 200 in 28ms (next.js: 1.5ms, proxy.ts: 6ms, application-code: 21ms)
+ GET /api/legal/my-data 200 in 248ms (next.js: 219ms, proxy.ts: 1.6ms, application-code: 27ms)
+[?25h

@@ -1,0 +1,183 @@
+{
+  "owner": "T02",
+  "timestamp": "2026-10-20T13:41:13.432824+00:00",
+  "ack": "ACK T02 explicite — PASS local borné, correction R121 et sécurité différentielle",
+  "deliverySha": "365f437b2dfccef174439690c10dd3ca95d7683e",
+  "testedSha": "365f437b2dfccef174439690c10dd3ca95d7683e",
+  "baseCandidate": "0f32bf0b84b51ad82e9ae5bf47d93f3e63442506",
+  "branch": "codex/sutra-t02-final-memoire-20261020",
+  "worktree": "/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015",
+  "executionBinding": "Tests executed precommit on candidate 0f32 plus this exact single-class delta; postcommit all source and evidence hashes equal committed bytes. Not a fresh CI run on delivery SHA.",
+  "integrationStatus": "PENDING_T01",
+  "readByT01OrT08": "NOT_PRESUMED",
+  "claim": "SUTRA-T02-20261020:FINAL-MEMOIRE",
+  "claimStatus": "RELEASED_FOR_T01_INTEGRATION",
+  "productFiles": [
+    "src/lib/legal/components/MaMemoirePage.tsx"
+  ],
+  "files": [
+    "BATON.md",
+    "HANDOFF-SUTRA-T02-FINAL-MEMOIRE-20261020.md",
+    "qa/t02-final-memoire-20261020/README.md",
+    "qa/t02-final-memoire-20261020/after/ma-memoire-1440.png",
+    "qa/t02-final-memoire-20261020/after/ma-memoire-375.png",
+    "qa/t02-final-memoire-20261020/after/results.json",
+    "qa/t02-final-memoire-20261020/after/server.log",
+    "qa/t02-final-memoire-20261020/before/ma-memoire-1440.png",
+    "qa/t02-final-memoire-20261020/before/ma-memoire-375.png",
+    "qa/t02-final-memoire-20261020/before/results.json",
+    "qa/t02-final-memoire-20261020/before/server.log",
+    "qa/t02-final-memoire-20261020/browser-after.json",
+    "qa/t02-final-memoire-20261020/browser-after.log",
+    "qa/t02-final-memoire-20261020/browser.mjs",
+    "qa/t02-final-memoire-20261020/ci-pg-stop.log",
+    "qa/t02-final-memoire-20261020/ci-receipt.json",
+    "qa/t02-final-memoire-20261020/ci-scheduler-isolation.log",
+    "qa/t02-final-memoire-20261020/export-security.test.mts",
+    "qa/t02-final-memoire-20261020/gitleaks-receipt.json",
+    "qa/t02-final-memoire-20261020/gitleaks-triage.json",
+    "qa/t02-final-memoire-20261020/gitleaks.json",
+    "qa/t02-final-memoire-20261020/gitnexus-analyze.log",
+    "qa/t02-final-memoire-20261020/gitnexus-compare-main.log",
+    "qa/t02-final-memoire-20261020/gitnexus-context.json",
+    "qa/t02-final-memoire-20261020/gitnexus-impact-file.json",
+    "qa/t02-final-memoire-20261020/gitnexus-impact.json",
+    "qa/t02-final-memoire-20261020/gitnexus-review.json",
+    "qa/t02-final-memoire-20261020/gitnexus-staged-final.log",
+    "qa/t02-final-memoire-20261020/gitnexus-staged.log",
+    "qa/t02-final-memoire-20261020/initial-lint.json",
+    "qa/t02-final-memoire-20261020/initial-lint.log",
+    "qa/t02-final-memoire-20261020/initial-security.json",
+    "qa/t02-final-memoire-20261020/initial-security.log",
+    "qa/t02-final-memoire-20261020/lint.json",
+    "qa/t02-final-memoire-20261020/lint.log",
+    "qa/t02-final-memoire-20261020/manifest.json",
+    "qa/t02-final-memoire-20261020/precommit.json",
+    "qa/t02-final-memoire-20261020/run.py",
+    "qa/t02-final-memoire-20261020/scan.py",
+    "qa/t02-final-memoire-20261020/security.json",
+    "qa/t02-final-memoire-20261020/security.log",
+    "qa/t02-final-memoire-20261020/typecheck.json",
+    "qa/t02-final-memoire-20261020/typecheck.log",
+    "qa/t02-final-memoire-20261020/verification.json",
+    "qa/t02-final-memoire-20261020/verify.py",
+    "src/lib/legal/components/MaMemoirePage.tsx",
+    "task_plan.md"
+  ],
+  "manifestSha256": "9c0d115611dff30afd89d8e2bc77bb462507b8625dc8747ca521a60866744241",
+  "postcommitVerification": {
+    "status": "PASS",
+    "manifestEntries": 46,
+    "sourceEntries": 874,
+    "helpers": 5,
+    "trackedClean": true,
+    "untrackedPriorNpmCache": "preserved and excluded"
+  },
+  "results": {
+    "beforeR121": {
+      "status": "FAIL_REPRODUCED",
+      "contrastRatio": 3.95,
+      "minimum": 4.5,
+      "widths": [
+        375,
+        1440
+      ]
+    },
+    "afterBrowser": {
+      "status": "PASS",
+      "pass": 9,
+      "fail": 0
+    },
+    "securityAuthPermissions": {
+      "status": "PASS",
+      "pass": 55,
+      "fail": 0,
+      "skip": 0,
+      "newExportTests": 8
+    },
+    "lint": {
+      "status": "PASS",
+      "warnings": 0
+    },
+    "typecheck": "PASS",
+    "sqlCI": {
+      "status": "PASS_REVIEWED_CI",
+      "sha": "0f32bf0b84b51ad82e9ae5bf47d93f3e63442506",
+      "pass": 7,
+      "fail": 0,
+      "skip": 0,
+      "sourceHashesVerified": 868,
+      "clusterStopped": true,
+      "externalCalls": 0
+    },
+    "historicalReceiptsReused": 17,
+    "cronRoutesUnchanged": 20,
+    "dependencyVersionsUnchanged": 32,
+    "secrets": {
+      "status": "PASS_BOUNDED",
+      "textFilesScanned": 106,
+      "findings": 32,
+      "verifiedDigestFindings": 32,
+      "unresolved": 0
+    },
+    "gitnexus": {
+      "stagedRisk": "low",
+      "compareMainRisk": "critical_historical_capped",
+      "exactSymbol": "UNKNOWN",
+      "exhaustiveCertified": false
+    }
+  },
+  "commands": {
+    "browser-after": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-memoire-20261020/browser.mjs",
+      "after"
+    ],
+    "security": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-concurrency=1",
+      "--test-timeout=30000",
+      "qa/t02-final-memoire-20261020/export-security.test.mts",
+      "scripts/test-auth-session.mts",
+      "scripts/test-security-account.mts"
+    ],
+    "lint": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings=0",
+      "src/lib/legal/components/MaMemoirePage.tsx",
+      "qa/t02-final-memoire-20261020/browser.mjs",
+      "qa/t02-final-memoire-20261020/export-security.test.mts"
+    ],
+    "typecheck": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false",
+      "--pretty",
+      "false"
+    ]
+  },
+  "differentialCommand": "python3 qa/t02-final-memoire-20261020/verify.py",
+  "evidenceDirectory": "/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-memoire-20261020",
+  "report": "/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/HANDOFF-SUTRA-T02-FINAL-MEMOIRE-20261020.md",
+  "limits": [
+    "GitNexus partial, exact component unresolved",
+    "Two-user proof is not native organization proof; model absent",
+    "WanGP connector/storage unavailable and owned by T09; no activation",
+    "No live provider, production, real OAuth consent or remote RLS proof",
+    "Previously triaged dependency alerts unchanged; no fresh advisory registry query",
+    "Contact limiter remains per-process; proxy headers and secret rotation not certified",
+    "Signed URLs may remain usable for their configured 300 second TTL",
+    "R113 DEV WebKit and R92 public404 remain outside this correction",
+    "No global release, live provider, native organization, or WanGP certification"
+  ],
+  "deployment": false,
+  "push": false,
+  "paidCalls": false
+}

@@ -1,0 +1,15 @@
+✔ both authenticated users can read/update their own schedule but cannot see or update each other (26.341661ms)
+✔ an empty session claim cannot read, update or delete either schedule (3.542972ms)
+✔ anon cannot bypass the server by invoking the scheduler RPC directly (2.754657ms)
+✔ authenticated cannot bypass the server by invoking the scheduler RPC directly (1.740809ms)
+✔ the owner cannot change the cursor directly even with a valid session (2.098799ms)
+✔ ownership cannot be reassigned to another user by an authenticated update (1.850404ms)
+✔ a privileged server RPC with a forged input owner fails before job, cursor or quota changes (7.981193ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 273.554484
