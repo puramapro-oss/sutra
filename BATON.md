@@ -422,3 +422,14 @@ CI39341713461 sur1d63 rouge : quatre ReferenceError du harnais VM historique apr
 CI39341713461 quality sur1d63 : quatre FAIL409/503 aux375/1440, ancien sélecteur textuel ambigu entre toast et alerte persistante T06. Helper historique T01 `socialFeedbackChecks` corrigé pour vérifier identifiant, rôle alert, texte exact et visibilité de l’alerte. Les assertions de navigation, bouton réactivé et absence de diagnostic fournisseur restent intactes. Aucun produit changé. GitNexus LOW, un appelant QA, zéro processus; index deux commits en retard, revue directe bornée.
 
 `SUTRA_T07_OUTPUT=qa/t01-closure-20261020/ci-social-locator node qa/t07-frontend-fixes-20261014/browser.mjs --production` : build PASS, **25PASS/0FAIL/0SKIP**, dont quatre contrôles sociaux, pagination, contraste, zéro mutation inattendue et zéro erreur JS/hydration. ESLint ciblé PASS. Preuves avant/après `ci-social-locator/`; environnement isolé, toutes connexions sociales simulées, aucun compte connecté. Manifeste1203,1160historiques conservés,33modifiés43ajoutés. La CI39341713461 reste rouge et conservée; CI et ACK exacts requis sur prochain SHA.
+
+
+## Reprise après interruption — sélecteur journey / 20 octobre 2026
+
+HEAD confirmé1968d826b19b23f6c360884337599080fd6d8b3e ; CI39343583135 terminée FAILURE, contracts et disposable-database SUCCESS, quality échoue à trois assertions sociales ambiguës (Chromium375/1440, WebKit375). Le correctif QA et ses reçus avaient été sauvegardés avant interruption, sans commit ni opération encore active. Aucun produit/SQL/dépendance changé.
+
+`qa/t07-frontend-journey-20261014/journey-checks.mjs` vérifie maintenant l'alerte persistante par identifiant, rôle, texte et visibilité ; navigation, reprise bouton et absence diagnostic restent inchangés. Impact GitNexus MEDIUM,6appelants QA directs,11symboles,0processus,index partiel.
+
+`node qa/t01-closure-20261020/ci-journey-locator/native-boundary.mjs` : **20PASS/0FAIL/0SKIP**, Chromium/WebKit375/1440, ancien sélecteur rouge et contrôles négatifs manquant/rôle/texte/visibilité. Preuve HTML native uniquement, pas une recette de l'application. Empreinte du helper confirmée à la reprise, pas de répétition de test invariant. ESLint ciblé deux sources PASS. `before.json` conserve les trois FAIL CI. La nouvelle campagne applicative du candidat exact reste obligatoire.
+
+Manifeste1204 chemins ;1160historiques conservés,34modifiés44ajoutés,0manquant. T02/T08 ont repris leur contre-revue indépendante1968 ; SHA final à transmettre après commit et aucune attestation automatiquement transférée. Code ElevenLabs/Coverr et correction R107 déjà intégrés ; Pollinations legacy réel reste non qualifié, sans bascule payante implicite. Aucun déploiement, migration distante, fournisseur, secret ou worktree tiers modifié.

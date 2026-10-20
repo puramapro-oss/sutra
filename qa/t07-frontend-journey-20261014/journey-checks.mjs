@@ -145,7 +145,10 @@ export async function journeyChecks({ page, context, base, fixture, output, chec
     await check(`${width}: social account absent; simulated consent unavailable does not navigate`, async () => {
       const button = page.getByRole('button', { name: 'Se connecter', exact: true }).first()
       await button.click()
-      await expect(page.getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true })).toBeVisible()
+      const alert = page.getByTestId('social-connect-error')
+      await expect(alert).toHaveAttribute('role', 'alert')
+      await expect(alert).toHaveText('Profil social non attribué. Contactez votre administrateur.')
+      await expect(alert).toBeVisible()
       await expect(button).toBeEnabled()
       assert.equal(new URL(page.url()).pathname, '/settings/social')
       await expect(page.getByText('UNTRUSTED_PROVIDER_DIAGNOSTIC', { exact: true })).toHaveCount(0)
