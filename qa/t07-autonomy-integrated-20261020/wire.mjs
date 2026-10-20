@@ -5,14 +5,15 @@ import { spawnSync } from 'node:child_process'
 import { mock } from 'node:test'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
-import pg from 'pg'
+import { createDrainingPool } from './draining-pool.mjs'
 import { setupSchema } from '../../src/data/setup-schema.ts'
 
 export async function startWire(user) {
   assert.equal(process.env.SUTRA_DISPOSABLE_DB, '1')
   assert.equal(process.env.PGHOST, '127.0.0.1')
-  let pool = new pg.Pool({ host: '127.0.0.1', port: Number(process.env.PGPORT), user: 'fixture', database: 'postgres', options: '-c search_path=sutra,public' })
-  const sql = (text, values = []) => pool.query(text, values)
+  const connectionOptions = { host: '127.0.0.1', port: Number(process.env.PGPORT), user: 'fixture', database: 'postgres', options: '-c search_path=sutra,public' }
+  let database = createDrainingPool(connectionOptions)
+  const sql = (text, values = []) => database.pool.query(text, values)
   const source = path => readFileSync(new URL('../../' + path, import.meta.url), 'utf8')
   const table = (text, name) => {
     const begin = text.indexOf(`CREATE TABLE IF NOT EXISTS sutra.${name} (`), end = text.indexOf('\n);', begin)
@@ -126,13 +127,13 @@ export async function startWire(user) {
       const data = process.env.SUTRA_T07_PGDATA
       assert.match(data, /sutra-t07-wire-pg-[^/]+\/data$/)
       const before = (await sql('SELECT pg_postmaster_start_time() AS started')).rows[0].started
-      await pool.end()
+      await database.close()
       const restarted = spawnSync(join(process.env.SUTRA_TEST_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin', 'pg_ctl'), ['-D', data, '-l', join(dirname(data), 'restart.log'), '-m', 'fast', '-w', 'restart'], {
         env: { PATH: process.env.PATH, HOME: process.env.HOME, LC_ALL: 'C' }, encoding: 'utf8', timeout: 30000,
       })
       assert.equal(restarted.error, undefined, 'private restart must not time out while capturing inherited stdout')
       assert.equal(restarted.status, 0, 'private PostgreSQL restart must succeed')
-      pool = new pg.Pool({ host: '127.0.0.1', port: Number(process.env.PGPORT), user: 'fixture', database: 'postgres', options: '-c search_path=sutra,public' })
+      database = createDrainingPool(connectionOptions)
       const after = (await sql('SELECT pg_postmaster_start_time() AS started')).rows[0].started
       assert.ok(after > before, 'PostgreSQL postmaster must actually restart')
       evidence.restarts.push({ before, after, status: restarted.status, stdout: restarted.stdout, stderr: restarted.stderr })
@@ -150,7 +151,7 @@ export async function startWire(user) {
       const activityLogs = (await sql('SELECT * FROM activity_logs ORDER BY created_at,id')).rows
       assert.ok(counters.every(row => row.reserved === 0))
       writeFileSync(join(output, 'database.json'), JSON.stringify({ jobs, beforeCleanup, counters, cleanupCancellations, activityLogs, evidence }, null, 2) + '\n')
-      await pool.end()
+      await database.close()
     },
   }
 }

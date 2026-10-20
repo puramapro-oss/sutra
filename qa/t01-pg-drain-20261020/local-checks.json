@@ -1,0 +1,49 @@
+{
+  "base": "7a23ab17d6f2a8b4a4fe2088656279c49ff80128",
+  "at": "2026-10-20T13:59:35.518379+00:00",
+  "observed_commands": [
+    {
+      "label": "pool-drain",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--test",
+        "qa/t01-pg-drain-20261020/pool-drain.test.mjs"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "lint",
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "node_modules/eslint/bin/eslint.js",
+        "qa/t01-pg-drain-20261020/pool-drain.test.mjs",
+        "qa/t07-autonomy-integrated-20261020/draining-pool.mjs",
+        "qa/t07-autonomy-integrated-20261020/wire.mjs",
+        "qa/t07-autonomy-integrated-20261020/run.mjs"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "tests": {
+    "pass": 4,
+    "fail": 0,
+    "skip": 0
+  },
+  "initial_failure": {
+    "ci": 39433814419,
+    "job": 118665466773,
+    "sqlstate": "57P01",
+    "before_crash_pass": 10
+  },
+  "scope": "QA connection lifecycle only; production sources, migrations and dependencies unchanged",
+  "not_tested": "Actual private PostgreSQL restart after this repair pending exact candidate CI"
+}

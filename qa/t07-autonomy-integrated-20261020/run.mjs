@@ -43,6 +43,7 @@ try {
     '-c', 'shared_memory_type=mmap', '-c', 'dynamic_shared_memory_type=posix', '-c', 'max_connections=30', '-c', 'shared_buffers=16MB'], 'pg-init'))
   assert.ok(run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', `-h 127.0.0.1 -k ${directory} -p ${port}`, '-w', 'start'], 'pg-start'))
   started = true
+  if (!run(process.execPath, ['--test', 'qa/t01-pg-drain-20261020/pool-drain.test.mjs'], 'pool-drain')) process.exitCode = 1
   if (!run(process.execPath, ['--experimental-test-module-mocks', '--import', 'tsx', 'qa/t07-autonomy-integrated-20261020/countertest.mjs'], 'countertest')) process.exitCode = 1
   if (!run(process.execPath, ['--experimental-test-module-mocks', '--import', 'tsx', '--test',
     'qa/t03-final-ack-20261019/port.test.mts'], 'future-port')) process.exitCode = 1
@@ -58,7 +59,8 @@ try {
   const files = git(['ls-files', 'src', 'migrations', 'package.json', 'package-lock.json', 'qa/t08/offline.cjs',
     'qa/t07-final-wire-20261016/settle.mjs', 'qa/t03-final-ack-20261019/port.test.mts']).split('\n')
   files.push('qa/t07-autonomy-integrated-20261020/run.mjs', 'qa/t07-autonomy-integrated-20261020/wire.mjs',
-    'qa/t07-autonomy-integrated-20261020/countertest.mjs')
+    'qa/t07-autonomy-integrated-20261020/countertest.mjs', 'qa/t07-autonomy-integrated-20261020/draining-pool.mjs',
+    'qa/t01-pg-drain-20261020/pool-drain.test.mjs')
   writeFileSync(join(output, 'receipt.json'), JSON.stringify({ candidate, label, commands, started, stopped,
     private_cluster: directory, external_calls: 0, environment: 'synthetic allowlist + T08 external socket/fetch/env-file guard',
     source_sha256: Object.fromEntries(files.map(p => [p, createHash('sha256').update(readFileSync(join(root, p))).digest('hex')])),

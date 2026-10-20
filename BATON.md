@@ -457,3 +457,7 @@ Précommit UI : GitNexus staged CRITICAL79symboles45parcours (722fichiers prépa
 
 ## 2026-10-20 — T01 intégration du correctif R121 livré par T02
 Base 0f32bf0b84b51ad82e9ae5bf47d93f3e63442506 ; livraison validée365f437b2dfccef174439690c10dd3ca95d7683e, claim libéré. Import45fichiers exacts, BATON/task_plan T02 exclus ; une classe couleur produit. Preuves et nouveau manifeste : qa/t01-final-memoire-integration-20261020/README.md. Gate locale puis CI/navigateur sur SHA final, reçus partagés T01-FINAL-MEMOIRE-INTEGRATION-20261020. Aucun ACK ancien transféré, T08 verdict à renouveler, R113/R92 et T09 restent ouverts. Aucun déploiement/paid/publication/secret/worktree tiers.
+
+
+## T01 — réparation CI PostgreSQL QA — 2026-10-20T14:00:30.381077+00:00
+Base7a23ab17 ; CI39433814419 arrêt57P01 au contre-test11. Course pg-pool.end/fermeture effective reproduite ; helper QA attend tous les end avant redémarrage synchrone.4testsPASS/0FAIL/0SKIP,lintcibléPASS,diff-checkPASS. Aucun produit,SQL,dépendance modifié. NouveauSHA/CI requis, preuve qa/t01-pg-drain-20261020/. Les ACK précédents restent bornés, aucun PASS/deploy/production/T09 anticipé. R121 intégré/retest T01PASS ; verdict T08 différentiel attendu,R113environnement non qualifié,R92HTTP404. Worktrees tiers préservés.
