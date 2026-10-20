@@ -77,7 +77,7 @@ export function SeedsBalance({ variant = 'compact', className }: SeedsBalancePro
               transition={{ duration: 0.8, ease: 'easeOut' }}
             />
           </div>
-          <p className="mt-2 text-xs text-white/40">
+          <p className="mt-2 text-xs text-white/60">
             Seuil : {next_level_threshold.toLocaleString('fr-FR')} graines cumulées
           </p>
         </div>

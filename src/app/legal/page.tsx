@@ -123,7 +123,7 @@ export default function LegalPage() {
                   <h3 className="text-sm font-bold text-white group-hover:text-violet-300 transition-colors">
                     {page.title}
                   </h3>
-                  <p className="text-xs text-white/40 mt-1">
+                  <p className="text-xs text-white/60 mt-1">
                     {page.description}
                   </p>
                 </div>
@@ -138,7 +138,7 @@ export default function LegalPage() {
       <div className="border-t border-white/[0.06] py-8 text-center">
         <Link
           href="/"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Retour a l&apos;accueil
         </Link>

@@ -146,7 +146,7 @@ export default function StylesPage() {
                   <span className="text-lg">{style.icon}</span>
                   <h3 className="text-sm font-semibold text-white">{style.name}</h3>
                 </div>
-                <p className="text-xs text-white/40 leading-relaxed mb-3 line-clamp-2">
+                <p className="text-xs text-white/60 leading-relaxed mb-3 line-clamp-2">
                   {style.description}
                 </p>
                 <Button
@@ -181,7 +181,7 @@ export default function StylesPage() {
           <h4 className="text-sm font-medium text-white/80 mb-1">
             Comment fonctionnent les styles ?
           </h4>
-          <p className="text-xs text-white/40 leading-relaxed">
+          <p className="text-xs text-white/60 leading-relaxed">
             Chaque style modifie le prompt visuel envoyé au moteur de génération LTX 2.3.
             Les instructions stylistiques sont ajoutées automatiquement à ta description pour
             orienter le rendu final. Tu peux combiner un style avec n&apos;importe quel prompt

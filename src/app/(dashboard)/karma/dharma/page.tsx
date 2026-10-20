@@ -256,7 +256,7 @@ export default function DharmaPage() {
               <p className="text-xs uppercase tracking-wider text-white/50">7 derniers tirages</p>
               <ul className="mt-3 space-y-2 text-sm">
                 {(state?.history ?? []).length === 0 ? (
-                  <li className="text-white/40">Aucun tirage encore.</li>
+                  <li className="text-white/60">Aucun tirage encore.</li>
                 ) : (
                   state?.history.map((h, i) => (
                     <li key={i} className="flex items-center justify-between gap-2 text-white/80">

@@ -15,6 +15,7 @@ import { capabilitiesCases } from '../t07-modes-20261014/capabilities-fixtures.m
 import { enterTestSession } from '../t07-final-ux-perf-20261015/session.mjs'
 import { nativeRuntimeControls } from '../t01-final-20261015/browser-harness/native-controls.mjs'
 import { observeRuntimeErrors } from '../t01-final-20261015/browser-harness/runtime-guard.mjs'
+import { publicationChecks } from '../t01-closure-20261020/publish-checks.mjs'
 
 const require = createRequire(import.meta.url)
 const production = process.argv.includes('--production')
@@ -240,6 +241,7 @@ try {
     assert.equal(writes.filter(w=>w.path==='/api/create/status'&&w.method==='DELETE').length,1)
   })
   await page.close()
+  await publicationChecks({ context, base, fixture, output, engine, check, newPage, writes })
   await context.addCookies([{name:'sutra_locale',value:'en',url:base}]); page=await newPage('/create')
   await check('English locale: translated creation heading',async()=>{
     await expect(page.locator('html')).toHaveAttribute('lang','en')

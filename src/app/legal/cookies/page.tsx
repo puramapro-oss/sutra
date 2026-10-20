@@ -40,7 +40,7 @@ function CookieTable({
   cookies: { name: string; purpose: string; duration: string; type: string }[]
 }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-white/[0.06]">
+    <div role="region" aria-label="Tableau des cookies" tabIndex={0} className="overflow-x-auto rounded-xl border border-white/[0.06] focus-visible:outline-2 focus-visible:outline-violet-400">
       <table className="w-full text-sm text-left">
         <thead>
           <tr className="border-b border-white/[0.06] bg-white/[0.03]">
@@ -158,7 +158,7 @@ export default function CookiesPage() {
           >
             Politique de cookies
           </h1>
-          <p className="text-white/40 text-sm">
+          <p className="text-white/60 text-sm">
             Derniere mise a jour : 29 mars 2026
           </p>
         </div>
@@ -242,7 +242,7 @@ export default function CookiesPage() {
               a{' '}
               <a
                 href="mailto:matiss.frasne@gmail.com"
-                className="text-violet-400 hover:text-violet-300"
+                className="text-violet-400 hover:text-violet-300 underline underline-offset-4"
               >
                 matiss.frasne@gmail.com
               </a>
@@ -256,19 +256,19 @@ export default function CookiesPage() {
       <div className="border-t border-white/[0.06] py-8 text-center flex items-center justify-center gap-6">
         <Link
           href="/legal/terms"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           CGU
         </Link>
         <Link
           href="/legal/privacy"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Confidentialite
         </Link>
         <Link
           href="/"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Accueil
         </Link>

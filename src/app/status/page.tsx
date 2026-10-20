@@ -201,7 +201,7 @@ export default function StatusPage() {
                     {overall.label}
                   </p>
                   {data.timestamp && (
-                    <p className="text-xs text-white/30 mt-1 flex items-center gap-1">
+                    <p className="text-xs text-white/60 mt-1 flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       Derniere verification :{' '}
                       {new Date(data.timestamp).toLocaleString('fr-FR', {
@@ -263,14 +263,14 @@ export default function StatusPage() {
               </AnimatePresence>
 
               {Object.keys(data.services).length === 0 && (
-                <div className="text-center py-12 text-white/40 text-sm">
+                <div className="text-center py-12 text-white/60 text-sm">
                   Aucun service a afficher.
                 </div>
               )}
             </div>
 
             {/* Auto-refresh note */}
-            <p className="text-center text-xs text-white/25">
+            <p className="text-center text-xs text-white/60">
               Cette page se rafraichit automatiquement toutes les 60 secondes.
             </p>
           </motion.div>
@@ -281,7 +281,7 @@ export default function StatusPage() {
       <div className="border-t border-white/[0.06] py-8 text-center">
         <Link
           href="/"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Retour a l&apos;accueil
         </Link>

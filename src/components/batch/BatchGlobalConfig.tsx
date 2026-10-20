@@ -27,7 +27,7 @@ export default function BatchGlobalConfig({
       <h2 className="text-sm font-semibold text-white/70 mb-4">Configuration globale</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
-          <label className="block text-xs text-white/40 mb-1.5">Format</label>
+          <label htmlFor="batch-format" className="block text-xs text-white/60 mb-1.5">Format</label>
           <select
             value={globalConfig.format}
             onChange={(e) =>
@@ -35,6 +35,7 @@ export default function BatchGlobalConfig({
             }
             className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-violet-500/40"
             disabled={isProcessing}
+            id="batch-format"
             data-testid="batch-config-format"
           >
             {FORMATS.map((f) => (
@@ -46,7 +47,7 @@ export default function BatchGlobalConfig({
         </div>
 
         <div>
-          <label className="block text-xs text-white/40 mb-1.5">Qualite</label>
+          <label htmlFor="batch-quality" className="block text-xs text-white/60 mb-1.5">Qualite</label>
           <select
             value={globalConfig.quality}
             onChange={(e) =>
@@ -54,6 +55,7 @@ export default function BatchGlobalConfig({
             }
             className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-violet-500/40"
             disabled={isProcessing}
+            id="batch-quality"
             data-testid="batch-config-quality"
           >
             {QUALITIES.map((q) => (
@@ -66,7 +68,7 @@ export default function BatchGlobalConfig({
         </div>
 
         <div>
-          <label className="block text-xs text-white/40 mb-1.5">Voix</label>
+          <label htmlFor="batch-voice" className="block text-xs text-white/60 mb-1.5">Voix</label>
           <select
             value={globalConfig.voice}
             onChange={(e) =>
@@ -74,6 +76,7 @@ export default function BatchGlobalConfig({
             }
             className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-violet-500/40"
             disabled={isProcessing}
+            id="batch-voice"
             data-testid="batch-config-voice"
           >
             {VOICE_STYLES.map((v) => (
@@ -85,7 +88,7 @@ export default function BatchGlobalConfig({
         </div>
 
         <div>
-          <label className="block text-xs text-white/40 mb-1.5">Moteur video</label>
+          <label htmlFor="batch-engine" className="block text-xs text-white/60 mb-1.5">Moteur video</label>
           <select
             value={globalConfig.engine}
             onChange={(e) =>
@@ -93,6 +96,7 @@ export default function BatchGlobalConfig({
             }
             className="w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-3 py-2 text-sm text-white/80 focus:outline-none focus:border-violet-500/40"
             disabled={isProcessing}
+            id="batch-engine"
             data-testid="batch-config-engine"
           >
             {VIDEO_ENGINES.map((eng) => (

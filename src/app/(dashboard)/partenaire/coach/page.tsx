@@ -106,7 +106,7 @@ export default function PartnerCoachPage() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
-              href="/partenaire"
+              href="/partenaire" aria-label="Retour au tableau de bord partenaire"
               className="text-white/50 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -116,7 +116,7 @@ export default function PartnerCoachPage() {
             </div>
             <div>
               <h1 className="text-lg font-semibold text-white">Coach Partenaire</h1>
-              <p className="text-xs text-white/40">IA personnalisee avec tes stats</p>
+              <p className="text-xs text-white/60">IA personnalisee avec tes stats</p>
             </div>
           </div>
         </div>
@@ -217,11 +217,12 @@ export default function PartnerCoachPage() {
             disabled={!input.trim() || loading}
             loading={loading}
             data-testid="coach-send"
+                aria-label="Envoyer le message au coach"
           >
             <Send className="w-4 h-4" />
           </Button>
         </div>
-        <p className="text-center text-white/20 text-xs mt-2">
+        <p className="text-center text-white/60 text-xs mt-2">
           20 messages par jour — Propulse par Claude
         </p>
       </div>

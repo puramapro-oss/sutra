@@ -1,0 +1,70 @@
+(node:9933) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9933) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T06 FINAL callback rejects profile reassigned while provider GET is pending (16.9415ms)
+✔ T06 FINAL callback rejects profile removed while provider GET is pending (0.851792ms)
+✔ T06 FINAL revoke blocks remote DELETE on reassigned but retains local fence (1.725833ms)
+✔ T06 FINAL revoke blocks remote DELETE on removed but retains local fence (0.8135ms)
+✔ T06 FINAL revoke blocks remote DELETE on invalid-binding but retains local fence (0.705958ms)
+✔ T06 FINAL revoke blocks remote DELETE on missing-provenance but retains local fence (0.580167ms)
+✔ T06 FINAL revoke blocks remote DELETE on foreign-profile but retains local fence (0.548875ms)
+✔ T06 FINAL revoke blocks remote DELETE on foreign-custodian but retains local fence (0.495041ms)
+✔ T06 FINAL revoke blocks remote DELETE on after-claim but retains local fence (0.545834ms)
+✔ T06 FINAL unchanged tenant can connect, revoke and personally reconnect (0.934625ms)
+✔ T06 FINAL provider refusal keeps revocation fenced and does not repeat DELETE (0.493167ms)
+✔ T06 FINAL confirmed revocation is idempotent without a second remote DELETE (0.528083ms)
+✔ T06 FINAL revoke erases legacy token fields (already confirmed=false) (0.428ms)
+✔ T06 FINAL revoke erases legacy token fields (already confirmed=true) (0.470792ms)
+✔ T06 FINAL pending revocation clears legacy credentials without retrying the provider (0.499042ms)
+[zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+[zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+[zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+(node:9934) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:9934) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ T06-FINAL OAuth route + adapter + atomic state: tiktok (6.218917ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: youtube (0.900125ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: instagram (1.266083ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: facebook (0.92075ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: x (0.673209ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: linkedin (0.472333ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: pinterest (0.894208ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: reddit (0.689583ms)
+✔ T06-FINAL OAuth route + adapter + atomic state: threads (0.66975ms)
+✔ T06-FINAL profile binding absent and caller-supplied organisation never reach provider (0.578542ms)
+✔ T06-FINAL session rotation during hosted consent requires fresh state (0.445875ms)
+✔ T06-FINAL expired hosted consent never reaches identity lookup (0.345333ms)
+✔ T06-FINAL atomic duplicate callback invokes real identity adapter only once (0.424458ms)
+✔ T06-FINAL forged remote profile is rejected after real state consumption, never persisted (0.382166ms)
+✔ T06-FINAL lost POST response uses identical persisted wire request, then GET only (2.771333ms)
+✔ T06-FINAL missing account preserves partial outcome; next consent sends only missing destination (1.323125ms)
+✔ T06-FINAL reconnect replaces local identity but requires explicit new account selection (1.564417ms)
+✔ T06-FINAL separate productions on same account receive distinct keys and histories (0.98025ms)
+✔ T06-FINAL another session user cannot revoke the bound account (0.688583ms)
+✔ T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay (1.401083ms)
+✔ T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled (1.630541ms)
+✔ T06-FINAL wrong remote account cannot confirm or retry a known post (0.754291ms)
+✔ T06-FINAL revoked during claim never reaches real POST adapter (1.045292ms)
+✔ T06-FINAL unverified media and missing approval never reach real POST adapter (0.659ms)
+✔ T06-FINAL UI regression: a revoked account must expose Se connecter again (10.542417ms)
+✔ T06-DELTA denied consent consumes the bound state even without account identity (0.768333ms)
+✔ T06-DELTA a forged denial cannot consume another session state (0.322ms)
+✔ T06-DELTA consent issued before revocation must not reconnect the revoked account (0.749417ms)
+✔ T06-DELTA revocation while identity lookup is in flight must win over callback (0.835875ms)
+✔ T06-DELTA X denial accepts the documented provider platform alias and consumes state (0.325042ms)
+✔ T06-DELTA unknown provider error remains generic and still consumes state (0.272041ms)
+✔ T06-DELTA fresh consent after completed revoke can reconnect without reviving old state (0.931292ms)
+✔ T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion (0.961083ms)
+✔ T06-DELTA two initial consent callbacks cannot overwrite the winning account (0.670708ms)
+✔ T06-DELTA account snapshot read error fails closed before state consumption or provider GET (0.262375ms)
+✔ T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish (0.56325ms)
+✔ T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke (0.743125ms)
+✔ T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke (0.644042ms)
+ℹ tests 53
+ℹ suites 0
+ℹ pass 53
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 834.780458

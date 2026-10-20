@@ -433,3 +433,23 @@ HEAD confirmé1968d826b19b23f6c360884337599080fd6d8b3e ; CI39343583135 terminée
 `node qa/t01-closure-20261020/ci-journey-locator/native-boundary.mjs` : **20PASS/0FAIL/0SKIP**, Chromium/WebKit375/1440, ancien sélecteur rouge et contrôles négatifs manquant/rôle/texte/visibilité. Preuve HTML native uniquement, pas une recette de l'application. Empreinte du helper confirmée à la reprise, pas de répétition de test invariant. ESLint ciblé deux sources PASS. `before.json` conserve les trois FAIL CI. La nouvelle campagne applicative du candidat exact reste obligatoire.
 
 Manifeste1204 chemins ;1160historiques conservés,34modifiés44ajoutés,0manquant. T02/T08 ont repris leur contre-revue indépendante1968 ; SHA final à transmettre après commit et aucune attestation automatiquement transférée. Code ElevenLabs/Coverr et correction R107 déjà intégrés ; Pollinations legacy réel reste non qualifié, sans bascule payante implicite. Aucun déploiement, migration distante, fournisseur, secret ou worktree tiers modifié.
+
+
+## T01 — publication intégrée et contre-preuve R123 / 2026-10-20T10:46:18.949382+00:00
+Livraison T06 f68abfa5 intégrée dans le worktree T01 à4blobs exacts ;220fichiers importés, journaux propriétaires préservés. Le contre-test indépendant T08 publish-read-counterexample.mjs exécuté depuis le worktree T01 passe1/1,0skip sur ce WIP, preuve `T01-POSTCOMMIT-FCD0559-20261020/t06-integrated-targeted.json`. Le raccord aux mêmes navigateurs/serveur production ajoute les15assertions T06+une assertion absence écritures, sans build supplémentaire. ESLint raccord PASS. Aucun transfert de cet essai WIP vers le futur SHA avant vérification du manifeste et CI. Attente livraison UI T07, pas de deuxième éditeur.
+
+
+## Intégration UI et contre-tests — 20 octobre, après fcd0559
+
+T06 f68abfa5 : quatre sources publication exactes ; T07 e011b109 + e5e0ec8 : 65 sources UI exactes et preuves intégrées (455 empreintes vérifiées, BATON/task_plan propriétaires exclus). Aucun chevauchement ni WIP écrasé. T02 88b34f1 : sept contre-tests SQL et T07 cabae2c : treize contre-tests API/SQL/restart raccordés à la CI jetable. Ils ne sont pas encore exécutés sur le candidat final.
+
+R123 : contre-exemple T08 rejoué T01, 1 PASS sur le hook corrigé. Publication : erreurs Supabase/payload malformé explicites, reprise manuelle, contrastes/clavier. UI : contrastes/noms, quatre labels Batch, hydratation partenaire, libellé exact « Solde de crédits ». La fausse sauvegarde notifications est retirée ; personnalisation persistante indisponible, pas une fonction livrée. T07 preuve Chromium DEV synthétique 100 lignes PASS/2 FAIL (50/51 routes) et20 interactions ; pas une recette production. FAIL restant MaMemoire export contraste3.95<4.5 transmis à T02, correction non reçue.
+
+R113 WebKit DEV : nouvelle page pour création après publication ; observation de toutes erreurs des deux pages conservée. Première recette29PASS0FAIL0SKIP, helper ensuite extrait pour respecter lint ; recette finale dans r113-webkit-final. Ni suppression d'assertion ni skip ajouté. Extension publication du harnais production :16 contrôles par moteur à exécuter dans CI finale.
+
+TypeScript et lint complets du résultat intégré PASS (integrated-ui-quality/results.json) ; avertissements conservés. Build/CI/nouveaux SQL et ACK exacts restent à produire après commit. Captures T07 personnellement affichées : Analytics43 mobile, outils partenaire1440 (QR externe bloqué), préférences notifications375. Aucun gain de performance production revendiqué.
+
+GitNexus KpiCards/BatchGlobalConfig UNKNOWN, index4commitsderrière ; impacts propriétaires partiels et grand périmètre CRITICAL annoncés, revue directe65fichiers. Aucune analyse exhaustive revendiquée. État OVH dernier GET T08404, aucune nouvelle sonde ou mutation distante. Migrations/backup/rollback selon MIGRATIONS-ROLLBACK.md, backup réel périmé. Aucun consentement, génération, publication, GPU, déploiement ni worktree tiers modifié. Nouveau SHA à transmettre aux sept propriétaires ; aucun ACK fcd transféré automatiquement.
+
+
+Précommit UI : GitNexus staged CRITICAL79symboles45parcours (722fichiers préparés), revue du périmètre pages/publication/QA ; comparemain historique plafonné6576fichiers12458symboles418parcours. Sources/SQL hors lot inchangés. Scan texte332fichiers Gitleaks exit1, six alertes UUID idempotence synthétiques avec provenance HEAD confirmée, zéro alerte non résolue ; scan brut expurgé conservé. Retest final R113WebKit29PASS/0FAIL/0SKIP, toutes erreurs des deux pages surveillées. Lint intégré0erreur108avertissements, TypeScriptPASS.

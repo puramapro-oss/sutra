@@ -43,7 +43,7 @@ export default function EngineStats({ engineStats }: EngineStatsProps) {
                   transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
                 />
               </div>
-              <p className="text-xs text-white/40 mt-2">
+              <p className="text-xs text-white/60 mt-2">
                 {engine.count} video{engine.count !== 1 ? 's' : ''}
               </p>
             </CardContent>

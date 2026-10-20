@@ -161,7 +161,7 @@ export default function BoutiquePage() {
             <div className="text-2xl font-bold text-white">
               <AnimatedCounter value={points.balance} />
             </div>
-            <div className="text-xs text-white/40">points disponibles</div>
+            <div className="text-xs text-white/60">points disponibles</div>
           </div>
         </div>
       </div>

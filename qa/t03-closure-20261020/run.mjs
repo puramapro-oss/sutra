@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto'
 const root = resolve(import.meta.dirname, '../..'), label = process.argv[2]
 assert.match(label ?? '', /^[a-z0-9-]+$/)
 const mode = process.argv[3] ?? 'recovery'
-assert.ok(['red','recovery','gate'].includes(mode))
+assert.ok(['red','recovery','security','gate'].includes(mode))
 const output = join(import.meta.dirname, label); mkdirSync(output)
 const bin = process.env.SUTRA_TEST_PG_BIN ?? '/opt/homebrew/opt/postgresql@18/bin', directory = mkdtempSync(join(tmpdir(), 'sutra-t03-closure-pg-')), data = join(directory, 'data')
 const socket = createServer(); await new Promise(r => socket.listen(0, '127.0.0.1', r))
@@ -36,6 +36,9 @@ try {
     if (!run(process.execPath, [...node, 'qa/t03-closure-20261020/reproduce.mjs'], 'r107-red')) process.exitCode = 1
   } else {
     test(['qa/t03-closure-20261020/recovery.test.mts'], 'recovery')
+    if (mode === 'security') {
+      test(['qa/t02-recert-fcd-20261020/scheduler-isolation.test.mts'], 'scheduler-isolation')
+    }
     if (mode === 'gate') {
       test(['qa/t03-durable-closure-20261015/postgres.test.mts', 'qa/t03-final-ack-20261019/migration.test.mts'], 'postgres')
       test(['qa/t01-final-20261015/durable-postgres.test.mts'], 'backoff', ['--test-name-pattern=retry has durable backoff|backoff grows'])
@@ -61,7 +64,7 @@ try {
     } finally { assert.ok(run(join(bin, 'pg_ctl'), ['-D', data, '-m', 'fast', '-w', 'stop'], 'pg-stop')) }
   }
   const git = args => spawnSync('git', args, { cwd: root, encoding: 'utf8' }).stdout.trim()
-  const files = git(['ls-files', '--cached', '--others', '--exclude-standard', 'src', 'migrations', 'scripts', 'qa/t03-closure-20261020/*.mts', 'qa/t03-closure-20261020/*.mjs', 'qa/t03-closure-20261020/tsconfig.json', 'qa/t03-final-ack-20261019/*.mts', 'qa/t03-final-ack-20261019/settle.mjs', 'qa/t03-final-durable-20261015/*.mts', 'qa/t03-durable-closure-20261015/*.mts', 'qa/t03-durable-closure-20261015/settle.mjs', 'qa/t01-final-20261015/durable-postgres.test.mts', 'qa/t08/offline.cjs', 'package.json', 'package-lock.json']).split('\n').filter(Boolean)
+  const files = git(['ls-files', '--cached', '--others', '--exclude-standard', 'src', 'migrations', 'scripts', 'qa/t03-closure-20261020/*.mts', 'qa/t03-closure-20261020/*.mjs', 'qa/t03-closure-20261020/tsconfig.json', 'qa/t02-recert-fcd-20261020/scheduler-isolation.test.mts', 'qa/t03-final-ack-20261019/*.mts', 'qa/t03-final-ack-20261019/settle.mjs', 'qa/t03-final-durable-20261015/*.mts', 'qa/t03-durable-closure-20261015/*.mts', 'qa/t03-durable-closure-20261015/settle.mjs', 'qa/t01-final-20261015/durable-postgres.test.mts', 'qa/t08/offline.cjs', 'package.json', 'package-lock.json']).split('\n').filter(Boolean)
   const source_sha256 = Object.fromEntries(files.map(p => [p, createHash('sha256').update(readFileSync(join(root,p))).digest('hex')]))
   writeFileSync(join(output, 'receipt.json'), JSON.stringify({ candidate: git(['rev-parse','HEAD']), mode, commands, source_sha256,
     private_cluster: directory, stopped: started, external_calls: 0, synthetic_environment_only: true }, null, 2)+'\n')

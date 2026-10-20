@@ -191,7 +191,7 @@ export default function PartenariatPage() {
           </p>
           <div className="bg-white/[0.02] border border-white/[0.06] backdrop-blur-xl rounded-2xl p-8">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-white/60 text-sm">Nombre de filleuls</span>
+              <label htmlFor="partner-referrals-count" className="text-white/60 text-sm">Nombre de filleuls</label>
               <span className="text-white font-bold text-lg">{sliderValue}</span>
             </div>
             <input
@@ -200,10 +200,11 @@ export default function PartenariatPage() {
               max={500}
               value={sliderValue}
               onChange={(e) => setSliderValue(Number(e.target.value))}
+              id="partner-referrals-count"
               data-testid="simulator-slider"
               className="w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer accent-violet-500 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:shadow-violet-500/40"
             />
-            <div className="flex justify-between text-xs text-white/30 mt-1 mb-8">
+            <div className="flex justify-between text-xs text-white/60 mt-1 mb-8">
               <span>1</span>
               <span>500</span>
             </div>
@@ -217,7 +218,7 @@ export default function PartenariatPage() {
               >
                 {estimatedGains.toLocaleString('fr-FR')} €
               </motion.p>
-              <p className="text-white/30 text-xs mt-2">
+              <p className="text-white/60 text-xs mt-2">
                 + 10 % récurrent à vie sur chaque renouvellement
               </p>
             </div>
@@ -245,7 +246,7 @@ export default function PartenariatPage() {
               >
                 <p className="text-2xl mb-2">{tier.icon}</p>
                 <p className="font-semibold text-white">{tier.name}</p>
-                <p className="text-xs text-white/40 mt-1">{tier.filleuls} filleuls</p>
+                <p className="text-xs text-white/60 mt-1">{tier.filleuls} filleuls</p>
               </div>
             ))}
           </div>
@@ -283,7 +284,7 @@ export default function PartenariatPage() {
       </section>
 
       <footer className="py-8 px-4 border-t border-white/[0.06]">
-        <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-6 text-sm text-white/40">
+        <div className="max-w-5xl mx-auto flex flex-wrap justify-center gap-6 text-sm text-white/60">
           <Link href="/mentions-legales" className="hover:text-white/70 transition-colors">
             Mentions légales
           </Link>

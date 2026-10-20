@@ -20,6 +20,7 @@ export function usePublish(userId: string | undefined) {
   const [scheduledPosts, setScheduledPosts] = useState<ScheduledPost[]>([])
   const [pastPosts, setPastPosts] = useState<ScheduledPost[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [publishStates, setPublishStates] = useState<Record<string, PublishVideoState>>({})
   const [publishing, setPublishing] = useState<string | null>(null)
   const [zernioResults, setZernioResults] = useState<Record<string, PublishResult[]>>({})
@@ -27,6 +28,7 @@ export function usePublish(userId: string | undefined) {
   const fetchData = useCallback(async () => {
     if (!userId) return
     setLoading(true)
+    setLoadError(null)
     try {
       const [videosRes, scheduledRes, pastRes] = await Promise.all([
         supabase
@@ -50,6 +52,10 @@ export function usePublish(userId: string | undefined) {
           .limit(20),
       ])
 
+      if ([videosRes, scheduledRes, pastRes].some(result => result.error || !Array.isArray(result.data))) {
+        throw new Error('Publication data unavailable')
+      }
+
       if (videosRes.data) setVideos(videosRes.data as VideoType[])
       if (scheduledRes.data) setScheduledPosts(scheduledRes.data as ScheduledPost[])
       if (pastRes.data) setPastPosts(pastRes.data as ScheduledPost[])
@@ -67,7 +73,7 @@ export function usePublish(userId: string | undefined) {
         setPublishStates(states)
       }
     } catch {
-      // Keep existing data on error
+      setLoadError('Impossible de vérifier les vidéos et les publications. Réessaie dans un instant.')
     } finally {
       setLoading(false)
     }
@@ -188,6 +194,7 @@ export function usePublish(userId: string | undefined) {
     scheduledPosts,
     pastPosts,
     loading,
+    loadError,
     publishStates,
     publishing,
     zernioResults,

@@ -130,7 +130,7 @@ export function FiscalClient({ totals, lastYearSummary }: { totals: Totals; last
         <button
           onClick={handleDownload}
           disabled={downloading}
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold hover:opacity-90 disabled:opacity-50 transition"
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-violet-700 text-white font-semibold hover:bg-violet-800 disabled:opacity-50 transition"
         >
           <Download className="w-4 h-4" />
           {downloading ? 'Génération...' : `Télécharger récapitulatif ${year}`}

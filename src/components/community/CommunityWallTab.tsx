@@ -46,7 +46,7 @@ export function CommunityWallTab({ posts, posting, onPost, onReact }: CommunityW
                   'px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
                   postType === pt.value
                     ? 'bg-violet-600/30 text-violet-300'
-                    : 'text-white/40 hover:text-white/60 bg-white/5'
+                    : 'text-white/60 hover:text-white/60 bg-white/5'
                 )}
               >
                 {pt.label}
@@ -61,7 +61,7 @@ export function CommunityWallTab({ posts, posting, onPost, onReact }: CommunityW
               className="flex-1"
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
             />
-            <Button onClick={handleSubmit} disabled={posting || !newPost.trim()}>
+            <Button aria-label="Publier le message" onClick={handleSubmit} disabled={posting || !newPost.trim()}>
               {posting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             </Button>
           </div>

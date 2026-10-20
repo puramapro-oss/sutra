@@ -12,7 +12,7 @@ import { capabilitiesCases } from '../t07-modes-20261014/capabilities-fixtures.m
 import { enterTestSession } from '../t07-final-ux-perf-20261015/session.mjs'
 import { nativeRuntimeControls } from '../t01-final-20261015/browser-harness/native-controls.mjs'
 import { observeRuntimeErrors } from '../t01-final-20261015/browser-harness/runtime-guard.mjs'
-
+import { combineRuntimeSnapshots } from '../t01-closure-20261020/r113-runtime.mjs'
 const require = createRequire(import.meta.url)
 const baseline = process.argv.includes('--baseline'), engine = process.argv.includes('--webkit') ? 'webkit' : 'chromium'
 const output = resolve('qa/t06-ux-social-ab935-20261019', process.argv.find(x => x.startsWith('--out='))?.slice(6) ?? (baseline ? 'before' : engine))
@@ -92,7 +92,7 @@ try {
   }
   await context.route('**/*', routeRequests)
   await context.addInitScript(() => { localStorage.setItem('sutra_intro_seen', '1'); localStorage.setItem('sutra_tutorial_dismissed', 'true') })
-  const page = await context.newPage()
+  let page = await context.newPage()
   runtimeSnapshot = await observeRuntimeErrors(page, { engine, nativeControl: engineControl, fixtureOrigin: fixture.url })
   await enterTestSession({ page, base, fixture })
   const trigger = page.getByTestId(`publish-everywhere-${id}`), modal = page.getByTestId('publish-everywhere-modal')
@@ -262,6 +262,10 @@ try {
     await expect(page.getByTestId('publish-result-youtube')).toContainText('A verifier')
     assert.equal(publications.length, sent + 1)
   })
+  // Isolate the next route; retain publication runtime/teardown evidence.
+  const publicationRuntime = runtimeSnapshot; await page.close(); page = await context.newPage()
+  const creationRuntime = await observeRuntimeErrors(page, { engine, nativeControl: engineControl, fixtureOrigin: fixture.url })
+  runtimeSnapshot = combineRuntimeSnapshots(publicationRuntime, creationRuntime)
   for (const mode of ['client', 'unavailable', 'ready']) {
     const scenario = capabilitiesCases.find(([name]) => name === mode); capability = scenario[1]
     await page.setViewportSize({ width: mode === 'ready' ? 1440 : 375, height: 900 })

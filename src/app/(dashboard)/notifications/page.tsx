@@ -198,7 +198,7 @@ export default function NotificationsPage() {
               'px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors',
               filter === f.id
                 ? 'bg-violet-500/20 text-violet-400'
-                : 'bg-white/[0.02] text-white/40 hover:text-white/60'
+                : 'bg-white/[0.02] text-white/60 hover:text-white/60'
             )}
           >
             {f.label}

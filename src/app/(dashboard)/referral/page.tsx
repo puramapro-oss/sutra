@@ -74,7 +74,7 @@ export default function ReferralPage() {
         {/* Header */}
         <div>
           <h1 className="text-2xl font-bold text-white">Parrainage & Wallet</h1>
-          <p className="text-sm text-white/40 mt-1">
+          <p className="text-sm text-white/60 mt-1">
             Invite des amis, gagne des commissions et retire tes gains
           </p>
         </div>

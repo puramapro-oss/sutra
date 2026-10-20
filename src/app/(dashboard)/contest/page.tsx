@@ -177,7 +177,7 @@ export default function ContestPage() {
         <h1 className="text-2xl font-bold text-white" data-testid="contest-title">
           Concours
         </h1>
-        <p className="text-sm text-white/40 mt-1">
+        <p className="text-sm text-white/60 mt-1">
           Participe et gagne des prix chaque semaine
         </p>
       </div>
@@ -189,8 +189,8 @@ export default function ContestPage() {
         <Card>
           <CardContent className="py-8 text-center">
             <Timer className="h-8 w-8 text-white/15 mx-auto mb-2" />
-            <p className="text-sm text-white/30">Aucun concours en cours</p>
-            <p className="text-xs text-white/20 mt-1">Le prochain concours commencera bientot</p>
+            <p className="text-sm text-white/60">Aucun concours en cours</p>
+            <p className="text-xs text-white/60 mt-1">Le prochain concours commencera bientot</p>
           </CardContent>
         </Card>
       )}

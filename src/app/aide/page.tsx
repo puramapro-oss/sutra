@@ -154,6 +154,7 @@ export default function AidePage() {
               />
               <Button
                 size="sm"
+                aria-label="Envoyer la question"
                 onClick={handleChatSend}
                 disabled={!chatInput.trim() || chatLoading}
                 className="shrink-0"
@@ -167,7 +168,7 @@ export default function AidePage() {
         <EscaladeForm />
 
         {/* Links */}
-        <div className="text-center text-sm text-white/30 space-x-4">
+        <div className="text-center text-sm text-white/60 space-x-4">
           <Link href="/guide" className="hover:text-white/60 transition-colors">Guide</Link>
           <Link href="/contact" className="hover:text-white/60 transition-colors">Contact</Link>
           <Link href="/mentions-legales" className="hover:text-white/60 transition-colors">Mentions legales</Link>

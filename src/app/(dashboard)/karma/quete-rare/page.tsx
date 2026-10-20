@@ -115,7 +115,7 @@ export default function QueteRarePage() {
                     'aspect-square rounded-lg border flex items-center justify-center text-xs font-mono',
                     done
                       ? 'border-rose-400/40 bg-rose-400/20 text-rose-100'
-                      : 'border-white/10 bg-white/[0.02] text-white/30'
+                      : 'border-white/10 bg-white/[0.02] text-white/60'
                   )}
                 >
                   {done ? <Check className="h-4 w-4" /> : i + 1}
@@ -135,7 +135,7 @@ export default function QueteRarePage() {
             Marquer ma création du jour
           </button>
 
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/60">
             Tu peux brancher cette action sur ton flow de création vidéo (appel auto après upload).
           </p>
         </>

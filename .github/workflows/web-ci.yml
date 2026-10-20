@@ -151,8 +151,10 @@ jobs:
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t01-certification-20261019/partner-pg-run.mjs partner-pg-ci
       - name: Atomic scheduler catch-up, cursor permissions, backup and rollback
         run: |
-          SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t03-closure-20261020/run.mjs ci-r107 recovery
+          SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t03-closure-20261020/run.mjs ci-r107 security
           python3 qa/t01-closure-20261020/verify_catalogue.py qa/t03-closure-20261020/ci-r107/receipt.json
+      - name: Independent scheduler API, restart and cancellation countertests
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t07-autonomy-integrated-20261020/run.mjs ci-countertest "$(git rev-parse HEAD)"
       - name: Durable HTTP route acknowledgement loss against disposable PostgreSQL
         run: node --experimental-test-module-mocks --import tsx --test --test-concurrency=1 qa/t03-final-candidate-20261015/api-postgres.test.mts
         env:
@@ -191,5 +193,6 @@ jobs:
           name: sutra-database-results
           path: |
             qa/t03-closure-20261020/ci-r107
+            qa/t07-autonomy-integrated-20261020/ci-countertest
             qa/t01-certification-20261019/partner-pg-ci
           if-no-files-found: warn

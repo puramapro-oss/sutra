@@ -1,0 +1,15 @@
+Changes: 222 files, 6 symbols
+Affected processes: 2
+Risk level: medium
+
+Changed symbols:
+  Function PublishPage → src/app/(dashboard)/publish/page.tsx
+  Function PastPostsList → src/components/publish/PastPostsList.tsx
+  Function ScheduledPostsTable → src/components/publish/ScheduledPostsTable.tsx
+  Function usePublish → src/hooks/usePublish.ts
+  Function fetchData → src/hooks/usePublish.ts
+  Property publishNow → src/hooks/usePublish.ts
+
+Affected execution flows:
+  • PublishPage → FetchData (3 steps) — changed: fetchData, usePublish, PublishPage
+  • PublishPage → Cn (3 steps) — changed: PublishPage

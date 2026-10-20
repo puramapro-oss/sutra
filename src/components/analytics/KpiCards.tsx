@@ -20,7 +20,7 @@ export default function KpiCards({ stats }: KpiCardsProps) {
       testId: 'kpi-videos-month',
     },
     {
-      label: 'Credits utilises',
+      label: 'Solde de crédits',
       value: stats.creditsUsed,
       icon: Zap,
       suffix: '',
@@ -77,7 +77,7 @@ export default function KpiCards({ stats }: KpiCardsProps) {
                     />
                   )}
                 </div>
-                <p className="text-xs text-white/40 mt-1">{kpi.label}</p>
+                <p className="text-xs text-white/60 mt-1">{kpi.label}</p>
               </CardContent>
             </Card>
           </motion.div>

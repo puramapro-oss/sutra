@@ -1,0 +1,130 @@
+{
+  "target": {
+    "id": "Function:src/hooks/usePublish.ts:usePublish.fetchData@26:2",
+    "name": "fetchData",
+    "type": "Function",
+    "filePath": "src/hooks/usePublish.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "lower-bound",
+  "boundaries": [
+    "1 symbol references this callable as a VALUE rather than calling it (a registration table, a callback argument, a stored function pointer). The reference is recorded, but the call made THROUGH that value is not: it is dispatched later from wherever the value is stored. Callers reached that way are absent from this result — actual impact may be higher."
+  ],
+  "causes": {
+    "scopeExtractionFiles": 0,
+    "receiverTyping": 0,
+    "dispatchBoundary": 0,
+    "externalBoundary": 0,
+    "undecidedSatisfaction": 0,
+    "callableValueReferences": 1
+  },
+  "summary": {
+    "direct": 2,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 3
+  },
+  "affected_processes": [
+    {
+      "name": "PublishPage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/publish/page.tsx",
+      "affected_process_count": 2,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Hooks",
+      "hits": 5,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/hooks/usePublish.ts:usePublish",
+        "name": "usePublish",
+        "filePath": "src/hooks/usePublish.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_65_publishpage",
+            "label": "PublishPage → FetchData",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/hooks/usePublish.ts:usePublish.publishViaZernio@111:2",
+        "name": "publishViaZernio",
+        "filePath": "src/hooks/usePublish.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/app/(dashboard)/publish/page.tsx:PublishPage",
+        "name": "PublishPage",
+        "filePath": "src/app/(dashboard)/publish/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_342_publishpage",
+            "label": "PublishPage → Cn",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_65_publishpage",
+            "label": "PublishPage → FetchData",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/hooks/usePublish.ts:usePublish.publishNow@175:2",
+        "name": "publishNow",
+        "filePath": "src/hooks/usePublish.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/hooks/usePublish.ts:usePublish.schedulePostAction@176:2",
+        "name": "schedulePostAction",
+        "filePath": "src/hooks/usePublish.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 4,
+    "hint": "⚠️ Index is 4 commits behind HEAD. Run analyze tool to update."
+  }
+}

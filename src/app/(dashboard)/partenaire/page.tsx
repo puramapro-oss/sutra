@@ -21,6 +21,7 @@ import dynamic from 'next/dynamic'
 import { cn, formatMoneyOrPilotPoints } from '@/lib/utils'
 import { PILOT_MODE, PILOT_PAYMENTS_NOTE } from '@/lib/constants'
 import { useAuth } from '@/hooks/useAuth'
+import { useHydrated } from '@/hooks/useHydrated'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 
@@ -32,15 +33,16 @@ const PartnerCommissionsChart = dynamic(
 )
 
 export default function PartenaireDashboard() {
-  const { user, profile } = useAuth()
+  const { user, profile, loading: authLoading } = useAuth()
+  const hydrated = useHydrated()
   const [stats, setStats] = useState<PartnerStats | null>(null)
   const [referrals, setReferrals] = useState<Referral[]>([])
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
 
   const partnerCode = stats?.partner_code ?? profile?.referral_code ?? ''
-  const shareUrl = stats?.share_url ?? (typeof window !== 'undefined'
-    ? `${window.location.origin}/scan/${partnerCode}`
+  const shareUrl = stats?.share_url ?? (hydrated && partnerCode
+    ? `${window.location.origin}/scan/${encodeURIComponent(partnerCode)}`
     : '')
 
   useEffect(() => {
@@ -172,7 +174,7 @@ export default function PartenaireDashboard() {
               ) : (
                 <p className="text-xl font-bold text-white">{card.display}</p>
               )}
-              <p className="text-xs text-white/40 mt-1">{card.label}</p>
+              <p className="text-xs text-white/60 mt-1">{card.label}</p>
             </motion.div>
           ))}
         </div>
@@ -192,6 +194,7 @@ export default function PartenaireDashboard() {
           <button
             onClick={handleCopyLink}
             data-testid="action-copy-link"
+            disabled={!shareUrl}
             className="bg-white/[0.02] border border-white/[0.06] backdrop-blur-xl rounded-xl p-5 text-left hover:border-white/[0.12] transition-all group"
           >
             <div className="flex items-center gap-3 mb-2">
@@ -204,7 +207,7 @@ export default function PartenaireDashboard() {
                 {copied ? 'Copié !' : 'Copier mon lien'}
               </span>
             </div>
-            <p className="text-xs text-white/40 truncate">{shareUrl || 'Chargement...'}</p>
+            <p className="text-xs text-white/60 truncate">{shareUrl || (!hydrated || authLoading || loading ? 'Chargement...' : 'Lien partenaire indisponible')}</p>
           </button>
 
           <Link
@@ -218,7 +221,7 @@ export default function PartenaireDashboard() {
                 Générer QR Code
               </span>
             </div>
-            <p className="text-xs text-white/40">Télécharge ton QR code personnalisé</p>
+            <p className="text-xs text-white/60">Télécharge ton QR code personnalisé</p>
           </Link>
 
           <button
@@ -232,7 +235,7 @@ export default function PartenaireDashboard() {
                 Demander un retrait
               </span>
             </div>
-            <p className="text-xs text-white/40">{PILOT_MODE ? PILOT_PAYMENTS_NOTE : 'Dès 5 € par virement IBAN'}</p>
+            <p className="text-xs text-white/60">{PILOT_MODE ? PILOT_PAYMENTS_NOTE : 'Dès 5 € par virement IBAN'}</p>
           </button>
         </div>
 
@@ -251,7 +254,7 @@ export default function PartenaireDashboard() {
             <div className="text-center py-12">
               <Users className="w-10 h-10 text-white/20 mx-auto mb-3" />
               <p className="text-white/50 text-sm">Aucun filleul pour le moment</p>
-              <p className="text-white/30 text-xs mt-1">
+              <p className="text-white/60 text-xs mt-1">
                 Partage ton lien pour commencer à gagner des commissions.
               </p>
             </div>

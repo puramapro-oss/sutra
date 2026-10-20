@@ -98,7 +98,7 @@ export default function MemoryPage() {
                   'px-3 py-1.5 rounded-lg text-xs border transition-all',
                   type === t
                     ? 'bg-violet-500/20 border-violet-500/40 text-violet-300'
-                    : 'bg-white/[0.02] border-white/[0.06] text-white/40'
+                    : 'bg-white/[0.02] border-white/[0.06] text-white/60'
                 )}
               >
                 {TYPE_META[t].label}
@@ -127,7 +127,7 @@ export default function MemoryPage() {
               'px-3 py-1.5 rounded-lg text-xs font-medium border transition-all',
               filter === f
                 ? 'bg-violet-500/20 border-violet-500/40 text-violet-300'
-                : 'bg-white/[0.02] border-white/[0.06] text-white/40 hover:text-white/70'
+                : 'bg-white/[0.02] border-white/[0.06] text-white/60 hover:text-white/70'
             )}
           >
             {f === 'all' ? 'Toutes' : TYPE_META[f as Memory['memory_type']].label}

@@ -134,7 +134,7 @@ export default function WalletPage() {
     >
       <div>
         <h1 className="text-2xl font-bold text-white">Wallet</h1>
-        <p className="text-sm text-white/40 mt-1">Tes gains de parrainage et concours</p>
+        <p className="text-sm text-white/60 mt-1">Tes gains de parrainage et concours</p>
       </div>
 
       {/* V6 — Smart Split 6 sous-wallets */}
@@ -149,7 +149,7 @@ export default function WalletPage() {
                 <Wallet className="h-5 w-5 text-emerald-400" />
               </div>
               <div>
-                <p className="text-xs text-white/40">Solde disponible</p>
+                <p className="text-xs text-white/60">Solde disponible</p>
                 <p className="text-xl font-bold text-white">
                   <AnimatedCounter value={wallet.balance} decimals={2} suffix=" EUR" />
                 </p>
@@ -164,7 +164,7 @@ export default function WalletPage() {
                 <Clock className="h-5 w-5 text-amber-400" />
               </div>
               <div>
-                <p className="text-xs text-white/40">En attente</p>
+                <p className="text-xs text-white/60">En attente</p>
                 <p className="text-xl font-bold text-white">{formatPrice(wallet.pending_balance)}</p>
               </div>
             </div>
@@ -177,7 +177,7 @@ export default function WalletPage() {
                 <ArrowDownLeft className="h-5 w-5 text-violet-400" />
               </div>
               <div>
-                <p className="text-xs text-white/40">Total gagne</p>
+                <p className="text-xs text-white/60">Total gagne</p>
                 <p className="text-xl font-bold text-white">{formatPrice(wallet.total_earned)}</p>
               </div>
             </div>

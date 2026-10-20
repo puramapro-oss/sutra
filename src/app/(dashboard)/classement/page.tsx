@@ -133,18 +133,18 @@ export default function ClassementPage() {
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-white">Classement Purama Impact</h1>
-        <p className="text-sm text-white/40 mt-1">Soumets ta meilleure video et gagne des prix</p>
+        <p className="text-sm text-white/60 mt-1">Soumets ta meilleure video et gagne des prix</p>
       </div>
 
       {/* Criteria bar */}
       <Card>
         <CardContent className="py-4">
-          <h2 className="text-xs font-semibold text-white/40 mb-3 uppercase tracking-wider">Bareme d&apos;evaluation — 100 points</h2>
+          <h2 className="text-xs font-semibold text-white/60 mb-3 uppercase tracking-wider">Bareme d&apos;evaluation — 100 points</h2>
           <div className="flex gap-2">
             {CRITERIA.map((c) => (
               <div key={c.name} className="flex-1 text-center">
                 <p className={cn('text-lg font-bold', c.color)}>{c.max}</p>
-                <p className="text-[10px] text-white/40">{c.name}</p>
+                <p className="text-[10px] text-white/60">{c.name}</p>
               </div>
             ))}
           </div>
@@ -205,7 +205,7 @@ export default function ClassementPage() {
         <Card>
           <CardContent className="py-8 text-center">
             <Clock className="h-8 w-8 text-white/15 mx-auto mb-2" />
-            <p className="text-sm text-white/30">Aucun classement en cours</p>
+            <p className="text-sm text-white/60">Aucun classement en cours</p>
           </CardContent>
         </Card>
       )}

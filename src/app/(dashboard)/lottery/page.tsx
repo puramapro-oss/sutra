@@ -104,14 +104,14 @@ export default function LotteryPage() {
                   <div className="text-2xl font-bold text-amber-400">
                     {formatPrice(currentDraw.pool_amount)}
                   </div>
-                  <div className="text-xs text-white/40">Cagnotte</div>
+                  <div className="text-xs text-white/60">Cagnotte</div>
                 </div>
               )}
               <div className="text-center glass rounded-xl px-4 py-2">
                 <div className="text-2xl font-bold text-white">
                   <AnimatedCounter value={userTickets} />
                 </div>
-                <div className="text-xs text-white/40">Tes tickets</div>
+                <div className="text-xs text-white/60">Tes tickets</div>
               </div>
             </div>
           </div>

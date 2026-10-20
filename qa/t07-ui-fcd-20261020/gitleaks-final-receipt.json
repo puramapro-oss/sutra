@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/opt/homebrew/bin/gitleaks",
+    "stdin",
+    "--redact=100",
+    "--report-format",
+    "json",
+    "--report-path",
+    "qa/t07-ui-fcd-20261020/gitleaks-final.json"
+  ],
+  "scope": "staged owned delta source/QA/docs, including deleted lines; no env/secret file read",
+  "inputSha256": "1063bb0a701310743f7f1397bb3ed73a20a35311c90bf99368b962c1985446df",
+  "exit": 0,
+  "findings": 0
+}

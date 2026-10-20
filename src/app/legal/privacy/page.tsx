@@ -35,7 +35,7 @@ export default function PrivacyPage() {
           >
             Politique de confidentialite
           </h1>
-          <p className="text-white/40 text-sm">
+          <p className="text-white/60 text-sm">
             Derniere mise a jour : 29 mars 2026
           </p>
         </div>

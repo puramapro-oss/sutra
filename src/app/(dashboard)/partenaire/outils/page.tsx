@@ -14,13 +14,16 @@ import {
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/useAuth'
+import { useHydrated } from '@/hooks/useHydrated'
 import { Button } from '@/components/ui/Button'
 
 export default function PartnerToolsPage() {
-  const { profile } = useAuth()
+  const { profile, loading: authLoading } = useAuth()
+  const hydrated = useHydrated()
   const partnerCode = profile?.referral_code ?? ''
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
-  const shareUrl = `${baseUrl}/scan/${partnerCode}`
+  const baseUrl = hydrated ? window.location.origin : ''
+  const shareUrl = baseUrl && partnerCode ? `${baseUrl}/scan/${encodeURIComponent(partnerCode)}` : ''
+  const linkStatus = !hydrated || authLoading ? 'Chargement...' : 'Lien partenaire indisponible'
 
   const [copied, setCopied] = useState(false)
   const [utmSource, setUtmSource] = useState('')
@@ -29,6 +32,7 @@ export default function PartnerToolsPage() {
   const [utmCopied, setUtmCopied] = useState(false)
 
   const utmUrl = useMemo(() => {
+    if (!shareUrl) return ''
     const params = new URLSearchParams()
     if (utmSource) params.set('utm_source', utmSource)
     if (utmMedium) params.set('utm_medium', utmMedium)
@@ -38,6 +42,7 @@ export default function PartnerToolsPage() {
   }, [shareUrl, utmSource, utmMedium, utmCampaign])
 
   const handleCopyLink = async () => {
+    if (!shareUrl) return
     try {
       await navigator.clipboard.writeText(shareUrl)
       setCopied(true)
@@ -48,6 +53,7 @@ export default function PartnerToolsPage() {
   }
 
   const handleCopyUtm = async () => {
+    if (!utmUrl) return
     try {
       await navigator.clipboard.writeText(utmUrl)
       setUtmCopied(true)
@@ -68,7 +74,7 @@ export default function PartnerToolsPage() {
       >
         <div className="flex items-center gap-3 mb-8">
           <Link
-            href="/partenaire"
+            href="/partenaire" aria-label="Retour au tableau de bord partenaire"
             className="text-white/50 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -89,14 +95,15 @@ export default function PartnerToolsPage() {
               <h2 className="text-lg font-semibold text-white">Ton lien partenaire</h2>
             </div>
             <div className="flex gap-2">
-              <div className="flex-1 bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white/60 truncate">
-                {shareUrl || 'Chargement...'}
+              <div className="flex-1 min-w-0 bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white/60 break-words">
+                {shareUrl || linkStatus}
               </div>
               <Button
                 variant="primary"
                 size="md"
                 onClick={handleCopyLink}
                 data-testid="copy-partner-link"
+                disabled={!shareUrl}
               >
                 {copied ? (
                   <CheckCircle className="w-4 h-4" />
@@ -129,7 +136,7 @@ export default function PartnerToolsPage() {
                 </div>
               ) : (
                 <div className="w-48 h-48 bg-white/[0.03] border border-dashed border-white/[0.08] rounded-xl flex items-center justify-center">
-                  <p className="text-white/30 text-sm">Chargement...</p>
+                  <p className="text-white/60 text-sm">{!hydrated || authLoading ? 'Chargement...' : 'QR code indisponible'}</p>
                 </div>
               )}
               <div className="flex-1 text-center sm:text-left">
@@ -182,7 +189,7 @@ export default function PartnerToolsPage() {
                 },
               ].map((field) => (
                 <div key={field.key} className="flex items-center gap-3">
-                  <span className="text-white/40 text-sm w-24 shrink-0">{field.label}</span>
+                  <span className="text-white/60 text-sm w-24 shrink-0">{field.label}</span>
                   <input
                     type="text"
                     value={field.value}
@@ -195,13 +202,14 @@ export default function PartnerToolsPage() {
               ))}
             </div>
             <div className="bg-white/[0.02] border border-white/[0.06] rounded-lg px-4 py-3 text-xs text-white/50 break-all mb-3">
-              {utmUrl}
+              {utmUrl || linkStatus}
             </div>
             <Button
               variant="secondary"
               size="sm"
               onClick={handleCopyUtm}
               data-testid="copy-utm-link"
+              disabled={!utmUrl}
             >
               {utmCopied ? (
                 <CheckCircle className="w-4 h-4" />

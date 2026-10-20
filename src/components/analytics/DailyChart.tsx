@@ -63,7 +63,7 @@ export default function DailyChart({ dailyCounts, chartMax, chartLabels }: Daily
                   return (
                     <span
                       key={lbl.index}
-                      className="absolute text-[10px] text-white/30 -translate-x-1/2"
+                      className="absolute text-[10px] text-white/60 -translate-x-1/2"
                       style={{ left: `${leftPercent}%` }}
                     >
                       {lbl.label}

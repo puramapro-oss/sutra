@@ -191,7 +191,7 @@ export default function AutopilotPage() {
           <h1 className="text-2xl font-bold text-white" data-testid="autopilot-title">
             Autopilot
           </h1>
-          <p className="text-sm text-white/40 mt-1">
+          <p className="text-sm text-white/60 mt-1">
             {series.length}/{limits.autopilot} series actives
           </p>
         </div>

@@ -29,7 +29,7 @@ export default function PastContestsSection({ contests }: PastContestsSectionPro
         <Card>
           <CardContent className="py-8 text-center">
             <Trophy className="h-8 w-8 text-white/15 mx-auto mb-2" />
-            <p className="text-sm text-white/30">Aucun concours passe</p>
+            <p className="text-sm text-white/60">Aucun concours passe</p>
           </CardContent>
         </Card>
       </div>

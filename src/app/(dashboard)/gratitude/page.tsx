@@ -126,7 +126,7 @@ export default function GratitudePage() {
       <div className="glass rounded-2xl p-5">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-medium text-white/70">Aujourd&apos;hui</span>
-          <span className="text-xs text-white/40">{todayCount}/{MAX_DAILY}</span>
+          <span className="text-xs text-white/60">{todayCount}/{MAX_DAILY}</span>
         </div>
         <div className="flex items-center gap-2">
           {Array.from({ length: MAX_DAILY }).map((_, i) => (
@@ -202,7 +202,7 @@ export default function GratitudePage() {
                 onClick={() => setShowInput(true)}
                 className="w-full glass rounded-2xl p-5 border border-dashed border-white/10 hover:border-pink-500/30 transition-all text-left group"
               >
-                <div className="flex items-center gap-3 text-white/40 group-hover:text-white/60 transition-colors">
+                <div className="flex items-center gap-3 text-white/60 group-hover:text-white/60 transition-colors">
                   <Plus className="w-5 h-5" />
                   <span className="text-sm">Ajouter une gratitude...</span>
                 </div>

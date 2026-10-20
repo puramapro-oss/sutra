@@ -1,0 +1,2576 @@
+
+  GitNexus Context (1.6.12)
+{
+  "status": "found",
+  "symbol": {
+    "name": "AchievementsPage",
+    "startLine": 36,
+    "endLine": 204
+  },
+  "epistemic": "exact",
+  "incoming": {
+    "accesses": [
+      {
+        "name": "update"
+      },
+      {
+        "name": "example"
+      },
+      {
+        "name": "example"
+      },
+      {
+        "name": "example"
+      },
+      {
+        "name": "example"
+      },
+      {
+        "name": "getAll"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "runT07Runtime"
+      },
+      {
+        "name": "runT07Runtime"
+      },
+      {
+        "name": "runT07Runtime"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "fetchImpl"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "example"
+      },
+      {
+        "name": "example"
+      },
+      {
+        "name": "example"
+      },
+      {
+        "name": "example"
+      },
+      {
+        "name": "record"
+      },
+      {
+        "name": "record"
+      },
+      {
+        "name": "run"
+      },
+      {
+        "name": "run"
+      }
+    ]
+  },
+  "outgoing": {
+    "accesses": [
+      {
+        "name": "BATCH_LIMIT"
+      },
+      {
+        "name": "LOCK_REASON"
+      },
+      {
+        "name": "STORAGE_KEY"
+      },
+      {
+        "name": "STORAGE_KEY"
+      },
+      {
+        "name": "EMPTY_AUTH"
+      },
+      {
+        "name": "serviceClients"
+      },
+      {
+        "name": "walletCredits"
+      },
+      {
+        "name": "walletCredits"
+      },
+      {
+        "name": "filters"
+      },
+      {
+        "name": "writes"
+      },
+      {
+        "name": "writes"
+      },
+      {
+        "name": "RING_POSITIONS"
+      },
+      {
+        "name": "exchange"
+      },
+      {
+        "name": "exchange"
+      },
+      {
+        "name": "exchange"
+      },
+      {
+        "name": "internal"
+      },
+      {
+        "name": "internal"
+      },
+      {
+        "name": "internal"
+      },
+      {
+        "name": "providerCalls"
+      },
+      {
+        "name": "providerCalls"
+      },
+      {
+        "name": "providerCalls"
+      },
+      {
+        "name": "providerCalls"
+      },
+      {
+        "name": "issued"
+      },
+      {
+        "name": "issued"
+      },
+      {
+        "name": "mutations"
+      },
+      {
+        "name": "mutations"
+      },
+      {
+        "name": "mutations"
+      },
+      {
+        "name": "mutations"
+      },
+      {
+        "name": "accountId"
+      },
+      {
+        "name": "accountId"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "proc_0_communityscreen",
+      "name": "CommunityScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_100_post",
+      "name": "POST → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_101_get",
+      "name": "GET → Origin",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_102_admincontestpage",
+      "name": "AdminContestPage → Cn",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_103_walletpage",
+      "name": "WalletPage → FormatDuration",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_105_adminwithdrawalspage",
+      "name": "AdminWithdrawalsPage → UseHydrated",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_106_gratitudepage",
+      "name": "GratitudePage → CreateClient",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_109_get",
+      "name": "GET → EmptyBalances",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_10_librarypage",
+      "name": "LibraryPage → FetchVideos",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_110_adminconfigpage",
+      "name": "AdminConfigPage → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_111_get",
+      "name": "GET → ProviderId",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_113_onpress",
+      "name": "OnPress → SignOut",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_114_onpress",
+      "name": "OnPress → SignOut",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_115_adminuserspage",
+      "name": "AdminUsersPage → FormatDate",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_117_get",
+      "name": "GET → GetRedis",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_119_get",
+      "name": "GET → EstimateCost",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_11_get",
+      "name": "GET → FetchWithRetry",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_120_post",
+      "name": "POST → LevelFromLifetime",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_121_runpublicationjourna",
+      "name": "RunPublicationJournal → Signature",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_123_libraryscreen",
+      "name": "LibraryScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_126_get",
+      "name": "GET → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_127_adminuserspage",
+      "name": "AdminUsersPage → Cn",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_128_admindashboard",
+      "name": "AdminDashboard → FormatDuration",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_12_post",
+      "name": "POST → CreateIntentKey",
+      "step_index": 7,
+      "step_count": 8
+    },
+    {
+      "id": "proc_130_videospage",
+      "name": "VideosPage → UseHydrated",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_131_classementpointspage",
+      "name": "ClassementPointsPage → CreateClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_133_get",
+      "name": "GET → EmptyBalances",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_134_memorypage",
+      "name": "MemoryPage → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_137_post",
+      "name": "POST → GetRedis",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_138_get",
+      "name": "GET → EstimateCost",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_139_analyticsscreen",
+      "name": "AnalyticsScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_13_get",
+      "name": "GET → Blocked",
+      "step_index": 3,
+      "step_count": 7
+    },
+    {
+      "id": "proc_142_get",
+      "name": "GET → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_143_adminwithdrawalspage",
+      "name": "AdminWithdrawalsPage → Cn",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_144_adminuserspage",
+      "name": "AdminUsersPage → FormatDuration",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_146_loginpage",
+      "name": "LoginPage → UseHydrated",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_147_post",
+      "name": "POST → EmptyBalances",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_148_settingspage",
+      "name": "SettingsPage → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_14_get",
+      "name": "GET → Query",
+      "step_index": 3,
+      "step_count": 7
+    },
+    {
+      "id": "proc_150_automodescreen",
+      "name": "AutoModeScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_153_post",
+      "name": "POST → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_154_autopage",
+      "name": "AutoPage → Cn",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_155_partnercoachpage",
+      "name": "PartnerCoachPage → FormatDuration",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_156_engagementpage",
+      "name": "EngagementPage → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_157_dashboardpage",
+      "name": "DashboardPage → UseHydrated",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_158_get",
+      "name": "GET → EmptyBalances",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_159_themespage",
+      "name": "ThemesPage → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_15_get",
+      "name": "GET → CreateServiceClient",
+      "step_index": 3,
+      "step_count": 6
+    },
+    {
+      "id": "proc_161_autopilotscreen",
+      "name": "AutopilotScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_164_paiementpage",
+      "name": "PaiementPage → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_165_videospage",
+      "name": "VideosPage → Cn",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_166_partenairedashboard",
+      "name": "PartenaireDashboard → FormatDuration",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_167_fiscalpage",
+      "name": "FiscalPage → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_168_partnercoachpage",
+      "name": "PartnerCoachPage → UseHydrated",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_169_get",
+      "name": "GET → EmptyBalances",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_16_get",
+      "name": "GET → Origin",
+      "step_index": 3,
+      "step_count": 6
+    },
+    {
+      "id": "proc_170_handlecreate",
+      "name": "HandleCreate → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_172_boutiquescreen",
+      "name": "BoutiqueScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_173_engagementpage",
+      "name": "EngagementPage → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_174_engagementpage",
+      "name": "EngagementPage → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_175_post",
+      "name": "POST → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_176_createpage",
+      "name": "CreatePage → Cn",
+      "step_index": 3,
+      "step_count": 4
+    },
+    {
+      "id": "proc_177_boutiquescreen",
+      "name": "BoutiqueScreen → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_178_abonnementpage",
+      "name": "AbonnementPage → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_179_partenairedashboard",
+      "name": "PartenaireDashboard → UseHydrated",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_17_admindashboard",
+      "name": "AdminDashboard → Cn",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_180_post",
+      "name": "POST → EmptyBalances",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_181_videospage",
+      "name": "VideosPage → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_182_classementpointsscre",
+      "name": "ClassementPointsScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_183_fiscalpage",
+      "name": "FiscalPage → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_184_fiscalpage",
+      "name": "FiscalPage → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_185_get",
+      "name": "GET → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_186_dashboardpage",
+      "name": "DashboardPage → Cn",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_187_contestscreen",
+      "name": "ContestScreen → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_188_paiementpage",
+      "name": "PaiementPage → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_189_canalregistrationpag",
+      "name": "CanalRegistrationPage → UseHydrated",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_18_schedulespage",
+      "name": "SchedulesPage → FormatDuration",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_190_post",
+      "name": "POST → EmptyBalances",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_191_influencerdashboard",
+      "name": "InfluencerDashboard → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_192_classementscreen",
+      "name": "ClassementScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_193_gratitudepage",
+      "name": "GratitudePage → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_194_gratitudepage",
+      "name": "GratitudePage → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_195_get",
+      "name": "GET → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_196_socialaccountspage",
+      "name": "SocialAccountsPage → Cn",
+      "step_index": 3,
+      "step_count": 4
+    },
+    {
+      "id": "proc_197_invoicesscreen",
+      "name": "InvoicesScreen → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_198_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_199_partenariatpage",
+      "name": "PartenariatPage → UseHydrated",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_19_schedulespage",
+      "name": "SchedulesPage → Canonical",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_1_admincontestpage",
+      "name": "AdminContestPage → FetchData",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_200_handlespin",
+      "name": "HandleSpin → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_201_communityscreen",
+      "name": "CommunityScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_202_referralpage",
+      "name": "ReferralPage → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_203_referralpage",
+      "name": "ReferralPage → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_204_get",
+      "name": "GET → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_205_loginpage",
+      "name": "LoginPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_206_lotteryscreen",
+      "name": "LotteryScreen → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_208_searchmodal",
+      "name": "SearchModal → UseHydrated",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_209_jeucreatifpage",
+      "name": "JeuCreatifPage → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_20_createpage",
+      "name": "CreatePage → ProductionJobId",
+      "step_index": 4,
+      "step_count": 5
+    },
+    {
+      "id": "proc_210_contestscreen",
+      "name": "ContestScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_211_abonnementpage",
+      "name": "AbonnementPage → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_212_abonnementpage",
+      "name": "AbonnementPage → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_213_get",
+      "name": "GET → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_214_achievementspage",
+      "name": "AchievementsPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_215_partenairescreen",
+      "name": "PartenaireScreen → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_216_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_217_lightningpage",
+      "name": "LightningPage → Error",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_218_editorscreen",
+      "name": "EditorScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_219_paiementpage",
+      "name": "PaiementPage → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_220_paiementpage",
+      "name": "PaiementPage → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_222_adminapiusagepage",
+      "name": "AdminApiUsagePage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_223_walletscreen",
+      "name": "WalletScreen → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_224_patch",
+      "name": "PATCH → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_225_invoicesscreen",
+      "name": "InvoicesScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_226_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_227_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_228_post",
+      "name": "POST → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_229_adminclassementpage",
+      "name": "AdminClassementPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_22_get",
+      "name": "GET → BreakerKey",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_230_adminapiusagepage",
+      "name": "AdminApiUsagePage → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_231_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_232_lotteryscreen",
+      "name": "LotteryScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_235_post",
+      "name": "POST → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_236_adminconfigpage",
+      "name": "AdminConfigPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_237_adminfinancespage",
+      "name": "AdminFinancesPage → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_238_delete",
+      "name": "DELETE → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_239_notificationsscreen",
+      "name": "NotificationsScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_23_get",
+      "name": "GET → Abort",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_240_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_241_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_242_post",
+      "name": "POST → CreateServiceClient",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_243_adminfinancespage",
+      "name": "AdminFinancesPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_244_adminwithdrawalspage",
+      "name": "AdminWithdrawalsPage → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_245_patch",
+      "name": "PATCH → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_246_partenairescreen",
+      "name": "PartenaireScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_247_patch",
+      "name": "PATCH → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_248_patch",
+      "name": "PATCH → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_249_adminhealthpage",
+      "name": "AdminHealthPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_24_get",
+      "name": "GET → FinitePositive",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_250_patch",
+      "name": "PATCH → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_251_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_252_publishscreen",
+      "name": "PublishScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_253_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_254_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_255_adminlayout",
+      "name": "AdminLayout → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_256_walletcard",
+      "name": "WalletCard → FormatDuration",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_257_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_258_referralscreen",
+      "name": "ReferralScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_259_delete",
+      "name": "DELETE → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_25_main",
+      "name": "Main → Command",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_260_delete",
+      "name": "DELETE → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_261_analyticspage",
+      "name": "AnalyticsPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_262_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_263_settingsscreen",
+      "name": "SettingsScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_264_patch",
+      "name": "PATCH → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_265_patch",
+      "name": "PATCH → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_266_memorypage",
+      "name": "MemoryPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_267_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_268_storyboardscreen",
+      "name": "StoryboardScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_269_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_26_adminuserspage",
+      "name": "AdminUsersPage → UseHydrated",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_270_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_271_schedulespage",
+      "name": "SchedulesPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_272_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_273_templatesscreen",
+      "name": "TemplatesScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_274_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_275_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_276_settingspage",
+      "name": "SettingsPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_277_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_278_walletscreen",
+      "name": "WalletScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_279_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_27_analyticspage",
+      "name": "AnalyticsPage → CreateClient",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_280_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_281_themespage",
+      "name": "ThemesPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_282_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_283_handlesubmit",
+      "name": "HandleSubmit → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_284_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_285_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_286_autopilotpage",
+      "name": "AutopilotPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_288_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_289_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_28_engagementpage",
+      "name": "EngagementPage → GetSeasonEndDate",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_290_boutiquepage",
+      "name": "BoutiquePage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_291_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_292_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_293_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_294_chatpage",
+      "name": "ChatPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_295_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_296_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_297_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_298_chatlistpage",
+      "name": "ChatListPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_299_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_2_adminuserspage",
+      "name": "AdminUsersPage → FetchUsers",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_302_classementpage",
+      "name": "ClassementPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_303_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_304_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_305_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_306_communitypage",
+      "name": "CommunityPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_307_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_308_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_309_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_30_gratitudepage",
+      "name": "GratitudePage → GetAwakeningLevel",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_310_contestpage",
+      "name": "ContestPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_311_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_312_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_313_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_314_gratitudepage",
+      "name": "GratitudePage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_316_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_317_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_318_influencerdashboard",
+      "name": "InfluencerDashboard → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_320_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_321_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_322_lotterypage",
+      "name": "LotteryPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_323_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_324_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_325_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_326_notificationspage",
+      "name": "NotificationsPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_327_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_328_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_330_partnercoachpage",
+      "name": "PartnerCoachPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_331_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_334_partenairedashboard",
+      "name": "PartenaireDashboard → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_335_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_337_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_338_productionpage",
+      "name": "ProductionPage → Cn",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_339_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_33_post",
+      "name": "POST → EmptyBalances",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_340_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_341_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_342_publishpage",
+      "name": "PublishPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_343_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_344_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_345_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_346_referralpage",
+      "name": "ReferralPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_348_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_349_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_34_get",
+      "name": "GET → Error",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_350_notificationsettings",
+      "name": "NotificationSettingsPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_352_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_353_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_354_settingspage",
+      "name": "SettingsPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_355_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_356_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_357_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_358_storyboardpage",
+      "name": "StoryboardPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_359_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_35_get",
+      "name": "GET → PublicationOutcome",
+      "step_index": 3,
+      "step_count": 4
+    },
+    {
+      "id": "proc_360_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_362_templatespage",
+      "name": "TemplatesPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_363_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_366_voicespage",
+      "name": "VoicesPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_367_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_369_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_36_get",
+      "name": "GET → AssertMediaProbeAvailable",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_370_walletpage",
+      "name": "WalletPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_371_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_372_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_373_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_374_canalregistrationpag",
+      "name": "CanalRegistrationPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_375_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_376_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_377_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_378_partenariatpage",
+      "name": "PartenariatPage → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_379_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_37_get",
+      "name": "GET → ProviderId",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_380_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_381_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_382_searchmodal",
+      "name": "SearchModal → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_383_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_384_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_385_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_386_walletcard",
+      "name": "WalletCard → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_387_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_388_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_389_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_390_apparencetab",
+      "name": "ApparenceTab → Cn",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_392_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_393_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_394_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_395_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_396_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_398_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_3_autopage",
+      "name": "AutoPage → RequestClientJson",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_401_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_402_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_403_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_407_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_409_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_411_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_415_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_416_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_417_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_41_profilescreen",
+      "name": "ProfileScreen → UseAuthStore",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_421_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_422_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_423_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_424_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_427_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_428_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_429_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_42_referralscreen",
+      "name": "ReferralScreen → GetCurrentTierIndex",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_430_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_432_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_433_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_434_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_435_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_437_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_438_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_43_handledeleteaccount",
+      "name": "HandleDeleteAccount → SignOut",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_440_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_441_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_443_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_445_get",
+      "name": "GET → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_446_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_448_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_44_handledeleteaccount",
+      "name": "HandleDeleteAccount → SignOut",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_451_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_453_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_454_post",
+      "name": "POST → Denied",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_456_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_458_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_459_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_45_wirechecks",
+      "name": "WireChecks → Sql",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_460_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_461_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_462_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_463_chatpage",
+      "name": "ChatPage → Query",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_464_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 5
+    },
+    {
+      "id": "proc_465_classementpage",
+      "name": "ClassementPage → Query",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_466_chatpage",
+      "name": "ChatPage → Blocked",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_467_contestpage",
+      "name": "ContestPage → Query",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_468_classementpage",
+      "name": "ClassementPage → Blocked",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_469_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_470_contestpage",
+      "name": "ContestPage → Blocked",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_471_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_472_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_474_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 4
+    },
+    {
+      "id": "proc_475_get",
+      "name": "GET → Query",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_477_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_478_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_479_post",
+      "name": "POST → Query",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_480_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_481_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_482_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_483_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_484_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_485_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_486_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_487_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_488_get",
+      "name": "GET → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_489_post",
+      "name": "POST → Blocked",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_48_reconcilechecks",
+      "name": "ReconcileChecks → Screenshot",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_49_admincontestpage",
+      "name": "AdminContestPage → FormatDate",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_4_communitypage",
+      "name": "CommunityPage → FetchBuddy",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_50_admincontestpage",
+      "name": "AdminContestPage → FormatRelativeDate",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_51_admindashboard",
+      "name": "AdminDashboard → StationHeader",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_52_adminuserspage",
+      "name": "AdminUsersPage → SortIcon",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_53_autopage",
+      "name": "AutoPage → ConfigFrom",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_54_autopage",
+      "name": "AutoPage → Accept",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_55_engagementpage",
+      "name": "EngagementPage → GetCurrentSeason",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_56_classementpage",
+      "name": "ClassementPage → Tick",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_57_communitypage",
+      "name": "CommunityPage → TikTokIcon",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_58_communitypage",
+      "name": "CommunityPage → TikTokIcon",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_59_communitypage",
+      "name": "CommunityPage → TikTokIcon",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_5_communitypage",
+      "name": "CommunityPage → FetchCircles",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_61_handlekeydown",
+      "name": "HandleKeyDown → ApplyHistoryState",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_62_fiscalpage",
+      "name": "FiscalPage → Stat",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_63_librarypage",
+      "name": "LibraryPage → LoadFavorites",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_64_librarypage",
+      "name": "LibraryPage → LoadFolders",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_65_publishpage",
+      "name": "PublishPage → FetchData",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_66_settingspage",
+      "name": "SettingsPage → UseAuth",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_68_templatespage",
+      "name": "TemplatesPage → FetchTemplates",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_69_voicespage",
+      "name": "VoicesPage → FetchVoices",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_6_communitypage",
+      "name": "CommunityPage → FetchWall",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_73_get",
+      "name": "GET → GetRedis",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_75_get",
+      "name": "GET → EstimateCost",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_76_get",
+      "name": "GET → Headers",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_77_post",
+      "name": "POST → AddBalances",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_78_get",
+      "name": "GET → DigestFromHex",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_79_get",
+      "name": "GET → Deserialize",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_80_get",
+      "name": "GET → FromHash",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_81_post",
+      "name": "POST → RandomInt",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_82_get",
+      "name": "GET → LevelFromLifetime",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_83_get",
+      "name": "GET → Signature",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_89_post",
+      "name": "POST → IbanCheckMod97",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_8_jeucreatifpage",
+      "name": "JeuCreatifPage → Load",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_90_post",
+      "name": "POST → NormalizeIban",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_91_runpublicationjourna",
+      "name": "RunPublicationJournal → ContentWithTags",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_92_runpublicationjourna",
+      "name": "RunPublicationJournal → ProviderPlatform",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_93_dashboardscreen",
+      "name": "DashboardScreen → ApiFetch",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_94_schedulespage",
+      "name": "SchedulesPage → RequestClientJson",
+      "step_index": 1,
+      "step_count": 3
+    },
+    {
+      "id": "proc_97_createpage",
+      "name": "CreatePage → CreateIntentKey",
+      "step_index": 4,
+      "step_count": 5
+    },
+    {
+      "id": "proc_98_profilescreen",
+      "name": "ProfileScreen → Blocked",
+      "step_index": 1,
+      "step_count": 6
+    },
+    {
+      "id": "proc_99_profilescreen",
+      "name": "ProfileScreen → Query",
+      "step_index": 1,
+      "step_count": 6
+    },
+    {
+      "id": "proc_9_lightningpage",
+      "name": "LightningPage → Load",
+      "step_index": 1,
+      "step_count": 3
+    }
+  ],
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 2,
+    "hint": "⚠️ Index is 2 commits behind HEAD. Run analyze tool to update."
+  }
+}

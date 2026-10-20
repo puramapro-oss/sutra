@@ -64,7 +64,7 @@ export default function TermsPage() {
           >
             Conditions Generales d&apos;Utilisation
           </h1>
-          <p className="text-white/40 text-sm">
+          <p className="text-white/60 text-sm">
             Derniere mise a jour : 2 avril 2026
           </p>
         </div>
@@ -249,19 +249,19 @@ export default function TermsPage() {
       <div className="border-t border-white/[0.06] py-8 text-center flex items-center justify-center gap-6">
         <Link
           href="/legal/privacy"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Confidentialite
         </Link>
         <Link
           href="/legal/cookies"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Cookies
         </Link>
         <Link
           href="/"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Accueil
         </Link>

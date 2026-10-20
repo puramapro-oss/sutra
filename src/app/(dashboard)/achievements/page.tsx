@@ -117,7 +117,7 @@ export default function AchievementsPage() {
           <div className="glass rounded-xl px-4 py-2 flex items-center gap-2">
             <Zap className="w-4 h-4 text-violet-400" />
             <span className="text-lg font-bold text-white"><AnimatedCounter value={totalXP} /></span>
-            <span className="text-xs text-white/40">XP</span>
+            <span className="text-xs text-white/60">XP</span>
           </div>
           <Button onClick={handleCheck} disabled={checking} size="sm">
             {checking ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
