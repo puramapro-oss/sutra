@@ -14,7 +14,12 @@ import PastPostsList from '@/components/publish/PastPostsList'
 import type { PlatformId } from '@/components/publish/constants'
 
 export default function PublishPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <PublishPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function PublishPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const {
     videos,
     scheduledPosts,

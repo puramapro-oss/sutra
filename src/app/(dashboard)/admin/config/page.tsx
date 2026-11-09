@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { AlertTriangle } from 'lucide-react'
 import { Skeleton } from '@/components/ui/Skeleton'
@@ -18,15 +18,19 @@ export default function AdminConfigPage() {
   const [savedSection, setSavedSection] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchConfig = useCallback(async () => {
-    try {
-      setLoading(true)
-      const res = await fetch('/api/admin/stats?type=config')
-
+  const dataRequest = useRef<AbortController | null>(null)
+  const fetchConfig = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/admin/stats?type=config', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (res.ok) {
         const data = await res.json()
         if (data.config) {
-          setConfig((prev) =>
+          commit(() => setConfig((prev) =>
             prev.map((section) => {
               const serverSection = data.config[section.key]
               if (!serverSection) return section
@@ -38,19 +42,23 @@ export default function AdminConfigPage() {
                 })),
               }
             })
-          )
+          ))
         }
       }
-      setError(null)
-    } catch {
-      // Fallback to default config
-    } finally {
-      setLoading(false)
-    }
+      commit(() => setError(null))
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
   useEffect(() => {
     fetchConfig()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
   }, [fetchConfig])
 
   const updateField = (sectionKey: string, fieldKey: string, value: string | number | boolean) => {

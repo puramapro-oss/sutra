@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { ShoppingBag, Coins, Tag, Ticket, Zap, Wallet, Star } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
@@ -42,7 +42,12 @@ const categoryLabels: Record<string, string> = {
 }
 
 export default function BoutiquePage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <BoutiquePageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function BoutiquePageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const [items, setItems] = useState<ShopItem[]>([])
   const [points, setPoints] = useState<PointsData>({ balance: 0, lifetime_earned: 0 })
   const [loading, setLoading] = useState(true)
@@ -50,36 +55,50 @@ export default function BoutiquePage() {
   const [dailyGift, setDailyGift] = useState<{ canOpen: boolean; streakCount: number } | null>(null)
   const [openingGift, setOpeningGift] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    try {
-      const [boutiqueRes, pointsRes, giftRes] = await Promise.all([
-        fetch('/api/boutique'),
-        fetch('/api/points'),
-        fetch('/api/daily-gift'),
-      ])
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return Promise.all([
+        fetch('/api/boutique', { signal: controller.signal }),
+        fetch('/api/points', { signal: controller.signal }),
+        fetch('/api/daily-gift', { signal: controller.signal }),
+      ]).then(async ([boutiqueRes, pointsRes, giftRes]) => {
+      if (!active()) return
       if (boutiqueRes.ok) {
         const data = await boutiqueRes.json()
-        setItems(data.items || [])
+        commit(() => setItems(data.items || []))
       }
       if (pointsRes.ok) {
         const data = await pointsRes.json()
-        setPoints({ balance: data.balance, lifetime_earned: data.lifetime_earned })
+        commit(() => setPoints({ balance: data.balance, lifetime_earned: data.lifetime_earned }))
       }
       if (giftRes.ok) {
         const data = await giftRes.json()
-        setDailyGift(data)
+        commit(() => setDailyGift(data))
       }
-    } catch {
-      // defaults
-    } finally {
-      setLoading(false)
-    }
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    return loadFetchData()
+  }, [loadFetchData])
+
   useEffect(() => {
-    if (!authLoading && profile?.id) fetchData()
-  }, [authLoading, profile?.id, fetchData])
+    if (!authLoading && profile?.id) loadFetchData()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [authLoading, profile?.id, loadFetchData])
 
   const handlePurchase = async (itemId: string) => {
     setPurchasing(itemId)

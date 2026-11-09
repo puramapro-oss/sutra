@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { DollarSign, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, XCircle, Clock, BarChart3, ArrowRight } from 'lucide-react'
 import { Skeleton } from '@/components/ui/Skeleton'
@@ -42,35 +42,49 @@ export default function AdminFinancesPage() {
   const [error, setError] = useState<string | null>(null)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true)
-      const res = await fetch('/api/admin/stats?type=finances')
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/admin/stats?type=finances', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (!res.ok) {
-        const fallbackRes = await fetch('/api/admin/stats')
+        const fallbackRes = await fetch('/api/admin/stats', { signal: controller.signal })
         if (!fallbackRes.ok) throw new Error('Erreur chargement finances')
         const stats = await fallbackRes.json()
         const apiCost = stats.total_api_costs_30d ?? 0
-        setFinance({
+        commit(() => setFinance({
           revenue_by_plan: stats.plan_distribution ?? {}, total_revenue: stats.total_revenue ?? 0, mrr: stats.mrr ?? 0,
           costs_by_service: { claude: apiCost * 0.35, elevenlabs: apiCost * 0.25, runpod: apiCost * 0.2, suno: apiCost * 0.1, shotstack: apiCost * 0.07, pexels: apiCost * 0.03 },
           total_costs: apiCost, profit: (stats.mrr ?? 0) - apiCost,
           margin_percent: stats.mrr > 0 ? (((stats.mrr - apiCost) / stats.mrr) * 100) : 0,
           mrr_growth_rate: 0, forecast_next_month: stats.mrr ?? 0,
-        })
+        }))
       } else {
         const data = await res.json()
-        setFinance(data.finance ?? data)
+        commit(() => setFinance(data.finance ?? data))
       }
-      setError(null)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur inconnue')
-    } finally {
-      setLoading(false)
-    }
+      commit(() => setError(null))
+    }).catch(err => {
+      if (!active()) return
+      commit(() => setError(err instanceof Error ? err.message : 'Erreur inconnue'))
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { fetchData() }, [fetchData])
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    return loadFetchData()
+  }, [loadFetchData])
+
+  useEffect(() => { loadFetchData()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [loadFetchData])
 
   const handleWithdrawalAction = async (id: string, action: 'approve' | 'reject') => {
     setActionLoading(id)

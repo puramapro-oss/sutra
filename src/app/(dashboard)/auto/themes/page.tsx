@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { Plus, Trash2, Tag } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -32,20 +32,34 @@ export default function ThemesPage() {
   const [audience, setAudience] = useState('')
   const [weight, setWeight] = useState(1)
 
-  const fetchThemes = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/auto/themes')
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchThemes = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/auto/themes', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       const json = await res.json()
-      setThemes(json.themes ?? [])
-    } catch {
+      commit(() => setThemes(json.themes ?? []))
+    }).catch(() => {
+      if (!active()) return
       toast.error('Erreur de chargement')
-    } finally {
-      setLoading(false)
-    }
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { fetchThemes() }, [fetchThemes])
+  const fetchThemes = useCallback(() => {
+    setLoading(true)
+    return loadFetchThemes()
+  }, [loadFetchThemes])
+
+  useEffect(() => { loadFetchThemes()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [loadFetchThemes])
 
   const handleCreate = useCallback(async () => {
     if (!theme.trim()) {

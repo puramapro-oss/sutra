@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { Save } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -47,20 +47,29 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
-  const fetchConfig = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/auto/config')
+  const dataRequest = useRef<AbortController | null>(null)
+  const fetchConfig = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/auto/config', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       const json = await res.json()
-      if (json.config) setCfg(json.config)
-    } catch {
+      if (json.config) commit(() => setCfg(json.config))
+    }).catch(() => {
+      if (!active()) return
       toast.error('Erreur de chargement')
-    } finally {
-      setLoading(false)
-    }
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { fetchConfig() }, [fetchConfig])
+  useEffect(() => { fetchConfig()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [fetchConfig])
 
   const update = useCallback(<K extends keyof AutoConfig>(key: K, value: AutoConfig[K]) => {
     setCfg((prev) => (prev ? { ...prev, [key]: value } : prev))

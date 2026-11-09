@@ -1,5 +1,14 @@
 import type { Aide, Profil, Situation } from '@/types/financer'
 
+export function officialAidUrl(value: string): string | null {
+  try {
+    const url = new URL(value)
+    return url.protocol === 'https:' && !url.username && !url.password ? url.href : null
+  } catch {
+    return null
+  }
+}
+
 export function formatMontant(n: number): string {
   return n.toLocaleString('fr-FR', {
     maximumFractionDigits: 0,

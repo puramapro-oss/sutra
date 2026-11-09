@@ -1,14 +1,15 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { Timer, Trophy } from 'lucide-react'
+import { Timer } from 'lucide-react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
+import { DataUnavailable } from '@/components/ui/DataUnavailable'
 import ContestBanner from '@/components/contest/ContestBanner'
 import ContestSubmissionForm from '@/components/contest/ContestSubmissionForm'
 import ContestLeaderboard from '@/components/contest/ContestLeaderboard'
@@ -32,9 +33,15 @@ interface Contest {
 }
 
 export default function ContestPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <ContestPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function ContestPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
 
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [activeContest, setActiveContest] = useState<Contest | null>(null)
   const [pastContests, setPastContests] = useState<Contest[]>([])
   const [videos, setVideos] = useState<VideoType[]>([])
@@ -47,58 +54,82 @@ export default function ContestPage() {
   const [submitting, setSubmitting] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    if (!profile?.id) return
-    setLoading(true)
-    try {
-      const [activeRes, pastRes, videosRes, submissionRes] = await Promise.all([
+  const dataRequest = useRef<AbortController | null>(null)
+  const userId = profile?.id
+  const loadFetchData = useCallback(() => {
+    if (!userId) return
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return Promise.all([
         supabase
           .from('contests')
           .select('*')
           .eq('status', 'open')
           .order('period_end', { ascending: true })
           .limit(1)
-          .single(),
+          .abortSignal(controller.signal).maybeSingle(),
         supabase
           .from('contests')
           .select('*')
           .eq('status', 'completed')
           .order('period_end', { ascending: false })
-          .limit(10),
+          .limit(10).abortSignal(controller.signal),
         supabase
           .from('videos')
           .select('*')
-          .eq('user_id', profile.id)
+          .eq('user_id', userId)
           .in('status', ['ready', 'published'])
-          .order('created_at', { ascending: false }),
+          .order('created_at', { ascending: false }).abortSignal(controller.signal),
         supabase
           .from('contest_submissions')
           .select('id')
-          .eq('user_id', profile.id)
-          .limit(1),
-      ])
-
-      if (activeRes.data) setActiveContest(activeRes.data as Contest)
-      if (pastRes.data) setPastContests(pastRes.data as Contest[])
-      if (videosRes.data) setVideos(videosRes.data as VideoType[])
-      if (submissionRes.data && submissionRes.data.length > 0) setHasSubmitted(true)
-
+          .eq('user_id', userId)
+          .limit(1).abortSignal(controller.signal),
+      ]).then(async ([activeRes, pastRes, videosRes, submissionRes]) => {
+      if (!active()) return
+      for (const result of [activeRes, pastRes, videosRes, submissionRes]) {
+        if (result.error) throw result.error
+      }
       const entriesRes = await supabase
         .from('contest_entries')
         .select('id', { count: 'exact', head: true })
-        .eq('user_id', profile.id)
-      setUserEntries(entriesRes.count ?? 1)
+        .eq('user_id', userId).abortSignal(controller.signal)
+      if (entriesRes.error) throw entriesRes.error
+      const entries = entriesRes.count
+      if (entries === null || !Number.isSafeInteger(entries) || entries < 0) {
+        throw new Error('Participation count unavailable')
+      }
+      commit(() => {
+        setLoadError(null)
+        setActiveContest(activeRes.data as Contest | null)
+        setPastContests((pastRes.data ?? []) as Contest[])
+        setVideos((videosRes.data ?? []) as VideoType[])
+        setHasSubmitted(Boolean(submissionRes.data?.length))
+        setUserEntries(entries)
+      })
+    }).catch(() => {
+      if (!active()) return
+      setActiveContest(null)
+      setLoadError('Les concours sont indisponibles. Les résultats et les participations ne peuvent pas être confirmés.')
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
+  }, [userId])
 
-    } catch {
-      // Keep defaults
-    } finally {
-      setLoading(false)
-    }
-  }, [profile?.id])
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    return loadFetchData()
+  }, [loadFetchData])
 
   useEffect(() => {
-    if (!authLoading && profile?.id) fetchData()
-  }, [authLoading, profile?.id, fetchData])
+    if (!authLoading && profile?.id) loadFetchData()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [authLoading, profile?.id, loadFetchData])
 
   const handleSubmit = useCallback(async () => {
     if (!selectedVideoId) {
@@ -163,6 +194,8 @@ export default function ContestPage() {
   )
 
   if (authLoading) return contestSkeleton
+
+  if (loadError && !loading) return <DataUnavailable title="Concours" message={loadError} onRetry={fetchData} />
 
   return (
     <LoadingTimeout loading={loading} onRetry={fetchData} skeleton={contestSkeleton}>

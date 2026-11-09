@@ -40,7 +40,11 @@ interface Submission {
   scheduledAt?: string
 }
 
-export function PublishEverywhereButton({
+export function PublishEverywhereButton(props: PublishEverywhereButtonProps) {
+  return <PublishEverywhereButtonContent key={props.videoId} {...props} />
+}
+
+function PublishEverywhereButtonContent({
   videoId,
   videoTitle,
   videoUrl,
@@ -67,26 +71,23 @@ export function PublishEverywhereButton({
   const accountRequest = useRef<AbortController | null>(null)
   const submitting = useRef(false)
   const submitted = useRef<Submission | null>(null)
+  const [submittedSnapshot, setSubmittedSnapshot] = useState<Submission | null>(null)
   const connectedPlatforms = useMemo(() => new Set(accounts.map(a => a.platform)), [accounts])
   // A result is retryable only when this platform has an explicit failure and no
   // successful/uncertain destination. The server journal remains authoritative.
   const retryPlatforms = new Set((results ?? []).filter(r => r.status === 'failed'
-    && submitted.current?.platforms.includes(r.platform)
-    && accounts.some(account => account.platform === r.platform && account.id === submitted.current?.accountIds[r.platform])
+    && submittedSnapshot?.platforms.includes(r.platform)
+    && accounts.some(account => account.platform === r.platform && account.id === submittedSnapshot?.accountIds[r.platform])
     && !results?.some(other => other.platform === r.platform && other.status !== 'failed'))
     .map(r => r.platform))
   const targets = results ? retryPlatforms : selectedPlatforms
 
-  const fetchAccounts = useCallback(async () => {
+  const loadAccounts = useCallback(() => {
     accountRequest.current?.abort()
     const controller = new AbortController()
     accountRequest.current = controller
     const timer = setTimeout(() => controller.abort(), 8000)
-    setAccountsLoading(true)
-    setAccountsError(null)
-    setAccounts([])
-    try {
-      const res = await fetch('/api/social/accounts', { credentials: 'include', cache: 'no-store', signal: controller.signal })
+    return fetch('/api/social/accounts', { credentials: 'include', cache: 'no-store', signal: controller.signal }).then(async res => {
       if (!res.ok) throw new Error('accounts_unavailable')
       const data = await res.json()
       if (!Array.isArray(data.accounts)) throw new Error('accounts_invalid')
@@ -97,20 +98,35 @@ export function PublishEverywhereButton({
       // Do not silently choose a different account when a platform is ambiguous.
       const list = connected.filter(a => connected.filter(other => other.platform === a.platform).length === 1)
       if (accountRequest.current !== controller) return
+      controller.signal.throwIfAborted()
       setAccounts(list)
       setSelectedPlatforms(previous => new Set([...previous].filter(platform => list.some(a => a.platform === platform))))
-    } catch {
+    }).catch(() => {
       if (accountRequest.current === controller) setAccountsError('Impossible de vérifier les comptes. Réessaie ou ouvre les paramètres sociaux.')
-    } finally {
+    }).finally(() => {
       clearTimeout(timer)
       if (accountRequest.current === controller) setAccountsLoading(false)
-    }
+    })
   }, [])
 
   useEffect(() => {
-    if (isOpen) void fetchAccounts()
+    if (isOpen) void loadAccounts()
     return () => { accountRequest.current?.abort(); accountRequest.current = null }
-  }, [isOpen, fetchAccounts])
+  }, [isOpen, loadAccounts])
+
+  const fetchAccounts = useCallback(() => {
+    setAccountsLoading(true)
+    setAccountsError(null)
+    setAccounts([])
+    return loadAccounts()
+  }, [loadAccounts])
+
+  const open = () => {
+    setAccountsLoading(true)
+    setAccountsError(null)
+    setAccounts([])
+    setIsOpen(true)
+  }
 
   const togglePlatform = useCallback(
     (platform: SocialPlatform) => {
@@ -159,6 +175,7 @@ export function PublishEverywhereButton({
         autoCaption: captionMode === 'auto', ...(captionMode === 'custom' ? { caption: customCaption.trim() } : {}),
         ...(!autoHashtags ? { hashtags: [] } : {}), ...(instant ? { scheduledAt: instant.toISOString() } : {}) }
     submitted.current ??= payload
+    setSubmittedSnapshot(submitted.current)
     submitting.current = true
     setPublishing(true)
     try {
@@ -193,7 +210,7 @@ export function PublishEverywhereButton({
   const close = () => { if (!submitting.current) setIsOpen(false) }
   return (
     <>
-      <PublishTriggerButton videoId={videoId} variant={variant} onClick={() => setIsOpen(true)} />
+      <PublishTriggerButton videoId={videoId} variant={variant} onClick={open} />
       <Modal open={isOpen} onClose={close} title="Publier sur les réseaux sociaux" className="sm:max-w-2xl" data-testid="publish-everywhere-modal">
         <p className="mb-4 break-words text-sm text-white/70">{videoTitle}</p>
         <div className="space-y-5" aria-busy={publishing}>

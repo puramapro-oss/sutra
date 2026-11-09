@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { Trash2, Star, Send, Film, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -44,20 +44,34 @@ export default function VideosPage() {
   const [loading, setLoading] = useState(true)
   const [actionId, setActionId] = useState<string | null>(null)
 
-  const fetchVideos = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/auto/videos?limit=100')
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchVideos = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/auto/videos?limit=100', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       const json = await res.json()
-      setVideos(json.videos ?? [])
-    } catch {
+      commit(() => setVideos(json.videos ?? []))
+    }).catch(() => {
+      if (!active()) return
       toast.error('Erreur de chargement')
-    } finally {
-      setLoading(false)
-    }
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { fetchVideos() }, [fetchVideos])
+  const fetchVideos = useCallback(() => {
+    setLoading(true)
+    return loadFetchVideos()
+  }, [loadFetchVideos])
+
+  useEffect(() => { loadFetchVideos()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [loadFetchVideos])
 
   const handlePublish = useCallback(async (id: string) => {
     setActionId(id)

@@ -20,8 +20,13 @@ import { Input } from '@/components/ui/Input'
 import { VoiceCard } from '@/components/voices/VoiceCard'
 
 export default function VoicesPage() {
+  const auth = useAuth()
+  return <VoicesPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function VoicesPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
   const router = useRouter()
-  const { profile, plan, loading: authLoading } = useAuth()
+  const { profile, plan, loading: authLoading } = auth
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { clonedVoices, setClonedVoices, loading, playingId, playPreview, deleteVoice, fetchVoices } =
