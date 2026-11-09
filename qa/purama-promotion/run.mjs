@@ -16,7 +16,7 @@ try {
   if (compile.error) throw compile.error
   if (compile.status !== 0) process.exitCode = compile.status ?? 1
   else {
-    const result = spawnSync(process.execPath, ['--test', join(root, 'qa/purama-promotion/promotion.test.cjs')], {
+    const result = spawnSync(process.execPath, ['--test', join(root, 'qa/purama-promotion/promotion.test.mjs')], {
       stdio: 'inherit', shell: false,
       env: { ...process.env, SUTRA_PROMOTION_MODULE: join(out, 'purama-promotion-plan.js') },
     })
