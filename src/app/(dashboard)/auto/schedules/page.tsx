@@ -10,17 +10,9 @@ import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { cn } from '@/lib/utils'
 import type { AutoSchedule as Schedule } from '@/lib/sutra-auto-types'
+import { DAYS, DAY_LABELS, FREQ } from './schedule-options'
 import { requestClientJson } from '@/lib/production-intent-client'
 import { reconcileScheduleChange, schedulesFromResponse, scheduleValidation, type ScheduleChange } from '@/lib/auto-schedule-client'
-
-const DAYS = ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU']
-const DAY_LABELS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
-const FREQ: Array<{ id: Schedule['frequency']; label: string }> = [
-  { id: 'daily', label: 'Quotidien' },
-  { id: 'weekly', label: 'Hebdomadaire' },
-  { id: 'biweekly', label: 'Toutes les 2 semaines' },
-  { id: 'monthly', label: '1er jour choisi du mois' },
-]
 
 export default function SchedulesPage() {
   const [schedules, setSchedules] = useState<Schedule[]>([])
@@ -32,6 +24,7 @@ export default function SchedulesPage() {
   const saveRequest = useRef<AbortController | null>(null)
   const draftId = useRef<string | null>(null)
   const pendingChange = useRef<ScheduleChange | null>(null)
+  const [hasPendingChange, setHasPendingChange] = useState(false)
   const [editing, setEditing] = useState<Schedule | null>(null)
   const [validation, setValidation] = useState<string | null>(null)
   const [message, setMessage] = useState('')
@@ -42,44 +35,49 @@ export default function SchedulesPage() {
   const [days, setDays] = useState<string[]>(['MO'])
   const [time, setTime] = useState('10:00')
 
-  const fetchSchedules = useCallback(async () => {
+  const loadSchedules = useCallback(() => {
     if (loadRequest.current) return
     const controller = new AbortController()
     loadRequest.current = controller
     const timeout = setTimeout(() => controller.abort(), 10_000)
-    setLoading(true)
-    setLoadError(false)
-    try {
-      const result = await requestClientJson('/api/auto/config', { signal: controller.signal })
+    return requestClientJson('/api/auto/config', { signal: controller.signal }).then(result => {
       if (!result.ok) throw new Error('load_failed')
       const latest = schedulesFromResponse(result.body)
       if (loadRequest.current !== controller || controller.signal.aborted) return
       setSchedules(latest)
-    } catch {
+      setLoadError(false)
+    }).catch(() => {
       if (loadRequest.current === controller) setLoadError(true)
-    } finally {
+    }).finally(() => {
       clearTimeout(timeout)
       if (loadRequest.current === controller) {
         loadRequest.current = null
         setLoading(false)
       }
-    }
+    })
   }, [])
 
+  const fetchSchedules = useCallback(() => {
+    setLoading(true)
+    setLoadError(false)
+    return loadSchedules()
+  }, [loadSchedules])
+
   useEffect(() => {
-    void fetchSchedules()
+    void loadSchedules()
     return () => {
       loadRequest.current?.abort()
       saveRequest.current?.abort()
       loadRequest.current = null
       saveRequest.current = null
     }
-  }, [fetchSchedules])
+  }, [loadSchedules])
 
   const saveSchedules = useCallback(async (change: ScheduleChange) => {
     if (saveRequest.current) return false
     const intended = pendingChange.current ?? change
     pendingChange.current = intended
+    setHasPendingChange(true)
     const controller = new AbortController()
     saveRequest.current = controller
     setSaving(true); setSaveError(false); setMessage('Vérification et sauvegarde du planning…')
@@ -109,6 +107,7 @@ export default function SchedulesPage() {
       }
       if (saveRequest.current !== controller || controller.signal.aborted) return false
       setSchedules(confirmed); pendingChange.current = null
+      setHasPendingChange(false)
       setMessage('Planning sauvegardé. L’exécution dépend du moteur serveur et de l’autorisation globale.')
       toast.success('Planning sauvegarde')
       return true
@@ -172,7 +171,7 @@ export default function SchedulesPage() {
       {saveError && !showForm && <Button variant="secondary" disabled={saving} onClick={() => pendingChange.current && void saveSchedules(pendingChange.current)}>Vérifier et réessayer</Button>}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-white/60">{schedules.length} planning(s) configure(s)</p>
-        <Button onClick={() => editSchedule(null)} disabled={saving || !!pendingChange.current} data-testid="schedule-add">
+        <Button onClick={() => editSchedule(null)} disabled={saving || hasPendingChange} data-testid="schedule-add">
           <Plus className="h-4 w-4" /> Nouveau planning
         </Button>
       </div>
@@ -182,7 +181,7 @@ export default function SchedulesPage() {
           <CardContent className="space-y-4">
             <h2 className="font-semibold text-white">{editing ? 'Modifier le planning' : 'Nouveau planning'}</h2>
             {validation && <p role="alert" id="schedule-validation" className="text-red-200">{validation}</p>}
-            <fieldset disabled={saving || !!pendingChange.current} className="space-y-4 min-w-0">
+            <fieldset disabled={saving || hasPendingChange} className="space-y-4 min-w-0">
             <Input
               label="Nom"
               value={name}
@@ -256,9 +255,9 @@ export default function SchedulesPage() {
 
             </fieldset>
             <div className="flex flex-wrap items-center gap-2">
-              <Button variant="secondary" disabled={saving || !!pendingChange.current} onClick={() => { setShowForm(false); setEditing(null); setValidation(null) }}>Annuler</Button>
+              <Button variant="secondary" disabled={saving || hasPendingChange} onClick={() => { setShowForm(false); setEditing(null); setValidation(null) }}>Annuler</Button>
               <Button onClick={handleCreate} loading={saving} data-testid="schedule-save">
-                {pendingChange.current ? 'Vérifier la sauvegarde' : editing ? 'Enregistrer les modifications' : 'Creer le planning'}
+                {hasPendingChange ? 'Vérifier la sauvegarde' : editing ? 'Enregistrer les modifications' : 'Creer le planning'}
               </Button>
             </div>
           </CardContent>
@@ -291,14 +290,14 @@ export default function SchedulesPage() {
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                <Button variant="secondary" size="sm" disabled={saving || !!pendingChange.current || showForm} aria-label={`Modifier le planning ${s.name}`} onClick={() => editSchedule(s)}>Modifier</Button>
-                <Button variant="secondary" size="sm" disabled={saving || !!pendingChange.current || showForm} aria-label={`${s.is_active ? 'Mettre en pause' : 'Reprendre'} le planning ${s.name}`} onClick={() => void saveSchedules({ before: s, after: { ...s, is_active: !s.is_active } })}>{s.is_active ? 'Pause' : 'Reprendre'}</Button>
+                <Button variant="secondary" size="sm" disabled={saving || hasPendingChange || showForm} aria-label={`Modifier le planning ${s.name}`} onClick={() => editSchedule(s)}>Modifier</Button>
+                <Button variant="secondary" size="sm" disabled={saving || hasPendingChange || showForm} aria-label={`${s.is_active ? 'Mettre en pause' : 'Reprendre'} le planning ${s.name}`} onClick={() => void saveSchedules({ before: s, after: { ...s, is_active: !s.is_active } })}>{s.is_active ? 'Pause' : 'Reprendre'}</Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => handleDelete(s)}
                   aria-label={`Supprimer le planning ${s.name}`}
-                  disabled={saving || !!pendingChange.current || showForm}
+                  disabled={saving || hasPendingChange || showForm}
                   className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
                   data-testid={`schedule-delete-${s.id}`}
                 >

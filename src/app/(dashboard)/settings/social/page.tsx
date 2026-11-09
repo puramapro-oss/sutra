@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { Suspense, useState, useEffect, useCallback, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
 import { PLATFORM_INFO, type SocialPlatform } from '@/lib/zernio'
@@ -10,6 +11,7 @@ import { PlatformGrid } from '@/components/settings/social/PlatformGrid'
 import { AutopilotSection, type AutopilotConfig } from '@/components/settings/social/AutopilotSection'
 import { DisconnectConfirmModal } from '@/components/settings/social/DisconnectConfirmModal'
 import Button from '@/components/ui/Button'
+import { oauthErrorMessage } from './oauth-error-message'
 
 interface SocialAccount {
   id: string
@@ -52,7 +54,14 @@ function isAutopilotConfig(value: unknown): value is AutopilotConfig {
 }
 
 export default function SocialAccountsPage() {
-  useAuth()
+  const auth = useAuth()
+  const fallback = <div role="status" className="p-6 text-white/70">Chargement des comptes sociaux…</div>
+  if (auth.loading) return fallback
+  return <Suspense fallback={fallback}><SocialAccountsPageContent key={auth.profile?.id ?? 'signed-out'} /></Suspense>
+}
+
+function SocialAccountsPageContent() {
+  const searchParams = useSearchParams()
   const [accounts, setAccounts] = useState<SocialAccount[]>([])
   const [autopilotConfig, setAutopilotConfig] = useState<AutopilotConfig | null>(null)
   const [loading, setLoading] = useState(true)
@@ -60,53 +69,57 @@ export default function SocialAccountsPage() {
   const accountsRequest = useRef<AbortController | null>(null)
   const connectRequest = useRef<AbortController | null>(null)
   const [connecting, setConnecting] = useState<SocialPlatform | null>(null)
-  const [connectError, setConnectError] = useState<string | null>(null)
+  const [connectError, setConnectError] = useState<string | null>(() => oauthErrorMessage(searchParams.get('error')))
   const [disconnectingId, setDisconnectingId] = useState<string | null>(null)
   const [savingAutopilot, setSavingAutopilot] = useState(false)
   const [confirmDisconnect, setConfirmDisconnect] = useState<SocialAccount | null>(null)
   const [disconnectNotice, setDisconnectNotice] = useState<string | null>(null)
 
-  const fetchAccounts = useCallback(async () => {
+  const loadAccounts = useCallback(() => {
     if (accountsRequest.current) return
     const controller = new AbortController()
     accountsRequest.current = controller
-    setLoading(true)
-    setLoadError(null)
     const timeout = setTimeout(() => controller.abort(), 10_000)
-    try {
-      const [accountsResponse, autopilotResponse] = await Promise.all([
+    return Promise.all([
         fetch('/api/social/accounts', { cache: 'no-store', signal: controller.signal }),
         fetch('/api/social/autopilot', { cache: 'no-store', signal: controller.signal }),
-      ])
+      ]).then(async ([accountsResponse, autopilotResponse]) => {
       if (!accountsResponse.ok || !autopilotResponse.ok) throw new Error('fetch_failed')
       const [data, autopilot] = await Promise.all([accountsResponse.json(), autopilotResponse.json()])
       if (!Array.isArray(data?.accounts) || !isAutopilotConfig(autopilot?.config)) throw new Error('invalid_social_state')
       if (accountsRequest.current !== controller || controller.signal.aborted) return
       setAccounts(data.accounts)
       setAutopilotConfig(autopilot.config)
-    } catch {
+      setLoadError(null)
+    }).catch(() => {
       if (accountsRequest.current === controller) {
         setLoadError('Impossible de vérifier tes comptes et réglages sociaux. Leur état est indisponible. Réessaie dans un instant.')
       }
-    } finally {
+    }).finally(() => {
       clearTimeout(timeout)
       controller.abort()
       if (accountsRequest.current === controller) {
         accountsRequest.current = null
         setLoading(false)
       }
-    }
+    })
   }, [])
 
+  const fetchAccounts = useCallback(() => {
+    setLoading(true)
+    setLoadError(null)
+    return loadAccounts()
+  }, [loadAccounts])
+
   useEffect(() => {
-    void fetchAccounts()
+    void loadAccounts()
     return () => {
       accountsRequest.current?.abort()
       accountsRequest.current = null
       connectRequest.current?.abort()
       connectRequest.current = null
     }
-  }, [fetchAccounts])
+  }, [loadAccounts])
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -127,19 +140,8 @@ export default function SocialAccountsPage() {
 
     if (error) {
       // URL parameters are untrusted; only expose our safe callback contract.
-      const message = error === 'invalid_or_expired_state'
-        ? 'Ce lien a expiré ou a déjà été utilisé. Relance la connexion depuis cette page.'
-        : error === 'session_required'
-          ? 'Ta session a expiré. Reconnecte-toi à SUTRA, puis relance la connexion du compte.'
-          : error === 'oauth_denied'
-            ? 'Autorisation refusée. Aucun compte ajouté ; tu peux réessayer si tu le souhaites.'
-            : error === 'oauth_empty_profile'
-              ? 'Aucun compte autorisé trouvé. Relance la connexion et sélectionne le compte souhaité.'
-              : error === 'db_error'
-                ? 'Impossible d’enregistrer la connexion. Vérifie la liste des comptes avant de réessayer.'
-                : 'Connexion indisponible. Relance la connexion depuis cette page.'
-      toast.error(message)
-      setConnectError(message)
+      const message = oauthErrorMessage(error)
+      if (message) toast.error(message)
       params.delete('error')
       const newUrl =
         window.location.pathname + (params.toString() ? `?${params.toString()}` : '')

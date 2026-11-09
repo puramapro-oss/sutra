@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Sprout, Check, Lock, Loader2 } from 'lucide-react'
 import Link from 'next/link'
@@ -45,25 +45,36 @@ export default function MissionsPage() {
   const [loading, setLoading] = useState(true)
   const [completing, setCompleting] = useState<string | null>(null)
 
-  const load = useCallback(async () => {
-    try {
-      const res = await fetch('/api/karma/missions', { cache: 'no-store' })
+  const dataRequest = useRef<AbortController | null>(null)
+  const load = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/karma/missions', { cache: 'no-store', signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (res.status === 401) {
-        setMissions([])
+        commit(() => setMissions([]))
         return
       }
       const data = await res.json()
-      setMissions(data.missions ?? [])
-    } catch {
+      commit(() => setMissions(data.missions ?? []))
+    }).catch(() => {
+      if (!active()) return
       toast.error('Impossible de charger les missions.')
-    } finally {
-      setLoading(false)
-    }
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => { load()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [load])
 
-  const complete = async (slug: string) => {
+  const handleComplete = useCallback(async (event: React.MouseEvent<HTMLButtonElement>) => {
+    const slug = event.currentTarget.value
     setCompleting(slug)
     try {
       const res = await fetch('/api/karma/missions', {
@@ -83,7 +94,7 @@ export default function MissionsPage() {
     } finally {
       setCompleting(null)
     }
-  }
+  }, [load])
 
   const grouped = missions.reduce<Record<string, Mission[]>>((acc, m) => {
     acc[m.category] = acc[m.category] ?? []
@@ -156,7 +167,8 @@ export default function MissionsPage() {
                     </span>
                     <button
                       type="button"
-                      onClick={() => complete(m.slug)}
+                      value={m.slug}
+                      onClick={handleComplete}
                       disabled={!m.can_complete || completing === m.slug}
                       className={cn(
                         'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition',

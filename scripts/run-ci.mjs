@@ -7,6 +7,12 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
+  'scripts/test-durable-request-store.mts',
+  'scripts/test-dependency-security-20261109.mjs',
+  'scripts/test-development-dependency-security.mjs',
+  'scripts/test-admin-stats-routes-20261109.mts',
+  'scripts/test-ui-honesty-20261109.mts',
+  'scripts/test-page-loaders-20261109.mjs',
   'qa/t04-closure-79cd-20261020/music-contracts.test.mts',
   'qa/t04-closure-79cd-20261020/music-provenance.test.mts',
   'qa/t01-certification-20261019/coverr.test.mts',
@@ -90,6 +96,8 @@ const profiles = {
     ['compositor', ['--experimental-test-module-mocks', '--import', 'tsx', '--import', './scripts/helpers/local-media-fixture.mts', '--test', '--test-concurrency=1', 'src/lib/ffmpeg-compositor.test.ts', 'src/lib/ffmpeg-compositor-formats.test.ts', 'src/lib/media-validation.test.ts']],
   ],
   browser: [['browser', ['scripts/test-ui-isolated.mjs']]],
+  'browser-recovery': [['browser-recovery', ['--import', 'tsx', '--test', '--test-concurrency=1',
+    'scripts/test-durable-hook-recovery.mjs', 'scripts/test-admin-users-recovery.mjs']]],
   'browser-profiles': [['profiles', ['scripts/test-ui-isolated.mjs', '--profile-only']]],
   editor: [['editor', ['scripts/test-ui-isolated.mjs', '--editor-only']]],
   legacy: [['legacy', ['scripts/test-ui-isolated.mjs', '--legacy']]],
@@ -100,11 +108,11 @@ const profiles = {
     ['build', ['node_modules/next/dist/bin/next', 'build', '--webpack']],
   ],
 }
-if (!Object.hasOwn(profiles, profile)) throw new Error('Usage: node scripts/run-ci.mjs contracts|media|quality|browser|browser-profiles|editor|legacy|legacy-regressions')
+if (!Object.hasOwn(profiles, profile)) throw new Error('Usage: node scripts/run-ci.mjs contracts|media|quality|browser|browser-recovery|browser-profiles|editor|legacy|legacy-regressions')
 if (readdirSync(root).some(name => name.startsWith('.env') && name !== '.env.example')) {
   throw new Error('Run CI gates in an isolated checkout without local environment files.')
 }
-const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot'].flatMap(key =>
+const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot', 'SUTRA_CHROMIUM_PATH'].flatMap(key =>
   process.env[key] ? [[key, process.env[key]]] : []))
 Object.assign(env, {
   T02_SALAD_TARGET: root, T03_SALAD_SOURCE: root,

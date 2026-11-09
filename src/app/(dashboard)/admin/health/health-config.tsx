@@ -16,10 +16,10 @@ import { cn } from '@/lib/utils'
 export interface ServiceHealth {
   name: string
   key: string
-  status: 'operational' | 'degraded' | 'down'
-  latency_ms: number
-  last_checked: string
-  uptime_30d: number
+  status: 'operational' | 'degraded' | 'down' | 'unknown'
+  latency_ms: number | null
+  last_checked: string | null
+  uptime_30d: number | null
 }
 
 export const SERVICE_ICONS: Record<string, typeof Server> = {
@@ -47,6 +47,13 @@ export const SERVICE_LABELS: Record<string, string> = {
 }
 
 export const STATUS_CONFIG = {
+  unknown: {
+    icon: AlertTriangle,
+    color: 'text-white/50',
+    bg: 'bg-white/5 border-white/20',
+    dot: 'bg-white/40',
+    label: 'Non vérifié',
+  },
   operational: {
     icon: CheckCircle,
     color: 'text-emerald-400',

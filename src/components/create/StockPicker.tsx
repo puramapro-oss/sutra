@@ -38,7 +38,12 @@ interface SceneStockPickerProps {
   allowFallback: boolean
 }
 
-export function SceneStockPicker({
+export function SceneStockPicker(props: SceneStockPickerProps) {
+  const identity = JSON.stringify([props.sceneIndex, props.sceneText, props.keywords.join(' '), props.orientation])
+  return <SceneStockPickerContent key={identity} {...props} />
+}
+
+function SceneStockPickerContent({
   sceneIndex,
   sceneText,
   keywords,
@@ -50,7 +55,7 @@ export function SceneStockPicker({
   allowFallback,
 }: SceneStockPickerProps) {
   const [results, setResults] = useState<StockResult[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(() => !!keywords.join(' ').trim())
   const [query, setQuery] = useState(keywords.join(' '))
   const [error, setError] = useState<string | null>(null)
   const active = useRef<{ query: string; controller: AbortController } | null>(null)
@@ -58,59 +63,66 @@ export function SceneStockPicker({
   useEffect(() => { selection.current = { selected, fallbackToAI, onSelect } }, [selected, fallbackToAI, onSelect])
   const keywordQuery = keywords.join(' ')
 
-  const search = useCallback(
-    async (q: string) => {
+  const loadResults = useCallback(
+    (q: string) => {
       const trimmed = q.trim()
-      if (active.current?.query === trimmed) return
+      if (!trimmed || active.current?.query === trimmed) return
       active.current?.controller.abort()
       active.current = null
-      setQuery(q)
-      setError(null)
-      if (!trimmed) {
-        setResults([])
-        setLoading(false)
-        return
-      }
       const controller = new AbortController()
       active.current = { query: trimmed, controller }
-      setLoading(true)
-      try {
-        const res = await fetch('/api/stock/search', {
+      return fetch('/api/stock/search', {
           method: 'POST',
           signal: controller.signal,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: trimmed, orientation, type: 'any' }),
-        })
+        }).then(async res => {
         const data = await res.json()
         controller.signal.throwIfAborted()
         if (!res.ok || !Array.isArray(data.results)) throw new Error('Recherche indisponible. Réessaie dans un instant.')
         const list = data.results as StockResult[]
         setResults(list)
+        setError(null)
         // Auto-select first 4K if nothing selected yet
         if (!selection.current.selected && !selection.current.fallbackToAI && list.length > 0) {
           const first4k = list.find((r) => r.quality === '4k') ?? list[0]
           selection.current.onSelect(first4k)
         }
-      } catch {
+      }).catch(() => {
         if (controller.signal.aborted) return
         setError('Recherche indisponible. Réessaie dans un instant.')
-      } finally {
+      }).finally(() => {
         if (active.current?.controller === controller) {
           active.current = null
           if (!controller.signal.aborted) setLoading(false)
         }
-      }
+      })
     },
     [orientation]
   )
 
   useEffect(() => {
-    void search(keywordQuery)
+    void loadResults(keywordQuery)
     return () => {
       active.current?.controller.abort()
       active.current = null
     }
-  }, [keywordQuery, search])
+  }, [keywordQuery, loadResults])
+
+  const search = useCallback((q: string) => {
+    const trimmed = q.trim()
+    if (active.current?.query === trimmed) return
+    setQuery(q)
+    setError(null)
+    setLoading(!!trimmed)
+    if (!trimmed) {
+      active.current?.controller.abort()
+      active.current = null
+      setResults([])
+      return
+    }
+    return loadResults(q)
+  }, [loadResults])
 
   return (
     <div
