@@ -7,6 +7,7 @@ import { resolve } from 'node:path'
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const nodeTests = [
+  'scripts/test-auto-learn-analytics.mts', 'scripts/test-auto-learn-route.mts', 'scripts/test-auto-learn-memory.mts',
   'scripts/test-durable-request-store.mts',
   'scripts/test-dependency-security-20261109.mjs',
   'scripts/test-development-dependency-security.mjs',
