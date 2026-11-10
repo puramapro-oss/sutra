@@ -1,0 +1,411 @@
+{
+  "status": "FAIL",
+  "checks": [
+    {
+      "name": "unrelated schema marker refuses migration before any additive column",
+      "status": "PASS",
+      "assertions": 4,
+      "duration_ms": 107
+    },
+    {
+      "name": "additive migration preserves existing evidence ACL RLS and inactive legacy journals",
+      "status": "PASS",
+      "assertions": 11,
+      "duration_ms": 245
+    },
+    {
+      "name": "reapplying migration preserves exact schema privileges functions and rows",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 647
+    },
+    {
+      "name": "all three RPCs are security definer with an empty search path",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 17
+    },
+    {
+      "name": "anon cannot read or write the journal",
+      "status": "PASS",
+      "assertions": 6,
+      "duration_ms": 46
+    },
+    {
+      "name": "anon cannot execute sutra.save_social_publication_journal",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 38
+    },
+    {
+      "name": "anon cannot execute sutra.claim_social_publication_journals",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 28
+    },
+    {
+      "name": "anon cannot execute sutra.release_social_publication_journal",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 42
+    },
+    {
+      "name": "authenticated cannot read or write the journal",
+      "status": "PASS",
+      "assertions": 6,
+      "duration_ms": 54
+    },
+    {
+      "name": "authenticated cannot execute sutra.save_social_publication_journal",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 28
+    },
+    {
+      "name": "authenticated cannot execute sutra.claim_social_publication_journals",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 36
+    },
+    {
+      "name": "authenticated cannot execute sutra.release_social_publication_journal",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 41
+    },
+    {
+      "name": "service role alone retains required table access and RPC execution without delete",
+      "status": "PASS",
+      "assertions": 7,
+      "duration_ms": 122
+    },
+    {
+      "name": "eight concurrent CAS admissions commit one complete batch of fifty operations",
+      "status": "PASS",
+      "assertions": 7,
+      "duration_ms": 103
+    },
+    {
+      "name": "a later invalid admission rolls back the whole transaction atomically",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 143
+    },
+    {
+      "name": "duplicate operation identities cannot be admitted",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 68
+    },
+    {
+      "name": "a live consumer cannot mutate immutable request",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 133
+    },
+    {
+      "name": "a live consumer cannot mutate immutable accountRows",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 126
+    },
+    {
+      "name": "a live consumer cannot mutate immutable createdAt",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 120
+    },
+    {
+      "name": "a live consumer cannot mutate immutable operation removal",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 122
+    },
+    {
+      "name": "admission without a lease cannot execute or mutate phase",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 93
+    },
+    {
+      "name": "admission without a lease cannot execute or mutate results",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 144
+    },
+    {
+      "name": "admission without a lease cannot execute or mutate firstAttemptAt",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 147
+    },
+    {
+      "name": "explicit admission flags can change while accepted execution evidence remains identical",
+      "status": "PASS",
+      "assertions": 4,
+      "duration_ms": 132
+    },
+    {
+      "name": "admission cannot append a started operation",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 79
+    },
+    {
+      "name": "admission cannot append a nonqueued operation",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 73
+    },
+    {
+      "name": "admission cannot append a consumer claim",
+      "status": "FAIL",
+      "assertions": 1,
+      "duration_ms": 67,
+      "error": "Refused mutation must not return a committed revision\n\n1 !== null\n"
+    },
+    {
+      "name": "admission cannot append a fabricated publication",
+      "status": "FAIL",
+      "assertions": 1,
+      "duration_ms": 65,
+      "error": "Refused mutation must not return a committed revision\n\n1 !== null\n"
+    },
+    {
+      "name": "a consumer cannot append a new destination even with a valid live lease",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 183
+    },
+    {
+      "name": "a consumer cannot poison later JSON processing with null results",
+      "status": "FAIL",
+      "assertions": 4,
+      "duration_ms": 97,
+      "error": "Refused mutation must not return a committed revision\n\n3 !== null\n"
+    },
+    {
+      "name": "a consumer cannot poison later JSON processing with object results",
+      "status": "FAIL",
+      "assertions": 4,
+      "duration_ms": 133,
+      "error": "Refused mutation must not return a committed revision\n\n3 !== null\n"
+    },
+    {
+      "name": "cross-owner and nonexistent save identities never match a journal",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 138
+    },
+    {
+      "name": "eight concurrent claimers obtain one live lease with one fencing token",
+      "status": "PASS",
+      "assertions": 8,
+      "duration_ms": 136
+    },
+    {
+      "name": "a live lease rejects tokenless admission and a wrong consumer token",
+      "status": "PASS",
+      "assertions": 7,
+      "duration_ms": 158
+    },
+    {
+      "name": "expired fencing tokens cannot save or release before and after a replacement claim",
+      "status": "PASS",
+      "assertions": 15,
+      "duration_ms": 359
+    },
+    {
+      "name": "first provider attempt timestamp cannot be changed or removed by a live consumer",
+      "status": "PASS",
+      "assertions": 9,
+      "duration_ms": 213
+    },
+    {
+      "name": "confirmed publication cannot regress to unknown",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 127
+    },
+    {
+      "name": "confirmed publication cannot regress to false success",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 124
+    },
+    {
+      "name": "confirmed publication cannot regress to missing success",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 144
+    },
+    {
+      "name": "confirmed publication cannot replace its recorded accountId",
+      "status": "FAIL",
+      "assertions": 4,
+      "duration_ms": 108,
+      "error": "Refused mutation must not return a committed revision\n\n4 !== null\n"
+    },
+    {
+      "name": "confirmed publication cannot replace its recorded postId",
+      "status": "FAIL",
+      "assertions": 4,
+      "duration_ms": 108,
+      "error": "Refused mutation must not return a committed revision\n\n4 !== null\n"
+    },
+    {
+      "name": "confirmed publication cannot replace its recorded externalPostId",
+      "status": "FAIL",
+      "assertions": 4,
+      "duration_ms": 181,
+      "error": "Refused mutation must not return a committed revision\n\n4 !== null\n"
+    },
+    {
+      "name": "release is fenced by token live expiry ownership and revision advancement",
+      "status": "PASS",
+      "assertions": 15,
+      "duration_ms": 317
+    },
+    {
+      "name": "future or absent next_run_at cannot be claimed",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 121
+    },
+    {
+      "name": "fifty queued intents survive native crash restart and recover under a new lease",
+      "status": "PASS",
+      "assertions": 12,
+      "duration_ms": 481
+    },
+    {
+      "name": "claim parameter bound rejects null token",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 18
+    },
+    {
+      "name": "claim parameter bound rejects zero limit",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 9
+    },
+    {
+      "name": "claim parameter bound rejects excess limit",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 9
+    },
+    {
+      "name": "claim parameter bound rejects null limit",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 10
+    },
+    {
+      "name": "claim parameter bound rejects short lease",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 8
+    },
+    {
+      "name": "claim parameter bound rejects long lease",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 11
+    },
+    {
+      "name": "claim parameter bound rejects null lease",
+      "status": "PASS",
+      "assertions": 2,
+      "duration_ms": 11
+    },
+    {
+      "name": "claim accepts inclusive limit 1 and lease 120 seconds",
+      "status": "PASS",
+      "assertions": 5,
+      "duration_ms": 77
+    },
+    {
+      "name": "claim accepts inclusive limit 4 and lease 300 seconds",
+      "status": "PASS",
+      "assertions": 8,
+      "duration_ms": 198
+    },
+    {
+      "name": "save parameter validation rejects negative revision",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 52
+    },
+    {
+      "name": "save parameter validation rejects null revision",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 29
+    },
+    {
+      "name": "save parameter validation rejects object payload",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 32
+    },
+    {
+      "name": "save parameter validation rejects null payload",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 27
+    },
+    {
+      "name": "save parameter validation rejects auto kind",
+      "status": "PASS",
+      "assertions": 3,
+      "duration_ms": 27
+    },
+    {
+      "name": "release rejects unsafe persisted error code",
+      "status": "PASS",
+      "assertions": 6,
+      "duration_ms": 79
+    },
+    {
+      "name": "release rejects overlong persisted error code",
+      "status": "PASS",
+      "assertions": 6,
+      "duration_ms": 81
+    },
+    {
+      "name": "legacy video and auto journals remain inactive after all dispatch activity",
+      "status": "PASS",
+      "assertions": 6,
+      "duration_ms": 17
+    },
+    {
+      "name": "the migration source remains identical throughout qualification",
+      "status": "FAIL",
+      "assertions": 1,
+      "duration_ms": 3,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'cbc80db14692138f34473f4b16b30ef8eb3d9c3f16b6de0359210c913c2e7310'\n- '699c68222776fc42a3be74ee2dd01ca4f6739403d3f8b7edb463890be76b4ef0'\n"
+    }
+  ],
+  "assertions": 285,
+  "failures": 8,
+  "skips": 0,
+  "sql_commands": 351,
+  "remote": false,
+  "provider_calls": 0,
+  "command": "node scripts/test-social-durable-postgres.mjs",
+  "node": "v24.22.1",
+  "cluster": "/tmp/sutra-social-durable-pg-mNk9JF",
+  "host": "127.0.0.1",
+  "migration_sha256": "699c68222776fc42a3be74ee2dd01ca4f6739403d3f8b7edb463890be76b4ef0",
+  "base_migration_sha256": "33b755a9ca964dfdc04dbe31feb884f16922c9347a7fd1ccf027bd2fdce5fb1e",
+  "started_at": "2026-11-10T21:46:41.989Z",
+  "stopped": true,
+  "restarts": 1,
+  "postgresql": "16.15 (Debian 16.15-1.pgdg13+2)",
+  "migration_sha256_at_end": "cbc80db14692138f34473f4b16b30ef8eb3d9c3f16b6de0359210c913c2e7310",
+  "check_count": 63,
+  "passed_checks": 55,
+  "ended_at": "2026-11-10T21:47:36.001Z"
+}

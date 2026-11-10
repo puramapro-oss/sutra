@@ -1,0 +1,83 @@
+{
+  "status": "PARTIEL",
+  "scope": "Manual social publication durable admission and worker; production not deployed",
+  "tested_base": "257b1bbeabc995a15cf7ffd85f75e44a16ab201c",
+  "recorded_at_utc": "2026-11-10T22:00:14.875520+00:00",
+  "behavior": {
+    "status": "PASS",
+    "tests": 134,
+    "failures": 0,
+    "skips": 0,
+    "exit_code": 0,
+    "command": "node --max-old-space-size=384 --experimental-test-module-mocks --import tsx --test --test-concurrency=1 scripts/test-social-durable-journal.mts scripts/test-social-durable-api-worker.mts scripts/test-social-publication.mts scripts/test-social-multi-account.mts scripts/test-social-multi-account-routes.mts"
+  },
+  "native_postgres": {
+    "status": "PASS",
+    "checks": 66,
+    "assertions": 302,
+    "failures": 0,
+    "skips": 0,
+    "version": "16.15",
+    "migration_sha256": "cbc80db14692138f34473f4b16b30ef8eb3d9c3f16b6de0359210c913c2e7310",
+    "receipt": "postgres.json"
+  },
+  "dispatcher_python": {
+    "status": "PASS",
+    "tests": 5,
+    "failures": 0,
+    "command": "python3 -m unittest discover -s deploy -p test_social_dispatch.py -v"
+  },
+  "lint_changed_files": {
+    "status": "PASS",
+    "exit_code": 0,
+    "scope": "Root API/worker/receipt/wrapper, core journal helpers, UI and new native test; per-owner targeted invocations"
+  },
+  "global_local_quality": {
+    "status": "NON_QUALIFIE",
+    "typecheck": "SIGKILL",
+    "lint": "SIGKILL",
+    "build": "Next build worker SIGKILL",
+    "application_error_diagnosed": false,
+    "receipt": "local-quality/results.json"
+  },
+  "browser_local": {
+    "status": "PARTIEL",
+    "receipt": "ui/receipt.json",
+    "global_pass": false
+  },
+  "standard_local_install": "SIGKILL; exact lock artifacts restored and verified, npm rebuild PASS; see runtime.json",
+  "remote_provider_calls": 0,
+  "production_migration": "NON_TESTE",
+  "dispatcher_installed": "NON_TESTE",
+  "deployment": "NON_TESTE",
+  "inputs_sha256": {
+    ".github/workflows/web-ci.yml": "90e898b90af171303f4ab209c0528f875f6ab82807217f55fd67b1a316c2cd24",
+    "deploy/social-dispatch.service": "30b5dc171dabfa3d5d39e12947bbf8d1b3287718170c29869f597060606eb4e0",
+    "deploy/social-dispatch.timer": "dec6e7a5513c9313a5ca9ee9ae71587d6936a06d1e1fdaaeec19b156fc3ea215",
+    "deploy/social_dispatch.py": "bdf18763df00eebd546ddfc62a6655a123fb202a81925818e412743c73b141cb",
+    "deploy/test_social_dispatch.py": "832d20d31c002b57e29a1dfa25b17bf90fcf878c95abd4fc55af1cffa8069de1",
+    "docs/SUTRA_MULTI_ACCOUNT_20261110.md": "2b7a8d0300d0e0fbbebba027604e338662db91b9b490d6478d23ce97a3cdb233",
+    "migrations/20261110_social_durable_dispatch.sql": "cbc80db14692138f34473f4b16b30ef8eb3d9c3f16b6de0359210c913c2e7310",
+    "scripts/run-ci.mjs": "4c7821f4327640ed1b117a0f679baa87ec28dcbe5b5e4c4726470effd5be9bd7",
+    "scripts/test-social-durable-api-worker.mts": "f0140193f643036e2915fe332ff248973bead3b7d3116ae41a3e6719bd46500e",
+    "scripts/test-social-durable-journal.mts": "cc8bdf15e2d2f74ca66bcb86953d9cc244bb6210f716a602bb614f35fd4d315b",
+    "scripts/test-social-durable-postgres.mjs": "3f1413edfeecaa7f47f53113a22fa051955eefac9828a563df05a59a58241dbb",
+    "scripts/test-social-durable-ui.mjs": "49397b5335c0adaa90c21627f9c5ab1cb6bfe3f8988db4f3ba856804c8438154",
+    "scripts/test-social-multi-account-routes.mts": "338c14f3659c9b386e6cec6c66fbb7523ea57d4181712c720e5d65ac01e089a3",
+    "scripts/test-social-multi-account-ui.mjs": "4fc97d14082dfc6178540edea26881f71ded89138679e90ce7851019bc8abf62",
+    "src/app/api/cron/social-worker/route.ts": "0489d9ef537f14b7e8558bae3853e1915ce5c3ffa32a6e368ddc2aa1f1a00815",
+    "src/app/api/social/publish/route.ts": "e015081235086464dba9095d13535c61d391c078cc23accf86abe61e350802fd",
+    "src/components/social/PublishEverywhereButton.tsx": "772908e67321de330eb68169479dec6ef58667b93e7bc2a614cb2616afc7bd5b",
+    "src/components/social/publish/PublishModalFooter.tsx": "968af13a98892def8b268e4d168d08e4ad29e162fad8e41e4e651c5a7d77dd68",
+    "src/components/social/publish/PublishResultsSection.tsx": "f4f6f08e5dc514001b329214fce32fa61bd2c13eaa52893f8957a8ff299a3e60",
+    "src/components/social/publish/publication-intent.ts": "4fc1a0eefbc750d4b3e42bf667f90429c7a0406f279da5be1fd4b626b24eace5",
+    "src/components/social/publish/publication-results.ts": "352e68c88b9c3a11d4741471c71c077194ad7f356f039c8589591d1afa235ecb",
+    "src/components/social/publish/usePublicationReconciliation.ts": "a0f6d621b70d3954e35302d26d5a0f5ab941bbf2d8dacd30e39bc73a4deb93e3",
+    "src/lib/publication-journal-admission.ts": "2de7590b7db5aa26e7b77ba08f042eb6bcd4db6ddabe4e01f0967ddcd459e848",
+    "src/lib/publication-journal-model.ts": "654251883b3cc193a2c5862e95499579cfad9bab871be059652b67b353db1b16",
+    "src/lib/publication-journal.ts": "366a1ede83de2773e9a1f7a0921916f5007b9385a5b11db54b33d6cec8992e3b",
+    "src/lib/social-publication-receipt.ts": "72020048d9af9cea25d7f8f30cd3faad1df9eeb1f65e261e95ce5b24844a85e6",
+    "src/lib/social-publication-worker.ts": "677a7cacf5940169d1e075343b97ec4bb2023450c697de5f1daad9023ad30529",
+    "src/lib/social-publication.ts": "c607b55390d9ec68454d6edb0e94371e1927bd3f203e2f2c8f48edf908a04047"
+  }
+}

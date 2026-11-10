@@ -150,6 +150,8 @@ jobs:
           PGPASSWORD: fixture
       - name: Account and integrated migration permissions on a private cluster
         run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-security-rls.mjs
+      - name: Durable social batch admission, leases and restart on native PostgreSQL
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-social-durable-postgres.mjs
       - name: Client write permissions and atomic social history
         run: |
           SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-final-write-permissions.mjs
@@ -203,6 +205,7 @@ jobs:
         with:
           name: sutra-database-results
           path: |
+            test-results/ci/social-durable-postgres.json
             qa/t03-closure-20261020/ci-r107
             qa/t07-autonomy-integrated-20261020/ci-countertest
             qa/t01-certification-20261019/partner-pg-ci

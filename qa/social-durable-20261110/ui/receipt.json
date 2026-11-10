@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-10T21:58:16.825524+00:00",
+  "status": "PARTIEL",
+  "cwd": "/workspace/scratch/682d6789af78/sutra-durable-20261110",
+  "head": "257b1bbeabc995a15cf7ffd85f75e44a16ab201c",
+  "branch": "codex/sutra-durable-batch-20261110",
+  "sourceSha256": {
+    "src/components/social/PublishEverywhereButton.tsx": "772908e67321de330eb68169479dec6ef58667b93e7bc2a614cb2616afc7bd5b",
+    "src/components/social/publish/usePublicationReconciliation.ts": "a0f6d621b70d3954e35302d26d5a0f5ab941bbf2d8dacd30e39bc73a4deb93e3",
+    "src/components/social/publish/publication-intent.ts": "4fc1a0eefbc750d4b3e42bf667f90429c7a0406f279da5be1fd4b626b24eace5",
+    "src/components/social/publish/publication-results.ts": "352e68c88b9c3a11d4741471c71c077194ad7f356f039c8589591d1afa235ecb",
+    "src/components/social/publish/PublishResultsSection.tsx": "f4f6f08e5dc514001b329214fce32fa61bd2c13eaa52893f8957a8ff299a3e60",
+    "src/components/social/publish/PublishModalFooter.tsx": "968af13a98892def8b268e4d168d08e4ad29e162fad8e41e4e651c5a7d77dd68",
+    "scripts/test-social-durable-ui.mjs": "49397b5335c0adaa90c21627f9c5ab1cb6bfe3f8988db4f3ba856804c8438154",
+    "scripts/test-social-multi-account-ui.mjs": "4fc97d14082dfc6178540edea26881f71ded89138679e90ce7851019bc8abf62"
+  },
+  "hashTiming": "Collected after the last browser attempt. These eight files were not edited between the last six-group observation and this collection. Other agents edited separate backend files; no immutable whole-tree qualification is claimed.",
+  "lint": {
+    "status": "PASS",
+    "command": "NODE_OPTIONS=--max-old-space-size=256 node node_modules/eslint/bin/eslint.js src/components/social/PublishEverywhereButton.tsx src/components/social/publish/usePublicationReconciliation.ts src/components/social/publish/publication-intent.ts src/components/social/publish/publication-results.ts src/components/social/publish/PublishResultsSection.tsx src/components/social/publish/PublishModalFooter.tsx scripts/test-social-durable-ui.mjs scripts/test-social-multi-account-ui.mjs",
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "diffCheck": {
+    "status": "PASS",
+    "command": "git diff --check",
+    "exitCode": 0
+  },
+  "browserVersion": "145.0.7632.6",
+  "currentCompleteBrowserGate": "NON_TESTE",
+  "browserAttempts": [
+    {
+      "name": "parallel initial UI suites and lint",
+      "status": "INCOMPLETE",
+      "legacyExitCode": 1,
+      "durableExitCode": 1,
+      "lintExitCode": 137,
+      "evidence": "Both browsers timed out during first account click; lint was killed without a diagnostic."
+    },
+    {
+      "name": "legacy sequential default Chromium",
+      "command": "node scripts/test-social-multi-account-ui.mjs",
+      "status": "INCOMPLETE",
+      "exitCode": 1,
+      "durationMs": 41696,
+      "observedPassedGroups": 10,
+      "remainingGroupsUnqualified": 11,
+      "evidence": "Page crashed; subsequent checks could not run. This predates the final explicit durable retry support; it does not qualify current source."
+    },
+    {
+      "name": "diagnostic renderer128",
+      "command": "NODE_OPTIONS=--max-old-space-size=256 SUTRA_UI_CHROMIUM_PATH=/tmp/sutra-ui-chromium-bounded node scripts/test-social-durable-ui.mjs",
+      "extraChromiumFlags": [
+        "--js-flags=--max-old-space-size=128",
+        "--renderer-process-limit=1"
+      ],
+      "status": "INCOMPLETE",
+      "exitCode": 1,
+      "observedPassedGroups": 0,
+      "evidence": "browserContext.newPage: Target page, context or browser has been closed"
+    },
+    {
+      "name": "durable default Chromium debug",
+      "command": "NODE_OPTIONS=--max-old-space-size=256 DEBUG=pw:browser node scripts/test-social-durable-ui.mjs",
+      "status": "INTERRUPTED",
+      "exitCode": 130,
+      "observedPassedGroups": 5,
+      "evidence": "GPU process exited unexpectedly: exit_code=9 repeatedly; interrupted this own session after loss of progress."
+    },
+    {
+      "name": "durable GPU disabled",
+      "command": "NODE_OPTIONS=--max-old-space-size=256 SUTRA_UI_CHROMIUM_PATH=/tmp/sutra-ui-chromium-bounded DEBUG=pw:browser node scripts/test-social-durable-ui.mjs",
+      "extraChromiumFlags": [
+        "--disable-gpu"
+      ],
+      "status": "INCOMPLETE",
+      "exitCode": 1,
+      "observedPassedGroups": 6,
+      "observedChecks": [
+        "202 admits two independent destinations once and labels them queued, never published",
+        "Closing stops reads; reloading restores the durable batch by video ID without POST or stored intent",
+        "Visible polling advances one destination while the other remains queued",
+        "Missing, unavailable, partial, duplicate and mismatched receipts preserve success and never authorize retry",
+        "A failed worker observation cannot demote published evidence or enable another admission",
+        "Only an explicit server retry capability and a deliberate click admit a failed destination again"
+      ],
+      "evidence": "page.reload: Page crashed; GPU process exited unexpectedly: exit_code=9. No complete PASS receipt was emitted."
+    },
+    {
+      "name": "final diagnostic rasterizer disabled, observed process memory",
+      "command": "NODE_OPTIONS=--max-old-space-size=256 SUTRA_UI_CHROMIUM_PATH=/tmp/sutra-ui-chromium-bounded node scripts/test-social-durable-ui.mjs",
+      "extraChromiumFlags": [
+        "--disable-gpu",
+        "--disable-software-rasterizer",
+        "--js-flags=--max-old-space-size=256"
+      ],
+      "status": "INCOMPLETE",
+      "exitCode": 1,
+      "observedPassedGroups": 0,
+      "peakObservedProcessRssKiB": 428876,
+      "elapsedSeconds": 30.86,
+      "evidence": "page.goto: Page crashed before the first group. The observed memory is not proof of an OOM cause."
+    }
+  ],
+  "limits": [
+    "Crash cause remains undetermined; no OOM diagnosis is claimed.",
+    "Partial groups across executions are not added together.",
+    "No full latest-source legacy or durable browser PASS.",
+    "No real social account, provider publication, production change or deployment.",
+    "Diagnostic browser flags exist only in a temporary launcher and these evidence notes. Both repository test scripts keep their standard Playwright launch configuration."
+  ],
+  "cleanup": {
+    "allOwnExecSessions": "completed or explicitly interrupted",
+    "knownLoopbackPorts": [
+      {
+        "port": 41275,
+        "connect_ex": 111
+      },
+      {
+        "port": 35787,
+        "connect_ex": 111
+      },
+      {
+        "port": 34739,
+        "connect_ex": 111
+      },
+      {
+        "port": 43325,
+        "connect_ex": 111
+      }
+    ],
+    "remoteServicesChanged": false
+  },
+  "nextGate": [
+    "node scripts/test-social-multi-account-ui.mjs",
+    "node scripts/test-social-durable-ui.mjs"
+  ],
+  "evidenceFormat": "Tool output excerpts, not full raw logs."
+}
