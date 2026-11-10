@@ -9,6 +9,8 @@ const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const heapOptions = ciHeapOptions(process.env.SUTRA_CI_HEAP_MB)
 const nodeTests = [
+  'scripts/test-auto-learn-analytics.mts', 'scripts/test-auto-learn-route.mts', 'scripts/test-auto-learn-memory.mts',
+  'scripts/test-auto-trends-memory.mts',
   'scripts/test-durable-request-store.mts',
   'scripts/test-dependency-security-20261109.mjs',
   'scripts/test-development-dependency-security.mjs',
