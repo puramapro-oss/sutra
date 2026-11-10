@@ -12,7 +12,7 @@ export type PublicationStatus = 'published' | 'scheduled' | 'publishing' | 'fail
 export const PUBLICATION_STATUS_LABELS: Record<PublicationStatus, string> = {
   published: 'Publie', scheduled: 'Programme', publishing: 'En cours', failed: 'Echec', unknown: 'A verifier',
 }
-export interface PublishResult { platform: SocialPlatform; accountId?: string; success: boolean; status?: PublicationStatus; postId?: string; postUrl?: string; externalPostId?: string; publishedAt?: string; error?: string }
+export interface PublishResult { platform: SocialPlatform; accountId?: string; localAccountId?: string; success: boolean; status?: PublicationStatus; postId?: string; postUrl?: string; externalPostId?: string; publishedAt?: string; error?: string }
 export interface AnalyticsData { views: number; likes: number; shares: number; comments: number; engagementRate?: number }
 
 function headers(): HeadersInit {
@@ -42,12 +42,16 @@ export function getAuthorizedProfileId(userId: string): string {
   } catch { throw new Error('SUTRA_ZERNIO_PROFILE_BINDING_REQUIRED') }
 }
 
-export async function getOAuthUrl(platform: SocialPlatform, profileId: string, redirectUri: string): Promise<OAuthUrlResponse> {
+export async function getOAuthUrl(platform: SocialPlatform, profileId: string, redirectUri: string, reconnectAccountId?: string): Promise<OAuthUrlResponse> {
   try {
-    if (!(OAUTH_PLATFORMS as readonly string[]).includes(platform) || !providerId(profileId)) throw new Error()
+    if (!(OAUTH_PLATFORMS as readonly string[]).includes(platform) || !providerId(profileId)
+      || (reconnectAccountId !== undefined && !providerId(reconnectAccountId))) throw new Error()
     const redirect = new URL(redirectUri)
     if (redirect.protocol !== 'https:' || redirect.username || redirect.password) throw new Error()
     const qs = new URLSearchParams({ profileId, redirect_url: redirectUri, scopes: 'posting' })
+    // The provider refuses a different login before mutating its account. The
+    // local callback still independently verifies identity and consent revision.
+    if (reconnectAccountId) qs.set('reconnectAccountId', reconnectAccountId)
     const res = await fetchWithRetry(`${ZERNIO_BASE}/connect/${providerPlatform(platform)}?${qs}`, {
       method: 'GET', headers: headers(), redirect: 'error', timeoutMs: 20_000,
     }, 1)

@@ -7,13 +7,23 @@ export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 export const maxDuration = 120
 
+const platformSchema = z.enum(['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest', 'reddit', 'threads', 'snapchat', 'tumblr', 'mastodon', 'bluesky', 'vimeo'])
 const schema = z.object({
   videoId: z.string().uuid(),
-  platforms: z.array(z.enum(['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest', 'reddit', 'threads', 'snapchat', 'tumblr', 'mastodon', 'bluesky', 'vimeo'])).min(1).max(14),
+  platforms: z.array(platformSchema).min(1).max(14),
   accountIds: z.record(z.string(), z.string().uuid()).optional(),
+  destinations: z.array(z.object({ platform: platformSchema, accountId: z.string().uuid() }).strict()).min(1).max(50).optional(),
   caption: z.string().max(20000).optional(), hashtags: z.array(z.string().max(100)).max(100).optional(),
   title: z.string().max(500).optional(), description: z.string().max(20000).optional(), tags: z.array(z.string().max(100)).max(100).optional(),
-  autoCaption: z.boolean().optional(), scheduledAt: z.string().datetime({ offset: true }).optional(),
+  autoCaption: z.boolean().optional(), reconcileOnly: z.boolean().optional(), scheduledAt: z.string().datetime({ offset: true }).optional(),
+}).superRefine((input, context) => {
+  if (!input.destinations) return
+  const platforms = new Set(input.destinations.map(destination => destination.platform))
+  if (input.accountIds || new Set(input.destinations.map(destination => destination.accountId)).size !== input.destinations.length
+    || input.platforms.some(platform => !platforms.has(platform))
+    || input.destinations.some(destination => !input.platforms.includes(destination.platform))) {
+    context.addIssue({ code: 'custom', path: ['destinations'], message: 'Selection des comptes incoherente' })
+  }
 })
 
 export async function POST(req: Request) {

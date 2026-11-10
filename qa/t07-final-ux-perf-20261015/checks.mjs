@@ -71,16 +71,18 @@ export async function finalChecks({ page, context, base, fixture, output, check,
       })
       await check(`${path} ${width}: interrupted network releases loading and preserves retry`, async () => {
         mode = 'interrupt'
-        const before = authCalls.length
-        await submit.click()
-        await expect(submit).toBeEnabled({ timeout: 12000 })
-        await expect(page.locator('[data-sonner-toast]').first()).toBeVisible()
-        await expect(page.getByTestId('email-input')).toHaveValue('ux-test@example.invalid')
-        assert.equal(authCalls.length - before, 1)
-        mode = 'failure'
-        await submit.click()
-        await expect(submit).toBeEnabled({ timeout: 12000 })
-        assert.equal(authCalls.length - before, 2)
+        try {
+          const before = authCalls.length
+          await submit.click()
+          await expect(submit).toBeEnabled({ timeout: 12000 })
+          await expect(page.locator('[data-sonner-toast]').first()).toBeVisible()
+          await expect(page.getByTestId('email-input')).toHaveValue('ux-test@example.invalid')
+          assert.equal(authCalls.length - before, 1)
+          mode = 'failure'
+          await submit.click()
+          await expect(submit).toBeEnabled({ timeout: 12000 })
+          assert.equal(authCalls.length - before, 2)
+        } finally { mode = 'failure' }
       })
       await check(`${path} ${width}: labels, contrast and no horizontal overflow`, async () => {
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true)

@@ -1,0 +1,734 @@
+# social-migration | node scripts/test-social-multi-account-migration.mjs
+
+Source: native-evidence/sutra16-social-migration.log
+
+PASS foreign shared-table marker refuses the migration atomically
+PASS legacy singleton upgrades without rewriting accounts, history, ACL, RLS or triggers
+PASS both previously enabled autopilots have empty explicit destinations
+PASS two accounts of one network coexist and audit events retain separate local identities
+PASS duplicate external and NULL legacy identities are rejected without partial history
+PASS uniqueness includes owner and network, while owner-read RLS still isolates accounts
+PASS existing authorization-history transition rules remain active after upgrade
+PASS destination arrays have a 50-item bound, reject NULLs and preserve empty defaults
+PASS a second application changes neither rows, history nor constraints and indexes
+{"status":"PASS","checks":9,"failures":0,"skips":0,"postgresql":"16.15","engine":"PostgreSQL native (pg)","nativeConcurrency":"NOT_TESTED","remote":false,"migrationSha256":"79c7d93071ec707eb4f153e670c86fe0bfddc6d10c395b31007f358a88fc2165"}
+
+# durable-migration | npm run test:migration-local
+
+Source: native-evidence/sutra16-durable-migration.log
+
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> sutra@0.1.0 test:migration-local
+> node scripts/test-migration-local.mjs
+
+✓ migration v10 appliquée (search_path sutra, backfill exécuté)
+✓ backfill : consommations du mois reprises, quota immédiatement borné
+✓ rejouabilité : re-run sans double comptage, réservations vivantes intactes
+✓ quota atomique : course limite 1 → exactement 1 réservée, 1 refusée
+✓ settlement : complete consomme la place, release la libère
+✓ illimité (limite 0) : traçable sans blocage
+✓ claim exclusif : 2 workers → 2 tâches distinctes
+✓ reprise : bail expiré → repris par un autre worker, tentative tracée
+✓ claim par clé : ciblé, exclusif, borné par tentatives
+✓ checkpoint (reprise sans régénérer) + heartbeat + idempotence UNIQUE
+✓ annulation (queued) : cancelled + place libérée atomiquement, jamais re-claimable
+✓ annulation en vol : place libérée, tâche jamais reprise
+✓ checkpoint MERGE : morceaux successifs cumulés sans écrasement
+MIGRATION v10 : tous les tests passent
+
+# pipeline | node --import tsx --test scripts/test-pipeline-postgres.mts
+
+Source: native-evidence/sutra16-pipeline.log
+
+✔ 12 concurrent claims obtain one owner; 24 independent checkpoints survive parallel writes (164.127337ms)
+✔ expired/replaced/cancelled owner cannot heartbeat, checkpoint, finish or write business output (27.050098ms)
+✔ ready refuses raw URL, missing proof, missing stage and mandatory audio; verified export persists (72.21101ms)
+✔ AUTO ready effects are atomic and once-only across concurrent replays (51.772998ms)
+✔ finish requires result, settles once; missing quota rolls back status; exhausted jobs quarantine (15.629171ms)
+✔ notification writes deduplicate atomically; owner mismatch and missing row refuse success (21.605296ms)
+✔ 12 same-intent submissions atomically create one job, one video and one quota reservation (23.712892ms)
+✔ failed initial video insert rolls back quota and task; retry after lost response reuses committed task (6.890655ms)
+✔ cancellation settles original month once and never consumes a new month reservation (6.351104ms)
+✔ NULL lease or owner cannot authorize any mutation, even with a matching worker (26.693096ms)
+✔ ready refuses unfinished checkpoints, invalid track values and zero-size export (357.189773ms)
+✔ silent export can skip optional tracks, but cannot skip scenes or use string validation flags (76.480451ms)
+✔ remote journal preserves acquired legacy identity while allowing status updates (56.760744ms)
+✔ LTX v2 permits first ID and sequential revisions, rejects identity replacement and revision rollback (85.744457ms)
+✔ Salad journal preserves scope, qualification and budget while allowing recovery and artifact result (77.124784ms)
+LOCAL_TEST_DATABASE=sutra_t03_79_1794322328529
+✔ provider ID map is append-only; malformed JSON and overwrites leave original receipt intact (25.986679ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1292.963378
+
+# rls | node scripts/test-security-rls.mjs
+
+Source: native-evidence/sutra16-rls.log
+
+RLS_LOCAL_PASS 261 assertions; baseline escalation reproduced; migration replayed; no remote DB
+Local-only fixture retained: /tmp/sutra-t02-pg-Yh0HKl
+
+# permissions | node scripts/test-final-write-permissions.mjs
+
+Source: native-evidence/sutra16-permissions.log
+
+{"status":"PASS","checks":30,"failures":0,"skips":0,"remote":false}
+
+# history | node scripts/test-final-social-history.mjs
+
+Source: native-evidence/sutra16-history.log
+
+PASS baseline metadata distinguishes absent history without query failure
+PASS schema guard refuses an unrelated shared table atomically
+PASS migration applies without changing public table ACL or RLS
+PASS stable metadata verifies definer, strict search path, enabled triggers and restricted ACL
+PASS foreign app and legacy rows remain writable and unaudited
+PASS legacy Zernio without revision revokes without inventing historical consent
+PASS legacy revocation rejects foreign missing malformed and pending provenance atomically
+PASS legacy revocation cannot transfer identity or profile or insert a fabricated request
+PASS eight legacy CAS revocation writers record exactly one operation
+PASS fresh connection produces one posting request with unknown actual grants
+PASS pre-migration authorization is preserved as observation on reconnect
+PASS revoke request is unknown; confirmation retains the same operation revision
+PASS idempotent cleanup does not duplicate confirmation or erase history
+PASS reconnect retains the first authorization and revocation facts
+PASS eight concurrent real CAS writers produce one new account revision and fact
+PASS audit insertion failure rolls back the account mutation
+PASS explicit transaction rollback removes both new fact and account change
+PASS history rejects direct insert update delete truncate by every application role
+PASS owner-only read rejects cross-user anonymous revoked and missing identities
+PASS shared browser writer cannot forge SUTRA facts even if parent ACL drifts
+PASS other application writer cannot claim SUTRA audit authority
+PASS strict search path ignores shadow profiles and history; trigger scope is exact
+PASS ownership provenance and revision reuse fail closed without partial history
+PASS pending revoke cannot be bypassed by reconnect or fabricated confirmation
+PASS migration replay preserves events and identical privilege metadata
+PASS physical account deletion cannot cascade into historical facts
+PASS rollback retains history immutable ACL and RLS; reapply resumes observation safely
+{"status":"PASS","checks":27,"failures":0,"skips":0,"remote":false,"ownClusterStopped":true}
+
+# history-routes | node qa/t06-integrated-retest-20261015/run-postgres.mjs history
+
+Source: native-evidence/sutra16-history-routes.log
+
+PASS PostgreSQL T06 history
+Own isolated PostgreSQL cluster stopped and preserved
+
+# schedule | node qa/t01-closure-20261015/schedule-postgres-run.mjs
+
+Source: native-evidence/sutra16-schedule.log
+
+PRIVATE_CLUSTER_STOPPED /tmp/sutra-t01-schedule-pg-qY8t6u
+
+# partner | node qa/t01-certification-20261019/partner-pg-run.mjs partner-pg-ci
+
+Source: native-evidence/sutra16-partner-matched-client.log
+
+Private PostgreSQL: PASS; stopped=true
+
+# recovery | node qa/t03-closure-20261020/run.mjs ci-r107 security
+
+Source: native-evidence/sutra16-recovery-matched-client.log
+
+PRIVATE_CLUSTER_STOPPED: /workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t03-closure-20261020/ci-r107
+
+# recovery-catalogue | python3 qa/t01-closure-20261020/verify_catalogue.py qa/t03-closure-20261020/ci-r107/receipt.json
+
+Source: native-evidence/sutra16-recovery-catalogue-matched-client.log
+
+{"status": "PASS", "querySha256": "907b5d544b295fd7dacdd4cbf6795f11d300f1dd181a23ab3d6fb68f2e6d12a6", "catalogueSha256": "a6c0275cd5b96b06100ec264781b7dd82cb868460f10eb2900e96d8f2d140449", "functions": 3, "tables": 3, "externalCalls": 0, "dataRead": false, "fixtureOnly": true}
+
+# autonomy | node qa/t07-autonomy-integrated-20261020/run.mjs ci-countertest 846bf6ef7d65be9b9b179739b229ced6339deb8f
+
+Source: native-evidence/sutra16-autonomy.log
+
+PRIVATE_CLUSTER_STOPPED=true; receipts=/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t07-autonomy-integrated-20261020/ci-countertest
+
+# api | node --experimental-test-module-mocks --import tsx --test --test-concurrency=1 qa/t03-final-candidate-20261015/api-postgres.test.mts
+
+Source: native-evidence/sutra16-api.log
+
+(node:1999) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1999) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ lost submission ACK is reconciled by GET, then cancelled without a second logical job (118.610561ms)
+✔ a still-uncommitted submission remains absent; false cancel is not evidence of cancellation (23.145699ms)
+✔ lost cancel ACK after commit stays 503 until the durable receipt is read (13.481712ms)
+✔ malformed cancel ACK after commit stays 503 until the durable receipt is read (11.267957ms)
+✔ SQL cancellation failure rolls back quota release and job state; the same intent can cancel later (23.270136ms)
+✔ an SQL read error is 503 without a mutation; user binding prevents observing another owner (22.362933ms)
+✔ cancellation wins between a persisted checkpoint and finish: no success, no reacquisition (36.485242ms)
+✔ finish wins before cancellation; disabled music null is a valid reusable terminal receipt (28.907778ms)
+✔ 12 concurrent HTTP deliveries share one worker, checkpoint and reservation (50.165659ms)
+✔ 12 cancellations after lease expiry release once and fence the obsolete worker checkpoint (20.554796ms)
+✔ an uncertain remote intention stays quarantined on HTTP redelivery and keeps acquired output (16.773574ms)
+✔ lost finish ACK is recovered from a valid SQL receipt without a second quota mutation (12.038109ms)
+✔ SQL failure during finish never returns success or consumes quota despite the acquired checkpoint (43.191029ms)
+T03_FINAL_SETTLEMENT {"reserved":0,"consumed":3,"released":10,"teardownCancellations":2,"providerCalls":0}
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1005.524787
+
+# salad | node --import tsx --test scripts/test-salad-persistence.mts
+
+Source: native-evidence/sutra16-salad.log
+
+✔ 24 independent sessions reserve one execution; replay and foreign input fail closed (97.172393ms)
+✔ distinct jobs race for one global slot, including UNKNOWN after deadline (44.459856ms)
+✔ lost acknowledgment and stale complete-record CAS cannot erase a committed checkpoint (35.164198ms)
+✔ only an immutable hash-verified external artifact releases the slot (21.433056ms)
+✔ restricted role has only five functions, no table mutation or other application access (6.453196ms)
+✔ actual PostgreSQL adapter survives reconnect and expunges persistence failure details (22.678757ms)
+PRIVATE_DATABASE_PRESERVED=sutra_ci_salad_2031_1794322346694
+✔ actual worker with external PostgreSQL executes once, survives restart and downloads immutable bytes (64.173902ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 596.368227
+
+# durable | node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t03-durable-reliability-20261014/postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts qa/t01-final-20261015/durable-postgres.test.mts
+
+Source: native-evidence/sutra16-durable.log
+
+✔ SQL refuses invalid terminal result false without consuming quota (143.770856ms)
+✔ SQL refuses invalid terminal result true without consuming quota (12.847375ms)
+✔ SQL refuses invalid terminal result "" without consuming quota (15.210686ms)
+✔ SQL refuses invalid terminal result 0 without consuming quota (32.612213ms)
+✔ SQL refuses invalid terminal result [] without consuming quota (28.72003ms)
+✔ SQL refuses invalid terminal result {} without consuming quota (18.030993ms)
+✔ SQL refuses invalid terminal result {"videoUrl":"raw.mp4"} without consuming quota (18.472462ms)
+✔ generation RPC cannot enter social states without media or publication journal (41.720914ms)
+✔ retry has durable backoff shared by targeted and batch claims, including concurrent restart (28.850381ms)
+✔ uncertain operation is quarantined directly, with reservation and completed video retained (11.368618ms)
+✔ completed prior-month reservation is settled once, current-month budget untouched (13.813526ms)
+✔ expired lease cannot cancel the new worker result through stale finish or checkpoint (17.896331ms)
+✔ valid measured results finish once for every generation kind and production assembly (49.053078ms)
+✔ substep results agree with their complete checkpoint; invalid string sentinels are refused (67.930814ms)
+✔ SQL rejects missing stages, missing required tracks, raw or unmeasured final output (162.252581ms)
+✔ quota SQL failure rolls back done, preserves acquired result and permits settlement-only retry (27.243015ms)
+✔ legacy compositing_failed is refused; generation states remain SQL-compatible and acquired data survives failure (32.134755ms)
+✔ backoff grows on retry and exhausted jobs are quarantined without releasing uncertain budget (11.537046ms)
+✔ ready rejects malformed scene receipts and missing audio for an acquired optional track (48.55826ms)
+✔ SQL finalization and ready reject fractional measured dimensions (44.1643ms)
+✔ cancellation creates one bounded durable audit receipt with twelve concurrent requests (23.567478ms)
+✔ failed audit persistence rolls cancellation and quota back together (10.857144ms)
+✔ missing quota fails closed without an audit event or cancellation (6.372981ms)
+✔ queued prior-month cancellation audits once without touching current-month quota (9.88309ms)
+✔ SQL done rejects legacy null result and retains reservation; only explicit music skip succeeds (174.912385ms)
+✔ duplicate final result is idempotent; conflicting result cannot replace the completed output (53.989509ms)
+✔ conflicting concurrent results elect one durable winner without overwriting it (25.639026ms)
+✔ completed stages and scenes survive conflicting late delivery, while provider journal can advance (23.322244ms)
+✔ paid outputs and remote identities are immutable before aggregate stage completion (112.693604ms)
+✔ targeted exhausted claim quarantines atomically and retains uncertain work and budget (17.526846ms)
+✔ canonical SQL CHECKs accept orchestrator states; rejected state rolls back business write (26.006207ms)
+✔ canonical auto ready and pending_approval require final proof, complete stages and requested tracks (26.374515ms)
+✔ separate worker process exits after durable remote ID; replacement polls once and replay does nothing (509.178301ms)
+✔ worker restart after provider ACK lost reconciles persisted ID once, preserves all independent stages (54.470653ms)
+✔ provider response without durable ID never resubmits after restart; completed video survives music failure (14.533608ms)
+✔ SQL checkpoint rollback before paid intent prevents any provider call and allows a safe retry (16.979265ms)
+✔ cancellation during remote execution fences late results and releases reservation exactly once (26.29158ms)
+✔ lost finish response plus 12 duplicate completions: one completed debit, read reconciliation only (141.51273ms)
+✔ expired lease after final checkpoint: new owner finishes; old owner cannot alter result or budget (35.32148ms)
+✔ cancel races finish: exactly one quota settlement, cancellation can never reconcile as done (96.940518ms)
+✔ quota settlement DB failure rolls back done, retains result; restoring ledger allows safe finish (23.940784ms)
+✔ explicitly skipped music reconciles its committed null result after a lost ACK (13.71764ms)
+✔ failed outcome with lost ACK and duplicate callbacks releases exactly one reservation (26.955588ms)
+✔ PG T06: 24 concurrent CAS on a legacy nullable row produce exactly one winner (40.117463ms)
+✔ PG T06: JSONB equality accepts reordered keys but refuses a changed revision with the same clock (10.319869ms)
+✔ PG T06: stale callback snapshot cannot reactivate a confirmed revoked account (9.749923ms)
+✔ PG T06: one in-flight revoke fences 23 concurrent retries and only one remote DELETE (19.407918ms)
+✔ PG T06: unknown DELETE retains durable fence and refuses a new OAuth state (9.672507ms)
+✔ PG T06: the same external identity gives one insert winner across 24 SQL sessions (16.284821ms)
+✔ PG T06: 24 distinct external identities on the same network persist across concurrent SQL sessions (23.519611ms)
+✔ PG T06: another owner or a changed external account cannot pass CAS (7.748853ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3532.147618
+
+# native-details/postgres.log
+
+Source: native-evidence/sutra-complete-proof/native-details/postgres.log
+
+TAP version 13
+# (node:1588) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1588) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: PG routes: connection, revocation and reconnection retain consent history and clear credentials
+ok 1 - PG routes: connection, revocation and reconnection retain consent history and clear credentials
+  ---
+  duration_ms: 78.888666
+  type: 'test'
+  ...
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# Subtest: PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect
+ok 2 - PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect
+  ---
+  duration_ms: 15.082147
+  type: 'test'
+  ...
+# Subtest: PG routes: one state can produce only one successful callback under concurrency
+ok 3 - PG routes: one state can produce only one successful callback under concurrency
+  ---
+  duration_ms: 23.115734
+  type: 'test'
+  ...
+# Subtest: PG routes: independent add callbacks for one external identity persist one account and one consent event
+ok 4 - PG routes: independent add callbacks for one external identity persist one account and one consent event
+  ---
+  duration_ms: 12.152209
+  type: 'test'
+  ...
+# Subtest: PG routes: state refuses another session, another user, profile change and expiry
+ok 5 - PG routes: state refuses another session, another user, profile change and expiry
+  ---
+  duration_ms: 8.539902
+  type: 'test'
+  ...
+# Subtest: PG routes: audit write failure rolls back account; callback state remains consumed
+ok 6 - PG routes: audit write failure rolls back account; callback state remains consumed
+  ---
+  duration_ms: 11.452548
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent pending cleanup retains one DELETE and confirms the original operation
+ok 7 - PG routes: concurrent pending cleanup retains one DELETE and confirms the original operation
+  ---
+  duration_ms: 28.714276
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent account change before-reload prevents false revocation confirmation
+ok 8 - PG routes: concurrent account change before-reload prevents false revocation confirmation
+  ---
+  duration_ms: 11.449223
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent account change after-reload prevents false revocation confirmation
+ok 9 - PG routes: concurrent account change after-reload prevents false revocation confirmation
+  ---
+  duration_ms: 14.120842
+  type: 'test'
+  ...
+# Subtest: PG routes: legacy scoped account without revision must still revoke locally
+ok 10 - PG routes: legacy scoped account without revision must still revoke locally
+  ---
+  duration_ms: 8.536462
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 505.04805
+
+# native-details/schedule-api-postgres.log
+
+Source: native-evidence/sutra-complete-proof/native-details/schedule-api-postgres.log
+
+(node:1650) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1650) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ 12 concurrent route requests serialize the same snapshot; SQL permits one winner (75.569103ms)
+✔ authenticated owner survives spoof and stale snapshot cannot overwrite (3.523755ms)
+✔ JSONB comparison preserves legacy extensions despite object key order (2.991144ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 425.365231
+
+# partner/tests.log
+
+Source: native-evidence/sutra-complete-proof/partner/tests.log
+
+(node:45) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ 20 concurrent real handlers at 99 scans admit exactly one, independent DB sessions (94.897482ms)
+✔ 20 concurrent same-IP requests record only once and keep idempotent redirect (17.329092ms)
+✔ expired history does not consume rolling quota and is preserved (4.650978ms)
+✔ inactive and unknown partners do not record or set attribution cookie (4.507964ms)
+✔ anon cannot execute service-only RPC (2.87269ms)
+✔ authenticated cannot execute service-only RPC (3.229846ms)
+✔ malformed address and network prefix fail closed, no DB diagnostic or cookie (4.149056ms)
+✔ read-only transaction and missing RPC both fail closed (5.239522ms)
+✔ non-default snapshot isolation explicitly rejects instead of accepting stale quota (2.926742ms)
+✔ apply replay and rollback preserve historical rows, RLS and least privileges (9.133875ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 467.26123
+
+# partner/receipt.json
+
+Source: native-evidence/sutra-complete-proof/partner/receipt.json
+
+{
+  "commands": [
+    {
+      "name": "init",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/initdb",
+        "-D",
+        "/tmp/sutra-t01-partner-zIZJKe/data",
+        "--auth=trust",
+        "--username=fixture",
+        "--no-locale",
+        "--encoding=UTF8",
+        "-c",
+        "shared_memory_type=mmap",
+        "-c",
+        "dynamic_shared_memory_type=posix",
+        "-c",
+        "max_connections=24",
+        "-c",
+        "shared_buffers=16MB"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "start",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/pg_ctl",
+        "-D",
+        "/tmp/sutra-t01-partner-zIZJKe/data",
+        "-l",
+        "/tmp/sutra-t01-partner-zIZJKe/server.log",
+        "-o",
+        "-h 127.0.0.1 -k '' -p 42499 -c timezone=UTC",
+        "-w",
+        "start"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "create",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/createdb",
+        "sutra_ci_partner_local"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "tests",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "qa/t01-certification-20261019/partner-postgres.test.mts"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "backup",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/pg_dump",
+        "--format=custom",
+        "--file=/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t01-certification-20261019/partner-pg-ci/private.dump"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "create-restore",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/createdb",
+        "sutra_ci_partner_restored"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "restore",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/pg_restore",
+        "--exit-on-error",
+        "--dbname=sutra_ci_partner_restored",
+        "/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t01-certification-20261019/partner-pg-ci/private.dump"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "rows-before",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/psql",
+        "-AtX",
+        "-c",
+        "SELECT count(*), md5(string_agg(row_to_json(s)::text,',' ORDER BY id)) FROM sutra.partner_scans s"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "rows-restored",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/psql",
+        "--dbname=sutra_ci_partner_restored",
+        "-AtX",
+        "-c",
+        "SELECT count(*), md5(string_agg(row_to_json(s)::text,',' ORDER BY id)) FROM sutra.partner_scans s"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "stop",
+      "command": [
+        "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime-16/native-full/bin/pg_ctl",
+        "-D",
+        "/tmp/sutra-t01-partner-zIZJKe/data",
+        "-m",
+        "fast",
+        "-w",
+        "stop"
+      ],
+      "exit": 0
+    }
+  ],
+  "hashes": {
+    "migrations/20261019_partner_scan_atomic.sql": "b26599554625ffe27688e9deb75d1aa84d498f551afd1d58b3cd052d52e135d4",
+    "migrations/20261019_partner_scan_atomic.rollback.sql": "9692b31174ba391bd26c93b1f8a00d00abb1b2c7e191e92e28a74a0362c81679",
+    "src/app/api/partner/scan/[code]/route.ts": "c7a01040da220616465aac68923abdf2b4e09c1e5fa063e3282c66e0472f36a1",
+    "qa/t01-certification-20261019/partner-postgres.test.mts": "00f1b90115bfcf41c8544fc407079d3e3161e6348b0e0a08a1a33a30d0b4acc2"
+  },
+  "cluster": "/tmp/sutra-t01-partner-zIZJKe",
+  "stopped": true,
+  "providerCalls": 0,
+  "remoteChanges": 0,
+  "result": "PASS"
+}
+
+# partner/rows-before.log
+
+Source: native-evidence/sutra-complete-proof/partner/rows-before.log
+
+1|6a734def9984a39571b660c42d916e3b
+
+# partner/rows-restored.log
+
+Source: native-evidence/sutra-complete-proof/partner/rows-restored.log
+
+1|6a734def9984a39571b660c42d916e3b
+
+# recovery/recovery.log
+
+Source: native-evidence/sutra-complete-proof/recovery/recovery.log
+
+(node:117) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:117) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ R107: the actual cron recovers noon after a 20-hour interruption (168.923789ms)
+✔ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (48.026007ms)
+✔ lost commit response reconciles from durable cursor without a second job or quota (37.320854ms)
+✔ invalid receipt never claims success; subsequent read reconciles its committed jobs (33.133046ms)
+✔ SQL job, cursor and quota errors roll back the entire window before retry (169.449782ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (29.449223ms)
+✔ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (509.64005ms)
+✔ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (51.119983ms)
+✔ missing migration fails closed without falling back to the old lossy window (3.406085ms)
+✔ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (394.324603ms)
+✔ suppressed SQL cursor update cannot return success or retain partial jobs (110.997256ms)
+✔ malformed legacy schedules cannot silently advance a calendar (41.082782ms)
+✔ thrown transport exception is redacted and leaves the cursor retryable (42.357938ms)
+✔ service role runs the real scheduler RPC and partner migration/rollback leaves durable functions intact (116.076568ms)
+✔ corrupt job receipt status is not accepted as scheduling success (28.801387ms)
+✔ known reconciliation-required receipt is not an overall success (12.75786ms)
+✔ DST fold and adjoining catch-up windows produce one logical occurrence (47.8563ms)
+✔ schedule edit and reactivation preserve materialised work and reset only the new calendar (27.733413ms)
+✔ owner RLS INSERT and DELETE/reinsert cannot choose past or future cursors (38.841654ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3189.033784
+
+# recovery/scheduler-isolation.log
+
+Source: native-evidence/sutra-complete-proof/recovery/scheduler-isolation.log
+
+✔ both authenticated users can read/update their own schedule but cannot see or update each other (44.379084ms)
+✔ an empty session claim cannot read, update or delete either schedule (2.875922ms)
+✔ anon cannot bypass the server by invoking the scheduler RPC directly (2.952737ms)
+✔ authenticated cannot bypass the server by invoking the scheduler RPC directly (2.536953ms)
+✔ the owner cannot change the cursor directly even with a valid session (1.905833ms)
+✔ ownership cannot be reassigned to another user by an authenticated update (2.285965ms)
+✔ a privileged server RPC with a forged input owner fails before job, cursor or quota changes (15.478112ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 355.378621
+
+# recovery/promotion-catalogue.json
+
+Source: native-evidence/sutra-complete-proof/recovery/promotion-catalogue.json
+
+{
+  "status": "PASS",
+  "querySha256": "907b5d544b295fd7dacdd4cbf6795f11d300f1dd181a23ab3d6fb68f2e6d12a6",
+  "catalogueSha256": "a6c0275cd5b96b06100ec264781b7dd82cb868460f10eb2900e96d8f2d140449",
+  "functions": 3,
+  "tables": 3,
+  "externalCalls": 0,
+  "dataRead": false,
+  "fixtureOnly": true
+}
+
+# autonomy/pool-drain.log
+
+Source: native-evidence/sutra-complete-proof/autonomy/pool-drain.log
+
+✔ reproduction: pool.end resolves while an idle socket has not closed (1.797923ms)
+✔ drain waits for every actual connection before permitting restart (3.225348ms)
+✔ drain handles no connections and already disconnected connections (0.309035ms)
+✔ unexpected database errors remain observable and are not suppressed (0.54587ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 141.908854
+
+# autonomy/countertest.log
+
+Source: native-evidence/sutra-complete-proof/autonomy/countertest.log
+
+PASS API schedule CAS: double edit has one winner; invalid IANA and cursor writes rejected
+PASS R107: microsecond cursor survives real PostgreSQL restart and 20h interruption, exactly one noon job
+PASS 12 concurrent ticks and repeated delivery reserve one occurrence; cancellation never resurrects it
+PASS lost committed RPC response then restart reconciles without a second occurrence, charge or inline retry
+PASS network-before-write and quota failure preserve cursor and roll back every occurrence before retry
+PASS multi-day outage reports bounded catchup; every daily occurrence recovered once
+PASS integrated SQL calendar: DST fold
+PASS integrated SQL calendar: DST spring gap
+PASS integrated SQL calendar: daily weekly biweekly monthly
+PASS expired lease resumes checkpoint; stale worker fenced; cancel preserves provider identity and unique audit/quota
+PASS production API cancellation recovers lost submit and cancel ACK, restart and repeated request
+PASS scheduler RPC permissions deny ordinary client; stale cursor and oversized window fail closed
+PASS activation and publication remain disabled; no worker or provider invoked by scheduler tests
+(node:1898) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1898) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+
+# autonomy/future-port.log
+
+Source: native-evidence/sutra-complete-proof/autonomy/future-port.log
+
+✔ future visual callback resumes a durable ID without submitting again; duplicate delivery shares one operation (2.024983ms)
+✔ lost submission response without durable ID quarantines a future callback, with no fallback submission (0.351358ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 287.375005
+
+# autonomy/results.json
+
+Source: native-evidence/sutra-complete-proof/autonomy/results.json
+
+{
+  "candidate": "846bf6ef7d65be9b9b179739b229ced6339deb8f",
+  "results": [
+    {
+      "name": "API schedule CAS: double edit has one winner; invalid IANA and cursor writes rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "R107: microsecond cursor survives real PostgreSQL restart and 20h interruption, exactly one noon job",
+      "status": "PASS"
+    },
+    {
+      "name": "12 concurrent ticks and repeated delivery reserve one occurrence; cancellation never resurrects it",
+      "status": "PASS"
+    },
+    {
+      "name": "lost committed RPC response then restart reconciles without a second occurrence, charge or inline retry",
+      "status": "PASS"
+    },
+    {
+      "name": "network-before-write and quota failure preserve cursor and roll back every occurrence before retry",
+      "status": "PASS"
+    },
+    {
+      "name": "multi-day outage reports bounded catchup; every daily occurrence recovered once",
+      "status": "PASS"
+    },
+    {
+      "name": "integrated SQL calendar: DST fold",
+      "status": "PASS"
+    },
+    {
+      "name": "integrated SQL calendar: DST spring gap",
+      "status": "PASS"
+    },
+    {
+      "name": "integrated SQL calendar: daily weekly biweekly monthly",
+      "status": "PASS"
+    },
+    {
+      "name": "expired lease resumes checkpoint; stale worker fenced; cancel preserves provider identity and unique audit/quota",
+      "status": "PASS"
+    },
+    {
+      "name": "production API cancellation recovers lost submit and cancel ACK, restart and repeated request",
+      "status": "PASS"
+    },
+    {
+      "name": "scheduler RPC permissions deny ordinary client; stale cursor and oversized window fail closed",
+      "status": "PASS"
+    },
+    {
+      "name": "activation and publication remain disabled; no worker or provider invoked by scheduler tests",
+      "status": "PASS"
+    }
+  ],
+  "observations": [
+    {
+      "risk": "R107",
+      "cursorBeforeRestart": "2026-11-06T03:00:00+00:00",
+      "cursorAfterCatchup": "2026-11-06T23:00:00+00:00",
+      "jobs": 1
+    }
+  ],
+  "scope": "real local PostgreSQL + canonical API handlers; mocked session/transport; no browser or provider"
+}

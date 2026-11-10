@@ -9,10 +9,13 @@ import { createRequire } from 'node:module'
 import { chromium, expect } from '@playwright/test'
 import { generationErrorCases, socialAccounts } from './generation-fixtures.mjs'
 import { capabilitiesCases } from './capabilities-fixtures.mjs'
+import { assertAutopilotAccountChoices, assertSocialAccountRows } from './social-account-checks.mjs'
 
 const require = createRequire(import.meta.url), socialOnly = process.argv.includes('--social-only')
 const capabilitiesOnly = process.argv.includes('--capabilities-only')
 const visualOnly = process.argv.includes('--visual-only')
+const youtubeAccount = socialAccounts.find(account => account.platform === 'youtube')
+assert.ok(youtubeAccount, 'YouTube fixture account exists')
 const output = resolve('qa/t07-modes-20261014/evidence', socialOnly ? 'social' : capabilitiesOnly ? visualOnly ? 'capabilities-visual' : 'capabilities' : '')
 await mkdir(output, { recursive: true })
 const user = { id: '11111111-1111-4111-8111-111111111111', aud: 'authenticated', role: 'authenticated', email: 'studio-test@example.invalid', app_metadata: { provider: 'email', providers: ['email'] }, user_metadata: { name: 'Studio Test' }, created_at: new Date().toISOString(), email_confirmed_at: new Date().toISOString() }
@@ -97,14 +100,22 @@ try {
       }
       if (socialOnly && url.pathname === '/api/social/accounts') {
         if (request.method() === 'DELETE') {
-          socialRequests.push({ path: url.pathname, method: request.method() })
-          socialAccounts[0].status = 'revoked'
+          const body = request.postDataJSON()
+          socialRequests.push({ path: url.pathname, method: request.method(), body })
+          assert.deepEqual(body, { accountId: youtubeAccount.id })
+          youtubeAccount.status = 'revoked'
           return route.fulfill({ status: 202, json: { success: false, status: 'revoked', remoteStatus: 'unconfirmed' } })
         }
         return route.fulfill({ json: { accounts: socialAccounts, autopilot: null } })
       }
+      if (socialOnly && url.pathname === '/api/social/autopilot' && request.method() === 'GET') {
+        return route.fulfill({ json: { config: {
+          enabled: false, default_platforms: [], publish_account_ids: [], auto_caption: true,
+          auto_hashtags: true, caption_style: 'professional', max_hashtags: 5, include_cta: false,
+        } } })
+      }
       if (socialOnly && url.pathname === '/api/social/connect') {
-        socialRequests.push({ path: url.pathname, method: request.method() })
+        socialRequests.push({ path: url.pathname, method: request.method(), body: request.postDataJSON() })
         return route.fulfill({ status: 503, json: { error: 'fixture_no_oauth' } })
       }
       if (['/api/create', '/api/production'].includes(url.pathname)) {
@@ -239,50 +250,41 @@ try {
       await check(`${width}px social statuses, historical rows, counters, axe and layout`, async () => {
         await page.setViewportSize({ width, height: 900 })
         await page.goto(base + '/settings/social', { waitUntil: 'networkidle' })
-        await expect(page.getByTestId('connected-count')).toHaveText('1 / 14 comptes connectes')
-        await expect(page.getByTestId('disconnect-youtube')).toBeVisible()
-        for (const platform of ['instagram', 'facebook', 'x', 'tiktok', 'linkedin']) {
-          const card = page.getByTestId(`platform-card-${platform}`)
-          await expect(card).toContainText(`Ancien compte : @historique_${platform}`)
-          await expect(card.getByTestId(`connect-${platform}`)).toBeEnabled()
-          await expect(card.getByTestId(`disconnect-${platform}`)).toHaveCount(0)
-          await expect(card.getByText('Connecte', { exact: true })).toHaveCount(0)
-        }
+        await assertSocialAccountRows(page, socialAccounts, youtubeAccount)
         await axe(page, `social-${width}`)
         if (width === 375 || width === 1440) {
           await page.getByTestId('platform-card-instagram').scrollIntoViewIfNeeded()
           await page.screenshot({ path: resolve(output, `social-${width}.png`), fullPage: false })
         }
-        if (width === 375) {
-          await page.getByTestId('toggle-autopilot').click()
-          await expect(page.getByTestId('autopilot-platform-youtube')).toBeVisible()
-          await expect(page.getByTestId('autopilot-platform-instagram')).toHaveCount(0)
-          await page.getByTestId('toggle-autopilot').click()
-        }
+        if (width === 375) await assertAutopilotAccountChoices(page, socialAccounts, youtubeAccount)
         assert.equal(socialRequests.length, 0, 'browsing never connects or revokes')
       })
     }
     await page.setViewportSize({ width: 375, height: 812 })
     await check('social DELETE202: no false success; reconnect visible; one intercepted revocation', async () => {
-      await page.getByTestId('disconnect-youtube').click()
+      await page.getByTestId(`disconnect-${youtubeAccount.id}`).click()
       await page.getByTestId('confirm-disconnect').click()
       await expect(page.getByRole('alert').filter({ hasText: 'Révocation distante non confirmée' })).toBeVisible()
-      await expect(page.getByTestId('connected-count')).toHaveText('0 / 14 comptes connectes')
-      await expect(page.getByTestId('connect-youtube')).toBeEnabled()
-      await expect(page.getByTestId('disconnect-youtube')).toHaveCount(0)
-      await expect(page.getByText('YouTube deconnecte', { exact: true })).toHaveCount(0)
+      await expect(page.getByTestId('connected-count')).toHaveText('0 compte connecté')
+      await expect(page.getByText('Sur 0 / 14 réseaux', { exact: true })).toBeVisible()
+      await expect(page.getByTestId(`reconnect-${youtubeAccount.id}`)).toBeEnabled()
+      await expect(page.getByTestId(`social-account-${youtubeAccount.id}`)).toContainText('Déconnecté')
+      await expect(page.getByTestId(`disconnect-${youtubeAccount.id}`)).toHaveCount(0)
+      await expect(page.getByText(`YouTube : ${youtubeAccount.display_name} · @${youtubeAccount.username} déconnecté`, { exact: true })).toHaveCount(0)
       await page.getByRole('alert').filter({ hasText: 'Révocation distante non confirmée' }).scrollIntoViewIfNeeded()
       await axe(page, 'social-revocation-unconfirmed')
       await page.screenshot({ path: resolve(output, 'social-revocation-unconfirmed.png'), fullPage: false })
       assert.equal(socialRequests.length, 1)
     })
     await check('social reconnect button uses keyboard; safe unavailable toast; no real OAuth', async () => {
-      const reconnect = page.getByTestId('connect-youtube')
+      const reconnect = page.getByTestId(`reconnect-${youtubeAccount.id}`)
       await reconnect.focus(); await expect(reconnect).toBeFocused(); await page.keyboard.press('Enter')
-      await expect(page.getByText('Connexion YouTube indisponible', { exact: true })).toBeVisible()
+      await expect(page.getByTestId('social-connect-error')).toHaveText('Profil social non attribué. Contactez votre administrateur.')
+      await expect(page.getByText('fixture_no_oauth', { exact: true })).toHaveCount(0)
       await expect(reconnect).toBeEnabled()
       await axe(page, 'social-reconnect-unavailable')
       assert.deepEqual(socialRequests.map(request => request.method), ['DELETE', 'POST'])
+      assert.deepEqual(socialRequests.at(-1).body, { platform: 'youtube', accountId: youtubeAccount.id })
     })
   }
   await check('no JS or hydration errors; no live generation, purchase or publication', async () => {

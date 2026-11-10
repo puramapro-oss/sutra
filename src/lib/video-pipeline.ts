@@ -18,6 +18,7 @@ import { stampVideoWhenReady } from '@/lib/video-proofs'
 import { pipelineLog as logApiCall, pipelineNotification as sendNotification } from '@/lib/pipeline-state'
 import { type SocialPlatform } from '@/lib/zernio'
 import { publishVideoRecord } from '@/lib/social-publication'
+import { readOwnedPublicationDestinations, destinationPlatformsMatch } from '@/lib/social-destinations'
 import type { Plan, ScriptData } from '@/types'
 
 // -----------------------------------------------------------------------------
@@ -78,13 +79,23 @@ function createPublicServiceClient() {
 }
 
 async function triggerAutopilot(args: { userId: string; videoId: string; videoUrl: string; videoTitle: string; videoDescription: string; videoTags: string[] }) {
-  const { data: config, error } = await createPublicServiceClient().from('social_autopilot_config').select('*').eq('user_id', args.userId).maybeSingle()
+  const service = createServiceClient()
+  const readConfig = () => createPublicServiceClient().from('social_autopilot_config').select('*').eq('user_id', args.userId).maybeSingle()
+  const { data: config, error } = await readConfig()
   if (error) throw new Error('SUTRA_PUBLICATION_CONFIG_UNAVAILABLE')
   if (!config?.enabled || !config.default_platforms?.length) return { status: 'skipped' }
+  if (!config.publish_account_ids?.length) throw new Error('SUTRA_ACCOUNT_SELECTION_REQUIRED')
+  const destinations = await readOwnedPublicationDestinations(args.userId, config.publish_account_ids, service)
+  if (!destinationPlatformsMatch(destinations, config.default_platforms)) throw new Error('SUTRA_DESTINATION_REVOKED')
   // publishVideoRecord owns its durable CAS intent and provider reconciliation.
   const outcome = await publishVideoRecord(args.userId, {
-    videoId: args.videoId, platforms: config.default_platforms as SocialPlatform[], caption: args.videoTitle,
+    videoId: args.videoId, platforms: config.default_platforms as SocialPlatform[], destinations, caption: args.videoTitle,
     hashtags: args.videoTags, autoCaption: Boolean(config.auto_caption),
+  }, service, undefined, undefined, {}, async (request, accountRows) => {
+    const live = await readConfig()
+    if (live.error) throw new Error('SUTRA_PUBLICATION_CONFIG_UNAVAILABLE')
+    if (!live.data?.enabled || request.platforms.some(platform => !live.data.default_platforms?.includes(platform)
+      || !live.data.publish_account_ids?.includes(accountRows[platform]))) throw new Error('SUTRA_DESTINATION_REVOKED')
   })
   if (!['published', 'scheduled'].includes(outcome.status)) throw new Error('SUTRA_RECONCILIATION_REQUIRED: publication ' + outcome.status)
   return outcome

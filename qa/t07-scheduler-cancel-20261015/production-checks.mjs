@@ -42,6 +42,15 @@ export async function productionChecks({ page, context, base, fixture, width, ch
   async function start(mode, all = false, beforeSubmit = async () => {}) {
     state.mode = mode; state.cancel = 'true'; state.status = 'processing'
     await page.goto(base + '/production')
+    // Each start creates an independent synthetic demand. A failed previous
+    // check may leave its recovery receipt; destroy that document first, then
+    // clear only this fixture's receipt. Reloads within a check keep their state.
+    const previousReceipt = await page.evaluate(key => {
+      const exists = sessionStorage.getItem(key) !== null
+      if (exists) sessionStorage.removeItem(key)
+      return exists
+    }, key)
+    if (previousReceipt) await page.reload()
     await expect(page.getByTestId('production-idea')).toBeEnabled({ timeout: 15000 })
     await page.getByTestId('production-idea').fill('Fixture : volcan sous-marin')
     if (!all) await page.getByRole('button', { name: /^2\. Script/ }).click()

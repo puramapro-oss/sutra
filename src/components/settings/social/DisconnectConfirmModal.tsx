@@ -2,17 +2,8 @@ import { useRef } from 'react'
 import { AlertTriangle } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Modal from '@/components/ui/Modal'
-import { PLATFORM_INFO, type SocialPlatform } from '@/lib/zernio'
-
-interface SocialAccount {
-  id: string
-  platform: SocialPlatform
-  username: string
-  display_name: string
-  avatar_url: string | null
-  status: string
-  connected_at: string
-}
+import { PLATFORM_INFO } from '@/lib/zernio'
+import { accountLabel, type SocialAccount } from './accounts'
 
 export interface DisconnectConfirmModalProps {
   account: SocialAccount | null
@@ -30,7 +21,7 @@ export function DisconnectConfirmModal({
     <Modal
       open={!!account}
       onClose={onCancel}
-      title={account ? `Deconnecter ${PLATFORM_INFO[account.platform].label} ?` : undefined}
+      title={account ? `Déconnecter ce compte ${PLATFORM_INFO[account.platform].label} ?` : undefined}
       initialFocusRef={cancelRef}
       className="max-w-md bg-[#0A0A0F]"
     >
@@ -41,9 +32,11 @@ export function DisconnectConfirmModal({
               <AlertTriangle className="w-6 h-6 text-red-400" />
             </div>
             <div>
+              <p className="mb-2 break-words text-sm font-semibold text-white">{accountLabel(account)}</p>
               <p className="text-sm text-white/60">
-                Tu ne pourras plus publier automatiquement sur ce reseau jusqu&apos;a une
-                nouvelle connexion.
+                Les nouveaux envois SUTRA vers ce compte seront arrêtés. La révocation
+                distante sera vérifiée séparément. Les publications déjà envoyées ou
+                programmées sur le réseau restent à vérifier dans leur suivi.
               </p>
             </div>
           </div>

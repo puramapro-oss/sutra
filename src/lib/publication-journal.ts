@@ -21,6 +21,11 @@ export interface PublicationGateway {
   retry: typeof retryPublication
   now: () => number
 }
+export interface PublicationDestination {
+  platform: SocialPlatform
+  /** Owned social_accounts row UUID, never a provider account identifier. */
+  accountId: string
+}
 const defaultGateway: PublicationGateway = {
   publish: publishToPlatforms, reconcile: getPublicationResults, replay: replayPublication, retry: retryPublication, now: Date.now,
 }
@@ -42,8 +47,9 @@ export function publicationHistoryId(production: string, platform: string, accou
 export async function runPublicationJournal(options: {
   userId: string; productionId: string; kind: 'video' | 'auto'; platforms: SocialPlatform[]
   accountIds?: Partial<Record<SocialPlatform, string>>
+  destinations?: PublicationDestination[]
   request: Omit<PublishRequest, 'platforms' | 'accountIds' | 'idempotencyKey'>
-  authorize: (request: PublishRequest) => Promise<void>
+  authorize: (request: PublishRequest, accountRows: Readonly<Record<string, string>>) => Promise<void>
   legacyOperations?: PublicationOperation[]
   legacyResults?: PublishResult[]
   legacyUncertain?: boolean
@@ -51,6 +57,25 @@ export async function runPublicationJournal(options: {
   retryFailed?: boolean
 }, service = createServiceClient(), overrides: Partial<PublicationGateway> = {}) {
   const gateway = { ...defaultGateway, ...overrides }
+  if (options.destinations && (options.accountIds || options.destinations.length > 50
+    || new Set(options.destinations.map(d => d.accountId)).size !== options.destinations.length
+    || options.destinations.some(d => !d.accountId || !options.platforms.includes(d.platform)))) {
+    throw new Error('SUTRA_INVALID_DESTINATIONS')
+  }
+  const selections = options.destinations ?? [...new Set(options.platforms)].map(platform => ({
+    platform, accountId: options.accountIds?.[platform],
+  }))
+  const selected = (operation: PublicationOperation) => operation.request.platforms.every(platform => {
+    // Imported grouped posts may already contain a confirmed destination. The
+    // provider retry only targets failed entries; keeping that success does not
+    // require selecting it again, while every unfinished entry must be selected.
+    if (operation.results?.some(result => result.platform === platform && result.status === 'published' && result.success)) return true
+    return selections.some(destination => destination.platform === platform
+      && (destination.accountId ? destination.accountId === operation.accountRows[platform] : (() => {
+        const matches = (accounts ?? []).filter(account => account.platform === platform && connected(account))
+        return matches.length === 1 && matches[0].id === operation.accountRows[platform]
+      })()))
+  })
   const table = () => service.from('social_publication_journals')
   const scoped = () => table().select('*').eq('kind', options.kind).eq('production_id', options.productionId).eq('user_id', options.userId)
   const read = await scoped().maybeSingle()
@@ -96,7 +121,8 @@ export async function runPublicationJournal(options: {
     && (!a.token_expires_at || Date.parse(a.token_expires_at) > gateway.now())
   const authorize = async (operation: PublicationOperation) => {
     if (options.reconcileOnly) throw new Error('SUTRA_PUBLICATION_READ_ONLY')
-    await options.authorize(operation.request)
+    if (!selected(operation)) throw new Error('SUTRA_DESTINATION_NOT_SELECTED')
+    await options.authorize(operation.request, operation.accountRows)
     // Service-role sends bypass session/RLS guards. Apply the same live profile
     // contract as account-access.ts; a prior approval cannot outlive revocation.
     const profile = await service.from('profiles').select('id,subscription_status,access_revoked_at')
@@ -122,26 +148,44 @@ export async function runPublicationJournal(options: {
     const matches = results.filter(r => r.platform === platform && (!r.accountId || r.accountId === operation.request.accountIds[platform]))
     const old = operation.results?.find(r => r.platform === platform)
     // A stale remote status must never erase a confirmed publication.
-    if (old?.status === 'published' && old.success) return old
+    if (old?.status === 'published' && old.success) return { ...old, localAccountId: operation.accountRows[platform] }
     const result = matches.length === 1 ? matches[0] : undefined
+    if (operation.phase === 'retrying' && result?.status === 'failed') {
+      // A GET may still return the failure from before a lost /retry response.
+      // It is not evidence that this retry failed and cannot release its fence.
+      return { ...result, platform, status: 'unknown' as const, success: false,
+        accountId: operation.request.accountIds[platform], localAccountId: operation.accountRows[platform],
+        error: 'SUTRA_RECONCILIATION_REQUIRED: reprise non confirmee, tentative fournisseur non identifiee' }
+    }
     return { ...(result ?? { platform, success: false }), status: result?.status ?? 'unknown',
       success: result?.status === 'published' && result.success === true,
       ...(result?.status === 'published' ? { publishedAt: result.publishedAt ?? new Date(gateway.now()).toISOString() } : {}),
-      accountId: operation.request.accountIds[platform] }
+      accountId: operation.request.accountIds[platform], localAccountId: operation.accountRows[platform] }
   })
   for (const operation of operations) {
     if (!operation.request?.platforms?.length || !operation.request.idempotencyKey) throw new Error('SUTRA_PUBLICATION_JOURNAL_INVALID')
     if (operation.results?.every(r => r.status === 'published' && r.success) && operation.results.length === operation.request.platforms.length) continue
     const postId = operation.results?.find(r => r.postId)?.postId
+    let groupedReadUnconfirmed = false
     try {
       if (postId) {
+        const confirmed = operation.results?.filter(result => result.status === 'published' && result.success) ?? []
+        groupedReadUnconfirmed = operation.request.platforms.length > 1 && confirmed.length > 0
         const remote = await gateway.reconcile(postId, operation.request)
+        // RetryPost accepts only a post ID, not a subset of its accounts. Do not
+        // let normalization hide a remote regression that could retry a success.
+        if (groupedReadUnconfirmed && confirmed.some(previous => {
+          const matches = remote.filter(result => result.platform === previous.platform
+            && result.accountId === operation.request.accountIds[previous.platform])
+          return matches.length !== 1 || matches[0].status !== 'published' || !matches[0].success
+        })) throw new Error('SUTRA_RECONCILIATION_REQUIRED: groupe distant incoherent')
+        groupedReadUnconfirmed = false
         operation.results = normalize(operation, remote)
         await save()
         const failed = operation.results.some(r => r.status === 'failed')
         // /retry targets only failed destinations of the original post. Re-authorize
         // every original account, including imported PR3 multi-account operations.
-        if (failed && options.retryFailed && !options.reconcileOnly && operation.phase === 'recorded') {
+        if (failed && options.retryFailed && !options.reconcileOnly && selected(operation) && operation.phase === 'recorded') {
           await authorize(operation)
           operation.phase = 'retrying'; operation.claimedAt = new Date(gateway.now()).toISOString()
           await save()
@@ -151,12 +195,16 @@ export async function runPublicationJournal(options: {
             operation.phase = 'recorded'; throw error
           }
           operation.results = normalize(operation, await gateway.retry(postId, operation.request))
-          operation.phase = 'recorded'
+          // Neither queued progress nor scheduling identifies the completed retry
+          // attempt. Without a provider attempt/version marker, only confirmed
+          // publication releases this fence; an older failed status cannot.
+          operation.phase = operation.results.every(result => result.status === 'published' && result.success) ? 'recorded' : 'retrying'
           await save()
-        } else if (!failed && operation.phase !== 'recorded') {
+        } else if (!failed && operation.phase !== 'recorded' && operation.results.every(result => result.status !== 'unknown')
+          && (operation.phase !== 'retrying' || operation.results.every(result => result.status === 'published' && result.success))) {
           operation.phase = 'recorded'; await save()
         }
-      } else if (operation.phase === 'submitting' && !options.reconcileOnly) {
+      } else if (operation.phase === 'submitting' && !options.reconcileOnly && selected(operation)) {
         const age = gateway.now() - Date.parse(operation.createdAt)
         const claimAge = gateway.now() - Date.parse(operation.claimedAt ?? operation.createdAt)
         if (claimAge < 120_000) continue
@@ -175,23 +223,28 @@ export async function runPublicationJournal(options: {
       // Keep known outcomes and identity. Uncertainty never authorizes another create.
       operation.results = operation.request.platforms.map(platform => {
         const old = operation.results?.find(r => r.platform === platform)
-        return old?.status === 'published' ? old : { ...old, platform, accountId: operation.request.accountIds[platform],
-          status: old?.status ?? 'unknown', success: false, error: error instanceof Error ? error.message : 'SUTRA_RECONCILIATION_REQUIRED' }
+        return old?.status === 'published' ? old : { ...old, platform, accountId: operation.request.accountIds[platform], localAccountId: operation.accountRows[platform],
+          status: operation.phase === 'retrying' || groupedReadUnconfirmed ? 'unknown' : old?.status ?? 'unknown', success: false,
+          error: groupedReadUnconfirmed ? 'SUTRA_RECONCILIATION_REQUIRED: groupe non confirme, compte deja publie a verifier'
+            : error instanceof Error ? error.message : 'SUTRA_RECONCILIATION_REQUIRED' }
       })
       await save()
     }
   }
   const unavailable: PublishResult[] = []
-  for (const platform of [...new Set(options.platforms)]) {
-    const selection = options.accountIds?.[platform]
+  for (const { platform, accountId: selection } of selections) {
     const matches = (accounts ?? []).filter(a => a.platform === platform && connected(a) && (!selection || a.id === selection))
     if (matches.length !== 1 || !matches[0].external_id) {
-      if (!operations.some(o => o.request.platforms.includes(platform) && (!selection || o.accountRows[platform] === selection))) unavailable.push({ platform, success: false, status: 'failed', error: 'SUTRA_ACCOUNT_SELECTION_REQUIRED' })
+      if ((!selection && matches.length > 1) || !operations.some(o => o.request.platforms.includes(platform) && (!selection || o.accountRows[platform] === selection))) unavailable.push({ platform, localAccountId: selection, success: false, status: 'failed', error: 'SUTRA_ACCOUNT_SELECTION_REQUIRED' })
       continue
     }
     const account = matches[0]
     if (operations.some(o => o.request.platforms.includes(platform) && o.request.accountIds[platform] === account.external_id)) continue
-    if (options.reconcileOnly) continue
+    if (options.reconcileOnly) {
+      unavailable.push({ platform, accountId: account.external_id, localAccountId: account.id, status: 'unknown', success: false,
+        error: 'SUTRA_PUBLICATION_EVIDENCE_REQUIRED' })
+      continue
+    }
     if (!selection && operations.some(o => o.request.platforms.includes(platform))) {
       unavailable.push({ platform, success: false, status: 'failed', error: 'SUTRA_ACCOUNT_CHANGED_SELECTION_REQUIRED' })
       continue
@@ -207,7 +260,15 @@ export async function runPublicationJournal(options: {
     buildPublishPayload(request)
     const operation: PublicationOperation = { id: request.idempotencyKey!, phase: 'submitting',
       createdAt: new Date(gateway.now()).toISOString(), request, accountRows: { [platform]: account.id } }
-    await authorize(operation)
+    try { await authorize(operation) } catch (error) {
+      // A refusal for one account must not hide another account's confirmed
+      // publication. No provider POST or durable claim exists for this target.
+      if (!(error instanceof Error) || !['SUTRA_ACCOUNT_REVOKED_OR_DISCONNECTED',
+        'SUTRA_SOCIAL_PROFILE_RECONNECTION_REQUIRED', 'SUTRA_DESTINATION_REVOKED'].includes(error.message)) throw error
+      unavailable.push({ platform, accountId: account.external_id, localAccountId: account.id,
+        status: 'failed', success: false, error: error.message })
+      continue
+    }
     operations = [...operations, operation]; await save()
     try {
       // Check revocation/approval again after the durable claim and immediately before POST.
@@ -215,12 +276,14 @@ export async function runPublicationJournal(options: {
       operation.results = normalize(operation, await gateway.publish(request))
       operation.phase = operation.results.some(r => r.postId) ? 'recorded' : 'submitting'
     } catch (error) {
-      operation.results = [{ platform, accountId: account.external_id, success: false, status: 'unknown',
+      operation.results = [{ platform, accountId: account.external_id, localAccountId: account.id, success: false, status: 'unknown',
         error: error instanceof Error ? error.message : 'SUTRA_RECONCILIATION_REQUIRED' }]
     }
     await save()
   }
-  return { ...publicationOutcome([...operations.flatMap(o => o.results?.length ? o.results : o.request.platforms.map(platform => ({
-    platform, accountId: o.request.accountIds[platform], success: false, status: 'unknown' as const,
+  return { ...publicationOutcome([...operations.flatMap(o => o.results?.length ? o.results.map(result => ({
+    ...result, localAccountId: o.accountRows[result.platform],
+  })) : o.request.platforms.map(platform => ({
+    platform, accountId: o.request.accountIds[platform], localAccountId: o.accountRows[platform], success: false, status: 'unknown' as const,
   }))), ...unavailable]), operations }
 }

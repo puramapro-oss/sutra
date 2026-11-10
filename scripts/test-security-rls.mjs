@@ -1,27 +1,29 @@
-// Isolated PostgreSQL on a private Unix socket. Never reads a DB URL or contacts Supabase.
+// Isolated PostgreSQL on a private loopback port. Never reads a DB URL or contacts Supabase.
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { mkdtemp, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { allocatePrivatePostgresEndpoint } from '../tooling/private-postgres-endpoint.mjs'
 
 const exec = promisify(execFile)
 const bin = process.env.SUTRA_TEST_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin'
 const directory = await mkdtemp('/tmp/sutra-t02-pg-')
+const { host, port, postgresOptions } = await allocatePrivatePostgresEndpoint()
 const data = join(directory, 'data')
 const owner = 'sutra_test_owner'
 const alice = '10000000-0000-4000-8000-000000000001'
 const bob = '10000000-0000-4000-8000-000000000002'
 let started = false, checks = 0
 const sql = async command => (await exec(join(bin, 'psql'), ['-X', '-qAt', '-v', 'ON_ERROR_STOP=1',
-  '-h', directory, '-p', '55432', '-U', owner, '-d', 'postgres', '-c', command])).stdout.trim()
+  '-h', host, '-p', String(port), '-U', owner, '-d', 'postgres', '-c', command])).stdout.trim()
 const asUser = command => sql(`SET ROLE authenticated; SET request.jwt.claim.sub = '${alice}'; ${command}`)
 const expectDenied = async command => {
   await assert.rejects(asUser(command), error => /permission denied|row-level security/.test(error.stderr)); checks++
 }
 try {
   await exec(join(bin, 'initdb'), ['-D', data, '--auth=trust', '--username', owner, '--no-locale', '--encoding=UTF8'])
-  await exec(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', `-h '' -k ${directory} -p 55432`, '-w', 'start'])
+  await exec(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', postgresOptions, '-w', 'start'])
   started = true
   const schema = await readFile(new URL('../src/data/setup-schema.ts', import.meta.url), 'utf8')
   const audit = await readFile(new URL('../migrations/audit_completion.sql', import.meta.url), 'utf8')

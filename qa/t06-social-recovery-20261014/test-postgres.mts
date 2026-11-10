@@ -46,7 +46,7 @@ const service = { schema: (schema: string) => { assert.equal(schema, 'public'); 
 const client = service as unknown as Parameters<typeof readSocialOAuthAccount>[2]
 const id = '11111111-1111-4111-8111-111111111111'
 const user = '22222222-2222-4222-8222-222222222222'
-const snapshot = () => readSocialOAuthAccount(user, 'youtube', client)
+const snapshot = () => readSocialOAuthAccount(user, 'youtube', client, id)
 async function authorizeFixture() {
   process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ [user]: 'a'.repeat(24) })
   await pool.query('UPDATE public.social_accounts SET metadata=$1', [{ zernio_profile_id: 'a'.repeat(24), credential_owner: 'zernio' }])
@@ -57,7 +57,8 @@ before(async () => {
     id uuid PRIMARY KEY, user_id uuid NOT NULL, platform text NOT NULL,
     external_id text, status text NOT NULL, updated_at timestamptz, metadata jsonb,
     access_token text, refresh_token text, token_expires_at timestamptz,
-    UNIQUE(user_id, platform))`)
+    UNIQUE(user_id, platform, external_id))`)
+  await pool.query('CREATE UNIQUE INDEX social_accounts_legacy_null ON public.social_accounts(user_id,platform) WHERE external_id IS NULL')
 })
 beforeEach(async () => {
   await pool.query('TRUNCATE public.social_accounts')
@@ -116,19 +117,31 @@ test('PG T06: unknown DELETE retains durable fence and refuses a new OAuth state
   assert.equal((await revokeSocialAccount(user, id, client, async () => false)).remoteStatus, 'unconfirmed')
   assert.equal((await snapshot())!.metadata!.sutra_revocation_pending, true)
   await assert.rejects(() => issueSocialOAuthState(user, 'youtube', 'fixture-state-with-enough-length',
-    { profileId: 'a'.repeat(24), sessionId: id }, client), /SUTRA_SOCIAL_REVOCATION_PENDING/)
+    { profileId: 'a'.repeat(24), sessionId: id, accountId: id }, client), /SUTRA_SOCIAL_REVOCATION_PENDING/)
   let called = false
   await revokeSocialAccount(user, id, client, async () => { called = true; return true })
   assert.equal(called, false)
 })
 
-test('PG T06: first connection uniqueness gives one winner across 24 SQL sessions', async () => {
+test('PG T06: the same external identity gives one insert winner across 24 SQL sessions', async () => {
   await pool.query('TRUNCATE public.social_accounts')
   const results = await Promise.allSettled(Array.from({ length: 24 }, () => pool.query(
-    'INSERT INTO public.social_accounts(id,user_id,platform,status) VALUES(gen_random_uuid(),$1,$2,$3)', [user, 'youtube', 'connected'])))
+    'INSERT INTO public.social_accounts(id,user_id,platform,external_id,status) VALUES(gen_random_uuid(),$1,$2,$3,$4)', [user, 'youtube', 'b'.repeat(24), 'connected'])))
   assert.equal(results.filter(result => result.status === 'fulfilled').length, 1)
   const failures = results.filter(result => result.status === 'rejected')
   assert.ok(failures.every(result => result.reason.code === '23505'))
+})
+
+test('PG T06: 24 distinct external identities on the same network persist across concurrent SQL sessions', async () => {
+  await pool.query('TRUNCATE public.social_accounts')
+  const identities = Array.from({ length: 24 }, (_, index) => index.toString(16).padStart(24, '0'))
+  const results = await Promise.allSettled(identities.map(externalId => pool.query(
+    'INSERT INTO public.social_accounts(id,user_id,platform,external_id,status) VALUES(gen_random_uuid(),$1,$2,$3,$4)', [user, 'youtube', externalId, 'connected'])))
+  assert.ok(results.every(result => result.status === 'fulfilled'))
+  const { rows } = await pool.query('SELECT id, external_id FROM public.social_accounts WHERE user_id=$1 AND platform=$2', [user, 'youtube'])
+  assert.equal(rows.length, 24)
+  assert.equal(new Set(rows.map(row => row.id)).size, 24)
+  assert.deepEqual(new Set(rows.map(row => row.external_id)), new Set(identities))
 })
 
 test('PG T06: another owner or a changed external account cannot pass CAS', async () => {
