@@ -14,6 +14,7 @@ import { awaitGeneration } from '../src/lib/generation-client.ts'
 type Session = { id: string; email: string } | null
 type Body = Record<string, unknown>
 const session = new AsyncLocalStorage<Session>()
+const wallClock = Date.now
 const client = { id: journeyUserId, email: 'client@fixture.invalid' }
 let db = journeyDatabase()
 const counts = { script: 0, voice: 0, music: 0, visual: 0, render: 0, renderPoll: 0, verify: 0, validate: 0, upload: 0, external: 0 }
@@ -120,19 +121,25 @@ globalThis.fetch = async (resource, options) => {
 
 const { POST: create } = await import('../src/app/api/create/route.ts')
 const { POST: exportVideo } = await import('../src/app/api/video/export/route.ts')
-const { POST: publish } = await import('../src/app/api/social/publish/route.ts')
+const { POST: publish, GET: publicationStatus } = await import('../src/app/api/social/publish/route.ts')
+const { POST: publicationWorker } = await import('../src/app/api/cron/social-worker/route.ts')
 const { GET: status } = await import('../src/app/api/video/status/[jobId]/route.ts')
 
 beforeEach(() => {
+  mock.timers.enable({ apis: ['Date'], now: Date.now() })
   db = journeyDatabase()
   for (const name of Object.keys(counts) as Array<keyof typeof counts>) counts[name] = 0
   Object.assign(failures, { renderTimeout: false, validation: false, voiceUpload: false })
   http.length = 0; remote.clear(); publicationState = 'scheduled'; renderGate = undefined
   process.env.SALAD_ENABLED = 'false'; process.env.LOCAL_ENGINE_ENABLED = 'false'
   process.env.ZERNIO_API_KEY = 'fixture-only'
+  process.env.CRON_SECRET = 'fixture-social-worker'
   process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ [journeyUserId]: journeyProfileId })
 })
-afterEach(() => assert.equal(counts.external, 0, 'zero unexpected network attempts'))
+afterEach(() => {
+  mock.timers.reset()
+  assert.equal(counts.external, 0, 'zero unexpected network attempts')
+})
 
 async function call(route: (r: Request) => Promise<Response>, body: Body, key: string, user: Session = client) {
   return session.run(user, async () => {
@@ -154,6 +161,29 @@ function edit(video: Body) {
     subtitles: [{ text: 'Sous titre edite par T08', start: 0, end: 5 }], voiceVolume: 1, musicVolume: 0.2 }
 }
 const newPosts = () => http.filter(r => r.method === 'POST' && r.path.endsWith('/posts'))
+async function drainPublication() {
+  // Admission's default gateway captures the real clock at module load. Keep
+  // the fixture DB clock caught up, then advance it explicitly for later polls.
+  mock.timers.tick(Math.max(0, wallClock() - Date.now()))
+  const response = await publicationWorker(new Request('http://127.0.0.1:3000/api/cron/social-worker', {
+    method: 'POST', headers: { Authorization: 'Bearer fixture-social-worker' },
+  }))
+  const result = await response.json()
+  assert.equal(response.status, 200, JSON.stringify(result))
+  assert.equal(result.confirmed, true)
+  assert.ok(result.processed > 0, 'accepted work must reach the real journal through the real worker route')
+  assert.ok(result.receipts.every((receipt: Body) => receipt.status === 'processed'), JSON.stringify(result))
+  return result
+}
+async function readPublication(video: Body) {
+  const before = http.length
+  const response = await session.run(client, () => publicationStatus(new Request(
+    `https://sutra.fixture.invalid/api/social/publish?videoId=${video.id}`)))
+  const result = await response.json() as Body
+  assert.equal(response.status, 200, JSON.stringify(result))
+  assert.equal(http.length, before, 'status reads never contact the provider')
+  return result
+}
 
 test('J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication', async () => {
   assert.equal((await call(create, input, 'journey', null)).status, 401)
@@ -189,17 +219,22 @@ test('J01 session -> project -> quota -> simulated generation -> resume -> edit 
   assert.deepEqual(counts, beforeReplay)
   const scheduledAt = new Date(Date.now() + 86_400_000).toISOString()
   const publication = { videoId: video.id, platforms: ['youtube'], scheduledAt, caption: 'Projet exporte T08' }
-  const scheduled = await call(publish, publication, 'schedule')
-  assert.equal(scheduled.status, 202, JSON.stringify(scheduled))
-  assert.equal(scheduled.body.success, false); assert.equal(scheduled.body.status, 'scheduled')
+  const accepted = await call(publish, publication, 'schedule')
+  assert.equal(accepted.status, 202, JSON.stringify(accepted))
+  assert.equal(accepted.body.success, false); assert.equal(accepted.body.status, 'publishing')
+  assert.equal(accepted.body.durable, true); assert.equal(newPosts().length, 0)
+  await drainPublication()
+  const scheduled = await readPublication(video)
+  assert.equal(scheduled.success, false); assert.equal(scheduled.status, 'scheduled')
   assert.deepEqual(newPosts()[0].body?.mediaItems, [{ type: 'video', url: exported.body.url }])
   assert.equal(newPosts()[0].body?.scheduledFor, scheduledAt)
   assert.equal(db.tables.videos[0].status, 'ready')
   assert.equal(db.tables.scheduled_posts[0].status, 'scheduled')
   for (const post of remote.values()) { post.status = 'published'; post.platforms.forEach(p => { p.status = 'published' }) }
-  const published = await call(publish, publication, 'schedule')
-  assert.equal(published.status, 200, JSON.stringify(published))
-  assert.equal(published.body.status, 'published'); assert.equal(published.body.success, true)
+  mock.timers.tick(60_000)
+  await drainPublication()
+  const published = await readPublication(video)
+  assert.equal(published.status, 'published'); assert.equal(published.success, true)
   assert.equal(newPosts().length, 1); assert.ok(http.some(r => r.method === 'GET'))
   assert.equal(db.tables.videos[0].status, 'published')
   assert.equal(db.tables.social_posts[0].status, 'published')
@@ -303,12 +338,19 @@ test('J08 two destination partial publication reconciles existing posts, never r
   const video = await project()
   publicationState = 'partial'
   const request = { videoId: video.id, platforms: ['youtube', 'instagram'] }
-  const partial = await call(publish, request, 'partial')
-  assert.equal(partial.body.status, 'partially_published', JSON.stringify(partial))
-  assert.equal(partial.body.success, false); assert.equal(db.tables.videos[0].status, 'ready')
+  const accepted = await call(publish, request, 'partial')
+  assert.equal(accepted.status, 202, JSON.stringify(accepted)); assert.equal(newPosts().length, 0)
+  await drainPublication()
+  const partial = await readPublication(video)
+  assert.equal(partial.status, 'partially_published', JSON.stringify(partial))
+  assert.equal(partial.success, false); assert.equal(db.tables.videos[0].status, 'ready')
   const initialPosts = newPosts().length
-  const resumed = await call(publish, request, 'partial')
-  assert.equal(resumed.body.status, 'published', JSON.stringify(resumed))
+  const retryAccepted = await call(publish, request, 'partial')
+  assert.equal(retryAccepted.status, 202, JSON.stringify(retryAccepted))
+  assert.equal(http.filter(r => r.path.endsWith('/retry')).length, 0)
+  await drainPublication()
+  const resumed = await readPublication(video)
+  assert.equal(resumed.status, 'published', JSON.stringify(resumed))
   assert.equal(newPosts().length, initialPosts)
   const retries = http.filter(r => r.path.endsWith('/retry'))
   assert.equal(retries.length, 1)
@@ -354,9 +396,16 @@ test('J11 bounded 12-click publication burst sends one verified media intent and
   const request = { videoId: video.id, platforms: ['youtube'] }
   const results = await Promise.all(Array.from({ length: 12 }, () => call(publish, request, 'publish-burst')))
   assert.ok(results.every(result => [200, 202, 409].includes(result.status)))
+  assert.ok(results.some(result => result.status === 202), 'one admission must be durably accepted')
+  assert.equal(newPosts().length, 0, 'admission cannot publish inline')
+  assert.equal(db.tables.social_publication_journals[0].operations?.length, 1)
+  const restored = await readPublication(video)
+  assert.equal(restored.status, 'publishing'); assert.equal(restored.hasPending, true)
+  await drainPublication()
   assert.equal(newPosts().length, 1)
-  const settled = await call(publish, request, 'publish-burst')
-  assert.equal(settled.body.status, 'published', JSON.stringify(settled))
+  const settled = await readPublication(video)
+  assert.equal(settled.status, 'published', JSON.stringify(settled))
+  assert.equal((await call(publish, request, 'publish-burst')).body.status, 'published')
   assert.equal(newPosts().length, 1)
   assert.equal(db.tables.social_posts.length, 1)
   assert.equal(db.tables.scheduled_posts.length, 1)
@@ -366,7 +415,10 @@ test('J11 bounded 12-click publication burst sends one verified media intent and
 test('J12 re-export after a scheduled intent cannot silently replace the scheduled verified media', async () => {
   const video = await project()
   const request = { videoId: video.id, platforms: ['youtube'], scheduledAt: new Date(Date.now() + 86_400_000).toISOString() }
-  assert.equal((await call(publish, request, 'scheduled')).body.status, 'scheduled')
+  assert.equal((await call(publish, request, 'scheduled')).status, 202)
+  assert.equal(newPosts().length, 0)
+  await drainPublication()
+  assert.equal((await readPublication(video)).status, 'scheduled')
   const exported = await call(exportVideo, edit(video), 'new-version')
   assert.equal(exported.status, 200)
   assert.notEqual(exported.body.url, video.video_url)

@@ -29,6 +29,12 @@ function result(request: PublishRequest, status: PublishResult['status'] = 'publ
     success: status === 'published', postId: request.accountIds[platform] }))
 }
 
+function executionReceipt(outcome: Awaited<ReturnType<typeof runPublicationJournal>>) {
+  assert.ok('execution' in outcome, 'expected a durable receipt, not unresolved legacy evidence')
+  assert.ok(outcome.execution, 'durable execution metadata must be present')
+  return outcome.execution
+}
+
 function harness(count = 2, privateMedia = false) {
   const db = socialDatabase(userId)
   const template = structuredClone(db.accounts[0])
@@ -103,7 +109,7 @@ test('Admission durable : 50 destinations dans un seul CAS, aucun appel fourniss
   assert.equal(h.saves.length, 1)
   assert.equal(h.saves[0].p_operations.length, 50)
   assert.equal(h.journal().operations.length, 50)
-  assert.equal(outcome.execution?.queued, 50)
+  assert.equal(executionReceipt(outcome).queued, 50)
   assert.equal(outcome.hasPending, true)
   assert.equal(outcome.success, false)
   assert.ok(outcome.results.every(entry => entry.status === 'publishing' && entry.deliveryState === 'queued'))
@@ -163,14 +169,14 @@ test('Drain durable : le premier POST voit le lot complet et la frontiere persis
   assert.equal(h.calls.publish.length, 1)
   assert.equal(first.status, 'partially_published')
   assert.equal(first.hasPending, true)
-  assert.equal(first.execution?.processed, 1)
-  assert.equal(first.execution?.queued, 1)
+  assert.equal(executionReceipt(first).processed, 1)
+  assert.equal(executionReceipt(first).queued, 1)
   assert.equal(h.journal().operations.length, 2)
   h.release()
   const last = await h.invoke(h.claim())
   assert.equal(last.status, 'published')
   assert.equal(last.hasPending, false)
-  assert.equal(last.execution?.nextRunAt, null)
+  assert.equal(executionReceipt(last).nextRunAt, null)
   assert.ok(h.journal().next_run_at, 'receipt retains a wake-up until projections and release succeed')
   assert.equal(h.calls.publish.length, 2)
 })
@@ -220,7 +226,7 @@ test('Drain durable : une incertitude expiree ne cree rien et reste explicitemen
   assert.equal(outcome.hasPending, true)
   assert.equal(outcome.results[0].deliveryState, 'blocked')
   assert.equal(outcome.operations[0].blockedReason, 'SUTRA_IDEMPOTENCY_WINDOW_EXPIRED')
-  assert.equal(outcome.execution?.nextRunAt, null)
+  assert.equal(executionReceipt(outcome).nextRunAt, null)
   assert.equal(h.calls.publish.length, 1)
   assert.equal(h.calls.replay.length + h.calls.retry.length, 0)
 })
@@ -305,8 +311,8 @@ test('Reprise durable : un ordre accepte reste en file et pending malgre le fail
   assert.equal(admitted.hasPending, true)
   assert.equal(admitted.results[0].status, 'publishing')
   assert.equal(admitted.results[0].deliveryState, 'queued')
-  assert.equal(admitted.execution?.queued, 1)
-  assert.ok(admitted.execution?.nextRunAt)
+  assert.equal(executionReceipt(admitted).queued, 1)
+  assert.ok(executionReceipt(admitted).nextRunAt)
   const observed = await h.invoke(undefined, { reconcileOnly: true })
   assert.equal(observed.hasPending, true)
   assert.equal(observed.results[0].deliveryState, 'queued')
@@ -346,7 +352,7 @@ test('Reprise durable : crash apres commit du claim retry garde pending et revei
   assert.equal(recovered.operations[0].phase, 'retrying')
   assert.equal(recovered.results[0].status, 'unknown')
   assert.equal(recovered.hasPending, true)
-  assert.ok(recovered.execution?.nextRunAt)
+  assert.ok(executionReceipt(recovered).nextRunAt)
   assert.equal(h.calls.retry.length + h.calls.replay.length, 0)
   assert.equal(h.calls.publish.length, 1)
 })
@@ -373,7 +379,7 @@ test('Drain durable : ancien recorded sans postId bloque explicitement sans affa
   assert.equal(h.calls.reconcile.length, 1)
   assert.equal(next.results[1].status, 'published')
   assert.equal(next.operations[0].blockedReason, 'SUTRA_PUBLICATION_POST_EVIDENCE_REQUIRED')
-  assert.equal(next.execution?.nextRunAt, null)
+  assert.equal(executionReceipt(next).nextRunAt, null)
   assert.equal(h.calls.publish.length, 2)
   assert.equal(h.calls.replay.length + h.calls.retry.length, 0)
 })
@@ -385,7 +391,7 @@ test('Lecture durable : reconcileOnly ne lit que les preuves locales sous bail ;
   const before = structuredClone(h.journal())
   const count = h.saves.length
   const outcome = await h.invoke(undefined, { reconcileOnly: true })
-  assert.equal(outcome.execution?.mode, 'read')
+  assert.equal(executionReceipt(outcome).mode, 'read')
   assert.equal(outcome.results.length, 2)
   assert.deepEqual(h.journal(), before)
   assert.equal(h.saves.length, count)
@@ -478,7 +484,9 @@ test('Wrapper video : admission sans fournisseur ni projection ; le drain projet
   assert.equal(calendarWrites, 1)
   assert.equal(h.db.tables.social_posts.length, 2)
   assert.equal(h.db.tables.scheduled_posts.length, 2)
-  assert.equal(h.db.video.publish_data?.sutraPublications.length, 2)
+  const storedVideo = h.db.tables.videos.find(video => video.id === 'v')
+  assert.ok(storedVideo?.publish_data, 'drain must persist the video publication projection')
+  assert.equal(storedVideo.publish_data.sutraPublications.length, 2)
 })
 
 test('Wrapper video : panne de projection apres preuve publiee se repare sous nouveau bail sans POST', async () => {

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "parentCommit": "cf0e71c5e95f97600e6d86445d2c88cb0c53ee53",
+  "initialCi": {
+    "runId": 42911370235,
+    "url": "https://github.com/puramapro-oss/sutra/actions/runs/42911370235",
+    "status": "FAIL",
+    "typeScriptDiagnostics": 12,
+    "contractTests": {
+      "tests": 1580,
+      "pass": 1569,
+      "fail": 4,
+      "skip": 7
+    },
+    "database": {
+      "status": "PASS",
+      "durableChecks": 66,
+      "assertions": 302,
+      "postgresVersion": "18.6",
+      "migrationSha256": "cbc80db14692138f34473f4b16b30ef8eb3d9c3f16b6de0359210c913c2e7310"
+    }
+  },
+  "correctedFilesSha256": {
+    "qa/t08-integration-journey-20261014/database.mts": "49fea2536224058e146409f9277866e8c7dc73c2c742f6fb3d6c29295890f85f",
+    "scripts/test-social-durable-journal.mts": "325d6b436b9b52289a0e26e722a8b8b9b42d0d52aa13fb3c2eb05d08e5639326",
+    "scripts/test-t08-integration-journey.mts": "5be35672f9031e37e1afdbfa7ce7aad590b1d8c87f45820f22970cb3b109b1cc",
+    "src/components/social/publish/usePublicationReconciliation.ts": "d8880475f48ab209887234ba990e5570e2ff7c8c95013696837d4203adbb5daa"
+  },
+  "targetedFollowup": {
+    "status": "PASS",
+    "tests": 147,
+    "pass": 147,
+    "fail": 0,
+    "skip": 0,
+    "exitCode": 0,
+    "log": "followup-tests.log",
+    "command": "NEXT_PUBLIC_SUPABASE_URL=https://sutra-test.invalid NEXT_PUBLIC_SUPABASE_ANON_KEY=fixture-anon SUPABASE_SERVICE_ROLE_KEY=fixture-service NEXT_PUBLIC_APP_SCHEMA=sutra node --max-old-space-size=384 --experimental-test-module-mocks --import tsx --test --test-concurrency=1 scripts/test-social-durable-journal.mts scripts/test-social-durable-api-worker.mts scripts/test-social-publication.mts scripts/test-social-multi-account.mts scripts/test-social-multi-account-routes.mts scripts/test-t08-integration-journey.mts"
+  },
+  "localTypecheckFollowup": {
+    "status": "NON QUALIFIE",
+    "heapLimitMiB": 384,
+    "exitCode": 134,
+    "reason": "Reached heap limit; no global typecheck pass is claimed"
+  },
+  "verificationScope": "Storage RPC fixtures and closed provider transport; native RPC guarantees remain separately qualified by the PostgreSQL receipt. The full quality/browser gates must be read on the exact corrected CI head.",
+  "deployment": "NON TESTE"
+}

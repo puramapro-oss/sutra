@@ -20,6 +20,11 @@ interface ReconciliationOptions {
 const POLL_INTERVAL_MS = 5_000
 const MAX_AUTOMATIC_READS = 60
 
+// Visibility can change while a read is awaited; inspect the document each time.
+function isDocumentVisible(): boolean {
+  return document.visibilityState === 'visible'
+}
+
 export function usePublicationReconciliation({ videoId, isOpen, accounts, snapshot, setSnapshot, results, setResults,
   submittingRef, requestRef, versionRef }: ReconciliationOptions) {
   const [verifying, setVerifying] = useState(false)
@@ -48,7 +53,7 @@ export function usePublicationReconciliation({ videoId, isOpen, accounts, snapsh
 
   const read = useCallback(async ({ legacy = false, allowLegacyFallback = false } = {}) => {
     const previous = latest.current.snapshot
-    if (submittingRef.current || !latest.current.isOpen || document.visibilityState === 'hidden'
+    if (submittingRef.current || !latest.current.isOpen || !isDocumentVisible()
       || (legacy && !previous?.payload)) return
     const controller = new AbortController()
     submittingRef.current = true
@@ -121,7 +126,7 @@ export function usePublicationReconciliation({ videoId, isOpen, accounts, snapsh
     automaticReads.current = 0
     const tick = async (restore = false) => {
       const currentEpoch = epoch
-      if (stopped || document.visibilityState === 'hidden') return
+      if (stopped || !isDocumentVisible()) return
       const state = latest.current
       const pending = state.snapshot?.durable === true && (state.snapshot.hasPending
         || state.results?.some(result => ['unknown', 'publishing', 'scheduled'].includes(result.status ?? 'unknown')))
@@ -131,7 +136,7 @@ export function usePublicationReconciliation({ videoId, isOpen, accounts, snapsh
           await read()
         } else setPollingPaused(true)
       }
-      if (!stopped && epoch === currentEpoch && document.visibilityState !== 'hidden') {
+      if (!stopped && epoch === currentEpoch && isDocumentVisible()) {
         clearTimeout(timer)
         timer = setTimeout(() => { void tick() }, POLL_INTERVAL_MS)
       }
@@ -139,7 +144,7 @@ export function usePublicationReconciliation({ videoId, isOpen, accounts, snapsh
     const visibility = () => {
       epoch++
       clearTimeout(timer)
-      if (document.visibilityState === 'hidden') cancelJournalRead()
+      if (!isDocumentVisible()) cancelJournalRead()
       else void tick(true)
     }
     document.addEventListener('visibilitychange', visibility)
