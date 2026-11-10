@@ -3,25 +3,16 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { Save } from 'lucide-react'
 import { toast } from 'sonner'
+import Link from 'next/link'
+import { useAuth } from '@/hooks/useAuth'
 import { Card, CardContent } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { cn } from '@/lib/utils'
+import { AccountSelection } from '@/components/settings/social/AccountSelection'
+import { isAccountAvailable, MAX_SELECTED_ACCOUNTS, platformsForAccounts, readSocialAccounts, type SocialAccount } from '@/components/settings/social/accounts'
 
-interface AutoConfig {
-  default_style: string
-  default_duration: number
-  default_aspect_ratio: string
-  default_music_genre: string
-  default_voice_enabled: boolean
-  default_voice_id: string | null
-  default_language: string
-  publish_platforms: string[]
-  auto_publish: boolean
-  require_approval_before_publish: boolean
-  preferred_model: string
-  quality_level: string
-}
+import { readAutoVideoConfig, type AutoVideoConfig as AutoConfig } from '@/components/settings/social/config'
 
 const STYLES = ['cinematic', 'anime', 'realistic', 'abstract', 'minimal']
 const RATIOS = ['9:16', '16:9', '1:1']
@@ -31,101 +22,123 @@ const MODELS = [
   { id: 'wan-2.2', label: 'WAN 2.2' },
 ]
 const QUALITIES = ['draft', 'standard', 'high', 'ultra']
-const PLATFORMS = [
-  'youtube',
-  'instagram',
-  'tiktok',
-  'facebook',
-  'x',
-  'linkedin',
-  'pinterest',
-  'threads',
-]
 
 export default function SettingsPage() {
+  const auth = useAuth()
+  if (auth.loading) return <Skeleton width="100%" height={400} rounded="xl" />
+  return <SettingsPageContent key={auth.profile?.id ?? 'signed-out'} />
+}
+
+function SettingsPageContent() {
   const [cfg, setCfg] = useState<AutoConfig | null>(null)
+  const [accounts, setAccounts] = useState<SocialAccount[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
 
   const dataRequest = useRef<AbortController | null>(null)
+  const saveRequest = useRef<AbortController | null>(null)
   const fetchConfig = useCallback(() => {
     dataRequest.current?.abort()
     const controller = new AbortController()
     dataRequest.current = controller
+    const timeout = setTimeout(() => controller.abort(), 10_000)
     const active = () => dataRequest.current === controller && !controller.signal.aborted
     const commit = (write: () => void) => { if (active()) write() }
-    return fetch('/api/auto/config', { signal: controller.signal }).then(async (res) => {
-      if (!active()) return
-      const json = await res.json()
-      if (json.config) commit(() => setCfg(json.config))
+    return Promise.all([
+      fetch('/api/auto/config', { signal: controller.signal, cache: 'no-store' }),
+      fetch('/api/social/accounts', { signal: controller.signal, cache: 'no-store' }),
+    ]).then(async ([configResponse, accountsResponse]) => {
+      if (!configResponse.ok || !accountsResponse.ok) throw new Error('auto_settings_unavailable')
+      const [json, social] = await Promise.all([configResponse.json(), accountsResponse.json()])
+      const config = readAutoVideoConfig(json?.config)
+      const loadedAccounts = readSocialAccounts(social?.accounts)
+      commit(() => { setCfg(config); setAccounts(loadedAccounts) })
     }).catch(() => {
-      if (!active()) return
-      toast.error('Erreur de chargement')
+      if (dataRequest.current === controller) setLoadError('Impossible de vérifier les réglages et les comptes de publication. Réessaie avant de modifier la configuration.')
     }).finally(() => {
-      commit(() => setLoading(false))
-      if (dataRequest.current === controller) dataRequest.current = null
+      clearTimeout(timeout)
+      if (dataRequest.current === controller) { setLoading(false); dataRequest.current = null }
     })
   }, [])
 
-  useEffect(() => { fetchConfig()
-    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  const reloadConfig = () => { setLoading(true); setLoadError(null); void fetchConfig() }
+
+  useEffect(() => { void fetchConfig()
+    return () => {
+      dataRequest.current?.abort(); dataRequest.current = null
+      saveRequest.current?.abort(); saveRequest.current = null
+    }
   }, [fetchConfig])
 
   const update = useCallback(<K extends keyof AutoConfig>(key: K, value: AutoConfig[K]) => {
     setCfg((prev) => (prev ? { ...prev, [key]: value } : prev))
   }, [])
 
-  const togglePlatform = useCallback((p: string) => {
+  const toggleAccount = useCallback((accountId: string) => {
     setCfg((prev) => {
       if (!prev) return prev
-      const has = prev.publish_platforms.includes(p)
+      const ids = new Set(prev.publish_account_ids)
+      if (ids.has(accountId)) ids.delete(accountId)
+      else if (ids.size < MAX_SELECTED_ACCOUNTS && accounts.some(account => account.id === accountId && isAccountAvailable(account))) ids.add(accountId)
       return {
         ...prev,
-        publish_platforms: has
-          ? prev.publish_platforms.filter((x) => x !== p)
-          : [...prev.publish_platforms, p],
+        publish_account_ids: [...ids],
+        publish_platforms: platformsForAccounts(accounts, [...ids]),
       }
     })
-  }, [])
+  }, [accounts])
 
   const handleSave = useCallback(async () => {
-    if (!cfg) return
+    if (!cfg || saveRequest.current) return
+    if (cfg.auto_publish && (!cfg.publish_account_ids.length || cfg.publish_account_ids.some(id => !accounts.some(account => account.id === id && isAccountAvailable(account))))) return
+    const controller = new AbortController()
+    saveRequest.current = controller
+    const current = () => saveRequest.current === controller
+    const timeout = setTimeout(() => controller.abort(), 10_000)
     setSaving(true)
     try {
       const res = await fetch('/api/auto/config', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         // Only this screen's editable preferences. Schedules have their own CAS contract.
         body: JSON.stringify({
           default_style: cfg.default_style,
           default_duration: cfg.default_duration,
           default_aspect_ratio: cfg.default_aspect_ratio,
           default_voice_enabled: cfg.default_voice_enabled,
-          publish_platforms: cfg.publish_platforms,
+          publish_platforms: platformsForAccounts(accounts, cfg.publish_account_ids),
+          publish_account_ids: cfg.publish_account_ids,
           auto_publish: cfg.auto_publish,
           require_approval_before_publish: cfg.require_approval_before_publish,
           preferred_model: cfg.preferred_model,
           quality_level: cfg.quality_level,
         }),
       })
+      if (!res.ok) throw new Error('save_failed')
       const json = await res.json()
-      if (json.config) {
-        toast.success('Reglages sauvegardes')
-        setCfg(json.config)
-      } else {
-        toast.error(json.error ?? 'Erreur')
-      }
+      const saved = readAutoVideoConfig(json?.config)
+      if (!current() || controller.signal.aborted) return
+      toast.success('Réglages sauvegardés')
+      setCfg(saved)
     } catch {
-      toast.error('Erreur')
+      if (current()) toast.error('Enregistrement non confirmé. Recharge les réglages pour vérifier leur état.')
     } finally {
-      setSaving(false)
+      clearTimeout(timeout)
+      if (current()) { saveRequest.current = null; setSaving(false) }
     }
-  }, [cfg])
+  }, [cfg, accounts])
 
-  if (loading || !cfg) return <Skeleton width="100%" height={400} rounded="xl" />
+  if (loading) return <Skeleton width="100%" height={400} rounded="xl" />
+  if (loadError || !cfg) return <div role="alert" data-testid="auto-settings-load-error" className="space-y-3 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200">
+    <p>{loadError ?? 'Réglages indisponibles.'}</p><Button variant="secondary" onClick={reloadConfig}>Réessayer</Button>
+  </div>
+  const invalidSelection = cfg.auto_publish && (!cfg.publish_account_ids.length || cfg.publish_account_ids.some(id => !accounts.some(account => account.id === id && isAccountAvailable(account))))
 
   return (
-    <div className="space-y-4">
+    <fieldset disabled={saving} className="min-w-0 space-y-4">
+      <legend className="sr-only">Réglages des vidéos automatiques</legend>
       <Card>
         <CardContent className="space-y-4">
           <h3 className="text-sm font-semibold text-white">Style visuel par defaut</h3>
@@ -233,24 +246,11 @@ export default function SettingsPage() {
 
       <Card>
         <CardContent className="space-y-4">
-          <h3 className="text-sm font-semibold text-white">Plateformes de publication</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {PLATFORMS.map((p) => (
-              <button
-                key={p}
-                onClick={() => togglePlatform(p)}
-                data-testid={`platform-${p}`}
-                className={cn(
-                  'px-3 py-2 rounded-xl text-xs font-medium border capitalize transition-all',
-                  cfg.publish_platforms.includes(p)
-                    ? 'bg-violet-500/20 border-violet-500/40 text-violet-300'
-                    : 'bg-white/[0.02] border-white/[0.06] text-white/40'
-                )}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
+          <h3 className="text-sm font-semibold text-white">Comptes de publication</h3>
+          <AccountSelection accounts={accounts} selectedAccountIds={cfg.publish_account_ids}
+            onToggle={toggleAccount} disabled={saving} testIdPrefix="auto-publish-account" />
+          <Link href="/settings/social" className="inline-block text-xs text-violet-300 underline">Gérer les connexions sociales</Link>
+          {cfg.auto_publish && cfg.publish_account_ids.length === 0 && <p role="status" className="text-sm text-amber-200">Choisis au moins un compte pour activer la publication automatique.</p>}
         </CardContent>
       </Card>
 
@@ -260,7 +260,7 @@ export default function SettingsPage() {
           <label className="flex items-center justify-between cursor-pointer p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]">
             <div>
               <p className="text-sm text-white">Publication automatique</p>
-              <p className="text-xs text-white/40">SUTRA publie sans validation</p>
+              <p className="text-xs text-white/60">SUTRA publie sur les comptes choisis, selon la validation définie ci-dessous.</p>
             </div>
             <input
               type="checkbox"
@@ -300,10 +300,10 @@ export default function SettingsPage() {
       </Card>
 
       <div className="sticky bottom-4 flex justify-end">
-        <Button onClick={handleSave} loading={saving} data-testid="settings-save">
+        <Button onClick={handleSave} loading={saving} disabled={saving || invalidSelection} data-testid="settings-save">
           <Save className="h-4 w-4" /> Sauvegarder
         </Button>
       </div>
-    </div>
+    </fieldset>
   )
 }

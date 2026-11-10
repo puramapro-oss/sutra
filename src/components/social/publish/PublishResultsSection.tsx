@@ -4,6 +4,8 @@ import { type SocialPlatform, type PublicationStatus, PLATFORM_INFO, PUBLICATION
 
 export interface PublishResultUI {
   accountId?: string
+  localAccountId?: string
+  accountLabel?: string
   platform: SocialPlatform
   success: boolean
   status?: PublicationStatus
@@ -27,8 +29,9 @@ export function PublishResultsSection({ results }: PublishResultsSectionProps) {
           const status = r.status ?? (r.success ? 'published' : 'unknown')
           return (
             <div
-              key={`${r.platform}:${r.accountId ?? 'unknown'}`}
-              data-testid={`publish-result-${r.platform}`}
+              key={r.localAccountId ?? `${r.platform}:${r.accountId ?? 'unknown'}`}
+              data-testid={`publish-result-${r.localAccountId ?? r.platform}`}
+              data-platform={r.platform}
               className={cn(
                 'flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-lg border text-xs',
                 status === 'published' ? 'bg-emerald-500/10 border-emerald-500/20' : status === 'failed' ? 'bg-red-500/10 border-red-500/20' : 'bg-amber-500/10 border-amber-500/20'
@@ -37,6 +40,7 @@ export function PublishResultsSection({ results }: PublishResultsSectionProps) {
               <div className="flex flex-wrap items-center gap-2">
                 <span>{info.icon}</span>
                 <span className="font-medium text-white/90">{info.label}</span>
+                {r.accountLabel && <span className="break-words text-white/80">{r.accountLabel}</span>}
                 <span className="px-2 py-0.5 rounded-full text-[10px]">{PUBLICATION_STATUS_LABELS[status]}</span>
               </div>
               {r.postUrl && (

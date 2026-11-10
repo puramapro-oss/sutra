@@ -2,6 +2,7 @@ import { createServiceClient } from '@/lib/supabase'
 import { publishToPlatforms, type SocialPlatform, type PublishResult } from '@/lib/zernio'
 import { runPublicationJournal, type PublicationGateway } from '@/lib/publication-journal'
 import { savePublicationHistory } from '@/lib/social-publication'
+import { readOwnedPublicationDestinations } from '@/lib/social-destinations'
 import type { AutoConfig } from './sutra-auto-types'
 
 // ---------------------------------------------------------------
@@ -124,17 +125,22 @@ export async function publishAutoVideoRecord(
   }
   const verifiedSha256 = await verify()
   const platforms = [...new Set((config.publish_platforms ?? []).map((p: string) => PLATFORM_ALIASES[p] ?? p))] as SocialPlatform[]
-  const outcome = await runPublicationJournal({ userId, productionId: videoId, kind: 'auto', platforms,
+  const selectedIds: string[] = config.publish_account_ids ?? []
+  if (!reconcileOnly && !selectedIds.length) throw new Error('SUTRA_ACCOUNT_SELECTION_REQUIRED')
+  const destinations = reconcileOnly ? [] : await readOwnedPublicationDestinations(userId, selectedIds, service)
+  if (destinations.some(destination => !platforms.includes(destination.platform))) throw new Error('SUTRA_DESTINATION_REVOKED')
+  const outcome = await runPublicationJournal({ userId, productionId: videoId, kind: 'auto', platforms, destinations,
     request: { videoUrl: video.video_final_url, verifiedSha256, caption: `${video.title ?? ''}\n\n${video.description ?? ''}`, hashtags: video.hashtags ?? [] },
     legacyResults: video.published_platforms ?? [],
     legacyUncertain: ['publishing', 'published', 'partially_published'].includes(video.status),
     reconcileOnly, retryFailed: explicitApproval,
-    authorize: async request => {
+    authorize: async (request, accountRows) => {
       await verify(request.verifiedSha256)
       if (request.videoUrl !== video.video_final_url) throw new Error('SUTRA_MEDIA_CHANGED')
-      const live = await service.from('sutra_auto_config').select('publish_platforms').eq('user_id', userId).single()
+      const live = await service.from('sutra_auto_config').select('publish_platforms,publish_account_ids').eq('user_id', userId).single()
       const allowed = (live.data?.publish_platforms ?? []).map((p: string) => PLATFORM_ALIASES[p] ?? p)
-      if (live.error || request.platforms.some(p => !allowed.includes(p))) throw new Error('SUTRA_DESTINATION_REVOKED')
+      const allowedAccounts = live.data?.publish_account_ids ?? []
+      if (live.error || request.platforms.some(p => !allowed.includes(p) || !allowedAccounts.includes(accountRows[p]))) throw new Error('SUTRA_DESTINATION_REVOKED')
     },
   }, service, { ...gateway, publish: gateway.publish ?? (async request => publish({
     config: { ...config, publish_platforms: request.platforms,

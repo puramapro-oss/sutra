@@ -2,11 +2,12 @@ import { createHash } from 'node:crypto'
 import { createServiceClient } from '@/lib/supabase'
 import { publishToPlatforms, getPublicationResults, type PublishResult, type SocialPlatform } from '@/lib/zernio'
 import { generateMultiPlatformCaptions } from '@/lib/ai/social-caption'
-import { runPublicationJournal, publicationHistoryId, type PublicationOperation, type PublicationGateway } from '@/lib/publication-journal'
+import { runPublicationJournal, publicationHistoryId, type PublicationOperation, type PublicationGateway, type PublicationDestination } from '@/lib/publication-journal'
 export { publicationOutcome } from '@/lib/publication-journal'
 
 export interface VideoPublicationInput {
   videoId: string; platforms: SocialPlatform[]; accountIds?: Partial<Record<SocialPlatform, string>>
+  destinations?: PublicationDestination[]
   caption?: string; hashtags?: string[]; title?: string; description?: string; tags?: string[]
   autoCaption?: boolean; scheduledAt?: string
 }
@@ -49,7 +50,8 @@ export async function savePublicationHistory(userId: string, videoId: string, op
 
 export async function publishVideoRecord(userId: string, input: VideoPublicationInput,
   service = createServiceClient(), publish = publishToPlatforms, reconcile = getPublicationResults,
-  gateway: Partial<PublicationGateway> = {}) {
+  gateway: Partial<PublicationGateway> = {},
+  authorizeDestinations?: Parameters<typeof runPublicationJournal>[0]['authorize']) {
   const read = () => service.from('videos').select('id,user_id,status,video_url,title,description,tags,publish_data,shotstack_json')
     .eq('id', input.videoId).eq('user_id', userId).maybeSingle()
   const { data: video, error } = await read()
@@ -75,16 +77,17 @@ export async function publishVideoRecord(userId: string, input: VideoPublication
       input.description ?? video.description ?? '', platforms, { userId })
   }
   const outcome = await runPublicationJournal({ userId, productionId: input.videoId, kind: 'video', platforms,
-    accountIds: input.accountIds, legacyOperations: operations,
+    accountIds: input.accountIds, destinations: input.destinations, legacyOperations: operations,
     legacyUncertain: video.status === 'published' && !operations.length,
     request: { videoUrl: video.video_url, verifiedSha256: video.shotstack_json.sutraVerification.sha256, caption: input.caption ?? [input.title ?? video.title, input.description ?? video.description].filter(Boolean).join('\n\n'),
       hashtags: input.hashtags ?? input.tags ?? video.tags ?? [], scheduledAt: input.scheduledAt, captionsByPlatform },
     retryFailed: true,
-    authorize: async request => {
+    authorize: async (request, accountRows) => {
       const current = await read()
       if (current.error || !current.data) throw new Error('SUTRA_VIDEO_READ_FAILED')
       verify(current.data)
       if (current.data.video_url !== request.videoUrl || (request.verifiedSha256 && current.data.shotstack_json.sutraVerification.sha256 !== request.verifiedSha256)) throw new Error('SUTRA_MEDIA_CHANGED')
+      await authorizeDestinations?.(request, accountRows)
     },
   }, service, { publish, reconcile, ...gateway })
   if ('reconciliationRequired' in outcome) return outcome

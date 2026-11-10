@@ -1,11 +1,10 @@
 import { Button } from '@/components/ui/Button'
-import { type SocialPlatform } from '@/lib/zernio'
 
 export interface PublishModalFooterProps {
   onCancel: () => void
   onPublish: () => void
   publishing: boolean
-  selectedPlatforms: Set<SocialPlatform>
+  selectedCount: number
   schedule: 'now' | 'later'
   retry?: boolean
 }
@@ -14,7 +13,7 @@ export function PublishModalFooter({
   onCancel,
   onPublish,
   publishing,
-  selectedPlatforms,
+  selectedCount,
   schedule,
   retry = false,
 }: PublishModalFooterProps) {
@@ -35,14 +34,14 @@ export function PublishModalFooter({
         data-testid="publish-submit"
         onClick={onPublish}
         loading={publishing}
-        disabled={publishing || selectedPlatforms.size === 0}
+        disabled={publishing || selectedCount === 0}
       >
         {publishing
           ? 'Publication...'
-          : retry ? `Reprendre les échecs (${selectedPlatforms.size})`
+          : retry ? `Reprendre les échecs (${selectedCount})`
           : schedule === 'later'
-            ? 'Programmer'
-            : `Publier (${selectedPlatforms.size})`}
+            ? `Programmer (${selectedCount} compte${selectedCount > 1 ? 's' : ''})`
+            : `Publier (${selectedCount} compte${selectedCount > 1 ? 's' : ''})`}
       </Button>
     </div>
   )

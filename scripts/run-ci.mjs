@@ -66,6 +66,7 @@ const nodeTests = [
   'scripts/test-release-regressions.mts', 'scripts/test-video-contracts.mjs',
   'scripts/test-opentimestamps.mjs', 'scripts/test-ltx-v2-media.mts',
   'scripts/test-social-publication.mts', 'scripts/test-auth-session.mts', 'scripts/test-public-origin.mts',
+  'scripts/test-social-multi-account.mts', 'scripts/test-social-multi-account-routes.mts',
   'tooling/disposable-database.test.mjs',
   'scripts/test-pipeline-interruptions.mts', 'scripts/test-pipeline-submit.mts',
   'scripts/test-release-oauth.mts', 'scripts/test-zernio-oauth-contracts.mts', 'scripts/test-security-account.mts', 'scripts/test-t02-oauth-boundaries.mts',

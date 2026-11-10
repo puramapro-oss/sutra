@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS social_accounts (
   metadata jsonb DEFAULT '{}',
   connected_at timestamptz DEFAULT now(),
   updated_at timestamptz DEFAULT now(),
-  UNIQUE(user_id, platform)
+  CONSTRAINT social_accounts_owner_platform_external_key UNIQUE(user_id, platform, external_id)
 );
 
 COMMENT ON TABLE social_accounts IS 'OAuth-connected social media accounts via Zernio';
@@ -66,6 +66,12 @@ CREATE TABLE IF NOT EXISTS social_autopilot_config (
   user_id uuid NOT NULL UNIQUE REFERENCES auth.users(id) ON DELETE CASCADE,
   enabled boolean DEFAULT false,
   default_platforms text[] DEFAULT ARRAY[]::text[],
+  publish_account_ids uuid[] NOT NULL DEFAULT '{}'::uuid[]
+    CONSTRAINT social_autopilot_publish_account_ids_valid CHECK (
+      COALESCE(array_ndims(publish_account_ids), 1) = 1
+      AND cardinality(publish_account_ids) <= 50
+      AND array_position(publish_account_ids, NULL) IS NULL
+    ),
   auto_caption boolean DEFAULT true,
   auto_hashtags boolean DEFAULT true,
   auto_publish_delay_minutes int DEFAULT 0,
@@ -85,6 +91,9 @@ COMMENT ON TABLE social_autopilot_config IS 'User preferences for autopilot soci
 CREATE INDEX IF NOT EXISTS idx_social_accounts_user_id ON social_accounts(user_id);
 CREATE INDEX IF NOT EXISTS idx_social_accounts_platform ON social_accounts(platform);
 CREATE INDEX IF NOT EXISTS idx_social_accounts_status ON social_accounts(status);
+-- Keep an unidentified legacy placeholder without allowing duplicate NULL identities.
+CREATE UNIQUE INDEX IF NOT EXISTS social_accounts_owner_platform_legacy_null_key
+  ON social_accounts(user_id, platform) WHERE external_id IS NULL;
 
 CREATE INDEX IF NOT EXISTS idx_social_posts_user_id ON social_posts(user_id);
 CREATE INDEX IF NOT EXISTS idx_social_posts_video_id ON social_posts(video_id);

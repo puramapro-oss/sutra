@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import { isValidAutoSchedules } from '@/lib/auto-schedule-validation'
+import { z } from 'zod'
+import { readOwnedPublicationDestinations, destinationPlatformsMatch } from '@/lib/social-destinations'
 
 const ALLOWED_FIELDS = [
   'is_active',
@@ -14,6 +16,7 @@ const ALLOWED_FIELDS = [
   'default_voice_id',
   'default_language',
   'publish_platforms',
+  'publish_account_ids',
   'auto_publish',
   'require_approval_before_publish',
   'watermark_url',
@@ -74,6 +77,33 @@ export async function PATCH(req: Request) {
     if (Object.keys(updates).length === 0) {
       return NextResponse.json({ error: 'Aucune donnee a mettre a jour' }, { status: 400 })
     }
+    const service = createServiceClient()
+    if (['is_active', 'auto_publish', 'require_approval_before_publish'].some(key => key in updates && typeof updates[key] !== 'boolean')) {
+      return NextResponse.json({ error: 'Autorisation de publication invalide' }, { status: 400 })
+    }
+    if ('publish_account_ids' in updates && !z.array(z.string().uuid()).max(50)
+      .refine(ids => new Set(ids).size === ids.length).safeParse(updates.publish_account_ids).success) {
+      return NextResponse.json({ error: 'Selection des comptes invalide' }, { status: 400 })
+    }
+    if ('publish_platforms' in updates && !z.array(z.string()).max(14).safeParse(updates.publish_platforms).success) {
+      return NextResponse.json({ error: 'Selection des plateformes invalide' }, { status: 400 })
+    }
+    const stopping = updates.auto_publish === false || updates.is_active === false
+    if (!stopping && ('publish_account_ids' in updates || 'publish_platforms' in updates || updates.auto_publish === true || updates.is_active === true)) {
+      const current = await service.from('sutra_auto_config').select('publish_platforms,publish_account_ids,auto_publish,is_active')
+        .eq('user_id', user.id).maybeSingle()
+      if (current.error) throw current.error
+      const ids = (updates.publish_account_ids ?? current.data?.publish_account_ids ?? []) as string[]
+      const platforms = (updates.publish_platforms ?? current.data?.publish_platforms ?? []) as string[]
+      const autoPublish = updates.auto_publish ?? current.data?.auto_publish ?? false
+      try {
+        const destinations = await readOwnedPublicationDestinations(user.id, ids, service, Boolean(autoPublish))
+        if ((autoPublish && !destinations.length) || !destinationPlatformsMatch(destinations, platforms)) throw new Error('SUTRA_ACCOUNT_SELECTION_REQUIRED')
+      } catch (error) {
+        if (error instanceof Error && error.message === 'SUTRA_SOCIAL_ACCOUNTS_READ_FAILED') throw error
+        return NextResponse.json({ error: 'Selectionne les comptes autorises pour cette publication automatique', code: 'SUTRA_ACCOUNT_SELECTION_REQUIRED' }, { status: 400 })
+      }
+    }
 
     if ('schedules' in updates) {
       if (!Object.hasOwn(body, 'expectedSchedules')) {
@@ -97,7 +127,6 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ config: data })
     }
 
-    const service = createServiceClient()
     const { data, error } = await service
       .from('sutra_auto_config')
       .upsert({ user_id: user.id, ...updates }, { onConflict: 'user_id' })

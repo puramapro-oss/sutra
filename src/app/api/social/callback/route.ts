@@ -6,7 +6,7 @@ import { cookies } from 'next/headers'
 import { createServerClient } from '@/lib/supabase-server'
 import { consumeSocialOAuthState, socialOAuthCookieName } from '@/lib/social-oauth-state'
 import { publicOrigin } from '@/lib/public-origin'
-import { readSocialOAuthAccount, updateSocialOAuthAccount } from '@/lib/social-oauth-account'
+import { isSocialAccountId, readSocialOAuthAccount, readSocialOAuthExternalAccount, updateSocialOAuthAccount } from '@/lib/social-oauth-account'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -37,6 +37,7 @@ export async function GET(req: Request) {
     const connected = url.searchParams.get('connected')
     const returnedProfileId = url.searchParams.get('profileId')
     const accountId = url.searchParams.get('accountId')
+    const localAccountId = url.searchParams.get('sutraAccountId')
     const state = url.searchParams.get('state')
     const returnedPlatform = url.searchParams.get('platform')
     const platformParam = returnedPlatform === 'twitter' ? 'x' : returnedPlatform
@@ -48,6 +49,9 @@ export async function GET(req: Request) {
 
     if (!(OAUTH_PLATFORMS as readonly string[]).includes(platformParam)) {
       return redirectToSettings(siteUrl, { error: 'invalid_platform' })
+    }
+    if (localAccountId !== null && !isSocialAccountId(localAccountId)) {
+      return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
     }
 
     const platform = platformParam as SocialPlatform
@@ -63,11 +67,12 @@ export async function GET(req: Request) {
       || ((!errorParam || connected) && connected !== (platform === 'x' ? 'twitter' : platform))) {
       return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
     }
-    const binding = { profileId, sessionId }
+    const binding = { profileId, sessionId, ...(localAccountId ? { accountId: localAccountId } : {}) }
     const cookieStore = await cookies()
     const cookieName = socialOAuthCookieName(state)
     const client = createPublicServiceClient()
-    const account = await readSocialOAuthAccount(user.id, platform, client)
+    const account = await readSocialOAuthAccount(user.id, platform, client, localAccountId ?? undefined)
+    if (localAccountId && !account) return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
     const consumed = await consumeSocialOAuthState(user.id, platform, state, cookieStore.get(cookieName)?.value, binding, undefined, account)
     if (!consumed) return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
     cookieStore.set(cookieName, '', { path: '/api/social', maxAge: 0, httpOnly: true,
@@ -91,6 +96,14 @@ export async function GET(req: Request) {
     if (!profile.externalId || !profile.username) {
       return redirectToSettings(siteUrl, { error: 'oauth_empty_profile' })
     }
+    if (account && profile.externalId !== account.external_id) {
+      return redirectToSettings(siteUrl, { error: 'account_identity_mismatch' })
+    }
+    // An add cannot reactivate/replace an existing account, especially one
+    // fenced by revocation. Reconnection requires its explicit, revision-bound ID.
+    if (!account && await readSocialOAuthExternalAccount(userId, platform, profile.externalId, client)) {
+      return redirectToSettings(siteUrl, { error: 'account_already_connected' })
+    }
 
     const record = {
       user_id: userId,
@@ -107,15 +120,15 @@ export async function GET(req: Request) {
       connected_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     }
-    // First connection uses the unique (user_id, platform) constraint; existing
-    // connections use CAS. Neither path may replace a newer authorization.
+    // Adds rely on (user_id, platform, external_id) uniqueness, including races
+    // between independent callbacks. Reconnection keeps the row and uses CAS.
     const saved = account
       ? await updateSocialOAuthAccount(userId, account, record, client)
       : await client.from('social_accounts').insert(record).select('id').maybeSingle()
 
     if (saved.error || !saved.data) {
       return redirectToSettings(siteUrl, {
-        error: 'db_error',
+        error: !account && saved.error?.code === '23505' ? 'account_already_connected' : 'db_error',
       })
     }
 
