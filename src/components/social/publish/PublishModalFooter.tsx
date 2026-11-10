@@ -4,6 +4,9 @@ export interface PublishModalFooterProps {
   onCancel: () => void
   onPublish: () => void
   publishing: boolean
+  verifying?: boolean
+  canVerify?: boolean
+  onVerify?: () => void
   selectedCount: number
   schedule: 'now' | 'later'
   retry?: boolean
@@ -13,6 +16,9 @@ export function PublishModalFooter({
   onCancel,
   onPublish,
   publishing,
+  verifying = false,
+  canVerify = false,
+  onVerify,
   selectedCount,
   schedule,
   retry = false,
@@ -24,17 +30,21 @@ export function PublishModalFooter({
         size="md"
         data-testid="publish-cancel"
         onClick={onCancel}
-        disabled={publishing}
+        disabled={publishing || verifying}
       >
         {retry ? 'Fermer' : 'Annuler'}
       </Button>
+      {onVerify && <Button variant="secondary" size="md" data-testid="publish-verify"
+        onClick={onVerify} loading={verifying} disabled={publishing || verifying || !canVerify}>
+        Vérifier l’état
+      </Button>}
       <Button
         variant="primary"
         size="md"
         data-testid="publish-submit"
         onClick={onPublish}
         loading={publishing}
-        disabled={publishing || selectedCount === 0}
+        disabled={publishing || verifying || selectedCount === 0}
       >
         {publishing
           ? 'Publication...'

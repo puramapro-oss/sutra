@@ -10,6 +10,8 @@ export interface VideoPublicationInput {
   destinations?: PublicationDestination[]
   caption?: string; hashtags?: string[]; title?: string; description?: string; tags?: string[]
   autoCaption?: boolean; scheduledAt?: string
+  /** Reconcile existing evidence without any provider write or new media grant. */
+  reconcileOnly?: boolean
 }
 
 export async function savePublicationHistory(userId: string, videoId: string, operations: PublicationOperation[],
@@ -72,7 +74,7 @@ export async function publishVideoRecord(userId: string, input: VideoPublication
   const existingJournal = await service.from('social_publication_journals').select('operations')
     .eq('kind', 'video').eq('production_id', input.videoId).eq('user_id', userId).maybeSingle()
   if (existingJournal.error) throw new Error('SUTRA_PUBLICATION_JOURNAL_READ_FAILED')
-  if (input.autoCaption && !operations.length && !existingJournal.data?.operations?.length) {
+  if (!input.reconcileOnly && input.autoCaption && !operations.length && !existingJournal.data?.operations?.length) {
     captionsByPlatform = await generateMultiPlatformCaptions(input.title ?? video.title ?? '',
       input.description ?? video.description ?? '', platforms, { userId })
   }
@@ -81,7 +83,7 @@ export async function publishVideoRecord(userId: string, input: VideoPublication
     legacyUncertain: video.status === 'published' && !operations.length,
     request: { videoUrl: video.video_url, verifiedSha256: video.shotstack_json.sutraVerification.sha256, caption: input.caption ?? [input.title ?? video.title, input.description ?? video.description].filter(Boolean).join('\n\n'),
       hashtags: input.hashtags ?? input.tags ?? video.tags ?? [], scheduledAt: input.scheduledAt, captionsByPlatform },
-    retryFailed: true,
+    reconcileOnly: input.reconcileOnly, retryFailed: !input.reconcileOnly,
     authorize: async (request, accountRows) => {
       const current = await read()
       if (current.error || !current.data) throw new Error('SUTRA_VIDEO_READ_FAILED')

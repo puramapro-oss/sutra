@@ -8,6 +8,7 @@ export interface PublishResultUI {
   accountLabel?: string
   platform: SocialPlatform
   success: boolean
+  retryEligible?: boolean
   status?: PublicationStatus
   postUrl?: string
   error?: string
@@ -55,7 +56,7 @@ export function PublishResultsSection({ results }: PublishResultsSectionProps) {
                 </a>
               )}
               {status === 'failed' && (
-                <span className="text-red-300">Échec confirmé. Vérifie le compte avant de reprendre.</span>
+                <span className="text-red-300">{r.retryEligible ? 'Échec confirmé. Vérifie le compte avant de reprendre.' : 'Échec indiqué lors du contrôle. Consulte le suivi avant toute autre action.'}</span>
               )}
             </div>
           )

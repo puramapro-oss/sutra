@@ -143,7 +143,7 @@ export async function journeyChecks({ page, context, base, fixture, output, chec
     await context.route('**/api/social/connect', route => route.fulfill({ status: 503, json: { error: 'UNTRUSTED_PROVIDER_DIAGNOSTIC' } }))
     await page.goto(base + '/settings/social')
     await check(`${width}: social account absent; simulated consent unavailable does not navigate`, async () => {
-      const button = page.getByRole('button', { name: 'Se connecter', exact: true }).first()
+      const button = page.getByTestId('connect-tiktok')
       await button.click()
       const alert = page.getByTestId('social-connect-error')
       await expect(alert).toHaveAttribute('role', 'alert')

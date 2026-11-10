@@ -36,3 +36,14 @@ export function mergePublicationResults(previous: PublishResultUI[] | null, next
   const nextIds = new Set(next.map(result => result.localAccountId))
   return [...(previous ?? []).filter(result => !nextIds.has(result.localAccountId)), ...next]
 }
+
+/** A status read can advance evidence, but can never grant permission to replay. */
+export function mergeReconciliationResults(previous: PublishResultUI[] | null, observed: PublishResultUI[]): PublishResultUI[] {
+  const previousById = new Map((previous ?? []).map(result => [result.localAccountId, result]))
+  const updates = observed.map(result => {
+    const old = previousById.get(result.localAccountId)
+    if (old?.status === 'published') return old
+    return { ...result, retryEligible: old?.retryEligible === true && result.status === 'failed' }
+  })
+  return mergePublicationResults(previous, updates)
+}

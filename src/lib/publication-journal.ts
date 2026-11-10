@@ -155,7 +155,7 @@ export async function runPublicationJournal(options: {
       // It is not evidence that this retry failed and cannot release its fence.
       return { ...result, platform, status: 'unknown' as const, success: false,
         accountId: operation.request.accountIds[platform], localAccountId: operation.accountRows[platform],
-        error: 'SUTRA_RECONCILIATION_REQUIRED: reprise non confirmee' }
+        error: 'SUTRA_RECONCILIATION_REQUIRED: reprise non confirmee, tentative fournisseur non identifiee' }
     }
     return { ...(result ?? { platform, success: false }), status: result?.status ?? 'unknown',
       success: result?.status === 'published' && result.success === true,
@@ -166,9 +166,20 @@ export async function runPublicationJournal(options: {
     if (!operation.request?.platforms?.length || !operation.request.idempotencyKey) throw new Error('SUTRA_PUBLICATION_JOURNAL_INVALID')
     if (operation.results?.every(r => r.status === 'published' && r.success) && operation.results.length === operation.request.platforms.length) continue
     const postId = operation.results?.find(r => r.postId)?.postId
+    let groupedReadUnconfirmed = false
     try {
       if (postId) {
+        const confirmed = operation.results?.filter(result => result.status === 'published' && result.success) ?? []
+        groupedReadUnconfirmed = operation.request.platforms.length > 1 && confirmed.length > 0
         const remote = await gateway.reconcile(postId, operation.request)
+        // RetryPost accepts only a post ID, not a subset of its accounts. Do not
+        // let normalization hide a remote regression that could retry a success.
+        if (groupedReadUnconfirmed && confirmed.some(previous => {
+          const matches = remote.filter(result => result.platform === previous.platform
+            && result.accountId === operation.request.accountIds[previous.platform])
+          return matches.length !== 1 || matches[0].status !== 'published' || !matches[0].success
+        })) throw new Error('SUTRA_RECONCILIATION_REQUIRED: groupe distant incoherent')
+        groupedReadUnconfirmed = false
         operation.results = normalize(operation, remote)
         await save()
         const failed = operation.results.some(r => r.status === 'failed')
@@ -184,9 +195,13 @@ export async function runPublicationJournal(options: {
             operation.phase = 'recorded'; throw error
           }
           operation.results = normalize(operation, await gateway.retry(postId, operation.request))
-          operation.phase = operation.results.some(result => result.status === 'unknown') ? 'retrying' : 'recorded'
+          // Neither queued progress nor scheduling identifies the completed retry
+          // attempt. Without a provider attempt/version marker, only confirmed
+          // publication releases this fence; an older failed status cannot.
+          operation.phase = operation.results.every(result => result.status === 'published' && result.success) ? 'recorded' : 'retrying'
           await save()
-        } else if (!failed && operation.phase !== 'recorded' && operation.results.every(result => result.status !== 'unknown')) {
+        } else if (!failed && operation.phase !== 'recorded' && operation.results.every(result => result.status !== 'unknown')
+          && (operation.phase !== 'retrying' || operation.results.every(result => result.status === 'published' && result.success))) {
           operation.phase = 'recorded'; await save()
         }
       } else if (operation.phase === 'submitting' && !options.reconcileOnly && selected(operation)) {
@@ -209,8 +224,9 @@ export async function runPublicationJournal(options: {
       operation.results = operation.request.platforms.map(platform => {
         const old = operation.results?.find(r => r.platform === platform)
         return old?.status === 'published' ? old : { ...old, platform, accountId: operation.request.accountIds[platform], localAccountId: operation.accountRows[platform],
-          status: operation.phase === 'retrying' ? 'unknown' : old?.status ?? 'unknown', success: false,
-          error: error instanceof Error ? error.message : 'SUTRA_RECONCILIATION_REQUIRED' }
+          status: operation.phase === 'retrying' || groupedReadUnconfirmed ? 'unknown' : old?.status ?? 'unknown', success: false,
+          error: groupedReadUnconfirmed ? 'SUTRA_RECONCILIATION_REQUIRED: groupe non confirme, compte deja publie a verifier'
+            : error instanceof Error ? error.message : 'SUTRA_RECONCILIATION_REQUIRED' }
       })
       await save()
     }
@@ -224,7 +240,11 @@ export async function runPublicationJournal(options: {
     }
     const account = matches[0]
     if (operations.some(o => o.request.platforms.includes(platform) && o.request.accountIds[platform] === account.external_id)) continue
-    if (options.reconcileOnly) continue
+    if (options.reconcileOnly) {
+      unavailable.push({ platform, accountId: account.external_id, localAccountId: account.id, status: 'unknown', success: false,
+        error: 'SUTRA_PUBLICATION_EVIDENCE_REQUIRED' })
+      continue
+    }
     if (!selection && operations.some(o => o.request.platforms.includes(platform))) {
       unavailable.push({ platform, success: false, status: 'failed', error: 'SUTRA_ACCOUNT_CHANGED_SELECTION_REQUIRED' })
       continue

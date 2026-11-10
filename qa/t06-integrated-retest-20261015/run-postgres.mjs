@@ -3,7 +3,7 @@ import { spawnSync } from 'node:child_process'
 import { mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { createServer } from 'node:net'
+import { allocatePrivatePostgresEndpoint } from '../../tooling/private-postgres-endpoint.mjs'
 const root = resolve(import.meta.dirname, '../..')
 const mode = process.argv[2] || 'history'
 if (!['history', 'history-t01', 'legacy-cas'].includes(mode)) throw new Error('Unknown PostgreSQL fixture')
@@ -11,11 +11,9 @@ const fixture = mode === 'legacy-cas' ? 'qa/t06-social-recovery-20261014/test-po
 const label = mode === 'legacy-cas' ? 'postgres-cas-tests' : mode === 'history-t01' ? 'postgres-t01' : 'postgres'
 const bin = process.env.SUTRA_TEST_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin'
 const directory = mkdtempSync(join(tmpdir(), 'sutra-t06-pg-')), data = join(directory, 'data')
-const server = createServer()
-await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
-const port = server.address().port
-await new Promise(resolve => server.close(resolve))
+const { port, postgresOptions } = await allocatePrivatePostgresEndpoint()
 const childEnvironment = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: tmpdir(), LC_ALL: 'C',
+  LD_LIBRARY_PATH: process.env.LD_LIBRARY_PATH,
   SUTRA_DISPOSABLE_DB: '1', SUTRA_TEST_SOCIAL_HISTORY_FIXTURE: mode === 'history-t01' ? 't01' : 'canonical',
   PGHOST: '127.0.0.1', PGPORT: String(port), PGUSER: 'fixture',
   NEXT_PUBLIC_SUPABASE_URL: 'https://sutra-test.invalid', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fixture-anon',
@@ -29,7 +27,7 @@ let started = false
 const receipt = { status: 'RUNNING', command: `${process.execPath} qa/t06-integrated-retest-20261015/run-postgres.mjs ${mode}`, fixture, mode, pgBin: bin, database: 'private-loopback-only', clusterPreserved: directory, stopped: false }
 try {
   run(join(bin, 'initdb'), ['-D', data, '--auth=trust', '--username=fixture', '--no-locale', '--encoding=UTF8'])
-  run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', `-h 127.0.0.1 -k ${directory} -p ${port}`, '-w', 'start'])
+  run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', postgresOptions, '-w', 'start'])
   started = true
   run(process.execPath, ['--experimental-test-module-mocks', '--experimental-vm-modules', '--import', 'tsx', '--test', '--test-reporter=tap', fixture], label)
   receipt.status = 'PASS'

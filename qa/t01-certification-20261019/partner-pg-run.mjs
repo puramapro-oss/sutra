@@ -1,7 +1,7 @@
 // Private loopback cluster only; no source secrets or remote database access.
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
-import { createServer } from 'node:net'
+import { allocatePrivatePostgresEndpoint } from '../../tooling/private-postgres-endpoint.mjs'
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { resolve, join } from 'node:path'
@@ -13,11 +13,9 @@ const output = join(import.meta.dirname, label)
 mkdirSync(output)
 const cluster = mkdtempSync(join(tmpdir(), 'sutra-t01-partner-'))
 const bin = process.env.SUTRA_TEST_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin'
-const server = createServer()
-await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
-const port = server.address().port
-await new Promise(resolve => server.close(resolve))
+const { port, postgresOptions } = await allocatePrivatePostgresEndpoint()
 const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: tmpdir(), LC_ALL: 'C',
+  LD_LIBRARY_PATH: process.env.LD_LIBRARY_PATH,
   PGHOST: '127.0.0.1', PGPORT: String(port), PGUSER: 'fixture', PGDATABASE: 'sutra_ci_partner_local',
   SUTRA_DISPOSABLE_DB: '1', NODE_OPTIONS: `--require=${join(root, 'qa/t08/offline.cjs')}` }
 const commands = []
@@ -31,7 +29,7 @@ const run = (name, cmd, args) => {
 let started = false, stopped = false
 try {
   run('init', join(bin, 'initdb'), ['-D', join(cluster, 'data'), '--auth=trust', '--username=fixture', '--no-locale', '--encoding=UTF8', '-c', 'shared_memory_type=mmap', '-c', 'dynamic_shared_memory_type=posix', '-c', 'max_connections=24', '-c', 'shared_buffers=16MB'])
-  run('start', join(bin, 'pg_ctl'), ['-D', join(cluster, 'data'), '-l', join(cluster, 'server.log'), '-o', `-h 127.0.0.1 -k ${cluster} -p ${port}`, '-w', 'start']); started = true
+  run('start', join(bin, 'pg_ctl'), ['-D', join(cluster, 'data'), '-l', join(cluster, 'server.log'), '-o', postgresOptions, '-w', 'start']); started = true
   run('create', join(bin, 'createdb'), ['sutra_ci_partner_local'])
   run('tests', process.execPath, ['--experimental-test-module-mocks', '--import', 'tsx', '--test', '--test-concurrency=1', 'qa/t01-certification-20261019/partner-postgres.test.mts'])
   run('backup', join(bin, 'pg_dump'), ['--format=custom', '--file=' + join(output, 'private.dump')])

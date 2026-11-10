@@ -14,6 +14,8 @@ import { PublishScheduleSection, localDateTime } from './publish/PublishSchedule
 import { PublishResultsSection, type PublishResultUI } from './publish/PublishResultsSection'
 import { PublishModalFooter } from './publish/PublishModalFooter'
 import { mergePublicationResults, normalizePublicationResults, unknownPublicationResults } from './publish/publication-results'
+import { usePublicationReconciliation } from './publish/usePublicationReconciliation'
+import type { PublicationIntent, PublicationSnapshot } from './publish/publication-intent'
 
 export interface PublishEverywhereButtonProps {
   videoId: string
@@ -24,22 +26,7 @@ export interface PublishEverywhereButtonProps {
   defaultAccountIds?: string[]
   onPublishComplete?: (
     results: Array<{ platform: SocialPlatform; localAccountId?: string; accountId?: string; success: boolean; postUrl?: string }>
-  ) => void
-}
-
-interface Submission {
-  videoId: string
-  platforms: SocialPlatform[]
-  destinations: Array<{ platform: SocialPlatform; accountId: string }>
-  autoCaption: boolean
-  caption?: string
-  hashtags?: string[]
-  scheduledAt?: string
-}
-
-interface SubmissionSnapshot {
-  payload: Submission
-  accounts: SocialAccount[]
+  ) => void | Promise<void>
 }
 
 export function PublishEverywhereButton(props: PublishEverywhereButtonProps) {
@@ -73,12 +60,16 @@ function PublishEverywhereButtonContent({
   const [submissionError, setSubmissionError] = useState<string | null>(null)
   const accountRequest = useRef<AbortController | null>(null)
   const publicationRequest = useRef<AbortController | null>(null)
+  const publicationVersion = useRef(0)
   const submitting = useRef(false)
-  const submitted = useRef<SubmissionSnapshot | null>(null)
-  const [submittedSnapshot, setSubmittedSnapshot] = useState<SubmissionSnapshot | null>(null)
+  const submitted = useRef<PublicationSnapshot | null>(null)
+  const [submittedSnapshot, setSubmittedSnapshot] = useState<PublicationSnapshot | null>(null)
+  const { canVerify, verifying, verificationError, verify } = usePublicationReconciliation({
+    snapshot: submittedSnapshot, results, setResults, submittingRef: submitting, requestRef: publicationRequest, versionRef: publicationVersion,
+  })
   // A sibling account's success or uncertainty must not affect a confirmed failure.
   // Reconnection to a different external identity is never a retry destination.
-  const retryAccountIds = new Set((results ?? []).filter(result => result.status === 'failed' && result.localAccountId
+  const retryAccountIds = new Set((results ?? []).filter(result => result.status === 'failed' && result.retryEligible === true && result.localAccountId
     && submittedSnapshot?.accounts.some(original => original.id === result.localAccountId
       && original.platform === result.platform
       && accounts.some(current => current.id === original.id && current.platform === original.platform
@@ -122,7 +113,7 @@ function PublishEverywhereButtonContent({
     return () => { accountRequest.current?.abort(); accountRequest.current = null }
   }, [isOpen, loadAccounts])
 
-  useEffect(() => () => { publicationRequest.current?.abort(); publicationRequest.current = null }, [])
+  useEffect(() => () => { publicationVersion.current++; publicationRequest.current?.abort(); publicationRequest.current = null }, [])
 
   const fetchAccounts = useCallback(() => {
     setAccountsLoading(true)
@@ -140,25 +131,27 @@ function PublishEverywhereButtonContent({
 
   const toggleAccount = useCallback(
     (accountId: string) => {
-      if (!accounts.some(account => account.id === accountId && isAccountAvailable(account))) return
+      if (submitting.current || results) return
       setSelectedAccountIds((prev) => {
         const next = new Set(prev)
         if (next.has(accountId)) next.delete(accountId)
-        else if (next.size < MAX_SELECTED_ACCOUNTS) next.add(accountId)
+        else if (next.size < MAX_SELECTED_ACCOUNTS && accounts.some(account => account.id === accountId && isAccountAvailable(account))) next.add(accountId)
         return next
       })
     },
-    [accounts]
+    [accounts, results]
   )
 
   const selectAll = useCallback(() => {
+    if (submitting.current || results) return
     const available = accounts.filter(account => isAccountAvailable(account))
     if (available.length <= MAX_SELECTED_ACCOUNTS) setSelectedAccountIds(new Set(available.map(account => account.id)))
-  }, [accounts])
+  }, [accounts, results])
 
   const deselectAll = useCallback(() => {
+    if (submitting.current || results) return
     setSelectedAccountIds(new Set())
-  }, [])
+  }, [results])
 
   const handlePublish = async () => {
     if (submitting.current || accountsLoading || accountsError || !targets.size) return
@@ -184,7 +177,7 @@ function PublishEverywhereButtonContent({
       setSubmissionError('Ajoute une légende avant de confirmer la publication.')
       return
     }
-    const payload: Submission = submitted.current
+    const payload: PublicationIntent = submitted.current
       ? { ...submitted.current.payload, platforms, destinations }
       : { videoId, platforms, destinations,
         autoCaption: captionMode === 'auto', ...(captionMode === 'custom' ? { caption: customCaption.trim() } : {}),
@@ -193,6 +186,8 @@ function PublishEverywhereButtonContent({
     setSubmittedSnapshot(submitted.current)
     submitting.current = true
     const controller = new AbortController()
+    const version = ++publicationVersion.current
+    let receivedResults: PublishResultUI[] | null = null
     publicationRequest.current = controller
     const current = () => publicationRequest.current === controller
     const timeout = setTimeout(() => controller.abort(), 30_000)
@@ -207,11 +202,11 @@ function PublishEverywhereButtonContent({
       if (!current()) return
       controller.signal.throwIfAborted()
       if (!Array.isArray(data.results) || !data.results.length) throw new Error('publication_unconfirmed')
-      const list = normalizePublicationResults(data.results, selectedAccounts)
+      const list = normalizePublicationResults(data.results, selectedAccounts).map(result => ({ ...result, retryEligible: result.status === 'failed' }))
+      receivedResults = list
       setResults(previous => mergePublicationResults(previous, list))
       if (list.every(r => r.status === 'published')) toast.success('Publication confirmée sur les destinations sélectionnées.')
       else if (list.every(r => r.status === 'scheduled')) toast.info('Publication programmée. Elle n’a pas encore été publiée.')
-      onPublishComplete?.(list.map(r => ({ platform: r.platform, localAccountId: r.localAccountId, accountId: r.accountId, success: r.success, postUrl: r.postUrl })))
     } catch {
       if (!current()) return
       // A lost response is not a confirmed failure. Never offer a second POST.
@@ -221,6 +216,14 @@ function PublishEverywhereButtonContent({
       clearTimeout(timeout)
       if (current()) { publicationRequest.current = null; submitting.current = false; setPublishing(false) }
     }
+    if (receivedResults && publicationVersion.current === version) {
+      // Refreshing the parent is separate from the provider's publication evidence.
+      try {
+        await onPublishComplete?.(receivedResults.map(r => ({ platform: r.platform, localAccountId: r.localAccountId, accountId: r.accountId, success: r.success, postUrl: r.postUrl })))
+      } catch {
+        if (publicationVersion.current === version) setSubmissionError('Les résultats de publication sont conservés. L’actualisation de la page a échoué ; consulte le suivi des publications.')
+      }
+    }
   }
 
   const close = () => { if (!submitting.current) setIsOpen(false) }
@@ -229,22 +232,25 @@ function PublishEverywhereButtonContent({
       <PublishTriggerButton videoId={videoId} variant={variant} onClick={open} />
       <Modal open={isOpen} onClose={close} title="Publier sur les réseaux sociaux" className="sm:max-w-2xl" data-testid="publish-everywhere-modal">
         <p className="mb-4 break-words text-sm text-white/70">{videoTitle}</p>
-        <div className="space-y-5" aria-busy={publishing}>
+        <div className="space-y-5" aria-busy={publishing || verifying}>
           <PublishVideoPreview videoUrl={videoUrl} />
-          <fieldset disabled={publishing || results !== null} className="min-w-0 space-y-5">
+          <PublishPlatformGrid accounts={accounts} selectedAccountIds={selectedAccountIds}
+            onToggleAccount={toggleAccount} onSelectAll={selectAll} onDeselectAll={deselectAll}
+            selectionLocked={publishing || verifying || results !== null}
+            accountsLoading={accountsLoading} accountsError={accountsError} onRetryFetch={fetchAccounts} />
+          <fieldset disabled={publishing || verifying || results !== null} className="min-w-0 space-y-5">
             <legend className="sr-only">Préparer la publication</legend>
-            <PublishPlatformGrid accounts={accounts} selectedAccountIds={selectedAccountIds}
-              onToggleAccount={toggleAccount} onSelectAll={selectAll} onDeselectAll={deselectAll}
-              accountsLoading={accountsLoading} accountsError={accountsError} onRetryFetch={fetchAccounts} />
             <PublishCaptionSection captionMode={captionMode} customCaption={customCaption} autoHashtags={autoHashtags}
               onCaptionModeChange={setCaptionMode} onCustomCaptionChange={setCustomCaption} onAutoHashtagsChange={setAutoHashtags} />
             <PublishScheduleSection schedule={schedule} scheduledAt={scheduledAt} onScheduleChange={setSchedule} onScheduledAtChange={setScheduledAt} />
           </fieldset>
           {submissionError && <p role="alert" className="text-sm text-red-300">{submissionError}</p>}
+          {verificationError && <p role="alert" className="text-sm text-amber-200">{verificationError}</p>}
           <PublishResultsSection results={results} />
           {results ? <Link href="/publish" className="inline-block text-sm text-violet-300 underline">Consulter le suivi des publications</Link>
             : <p className="text-sm text-white/70">Vérifie la vidéo, les comptes et la date. Le bouton ci-dessous confirme ton envoi vers les destinations sélectionnées.</p>}
-          <PublishModalFooter onCancel={close} onPublish={handlePublish} publishing={publishing}
+          <PublishModalFooter onCancel={close} onPublish={handlePublish} publishing={publishing} verifying={verifying} canVerify={canVerify}
+            onVerify={results ? () => { setSubmissionError(null); void verify() } : undefined}
             selectedCount={accountsLoading || accountsError ? 0 : targets.size} schedule={schedule} retry={results !== null} />
         </div>
       </Modal>

@@ -148,6 +148,7 @@ function SettingsPageContent() {
                 key={s}
                 onClick={() => update('default_style', s)}
                 data-testid={`style-${s}`}
+                aria-pressed={cfg.default_style === s}
                 className={cn(
                   'px-3 py-2 rounded-xl text-xs font-medium border capitalize transition-all',
                   cfg.default_style === s
@@ -173,6 +174,7 @@ function SettingsPageContent() {
                   key={r}
                   onClick={() => update('default_aspect_ratio', r)}
                   data-testid={`ratio-${r}`}
+                  aria-pressed={cfg.default_aspect_ratio === r}
                   className={cn(
                     'px-4 py-2 rounded-xl text-xs font-medium border transition-all',
                     cfg.default_aspect_ratio === r
@@ -186,10 +188,11 @@ function SettingsPageContent() {
             </div>
           </div>
           <div>
-            <label className="text-xs text-white/60 mb-2 block">
-              Duree: {cfg.default_duration}s
+            <label htmlFor="auto-video-duration" className="text-xs text-white/60 mb-2 block">
+              Durée : {cfg.default_duration}s
             </label>
             <input
+              id="auto-video-duration"
               type="range"
               min={5}
               max={60}
@@ -211,6 +214,7 @@ function SettingsPageContent() {
               <button
                 key={m.id}
                 onClick={() => update('preferred_model', m.id)}
+                aria-pressed={cfg.preferred_model === m.id}
                 className={cn(
                   'px-4 py-2 rounded-xl text-xs font-medium border transition-all',
                   cfg.preferred_model === m.id
@@ -229,6 +233,7 @@ function SettingsPageContent() {
                 <button
                   key={q}
                   onClick={() => update('quality_level', q)}
+                  aria-pressed={cfg.quality_level === q}
                   className={cn(
                     'px-4 py-2 rounded-xl text-xs font-medium border capitalize transition-all',
                     cfg.quality_level === q
