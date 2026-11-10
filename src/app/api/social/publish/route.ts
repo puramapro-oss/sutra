@@ -15,7 +15,7 @@ const schema = z.object({
   destinations: z.array(z.object({ platform: platformSchema, accountId: z.string().uuid() }).strict()).min(1).max(50).optional(),
   caption: z.string().max(20000).optional(), hashtags: z.array(z.string().max(100)).max(100).optional(),
   title: z.string().max(500).optional(), description: z.string().max(20000).optional(), tags: z.array(z.string().max(100)).max(100).optional(),
-  autoCaption: z.boolean().optional(), scheduledAt: z.string().datetime({ offset: true }).optional(),
+  autoCaption: z.boolean().optional(), reconcileOnly: z.boolean().optional(), scheduledAt: z.string().datetime({ offset: true }).optional(),
 }).superRefine((input, context) => {
   if (!input.destinations) return
   const platforms = new Set(input.destinations.map(destination => destination.platform))

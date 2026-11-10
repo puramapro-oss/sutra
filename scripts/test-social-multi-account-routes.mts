@@ -81,6 +81,21 @@ test('API multicomptes : conserve la selection legacy explicite d un seul compte
   assert.deepEqual(requests[0].input.accountIds, { youtube: localA })
 })
 
+for (const reconcileOnly of [true, false]) {
+  test(`API multicomptes : transmet le booleen de verification ${reconcileOnly} sans modifier l identite`, async () => {
+    assert.equal((await publish(request({ ...body, reconcileOnly }))).status, 202)
+    assert.equal(requests.length, 1)
+    assert.deepEqual(requests[0], { userId: user, input: { ...body, reconcileOnly, scheduledAt: undefined } })
+  })
+}
+
+for (const reconcileOnly of ['true', 'false', 1, 0, null, {}]) {
+  test(`API multicomptes : refuse un mode de verification non booleen ${JSON.stringify(reconcileOnly)}`, async () => {
+    assert.equal((await publish(request({ ...body, reconcileOnly }))).status, 400)
+    assert.equal(requests.length, 0)
+  })
+}
+
 for (const [name, invalid] of [
   ['deux modes de selection', { ...body, accountIds: { youtube: localA } }],
   ['plateforme ajoutee sans destination', { ...body, platforms: ['youtube', 'instagram'] }],
@@ -99,6 +114,7 @@ for (const [name, invalid] of [
 test('API multicomptes : session absente ne publie ni ne modifie les deux configurations', async () => {
   authenticated = false
   assert.equal((await publish(request(body))).status, 401)
+  assert.equal((await publish(request({ ...body, reconcileOnly: true }))).status, 401)
   assert.equal((await socialConfig(request({ enabled: true, default_platforms: ['youtube'], publish_account_ids: [localA] }))).status, 401)
   assert.equal((await autoConfig(request({ auto_publish: true, publish_platforms: ['youtube'], publish_account_ids: [localA] }, 'PATCH'))).status, 401)
   assert.equal(requests.length + configWrites, 0)

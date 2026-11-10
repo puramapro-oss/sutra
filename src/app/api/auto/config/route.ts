@@ -77,7 +77,6 @@ export async function PATCH(req: Request) {
     if (Object.keys(updates).length === 0) {
       return NextResponse.json({ error: 'Aucune donnee a mettre a jour' }, { status: 400 })
     }
-    const service = createServiceClient()
     if (['is_active', 'auto_publish', 'require_approval_before_publish'].some(key => key in updates && typeof updates[key] !== 'boolean')) {
       return NextResponse.json({ error: 'Autorisation de publication invalide' }, { status: 400 })
     }
@@ -88,6 +87,17 @@ export async function PATCH(req: Request) {
     if ('publish_platforms' in updates && !z.array(z.string()).max(14).safeParse(updates.publish_platforms).success) {
       return NextResponse.json({ error: 'Selection des plateformes invalide' }, { status: 400 })
     }
+    if ('schedules' in updates) {
+      if (!Object.hasOwn(body, 'expectedSchedules')) {
+        return NextResponse.json({ error: 'Relis les plannings avant de les modifier', code: 'SCHEDULE_PRECONDITION_REQUIRED' }, { status: 428 })
+      }
+      // Validate the complete intent before constructing a privileged client or
+      // reading saved publication mandates. Legacy snapshots may be removed.
+      if (!Array.isArray(body.expectedSchedules) || !isValidAutoSchedules(updates.schedules)) {
+        return NextResponse.json({ error: 'Plannings invalides', code: 'SCHEDULE_INVALID' }, { status: 400 })
+      }
+    }
+    const service = createServiceClient()
     const stopping = updates.auto_publish === false || updates.is_active === false
     if (!stopping && ('publish_account_ids' in updates || 'publish_platforms' in updates || updates.auto_publish === true || updates.is_active === true)) {
       const current = await service.from('sutra_auto_config').select('publish_platforms,publish_account_ids,auto_publish,is_active')
@@ -106,14 +116,7 @@ export async function PATCH(req: Request) {
     }
 
     if ('schedules' in updates) {
-      if (!Object.hasOwn(body, 'expectedSchedules')) {
-        return NextResponse.json({ error: 'Relis les plannings avant de les modifier', code: 'SCHEDULE_PRECONDITION_REQUIRED' }, { status: 428 })
-      }
-      // The previous snapshot may contain legacy entries that the user is removing.
-      if (!Array.isArray(body.expectedSchedules) || !isValidAutoSchedules(updates.schedules)) {
-        return NextResponse.json({ error: 'Plannings invalides', code: 'SCHEDULE_INVALID' }, { status: 400 })
-      }
-      const { data, error } = await createServiceClient()
+      const { data, error } = await service
         .from('sutra_auto_config')
         .update(updates)
         .eq('user_id', user.id)

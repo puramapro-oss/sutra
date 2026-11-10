@@ -1,20 +1,75 @@
-// Real PostgreSQL semantics in an isolated, in-memory PGlite runtime.
-// SUTRA_TEST_PGLITE_ENTRY must point to a separately verified local runtime;
-// this test neither downloads a package nor adds an application dependency.
-// PGlite has one connection: native inter-process races are not certified here.
+// The same migration/RLS/history assertions run against either native PostgreSQL
+// or an isolated, in-memory PGlite runtime. Neither mode downloads dependencies.
+// Native: SUTRA_DISPOSABLE_DB=1 DATABASE_URL_LOCAL=postgres://fixture:fixture@127.0.0.1:5432/sutra_ci_actions
+// PGlite: SUTRA_TEST_PGLITE_ENTRY=/absolute/path/to/a/verified/runtime/dist/index.js
+// This recipe is sequential; the separate native OAuth fixture tests races.
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import { createHash, randomUUID } from 'node:crypto'
 import { isAbsolute } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { assertDisposableDatabase } from '../tooling/disposable-database.mjs'
 
 const entry = process.env.SUTRA_TEST_PGLITE_ENTRY
-if (!entry || !isAbsolute(entry)) throw new Error('Set SUTRA_TEST_PGLITE_ENTRY to a verified local PGlite entry point')
+const postgresUrl = process.env.DATABASE_URL_LOCAL
+if (entry && postgresUrl) throw new Error('Choose exactly one migration test backend: DATABASE_URL_LOCAL or SUTRA_TEST_PGLITE_ENTRY')
+if (entry) {
+  if (!isAbsolute(entry)) throw new Error('Set SUTRA_TEST_PGLITE_ENTRY to a verified local PGlite entry point')
+} else {
+  // Validate before importing pg, constructing a client or attempting a connection.
+  assertDisposableDatabase(postgresUrl, process.env.SUTRA_DISPOSABLE_DB)
+}
 globalThis.fetch = async () => { throw new Error('UNEXPECTED_NETWORK_IN_MIGRATION_TEST') }
-const { PGlite } = await import(pathToFileURL(entry).href)
-const db = new PGlite()
 const migration = await readFile(new URL('../migrations/20261110_social_multi_accounts.sql', import.meta.url), 'utf8')
 const historyMigration = await readFile(new URL('../migrations/20261015_social_authorization_history.sql', import.meta.url), 'utf8')
+const engine = entry ? 'PGlite in-memory' : 'PostgreSQL native (pg)'
+let rolesCreated = false
+async function openDatabase() {
+  if (entry) {
+    const { PGlite } = await import(pathToFileURL(entry).href)
+    return new PGlite()
+  }
+  const { default: pg } = await import('pg')
+  const options = connectionString => ({ connectionString, ssl: false, connectionTimeoutMillis: 5_000,
+    statement_timeout: 15_000, application_name: 'sutra-social-multi-account-migration-test' })
+  const admin = new pg.Client(options(postgresUrl))
+  const name = `sutra_ci_social_multi_${randomUUID().replaceAll('-', '')}`
+  const isolatedUrl = new URL(postgresUrl)
+  isolatedUrl.pathname = `/${name}`
+  assertDisposableDatabase(isolatedUrl.href, process.env.SUTRA_DISPOSABLE_DB)
+  const client = new pg.Client(options(isolatedUrl.href))
+  let databaseCreated = false
+  const close = async () => {
+    try {
+      await client.end()
+      if (databaseCreated) await admin.query(`DROP DATABASE "${name}"`)
+      // Only drop roles whose creation committed successfully in this recipe.
+      // Never adopt, alter or remove a cluster's pre-existing authorization roles.
+      if (rolesCreated) await admin.query('DROP ROLE anon, authenticated, service_role;')
+    } finally { await admin.end() }
+  }
+  try {
+    await admin.connect()
+    const existing = await admin.query("SELECT rolname FROM pg_roles WHERE rolname IN ('anon','authenticated','service_role')")
+    assert.equal(existing.rows.length, 0, 'Use a disposable PostgreSQL cluster without existing authorization roles')
+    await admin.query(`CREATE DATABASE "${name}" TEMPLATE template0`)
+    databaseCreated = true
+    await client.connect()
+    return { query: text => client.query(text), exec: text => client.query(text), close }
+  } catch (error) {
+    try { await close() } catch (cleanupError) {
+      throw new AggregateError([error, cleanupError], 'Native migration fixture setup and cleanup failed')
+    }
+    throw error
+  }
+}
+const db = await openDatabase()
+let closed = false
+const close = async () => {
+  if (closed) return
+  closed = true
+  await db.close()
+}
 const literal = value => `'${String(value).replaceAll("'", "''")}'`
 const json = value => `${literal(JSON.stringify(value))}::jsonb`
 const query = async text => (await db.query(text)).rows
@@ -63,8 +118,13 @@ const structureMetadata = () => query(`SELECT c.conrelid::regclass::text AS rela
 let version = 'unavailable'
 try {
   version = await scalar('SHOW server_version;')
-  await exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role BYPASSRLS;
-    CREATE SCHEMA auth; CREATE SCHEMA sutra;
+  await exec(`BEGIN;
+    CREATE ROLE anon NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
+    CREATE ROLE authenticated NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
+    CREATE ROLE service_role NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION BYPASSRLS;
+    COMMIT;`)
+  rolesCreated = true
+  await exec(`CREATE SCHEMA auth; CREATE SCHEMA sutra;
     CREATE TABLE auth.users(id uuid PRIMARY KEY);
     CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS
       $$SELECT nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
@@ -180,13 +240,14 @@ try {
     assert.deepEqual(await protectionMetadata(), beforeProtections)
     assert.deepEqual(await configRows(), configs)
   })
+  await close()
   console.log(JSON.stringify({ status: 'PASS', checks: checks.length, failures: 0, skips: 0,
-    postgresql: version, engine: 'PGlite in-memory', nativeConcurrency: 'NOT_TESTED', remote: false,
+    postgresql: version, engine, nativeConcurrency: 'NOT_TESTED', remote: false,
     migrationSha256: createHash('sha256').update(migration).digest('hex') }))
 } catch (error) {
   console.error(JSON.stringify({ status: 'FAIL', checks: checks.length, failures: 1, remote: false,
-    postgresql: version, error: String(error.message).slice(0, 800) }))
+    postgresql: version, engine, error: String(error.message).slice(0, 800) }))
   throw error
 } finally {
-  await db.close()
+  await close()
 }

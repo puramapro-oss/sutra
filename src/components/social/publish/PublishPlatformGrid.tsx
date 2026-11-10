@@ -11,6 +11,7 @@ export interface PublishPlatformGridProps {
   onDeselectAll: () => void
   accountsLoading: boolean
   accountsError: string | null
+  selectionLocked?: boolean
   onRetryFetch: () => void
 }
 
@@ -22,6 +23,7 @@ export function PublishPlatformGrid({
   onDeselectAll,
   accountsLoading,
   accountsError,
+  selectionLocked = false,
   onRetryFetch,
 }: PublishPlatformGridProps) {
   const allSelected = selectedAccountIds.size > 0 && selectedAccountIds.size === accounts.length
@@ -34,7 +36,7 @@ export function PublishPlatformGrid({
         <button
           type="button"
           data-testid="publish-toggle-all"
-          disabled={accountsLoading || !!accountsError || accounts.length === 0 || (!clearSelection && accounts.length > MAX_SELECTED_ACCOUNTS)}
+          disabled={selectionLocked || accountsLoading || !!accountsError || accounts.length === 0 || (!clearSelection && accounts.length > MAX_SELECTED_ACCOUNTS)}
           onClick={clearSelection ? onDeselectAll : onSelectAll}
           className="text-xs text-violet-400 hover:text-violet-300 transition-colors disabled:opacity-50"
         >
@@ -65,7 +67,7 @@ export function PublishPlatformGrid({
       {accounts.length > MAX_SELECTED_ACCOUNTS && <p className="text-xs text-white/70">Choisis jusqu’à {MAX_SELECTED_ACCOUNTS} comptes pour cet envoi.</p>}
       {!accountsLoading && !accountsError && (
         <AccountSelection accounts={accounts} selectedAccountIds={[...selectedAccountIds]}
-          onToggle={onToggleAccount} testIdPrefix="publish-account" />
+          onToggle={onToggleAccount} disabled={selectionLocked} testIdPrefix="publish-account" />
       )}
     </div>
   )

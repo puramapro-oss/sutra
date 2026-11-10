@@ -237,7 +237,9 @@ function publicationDatabase(status = 'ready', failClaim = false, failSave = fal
   process.env.ZERNIO_PROFILE_BINDINGS = JSON.stringify({ [publicationUser]: 'a'.repeat(24) })
   const db = socialDatabase(publicationUser)
   db.auto.status = status; db.settings.failClaim = failClaim; db.settings.failFinal = failSave
-  db.accounts.splice(1)
+  // An unselected connected account is not an implicit publication mandate.
+  db.config.publish_platforms = ['youtube']
+  db.config.publish_account_ids = ['local-y']
   if (!verified) db.tables.video_jobs.length = 0
   return { ...db, video: db.auto }
 }
@@ -256,9 +258,17 @@ test('PUBLICATION AUTO: ancien ready sans checkpoint du fichier verifie ne publi
 
 test('PUBLICATION: succes partiel reste partiel et comptes issus du serveur', async () => {
   const db = publicationDatabase()
+  db.config.publish_platforms = ['youtube', 'instagram']
+  db.config.publish_account_ids = ['local-y', 'local-i']
   const actual = await publishAutoVideoRecord(publicationUser, 'v', true, db.client, async params => {
-    assert.equal(params.config.zernio_connected_platforms[0].account_id, verifiedAccount)
-    return [{ platform: 'youtube' as const, success: true, status: 'published' as const, postId: publicationPostId }]
+    const destination = params.config.zernio_connected_platforms[0]
+    const expected = db.accounts.find(account => account.platform === destination.platform)!
+    assert.equal(destination.account_id, expected.external_id)
+    if (destination.platform === 'youtube') {
+      assert.equal(destination.account_id, verifiedAccount)
+      return [{ platform: 'youtube' as const, success: true, status: 'published' as const, postId: publicationPostId }]
+    }
+    return [{ platform: 'instagram' as const, success: false, status: 'failed' as const, postId: publicationPostId }]
   })
   assert.equal(actual.status, 'partially_published')
   assert.equal(actual.success, false)
