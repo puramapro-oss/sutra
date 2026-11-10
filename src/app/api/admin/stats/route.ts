@@ -61,12 +61,13 @@ export async function GET(req: Request) {
     if (type === 'config') {
       const { data, error } = await service.from('app_config').select('key, value')
       if (error) throw error
-      const config: Record<string, Record<string, unknown>> = {}
+      // Stored keys are data, including names such as __proto__ and constructor.
+      const config: Record<string, Record<string, unknown>> = Object.create(null)
       for (const row of data ?? []) {
         // key format "section.field" e.g. "landing.hero_title"
         const [section, field] = row.key.split('.')
         if (!section || !field) continue
-        if (!config[section]) config[section] = {}
+        if (!config[section]) config[section] = Object.create(null)
         config[section][field] = row.value
       }
       return NextResponse.json({ config })
@@ -111,7 +112,7 @@ export async function GET(req: Request) {
         .select('service, estimated_cost', { count: 'exact' })
         .gte('created_at', thirtyDaysAgo.toISOString())
       const data = completeRows(response)
-      const totals: Record<string, number> = {}
+      const totals: Record<string, number> = Object.create(null)
       for (const log of data ?? []) {
         const key = (log.service ?? 'other').toLowerCase()
         totals[key] = (totals[key] ?? 0) + Number(log.estimated_cost ?? 0)
@@ -196,7 +197,7 @@ export async function GET(req: Request) {
           .reduce((sum, p) => sum + Number(p.amount ?? 0), 0)
         const totalApiCosts = (apiCosts ?? []).reduce((sum, l) => sum + Number(l.estimated_cost ?? 0), 0)
 
-        const plans: Record<string, number> = {}
+        const plans: Record<string, number> = Object.create(null)
         for (const p of planDistribution ?? []) {
           const plan = p.plan ?? 'free'
           plans[plan] = (plans[plan] ?? 0) + 1
