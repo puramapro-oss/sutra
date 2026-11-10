@@ -271,7 +271,9 @@ Avant activation sur Hostinger ou un autre serveur Linux retenu :
 3. Installer les unités et vérifier leur configuration. Un appel du dispatcher sur une file vide doit confirmer zéro traitement. Cette vérification ne doit pas servir à déclencher des ordres réels inconnus.
 4. Activer le timer après inspection des journaux admissibles et qualification d'une publication réelle autorisée. Vérifier le résultat réseau, sa visibilité, les identifiants des comptes et la reprise après arrêt contrôlé du service.
 
-Le service d'observation historique reste strictement en lecture seule. Il n'est pas détourné en dispatcher. Pour suspendre les nouveaux passages, arrêter ce nouveau timer et son service ; conserver journal, clés et résultats. L'arrêt local ne prouve pas l'annulation d'une publication déjà reçue par le fournisseur. Un retour à l'ancien binaire doit conserver les colonnes et journaux durables et maintenir le dispatcher arrêté ; aucun rollback ne supprime les preuves.
+Le service d'observation historique reste strictement en lecture seule. Il n'est pas détourné en dispatcher. Pour suspendre les nouveaux passages, arrêter ce nouveau timer et son service ; conserver journal, clés et résultats. L'arrêt local ne prouve pas l'annulation d'une publication déjà reçue par le fournisseur.
+
+**Retour à un binaire antérieur : garder les écritures sociales fermées pendant tout le rollback.** L'arrêt du dispatcher seul ne suspend pas les envois manuels. L'ancien journal ignore `dispatch_enabled` et sauvegarde directement par révision, sans contrôler le nouveau bail ; il peut encore ajouter une destination ou relancer un échec. Fermer les POST `/api/social/publish` et leurs alias `/api/publish` et `/api/publish/social`, puis suspendre aussi les routes et workers capables d'appeler les automatismes de publication. Vérifier ces refus sur le serveur avant de rétablir l'ancien binaire. Ne rouvrir ces entrées qu'avec un binaire compatible avec les journaux durables et après rapprochement des opérations encore en attente. Conserver les colonnes, journaux, clés et résultats ; aucun rollback ne supprime les preuves.
 
 ### Qualification de ce candidat
 
