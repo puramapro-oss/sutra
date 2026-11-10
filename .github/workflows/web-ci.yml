@@ -88,7 +88,8 @@ jobs:
           raise SystemExit(not result.wasSuccessful())
           PY
       - name: Audit production dependencies
-        if: always()
+        # npm audit uploads the dependency graph; PR checks keep private graph data local.
+        if: always() && github.event_name != 'pull_request'
         run: npm audit --omit=dev --audit-level=high
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
