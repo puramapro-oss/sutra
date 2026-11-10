@@ -1,0 +1,282 @@
+# quality/results.json
+
+Source: native-evidence/sutra-complete-proof/quality/results.json
+
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "status": "FAIL",
+    "exitCode": null,
+    "signal": "SIGKILL",
+    "durationMs": 19254
+  },
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "."
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 39554
+  },
+  {
+    "name": "build",
+    "command": [
+      "node",
+      "node_modules/next/dist/bin/next",
+      "build",
+      "--webpack"
+    ],
+    "status": "FAIL",
+    "exitCode": null,
+    "signal": "SIGKILL",
+    "durationMs": 58312
+  }
+]
+
+# quality/typecheck.log
+
+Source: native-evidence/sutra-complete-proof/quality/typecheck.log
+
+
+
+# quality/lint.log
+
+Source: native-evidence/sutra-complete-proof/quality/lint.log
+
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/e2e/landing.spec.ts
+  168:12  warning  'response' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/e2e/v3-features.spec.ts
+  28:51  warning  'browserName' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/purama-promotion/promotion.test.mjs
+  142:44  warning  'c' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t06-recert-1968-20261020/pages-initial.mjs
+  9:20  warning  'expect' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/scripts/screenshot-landing.mjs
+  19:66  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/scripts/test-api-contracts.mts
+  47:9  warning  'fetchWithRetry' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/scripts/test-auto-export-queue.mts
+    3:1  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  225:9  warning  'part1' is assigned a value but never used                                     @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/scripts/test-production-queue.mts
+  2:1  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/achievements/page.tsx
+   47:10  warning  'totalPoints' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  107:9   warning  'locked' is assigned a value but never used       @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/admin/classement/page.tsx
+  5:24  warning  'Loader2' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/admin/withdrawals/page.tsx
+  8:10  warning  'cn' is defined but never used           @typescript-eslint/no-unused-vars
+  9:16  warning  'CardContent' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/auto/page.tsx
+  205:25  warning  Unused eslint-disable directive (no problems were reported from 'jsx-a11y/media-has-caption')
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/auto/videos/page.tsx
+  143:19  warning  Unused eslint-disable directive (no problems were reported from 'jsx-a11y/media-has-caption')
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/classement-points/page.tsx
+  188:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/create/page.tsx
+   3:20  warning  'useCallback' is defined but never used       @typescript-eslint/no-unused-vars
+   3:33  warning  'useRef' is defined but never used            @typescript-eslint/no-unused-vars
+   8:3   warning  'Sparkles' is defined but never used          @typescript-eslint/no-unused-vars
+  10:3   warning  'ChevronRight' is defined but never used      @typescript-eslint/no-unused-vars
+  11:3   warning  'ChevronLeft' is defined but never used       @typescript-eslint/no-unused-vars
+  12:3   warning  'Mic' is defined but never used               @typescript-eslint/no-unused-vars
+  13:3   warning  'Music' is defined but never used             @typescript-eslint/no-unused-vars
+  14:3   warning  'FileVideo' is defined but never used         @typescript-eslint/no-unused-vars
+  19:23  warning  'NICHES' is defined but never used            @typescript-eslint/no-unused-vars
+  19:45  warning  'VIDEO_ENGINES' is defined but never used     @typescript-eslint/no-unused-vars
+  20:10  warning  'MANUAL_STEPS' is defined but never used      @typescript-eslint/no-unused-vars
+  21:10  warning  'cn' is defined but never used                @typescript-eslint/no-unused-vars
+  26:10  warning  'MediaModeCards' is defined but never used    @typescript-eslint/no-unused-vars
+  27:10  warning  'SceneStockPicker' is defined but never used  @typescript-eslint/no-unused-vars
+  28:25  warning  'AutoFormProps' is defined but never used     @typescript-eslint/no-unused-vars
+  29:27  warning  'ManualFormProps' is defined but never used   @typescript-eslint/no-unused-vars
+  31:3   warning  'OptionSection' is defined but never used     @typescript-eslint/no-unused-vars
+  32:3   warning  'OptionCard' is defined but never used        @typescript-eslint/no-unused-vars
+  33:3   warning  'UploadZone' is defined but never used        @typescript-eslint/no-unused-vars
+  34:3   warning  'SummaryRow' is defined but never used        @typescript-eslint/no-unused-vars
+  39:21  warning  'PipelineStep' is defined but never used      @typescript-eslint/no-unused-vars
+  42:11  warning  'SceneStockState' is defined but never used   @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/dashboard/page.tsx
+  17:23  warning  'formatRelativeDate' is defined but never used  @typescript-eslint/no-unused-vars
+  22:10  warning  'Skeleton' is defined but never used            @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/influencer/page.tsx
+  4:77   warning  'Award' is defined but never used         @typescript-eslint/no-unused-vars
+  4:110  warning  'Sparkles' is defined but never used      @typescript-eslint/no-unused-vars
+  4:134  warning  'ExternalLink' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/lottery/page.tsx
+   4:10  warning  'motion' is defined but never used      @typescript-eslint/no-unused-vars
+   5:26  warning  'Clock' is defined but never used       @typescript-eslint/no-unused-vars
+   5:33  warning  'Coins' is defined but never used       @typescript-eslint/no-unused-vars
+   5:40  warning  'Users' is defined but never used       @typescript-eslint/no-unused-vars
+  11:10  warning  'EmptyState' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/notifications/page.tsx
+  25:10  warning  'Card' is defined but never used             @typescript-eslint/no-unused-vars
+  25:16  warning  'CardContent' is defined but never used      @typescript-eslint/no-unused-vars
+  64:9   warning  'router' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/partenaire/outils/page.tsx
+  15:10  warning  'cn' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/partenaire/page.tsx
+  14:3  warning  'Clock' is defined but never used                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+  98:5  warning  Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/publish/page.tsx
+  90:66  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/storyboard/page.tsx
+  22:11  warning  'profile' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/styles/page.tsx
+  22:11  warning  'profile' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/voices/page.tsx
+  8:10  warning  'createClient' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/(dashboard)/wallet/page.tsx
+  5:82  warning  'Loader2' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/aide/page.tsx
+   9:3   warning  'MessageCircle' is defined but never used  @typescript-eslint/no-unused-vars
+  12:3   warning  'Mail' is defined but never used           @typescript-eslint/no-unused-vars
+  13:3   warning  'CheckCircle2' is defined but never used   @typescript-eslint/no-unused-vars
+  16:10  warning  'toast' is defined but never used          @typescript-eslint/no-unused-vars
+  19:15  warning  'FAQItem' is defined but never used        @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/api/karma/games/quete/route.ts
+  63:28  warning  '_request' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/api/partner/stats/route.ts
+  66:13  warning  'monthKey' is assigned a value but never used          @typescript-eslint/no-unused-vars
+  75:13  warning  'monthStart' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  76:13  warning  'monthEnd' is assigned a value but never used          @typescript-eslint/no-unused-vars
+  77:13  warning  'monthCommissions' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/api/production/route.ts
+  137:24  warning  '_requestId' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/api/video/export/route.ts
+  116:24  warning  '_requestId' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/guide/page.tsx
+  34:5  warning  Do not use `window.location.href` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/page.tsx
+  2:8  warning  'Link' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/app/partenariat/page.tsx
+   6:3  warning  'Users' is defined but never used       @typescript-eslint/no-unused-vars
+  13:3  warning  'TrendingUp' is defined but never used  @typescript-eslint/no-unused-vars
+  14:3  warning  'DollarSign' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/autopilot/AutopilotUpgradePrompt.tsx
+  25:26  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/contest/ContestSubmissionForm.tsx
+  52:64  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/dashboard/VideoCard.tsx
+  80:11  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/editor/EditorTabs.tsx
+  9:8  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/editor/tabs/BrandKitTab.tsx
+  22:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/home/ReferralBlock.tsx
+  197:15  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/layout/Header.tsx
+   23:9   warning  'router' is assigned a value but never used                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+   48:28  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination                   @next/next/no-location-assign-relative-destination
+  114:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/library/VideoList.tsx
+  58:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/publish/VideoPublishCard.tsx
+  52:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/settings/AbonnementTab.tsx
+  87:28  warning  Do not use `window.location.assign()` to navigate to internal Next.js pages. Use `redirect()` in the render phase, or `useRouter().push()` in Client Components' event handlers instead. See: https://nextjs.org/docs/messages/no-location-assign-relative-destination  @next/next/no-location-assign-relative-destination
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/settings/ApparenceTab.tsx
+  138:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/settings/ProfilTab.tsx
+  58:17  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/shared/ShareableCard.tsx
+  10:3  warning  'MessageCircle' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/components/voices/VoiceCard.tsx
+  5:10  warning  'Badge' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/hooks/usePublish.ts
+  5:15  warning  'SocialPlatform' is defined but never used  @typescript-eslint/no-unused-vars
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/lib/ai/social-caption.ts
+  177:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+/workspace/scratch/6a3b4f291e34/continuation/sutra/src/lib/editor-export.ts
+  12:74  warning  '_media' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 96 problems (0 errors, 96 warnings)
+  0 errors and 5 warnings potentially fixable with the `--fix` option.
+
+
+# quality/build.log
+
+Source: native-evidence/sutra-complete-proof/quality/build.log
+
+▲ Next.js 16.4.5 (webpack)
+✓ Running next.config.ts took 108ms
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+- Experiments (use with caution):
+  · cpus: 2
+
+  Creating an optimized production build ...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+
+# sutra-final-targeted-eslint.log
+
+Source: native-evidence/sutra-complete-proof/sutra-final-targeted-eslint.log

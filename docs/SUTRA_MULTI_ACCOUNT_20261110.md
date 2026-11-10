@@ -1,5 +1,56 @@
 # SUTRA multicomptes et autorisations de publication
 
+## Qualification native de continuation — 10 novembre 2026
+
+La continuation du candidat `846bf6ef7d65be9b9b179739b229ced6339deb8f`
+exécute les **15 commandes du gate de base de données** avec PostgreSQL natif
+16.15, dans des clusters locaux jetables sous UID 1000. Les résultats finaux sont
+PASS, sans test natif ignoré. Le reçu conserve les essais intermédiaires : les
+clients PostgreSQL 18 ont d’abord fait échouer deux restaurations sur le serveur
+16 ; les clients natifs 16.15 ont ensuite permis de rejouer les trois commandes
+concernées avec succès. Ce résultat n’est pas présenté comme un premier passage
+unique entièrement vert. La première qualification en PostgreSQL 18.6 apporte une
+preuve complémentaire ; ses compteurs ne s’ajoutent pas à ceux de la passe 16.
+
+Le banc commun choisit un port attribué par le système, écoute seulement sur
+`127.0.0.1`, désactive les sockets Unix interdits par ce runtime et fixe UTC. Les
+assertions métier restent actives : rôles et RLS, unicité, quotas, verrous, reprise
+après redémarrage réel, refus du worker expiré, sauvegarde/restauration et catalogue
+de promotion. Les migrations et le code produit restent inchangés.
+
+Deux anciens scénarios ont été adaptés au protocole multicomptes publié : une
+reconnexion transmet l’UUID du compte choisi, et la génération planifiée sans
+publication désactive explicitement `auto_publish` dans la même requête que son
+activation. La fixture OAuth applique maintenant la migration multicomptes réelle.
+Un nouveau test natif vérifie aussi que deux retours OAuth indépendants visant la
+même identité externe ne créent qu’un compte et un événement de consentement.
+
+| Contrôle de continuation | Résultat |
+|---|---|
+| Migration multicomptes | 9 groupes PASS ; identités, historique, RLS, droits et réapplication |
+| Concurrence pipeline / API / Salad / fiabilité durable | Respectivement 16, 13, 7 et 51 tests PASS, 0 SKIP |
+| RLS / droits d’écriture / historique social | 261 assertions, 30 contrôles et 27 groupes PASS |
+| Routes OAuth / planning / partenaire | Respectivement 10, 3 et 10 tests PASS |
+| Reprise / isolation du planificateur | 19 et 7 tests PASS, avec sauvegarde/restauration |
+| Autonomie locale | 13 scénarios PASS ; 4 tests de fermeture de connexions et 2 tests de port inclus dans le runner |
+| Catalogue de promotion | PASS : 3 fonctions et 3 tables contrôlées |
+| Chromium, composants sociaux / reprise | 21 groupes et 12 tests PASS ; vrais composants, transports locaux synthétiques |
+| ESLint global et contrôle ciblé final | PASS |
+| TypeScript global et build Next de cette passe | BLOQUÉS : processus SIGKILL sans diagnostic de code, heap 1024 Mo |
+
+Les commandes, tentatives, sources et empreintes sont dans
+[`qa/native-qualification-20261110/RECEIPT.json`](../qa/native-qualification-20261110/RECEIPT.json).
+L’installation npm standard reste BLOQUÉE par le transport Git du paquet privé
+SMARANA. L’installation de qualification utilise ses 21 blobs canoniques vérifiés
+au commit verrouillé et les mêmes versions d’archives npm ; `npm rebuild` passe.
+Elle ne constitue pas un PASS de l’installation standard de la CI.
+
+Les parcours Next complets en build de production ne sont pas revendiqués pour
+cette passe. WebKit manque de bibliothèques système ; les fournisseurs réels,
+Supabase hébergé, la production et les mesures de charge restent NON TESTÉS.
+Aucun compte social, message, paiement, déploiement ni base distante n’a été modifié.
+Les preuves historiques détaillées plus bas conservent leur date et leur portée.
+
 ## Résultat et périmètre
 
 Cette extension permet de conserver plusieurs comptes d'un même réseau, de les sélectionner séparément et de publier par destination avec le journal durable existant. Elle s'appuie sur la PR #8, branche `repair/sutra-security-20261109`, commit `9f876cbcc5fe667209a369a8ee64c109ab043173`.

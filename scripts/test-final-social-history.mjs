@@ -1,4 +1,4 @@
-// Real PostgreSQL, private Unix socket, synthetic accounts only. No remote target,
+// Real PostgreSQL, private loopback port, synthetic accounts only. No remote target,
 // inherited credentials, provider transport, account connection or publication.
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
@@ -6,17 +6,20 @@ import { promisify } from 'node:util'
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { randomUUID, createHash } from 'node:crypto'
+import { allocatePrivatePostgresEndpoint } from '../tooling/private-postgres-endpoint.mjs'
 
 const exec = promisify(execFile)
 const bin = process.env.SUTRA_TEST_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin'
 const directory = await mkdtemp('/tmp/sutra-social-history-pg-')
+const { host, port, postgresOptions } = await allocatePrivatePostgresEndpoint()
 const owner = 'sutra_social_history_fixture'
-const childEnvironment = { PATH: '/usr/bin:/bin:/usr/sbin:/sbin', LC_ALL: 'C', TMPDIR: directory }
+const childEnvironment = { PATH: '/usr/bin:/bin:/usr/sbin:/sbin', LC_ALL: 'C', TMPDIR: directory,
+  LD_LIBRARY_PATH: process.env.LD_LIBRARY_PATH }
 const run = (command, args) => exec(command, args, { env: childEnvironment, timeout: 60_000, maxBuffer: 4 * 1024 * 1024 })
 const sql = async text => {
   try {
     return (await run(join(bin, 'psql'), ['-X', '-qAt', '-v', 'ON_ERROR_STOP=1',
-      '-h', directory, '-p', '55432', '-U', owner, '-d', 'postgres', '-c', text])).stdout.trim()
+      '-h', host, '-p', String(port), '-U', owner, '-d', 'postgres', '-c', text])).stdout.trim()
   } catch (error) {
     const failure = new Error((error.stderr || 'Local PostgreSQL command failed').slice(0, 1200))
     failure.stderr = error.stderr
@@ -59,7 +62,7 @@ let started = false
 try {
   await run(join(bin, 'initdb'), ['-D', join(directory, 'data'), '--auth=trust', '--username', owner, '--no-locale', '--encoding=UTF8'])
   await run(join(bin, 'pg_ctl'), ['-D', join(directory, 'data'), '-l', join(directory, 'server.log'),
-    '-o', `-h '' -k ${directory} -p 55432`, '-w', 'start'])
+    '-o', postgresOptions, '-w', 'start'])
   started = true
   const social = await readFile(new URL('../sql/social-autopilot.sql', import.meta.url), 'utf8')
   const definition = social.match(/CREATE TABLE IF NOT EXISTS social_accounts \([\s\S]*?\n\);/)?.[0]

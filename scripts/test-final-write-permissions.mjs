@@ -1,18 +1,20 @@
-// Synthetic PostgreSQL on a private socket; no credentials, remote DB or providers.
+// Synthetic PostgreSQL on a private loopback port; no credentials, remote DB or providers.
 import assert from 'node:assert/strict'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { mkdtemp, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { allocatePrivatePostgresEndpoint } from '../tooling/private-postgres-endpoint.mjs'
 
 const exec = promisify(execFile)
 const bin = process.env.SUTRA_TEST_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin'
 const dir = await mkdtemp('/tmp/sutra-t01-write-pg-')
+const { host, port, postgresOptions } = await allocatePrivatePostgresEndpoint()
 const owner = 'sutra_permission_test_owner'
 const alice = '11000000-0000-4000-8000-000000000001'
 const bob = '11000000-0000-4000-8000-000000000002'
 const sql = async text => (await exec(join(bin, 'psql'), ['-X', '-qAt', '-v', 'ON_ERROR_STOP=1',
-  '-h', dir, '-p', '55432', '-U', owner, '-d', 'postgres', '-c', text])).stdout.trim()
+  '-h', host, '-p', String(port), '-U', owner, '-d', 'postgres', '-c', text])).stdout.trim()
 const client = text => sql(`SET ROLE authenticated; SET request.jwt.claim.sub='${alice}'; ${text}`)
 let checks = 0, started = false
 const denied = async text => {
@@ -20,7 +22,7 @@ const denied = async text => {
 }
 try {
   await exec(join(bin, 'initdb'), ['-D', join(dir, 'data'), '--auth=trust', '--username', owner, '--no-locale', '--encoding=UTF8'])
-  await exec(join(bin, 'pg_ctl'), ['-D', join(dir, 'data'), '-l', join(dir, 'server.log'), '-o', `-h '' -k ${dir} -p 55432`, '-w', 'start'])
+  await exec(join(bin, 'pg_ctl'), ['-D', join(dir, 'data'), '-l', join(dir, 'server.log'), '-o', postgresOptions, '-w', 'start'])
   started = true
   const schema = await readFile(new URL('../src/data/setup-schema.ts', import.meta.url), 'utf8')
   const definition = table => {

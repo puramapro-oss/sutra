@@ -24,7 +24,7 @@ start = next(c['command'] for c in receipt['commands'] if c['log'] == 'pg-start.
 bin_dir = Path(start[0]).parent
 assert Path(start[0]).name == 'pg_ctl' and Path(start[2]).resolve() == directory / 'data'
 assert not (directory / 'data/postmaster.pid').exists(), 'FIXTURE_ALREADY_RUNNING'
-environment = {k: os.environ[k] for k in ('PATH', 'HOME') if k in os.environ}
+environment = {k: os.environ[k] for k in ('PATH', 'HOME', 'LD_LIBRARY_PATH') if k in os.environ}
 environment['LC_ALL'] = 'C'
 output = Path(sys.argv[1]).parent
 started = False
@@ -32,9 +32,17 @@ try:
     result = subprocess.run(start, env=environment, capture_output=True, timeout=30)
     assert result.returncode == 0, 'PRIVATE_FIXTURE_START_FAILED'
     started = True
-    # Socket belongs to this fixture; no default localhost/production fallback.
-    port = (directory / 'data/postmaster.pid').read_text().splitlines()[3]
-    command = [str(bin_dir / 'psql'), '-h', str(directory), '-p', port,
+    # Read the endpoint of the private process we just started. Older receipts
+    # use its own Unix socket; portable recipes use loopback TCP only.
+    process_state = (directory / 'data/postmaster.pid').read_text().splitlines()
+    port = process_state[3]
+    assert port.isdigit() and 0 < int(port) < 65536, 'FIXTURE_PORT_INVALID'
+    if process_state[4] == str(directory):
+        host = str(directory)
+    else:
+        assert process_state[4] == '' and process_state[5] == '127.0.0.1', 'FIXTURE_ENDPOINT_INVALID'
+        host = '127.0.0.1'
+    command = [str(bin_dir / 'psql'), '-h', host, '-p', port,
         '-U', 'fixture', '-d', 't03_scheduler', '-X', '-A', '-t', '-q', '-v', 'ON_ERROR_STOP=1']
     # T03 ends the partner coexistence test after rollback. Replay the exact
     # additive migrations in this disposable database before checking the gate.
