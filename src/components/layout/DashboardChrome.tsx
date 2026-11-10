@@ -49,7 +49,8 @@ const MagicMoment = dynamic(
 
 // Chrome du dashboard (sidebar/header/nav/overlays) — extrait de l'ancien `(dashboard)/layout.tsx`
 // pour que `layout.tsx` redevienne un Server Component capable de calculer `docsEnAttente`
-// (CONFORMITE.md 2026-08-23 gap #9). Ce composant reste 'use client', 0 changement de comportement.
+// (CONFORMITE.md 2026-08-23 gap #9). Cette extraction conservait le comportement existant.
+// Le contenu reste désormais opaque pendant son entrée pour préserver le contraste.
 export default function DashboardChrome({
   children,
 }: {
@@ -77,7 +78,7 @@ export default function DashboardChrome({
         <FiscalBanner />
 
         <motion.main
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 1, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden"
