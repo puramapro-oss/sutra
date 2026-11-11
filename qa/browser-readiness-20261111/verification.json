@@ -1,0 +1,32 @@
+{
+  "recorded_at_utc": "2026-11-11T23:26:58.793958+00:00",
+  "source_parent": "ece8f760fa05feb4addb1359aa9f6d5e12a49ded",
+  "composition_target": "51196fe2c04ea7fd5897744d36cc698e9d0855c7",
+  "failed_run": "https://github.com/puramapro-oss/sutra/actions/runs/43116691551",
+  "failed_merge_commit": "f5811b1eebb29b154113251cbb18f9193d1e6b0b",
+  "failed_merge_tree": "3f7cd8b12441c509066c47ba9bdb7b70c459493e",
+  "artifact_id": 13898878595,
+  "artifact_sha256": "c457cca44aed364df6d3de002fcd530978affb51aa0524a9b2077ecfd12d1e33",
+  "observed_cause": "Initial library navigation timed out waiting for networkidle before XSS assertions/editor navigation; four dependent export timeouts. The later labelled editor accessibility PASS actually ran on the library screenshot and does not qualify the editor.",
+  "background_fetch_causality": "Unfinished prefetch GETs observed; exact causal request not proven by retained final navigation trace. Native witness tests this failure mechanism without claiming full incident reconstruction.",
+  "local_native_tests": "NON TESTE: Chromium launch socket() EPERM before any assertion; do not count as failing product test or passing regression",
+  "local_runtime": {
+    "node": "24.22.1",
+    "next": "16.4.5",
+    "playwright": "1.61.1",
+    "chromium": "system156; launch blocked"
+  },
+  "ci_runtime": "Existing pinned Playwright1.58.2 container; seven native scenarios added to existing quality step, followed by unchanged full browser gates",
+  "source_sha256": {
+    "qa/t08/integrated/browser-extension.mjs": "4670d33fb7a9f6c43e59939497ae78430696997c2ff499abb693b90950ac5ce5",
+    "qa/t08/integrated/stored-markup-readiness.mjs": "62ff61f7f0b44e3c0aa42b76f18153214e9f2f07e07331bc54bc0bfdeec68fe5",
+    "qa/t08/integrated/stored-markup-readiness.test.mjs": "5257c2213721b098b3603b1e2af06c3b933ef8daff90b8c49b380482ce8b0295",
+    ".github/workflows/web-ci.yml": "6b5b6f5be8582e718cc0d744621afc885cfe838f30ec289729c0c4df65941bf1"
+  },
+  "limits": [
+    "Native fixture is a readiness-control test, not application qualification",
+    "Full application proof must come from the CI run on the exact resulting merge tree",
+    "No product sources, credentials, provider operations or CI thresholds changed"
+  ],
+  "publication_guard": "codex/sutra-accessible-minimal-subtitles-20261111=false; all existing guard values preserved"
+}
