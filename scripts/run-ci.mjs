@@ -12,6 +12,7 @@ const nodeTests = [
   'scripts/test-subtitles-route.mts',
   'scripts/test-cinema-project.mts', 'scripts/test-higgsfield-contracts.mts',
   'scripts/test-create-manual-mode.mts',
+  'scripts/test-caption-timeline.mts',
   'scripts/test-storyboard-create-draft.mts',
   'scripts/test-auto-learn-analytics.mts', 'scripts/test-auto-learn-route.mts', 'scripts/test-auto-learn-memory.mts',
   'scripts/test-auto-trends-memory.mts',
