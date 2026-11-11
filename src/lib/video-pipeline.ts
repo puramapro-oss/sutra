@@ -19,6 +19,7 @@ import { pipelineLog as logApiCall, pipelineNotification as sendNotification } f
 import { type SocialPlatform } from '@/lib/zernio'
 import { publishVideoRecord } from '@/lib/social-publication'
 import { readOwnedPublicationDestinations, destinationPlatformsMatch } from '@/lib/social-destinations'
+import { manualScriptSchema } from '@/lib/validators'
 import type { Plan, ScriptData } from '@/types'
 
 // -----------------------------------------------------------------------------
@@ -117,6 +118,10 @@ export async function executeCreateJob(
   resume: CreateJobResume,
   hooks: CreateJobHooks = {}
 ): Promise<CreateJobResult> {
+  const manual = input.mode === 'manual' ? manualScriptSchema.safeParse(input.manualScript) : null
+  if (manual && !manual.success) {
+    throw new Error('SUTRA_RECONCILIATION_REQUIRED: SUTRA_INVALID_MANUAL_SCRIPT')
+  }
   const serviceClient = createServiceClient()
   const { videoId, userId, userEmail, genPlan, quality, format, mediaFormat } = input
   const done = resume.steps ?? {}
@@ -128,15 +133,16 @@ export async function executeCreateJob(
 
   // ---------------------------------------------------------------- Script
   let script: ScriptData
-  if (input.mode === 'manual' && input.manualScript && input.manualScript.trim().length >= 20) {
-    const scenes = input.manualScript
+  if (manual?.success) {
+    const manualScript = manual.data
+    const scenes = manualScript
       .split('\n').map((l) => l.trim()).filter(Boolean)
       .map((line) => ({ visual_prompt: line.slice(0, 2000), duration_seconds: 5, use_stock: false }))
     script = {
       title: input.topic.slice(0, 160),
       description: `Video generee a partir du script manuel : ${input.topic}`,
       tags: [input.topic.split(/\s+/).slice(0, 3).join('-').toLowerCase(), 'manuel', 'sutra'],
-      narration: input.manualScript,
+      narration: manualScript,
       scenes,
       music_prompt: `instrumental background for a video about ${input.topic}`,
       music_style: 'cinematic',

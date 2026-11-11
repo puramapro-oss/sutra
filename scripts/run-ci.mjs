@@ -11,6 +11,8 @@ const heapOptions = ciHeapOptions(process.env.SUTRA_CI_HEAP_MB)
 const nodeTests = [
   'scripts/test-subtitles-route.mts',
   'scripts/test-cinema-project.mts', 'scripts/test-higgsfield-contracts.mts',
+  'scripts/test-create-manual-mode.mts',
+  'scripts/test-storyboard-create-draft.mts',
   'scripts/test-auto-learn-analytics.mts', 'scripts/test-auto-learn-route.mts', 'scripts/test-auto-learn-memory.mts',
   'scripts/test-auto-trends-memory.mts',
   'scripts/test-durable-request-store.mts',
@@ -112,7 +114,7 @@ const profiles = {
     ['browser-social', ['scripts/test-social-multi-account-ui.mjs']],
     ['browser-social-durable', ['scripts/test-social-durable-ui.mjs']],
   ],
-  'browser-cinema': [['browser-cinema', ['scripts/test-cinema-ui.mjs']]],
+  'browser-cinema': [['browser-cinema', ['scripts/test-cinema-ui.mjs']], ['storyboard-draft', ['scripts/test-storyboard-create-draft-ui.mjs']]],
   'cinema-blender': [['cinema-blender', ['--import', 'tsx', '--test', 'scripts/test-cinema-blender.mts']]],
   'browser-profiles': [['profiles', ['scripts/test-ui-isolated.mjs', '--profile-only']]],
   editor: [['editor', ['scripts/test-ui-isolated.mjs', '--editor-only']]],
