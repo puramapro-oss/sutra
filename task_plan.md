@@ -660,3 +660,7 @@ Base 0f32bf0b84b51ad82e9ae5bf47d93f3e63442506 ; livraison validée365f437b2dfcce
 
 ## T01 — réparation CI PostgreSQL QA — 2026-10-20T14:00:30.381077+00:00
 Base7a23ab17 ; CI39433814419 arrêt57P01 au contre-test11. Course pg-pool.end/fermeture effective reproduite ; helper QA attend tous les end avant redémarrage synchrone.4testsPASS/0FAIL/0SKIP,lintcibléPASS,diff-checkPASS. Aucun produit,SQL,dépendance modifié. NouveauSHA/CI requis, preuve qa/t01-pg-drain-20261020/. Les ACK précédents restent bornés, aucun PASS/deploy/production/T09 anticipé. R121 intégré/retest T01PASS ; verdict T08 différentiel attendu,R113environnement non qualifié,R92HTTP404. Worktrees tiers préservés.
+
+## 2026-11-11 — Composition Unlazy SUTRA #14 + derniers correctifs #12
+
+Candidat isolé : conservation de b1a3c244 et réception de 2257eb3 par fusion. Quatre fichiers de tests identiques à la branche entrante ; sources produit inchangées. Reçu initial, contrôles locaux et gates restants : `qa/unlazy-consolidation-20261111/README.md`. CI complète de composition attendue ; aucun déploiement ou fournisseur réel qualifié.

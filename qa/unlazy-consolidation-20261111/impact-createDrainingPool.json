@@ -1,0 +1,85 @@
+{
+  "target": {
+    "id": "Function:qa/t07-autonomy-integrated-20261020/draining-pool.mjs:createDrainingPool",
+    "name": "createDrainingPool",
+    "type": "Function",
+    "filePath": "qa/t07-autonomy-integrated-20261020/draining-pool.mjs"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 3,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 3,
+    "2": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "T07-autonomy-integrated-20261020",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:qa/t01-pg-drain-20261020/pool-drain.test.mjs",
+        "name": "pool-drain.test.mjs",
+        "filePath": "qa/t01-pg-drain-20261020/pool-drain.test.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:qa/t07-autonomy-integrated-20261020/wire.mjs:startWire",
+        "name": "startWire",
+        "filePath": "qa/t07-autonomy-integrated-20261020/wire.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:qa/t07-autonomy-integrated-20261020/wire.mjs:startWire.reopen@125:4",
+        "name": "reopen",
+        "filePath": "qa/t07-autonomy-integrated-20261020/wire.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:qa/t03-closure-20261020/reproduce.mjs",
+        "name": "reproduce.mjs",
+        "filePath": "qa/t03-closure-20261020/reproduce.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.5,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:qa/t07-autonomy-integrated-20261020/countertest.mjs",
+        "name": "countertest.mjs",
+        "filePath": "qa/t07-autonomy-integrated-20261020/countertest.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

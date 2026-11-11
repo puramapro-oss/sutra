@@ -1,0 +1,98 @@
+{
+  "kind": "initial_local_composition_receipt",
+  "created_utc": "2026-11-11T05:51:35.050286+00:00",
+  "status": "PARTIAL_AWAITING_COMPOSED_CI",
+  "base": "b1a3c2449438819c8af8862fbaf75d63179c1959",
+  "incoming": "2257eb3e905e76e05b8e2814a524248344e86c32",
+  "missing_commits": [
+    "87dd72c999a3beb61fa7f415129ac50864bcabca",
+    "2257eb3e905e76e05b8e2814a524248344e86c32"
+  ],
+  "method": "merge --no-commit --no-ff; existing commit ancestry preserved",
+  "changed_test_files": {
+    "e2e/media-mode.spec.ts": {
+      "git_blob": "89e0c4f2e3a186fdcf043f9b5bd0d1c1a2c5be49",
+      "sha256": "fa127d625b15000c69876de5699f2aa998417a066ef70fb1d30df781548afe45"
+    },
+    "e2e/spiritual-pages.spec.ts": {
+      "git_blob": "182c5afef585438c6b02e9a8f5f88e9021c00856",
+      "sha256": "01b3d61bbd9faa272647d9a2b06fb2ea3909a94c26f0d61898d2283b4dc874e0"
+    },
+    "qa/t03-closure-20261020/recovery.test.mts": {
+      "git_blob": "988c818f72d96ada46cd657677970b50101cfd21",
+      "sha256": "99730a1194b202abe8f135c0d1aa12b72359e8b1a7bd5473644153fd9fd6548d"
+    },
+    "qa/t03-closure-20261020/run.mjs": {
+      "git_blob": "0b025804fa16e6762af8ae3caae4ff857628d155",
+      "sha256": "dd90b80be752548dc161224d454c985013d1ba37e5714fb741a4e756efb3c5a6"
+    }
+  },
+  "production_sources_unchanged_from_base": true,
+  "checks": {
+    "pool_drain": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "physical_connections": "DeferredClient synthetic; no database"
+    },
+    "typescript_syntax": {
+      "files": 3,
+      "version": "5.9.3",
+      "full_typecheck": false
+    },
+    "runner_node_check": {
+      "exit": 0
+    },
+    "playwright_discovery": {
+      "restored_instances": 12,
+      "version": "1.58.2",
+      "browser_executed": false
+    },
+    "diff_check": {
+      "exit": 0
+    }
+  },
+  "runtime": "Node v26.0.0",
+  "gitnexus": {
+    "version": "1.6.12",
+    "index": "sparse source projection only",
+    "nodes": 16447,
+    "edges": 38002,
+    "flows": 424,
+    "first_attempt": "timeout at 150s; retained, no success claimed",
+    "completed_attempt_seconds": 139.4,
+    "impacts": {
+      "dismissCookieBanner": "LOW, one direct file",
+      "createDrainingPool": "LOW, three direct and five total dependants"
+    },
+    "limits": [
+      "FTS disabled",
+      "851 cross-language property sites unresolved",
+      "1314 candidate entry points omitted by flow ranking",
+      "853 callees not traced by process branching budget",
+      "sparse index does not establish global completeness"
+    ]
+  },
+  "deployed": false,
+  "providers_called": false,
+  "database_services_started": false,
+  "dependency_install_performed": false,
+  "limits": [
+    "No local full build or full typecheck: installed donor Next 16.2.11 differs from locked Next 16.4.5",
+    "No local actual browser journey or native PostgreSQL integration execution",
+    "Hosted CI must verify the complete composed tree",
+    "Source services, accounts, payments, production and endurance remain unqualified"
+  ],
+  "independent_static_review": {
+    "status": "PASS",
+    "reviewer": "infra_readiness subagent",
+    "verified": [
+      "four incoming Git blobs against 2257eb3",
+      "all src/ identical to b1a3c244",
+      "unchanged helper and actual socket-end wait before restart and after",
+      "loopback fixture boundary, exclusive aria-pressed and exact support POST payload",
+      "new branch deployment guard false"
+    ],
+    "runtime_tests_performed_by_reviewer": false
+  }
+}
