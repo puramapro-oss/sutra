@@ -137,7 +137,7 @@ jobs:
       - name: Cinema storyboard exports and explicit preview consent
         run: node scripts/run-ci.mjs browser-cinema
       - name: Native browser error guard method boundaries
-        run: node --test qa/t01-final-20261015/browser-harness/guard.test.mjs qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+        run: node --test qa/t01-final-20261015/browser-harness/guard.test.mjs qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs qa/t08/integrated/stored-markup-readiness.test.mjs
       - run: node qa/t08/run.mjs browser-redteam
       - name: Library pagination and consent contrast regressions
         run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
