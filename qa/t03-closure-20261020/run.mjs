@@ -65,6 +65,7 @@ try {
   }
   const git = args => spawnSync('git', args, { cwd: root, encoding: 'utf8' }).stdout.trim()
   const files = git(['ls-files', '--cached', '--others', '--exclude-standard', 'src', 'migrations', 'scripts', 'qa/t03-closure-20261020/*.mts', 'qa/t03-closure-20261020/*.mjs', 'qa/t03-closure-20261020/tsconfig.json', 'qa/t02-recert-fcd-20261020/scheduler-isolation.test.mts', 'qa/t03-final-ack-20261019/*.mts', 'qa/t03-final-ack-20261019/settle.mjs', 'qa/t03-final-durable-20261015/*.mts', 'qa/t03-durable-closure-20261015/*.mts', 'qa/t03-durable-closure-20261015/settle.mjs', 'qa/t01-final-20261015/durable-postgres.test.mts', 'qa/t08/offline.cjs', 'package.json', 'package-lock.json']).split('\n').filter(Boolean)
+  files.push('qa/t07-autonomy-integrated-20261020/draining-pool.mjs')
   const source_sha256 = Object.fromEntries(files.map(p => [p, createHash('sha256').update(readFileSync(join(root,p))).digest('hex')]))
   writeFileSync(join(output, 'receipt.json'), JSON.stringify({ candidate: git(['rev-parse','HEAD']), mode, commands, source_sha256,
     private_cluster: directory, stopped: started, external_calls: 0, synthetic_environment_only: true }, null, 2)+'\n')
