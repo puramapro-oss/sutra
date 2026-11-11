@@ -4,7 +4,7 @@ import { runVideoJob } from '@/lib/video-worker'
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
-import { createVideoSchema } from '@/lib/validators'
+import { createVideoSchema, manualScriptSchema } from '@/lib/validators'
 import { clampQualityToPlan } from '@/lib/ltx-utils'
 import { resolveVoiceProviderId } from '@/lib/constants'
 import { completeQuotaForFinishedJob, claimJobByKey, finishJob } from '@/lib/video-queue'
@@ -32,6 +32,14 @@ export async function POST(req: Request) {
     const parsed = createVideoSchema.safeParse(await req.json())
     if (!parsed.success) {
       return NextResponse.json({ error: 'Donnees invalides', details: parsed.error.flatten().fieldErrors }, { status: 400 })
+    }
+
+    const manual = parsed.data.mode === 'manual' ? manualScriptSchema.safeParse(parsed.data.script) : null
+    if (manual && !manual.success) {
+      return NextResponse.json({
+        error: 'Script manuel invalide',
+        details: { script: manual.error.issues.map((issue) => issue.message) },
+      }, { status: 400 })
     }
 
     const serviceClient = createServiceClient()
