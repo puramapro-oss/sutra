@@ -11,6 +11,7 @@ import { Skeleton } from '@/components/ui/Skeleton'
 import { useStoryboard } from '@/hooks/useStoryboard'
 import StoryboardInput from '@/components/storyboard/StoryboardInput'
 import SceneCard from '@/components/storyboard/SceneCard'
+import CinemaExport from '@/components/storyboard/CinemaExport'
 import type { VideoFormat, DurationTarget } from '@/lib/storyboard'
 
 // ---------------------------------------------------------------------------
@@ -19,7 +20,7 @@ import type { VideoFormat, DurationTarget } from '@/lib/storyboard'
 
 export default function StoryboardPage() {
   const router = useRouter()
-  const { profile, loading: authLoading } = useAuth()
+  const { loading: authLoading } = useAuth()
 
   const [idea, setIdea] = useState('')
   const [format, setFormat] = useState<VideoFormat>('16:9')
@@ -110,6 +111,17 @@ export default function StoryboardPage() {
           onGenerate={handleGenerate}
         />
 
+        {scenes.length === 0 && !isGenerating && (
+          <section aria-labelledby="manual-storyboard-heading" className="rounded-xl border border-white/10 bg-white/[0.02] p-5 space-y-3">
+            <h2 id="manual-storyboard-heading" className="font-semibold text-white">Composer les plans soi-même</h2>
+            <p className="text-sm text-white/70">Ajoute un premier plan, règle sa durée et prépare ton projet pour Blender.</p>
+            <Button onClick={addScene} variant="secondary" data-testid="add-first-scene-btn">
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              Ajouter le premier plan
+            </Button>
+          </section>
+        )}
+
         {/* ----------------------------------------------------------------- */}
         {/* Loading skeletons                                                 */}
         {/* ----------------------------------------------------------------- */}
@@ -152,6 +164,8 @@ export default function StoryboardPage() {
                   {scenes.length} scenes
                 </h2>
               </div>
+
+              <CinemaExport title={idea} format={format} scenes={scenes} />
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {scenes.map((scene, idx) => (
