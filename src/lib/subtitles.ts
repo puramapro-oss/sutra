@@ -54,7 +54,7 @@ export const SUBTITLE_STYLES: Array<{
   {
     id: 'minimal',
     label: 'Minimal',
-    description: 'Phrases cles uniquement, style epure',
+    description: 'Texte complet en groupes courts, style epure',
     preview: 'Idee principale',
   },
 ]
@@ -88,10 +88,14 @@ export const SUBTITLE_COLORS: string[] = [
 // ─── SRT Generation ──────────────────────────────────────────────────
 
 function formatSRTTime(seconds: number): string {
-  const h = Math.floor(seconds / 3600)
-  const m = Math.floor((seconds % 3600) / 60)
-  const s = Math.floor(seconds % 60)
-  const ms = Math.round((seconds % 1) * 1000)
+  // Round once before splitting units: a carry must never produce ",1000".
+  const milliseconds = Math.round(seconds * 1000)
+  const ms = milliseconds % 1000
+  const totalSeconds = (milliseconds - ms) / 1000
+  const s = totalSeconds % 60
+  const totalMinutes = (totalSeconds - s) / 60
+  const m = totalMinutes % 60
+  const h = (totalMinutes - m) / 60
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')},${String(ms).padStart(3, '0')}`
 }
 
@@ -262,32 +266,21 @@ function generateKaraokeStyle(narration: string, totalDuration: number): Subtitl
 }
 
 function generateMinimalStyle(narration: string, totalDuration: number): SubtitleEntry[] {
-  const sentences = narration
-    .split(/(?<=[.!?…])\s+/)
-    .map((s) => s.trim())
-    .filter((s) => s.length > 0)
+  const words = narration.split(/\s+/).filter((word) => word.length > 0)
+  if (words.length === 0) return []
 
-  if (sentences.length === 0) return []
-
-  // Extract key phrases: first 4-6 words of each sentence
-  const keyPhrases = sentences.map((sentence) => {
-    const words = sentence.replace(/[.!?…]+$/, '').split(/\s+/)
-    return words.slice(0, Math.min(6, words.length)).join(' ')
-  })
-
-  const durationPerPhrase = totalDuration / keyPhrases.length
-  const entries: SubtitleEntry[] = []
-
-  for (let i = 0; i < keyPhrases.length; i++) {
-    const start = i * durationPerPhrase
-    // Minimal style: show for 70% of the slot, leave gaps
-    const end = Math.min(start + durationPerPhrase * 0.7, totalDuration)
-    entries.push({
-      text: keyPhrases[i],
-      start: Math.round(start * 1000) / 1000,
-      end: Math.round(end * 1000) / 1000,
-    })
+  // Compact presentation must keep every word, its order and its punctuation.
+  const chunks: string[] = []
+  for (let i = 0; i < words.length; i += 6) {
+    chunks.push(words.slice(i, i + 6).join(' '))
   }
 
-  return entries
+  // Keep the API's existing sub-millisecond duration contract. Only SRT output
+  // rounds to milliseconds; very short cues can share an exported timestamp.
+  // These estimated timings cover the duration without inventing silent gaps.
+  return chunks.map((text, index) => ({
+    text,
+    start: totalDuration * (index / chunks.length),
+    end: totalDuration * ((index + 1) / chunks.length),
+  }))
 }
