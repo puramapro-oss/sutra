@@ -117,7 +117,10 @@ export function generateSRT(subtitles: SubtitleEntry[]): string {
 }
 
 export function parseSRT(srt: string): SubtitleEntry[] {
-  const blocks = srt.trim().split(/\n\n+/)
+  // Normalize file line endings before recognizing empty cue separators.
+  // Only spaces and tabs on separator lines are ignored; cue text stays intact.
+  const blocks = srt.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n')
+    .trim().split(/\n(?:[ \t]*\n)+/)
   const entries: SubtitleEntry[] = []
 
   for (const block of blocks) {

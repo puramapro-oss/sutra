@@ -291,3 +291,52 @@ for (const [duration, endTime] of [
     assert.equal(data.srt, `1\n00:00:00,000 --> ${endTime}\nBonjour.`)
   })
 }
+
+const importedSRT = [
+  '1',
+  '00:00:01,125 --> 00:00:03,500',
+  'Ne traversez pas.',
+  'Attendez  ici !',
+  '',
+  '2',
+  '00:00:04,250 --> 00:00:06,750',
+  'Merci,\tÉlodie… سلام',
+].join('\n')
+const importedCues: Cue[] = [
+  { text: 'Ne traversez pas.\nAttendez  ici !', start: 1.125, end: 3.5 },
+  { text: 'Merci,\tÉlodie… سلام', start: 4.25, end: 6.75 },
+]
+
+for (const [name, source] of [
+  ['LF', importedSRT],
+  ['LF with a UTF-8 BOM', '\uFEFF' + importedSRT],
+  ['CRLF', importedSRT.replace(/\n/g, '\r\n')],
+  ['CRLF with a UTF-8 BOM', '\uFEFF' + importedSRT.replace(/\n/g, '\r\n')],
+  ['CR', importedSRT.replace(/\n/g, '\r')],
+  ['blank LF separator lines containing spaces and tabs', importedSRT.replace('\n\n', '\n \t\n\t \n')],
+  ['blank CRLF separator lines containing spaces and tabs', importedSRT.replace('\n\n', '\n \t\n\t \n').replace(/\n/g, '\r\n')],
+  ['mixed line endings', importedSRT.replace('1\n', '1\r\n').replace('\n\n', '\r\n\r\n')],
+] as const) {
+  test(`SRT import preserves cue text and timestamps with ${name}`, () => {
+    assert.deepEqual(parseSRT(source), importedCues)
+    assert.equal(translationCalls, 0)
+  })
+}
+
+test('empty SRT files and a BOM with only blank lines contain no cues', () => {
+  for (const source of ['', '\uFEFF', '\uFEFF\r\n \t\r\n\r\n']) {
+    assert.deepEqual(parseSRT(source), [])
+  }
+})
+
+test('a Windows SRT import can be exported without merging cues or changing their timings', async () => {
+  const subtitles = parseSRT('\uFEFF' + importedSRT.replace(/\n/g, '\r\n'))
+  const response = await exportSubtitles(new Request('https://subtitle-test.invalid/api/subtitles/export', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ subtitles }),
+  }))
+  assert.equal(response.status, 200)
+  assert.equal(await response.text(), importedSRT)
+  assert.equal(translationCalls, 0)
+})
