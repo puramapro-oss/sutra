@@ -1,0 +1,196 @@
+import test, { beforeEach, mock } from 'node:test'
+import assert from 'node:assert/strict'
+
+let authenticated = true
+let authError = false
+let authFailure = false
+let translationCalls = 0
+
+globalThis.fetch = async () => { throw new Error('UNEXPECTED_NETWORK') }
+
+mock.module('../src/lib/supabase-server.ts', {
+  namedExports: {
+    createServerClient: async () => {
+      if (authFailure) throw new Error('Synthetic authentication service failure')
+      return {
+        auth: {
+          getUser: async () => ({
+            data: { user: authenticated ? { id: 'synthetic-subtitle-user' } : null },
+            error: authError ? { message: 'Synthetic authentication refusal' } : null,
+          }),
+        },
+      }
+    },
+  },
+})
+mock.module('../src/lib/claude.ts', {
+  namedExports: {
+    askClaude: async () => {
+      translationCalls++
+      return 'Hello world.'
+    },
+  },
+})
+
+// The real handler, subtitle generators, SRT serializer and NextResponse execute.
+// Only authentication and the external translation boundary are synthetic.
+const { POST } = await import('../src/app/api/subtitles/route.ts')
+
+beforeEach(() => {
+  authenticated = true
+  authError = false
+  authFailure = false
+  translationCalls = 0
+})
+
+const request = (body: string) => new Request('https://subtitle-test.invalid/api/subtitles', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body,
+})
+const submit = (body: unknown) => POST(request(JSON.stringify(body)))
+
+for (const refusedBy of ['missing user', 'authentication error'] as const) {
+  test(`authentication precedes JSON parsing: ${refusedBy}`, async () => {
+    authenticated = refusedBy !== 'missing user'
+    authError = refusedBy === 'authentication error'
+    const req = request('{')
+    let bodyReads = 0
+    mock.method(req, 'json', async () => { bodyReads++; throw new Error('Body must remain unread') })
+    const response = await POST(req)
+    assert.equal(response.status, 401)
+    assert.equal(bodyReads, 0)
+    assert.equal(translationCalls, 0)
+  })
+}
+
+test('an authentication service failure remains a server error', async () => {
+  authFailure = true
+  assert.equal((await POST(request('{'))).status, 500)
+  assert.equal(translationCalls, 0)
+})
+
+for (const [name, body] of [
+  ['empty', ''],
+  ['truncated', '{"narration":'],
+  ['trailing comma', '{"narration":"synthetic-private-marker","duration":3,}'],
+] as const) {
+  test(`malformed JSON is a client error: ${name}`, async () => {
+    const response = await POST(request(body))
+    assert.equal(response.status, 400)
+    const data = await response.json()
+    assert.equal(data.error, 'Corps JSON invalide')
+    assert.doesNotMatch(JSON.stringify(data), /synthetic-private-marker|SyntaxError|JSON\.parse/)
+    assert.equal(translationCalls, 0)
+  })
+}
+
+for (const body of [null, [], 'Bonjour.', true, 42]) {
+  test(`a JSON object is required: ${JSON.stringify(body)}`, async () => {
+    assert.equal((await submit(body)).status, 400)
+    assert.equal(translationCalls, 0)
+  })
+}
+
+for (const narration of [undefined, '', '  \n\t ', null, 42]) {
+  test(`invalid narration is rejected before translation: ${JSON.stringify(narration)}`, async () => {
+    const response = await submit({ narration, duration: 3, targetLang: 'en' })
+    assert.equal(response.status, 400)
+    assert.equal(translationCalls, 0)
+  })
+}
+
+for (const [name, duration] of [
+  ['missing', undefined],
+  ['null', null],
+  ['zero', 0],
+  ['negative', -1],
+  ['numeric string', '3'],
+  ['boolean', true],
+  ['finite seconds overflowing milliseconds', 1e308],
+  ['milliseconds beyond exact integer precision', (Number.MAX_SAFE_INTEGER + 1) / 1000],
+] as const) {
+  test(`invalid duration is rejected before translation: ${name}`, async () => {
+    const response = await submit({ narration: 'Bonjour.', duration, targetLang: 'en' })
+    assert.equal(response.status, 400)
+    assert.equal(translationCalls, 0)
+  })
+}
+
+test('a JSON exponent overflowing to Infinity is rejected before translation', async () => {
+  const response = await POST(request('{"narration":"Bonjour.","duration":1e309,"targetLang":"en"}'))
+  assert.equal(response.status, 400)
+  assert.equal(translationCalls, 0)
+})
+
+const styleCases = [
+  {
+    style: 'classic',
+    subtitles: [{ text: 'Bonjour monde.', start: 0, end: 3 }],
+    srt: '1\n00:00:00,000 --> 00:00:03,000\nBonjour monde.',
+  },
+  {
+    style: 'tiktok',
+    subtitles: [{ text: 'BONJOUR MONDE.', start: 0, end: 3 }],
+    srt: '1\n00:00:00,000 --> 00:00:03,000\nBONJOUR MONDE.',
+  },
+  {
+    style: 'karaoke',
+    subtitles: [{ text: 'Bonjour', start: 0, end: 1.5 }, { text: 'monde.', start: 1.5, end: 3 }],
+    srt: '1\n00:00:00,000 --> 00:00:01,500\nBonjour\n\n2\n00:00:01,500 --> 00:00:03,000\nmonde.',
+  },
+  {
+    style: 'minimal',
+    subtitles: [{ text: 'Bonjour monde', start: 0, end: 2.1 }],
+    srt: '1\n00:00:00,000 --> 00:00:02,100\nBonjour monde',
+  },
+] as const
+
+for (const { style, subtitles, srt } of styleCases) {
+  test(`valid ${style} subtitles and SRT are preserved`, async () => {
+    const response = await submit({ narration: 'Bonjour monde.', duration: 3, style })
+    assert.equal(response.status, 200)
+    assert.deepEqual(await response.json(), { subtitles, srt })
+    assert.equal(translationCalls, 0)
+  })
+}
+
+test('omitting the style preserves the classic default', async () => {
+  const response = await submit({ narration: 'Bonjour monde.', duration: 3 })
+  assert.equal(response.status, 200)
+  assert.deepEqual(await response.json(), {
+    subtitles: styleCases[0].subtitles,
+    srt: styleCases[0].srt,
+  })
+  assert.equal(translationCalls, 0)
+})
+
+test('positive fractional durations remain accepted with millisecond rounding', async () => {
+  const response = await submit({ narration: 'Bonjour.', duration: 1 / 3, style: 'karaoke' })
+  assert.equal(response.status, 200)
+  assert.deepEqual(await response.json(), {
+    subtitles: [{ text: 'Bonjour.', start: 0, end: 0.333 }],
+    srt: '1\n00:00:00,000 --> 00:00:00,333\nBonjour.',
+  })
+})
+
+test('representable long durations are accepted without a business duration ceiling', async () => {
+  for (const duration of [360_000, Number.MAX_SAFE_INTEGER / 1000]) {
+    const response = await submit({ narration: 'Bonjour.', duration, style: 'karaoke' })
+    assert.equal(response.status, 200)
+    const data = await response.json()
+    assert.deepEqual(data.subtitles, [{ text: 'Bonjour.', start: 0, end: duration }])
+    assert.doesNotMatch(data.srt, /NaN|Infinity|e\+/)
+    assert.match(data.srt, /^1\n00:00:00,000 --> \d{2,}:\d{2}:\d{2},\d{3}\nBonjour\.$/)
+  }
+})
+
+test('valid translation still uses the real subtitle pipeline once', async () => {
+  const response = await submit({ narration: 'Bonjour monde.', duration: 3, targetLang: 'en' })
+  assert.equal(response.status, 200)
+  assert.deepEqual(await response.json(), {
+    subtitles: [{ text: 'Hello world.', start: 0, end: 3 }],
+    srt: '1\n00:00:00,000 --> 00:00:03,000\nHello world.',
+  })
+  assert.equal(translationCalls, 1)
+})
