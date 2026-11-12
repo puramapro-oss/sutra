@@ -205,21 +205,23 @@ function generateClassicStyle(narration: string, totalDuration: number): Subtitl
   if (sentences.length === 0) return []
 
   const totalChars = sentences.reduce((sum, s) => sum + s.length, 0)
-  const entries: SubtitleEntry[] = []
-  let currentTime = 0
+  const weights = sentences.map(sentence => Math.max(1.5, sentence.length / totalChars * totalDuration))
+  const totalWeight = weights.reduce((sum, weight) => sum + weight, 0)
+  let elapsedWeight = 0
+  let previousEnd = 0
 
-  for (const sentence of sentences) {
-    const proportion = sentence.length / totalChars
-    const duration = Math.max(1.5, proportion * totalDuration)
-    entries.push({
-      text: sentence,
-      start: Math.round(currentTime * 1000) / 1000,
-      end: Math.round((currentTime + duration) * 1000) / 1000,
-    })
-    currentTime += duration
-  }
-
-  return entries
+  // The preferred reading minimum is a weight, not permission to extend the
+  // video. Normalize every sentence into the supplied duration without losing text.
+  return sentences.map((text, index) => {
+    elapsedWeight += weights[index]
+    // Preserve millisecond intermediate boundaries and the exact final duration,
+    // including the existing positive sub-millisecond input contract.
+    const end = index === sentences.length - 1 ? totalDuration
+      : Math.min(totalDuration, Math.round(totalDuration * (elapsedWeight / totalWeight) * 1000) / 1000)
+    const entry = { text, start: previousEnd, end }
+    previousEnd = end
+    return entry
+  })
 }
 
 function generateTikTokStyle(narration: string, totalDuration: number): SubtitleEntry[] {
