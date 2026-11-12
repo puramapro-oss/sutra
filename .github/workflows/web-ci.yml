@@ -15,8 +15,11 @@ concurrency:
 
 jobs:
   contracts:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -24,9 +27,28 @@ jobs:
       - uses: ./.github/actions/setup-sutra
         with:
           smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
-      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
+      - name: Prepare pinned FFmpeg and Blender without APT
+        run: python3 scripts/ci/prepare-contract-tools.py
       - run: npm run test:contracts
       - run: npm run test:media
+      - name: Editable cinema project in native Blender
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict'
+          import { spawnSync } from 'node:child_process'
+          const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot'].flatMap(key =>
+            process.env[key] ? [[key, process.env[key]]] : []))
+          env.CI = '1'
+          const probe = spawnSync('blender', ['--version'], { env, encoding: 'utf8', timeout: 15_000 })
+          assert.equal(probe.error, undefined, 'Native Blender must be available in the isolated PATH')
+          assert.equal(probe.status, 0, probe.stderr)
+          assert.ok(probe.stdout.startsWith('Blender 4.5.16'), 'Unexpected Blender version')
+          process.stdout.write(probe.stdout)
+          NODE
+          node scripts/run-ci.mjs cinema-blender
+          python3 scripts/ci/prepare-contract-tools.py \
+            --verify-cinema-log test-results/ci/cinema-blender/cinema-blender.log \
+            | tee "$RUNNER_TEMP/sutra-contract-tools-evidence/cinema-native-receipt.json"
       - name: Salad secure setup and redacted input diagnostics (synthetic inputs only)
         run: |
           python3 -m unittest discover -s qa/t04-salad-access-20261015 -p test_secure_setup.py -v
@@ -43,11 +65,20 @@ jobs:
             qa/t05-real-export-20261014/measurements.json
             qa/t05-final-media-20261015/exports
             qa/t05-final-media-20261015/media-ci.json
+            ${{ runner.temp }}/sutra-contract-tools-evidence
           if-no-files-found: warn
 
   quality:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:6446946a1d9fd62d9ae501312a2d76a43ee688542b21622056a372959b65d63d
+      options: --user 1001 --shm-size=1g
+    defaults:
+      run:
+        shell: bash
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -55,14 +86,58 @@ jobs:
       - uses: ./.github/actions/setup-sutra
         with:
           smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.14'
       - run: npm run check
-      - run: npx playwright install --with-deps chromium webkit
+      - name: Verify matching preinstalled browsers and isolated cache lookup
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict'
+          import { lstatSync, mkdirSync, readFileSync, realpathSync, symlinkSync } from 'node:fs'
+          import { homedir } from 'node:os'
+          import { dirname, join } from 'node:path'
+          import { spawnSync } from 'node:child_process'
+          const version = '1.58.2'
+          assert.equal(process.getuid(), 1001, 'Browser checks must run as the configured non-root user')
+          assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, '/ms-playwright')
+          const lock = JSON.parse(readFileSync('package-lock.json', 'utf8'))
+          for (const name of ['@playwright/test', 'playwright', 'playwright-core']) {
+            assert.equal(lock.packages[`node_modules/${name}`].version, version, `${name}: image/lockfile mismatch`)
+            assert.equal(JSON.parse(readFileSync(`node_modules/${name}/package.json`, 'utf8')).version, version, `${name}: installed version mismatch`)
+          }
+          // Existing isolated wrappers deliberately keep HOME and discard other environment.
+          // Give their default browser lookup the same preinstalled, version-checked files.
+          const cache = join(homedir(), '.cache', 'ms-playwright')
+          mkdirSync(dirname(cache), { recursive: true })
+          try { symlinkSync('/ms-playwright', cache, 'dir') } catch (error) {
+            if (error.code !== 'EEXIST') throw error
+            assert.ok(lstatSync(cache).isSymbolicLink(), 'Unexpected browser cache; refusing to replace it')
+          }
+          assert.equal(realpathSync(cache), '/ms-playwright')
+          const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot'].flatMap(key =>
+            process.env[key] ? [[key, process.env[key]]] : []))
+          const probe = spawnSync(process.execPath, ['--input-type=module', '-e', `
+            import { accessSync, constants } from 'node:fs'
+            import { chromium, webkit } from '@playwright/test'
+            for (const browser of [chromium, webkit]) {
+              accessSync(browser.executablePath(), constants.X_OK)
+              console.log(browser.name() + ': ' + browser.executablePath())
+            }
+          `], { env, encoding: 'utf8', timeout: 10_000 })
+          assert.equal(probe.error, undefined)
+          assert.equal(probe.status, 0, probe.stderr)
+          process.stdout.write(probe.stdout)
+          console.log(`Preinstalled browser lookup verified for Playwright ${version}`)
+          NODE
       - name: Durable request and admin recovery in isolated browser fixtures
         run: node scripts/run-ci.mjs browser-recovery
       - name: Explicit social accounts, truthful outcomes and accessible controls
         run: node scripts/run-ci.mjs browser-social
+      - name: Cinema storyboard exports and explicit preview consent
+        run: node scripts/run-ci.mjs browser-cinema
       - name: Native browser error guard method boundaries
-        run: node --test qa/t01-final-20261015/browser-harness/guard.test.mjs qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs
+        run: node --test qa/t01-final-20261015/browser-harness/guard.test.mjs qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs qa/t08/integrated/stored-markup-readiness.test.mjs
       - run: node qa/t08/run.mjs browser-redteam
       - name: Library pagination and consent contrast regressions
         run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
