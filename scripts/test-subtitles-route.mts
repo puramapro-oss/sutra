@@ -201,6 +201,54 @@ type Cue = { text: string; start: number; end: number }
 type GeneratedSubtitles = { subtitles: Cue[]; srt: string }
 const normalizeWhitespace = (text: string) => text.trim().split(/\s+/).join(' ')
 
+for (const duration of [1, 5, 0.0001, 1 / 3, Number.MIN_VALUE, Number.MAX_SAFE_INTEGER / 1000]) {
+  test(`classic timeline retains every sentence within the supplied duration: ${duration}`, async () => {
+    const response = await submit({ narration: 'Oui. Non. Merci.', duration, style: 'classic' })
+    assert.equal(response.status, 200)
+    const data = await response.json() as GeneratedSubtitles
+    assert.deepEqual(data.subtitles.map(cue => cue.text), ['Oui.', 'Non.', 'Merci.'])
+    let previousEnd = 0
+    for (const cue of data.subtitles) {
+      assert.ok(Number.isFinite(cue.start) && Number.isFinite(cue.end))
+      assert.equal(cue.start, previousEnd, 'sentences remain contiguous')
+      assert.ok(cue.start >= 0 && cue.end >= cue.start && cue.end <= duration,
+        'no sentence is placed after the supplied media duration')
+      previousEnd = cue.end
+    }
+    assert.equal(previousEnd, duration, 'the final sentence ends at the supplied duration')
+    assert.doesNotMatch(data.srt, /NaN|Infinity|e\+/)
+    assert.equal(translationCalls, 0)
+  })
+}
+
+test('classic timeline preserves existing timing when the reading minimum already fits', async () => {
+  const response = await submit({ narration: 'Oui. Non. Merci.', duration: 14, style: 'classic' })
+  assert.equal(response.status, 200)
+  assert.deepEqual((await response.json()).subtitles, [
+    { text: 'Oui.', start: 0, end: 4 },
+    { text: 'Non.', start: 4, end: 8 },
+    { text: 'Merci.', start: 8, end: 14 },
+  ])
+})
+
+test('classic timeline exports complete sentences without extending a short video', async () => {
+  const generated = await submit({ narration: 'Oui. Non. Merci.', duration: 1, style: 'classic' })
+  assert.equal(generated.status, 200)
+  const data = await generated.json() as GeneratedSubtitles
+  const response = await exportSubtitles(new Request('https://subtitle-test.invalid/api/subtitles/export', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ subtitles: data.subtitles }),
+  }))
+  assert.equal(response.status, 200)
+  const srt = await response.text()
+  assert.equal(srt, data.srt)
+  const cues = parseSRT(srt)
+  assert.deepEqual(cues.map(cue => cue.text), ['Oui.', 'Non.', 'Merci.'])
+  assert.equal(cues[0].start, 0)
+  assert.equal(cues.at(-1)?.end, 1)
+  assert.equal(translationCalls, 0)
+})
+
 function assertCompleteMinimalTimeline(subtitles: Cue[], narration: string, duration: number) {
   assert.ok(subtitles.length > 0)
   assert.equal(subtitles.map(cue => cue.text).join(' '), normalizeWhitespace(narration))
