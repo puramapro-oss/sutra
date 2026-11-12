@@ -1,4 +1,5 @@
 import { assembleFinalVideo } from './final-composition'
+import { buildCreateSubtitles, proofForCheckpoint } from './caption-timeline'
 import { pipelineSteps, checkpointStage, assertFinalMedia, requireTracks, persistPipelineVideo } from '@/lib/pipeline-state'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { createServiceClient } from '@/lib/supabase'
@@ -100,12 +101,6 @@ async function triggerAutopilot(args: { userId: string; videoId: string; videoUr
   })
   if (!['published', 'scheduled'].includes(outcome.status)) throw new Error('SUTRA_RECONCILIATION_REQUIRED: publication ' + outcome.status)
   return outcome
-}
-
-function generateSubtitles(narration: string, totalDuration: number): Array<{ text: string; start: number; end: number }> {
-  const sentences = narration.split(/[.!?]+/).filter((s) => s.trim().length > 0)
-  const segmentDuration = totalDuration / sentences.length
-  return sentences.map((text, i) => ({ text: text.trim(), start: i * segmentDuration, end: (i + 1) * segmentDuration }))
 }
 
 /**
@@ -266,8 +261,16 @@ export async function executeCreateJob(
   await checkpointStage(done, hooks, 'music', musicUrl)
   await step('tracks_saved', async () => { await updateVideo({ voice_url: voiceUrl, music_url: musicUrl || null }); return true })
 
-  const subtitles = await step('subtitles', async () => generateSubtitles(script.narration, script.estimated_duration))
+  const captionInput = {
+    mode: manual?.success ? 'manual' as const : 'estimated' as const,
+    narration: script.narration,
+    totalDuration: script.estimated_duration,
+    sceneDurations: script.scenes.map(scene => scene.duration_seconds),
+  }
+  const subtitles = await step('subtitles', async () => buildCreateSubtitles(captionInput).cues)
   await checkpointStage(done, hooks, 'subtitles', subtitles)
+  // Distinct from the file probe and from hasAudio. A resumed checkpoint keeps its cues.
+  await step('subtitle_proof', async () => proofForCheckpoint(buildCreateSubtitles(captionInput), subtitles))
   await hooks.heartbeat?.()
   const rendered = await step('assembly', () => assembleFinalVideo({
     clips: clipsResult,
