@@ -1,28 +1,26 @@
-import { test, expect, Page } from '@playwright/test'
+import { test, expect, type Page } from '@playwright/test'
 
 const BASE = process.env.E2E_BASE_URL ?? 'https://sutra.purama.dev'
 
-async function dismissCookieBanner(page: Page) {
-  await page.evaluate(() =>
-    localStorage.setItem(
-      'purama_cookie_consent_v1',
-      JSON.stringify({ essential: true, analytics: false, marketing: false })
-    )
-  )
+async function openAuthenticatedCreate(page: Page) {
+  // Credentials belong only to the local Supabase fixture in test-ui-isolated.mjs.
+  expect(new URL(BASE).hostname, 'synthetic account requires the loopback fixture').toBe('127.0.0.1')
+  await page.addInitScript(() => {
+    localStorage.setItem('purama_cookie_consent_v1', JSON.stringify({ necessaire: true, mesure: false, marketing: false, updatedAt: new Date().toISOString() }))
+    localStorage.setItem('sutra_intro_seen', '1')
+    localStorage.setItem('sutra_tutorial_dismissed', 'true')
+  })
+  await page.goto(`${BASE}/login?next=%2Fcreate`)
+  await page.getByTestId('email-input').fill('studio-test@example.invalid')
+  await page.getByTestId('password-input').fill('fixture-password-42')
+  await page.getByTestId('login-button').click()
+  await expect(page).toHaveURL(`${BASE}/create`)
+  await expect(page.getByTestId('header')).toBeVisible()
 }
 
 test.describe('Media Mode (stock footage)', () => {
   test('mediaMode cards visible on /create (auto mode)', async ({ page }) => {
-    await page.goto(`${BASE}/create`)
-    await dismissCookieBanner(page)
-    // Auth wall: page redirects to /login if not logged in. We just verify
-    // the route exists by checking either form or login presence.
-    const loginVisible = await page
-      .locator('[data-testid="login-form"], form input[type="email"]')
-      .first()
-      .isVisible()
-      .catch(() => false)
-    test.skip(loginVisible, 'Auth wall in place; smoke test only')
+    await openAuthenticatedCreate(page)
 
     await expect(page.getByTestId('media-mode-ai')).toBeVisible()
     await expect(page.getByTestId('media-mode-stock')).toBeVisible()
@@ -30,17 +28,16 @@ test.describe('Media Mode (stock footage)', () => {
   })
 
   test('selecting each mediaMode toggles selected state', async ({ page }) => {
-    await page.goto(`${BASE}/create`)
-    await dismissCookieBanner(page)
+    await openAuthenticatedCreate(page)
     const ai = page.getByTestId('media-mode-ai')
     const stock = page.getByTestId('media-mode-stock')
     const mixed = page.getByTestId('media-mode-mixed')
 
-    const visible = await ai.isVisible().catch(() => false)
-    test.skip(!visible, 'Auth wall in place; smoke test only')
-
     for (const card of [ai, stock, mixed]) {
       await card.click()
+      for (const option of [ai, stock, mixed]) {
+        await expect(option).toHaveAttribute('aria-pressed', option === card ? 'true' : 'false')
+      }
       // The selected card has the violet border class — assert via DOM
       const cls = await card.getAttribute('class')
       expect(cls).toContain('border-violet-500/50')

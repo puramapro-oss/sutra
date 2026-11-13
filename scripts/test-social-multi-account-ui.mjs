@@ -96,6 +96,8 @@ try {
       return reply({ config: fixture.auto })
     }
     if (url.pathname === '/api/social/publish') {
+      // Legacy fixtures have no durable receipt; restoration must stay a GET.
+      if (method === 'GET') return reply({ error: 'Publication durable introuvable' }, 404)
       if (body?.reconcileOnly === true) {
         requests.reconcile.push(body)
         if (rejectReconciliation) return route.abort('failed')

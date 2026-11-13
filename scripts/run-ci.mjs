@@ -9,6 +9,13 @@ const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const heapOptions = ciHeapOptions(process.env.SUTRA_CI_HEAP_MB)
 const nodeTests = [
+  'scripts/test-subtitles-route.mts',
+  'scripts/test-cinema-project.mts', 'scripts/test-higgsfield-contracts.mts',
+  'scripts/test-create-manual-mode.mts',
+  'scripts/test-caption-timeline.mts',
+  'scripts/test-storyboard-create-draft.mts',
+  'scripts/test-auto-learn-analytics.mts', 'scripts/test-auto-learn-route.mts', 'scripts/test-auto-learn-memory.mts',
+  'scripts/test-auto-trends-memory.mts',
   'scripts/test-durable-request-store.mts',
   'scripts/test-dependency-security-20261109.mjs',
   'scripts/test-development-dependency-security.mjs',
@@ -69,6 +76,7 @@ const nodeTests = [
   'scripts/test-opentimestamps.mjs', 'scripts/test-ltx-v2-media.mts',
   'scripts/test-social-publication.mts', 'scripts/test-auth-session.mts', 'scripts/test-public-origin.mts',
   'scripts/test-social-multi-account.mts', 'scripts/test-social-multi-account-routes.mts',
+  'scripts/test-social-durable-journal.mts', 'scripts/test-social-durable-api-worker.mts',
   'tooling/disposable-database.test.mjs',
   'tooling/ci-heap.test.mjs',
   'scripts/test-pipeline-interruptions.mts', 'scripts/test-pipeline-submit.mts',
@@ -103,7 +111,12 @@ const profiles = {
   browser: [['browser', ['scripts/test-ui-isolated.mjs']]],
   'browser-recovery': [['browser-recovery', ['--import', 'tsx', '--test', '--test-concurrency=1',
     'scripts/test-durable-hook-recovery.mjs', 'scripts/test-admin-users-recovery.mjs']]],
-  'browser-social': [['browser-social', ['scripts/test-social-multi-account-ui.mjs']]],
+  'browser-social': [
+    ['browser-social', ['scripts/test-social-multi-account-ui.mjs']],
+    ['browser-social-durable', ['scripts/test-social-durable-ui.mjs']],
+  ],
+  'browser-cinema': [['browser-cinema', ['scripts/test-cinema-ui.mjs']], ['storyboard-draft', ['scripts/test-storyboard-create-draft-ui.mjs']]],
+  'cinema-blender': [['cinema-blender', ['--import', 'tsx', '--test', 'scripts/test-cinema-blender.mts']]],
   'browser-profiles': [['profiles', ['scripts/test-ui-isolated.mjs', '--profile-only']]],
   editor: [['editor', ['scripts/test-ui-isolated.mjs', '--editor-only']]],
   legacy: [['legacy', ['scripts/test-ui-isolated.mjs', '--legacy']]],
@@ -114,7 +127,7 @@ const profiles = {
     ['build', ['node_modules/next/dist/bin/next', 'build', '--webpack']],
   ],
 }
-if (!Object.hasOwn(profiles, profile)) throw new Error('Usage: node scripts/run-ci.mjs contracts|media|quality|browser|browser-recovery|browser-social|browser-profiles|editor|legacy|legacy-regressions')
+if (!Object.hasOwn(profiles, profile)) throw new Error('Usage: node scripts/run-ci.mjs contracts|media|quality|browser|browser-recovery|browser-social|browser-cinema|cinema-blender|browser-profiles|editor|legacy|legacy-regressions')
 if (readdirSync(root).some(name => name.startsWith('.env') && name !== '.env.example')) {
   throw new Error('Run CI gates in an isolated checkout without local environment files.')
 }

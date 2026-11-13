@@ -335,12 +335,14 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
         return runFfmpeg(audioArgs, remainingMs(), 'audio', signal)
       })
 
-      // Pass 5 — mux final (stream copy)
-      const finalPath = join(tmpDir, 'final.mp4')
+      // Both inputs are already bounded by the composition timeline. -shortest
+      // can discard a delayed B-frame when AAC reaches EOF during stream copy.
+      // Version only this artifact so a completed legacy mux is rebuilt on resume.
+      const finalPath = join(tmpDir, 'final-mux-v2.mp4')
       await ensure(finalPath, 'mux', () =>
         runFfmpeg(
           ['-i', visualPath, '-i', audioPath, '-map', '0:v:0', '-map', '1:a:0',
-            '-c:v', 'copy', '-c:a', 'copy', '-shortest', '-movflags', '+faststart', finalPath],
+            '-c:v', 'copy', '-c:a', 'copy', '-movflags', '+faststart', finalPath],
           remainingMs(),
           'mux',
           signal

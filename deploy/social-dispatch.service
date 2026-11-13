@@ -1,0 +1,25 @@
+[Unit]
+Description=SUTRA accepted social publication dispatcher
+After=network.target
+
+[Service]
+Type=oneshot
+DynamicUser=yes
+EnvironmentFile=/etc/purama/sutra-social-worker.env
+ExecStart=/usr/bin/python3 /opt/purama/sutra/deploy/social_dispatch.py
+TimeoutStartSec=310
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+IPAddressDeny=any
+IPAddressAllow=localhost
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

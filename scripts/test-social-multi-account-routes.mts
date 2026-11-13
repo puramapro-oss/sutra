@@ -52,7 +52,11 @@ mock.module('../src/lib/supabase.ts', { namedExports: { createServiceClient: () 
 mock.module('@supabase/supabase-js', { namedExports: { createClient: () => service } })
 mock.module('../src/lib/social-publication.ts', { namedExports: {
   publishVideoRecord: async (userId: string, input: VideoPublicationInput) => {
-    requests.push({ userId, input }); return { success: false, status: 'publishing', results: [] }
+    requests.push({ userId, input }); return { success: false, status: 'publishing', results: [], operations: [{
+      id: 'fixture-operation', phase: 'queued', createdAt: new Date().toISOString(), dispatchRequested: true,
+      request: { videoUrl: 'https://media.invalid/final.mp4', platforms: ['youtube'], accountIds: { youtube: 'a'.repeat(24) },
+        caption: 'fixture', hashtags: [], idempotencyKey: 'fixture-operation' }, accountRows: { youtube: localA },
+    }] }
   },
 } })
 const { POST: publish } = await import('../src/app/api/social/publish/route.ts')

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Clock, Layers, Film, ArrowRight } from 'lucide-react'
@@ -11,6 +11,8 @@ import { Skeleton } from '@/components/ui/Skeleton'
 import { useStoryboard } from '@/hooks/useStoryboard'
 import StoryboardInput from '@/components/storyboard/StoryboardInput'
 import SceneCard from '@/components/storyboard/SceneCard'
+import CinemaExport from '@/components/storyboard/CinemaExport'
+import { prepareStoryboardDraft, StoryboardDraftError } from '@/lib/storyboard-create-draft'
 import type { VideoFormat, DurationTarget } from '@/lib/storyboard'
 
 // ---------------------------------------------------------------------------
@@ -18,8 +20,16 @@ import type { VideoFormat, DurationTarget } from '@/lib/storyboard'
 // ---------------------------------------------------------------------------
 
 export default function StoryboardPage() {
+  const { profile, loading } = useAuth()
+  return <StoryboardWorkspace key={profile?.id ?? 'anonymous'} userId={profile?.id} authLoading={loading} />
+}
+
+function StoryboardWorkspace({ userId, authLoading }: { userId?: string; authLoading: boolean }) {
   const router = useRouter()
-  const { profile, loading: authLoading } = useAuth()
+  const [isNavigating, startNavigation] = useTransition()
+  const [handoffError, setHandoffError] = useState<string | null>(null)
+  const [canReplaceTransfer, setCanReplaceTransfer] = useState(false)
+  const [replaceTransfer, setReplaceTransfer] = useState(false)
 
   const [idea, setIdea] = useState('')
   const [format, setFormat] = useState<VideoFormat>('16:9')
@@ -45,16 +55,18 @@ export default function StoryboardPage() {
   }, [idea, format, durationTarget, generate])
 
   const handleGoToCreate = useCallback(() => {
+    setHandoffError(null)
+    setCanReplaceTransfer(false)
+    if (!userId) { setHandoffError('Connecte-toi avant de préparer un brouillon manuel.'); return }
     try {
-      sessionStorage.setItem(
-        'sutra-storyboard',
-        JSON.stringify({ scenes, format, durationTarget, idea })
-      )
-    } catch {
-      // sessionStorage may be full
+      prepareStoryboardDraft(sessionStorage, userId, { scenes, format, durationTarget, idea }, replaceTransfer)
+      setReplaceTransfer(false)
+      startNavigation(() => router.push('/create'))
+    } catch (cause) {
+      setCanReplaceTransfer(cause instanceof StoryboardDraftError && ['EXISTS', 'CORRUPT'].includes(cause.code))
+      setHandoffError(cause instanceof StoryboardDraftError ? cause.message : 'Le stockage de cet onglet est indisponible. Le storyboard reste sur cette page ; aucun transfert n’a été effectué.')
     }
-    router.push('/create')
-  }, [scenes, format, durationTarget, idea, router])
+  }, [scenes, format, durationTarget, idea, router, userId, replaceTransfer])
 
   // ---------------------------------------------------------------------------
   // Auth loading
@@ -110,6 +122,17 @@ export default function StoryboardPage() {
           onGenerate={handleGenerate}
         />
 
+        {scenes.length === 0 && !isGenerating && (
+          <section aria-labelledby="manual-storyboard-heading" className="rounded-xl border border-white/10 bg-white/[0.02] p-5 space-y-3">
+            <h2 id="manual-storyboard-heading" className="font-semibold text-white">Composer les plans soi-même</h2>
+            <p className="text-sm text-white/70">Ajoute un premier plan, règle sa durée et prépare ton projet pour Blender.</p>
+            <Button onClick={addScene} variant="secondary" data-testid="add-first-scene-btn">
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              Ajouter le premier plan
+            </Button>
+          </section>
+        )}
+
         {/* ----------------------------------------------------------------- */}
         {/* Loading skeletons                                                 */}
         {/* ----------------------------------------------------------------- */}
@@ -152,6 +175,8 @@ export default function StoryboardPage() {
                   {scenes.length} scenes
                 </h2>
               </div>
+
+              <CinemaExport title={idea} format={format} scenes={scenes} />
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {scenes.map((scene, idx) => (
@@ -208,7 +233,14 @@ export default function StoryboardPage() {
             exit={{ y: 80, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
+            <div className="max-w-7xl mx-auto space-y-3">
+              <p className="text-sm text-white/75">Prépare un brouillon manuel à partir des descriptions. L’import sera confirmé sur l’écran de création ; les durées et transitions restent dans le projet cinéma original.</p>
+              {handoffError && <p role="alert" className="text-sm text-red-200">{handoffError}</p>}
+              {canReplaceTransfer && <label className="flex items-start gap-2 text-sm text-white/80">
+                <input type="checkbox" checked={replaceTransfer} onChange={event => setReplaceTransfer(event.target.checked)} className="mt-1" />
+                Je confirme le remplacement du storyboard précédemment transféré dans cet onglet.
+              </label>}
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2 text-white/60">
                   <Layers className="h-4 w-4" />
@@ -226,12 +258,14 @@ export default function StoryboardPage() {
 
               <Button
                 onClick={handleGoToCreate}
+                disabled={isNavigating || (canReplaceTransfer && !replaceTransfer)}
                 size="md"
                 data-testid="generate-video-btn"
               >
-                Generer la video
+                Préparer un brouillon manuel
                 <ArrowRight className="h-4 w-4" />
               </Button>
+            </div>
             </div>
           </motion.div>
         )}

@@ -100,7 +100,7 @@ La route de publication conserve `platforms` et accepte une liste explicite :
 }
 ```
 
-Les UUID ci-dessus sont des marqueurs explicatifs à remplacer par de véritables UUID. L'API accepte au plus 50 comptes par demande, refuse les doublons et exige une correspondance exacte avec les plateformes annoncées. Elle refuse de mélanger `destinations` et l'ancien objet `accountIds`.
+Les UUID ci-dessus sont des marqueurs explicatifs à remplacer par de véritables UUID. L'API accepte au plus 50 comptes par demande et par journal durable, refuse les doublons et exige une correspondance exacte avec les plateformes annoncées. Elle refuse de mélanger `destinations` et l'ancien objet `accountIds`.
 
 L'ancien format à un compte par réseau demeure compatible. Une sélection implicite par réseau exige un compte connecté unique ; elle ne peut pas choisir arbitrairement une chaîne ni reprendre une ancienne opération devenue ambiguë.
 
@@ -126,7 +126,7 @@ Le bouton « Vérifier l'état » réutilise l'intention initiale avec `reconcil
 
 Une destination sans preuve reste `unknown` avec `SUTRA_PUBLICATION_EVIDENCE_REQUIRED`. Un contrôle d'état ne crée jamais de droit de reprise dans l'interface ; un succès confirmé reste conservé, et une nouvelle observation inconnue retire une ancienne éligibilité de reprise. Publication et vérification partagent le même verrou de requête. Une erreur du callback de rafraîchissement du parent ne transforme plus une publication confirmée en résultat inconnu.
 
-Ce mécanisme ne résout pas tous les lots longs : le navigateur attend jusqu'à 30 secondes, la route annonce 120 secondes, et l'adapter peut attendre jusqu'à 90 secondes par envoi séquentiel. Les 50 destinations autorisées par le schéma ne constituent donc pas une capacité de diffusion simultanée qualifiée. Le raccord à une exécution durable de tout le lot, incluant les destinations pas encore commencées, reste à réaliser. Sans `postId` enregistré, la seule vérification d'état ne peut pas identifier une réponse distante perdue.
+Au candidat `846bf6e`, ce mécanisme ne résolvait pas les lots longs : le navigateur attendait jusqu'à 30 secondes, la route annonçait 120 secondes, et l'adapter pouvait attendre jusqu'à 90 secondes par envoi séquentiel. Le candidat de reprise durable décrit plus bas dissocie maintenant l'admission du lot de ces appels. Il ne constitue pas une mesure de capacité simultanée sur les réseaux réels. Sans `postId` enregistré, la seule lecture d'état ne peut toujours pas identifier une réponse distante perdue.
 
 ## Deux automatismes raccordés
 
@@ -230,3 +230,53 @@ L'installation `npm ci` a été interrompue dans cet environnement. Les dépenda
 Après création de plusieurs comptes, rétablir l'ancienne contrainte singleton exigerait un traitement des données : aucun rollback destructif n'est prévu. En cas de problème, suspendre les envois et corriger en conservant les identités et les preuves.
 
 La révocation locale bloque les nouveaux envois. Elle ne prouve pas l'annulation d'une publication déjà programmée chez un fournisseur. Les retraits distants, la suppression des données API, les plafonds de capacité par projet, les droits par variante et le rapprochement commercial doivent garder leurs critères distincts dans le cahier SUTRA.
+
+## Reprise durable du lot — candidat suivant la réconciliation analytics
+
+Ce lot part de `257b1bbeabc995a15cf7ffd85f75e44a16ab201c` (PR #12), qui conserve la qualification native de la PR #9 et les corrections analytics/CI. Il modifie l'entrée manuelle `/api/social/publish` et son suivi. Les deux automatismes gardent leurs contrôles de mandat et leur exécution existante ; aucune configuration automatique ancienne n'est activée par la migration.
+
+### Contrat exécuté
+
+- Le POST prépare toutes les destinations autorisées et enregistre leurs requêtes immuables en **un seul CAS**, avec phase `queued`. Aucun appel fournisseur de lecture, création ou reprise ne précède l'accusé durable. Une admission refusée ne rend pas un préfixe du lot exécutable.
+- L'identité du lot est l'identité de production, déjà unique dans le journal. Un double enregistrement retrouve les mêmes opérations, clés et grants média. Une demande ne peut pas dépasser 50 destinations au total en ajoutant plusieurs sous-lots successifs.
+- Le dispatcher réserve un journal dû avec `FOR UPDATE SKIP LOCKED`, un jeton et un bail de 240 secondes. La sauvegarde exige propriétaire, révision et bail encore valide selon l'heure PostgreSQL. Un ancien exécutant ne peut plus sauvegarder ni libérer un bail repris.
+- Un passage traite une opération fournisseur. Les comptes jamais commencés passent avant les anciennes vérifications. Les réveils sont persistés ; la route traite au plus quatre réservations et ne commence plus d'opération après 70 secondes.
+- `firstAttemptAt` est enregistré juste avant la frontière réseau. Une vidéo restée en file plus de 24 heures n'est donc pas confondue avec une soumission incertaine vieille de 24 heures. Après une réponse perdue, l'opération conserve sa clé, sa requête et la fenêtre prudente de reprise existante.
+- La programmation passée est refusée au moment d'envoyer. Elle n'est jamais transformée silencieusement en publication immédiate.
+- La réservation ne remplace pas l'autorisation : compte exact, profil actif, liaison Zernio et export vérifié sont relus. Les refus restent visibles dans le journal. Un compte ajouté plus tard ne rejoint pas le lot.
+- Une reprise d'échec exige un ordre explicite enregistré à l'admission et consommé avant l'appel. Un ancien état d'échec ne libère pas la barrière `retrying`. Une opération legacy non sélectionnée peut être relue, mais ne reçoit pas implicitement un nouvel ordre de rejeu.
+- La preuve de publication est conservée avant les projections. Le journal garde un réveil jusqu'à leur réparation et à la libération du bail. Les écritures d'historique et de calendrier sont regroupées en deux upserts au lieu de deux requêtes par destination.
+- Un export remplacé ou supprimé bloque les nouveaux envois. Les posts déjà identifiés restent vérifiables ; le résultat de l'ancien export ne marque pas le nouvel export comme publié.
+
+Le fournisseur documente une protection d'idempotence de création de 24 heures, indexée sur la clé seule, et un comportement synchrone si une programmation est déjà passée. Ces limites expliquent la conservation des requêtes et le blocage prudent au-delà de la fenêtre : [idempotence](https://docs.zernio.com/guides/idempotency), [création](https://docs.zernio.com/posts/create-post), [reprise](https://docs.zernio.com/posts/retry-post).
+
+### Suivi navigateur et réponse API
+
+`GET /api/social/publish?videoId=UUID` lit uniquement le journal du propriétaire connecté. Il renvoie un reçu privé non mis en cache, avec `batchId`, `durable`, `hasPending`, les destinations exactes et leurs résultats. Il n'expose ni requête fournisseur, ni URL média signée, ni clé d'idempotence, ni bail. Un succès partiel reste `hasPending:true` tant qu'une destination est en attente ; l'accusé POST reste alors HTTP202.
+
+La fenêtre restaure le suivi après rechargement. Les lectures automatiques sont limitées à une requête à la fois, toutes les cinq secondes et au plus 60 lectures par ouverture ; elles s'arrêtent à la fermeture, au masquage et au changement de vidéo. Les succès restent conservés si une lecture ultérieure échoue ou régresse. Un `failed` lu seul n'active pas une reprise : un champ serveur distinct `canRequestRetry` propose seulement une action explicite, toujours revalidée à l'admission. Une identité externe différente ne devient jamais la cible de l'ancien ordre.
+
+Les anciennes publications utilisent encore leur vérification `reconcileOnly`. Pour un journal durable, cette vérification lit le même reçu local et ne lance aucun appel fournisseur. Fermer la fenêtre ferme le suivi ; cela n'annule pas un lot déjà accepté.
+
+### Livraison sur le serveur de destination
+
+La migration additive est `migrations/20261110_social_durable_dispatch.sql`. Elle garde la table de journal existante, ses données et ses droits serveur. Elle ne crée aucun job de génération et n'affecte pas les quotas vidéo. Les journaux antérieurs commencent avec `dispatch_enabled=false`.
+
+Le consommateur est `POST /api/cron/social-worker`, protégé par le `CRON_SECRET` existant. Le client `deploy/social_dispatch.py` accepte uniquement une URL HTTP de boucle locale vers cette route précise ; redirections, hôtes distants, identifiants dans l'URL et autres routes sont refusés. Les unités `social-dispatch.service` et `social-dispatch.timer` fournissent le raccord systemd. Le timer réveille le service 15 secondes après sa fin et ne le lance pas en parallèle avec lui-même.
+
+Avant activation sur Hostinger ou un autre serveur Linux retenu :
+
+1. Vérifier le commit livré, les trois jobs CI au même SHA, la sauvegarde restaurable et les préconditions du journal ; appliquer la migration avant le nouveau code.
+2. Installer le script à l'emplacement indiqué par l'unité (ou adapter cet emplacement au déploiement existant), puis créer le fichier protégé `/etc/purama/sutra-social-worker.env`, lisible uniquement par l'administrateur. Il contient `SUTRA_SOCIAL_WORKER_URL=http://127.0.0.1:PORT/api/cron/social-worker` avec le port réellement constaté, et le même `CRON_SECRET` que l'application. Aucun secret ne figure dans le dépôt.
+3. Installer les unités et vérifier leur configuration. Un appel du dispatcher sur une file vide doit confirmer zéro traitement. Cette vérification ne doit pas servir à déclencher des ordres réels inconnus.
+4. Activer le timer après inspection des journaux admissibles et qualification d'une publication réelle autorisée. Vérifier le résultat réseau, sa visibilité, les identifiants des comptes et la reprise après arrêt contrôlé du service.
+
+Le service d'observation historique reste strictement en lecture seule. Il n'est pas détourné en dispatcher. Pour suspendre les nouveaux passages, arrêter ce nouveau timer et son service ; conserver journal, clés et résultats. L'arrêt local ne prouve pas l'annulation d'une publication déjà reçue par le fournisseur.
+
+**Retour à un binaire antérieur : garder les écritures sociales fermées pendant tout le rollback.** L'arrêt du dispatcher seul ne suspend pas les envois manuels. L'ancien journal ignore `dispatch_enabled` et sauvegarde directement par révision, sans contrôler le nouveau bail ; il peut encore ajouter une destination ou relancer un échec. Fermer les POST `/api/social/publish` et leurs alias `/api/publish` et `/api/publish/social`, puis suspendre aussi les routes et workers capables d'appeler les automatismes de publication. Vérifier ces refus sur le serveur avant de rétablir l'ancien binaire. Ne rouvrir ces entrées qu'avec un binaire compatible avec les journaux durables et après rapprochement des opérations encore en attente. Conserver les colonnes, journaux, clés et résultats ; aucun rollback ne supprime les preuves.
+
+### Qualification de ce candidat
+
+Les nouveaux contrôles sont raccordés aux profils existants : contrats du journal/API/worker, navigateur social et recette PostgreSQL native. `deploy/test_social_dispatch.py` est inclus dans la découverte Python du workflow. Les preuves propres à ce lot sont conservées dans `qa/social-durable-20261110/`.
+
+Les essais utilisent des comptes synthétiques et des transports simulés. Le test PostgreSQL démarre un cluster privé réel, exerce les courses entre clients et redémarre effectivement le serveur. Une preuve locale de ces mécanismes ne prouve ni l'installation du timer sur le serveur final, ni l'application de la migration distante, ni une publication sur un compte réel. Ces trois éléments restent à qualifier sur la cible disposant des accès.
