@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 
 export interface WallPost {
@@ -38,51 +38,84 @@ export interface Mission {
   achieved: boolean
 }
 
+async function readCommunity(path: string, signal?: AbortSignal): Promise<Record<string, unknown>> {
+  const response = await fetch(path, { signal })
+  if (!response.ok) throw new Error('Community unavailable')
+  const data: unknown = await response.json()
+  if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('Community response invalid')
+  return data as Record<string, unknown>
+}
+
 export function useCommunity(userId?: string) {
   const [loading, setLoading] = useState(true)
   const [posts, setPosts] = useState<WallPost[]>([])
   const [circles, setCircles] = useState<Circle[]>([])
   const [buddy, setBuddy] = useState<Buddy | null>(null)
-  const [missions, setMissions] = useState<Mission[]>([])
+  const [missions] = useState<Mission[]>([])
   const [posting, setPosting] = useState(false)
   const [joiningCircle, setJoiningCircle] = useState<string | null>(null)
   const [checkingIn, setCheckingIn] = useState(false)
+  const [loadedUser, setLoadedUser] = useState<string | undefined>()
+  const [error, setError] = useState<string | null>(null)
+  const pending = useRef<AbortController | null>(null)
 
-  const fetchWall = useCallback(async () => {
-    try {
-      const res = await fetch('/api/community/wall')
-      if (res.ok) {
-        const data = await res.json()
-        setPosts(data.posts || [])
-      }
-    } catch { /* empty */ }
+  const fetchWall = useCallback((signal?: AbortSignal) => {
+    return readCommunity('/api/community/wall', signal).then(data => {
+      if (signal?.aborted) return
+      if (!Array.isArray(data.posts)) throw new Error('Wall response invalid')
+      setPosts(data.posts as WallPost[])
+    }).catch(() => {
+      if (signal?.aborted) return
+      setPosts([])
+      setError('Impossible de charger le mur de la communauté. Réessaie.')
+    })
   }, [])
 
-  const fetchCircles = useCallback(async () => {
-    try {
-      const res = await fetch('/api/community/circles')
-      if (res.ok) {
-        const data = await res.json()
-        setCircles(data.circles || [])
-      }
-    } catch { /* empty */ }
+  const fetchCircles = useCallback((signal?: AbortSignal) => {
+    return readCommunity('/api/community/circles', signal).then(data => {
+      if (signal?.aborted) return
+      if (!Array.isArray(data.circles)) throw new Error('Circles response invalid')
+      setCircles(data.circles as Circle[])
+    }).catch(() => {
+      if (signal?.aborted) return
+      setCircles([])
+      setError('Impossible de charger les cercles. Réessaie.')
+    })
   }, [])
 
-  const fetchBuddy = useCallback(async () => {
-    try {
-      const res = await fetch('/api/community/buddy')
-      if (res.ok) {
-        const data = await res.json()
-        setBuddy(data.buddy || null)
-      }
-    } catch { /* empty */ }
+  const fetchBuddy = useCallback((signal?: AbortSignal) => {
+    return readCommunity('/api/community/buddy', signal).then(data => {
+      if (signal?.aborted) return
+      setBuddy((data.buddy as Buddy | null) ?? null)
+    }).catch(() => {
+      if (signal?.aborted) return
+      setBuddy(null)
+      setError('Impossible de charger ton binôme. Réessaie.')
+    })
   }, [])
+
+  const load = useCallback(() => {
+    if (!userId) return
+    pending.current?.abort()
+    const controller = new AbortController()
+    pending.current = controller
+    return Promise.all([fetchWall(controller.signal), fetchCircles(controller.signal), fetchBuddy(controller.signal)]).finally(() => {
+      if (controller.signal.aborted) return
+      setLoadedUser(userId)
+      setLoading(false)
+    })
+  }, [userId, fetchWall, fetchCircles, fetchBuddy])
+
+  const refresh = useCallback(() => {
+    setLoading(true)
+    setError(null)
+    return load()
+  }, [load])
 
   useEffect(() => {
-    if (!userId) return
-    setLoading(true)
-    Promise.all([fetchWall(), fetchCircles(), fetchBuddy()]).finally(() => setLoading(false))
-  }, [userId, fetchWall, fetchCircles, fetchBuddy])
+    void load()
+    return () => { pending.current?.abort(); pending.current = null }
+  }, [load])
 
   const handlePost = async (content: string, type: string): Promise<boolean> => {
     if (!content.trim()) return false
@@ -179,11 +212,11 @@ export function useCommunity(userId?: string) {
   }
 
   return {
-    loading,
-    posts,
-    circles,
-    buddy,
-    missions,
+    loading: !!userId && (loading || loadedUser !== userId),
+    posts: loadedUser === userId ? posts : [],
+    circles: loadedUser === userId ? circles : [],
+    buddy: loadedUser === userId ? buddy : null,
+    missions: loadedUser === userId ? missions : [],
     posting,
     joiningCircle,
     checkingIn,
@@ -192,5 +225,7 @@ export function useCommunity(userId?: string) {
     handleJoinCircle,
     handleCheckin,
     handleFindBuddy,
+    error: loadedUser === userId ? error : null,
+    refresh,
   }
 }

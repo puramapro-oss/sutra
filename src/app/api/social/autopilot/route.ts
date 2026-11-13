@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { createServerClient } from '@/lib/supabase-server'
+import { readOwnedPublicationDestinations, destinationPlatformsMatch } from '@/lib/social-destinations'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -34,6 +35,8 @@ const CAPTION_STYLE = z.enum([
 const upsertSchema = z.object({
   enabled: z.boolean(),
   default_platforms: z.array(PLATFORM_ENUM).default([]).transform((platforms) => [...new Set(platforms)]),
+  publish_account_ids: z.array(z.string().uuid()).max(50).default([])
+    .refine(ids => new Set(ids).size === ids.length, 'Comptes dupliques'),
   auto_caption: z.boolean().default(true),
   auto_hashtags: z.boolean().default(true),
   caption_style: CAPTION_STYLE.default('engaging'),
@@ -57,6 +60,7 @@ function createPublicServiceClient() {
 const DEFAULT_CONFIG = {
   enabled: false,
   default_platforms: [] as string[],
+  publish_account_ids: [] as string[],
   auto_caption: true,
   auto_hashtags: true,
   auto_publish_delay_minutes: 0,
@@ -146,6 +150,17 @@ export async function POST(req: Request) {
 
     const client = createPublicServiceClient()
     const nowIso = new Date().toISOString()
+    try {
+      // Stopping must remain possible even when a saved account disappeared.
+      // Every subsequent activation revalidates the entire explicit selection.
+      if (parsed.data.enabled) {
+        const destinations = await readOwnedPublicationDestinations(user.id, parsed.data.publish_account_ids, client, true)
+        if (!destinations.length || !destinationPlatformsMatch(destinations, parsed.data.default_platforms)) throw new Error('SUTRA_ACCOUNT_SELECTION_REQUIRED')
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message === 'SUTRA_SOCIAL_ACCOUNTS_READ_FAILED') throw error
+      return NextResponse.json({ error: 'Selectionne les comptes autorises pour cette publication automatique', code: 'SUTRA_ACCOUNT_SELECTION_REQUIRED' }, { status: 400 })
+    }
 
     const { data, error } = await client
       .from('social_autopilot_config')

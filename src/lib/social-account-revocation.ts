@@ -47,7 +47,7 @@ export async function revokeSocialAccount(userId: string, accountId: string,
   // The DB updated_at trigger replaces the client clock. Reload the committed
   // snapshot after remote confirmation, retaining ownership of this operation:
   // a concurrent cleanup may change the timestamp, never its revision/target.
-  const current = await readSocialOAuthAccount(userId, account.platform, service)
+  const current = await readSocialOAuthAccount(userId, account.platform, service, account.id)
   if (!current || current.id !== account.id || current.external_id !== account.external_id || current.status !== 'revoked'
     || current.metadata?.sutra_oauth_revision !== pending.metadata.sutra_oauth_revision
     || current.metadata?.sutra_revocation_pending !== true

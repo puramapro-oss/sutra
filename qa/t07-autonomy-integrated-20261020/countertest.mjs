@@ -24,8 +24,10 @@ const daily = (changes = {}) => ({ id: randomUUID(), name: 'Synthetic schedule',
   frequency: 'daily', days: [], timezone: 'UTC', time: '12:00', ...changes })
 const configure = async (start = '2026-11-06T00:00:00.123456Z', schedules = [daily()]) => {
   const previous = await one('SELECT schedules FROM sutra_auto_config WHERE user_id=$1', [user.id])
-  assert.equal((await patch({ schedules, expectedSchedules: previous.schedules, is_active: true })).status, 200)
-  await sql('UPDATE sutra_auto_config SET auto_publish=false,require_approval_before_publish=true WHERE user_id=$1', [user.id])
+  // This recipe schedules generation only. Disable publication in the same API
+  // intent before activation, rather than relying on unsafe legacy defaults.
+  assert.equal((await patch({ schedules, expectedSchedules: previous.schedules, is_active: true,
+    auto_publish: false, require_approval_before_publish: true })).status, 200)
   // Privileged test seed after configuration trigger; never a client-supplied backfill.
   await sql('UPDATE sutra_auto_config SET scheduler_cursor=$2 WHERE user_id=$1', [user.id, start])
   return schedules

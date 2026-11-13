@@ -1,6 +1,7 @@
 import test, { afterEach, beforeEach, mock } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
+import { randomUUID } from 'node:crypto'
 import { socialDatabase, accountId, type Row } from './helpers/social-database.mts'
 import type { SocialPlatform } from '../src/lib/zernio.ts'
 
@@ -20,11 +21,11 @@ let states: Row[] = [], remoteAccounts: Row[] = []
 const browser = new Map<string, string>()
 type Call = { url: URL; method: string; headers: Headers; body?: string }
 let calls: Call[] = []
-let onIdentity: () => void = () => {}, deleteStatus = 200
+let onIdentity: () => void | Promise<void> = () => {}, deleteStatus = 200
 let wireViolations: string[] = []
 
 // Reuse the canonical publication fixture; bridge only OAuth's atomic state table
-// and public.social_accounts' real (user_id, platform) unique insert contract.
+// and public.social_accounts' real (user_id, platform, external_id) insert contract.
 const database = {
   schema: () => database,
   from(table: string): object {
@@ -36,9 +37,9 @@ const database = {
         if (key !== 'insert') return Reflect.get(target, key)
         return (row: Row) => {
           const query = { select: () => query, maybeSingle: async () => {
-            const old = db.accounts.find(a => a.user_id === row.user_id && a.platform === row.platform)
+            const old = db.accounts.find(a => a.user_id === row.user_id && a.platform === row.platform && a.external_id === row.external_id)
             if (old) return { data: null, error: { code: '23505' } }
-            const created = { ...row, id: db.accounts.length ? '44444444-4444-4444-8444-444444444444' : localId }
+            const created = { ...row, id: db.accounts.length ? randomUUID() : localId }
             db.accounts.push(created as typeof db.accounts[number])
             return { data: { id: created.id }, error: null }
           } }
@@ -79,7 +80,7 @@ mock.module('next/headers', { namedExports: { cookies: async () => ({
 globalThis.fetch = async () => { throw new Error('T06_UNEXPECTED_NETWORK') }
 const { POST: connect } = await import('../src/app/api/social/connect/route.ts')
 const { GET: callback } = await import('../src/app/api/social/callback/route.ts')
-const { DELETE: revoke } = await import('../src/app/api/social/accounts/route.ts')
+const { GET: listAccounts, DELETE: revoke } = await import('../src/app/api/social/accounts/route.ts')
 
 beforeEach(() => {
   userId = alice; sessionId = session; db = socialDatabase()
@@ -99,12 +100,16 @@ beforeEach(() => {
       assert.ok(states.length >= 1, 'Persist local state before provider URL acquisition')
       assert.equal(url.searchParams.get('profileId'), profile)
       assert.equal(url.searchParams.get('scopes'), 'posting')
+      const localSelection = new URL(url.searchParams.get('redirect_url')!).searchParams.get('sutraAccountId')
+      assert.equal(url.searchParams.get('reconnectAccountId'), localSelection
+        ? db.accounts.find(account => account.id === localSelection)?.external_id : null,
+      'A reconnect is pinned to the verified provider account before the hosted flow')
       assert.equal(init?.redirect, 'error'); assert.ok(init?.signal)
       return Response.json({ authUrl: 'https://consent.invalid/hosted', state: 'provider-state-must-not-replace-local-state' })
     }
     if (call.method === 'GET' && url.pathname === '/api/v1/accounts') {
       assert.equal(url.searchParams.get('profileId'), profile)
-      onIdentity()
+      await onIdentity()
       return Response.json({ accounts: remoteAccounts })
     }
     if (call.method === 'DELETE' && url.pathname.startsWith('/api/v1/accounts/')) {
@@ -144,8 +149,8 @@ async function begin(platform: SocialPlatform = 'youtube', extra = {}) {
   callbackUrl.searchParams.set('profileId', profile); callbackUrl.searchParams.set('accountId', accountId)
   return { response, callbackUrl, state: body.state }
 }
-async function consent(platform: SocialPlatform = 'youtube', externalId = accountId) {
-  const started = await begin(platform); assert.equal(started.response.status, 200)
+async function consent(platform: SocialPlatform = 'youtube', externalId = accountId, reconnectAccountId?: string) {
+  const started = await begin(platform, reconnectAccountId ? { accountId: reconnectAccountId } : {}); assert.equal(started.response.status, 200)
   remoteAccounts = [{ _id: externalId, platform: platform === 'x' ? 'twitter' : platform,
     profileId: { _id: profile }, isActive: true, username: 'synthetic-account', accessToken: 'must-not-store', refreshToken: 'must-not-store' }]
   started.callbackUrl.searchParams.set('accountId', externalId)
@@ -190,7 +195,7 @@ for (const reason of ['reassigned', 'removed', 'invalid-binding', 'missing-prove
 test('T06 FINAL unchanged tenant can connect, revoke and personally reconnect', async () => {
   await consent()
   assert.equal((await revoke(revokeRequest())).status, 200); assert.equal(deleteCalls(), 1)
-  await consent()
+  await consent('youtube', accountId, localId)
   assert.equal(db.accounts.length, 1); assert.equal(db.accounts[0].status, 'connected')
 
 })
@@ -229,4 +234,171 @@ test('T06 FINAL pending revocation clears legacy credentials without retrying th
   assert.equal((await revoke(revokeRequest())).status, 202)
   assert.equal(row.access_token, null); assert.equal(row.refresh_token, null); assert.equal(row.token_expires_at, null)
   assert.equal(deleteCalls(), 1); assert.equal((row.metadata as Record<string, unknown>).sutra_oauth_revision, revision)
+})
+
+const otherExternalId = '77c3f20e9d4a6b8f0e1c2d3e'
+const locationError = (response: Response) => new URL(response.headers.get('location')!).searchParams.get('error')
+const identityCalls = () => calls.filter(call => call.method === 'GET' && call.url.pathname === '/api/v1/accounts').length
+const remote = (externalId: string) => ({ _id: externalId, platform: 'youtube', profileId: profile,
+  isActive: true, username: `channel-${externalId.slice(0, 4)}` })
+
+test('MULTI ACCOUNT: two YouTube channels remain distinct and connecting does not enroll an autopilot', async () => {
+  await consent()
+  const first = structuredClone(db.accounts[0])
+  const unrelatedBefore = structuredClone(Object.fromEntries(Object.entries(db.tables).filter(([table]) => table !== 'social_accounts')))
+  await consent('youtube', otherExternalId)
+  assert.equal(db.accounts.length, 2)
+  assert.deepEqual(db.accounts[0], first)
+  assert.equal(db.accounts[1].external_id, otherExternalId)
+  assert.notEqual(db.accounts[0].id, db.accounts[1].id)
+  assert.deepEqual(Object.fromEntries(Object.entries(db.tables).filter(([table]) => table !== 'social_accounts')), unrelatedBefore)
+  const response = await listAccounts()
+  assert.equal(response.status, 200)
+  const listed = await response.json() as { accounts: Array<{ id: string; platform: string }> }
+  assert.deepEqual(listed.accounts.map(a => a.id).sort(), db.accounts.map(a => a.id).sort())
+  assert.ok(listed.accounts.every(a => a.platform === 'youtube'))
+})
+
+test('MULTI ACCOUNT: adding an already connected identity cannot replace its local row or revision', async () => {
+  await consent()
+  const before = structuredClone(db.accounts)
+  const started = await begin()
+  remoteAccounts = [remote(accountId)]
+  const response = await callback(new Request(started.callbackUrl))
+  assert.equal(locationError(response), 'account_already_connected')
+  assert.deepEqual(db.accounts, before)
+  assert.equal(states.length, 0)
+})
+
+test('MULTI ACCOUNT: reconnect selects exactly one of two channels and preserves the other', async () => {
+  await consent()
+  await consent('youtube', otherExternalId)
+  const first = structuredClone(db.accounts[0])
+  const secondId = db.accounts[1].id
+  const oldRevision = db.accounts[1].metadata!.sutra_oauth_revision
+  await consent('youtube', otherExternalId, secondId)
+  assert.equal(db.accounts.length, 2)
+  assert.deepEqual(db.accounts[0], first)
+  assert.equal(db.accounts[1].id, secondId)
+  assert.notEqual(db.accounts[1].metadata!.sutra_oauth_revision, oldRevision)
+})
+
+test('MULTI ACCOUNT: a reconnect cannot substitute another provider identity', async () => {
+  await consent()
+  const before = structuredClone(db.accounts)
+  const started = await begin('youtube', { accountId: localId })
+  assert.equal(started.callbackUrl.searchParams.get('sutraAccountId'), localId)
+  remoteAccounts = [remote(otherExternalId)]
+  started.callbackUrl.searchParams.set('accountId', otherExternalId)
+  const response = await callback(new Request(started.callbackUrl))
+  assert.equal(locationError(response), 'account_identity_mismatch')
+  assert.deepEqual(db.accounts, before)
+  assert.equal(states.length, 0)
+})
+
+test('MULTI ACCOUNT: removing or replacing the selected local account cannot consume its state', async () => {
+  await consent()
+  await consent('youtube', otherExternalId)
+  const started = await begin('youtube', { accountId: localId })
+  const beforeCalls = identityCalls()
+  const missing = new URL(started.callbackUrl); missing.searchParams.delete('sutraAccountId')
+  assert.equal(locationError(await callback(new Request(missing))), 'invalid_or_expired_state')
+  const switched = new URL(started.callbackUrl); switched.searchParams.set('sutraAccountId', db.accounts[1].id)
+  assert.equal(locationError(await callback(new Request(switched))), 'invalid_or_expired_state')
+  assert.equal(identityCalls(), beforeCalls)
+  assert.equal(states.length, 1)
+  remoteAccounts = [remote(accountId)]
+  assert.equal(locationError(await callback(new Request(started.callbackUrl))), null)
+  assert.equal(states.length, 0)
+})
+
+test('MULTI ACCOUNT: an add cannot be relabeled as a reconnect by editing the callback', async () => {
+  await consent()
+  const started = await begin()
+  const beforeCalls = identityCalls()
+  started.callbackUrl.searchParams.set('sutraAccountId', localId)
+  assert.equal(locationError(await callback(new Request(started.callbackUrl))), 'invalid_or_expired_state')
+  assert.equal(identityCalls(), beforeCalls)
+  assert.equal(states.length, 1)
+})
+
+test('MULTI ACCOUNT: foreign or missing local IDs are refused before state or provider access', async () => {
+  await consent()
+  ;(db.accounts[0] as unknown as Row).user_id = '55555555-5555-4555-8555-555555555555'
+  const beforeCalls = calls.length
+  for (const id of [localId, randomUUID()]) {
+    assert.equal((await begin('youtube', { accountId: id })).response.status, 404)
+  }
+  assert.equal(calls.length, beforeCalls)
+  assert.equal(states.length, 0)
+})
+
+test('MULTI ACCOUNT: one pending revoke blocks only its reconnect and cannot be bypassed by add', async () => {
+  await consent(); deleteStatus = 503
+  assert.equal((await revoke(revokeRequest())).status, 202)
+  const fenced = structuredClone(db.accounts[0])
+  const beforeCalls = calls.length
+  assert.equal((await begin('youtube', { accountId: localId })).response.status, 409)
+  assert.equal(calls.length, beforeCalls)
+  const duplicate = await begin()
+  remoteAccounts = [remote(accountId)]
+  assert.equal(locationError(await callback(new Request(duplicate.callbackUrl))), 'account_already_connected')
+  await consent('youtube', otherExternalId)
+  assert.equal(db.accounts.length, 2)
+  assert.deepEqual(db.accounts[0], fenced)
+})
+
+test('MULTI ACCOUNT: a callback issued before revocation cannot reauthorize the selected account', async () => {
+  await consent()
+  const started = await begin('youtube', { accountId: localId })
+  assert.equal((await revoke(revokeRequest())).status, 200)
+  const beforeCalls = identityCalls()
+  assert.equal(locationError(await callback(new Request(started.callbackUrl))), 'invalid_or_expired_state')
+  assert.equal(identityCalls(), beforeCalls)
+  assert.equal(db.accounts[0].status, 'revoked')
+})
+
+test('MULTI ACCOUNT: revocation during provider verification wins against the reconnect CAS', async () => {
+  await consent()
+  const started = await begin('youtube', { accountId: localId })
+  onIdentity = async () => { assert.equal((await revoke(revokeRequest())).status, 200) }
+  const response = await callback(new Request(started.callbackUrl))
+  assert.equal(locationError(response), 'db_error')
+  assert.equal(db.accounts[0].status, 'revoked')
+  assert.equal(db.accounts[0].metadata!.sutra_revocation_pending, false)
+  assert.equal(states.length, 0)
+})
+
+test('MULTI ACCOUNT: a legacy NULL identity is retained and cannot masquerade as a verified reconnect', async () => {
+  await consent()
+  ;(db.accounts[0] as unknown as Row).external_id = null
+  const legacy = structuredClone(db.accounts[0])
+  const beforeCalls = calls.length
+  assert.equal((await begin('youtube', { accountId: localId })).response.status, 409)
+  assert.equal(calls.length, beforeCalls)
+  await consent('youtube', otherExternalId)
+  assert.equal(db.accounts.length, 2)
+  assert.deepEqual(db.accounts[0], legacy)
+})
+
+test('MULTI ACCOUNT: concurrent independent adds keep both same-network identities', async () => {
+  const first = await begin(), second = await begin()
+  second.callbackUrl.searchParams.set('accountId', otherExternalId)
+  remoteAccounts = [remote(accountId), remote(otherExternalId)]
+  const responses = await Promise.all([callback(new Request(first.callbackUrl)), callback(new Request(second.callbackUrl))])
+  assert.ok(responses.every(response => locationError(response) === null))
+  assert.equal(db.accounts.length, 2)
+  assert.deepEqual(db.accounts.map(a => a.external_id).sort(), [accountId, otherExternalId].sort())
+  assert.equal(new Set(db.accounts.map(a => a.id)).size, 2)
+  assert.equal(states.length, 0)
+})
+
+test('MULTI ACCOUNT: concurrent adds of one external identity create only one connection', async () => {
+  const first = await begin(), second = await begin()
+  remoteAccounts = [remote(accountId)]
+  const responses = await Promise.all([callback(new Request(first.callbackUrl)), callback(new Request(second.callbackUrl))])
+  assert.equal(responses.filter(response => locationError(response) === null).length, 1)
+  assert.equal(responses.filter(response => locationError(response) === 'account_already_connected').length, 1)
+  assert.equal(db.accounts.length, 1)
+  assert.equal(states.length, 0)
 })

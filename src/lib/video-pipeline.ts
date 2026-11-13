@@ -1,4 +1,5 @@
 import { assembleFinalVideo } from './final-composition'
+import { buildCreateSubtitles, proofForCheckpoint } from './caption-timeline'
 import { pipelineSteps, checkpointStage, assertFinalMedia, requireTracks, persistPipelineVideo } from '@/lib/pipeline-state'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { createServiceClient } from '@/lib/supabase'
@@ -18,6 +19,8 @@ import { stampVideoWhenReady } from '@/lib/video-proofs'
 import { pipelineLog as logApiCall, pipelineNotification as sendNotification } from '@/lib/pipeline-state'
 import { type SocialPlatform } from '@/lib/zernio'
 import { publishVideoRecord } from '@/lib/social-publication'
+import { readOwnedPublicationDestinations, destinationPlatformsMatch } from '@/lib/social-destinations'
+import { manualScriptSchema } from '@/lib/validators'
 import type { Plan, ScriptData } from '@/types'
 
 // -----------------------------------------------------------------------------
@@ -78,22 +81,26 @@ function createPublicServiceClient() {
 }
 
 async function triggerAutopilot(args: { userId: string; videoId: string; videoUrl: string; videoTitle: string; videoDescription: string; videoTags: string[] }) {
-  const { data: config, error } = await createPublicServiceClient().from('social_autopilot_config').select('*').eq('user_id', args.userId).maybeSingle()
+  const service = createServiceClient()
+  const readConfig = () => createPublicServiceClient().from('social_autopilot_config').select('*').eq('user_id', args.userId).maybeSingle()
+  const { data: config, error } = await readConfig()
   if (error) throw new Error('SUTRA_PUBLICATION_CONFIG_UNAVAILABLE')
   if (!config?.enabled || !config.default_platforms?.length) return { status: 'skipped' }
+  if (!config.publish_account_ids?.length) throw new Error('SUTRA_ACCOUNT_SELECTION_REQUIRED')
+  const destinations = await readOwnedPublicationDestinations(args.userId, config.publish_account_ids, service)
+  if (!destinationPlatformsMatch(destinations, config.default_platforms)) throw new Error('SUTRA_DESTINATION_REVOKED')
   // publishVideoRecord owns its durable CAS intent and provider reconciliation.
   const outcome = await publishVideoRecord(args.userId, {
-    videoId: args.videoId, platforms: config.default_platforms as SocialPlatform[], caption: args.videoTitle,
+    videoId: args.videoId, platforms: config.default_platforms as SocialPlatform[], destinations, caption: args.videoTitle,
     hashtags: args.videoTags, autoCaption: Boolean(config.auto_caption),
+  }, service, undefined, undefined, {}, async (request, accountRows) => {
+    const live = await readConfig()
+    if (live.error) throw new Error('SUTRA_PUBLICATION_CONFIG_UNAVAILABLE')
+    if (!live.data?.enabled || request.platforms.some(platform => !live.data.default_platforms?.includes(platform)
+      || !live.data.publish_account_ids?.includes(accountRows[platform]))) throw new Error('SUTRA_DESTINATION_REVOKED')
   })
   if (!['published', 'scheduled'].includes(outcome.status)) throw new Error('SUTRA_RECONCILIATION_REQUIRED: publication ' + outcome.status)
   return outcome
-}
-
-function generateSubtitles(narration: string, totalDuration: number): Array<{ text: string; start: number; end: number }> {
-  const sentences = narration.split(/[.!?]+/).filter((s) => s.trim().length > 0)
-  const segmentDuration = totalDuration / sentences.length
-  return sentences.map((text, i) => ({ text: text.trim(), start: i * segmentDuration, end: (i + 1) * segmentDuration }))
 }
 
 /**
@@ -106,6 +113,10 @@ export async function executeCreateJob(
   resume: CreateJobResume,
   hooks: CreateJobHooks = {}
 ): Promise<CreateJobResult> {
+  const manual = input.mode === 'manual' ? manualScriptSchema.safeParse(input.manualScript) : null
+  if (manual && !manual.success) {
+    throw new Error('SUTRA_RECONCILIATION_REQUIRED: SUTRA_INVALID_MANUAL_SCRIPT')
+  }
   const serviceClient = createServiceClient()
   const { videoId, userId, userEmail, genPlan, quality, format, mediaFormat } = input
   const done = resume.steps ?? {}
@@ -117,15 +128,16 @@ export async function executeCreateJob(
 
   // ---------------------------------------------------------------- Script
   let script: ScriptData
-  if (input.mode === 'manual' && input.manualScript && input.manualScript.trim().length >= 20) {
-    const scenes = input.manualScript
+  if (manual?.success) {
+    const manualScript = manual.data
+    const scenes = manualScript
       .split('\n').map((l) => l.trim()).filter(Boolean)
       .map((line) => ({ visual_prompt: line.slice(0, 2000), duration_seconds: 5, use_stock: false }))
     script = {
       title: input.topic.slice(0, 160),
       description: `Video generee a partir du script manuel : ${input.topic}`,
       tags: [input.topic.split(/\s+/).slice(0, 3).join('-').toLowerCase(), 'manuel', 'sutra'],
-      narration: input.manualScript,
+      narration: manualScript,
       scenes,
       music_prompt: `instrumental background for a video about ${input.topic}`,
       music_style: 'cinematic',
@@ -249,8 +261,16 @@ export async function executeCreateJob(
   await checkpointStage(done, hooks, 'music', musicUrl)
   await step('tracks_saved', async () => { await updateVideo({ voice_url: voiceUrl, music_url: musicUrl || null }); return true })
 
-  const subtitles = await step('subtitles', async () => generateSubtitles(script.narration, script.estimated_duration))
+  const captionInput = {
+    mode: manual?.success ? 'manual' as const : 'estimated' as const,
+    narration: script.narration,
+    totalDuration: script.estimated_duration,
+    sceneDurations: script.scenes.map(scene => scene.duration_seconds),
+  }
+  const subtitles = await step('subtitles', async () => buildCreateSubtitles(captionInput).cues)
   await checkpointStage(done, hooks, 'subtitles', subtitles)
+  // Distinct from the file probe and from hasAudio. A resumed checkpoint keeps its cues.
+  await step('subtitle_proof', async () => proofForCheckpoint(buildCreateSubtitles(captionInput), subtitles))
   await hooks.heartbeat?.()
   const rendered = await step('assembly', () => assembleFinalVideo({
     clips: clipsResult,

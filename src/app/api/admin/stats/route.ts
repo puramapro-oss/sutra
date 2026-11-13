@@ -4,6 +4,23 @@ import { createServiceClient } from '@/lib/supabase'
 import { isSuperAdmin } from '@/lib/utils'
 import { cached } from '@/lib/redis'
 
+function exactCount(response: { count: number | null; error: unknown }): number {
+  if (response.error) throw response.error
+  if (response.count === null || !Number.isSafeInteger(response.count) || response.count < 0) {
+    throw new Error('Missing exact statistics count')
+  }
+  return response.count
+}
+
+function completeRows<T>(response: { data: T[] | null; count: number | null; error: unknown }): T[] {
+  // PostgREST can cap returned rows. A partial page cannot certify a total.
+  const count = exactCount(response)
+  if (!response.data || response.data.length !== count) {
+    throw new Error('Incomplete statistics dataset')
+  }
+  return response.data
+}
+
 async function requireAdmin() {
   const supabase = await createServerClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -19,7 +36,7 @@ async function requireAdmin() {
 export async function GET(req: Request) {
   try {
     const guard = await requireAdmin()
-    if ('error' in guard) return guard.error
+    if (guard.error) return guard.error
 
     const { searchParams } = new URL(req.url)
     const type = searchParams.get('type')
@@ -44,12 +61,13 @@ export async function GET(req: Request) {
     if (type === 'config') {
       const { data, error } = await service.from('app_config').select('key, value')
       if (error) throw error
-      const config: Record<string, Record<string, unknown>> = {}
+      // Stored keys are data, including names such as __proto__ and constructor.
+      const config: Record<string, Record<string, unknown>> = Object.create(null)
       for (const row of data ?? []) {
         // key format "section.field" e.g. "landing.hero_title"
         const [section, field] = row.key.split('.')
         if (!section || !field) continue
-        if (!config[section]) config[section] = {}
+        if (!config[section]) config[section] = Object.create(null)
         config[section][field] = row.value
       }
       return NextResponse.json({ config })
@@ -60,13 +78,13 @@ export async function GET(req: Request) {
     // ----------------------------------------------------------
     if (type === 'revenue_chart') {
       const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
-      const { data, error } = await service
+      const response = await service
         .from('payments')
-        .select('amount, created_at')
+        .select('amount, created_at', { count: 'exact' })
         .eq('status', 'succeeded')
         .gte('created_at', ninetyDaysAgo.toISOString())
         .order('created_at', { ascending: true })
-      if (error) throw error
+      const data = completeRows(response)
 
       const buckets: Record<string, number> = {}
       for (let i = 89; i >= 0; i--) {
@@ -89,12 +107,12 @@ export async function GET(req: Request) {
     // ----------------------------------------------------------
     if (type === 'service_costs') {
       const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-      const { data, error } = await service
+      const response = await service
         .from('api_logs')
-        .select('service, estimated_cost')
+        .select('service, estimated_cost', { count: 'exact' })
         .gte('created_at', thirtyDaysAgo.toISOString())
-      if (error) throw error
-      const totals: Record<string, number> = {}
+      const data = completeRows(response)
+      const totals: Record<string, number> = Object.create(null)
       for (const log of data ?? []) {
         const key = (log.service ?? 'other').toLowerCase()
         totals[key] = (totals[key] ?? 0) + Number(log.estimated_cost ?? 0)
@@ -106,16 +124,21 @@ export async function GET(req: Request) {
     // type=referral_stats — partner commissions and top partners
     // ----------------------------------------------------------
     if (type === 'referral_stats') {
-      const [{ data: commissions }, { data: partners }] = await Promise.all([
+      const responses = await Promise.all([
         service
           .from('partner_commissions')
-          .select('amount, status'),
+          .select('amount, status', { count: 'exact' }),
         service
           .from('partners')
           .select('id, partner_code, total_referrals, total_commissions')
           .order('total_commissions', { ascending: false })
           .limit(5),
       ])
+      for (const response of responses) {
+        if (response.error) throw response.error
+      }
+      const commissions = completeRows(responses[0])
+      const { data: partners } = responses[1]
 
       const paid = (commissions ?? [])
         .filter((c) => c.status === 'paid')
@@ -139,17 +162,9 @@ export async function GET(req: Request) {
     // Default: aggregated dashboard stats
     // ----------------------------------------------------------
     const stats = await cached(
-      'admin:stats',
+      'admin:stats:complete-v1',
       async () => {
-        const [
-          { count: totalUsers },
-          { count: payingUsers },
-          { count: totalVideos },
-          { count: activeUsers7d },
-          { data: revenueData },
-          { data: apiCosts },
-          { data: planDistribution },
-        ] = await Promise.all([
+        const responses = await Promise.all([
           service.from('profiles').select('*', { count: 'exact', head: true }),
           service.from('profiles').select('*', { count: 'exact', head: true }).neq('plan', 'free'),
           service.from('videos').select('*', { count: 'exact', head: true }),
@@ -157,13 +172,23 @@ export async function GET(req: Request) {
             'updated_at',
             new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
           ),
-          service.from('payments').select('amount, created_at').eq('status', 'succeeded'),
-          service.from('api_logs').select('estimated_cost').gte(
+          service.from('payments').select('amount, created_at', { count: 'exact' }).eq('status', 'succeeded'),
+          service.from('api_logs').select('estimated_cost', { count: 'exact' }).gte(
             'created_at',
             new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
           ),
-          service.from('profiles').select('plan'),
+          service.from('profiles').select('plan', { count: 'exact' }),
         ])
+        for (const response of responses) {
+          if (response.error) throw response.error
+        }
+        const totalUsers = exactCount(responses[0])
+        const payingUsers = exactCount(responses[1])
+        const totalVideos = exactCount(responses[2])
+        const activeUsers7d = exactCount(responses[3])
+        const revenueData = completeRows(responses[4])
+        const apiCosts = completeRows(responses[5])
+        const planDistribution = completeRows(responses[6])
 
         const totalRevenue = (revenueData ?? []).reduce((sum, p) => sum + Number(p.amount ?? 0), 0)
         const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
@@ -172,17 +197,17 @@ export async function GET(req: Request) {
           .reduce((sum, p) => sum + Number(p.amount ?? 0), 0)
         const totalApiCosts = (apiCosts ?? []).reduce((sum, l) => sum + Number(l.estimated_cost ?? 0), 0)
 
-        const plans: Record<string, number> = {}
+        const plans: Record<string, number> = Object.create(null)
         for (const p of planDistribution ?? []) {
           const plan = p.plan ?? 'free'
           plans[plan] = (plans[plan] ?? 0) + 1
         }
 
         return {
-          total_users: totalUsers ?? 0,
-          paying_users: payingUsers ?? 0,
-          total_videos: totalVideos ?? 0,
-          active_users_7d: activeUsers7d ?? 0,
+          total_users: totalUsers,
+          paying_users: payingUsers,
+          total_videos: totalVideos,
+          active_users_7d: activeUsers7d,
           total_revenue: totalRevenue,
           mrr,
           total_api_costs_30d: totalApiCosts,
@@ -201,7 +226,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const guard = await requireAdmin()
-    if ('error' in guard) return guard.error
+    if (guard.error) return guard.error
 
     const body = await req.json()
     if (body?.type !== 'save_config') {

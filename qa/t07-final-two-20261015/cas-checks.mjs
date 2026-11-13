@@ -3,7 +3,7 @@ import { expect } from '@playwright/test'
 
 export async function casChecks({ page, context, base, check, details }) {
   const original = { id: '11111111-1111-4111-8111-111111111111', name: 'Planning CAS', is_active: true, frequency: 'weekly', days: ['MO'], time: '10:00', timezone: 'Europe/Paris', theme_ids: ['kept'], extension: { version: 2 } }
-  const defaults = { default_style: 'cinematic', default_duration: 30, default_aspect_ratio: '9:16', default_music_genre: 'ambient', default_voice_enabled: false, default_voice_id: null, default_language: 'fr', publish_platforms: [], auto_publish: false, require_approval_before_publish: true, preferred_model: 'ltx-2-3-pro', quality_level: 'standard', user_id: 'fixture-owner', is_active: false }
+  const defaults = { default_style: 'cinematic', default_duration: 30, default_aspect_ratio: '9:16', default_music_genre: 'ambient', default_voice_enabled: false, default_voice_id: null, default_language: 'fr', publish_platforms: [], publish_account_ids: [], auto_publish: false, require_approval_before_publish: true, preferred_model: 'ltx-2-3-pro', quality_level: 'standard', user_id: 'fixture-owner', is_active: false }
   let schedules, mode, writes, reads
   await context.route('**/api/auto/config', async route => {
     if (route.request().method() === 'GET') {
@@ -62,15 +62,16 @@ export async function casChecks({ page, context, base, check, details }) {
       assert.equal(writes.length, 1); await expect.poll(() => reads, { timeout: 2500 }).toBeGreaterThanOrEqual(before + 2)
       await expect(page.getByText('PRIVATE_FIXTURE', { exact: true })).toHaveCount(0)
     })
-    await check(`${width}: general settings only sends its nine editable fields`, async () => {
+    await check(`${width}: general settings only sends its ten editable fields`, async () => {
       schedules = [structuredClone(original)]; mode = 'normal'; writes = []
       await page.goto(base + '/auto/settings')
       await page.getByTestId('style-anime').click()
       await page.getByTestId('settings-save').click()
       await expect.poll(() => writes.length).toBe(1)
-      assert.deepEqual(Object.keys(writes[0]).sort(), ['default_style', 'default_duration', 'default_aspect_ratio', 'default_voice_enabled', 'publish_platforms', 'auto_publish', 'require_approval_before_publish', 'preferred_model', 'quality_level'].sort())
+      assert.deepEqual(Object.keys(writes[0]).sort(), ['default_style', 'default_duration', 'default_aspect_ratio', 'default_voice_enabled', 'publish_platforms', 'publish_account_ids', 'auto_publish', 'require_approval_before_publish', 'preferred_model', 'quality_level'].sort())
+      assert.deepEqual(writes[0].publish_account_ids, [], 'saving unrelated settings must not grant publication to any account')
       assert.equal(writes[0].default_style, 'anime'); assert.deepEqual(schedules, [original])
-      await expect(page.getByText('Reglages sauvegardes', { exact: true })).toBeVisible()
+      await expect(page.getByText('Réglages sauvegardés', { exact: true })).toBeVisible()
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true)
     })
     details.push({ name: `cas-viewport-${width}`, contract: 'T01 2026-10-15T20:26:24Z; fixture only' })

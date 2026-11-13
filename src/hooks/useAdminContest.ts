@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 
 export interface Contest {
@@ -43,27 +43,41 @@ export function useAdminContest() {
   const [judgingId, setJudgingId] = useState<string | null>(null)
   const [confirmingWinners, setConfirmingWinners] = useState(false)
   const [triggeringDraw, setTriggeringDraw] = useState<string | null>(null)
+  const pending = useRef<AbortController | null>(null)
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true)
-      const res = await fetch('/api/admin/stats')
+  const loadData = useCallback(() => {
+    pending.current?.abort()
+    const controller = new AbortController()
+    pending.current = controller
+    const current = () => pending.current === controller && !controller.signal.aborted
+    return fetch('/api/admin/stats', { signal: controller.signal }).then(res => {
       if (!res.ok) throw new Error('Erreur chargement concours')
+      if (!current()) return
       setContests([])
       setActiveContest(null)
       setSubmissions([])
       setHallOfFame([])
       setError(null)
-    } catch (err) {
+    }).catch((err: unknown) => {
+      if (!current()) return
       setError(err instanceof Error ? err.message : 'Erreur inconnue')
-    } finally {
+    }).finally(() => {
+      if (!current()) return
       setLoading(false)
-    }
+      pending.current = null
+    })
   }, [])
 
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    setError(null)
+    return loadData()
+  }, [loadData])
+
   useEffect(() => {
-    fetchData()
-  }, [fetchData])
+    void loadData()
+    return () => { pending.current?.abort(); pending.current = null }
+  }, [loadData])
 
   const triggerDraw = async (type: 'weekly' | 'monthly') => {
     setTriggeringDraw(type)

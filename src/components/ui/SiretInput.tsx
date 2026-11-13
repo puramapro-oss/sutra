@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Building2, Check, Loader2, AlertCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import {
@@ -63,41 +63,22 @@ export function SiretInput({
   const [value, setValue] = useState(normalizeSiret(defaultValue))
   const [display, setDisplay] = useState(formatSiretDisplay(normalizeSiret(defaultValue)))
   const [focused, setFocused] = useState(false)
-  const [state, setState] = useState<VerifyState>({ kind: 'idle' })
+  const [verification, setVerification] = useState<{ siret: string; state: VerifyState } | null>(null)
+  const state: VerifyState = !value ? { kind: 'idle' }
+    : value.length < 14 ? { kind: 'incomplete', length: value.length }
+      : verification?.siret === value ? verification.state : { kind: 'checking', siret: value }
   const abortRef = useRef<AbortController | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const callbacks = useRef({ onVerified, onError })
+  useEffect(() => { callbacks.current = { onVerified, onError } }, [onVerified, onError])
 
   // Propager onChange à chaque mise à jour du digit-only SIRET.
   useEffect(() => {
     onChange?.(value)
   }, [value, onChange])
 
-  // Déclencher la vérification INSEE en debounce.
-  useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-    if (abortRef.current) abortRef.current.abort()
-
-    if (value.length === 0) {
-      setState({ kind: 'idle' })
-      return
-    }
-    if (value.length < 14) {
-      setState({ kind: 'incomplete', length: value.length })
-      return
-    }
-
-    setState({ kind: 'checking', siret: value })
-    debounceRef.current = setTimeout(() => {
-      void verify(value)
-    }, DEBOUNCE_MS)
-
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
-
-  async function verify(siret: string) {
+  const verify = useCallback(async (siret: string) => {
+    const setState = (next: VerifyState) => setVerification({ siret, state: next })
     const ctrl = new AbortController()
     abortRef.current = ctrl
     try {
@@ -114,10 +95,11 @@ export function SiretInput({
         error?: string
       }
 
+      if (ctrl.signal.aborted || abortRef.current !== ctrl) return
       if (res.ok && body.ok && body.data) {
         const info = body.data
         setState({ kind: 'valid', info, fromCache: Boolean(body.fromCache) })
-        onVerified?.(info)
+        callbacks.current.onVerified?.(info)
         return
       }
 
@@ -128,46 +110,57 @@ export function SiretInput({
           code: 'not_found',
           message: 'SIRET introuvable dans le répertoire INSEE.',
         })
-        onError?.('not_found')
+        callbacks.current.onError?.('not_found')
       } else if (res.status === 400 || err === 'invalid_format') {
         setState({
           kind: 'error',
           code: 'format_invalid',
           message: 'Format SIRET invalide (14 chiffres attendus).',
         })
-        onError?.('format_invalid')
+        callbacks.current.onError?.('format_invalid')
       } else if (res.status === 429 || err === 'rate_limited' || err === 'rate_limited_upstream') {
         setState({
           kind: 'error',
           code: 'rate_limited',
           message: 'Trop de vérifications — réessaie dans une minute.',
         })
-        onError?.('rate_limited')
+        callbacks.current.onError?.('rate_limited')
       } else if (res.status === 503 || err === 'missing_api_key') {
         setState({
           kind: 'error',
           code: 'missing_api_key',
           message: 'Vérification temporairement indisponible.',
         })
-        onError?.('missing_api_key')
+        callbacks.current.onError?.('missing_api_key')
       } else {
         setState({
           kind: 'error',
           code: 'server_error',
           message: 'Impossible de joindre INSEE. Réessaie plus tard.',
         })
-        onError?.('server_error')
+        callbacks.current.onError?.('server_error')
       }
     } catch (err) {
-      if (err instanceof Error && err.name === 'AbortError') return
+      if (ctrl.signal.aborted || abortRef.current !== ctrl || (err instanceof Error && err.name === 'AbortError')) return
       setState({
         kind: 'error',
         code: 'server_error',
         message: 'Erreur réseau lors de la vérification.',
       })
-      onError?.('server_error')
+      callbacks.current.onError?.('server_error')
     }
-  }
+  }, [])
+
+  // The UI state derives from the current input; only the remote result is stored.
+  useEffect(() => {
+    if (value.length !== 14) return
+    debounceRef.current = setTimeout(() => { void verify(value) }, DEBOUNCE_MS)
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+      abortRef.current?.abort()
+      abortRef.current = null
+    }
+  }, [value, verify])
 
   const isValid = state.kind === 'valid'
   const isError = state.kind === 'error'

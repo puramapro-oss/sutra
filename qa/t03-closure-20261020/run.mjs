@@ -3,7 +3,7 @@ import { spawnSync } from 'node:child_process'
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { createServer } from 'node:net'
+import { allocatePrivatePostgresEndpoint } from '../../tooling/private-postgres-endpoint.mjs'
 import { createHash } from 'node:crypto'
 const root = resolve(import.meta.dirname, '../..'), label = process.argv[2]
 assert.match(label ?? '', /^[a-z0-9-]+$/)
@@ -11,9 +11,9 @@ const mode = process.argv[3] ?? 'recovery'
 assert.ok(['red','recovery','security','gate'].includes(mode))
 const output = join(import.meta.dirname, label); mkdirSync(output)
 const bin = process.env.SUTRA_TEST_PG_BIN ?? '/opt/homebrew/opt/postgresql@18/bin', directory = mkdtempSync(join(tmpdir(), 'sutra-t03-closure-pg-')), data = join(directory, 'data')
-const socket = createServer(); await new Promise(r => socket.listen(0, '127.0.0.1', r))
-const port = socket.address().port; await new Promise(r => socket.close(r))
+const { port, postgresOptions } = await allocatePrivatePostgresEndpoint()
 const fixture = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: tmpdir(), LC_ALL: 'C',
+  LD_LIBRARY_PATH: process.env.LD_LIBRARY_PATH,
   SUTRA_DISPOSABLE_DB: '1', PGHOST: '127.0.0.1', PGPORT: String(port), PGUSER: 'fixture',
   T03_PROOF_DIR: output, T03_PG_BIN: bin, T03_PGDATA: data,
   CRON_SECRET: 'synthetic-local-cron-only', NEXT_PUBLIC_SUPABASE_URL: 'https://db.fixture.invalid',
@@ -31,7 +31,7 @@ const test = (files, label, selection = []) => { if (!run(process.execPath, [...
 let started = false
 try {
   assert.ok(run(join(bin, 'initdb'), ['-D', data, '--auth=trust', '--username=fixture', '--no-locale', '--encoding=UTF8', '-c', 'shared_memory_type=mmap', '-c', 'dynamic_shared_memory_type=posix', '-c', 'max_connections=30', '-c', 'shared_buffers=16MB'], 'pg-init'))
-  assert.ok(run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', `-h 127.0.0.1 -k ${directory} -p ${port}`, '-w', 'start'], 'pg-start')); started = true
+  assert.ok(run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', postgresOptions, '-w', 'start'], 'pg-start')); started = true
   if (mode === 'red') {
     if (!run(process.execPath, [...node, 'qa/t03-closure-20261020/reproduce.mjs'], 'r107-red')) process.exitCode = 1
   } else {
@@ -65,6 +65,7 @@ try {
   }
   const git = args => spawnSync('git', args, { cwd: root, encoding: 'utf8' }).stdout.trim()
   const files = git(['ls-files', '--cached', '--others', '--exclude-standard', 'src', 'migrations', 'scripts', 'qa/t03-closure-20261020/*.mts', 'qa/t03-closure-20261020/*.mjs', 'qa/t03-closure-20261020/tsconfig.json', 'qa/t02-recert-fcd-20261020/scheduler-isolation.test.mts', 'qa/t03-final-ack-20261019/*.mts', 'qa/t03-final-ack-20261019/settle.mjs', 'qa/t03-final-durable-20261015/*.mts', 'qa/t03-durable-closure-20261015/*.mts', 'qa/t03-durable-closure-20261015/settle.mjs', 'qa/t01-final-20261015/durable-postgres.test.mts', 'qa/t08/offline.cjs', 'package.json', 'package-lock.json']).split('\n').filter(Boolean)
+  files.push('qa/t07-autonomy-integrated-20261020/draining-pool.mjs')
   const source_sha256 = Object.fromEntries(files.map(p => [p, createHash('sha256').update(readFileSync(join(root,p))).digest('hex')]))
   writeFileSync(join(output, 'receipt.json'), JSON.stringify({ candidate: git(['rev-parse','HEAD']), mode, commands, source_sha256,
     private_cluster: directory, stopped: started, external_calls: 0, synthetic_environment_only: true }, null, 2)+'\n')

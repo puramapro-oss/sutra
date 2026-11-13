@@ -23,6 +23,10 @@ mock.module('../../src/lib/supabase.ts', { namedExports: { createServiceClient: 
         return { data: rows.get(id), error: null }
       }
       const row = owner ? rows.get(owner) : null
+      if (!mode) {
+        assert.ok(owner)
+        return { data: row ?? null, error: null }
+      }
       assert.equal(mode, 'update'); assert.ok(owner); assert.notEqual(expected, undefined)
       if (!row || !isDeepStrictEqual(row.schedules, expected)) return { data: null, error: null }
       rows.set(owner, { ...row, ...update }); writes++
@@ -46,6 +50,12 @@ const send = (body: unknown) => PATCH(new Request('https://sutra.example.test/ap
 beforeEach(() => { identity = alice; fail = ''; writes = privileged = 0; rows = new Map([[alice, { user_id: alice, schedules: [], is_active: false }], [bob, { user_id: bob, schedules: [], is_active: false }]]) })
 test('schedule replacement requires explicit precondition before privileged query', async () => {
   assert.equal((await send({ schedules: [schedule] })).status, 428); assert.equal(privileged, 0); assert.equal(writes, 0)
+})
+test('invalid schedule with activation never reads publication mandates or writes settings', async () => {
+  const response = await send({ schedules: [{ ...schedule, time: '25:00' }], expectedSchedules: [], auto_publish: true })
+  assert.equal(response.status, 400)
+  assert.equal(privileged, 0)
+  assert.equal(writes, 0)
 })
 test('two concurrent intents on one snapshot have exactly one winner', async () => {
   const responses = await Promise.all([send({ schedules: [schedule], expectedSchedules: [] }), send({ schedules: [{ ...schedule, id: 'second' }], expectedSchedules: [] })])

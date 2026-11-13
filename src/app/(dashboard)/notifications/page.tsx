@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -56,37 +56,55 @@ const FILTER_OPTIONS = [
 ] as const
 
 export default function NotificationsPage() {
+  const auth = useAuth()
+  return <NotificationsPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function NotificationsPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
   const router = useRouter()
-  const { profile, loading: authLoading } = useAuth()
+  const { profile, loading: authLoading } = auth
 
   const [notifications, setNotifications] = useState<UserNotification[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<string>('all')
   const [markingAll, setMarkingAll] = useState(false)
 
-  const fetchNotifications = useCallback(async () => {
-    if (!profile?.id) return
-    setLoading(true)
-    try {
-      const { data } = await supabase
+  const dataRequest = useRef<AbortController | null>(null)
+  const userId = profile?.id
+  const loadFetchNotifications = useCallback(() => {
+    if (!userId) return
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return Promise.resolve(supabase
         .from('user_notifications')
         .select('*')
-        .eq('user_id', profile.id)
+        .eq('user_id', userId)
         .order('created_at', { ascending: false })
-        .limit(100)
+        .limit(100).abortSignal(controller.signal)).then(async ({ data }) => {
+      if (!active()) return
+      if (data) commit(() => setNotifications(data as UserNotification[]))
+    }).catch(() => {
+      if (!active()) return
+      commit(() => setNotifications([]))
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
+  }, [userId])
 
-      if (data) setNotifications(data as UserNotification[])
-    } catch {
-      setNotifications([])
-    } finally {
-      setLoading(false)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile?.id])
+  const fetchNotifications = useCallback(() => {
+    setLoading(true)
+    return loadFetchNotifications()
+  }, [loadFetchNotifications])
 
   useEffect(() => {
-    if (!authLoading && profile?.id) fetchNotifications()
-  }, [authLoading, profile?.id, fetchNotifications])
+    if (!authLoading && profile?.id) loadFetchNotifications()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [authLoading, profile?.id, loadFetchNotifications])
 
   const markAsRead = useCallback(async (id: string) => {
     const notif = notifications.find((n) => n.id === id)

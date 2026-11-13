@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 
 export interface SeedTransaction {
   id: string
@@ -39,19 +39,25 @@ export function useSeeds() {
   const [state, setState] = useState<SeedsState>(INITIAL)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const pending = useRef<AbortController | null>(null)
 
-  const refresh = useCallback(async () => {
-    try {
-      setError(null)
-      const res = await fetch('/api/karma/seeds', { cache: 'no-store' })
+  const load = useCallback(() => {
+    pending.current?.abort()
+    const controller = new AbortController()
+    pending.current = controller
+    const current = () => pending.current === controller && !controller.signal.aborted
+    return fetch('/api/karma/seeds', { cache: 'no-store', signal: controller.signal }).then(async res => {
+      if (!current()) return
       if (res.status === 401) {
         setState(INITIAL)
+        setError(null)
         return
       }
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`)
       }
       const data = await res.json()
+      if (!current()) return
       setState({
         balance: data.balance ?? 0,
         lifetime_earned: data.lifetime_earned ?? 0,
@@ -63,16 +69,27 @@ export function useSeeds() {
         progress_percent: data.progress_percent ?? 0,
         transactions: Array.isArray(data.transactions) ? data.transactions : [],
       })
-    } catch (err) {
+      setError(null)
+    }).catch((err: unknown) => {
+      if (!current()) return
       setError(err instanceof Error ? err.message : 'Erreur inconnue')
-    } finally {
+    }).finally(() => {
+      if (!current()) return
       setLoading(false)
-    }
+      pending.current = null
+    })
   }, [])
 
+  const refresh = useCallback(() => {
+    setLoading(true)
+    setError(null)
+    return load()
+  }, [load])
+
   useEffect(() => {
-    refresh()
-  }, [refresh])
+    void load()
+    return () => { pending.current?.abort(); pending.current = null }
+  }, [load])
 
   return { ...state, loading, error, refresh }
 }

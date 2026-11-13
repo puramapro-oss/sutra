@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   CheckCircle2,
@@ -87,39 +87,45 @@ export default function StatusPage() {
   const [data, setData] = useState<StatusResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const statusRequest = useRef<AbortController | null>(null)
 
-  const fetchStatus = useCallback(async (isRefresh = false) => {
-    if (isRefresh) setRefreshing(true)
-    try {
-      const res = await fetch('/api/status', { cache: 'no-store' })
+  const fetchStatus = useCallback(() => {
+    statusRequest.current?.abort()
+    const controller = new AbortController()
+    statusRequest.current = controller
+    const active = () => statusRequest.current === controller && !controller.signal.aborted
+    return fetch('/api/status', { cache: 'no-store', signal: controller.signal }).then(async res => {
       if (res.ok) {
         const json: StatusResponse = await res.json()
-        setData(json)
+        if (active()) setData(json)
       } else {
-        setData({
+        if (active()) setData({
           status: 'error',
           services: {},
           timestamp: new Date().toISOString(),
           message: 'Impossible de contacter le serveur',
         })
       }
-    } catch {
-      setData({
+    }).catch(() => {
+      if (active()) setData({
         status: 'error',
         services: {},
         timestamp: new Date().toISOString(),
         message: 'Erreur reseau',
       })
-    } finally {
-      setLoading(false)
-      setRefreshing(false)
-    }
+    }).finally(() => {
+      if (active()) {
+        setLoading(false)
+        setRefreshing(false)
+      }
+      if (statusRequest.current === controller) statusRequest.current = null
+    })
   }, [])
 
   useEffect(() => {
     fetchStatus()
     const interval = setInterval(() => fetchStatus(), 60_000)
-    return () => clearInterval(interval)
+    return () => { clearInterval(interval); statusRequest.current?.abort(); statusRequest.current = null }
   }, [fetchStatus])
 
   const overall = data ? getOverallLabel(data.status) : null
@@ -140,7 +146,7 @@ export default function StatusPage() {
             </span>
           </Link>
           <button
-            onClick={() => fetchStatus(true)}
+            onClick={() => { setRefreshing(true); void fetchStatus() }}
             disabled={refreshing}
             data-testid="status-refresh"
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/[0.08] text-sm text-white/70 hover:bg-white/10 transition-all"

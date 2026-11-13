@@ -14,7 +14,7 @@ Cette version ne doit donc JAMAIS être interprétée comme une permission de cr
 Fichiers :
 - `src/lib/social-account-onboarding.ts` : parsing strict, identités, clés de dossiers, capacités et décisions.
 - `qa/account-onboarding/run.mjs` : compilation stricte isolée et tests Node, sans installation.
-- `qa/account-onboarding/onboarding.test.cjs` : tests entièrement synthétiques.
+- `qa/account-onboarding/onboarding.test.mjs` : tests entièrement synthétiques.
 
 ## Améliorations livrées
 
@@ -89,9 +89,18 @@ via `node --test`. Seul son propre répertoire temporaire est supprimé à la fi
 
 Mesure locale du 21 octobre 2026 : **80 tests PASS, 0 FAIL, 0 SKIP**.
 Environnement réellement utilisé : Node `v22.16.0`, TypeScript `5.6.3`.
-Le dépôt exige Node 24 ou 26 : la suite doit être rejouée sur cet environnement avant fusion.
+Le dépôt exige Node 24 ou 26 : cette première mesure ne suffisait pas à qualifier l'environnement supporté.
 Le test de 1 000 éditions est un test synthétique de planification et d’unicité, pas une charge
 réseau, une création de comptes ou une preuve d’autorisation d’en exploiter 1 000.
+
+Revalidation du 13 novembre 2026 sur la composition avec la base commune `2f5cd905` :
+**80 tests PASS, 0 FAIL, 0 SKIP**, sous Node `24.22.1` et TypeScript `5.9.3`.
+Le test utilise désormais les imports ESM ; le module et toutes les assertions des 80 tests
+sont conservés. Le lanceur est exécuté une seule fois par le workflow de contrats.
+Le lint ciblé du test, du lanceur et du module passe sans erreur ni avertissement avec les
+configurations du dépôt inchangées, ESLint `9.39.4` et TypeScript ESLint `8.57.2`.
+La configuration Next disponible pour ce contrôle est `16.3.8`, contre `16.4.5` dans la base
+commune : la CI complète du nouvel arbre composé reste à exécuter avant intégration.
 
 Non exécutés : build Next.js complet, lint global, CI du dépôt, navigateur, tests OAuth réels,
 base PostgreSQL, création de compte distant, génération GPU, publication et endurance 24/7.

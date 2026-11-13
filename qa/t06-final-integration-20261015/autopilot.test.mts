@@ -9,6 +9,11 @@ let expired = false, revoked = false, absent = false
 let failAt = '', privileged = 0, throwFailure = false
 const writes: Array<Record<string, unknown>> = []
 const { enforceAccountAccess } = await import('../../src/lib/account-access.ts')
+// The destination helper accepts the route's public service client. Its unused
+// default client must not initialize a browser client inside this server fixture.
+mock.module('../../src/lib/supabase.ts', { namedExports: {
+  createServiceClient: () => { throw new Error('UNEXPECTED_DEFAULT_SERVICE_CLIENT') },
+} })
 mock.module('../../src/lib/supabase-server.ts', { namedExports: {
   createServerClient: async () => {
     if (failAt === 'auth') throw new Error(marker)

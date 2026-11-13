@@ -6,11 +6,12 @@ import { getOAuthUrl, getAuthorizedProfileId, OAUTH_PLATFORMS } from '@/lib/zern
 import { issueSocialOAuthState, socialOAuthCookieName, SOCIAL_OAUTH_TTL_SECONDS } from '@/lib/social-oauth-state'
 import { enforceRateLimit } from '@/lib/rate-limit'
 import { publicOrigin } from '@/lib/public-origin'
+import { readSocialOAuthAccount } from '@/lib/social-oauth-account'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
-const connectSchema = z.object({ platform: z.enum(OAUTH_PLATFORMS) }).strict()
+const connectSchema = z.object({ platform: z.enum(OAUTH_PLATFORMS), accountId: z.string().uuid().transform(value => value.toLowerCase()).optional() }).strict()
 
 export async function POST(req: Request) {
   try {
@@ -46,17 +47,23 @@ export async function POST(req: Request) {
     if (claimsError || claimsData?.claims.sub !== user.id || typeof sessionId !== 'string') {
       return NextResponse.json({ error: 'Session OAuth invalide' }, { status: 401 })
     }
-    const { platform } = parsed.data
+    const { platform, accountId } = parsed.data
     const profileId = getAuthorizedProfileId(user.id)
-    const binding = { profileId, sessionId }
+    const binding = { profileId, sessionId, ...(accountId ? { accountId } : {}) }
     const state = randomBytes(32).toString('hex')
     const siteUrl = publicOrigin('https://sutra.purama.dev')
     const redirectUri = new URL('/api/social/callback', siteUrl)
     redirectUri.searchParams.set('state', state)
     redirectUri.searchParams.set('platform', platform)
+    // The provider's accountId parameter is its own identity. Keep the selected
+    // local row separate and bind it into the one-use state before redirecting.
+    if (accountId) redirectUri.searchParams.set('sutraAccountId', accountId)
     // Persist before obtaining any provider URL. Never use its internal OAuth state as ours.
-    const browserSecret = await issueSocialOAuthState(user.id, platform, state, binding)
-    const { url: oauthUrl } = await getOAuthUrl(platform, profileId, redirectUri.href)
+    const storedAccount = await readSocialOAuthAccount(user.id, platform, undefined, accountId)
+    const browserSecret = await issueSocialOAuthState(user.id, platform, state, binding, undefined, storedAccount)
+    // Provider-side reconnect targeting prevents the hosted flow from replacing
+    // a different channel before our callback can verify the returned identity.
+    const { url: oauthUrl } = await getOAuthUrl(platform, profileId, redirectUri.href, storedAccount?.external_id ?? undefined)
     const response = NextResponse.json({ oauthUrl, state, platform })
     response.headers.set('Cache-Control', 'no-store')
     response.cookies.set(socialOAuthCookieName(state), browserSecret, {
@@ -65,6 +72,12 @@ export async function POST(req: Request) {
     })
     return response
   } catch (error) {
+    if (error instanceof Error && error.message === 'SUTRA_ACCOUNT_NOT_FOUND') {
+      return NextResponse.json({ error: 'Compte à reconnecter introuvable.' }, { status: 404 })
+    }
+    if (error instanceof Error && error.message === 'SUTRA_SOCIAL_ACCOUNT_IDENTITY_REQUIRED') {
+      return NextResponse.json({ error: 'Identité de cet ancien compte non vérifiée. Ajoutez le compte comme nouvelle connexion.' }, { status: 409 })
+    }
     if (error instanceof Error && error.message === 'SUTRA_SOCIAL_REVOCATION_PENDING') {
       return NextResponse.json({ error: 'Déconnexion en cours de vérification. Réessayez plus tard ; si le blocage persiste, contactez votre administrateur.' }, { status: 409 })
     }

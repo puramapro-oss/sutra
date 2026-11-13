@@ -1,9 +1,10 @@
-const { test } = require('node:test')
-const assert = require('node:assert/strict')
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { pathToFileURL } from 'node:url'
 const modulePath = process.env.SUTRA_ONBOARDING_TEST_MODULE
 if (!modulePath) throw new Error('Run: node qa/account-onboarding/run.mjs')
 const { planAccountOnboarding: plan, parseOnboardingIntent: parse, onboardingIntentKey: key,
-  onboardingCapabilities: capabilities, PLATFORMS, ONBOARDING_POLICY_VERSION: version } = require(modulePath)
+  onboardingCapabilities: capabilities, PLATFORMS, ONBOARDING_POLICY_VERSION: version } = (await import(pathToFileURL(modulePath).href)).default
 const now = Date.UTC(2026, 9, 21, 12)
 const intent = (change = {}) => ({ tenantId: 'tenant-1', ownerId: 'owner-1', editionId: 'love-fr',
   platform: 'youtube', kind: 'channel', action: 'create', mode: 'personal', locale: 'fr-FR', profileDigest: 'a'.repeat(64), ...change })

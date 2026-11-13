@@ -7,7 +7,7 @@ export async function socialFeedbackChecks(page, base, output, check) {
     // Other methods still reach the harness mutation-denial guard.
     await page.route('**/api/social/autopilot', route => route.request().method() === 'GET'
       ? route.fulfill({ json: { config: {
-        enabled: false, default_platforms: [], auto_caption: true, auto_hashtags: true,
+        enabled: false, default_platforms: [], publish_account_ids: [], auto_caption: true, auto_hashtags: true,
         caption_style: 'professional', max_hashtags: 5, include_cta: false,
       } } }) : route.fallback())
     for (const width of [375, 1440]) for (const [status, message] of [
@@ -17,7 +17,7 @@ export async function socialFeedbackChecks(page, base, output, check) {
       await page.setViewportSize({ width, height: 900 })
       await page.route('**/api/social/connect', route => route.fulfill({ status, json: { error: 'UNTRUSTED_PROVIDER_DIAGNOSTIC' } }))
       await page.goto(base + '/settings/social')
-      const button = page.getByRole('button', { name: 'Se connecter', exact: true }).first()
+      const button = page.getByTestId('connect-tiktok')
       await expect(button).toBeVisible()
       await button.click()
       const alert = page.getByTestId('social-connect-error')

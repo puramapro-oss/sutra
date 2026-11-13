@@ -23,7 +23,7 @@ try {
   let compiler
   try { compiler = require.resolve('typescript/bin/tsc') } catch { /* Use installed global tsc only. */ }
   run(compiler ? process.execPath : 'tsc', [...(compiler ? [compiler] : []), '-p', join(temp, 'tsconfig.json')])
-  run(process.execPath, ['--test', join(root, 'qa/account-onboarding/onboarding.test.cjs')], {
+  run(process.execPath, ['--test', join(root, 'qa/account-onboarding/onboarding.test.mjs')], {
     ...process.env, SUTRA_ONBOARDING_TEST_MODULE: join(temp, 'compiled/social-account-onboarding.js'),
   })
 } finally {

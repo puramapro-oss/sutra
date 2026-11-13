@@ -1,0 +1,11 @@
+[Unit]
+Description=Resume accepted SUTRA social publications
+
+[Timer]
+OnBootSec=30s
+OnUnitInactiveSec=15s
+AccuracySec=1s
+Unit=social-dispatch.service
+
+[Install]
+WantedBy=timers.target

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { BookHeart, Plus, Send, Sparkles, Flame, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -22,7 +22,12 @@ const MAX_DAILY = 3
 const POINTS_REWARD = 100
 
 export default function GratitudePage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <GratitudePageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function GratitudePageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const { addXp, streak } = useAwakening(profile?.id)
   const [entries, setEntries] = useState<GratitudeEntry[]>([])
   const [todayCount, setTodayCount] = useState(0)
@@ -31,24 +36,33 @@ export default function GratitudePage() {
   const [submitting, setSubmitting] = useState(false)
   const [showInput, setShowInput] = useState(false)
 
-  const fetchEntries = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/gratitude')
+  const dataRequest = useRef<AbortController | null>(null)
+  const fetchEntries = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/gratitude', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (res.ok) {
         const data = await res.json()
-        setEntries(data.entries || [])
-        setTodayCount(data.todayCount || 0)
+        commit(() => setEntries(data.entries || []))
+        commit(() => setTodayCount(data.todayCount || 0))
       }
-    } catch {
-      // defaults
-    } finally {
-      setLoading(false)
-    }
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
   useEffect(() => {
     if (!authLoading && profile?.id) fetchEntries()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
   }, [authLoading, profile?.id, fetchEntries])
 
   const handleSubmit = async () => {

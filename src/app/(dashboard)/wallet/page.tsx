@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Wallet, ArrowDownLeft, ArrowUpRight, Clock, CheckCircle, XCircle, Send, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -39,7 +39,12 @@ interface WithdrawalRecord {
 }
 
 export default function WalletPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <WalletPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function WalletPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const [loading, setLoading] = useState(true)
   const [wallet, setWallet] = useState<WalletData>({ balance: 0, pending_balance: 0, total_earned: 0, currency: 'EUR' })
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -49,25 +54,39 @@ export default function WalletPage() {
   const [amount, setAmount] = useState('')
   const [withdrawing, setWithdrawing] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/wallet')
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/wallet', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (!res.ok) throw new Error()
       const data = await res.json()
-      setWallet(data.wallet)
-      setTransactions(data.transactions)
-      setWithdrawals(data.withdrawals)
-    } catch {
-      // defaults
-    } finally {
-      setLoading(false)
-    }
+      commit(() => setWallet(data.wallet))
+      commit(() => setTransactions(data.transactions))
+      commit(() => setWithdrawals(data.withdrawals))
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    return loadFetchData()
+  }, [loadFetchData])
+
   useEffect(() => {
-    if (!authLoading && profile?.id) fetchData()
-  }, [authLoading, profile?.id, fetchData])
+    if (!authLoading && profile?.id) loadFetchData()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [authLoading, profile?.id, loadFetchData])
 
   const handleWithdraw = async () => {
     const numAmount = parseFloat(amount)

@@ -3,10 +3,25 @@
 import { spawnSync } from 'node:child_process'
 import { mkdirSync, readdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { ciHeapOptions } from '../tooling/ci-heap.mjs'
 
 const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
+const heapOptions = ciHeapOptions(process.env.SUTRA_CI_HEAP_MB)
 const nodeTests = [
+  'scripts/test-subtitles-route.mts',
+  'scripts/test-cinema-project.mts', 'scripts/test-higgsfield-contracts.mts',
+  'scripts/test-create-manual-mode.mts',
+  'scripts/test-caption-timeline.mts',
+  'scripts/test-storyboard-create-draft.mts',
+  'scripts/test-auto-learn-analytics.mts', 'scripts/test-auto-learn-route.mts', 'scripts/test-auto-learn-memory.mts',
+  'scripts/test-auto-trends-memory.mts',
+  'scripts/test-durable-request-store.mts',
+  'scripts/test-dependency-security-20261109.mjs',
+  'scripts/test-development-dependency-security.mjs',
+  'scripts/test-admin-stats-routes-20261109.mts',
+  'scripts/test-ui-honesty-20261109.mts',
+  'scripts/test-page-loaders-20261109.mjs',
   'qa/t04-closure-79cd-20261020/music-contracts.test.mts',
   'qa/t04-closure-79cd-20261020/music-provenance.test.mts',
   'qa/t01-certification-20261019/coverr.test.mts',
@@ -60,7 +75,10 @@ const nodeTests = [
   'scripts/test-release-regressions.mts', 'scripts/test-video-contracts.mjs',
   'scripts/test-opentimestamps.mjs', 'scripts/test-ltx-v2-media.mts',
   'scripts/test-social-publication.mts', 'scripts/test-auth-session.mts', 'scripts/test-public-origin.mts',
+  'scripts/test-social-multi-account.mts', 'scripts/test-social-multi-account-routes.mts',
+  'scripts/test-social-durable-journal.mts', 'scripts/test-social-durable-api-worker.mts',
   'tooling/disposable-database.test.mjs',
+  'tooling/ci-heap.test.mjs',
   'scripts/test-pipeline-interruptions.mts', 'scripts/test-pipeline-submit.mts',
   'scripts/test-release-oauth.mts', 'scripts/test-zernio-oauth-contracts.mts', 'scripts/test-security-account.mts', 'scripts/test-t02-oauth-boundaries.mts',
   'scripts/test-private-media.mts', 'scripts/test-security-media.mts', 'scripts/test-security-routes.mts', 'scripts/test-security-storage.mts',
@@ -78,6 +96,7 @@ const profiles = {
     ['schedule', ['scripts/test-auto-schedule.mjs']],
     ['composition', ['scripts/test-auto-composition.mjs']],
     ['publication', ['scripts/test-auto-publication.mjs']],
+    ['promotion', ['qa/purama-promotion/run.mjs']],
   ],
   media: [
     ['retained-real-exports', ['--import', 'tsx', '--test', 'scripts/test-t05-real-export.mts']],
@@ -90,6 +109,14 @@ const profiles = {
     ['compositor', ['--experimental-test-module-mocks', '--import', 'tsx', '--import', './scripts/helpers/local-media-fixture.mts', '--test', '--test-concurrency=1', 'src/lib/ffmpeg-compositor.test.ts', 'src/lib/ffmpeg-compositor-formats.test.ts', 'src/lib/media-validation.test.ts']],
   ],
   browser: [['browser', ['scripts/test-ui-isolated.mjs']]],
+  'browser-recovery': [['browser-recovery', ['--import', 'tsx', '--test', '--test-concurrency=1',
+    'scripts/test-durable-hook-recovery.mjs', 'scripts/test-admin-users-recovery.mjs']]],
+  'browser-social': [
+    ['browser-social', ['scripts/test-social-multi-account-ui.mjs']],
+    ['browser-social-durable', ['scripts/test-social-durable-ui.mjs']],
+  ],
+  'browser-cinema': [['browser-cinema', ['scripts/test-cinema-ui.mjs']], ['storyboard-draft', ['scripts/test-storyboard-create-draft-ui.mjs']]],
+  'cinema-blender': [['cinema-blender', ['--import', 'tsx', '--test', 'scripts/test-cinema-blender.mts']]],
   'browser-profiles': [['profiles', ['scripts/test-ui-isolated.mjs', '--profile-only']]],
   editor: [['editor', ['scripts/test-ui-isolated.mjs', '--editor-only']]],
   legacy: [['legacy', ['scripts/test-ui-isolated.mjs', '--legacy']]],
@@ -100,15 +127,15 @@ const profiles = {
     ['build', ['node_modules/next/dist/bin/next', 'build', '--webpack']],
   ],
 }
-if (!Object.hasOwn(profiles, profile)) throw new Error('Usage: node scripts/run-ci.mjs contracts|media|quality|browser|browser-profiles|editor|legacy|legacy-regressions')
+if (!Object.hasOwn(profiles, profile)) throw new Error('Usage: node scripts/run-ci.mjs contracts|media|quality|browser|browser-recovery|browser-social|browser-cinema|cinema-blender|browser-profiles|editor|legacy|legacy-regressions')
 if (readdirSync(root).some(name => name.startsWith('.env') && name !== '.env.example')) {
   throw new Error('Run CI gates in an isolated checkout without local environment files.')
 }
-const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot'].flatMap(key =>
+const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot', 'SUTRA_CHROMIUM_PATH', 'SUTRA_UI_CHROMIUM_PATH'].flatMap(key =>
   process.env[key] ? [[key, process.env[key]]] : []))
 Object.assign(env, {
   T02_SALAD_TARGET: root, T03_SALAD_SOURCE: root,
-  NODE_OPTIONS: `--require=${resolve(root, 'qa/t08/offline.cjs')}`,
+  NODE_OPTIONS: [...heapOptions, `--require=${resolve(root, 'qa/t08/offline.cjs')}`].join(' '),
   CI: '1', SUTRA_UI_PRODUCTION: '1', NEXT_TELEMETRY_DISABLED: '1', OTS_NETWORK: '0', LTX_TRACK_DB: '0',
   NEXT_PUBLIC_SUPABASE_URL: 'https://sutra-test.invalid',
   NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fixture-anon', NEXT_PUBLIC_APP_SCHEMA: 'sutra',
