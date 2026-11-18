@@ -39,6 +39,15 @@ test('explicit import converts descriptions only and retains IDs, prompts, timin
   assert.deepEqual(readStoryboardDraft(storage, user), result.packet)
 })
 
+test('a detailed brief survives the handoff and supplies a bounded title for manual creation', () => {
+  const storage = new MemoryStorage()
+  const idea = 'Démo de la gourde\n' + 'Présenter le produit en situation. '.repeat(40)
+  const packet = prepareStoryboardDraft(storage, user, { ...source(), idea })
+  const result = importStoryboardDraft(storage, user, packet, options)
+  assert.equal(result.draft.topic, 'Démo de la gourde')
+  assert.equal(readStoryboardDraft(storage, user)?.source.idea, idea)
+})
+
 test('repeated preparation is idempotent and never clears a previous import receipt', () => {
   const storage = new MemoryStorage(), first = prepareStoryboardDraft(storage, user, source())
   const second = prepareStoryboardDraft(storage, user, source())

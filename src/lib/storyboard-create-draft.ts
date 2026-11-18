@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { createCinemaProject } from './cinema-project'
 import { createVideoSchema, manualScriptSchema } from './validators'
-import type { Scene, VideoFormat, DurationTarget } from './storyboard'
+import { MAX_STORYBOARD_IDEA_LENGTH, storyboardProjectTitle, type Scene, type VideoFormat, type DurationTarget } from './storyboard'
 
 export const STORYBOARD_DRAFT_EVENT = 'sutra-storyboard-draft-changed'
 export const MAX_STORYBOARD_DRAFT_BYTES = 512 * 1024
@@ -20,7 +20,7 @@ export class StoryboardDraftError extends Error {
 const invalid = () => new StoryboardDraftError('INVALID', 'Transfert de storyboard invalide ou trop volumineux. Vérifie les plans, le sujet et leurs descriptions, puis prépare à nouveau le brouillon.')
 const unavailable = () => new StoryboardDraftError('STORAGE', 'Le stockage de cet onglet est indisponible. Aucun brouillon n’a été remplacé ni importé.')
 const sourceSchema = z.object({
-  idea: z.string().max(500), format: z.enum(['16:9', '9:16', '1:1']),
+  idea: z.string().max(MAX_STORYBOARD_IDEA_LENGTH), format: z.enum(['16:9', '9:16', '1:1']),
   durationTarget: z.enum(['short', 'medium', 'long']), scenes: z.array(z.unknown()).min(1).max(60),
 }).strict()
 const envelopeSchema = z.object({
@@ -34,7 +34,7 @@ export function storyboardDraftKey(userId: string): string {
 }
 
 export function manualDraftFromStoryboard(source: StoryboardDraftSource): ManualStoryboardDraft {
-  const topic = source.idea.trim() || 'Mon storyboard'
+  const topic = storyboardProjectTitle(source.idea.trim() || 'Mon storyboard')
   // A source description remains one manual scene, including when it has line breaks.
   const lines = source.scenes.map(scene => scene.description.replace(/\r\n?|\n/g, ' ').trim())
   const script = lines.join('\n')
@@ -48,7 +48,7 @@ function validateSource(value: unknown): StoryboardDraftSource {
   if (!parsed.success) throw invalid()
   try {
     // Reuse the cinema contract for IDs, prompts, descriptions, timing and transitions.
-    const project = createCinemaProject({ title: parsed.data.idea.trim() || 'Mon storyboard',
+    const project = createCinemaProject({ title: storyboardProjectTitle(parsed.data.idea.trim() || 'Mon storyboard'),
       format: parsed.data.format, scenes: parsed.data.scenes as Scene[] })
     const source: StoryboardDraftSource = { ...parsed.data,
       scenes: project.scenes.map(({ id, visual_prompt, description, duration_seconds, transition }) =>
