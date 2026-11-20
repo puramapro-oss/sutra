@@ -28,6 +28,13 @@ export const createVideoSchema = z.object({
   stockSelections: z.array(stockSelectionSchema).max(60, 'Trop de selections stock').optional().default([]),
 })
 
+// Admission and durable execution share the manual limits. Keep the structural
+// createVideoSchema compatible with older receipts used for recovery/cancellation.
+export const manualScriptSchema = createVideoSchema.shape.script.unwrap()
+  .refine((script) => script.trim().length > 0, 'Le script manuel est requis')
+  .refine((script) => script.split('\n').filter((line) => line.trim()).length <= 60,
+    'Le script manuel ne peut pas depasser 60 scenes')
+
 export const signupSchema = z.object({
   email: z.string().email('Email invalide'),
   password: z.string().min(8, 'Minimum 8 caracteres'),

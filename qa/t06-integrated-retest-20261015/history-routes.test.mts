@@ -102,7 +102,10 @@ before(async () => {
   const social = await readFile(new URL('../../sql/social-autopilot.sql', import.meta.url), 'utf8')
   const definition = social.match(/CREATE TABLE IF NOT EXISTS social_accounts \([\s\S]*?\n\);/)?.[0]
   const updatedTrigger = social.match(/CREATE OR REPLACE FUNCTION update_social_updated_at\(\)[\s\S]*?EXECUTE FUNCTION update_social_updated_at\(\);/)?.[0]
-  assert.ok(definition); assert.ok(updatedTrigger)
+  const autopilot = social.match(/CREATE TABLE IF NOT EXISTS social_autopilot_config \([\s\S]*?\n\);/)?.[0]
+  const autoSource = await readFile(new URL('../../migrations/sutra_auto.sql', import.meta.url), 'utf8')
+  const autoConfig = autoSource.match(/CREATE TABLE IF NOT EXISTS sutra\.sutra_auto_config \([\s\S]*?\n\);/)?.[0]
+  assert.ok(definition); assert.ok(updatedTrigger); assert.ok(autopilot); assert.ok(autoConfig)
   await pool.query(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role BYPASSRLS;
     CREATE SCHEMA auth; CREATE SCHEMA sutra; CREATE TABLE auth.users(id uuid PRIMARY KEY);
     CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS
@@ -113,13 +116,14 @@ before(async () => {
       $$SELECT EXISTS(SELECT 1 FROM sutra.profiles WHERE id=auth.uid() AND access_revoked_at IS NULL
         AND subscription_status IS DISTINCT FROM 'banned')$$;
     INSERT INTO auth.users VALUES('${alice}'),('${bob}'); INSERT INTO sutra.profiles VALUES('${alice}','active',NULL),('${bob}','active',NULL);
-    SET search_path=public; ${definition} ${updatedTrigger}
+    SET search_path=public; ${definition} ${updatedTrigger} ${autopilot} ${autoConfig}
     COMMENT ON TABLE public.social_accounts IS 'OAuth-connected social media accounts via Zernio';
     GRANT ALL ON public.social_accounts TO service_role; ALTER TABLE public.social_accounts ENABLE ROW LEVEL SECURITY;`)
   await pool.query(await readFile(new URL('../../migrations/20261011_social_oauth_state.sql', import.meta.url), 'utf8'))
   const historyMigration = process.env.SUTRA_TEST_SOCIAL_HISTORY_FIXTURE === 't01'
     ? './t01-social-history.sql' : '../../migrations/20261015_social_authorization_history.sql'
   await pool.query(await readFile(new URL(historyMigration, import.meta.url), 'utf8'))
+  await pool.query(await readFile(new URL('../../migrations/20261110_social_multi_accounts.sql', import.meta.url), 'utf8'))
 })
 beforeEach(async () => {
   await pool.query('TRUNCATE public.social_accounts, sutra.social_oauth_states')
@@ -151,8 +155,8 @@ after(async () => { await pool.end() })
 const account = async () => (await pool.query('SELECT * FROM public.social_accounts WHERE user_id=$1', [alice])).rows[0]
 const events = async (id: string) => (await pool.query('SELECT * FROM sutra.social_authorization_history WHERE account_id=$1 ORDER BY recorded_at,id', [id])).rows
 const deleteCalls = () => calls.filter(call => call.method === 'DELETE').length
-async function begin() {
-  const response = await connect(new Request('https://sutra-test.invalid/api/social/connect', { method: 'POST', body: JSON.stringify({ platform: 'youtube' }) }))
+async function begin(accountId?: string) {
+  const response = await connect(new Request('https://sutra-test.invalid/api/social/connect', { method: 'POST', body: JSON.stringify({ platform: 'youtube', ...(accountId ? { accountId } : {}) }) }))
   if (response.status !== 200) return { response, url: new URL('https://sutra-test.invalid/unused') }
   const body = await response.json() as { state: string }
   assert.match(body.state, /^[a-f0-9]{64}$/); assert.equal(response.headers.get('cache-control'), 'no-store')
@@ -165,8 +169,8 @@ async function begin() {
   remoteAccounts = [{ _id: externalId, platform: 'youtube', profileId: { _id: profile }, isActive: true, username: 'fixture', accessToken: 'fixture-must-not-store', refreshToken: 'fixture-must-not-store' }]
   return { response, url }
 }
-async function consent() {
-  const started = await begin(); assert.equal(started.response.status, 200)
+async function consent(accountId?: string) {
+  const started = await begin(accountId); assert.equal(started.response.status, 200)
   const response = await callback(new Request(started.url))
   assert.equal(response.headers.get('location'), 'https://sutra-test.invalid/settings/social?connected=youtube', databaseErrors.join(','))
   return account()
@@ -178,7 +182,7 @@ test('PG routes: connection, revocation and reconnection retain consent history 
   assert.equal(first.access_token, null); assert.equal(first.refresh_token, null)
   assert.equal((await revoke(revokeRequest(first.id))).status, 200, databaseErrors.join(','))
   assert.equal((await revoke(revokeRequest(first.id))).status, 200)
-  await consent()
+  await consent(first.id)
   const history = await events(first.id)
   assert.deepEqual(history.map(row => row.event_type), ['connection', 'revocation_requested', 'revocation_confirmed', 'reconnection'])
   assert.equal(history[0].revision_id, revision); assert.equal(deleteCalls(), 1)
@@ -189,7 +193,7 @@ test('PG routes: unknown remote deletion preserves fence; repeat cannot delete o
   const first = await consent(); deleteStatus = 500
   assert.equal((await revoke(revokeRequest(first.id))).status, 202)
   assert.equal((await revoke(revokeRequest(first.id))).status, 202)
-  assert.equal((await begin()).response.status, 409); assert.equal(deleteCalls(), 1)
+  assert.equal((await begin(first.id)).response.status, 409); assert.equal(deleteCalls(), 1)
   assert.deepEqual((await events(first.id)).map(row => row.event_type), ['connection', 'revocation_requested'])
   assert.equal((await account()).metadata.sutra_revocation_pending, true)
 })
@@ -197,6 +201,17 @@ test('PG routes: one state can produce only one successful callback under concur
   const started = await begin()
   const responses = await Promise.all(Array.from({ length: 12 }, () => callback(new Request(started.url))))
   assert.equal(responses.filter(response => response.headers.get('location')?.endsWith('?connected=youtube')).length, 1)
+  assert.equal((await events((await account()).id)).length, 1)
+  assert.equal(Number((await pool.query('SELECT count(*) FROM sutra.social_oauth_states')).rows[0].count), 0)
+})
+test('PG routes: independent add callbacks for one external identity persist one account and one consent event', async () => {
+  const first = await begin(), second = await begin()
+  assert.equal(first.response.status, 200); assert.equal(second.response.status, 200)
+  const responses = await Promise.all([first, second].map(attempt => callback(new Request(attempt.url))))
+  const locations = responses.map(response => response.headers.get('location'))
+  assert.equal(locations.filter(location => location?.endsWith('?connected=youtube')).length, 1)
+  assert.equal(locations.filter(location => location?.endsWith('?error=account_already_connected')).length, 1)
+  assert.equal(Number((await pool.query('SELECT count(*) FROM public.social_accounts')).rows[0].count), 1)
   assert.equal((await events((await account()).id)).length, 1)
   assert.equal(Number((await pool.query('SELECT count(*) FROM sutra.social_oauth_states')).rows[0].count), 0)
 })

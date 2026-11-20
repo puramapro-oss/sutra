@@ -83,7 +83,10 @@ export async function publicationChecks({ context, base, fixture, output, engine
         await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') })
         const violations = await page.evaluate(async () => (await window.axe.run(document, {
           runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] },
-        })).violations.map(({ id }) => id))
+        })).violations.map(({ id, nodes }) => ({
+          id, nodes: nodes.map(n => ({ target: n.target, summary: n.failureSummary })),
+        })))
+        await writeFile(resolve(output, `${engine}-publish-read-${source}-axe.json`), JSON.stringify(violations, null, 2) + '\n')
         assert.deepEqual(violations, [])
         readError = false
         const retry = page.getByRole('button', { name: 'Réessayer', exact: true })

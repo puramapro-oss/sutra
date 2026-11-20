@@ -1,0 +1,109 @@
+# browser-social/browser-social.log
+
+Source: native-evidence/sutra-complete-proof/browser-social/browser-social.log
+
+{
+  "status": "PASS",
+  "browserVersion": "145.0.7632.6",
+  "durationMs": 17806,
+  "checks": [
+    "Independent same-platform selection, exact payload, duplicate-click guard, partial retry, immutable caption",
+    "Lost response remains unknown per account, without a retry",
+    "Retry preserves an uncertain sibling account",
+    "Contradictory, duplicate, mismatched and absent result identities fail closed",
+    "Social settings list all accounts, bind add/reconnect/revoke, and keep autopilot account consent explicit",
+    "Automatic video settings save explicit accounts and preserve approval/schedule boundaries",
+    "Failed account reads cannot replace saved settings or enable save",
+    "50-account limit, no silent truncation, and explicit clear-all",
+    "A failed parent refresh preserves confirmed publication evidence",
+    "A pending parent refresh never delays a safe retry or overwrites newer feedback",
+    "Account-read retry remains usable after closing a partial result",
+    "Autopilot switches expose their state and support keyboard activation",
+    "Video settings expose selected choices and an associated duration label",
+    "An account expiring during preparation can be removed without submitting",
+    "Explicit read-only verification preserves the whole scheduled intent after a lost response",
+    "Verification cannot revoke a confirmed success or create permission to retry a new failure",
+    "A new uncertain observation removes an older failed account from safe retries",
+    "Aborted verification preserves evidence and its shared lock excludes overlapping POSTs",
+    "Historical verification remains read-only when the current account list is unavailable",
+    "Publication and verification share one immediate lock in both directions",
+    "Changing video unmounts and aborts an outstanding verification without late feedback"
+  ],
+  "auditFailures": [],
+  "outboundRequests": 0,
+  "fixtureRequests": {
+    "publish": 19,
+    "reconcile": 9,
+    "connect": 2,
+    "revoke": 1,
+    "social": 1,
+    "auto": 1,
+    "accountReads": 29
+  }
+}
+
+# browser-social/results.json
+
+Source: native-evidence/sutra-complete-proof/browser-social/results.json
+
+[
+  {
+    "name": "browser-social",
+    "command": [
+      "node",
+      "scripts/test-social-multi-account-ui.mjs"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 18437
+  }
+]
+
+# browser-recovery/browser-recovery.log
+
+Source: native-evidence/sutra-complete-proof/browser-recovery/browser-recovery.log
+
+✔ failed filter B after success A removes stale users and CSV export; retry shows only B (815.281081ms)
+✔ an aborted former filter cannot clear or replace the current users after its late failure (424.534318ms)
+✔ create: hydrate a cancellation receipt without submitting, then resume its exact identity (623.478977ms)
+✔ create: account changes never commit the previous owner's receipt and abort its observer (267.166381ms)
+✔ create: corrupt recovery remains locked and a storage write failure cannot submit (470.540297ms)
+✔ create: double submission persists one identity and a reload only resumes that identity (378.22326ms)
+✔ production: hydrate a cancellation receipt without submitting, then resume its exact identity (226.520228ms)
+✔ production: account changes never commit the previous owner's receipt and abort its observer (272.368178ms)
+✔ production: corrupt recovery remains locked and a storage write failure cannot submit (474.742808ms)
+✔ production: double submission persists one identity and a reload only resumes that identity (321.812347ms)
+✔ production: a done restored request cannot restore an obsolete form after callback replacement (235.087407ms)
+✔ production: a cancelled restored request cannot restore an obsolete form after callback replacement (283.648567ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6907.829015
+
+# browser-recovery/results.json
+
+Source: native-evidence/sutra-complete-proof/browser-recovery/results.json
+
+[
+  {
+    "name": "browser-recovery",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-concurrency=1",
+      "scripts/test-durable-hook-recovery.mjs",
+      "scripts/test-admin-users-recovery.mjs"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 6951
+  }
+]

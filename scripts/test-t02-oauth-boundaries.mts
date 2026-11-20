@@ -12,7 +12,8 @@ globalThis.fetch = async () => { throw new Error('UNEXPECTED_NETWORK') }
 type Row = Record<string, unknown>
 const sensitive = 'synthetic-private-diagnostic'
 const profileId = 'a'.repeat(24)
-const binding = { profileId, sessionId: '11111111-1111-4111-8111-111111111111' }
+const localAccountId = '33333333-3333-4333-8333-333333333333'
+const binding = { profileId, sessionId: '11111111-1111-4111-8111-111111111111', accountId: localAccountId }
 let sessionId = binding.sessionId
 let userId: string | null = 'alice', dbFailure = '', providerFailure = false
 let reads = 0, exchanges = 0, writes = 0
@@ -81,7 +82,8 @@ const { issueSocialOAuthState, socialOAuthCookieName } = await import('../src/li
 beforeEach(() => {
   userId = 'alice'; sessionId = binding.sessionId; dbFailure = ''; providerFailure = false
   reads = 0; exchanges = 0; writes = 0; states = []; browser.clear()
-  accounts = ['alice', 'bob'].map(user_id => ({ id: user_id, user_id, platform: 'youtube', username: user_id,
+  accounts = ['alice', 'bob'].map((user_id, i) => ({ id: i ? '44444444-4444-4444-8444-444444444444' : localAccountId,
+    user_id, platform: 'youtube', username: user_id, external_id: '66b2e19d8c3f5a7e9d0b1c2d',
     status: 'connected', metadata: { privateDiagnostic: sensitive }, access_token: 'synthetic-access-token', refresh_token: 'synthetic-refresh-token' }))
 })
 const state = 'synthetic-provider-state-0123456789'
@@ -91,7 +93,7 @@ async function begin() {
   reads = 0 // assertions below count callback reads, after issuing its account-bound state
 }
 function request(platform = 'youtube') {
-  return new Request(`https://sutra-test.invalid/api/social/callback?connected=${platform}&profileId=${profileId}&accountId=${'b'.repeat(24)}&state=${state}&platform=${platform}`)
+  return new Request(`https://sutra-test.invalid/api/social/callback?connected=${platform}&profileId=${profileId}&accountId=${'b'.repeat(24)}&state=${state}&platform=${platform}&sutraAccountId=${localAccountId}`)
 }
 function assertRejected(response: Response, reason: string) {
   assert.equal(response.status, 302)

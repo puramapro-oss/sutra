@@ -10,22 +10,16 @@ import { ConnectionSummary } from '@/components/settings/social/ConnectionSummar
 import { PlatformGrid } from '@/components/settings/social/PlatformGrid'
 import { AutopilotSection, type AutopilotConfig } from '@/components/settings/social/AutopilotSection'
 import { DisconnectConfirmModal } from '@/components/settings/social/DisconnectConfirmModal'
+import { accountLabel, isAccountAvailable, MAX_SELECTED_ACCOUNTS, platformsForAccounts, readSocialAccounts, type SocialAccount } from '@/components/settings/social/accounts'
 import Button from '@/components/ui/Button'
 import { oauthErrorMessage } from './oauth-error-message'
-
-interface SocialAccount {
-  id: string
-  platform: SocialPlatform
-  username: string
-  display_name: string
-  avatar_url: string | null
-  status: string
-  connected_at: string
-}
+import { readAutopilotConfig } from '@/components/settings/social/config'
+import { useConnectSocialAccount } from '@/components/settings/social/useConnectSocialAccount'
 
 const DEFAULT_AUTOPILOT: AutopilotConfig = {
   enabled: false,
   default_platforms: [],
+  publish_account_ids: [],
   auto_caption: true,
   auto_hashtags: true,
   caption_style: 'engaging',
@@ -39,19 +33,6 @@ const PLATFORMS_ORDER: SocialPlatform[] = [
 ]
 
 const TOTAL_PLATFORMS = PLATFORMS_ORDER.length
-
-// A failed or malformed read is unknown; never replace saved preferences with defaults.
-function isAutopilotConfig(value: unknown): value is AutopilotConfig {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) return false
-  const config = value as Record<string, unknown>
-  return ['enabled', 'auto_caption', 'auto_hashtags', 'include_cta'].every(key => typeof config[key] === 'boolean')
-    && Array.isArray(config.default_platforms)
-    && config.default_platforms.every(platform => typeof platform === 'string' && PLATFORMS_ORDER.includes(platform as SocialPlatform))
-    && typeof config.caption_style === 'string'
-    && ['engaging', 'professional', 'casual', 'educational', 'humorous'].includes(config.caption_style)
-    && typeof config.max_hashtags === 'number' && Number.isInteger(config.max_hashtags)
-    && config.max_hashtags >= 0 && config.max_hashtags <= 30
-}
 
 export default function SocialAccountsPage() {
   const auth = useAuth()
@@ -67,9 +48,9 @@ function SocialAccountsPageContent() {
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const accountsRequest = useRef<AbortController | null>(null)
-  const connectRequest = useRef<AbortController | null>(null)
-  const [connecting, setConnecting] = useState<SocialPlatform | null>(null)
-  const [connectError, setConnectError] = useState<string | null>(() => oauthErrorMessage(searchParams.get('error')))
+  const disconnectRequest = useRef<AbortController | null>(null)
+  const autopilotRequest = useRef<AbortController | null>(null)
+  const { connecting, connectingAccountId, connectError, connectRequest, handleConnect } = useConnectSocialAccount(oauthErrorMessage(searchParams.get('error')), disconnectRequest)
   const [disconnectingId, setDisconnectingId] = useState<string | null>(null)
   const [savingAutopilot, setSavingAutopilot] = useState(false)
   const [confirmDisconnect, setConfirmDisconnect] = useState<SocialAccount | null>(null)
@@ -86,10 +67,11 @@ function SocialAccountsPageContent() {
       ]).then(async ([accountsResponse, autopilotResponse]) => {
       if (!accountsResponse.ok || !autopilotResponse.ok) throw new Error('fetch_failed')
       const [data, autopilot] = await Promise.all([accountsResponse.json(), autopilotResponse.json()])
-      if (!Array.isArray(data?.accounts) || !isAutopilotConfig(autopilot?.config)) throw new Error('invalid_social_state')
+      const loadedAccounts = readSocialAccounts(data?.accounts)
+      const loadedAutopilot = readAutopilotConfig(autopilot?.config)
       if (accountsRequest.current !== controller || controller.signal.aborted) return
-      setAccounts(data.accounts)
-      setAutopilotConfig(autopilot.config)
+      setAccounts(loadedAccounts)
+      setAutopilotConfig(loadedAutopilot)
       setLoadError(null)
     }).catch(() => {
       if (accountsRequest.current === controller) {
@@ -116,8 +98,10 @@ function SocialAccountsPageContent() {
     return () => {
       accountsRequest.current?.abort()
       accountsRequest.current = null
-      connectRequest.current?.abort()
-      connectRequest.current = null
+      disconnectRequest.current?.abort()
+      disconnectRequest.current = null
+      autopilotRequest.current?.abort()
+      autopilotRequest.current = null
     }
   }, [loadAccounts])
 
@@ -149,62 +133,13 @@ function SocialAccountsPageContent() {
     }
   }, [])
 
-  const handleConnect = useCallback(async (platform: SocialPlatform) => {
-    // React state alone cannot guard two activations in the same event turn.
-    if (connectRequest.current) return
-    const controller = new AbortController()
-    connectRequest.current = controller
-    const current = () => connectRequest.current === controller
-    const timeout = setTimeout(() => controller.abort(), 10_000)
-    let redirecting = false
-    setConnecting(platform)
-    setConnectError(null)
-    try {
-      const res = await fetch('/api/social/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ platform }),
-        signal: controller.signal,
-      })
-      if (!current() || controller.signal.aborted) return
-      if (!res.ok) {
-        // These statuses are SUTRA's safe contract; never display provider error bodies.
-        const message = res.status === 409
-          ? 'Déconnexion en cours de vérification. Réessayez plus tard ; si le blocage persiste, contactez votre administrateur.'
-          : res.status === 503
-            ? 'Profil social non attribué. Contactez votre administrateur.'
-            : `Connexion ${PLATFORM_INFO[platform].label} indisponible`
-        toast.error(message)
-        setConnectError(message)
-        return
-      }
-      const data = await res.json()
-      if (!current() || controller.signal.aborted) return
-      if (data?.oauthUrl) {
-        window.location.href = data.oauthUrl
-        redirecting = true
-      } else {
-        throw new Error('no_oauth_url')
-      }
-    } catch {
-      if (!current()) return // Unmounted: no late toast or redirect.
-      const message = controller.signal.aborted
-        ? 'Le lien de connexion n’a pas pu être récupéré à temps. Réessaie manuellement.'
-        : `Connexion ${PLATFORM_INFO[platform].label} indisponible`
-      toast.error(message)
-      setConnectError(message)
-    } finally {
-      clearTimeout(timeout)
-      // Hold the guard until navigation; an OAuth redirect must not be duplicated.
-      if (current() && !redirecting) {
-        connectRequest.current = null
-        setConnecting(null)
-      }
-    }
-  }, [])
-
   const handleDisconnect = useCallback(
     async (account: SocialAccount) => {
+      if (disconnectRequest.current || connectRequest.current) return
+      const controller = new AbortController()
+      disconnectRequest.current = controller
+      const current = () => disconnectRequest.current === controller
+      const timeout = setTimeout(() => controller.abort(), 30_000)
       setDisconnectingId(account.id)
       setConfirmDisconnect(null)
       setDisconnectNotice(null)
@@ -213,55 +148,70 @@ function SocialAccountsPageContent() {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ accountId: account.id }),
+          signal: controller.signal,
         })
         if (!res.ok) throw new Error('disconnect_failed')
         const result = await res.json()
+        if (!current() || controller.signal.aborted) return
         if (res.status === 200 && result.success === true && result.remoteStatus === 'revoked') {
-          toast.success(`${PLATFORM_INFO[account.platform].label} deconnecte`)
+          toast.success(`${PLATFORM_INFO[account.platform].label} : ${accountLabel(account)} déconnecté`)
         } else {
           setDisconnectNotice('Révocation distante non confirmée. Vérifie les autorisations dans ton réseau social avant de reconnecter ce compte. Aucune nouvelle tentative automatique ne sera lancée.')
         }
         await fetchAccounts()
       } catch {
-        toast.error('Impossible de deconnecter ce compte')
+        if (!current()) return
+        setDisconnectNotice('Déconnexion non confirmée pour ce compte. Vérifie son état et ses autorisations avant toute nouvelle tentative.')
+        await fetchAccounts()
       } finally {
-        setDisconnectingId(null)
+        clearTimeout(timeout)
+        if (current()) { disconnectRequest.current = null; setDisconnectingId(null) }
       }
     },
-    [fetchAccounts]
+    [fetchAccounts, connectRequest]
   )
 
   const handleSaveAutopilot = useCallback(async () => {
-    if (!autopilotConfig) return
+    if (!autopilotConfig || autopilotRequest.current) return
+    const selected = autopilotConfig.publish_account_ids
+    if (autopilotConfig.enabled && (!selected.length || selected.some(id => !accounts.some(account => account.id === id && isAccountAvailable(account))))) return
+    const controller = new AbortController()
+    autopilotRequest.current = controller
+    const current = () => autopilotRequest.current === controller
+    const timeout = setTimeout(() => controller.abort(), 10_000)
     setSavingAutopilot(true)
     try {
       const res = await fetch('/api/social/autopilot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(autopilotConfig),
+        body: JSON.stringify({ ...autopilotConfig, default_platforms: platformsForAccounts(accounts, selected) }),
+        signal: controller.signal,
       })
       if (!res.ok) throw new Error('save_failed')
+      const data = await res.json()
+      const saved = readAutopilotConfig(data?.config)
+      if (!current() || controller.signal.aborted) return
+      setAutopilotConfig(saved)
       toast.success('Autopilot mis a jour')
     } catch {
-      toast.error("Impossible d&apos;enregistrer l&apos;autopilot")
+      if (current()) toast.error('Enregistrement de l’autopilot non confirmé. Recharge les réglages pour vérifier leur état.')
     } finally {
-      setSavingAutopilot(false)
+      clearTimeout(timeout)
+      if (current()) { autopilotRequest.current = null; setSavingAutopilot(false) }
     }
-  }, [autopilotConfig])
+  }, [autopilotConfig, accounts])
 
-  const accountsByPlatform = accounts.reduce<Partial<Record<SocialPlatform, SocialAccount>>>(
+  const accountsByPlatform = accounts.reduce<Partial<Record<SocialPlatform, SocialAccount[]>>>(
     (acc, a) => {
-      // Keep the historical row visible, but never let it mask a live connection.
-      if (acc[a.platform]?.status !== 'connected') acc[a.platform] = a
+      ;(acc[a.platform] ??= []).push(a)
       return acc
     },
     {}
   )
-  const connectedAccountsByPlatform = Object.fromEntries(
-    Object.entries(accountsByPlatform).filter(([, account]) => account.status === 'connected')
-  )
-  const connectedCount = Object.keys(connectedAccountsByPlatform).length
-  const progressPct = Math.round((connectedCount / TOTAL_PLATFORMS) * 100)
+  const connectedAccounts = accounts.filter(account => isAccountAvailable(account))
+  const connectedCount = connectedAccounts.length
+  const connectedPlatformCount = new Set(connectedAccounts.map(account => account.platform)).size
+  const progressPct = Math.round((connectedPlatformCount / TOTAL_PLATFORMS) * 100)
 
   const updateAutopilot = <K extends keyof AutopilotConfig>(
     key: K,
@@ -270,13 +220,14 @@ function SocialAccountsPageContent() {
     setAutopilotConfig((prev) => ({ ...(prev ?? DEFAULT_AUTOPILOT), [key]: value }))
   }
 
-  const togglePlatformDefault = (platform: SocialPlatform) => {
+  const toggleAccountDefault = (accountId: string) => {
     setAutopilotConfig((prev) => {
       const base = prev ?? DEFAULT_AUTOPILOT
-      const list = new Set(base.default_platforms)
-      if (list.has(platform)) list.delete(platform)
-      else list.add(platform)
-      return { ...base, default_platforms: Array.from(list) }
+      const list = new Set(base.publish_account_ids)
+      if (list.has(accountId)) list.delete(accountId)
+      else if (list.size < MAX_SELECTED_ACCOUNTS && accounts.some(account => account.id === accountId && isAccountAvailable(account))) list.add(accountId)
+      const ids = [...list]
+      return { ...base, publish_account_ids: ids, default_platforms: platformsForAccounts(accounts, ids) }
     })
   }
 
@@ -296,6 +247,7 @@ function SocialAccountsPageContent() {
 
         {!loading && !loadError && <ConnectionSummary
           connectedCount={connectedCount}
+          connectedPlatformCount={connectedPlatformCount}
           totalPlatforms={TOTAL_PLATFORMS}
           progressPct={progressPct}
         />}
@@ -307,6 +259,7 @@ function SocialAccountsPageContent() {
           loading={loading}
           accountsByPlatform={accountsByPlatform}
           connecting={connecting}
+          connectingAccountId={connectingAccountId}
           disconnectingId={disconnectingId}
           onConnect={handleConnect}
           onDisconnectClick={setConfirmDisconnect}
@@ -314,11 +267,10 @@ function SocialAccountsPageContent() {
 
         {!loading && !loadError && <AutopilotSection
           config={autopilotConfig}
-          accountsByPlatform={connectedAccountsByPlatform}
-          connectedCount={connectedCount}
+          accounts={accounts}
           savingAutopilot={savingAutopilot}
           onUpdateConfig={updateAutopilot}
-          onTogglePlatformDefault={togglePlatformDefault}
+          onToggleAccount={toggleAccountDefault}
           onSave={handleSaveAutopilot}
         />}
       </div>

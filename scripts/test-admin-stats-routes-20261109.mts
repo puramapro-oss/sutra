@@ -173,3 +173,53 @@ test('admin revenue chart: a complete query retains its daily buckets and sum', 
   assert.equal(series.length, 90)
   assert.equal(series.find((point: { date: string; amount: number }) => point.date === today)?.amount, 10)
 })
+
+test('admin config: stored sections cannot mutate shared JavaScript prototypes', async () => {
+  const marker = 'sutra_stats_key_safety_marker'
+  assert.equal(Object.hasOwn(Object.prototype, marker), false)
+  assert.equal(Object.hasOwn(Object, marker), false)
+  results = [response([
+    { key: `__proto__.${marker}`, value: 'prototype-section' },
+    { key: `constructor.${marker}`, value: 'constructor-section' },
+  ])]
+  try {
+    const res = await GET(request('config'))
+    assert.equal(res.status, 200)
+    assert.equal(Object.hasOwn(Object.prototype, marker), false, 'database keys must remain JSON data')
+    assert.equal(Object.hasOwn(Object, marker), false, 'a section must not refer to the Object constructor')
+    assert.deepEqual(await res.json(), JSON.parse(`{"config":{"__proto__":{"${marker}":"prototype-section"},"constructor":{"${marker}":"constructor-section"}}}`))
+  } finally {
+    Reflect.deleteProperty(Object.prototype, marker)
+    Reflect.deleteProperty(Object, marker)
+  }
+})
+
+test('admin config: reserved field names survive JSON serialization as own data', async () => {
+  results = [response([
+    { key: 'landing.__proto__', value: 'prototype-field' },
+    { key: 'landing.constructor', value: 'constructor-field' },
+    { key: 'landing.hasOwnProperty', value: 'ordinary-field' },
+  ])]
+  const res = await GET(request('config'))
+  assert.equal(res.status, 200)
+  assert.deepEqual(await res.json(), JSON.parse('{"config":{"landing":{"__proto__":"prototype-field","constructor":"constructor-field","hasOwnProperty":"ordinary-field"}}}'))
+})
+
+test('admin service costs: reserved object names retain numeric totals', async () => {
+  results = [response([
+    { service: '__proto__', estimated_cost: 4 }, { service: '__proto__', estimated_cost: 2 },
+    { service: 'constructor', estimated_cost: 3 }, { service: 'hasOwnProperty', estimated_cost: 5 },
+  ])]
+  const res = await GET(request('service_costs'))
+  assert.equal(res.status, 200)
+  assert.deepEqual(await res.json(), JSON.parse('{"services":{"__proto__":6,"constructor":3,"hasownproperty":5}}'))
+})
+
+test('admin plan distribution: reserved object names are counted as data', async () => {
+  results = [response(null, 3), response(null, 3), response(null, 0), response(null, 0),
+    response([]), response([]), response([{ plan: '__proto__' }, { plan: '__proto__' }, { plan: 'constructor' }])]
+  const res = await GET(request())
+  assert.equal(res.status, 200)
+  const body = await res.json()
+  assert.deepEqual(body.plan_distribution, JSON.parse('{"__proto__":2,"constructor":1}'))
+})

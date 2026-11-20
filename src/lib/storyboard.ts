@@ -12,6 +12,7 @@ export interface Scene {
 
 export type VideoFormat = '16:9' | '9:16' | '1:1'
 export type DurationTarget = 'short' | 'medium' | 'long'
+export const MAX_STORYBOARD_IDEA_LENGTH = 5000
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -42,6 +43,22 @@ export const TRANSITIONS: { id: Scene['transition']; label: string }[] = [
 
 export function makeId(): string {
   return Math.random().toString(36).slice(2, 10)
+}
+
+/** A detailed creative brief can exceed the cinema project's 500-character title. */
+export function storyboardProjectTitle(idea: string): string {
+  const title = idea.trim()
+  if (title.length <= 500) return title || 'Projet cinéma SUTRA'
+  const firstLine = title.split(/\r?\n/, 1)[0].trim()
+  const characters = Array.from(firstLine.length >= 3 ? firstLine : title.replace(/\s+/g, ' '))
+  return characters.length > 100 ? `${characters.slice(0, 99).join('').trimEnd()}…` : characters.join('')
+}
+
+/** Accept the JSON object directly or in one Markdown code block from a chat tool. */
+export function parseStoryboardJson(text: string): unknown {
+  const raw = text.trim()
+  const fenced = /^```(?:json)?[^\S\r\n]*\r?\n([\s\S]*?)\r?\n```$/i.exec(raw)
+  return JSON.parse(fenced?.[1] ?? raw)
 }
 
 export function getPollinationsUrl(prompt: string, format: VideoFormat): string {

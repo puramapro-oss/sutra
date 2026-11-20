@@ -1,0 +1,11 @@
+{"check": "202 admits two independent destinations once and labels them queued, never published", "status": "PASS"}
+{"check": "Closing stops reads; reloading restores the durable batch by video ID without POST or stored intent", "status": "PASS"}
+{"check": "Visible polling advances one destination while the other remains queued", "status": "PASS"}
+{"check": "Missing, unavailable, partial, duplicate and mismatched receipts preserve success and never authorize retry", "status": "PASS"}
+{"check": "A failed worker observation cannot demote published evidence or enable another admission", "status": "PASS"}
+{"check": "Only an explicit server retry capability and a deliberate click admit a failed destination again", "status": "PASS"}
+2026-11-10T21:52:58.142Z pw:browser [pid=41][err] GPU process exited unexpectedly: exit_code=9
+2026-11-10T21:52:58.205Z pw:browser [pid=41] <process did exit: exitCode=0, signal=null>
+page.reload: Page crashed
+    at scripts/test-social-durable-ui.mjs:182:14
+Final diagnostic: page.goto: Page crashed before first group; exit=1; peak_rss_kib=428876; elapsed_seconds=30.86

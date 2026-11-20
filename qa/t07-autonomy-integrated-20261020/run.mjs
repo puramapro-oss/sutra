@@ -5,7 +5,7 @@ import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { createServer } from 'node:net'
+import { allocatePrivatePostgresEndpoint } from '../../tooling/private-postgres-endpoint.mjs'
 const root = resolve(import.meta.dirname, '../..'), label = process.argv[2]
 assert.match(label ?? '', /^[a-z0-9-]+$/)
 const git = args => {
@@ -19,10 +19,10 @@ assert.equal(git(['diff', candidate, '--', 'src', 'migrations', 'package.json', 
 const output = join(import.meta.dirname, label); mkdirSync(output)
 const bin = process.env.SUTRA_TEST_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin'
 const directory = mkdtempSync(join(tmpdir(), 'sutra-t07-wire-pg-')), data = join(directory, 'data')
-const socket = createServer(); await new Promise(r => socket.listen(0, '127.0.0.1', r))
-const port = socket.address().port; await new Promise(r => socket.close(r))
+const { port, postgresOptions } = await allocatePrivatePostgresEndpoint()
 const fixture = {
   PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: tmpdir(), LC_ALL: 'C',
+  LD_LIBRARY_PATH: process.env.LD_LIBRARY_PATH,
   SUTRA_TEST_PG_BIN: bin, SUTRA_DISPOSABLE_DB: '1', SUTRA_T07_PGDATA: data,
   PGHOST: '127.0.0.1', PGPORT: String(port), PGUSER: 'fixture',
   T07_PROOF_DIR: output, T07_CANDIDATE_SHA: candidate,
@@ -41,7 +41,7 @@ let started = false, stopped = false
 try {
   assert.ok(run(join(bin, 'initdb'), ['-D', data, '--auth=trust', '--username=fixture', '--no-locale', '--encoding=UTF8',
     '-c', 'shared_memory_type=mmap', '-c', 'dynamic_shared_memory_type=posix', '-c', 'max_connections=30', '-c', 'shared_buffers=16MB'], 'pg-init'))
-  assert.ok(run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', `-h 127.0.0.1 -k ${directory} -p ${port}`, '-w', 'start'], 'pg-start'))
+  assert.ok(run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', postgresOptions, '-w', 'start'], 'pg-start'))
   started = true
   if (!run(process.execPath, ['--test', 'qa/t01-pg-drain-20261020/pool-drain.test.mjs'], 'pool-drain')) process.exitCode = 1
   if (!run(process.execPath, ['--experimental-test-module-mocks', '--import', 'tsx', 'qa/t07-autonomy-integrated-20261020/countertest.mjs'], 'countertest')) process.exitCode = 1
