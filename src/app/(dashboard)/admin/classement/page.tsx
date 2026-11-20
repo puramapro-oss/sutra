@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Trophy, Play, Loader2, Star } from 'lucide-react'
 import { toast } from 'sonner'
@@ -40,18 +40,37 @@ export default function AdminClassementPage() {
   const [loading, setLoading] = useState(true)
   const [triggering, setTriggering] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    const [contestsRes, subsRes] = await Promise.all([
-      supabase.from('contests').select('*').eq('type', 'monthly').order('created_at', { ascending: false }).limit(10),
-      supabase.from('contest_submissions').select('*').order('ai_score', { ascending: false }).limit(50),
-    ])
-    setContests((contestsRes.data ?? []) as Contest[])
-    setSubmissions((subsRes.data ?? []) as Submission[])
-    setLoading(false)
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return Promise.all([
+      supabase.from('contests').select('*').eq('type', 'monthly').order('created_at', { ascending: false }).limit(10).abortSignal(controller.signal),
+      supabase.from('contest_submissions').select('*').order('ai_score', { ascending: false }).limit(50).abortSignal(controller.signal),
+    ]).then(async ([contestsRes, subsRes]) => {
+      if (!active()) return
+      commit(() => setContests((contestsRes.data ?? []) as Contest[]))
+      commit(() => setSubmissions((subsRes.data ?? []) as Submission[]))
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { fetchData() }, [fetchData])
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    return loadFetchData()
+  }, [loadFetchData])
+
+  useEffect(() => { loadFetchData()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [loadFetchData])
 
   const triggerJudge = async () => {
     setTriggering(true)

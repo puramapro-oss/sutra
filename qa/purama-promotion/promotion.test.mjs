@@ -1,7 +1,8 @@
-const { test } = require('node:test')
-const assert = require('node:assert/strict')
+import { test } from 'node:test'
+import assert from 'node:assert/strict'
+import { pathToFileURL } from 'node:url'
 const { planPuramaPromotion: plan, promotionIntentKey: key, parsePromotionIntent: parse,
-  PROMOTION_POLICY_VERSION: version } = require(process.env.SUTRA_PROMOTION_MODULE)
+  PROMOTION_POLICY_VERSION: version } = await import(pathToFileURL(process.env.SUTRA_PROMOTION_MODULE).href)
 const now = Date.UTC(2026, 9, 21, 12)
 const ev = (evidenceId) => ({ evidenceId, reviewedAt: now - 1000, expiresAt: now + 3600000 })
 function fixture() {

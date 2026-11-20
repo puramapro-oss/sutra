@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import type { Video as VideoType, ScheduledPost } from '@/types'
@@ -25,37 +25,43 @@ export function usePublish(userId: string | undefined) {
   const [publishing, setPublishing] = useState<string | null>(null)
   const [zernioResults, setZernioResults] = useState<Record<string, PublishResult[]>>({})
 
-  const fetchData = useCallback(async () => {
+  const pending = useRef<AbortController | null>(null)
+  const [loadedUser, setLoadedUser] = useState<string | undefined>()
+
+  const loadData = useCallback(() => {
     if (!userId) return
-    setLoading(true)
-    setLoadError(null)
-    try {
-      const [videosRes, scheduledRes, pastRes] = await Promise.all([
+    pending.current?.abort()
+    const controller = new AbortController()
+    pending.current = controller
+    const current = () => pending.current === controller && !controller.signal.aborted
+    return Promise.all([
         supabase
           .from('videos')
           .select('*')
           .eq('user_id', userId)
           .in('status', ['ready', 'published'])
-          .order('updated_at', { ascending: false }),
+          .order('updated_at', { ascending: false }).abortSignal(controller.signal),
         supabase
           .from('scheduled_posts')
           .select('*')
           .eq('user_id', userId)
           .eq('status', 'scheduled')
-          .order('scheduled_at', { ascending: true }),
+          .order('scheduled_at', { ascending: true }).abortSignal(controller.signal),
         supabase
           .from('scheduled_posts')
           .select('*')
           .eq('user_id', userId)
           .in('status', ['published', 'failed'])
           .order('created_at', { ascending: false })
-          .limit(20),
-      ])
+          .limit(20).abortSignal(controller.signal),
+      ]).then(([videosRes, scheduledRes, pastRes]) => {
+      if (!current()) return
 
       if ([videosRes, scheduledRes, pastRes].some(result => result.error || !Array.isArray(result.data))) {
         throw new Error('Publication data unavailable')
       }
 
+      setLoadError(null)
       if (videosRes.data) setVideos(videosRes.data as VideoType[])
       if (scheduledRes.data) setScheduledPosts(scheduledRes.data as ScheduledPost[])
       if (pastRes.data) setPastPosts(pastRes.data as ScheduledPost[])
@@ -72,17 +78,28 @@ export function usePublish(userId: string | undefined) {
         }
         setPublishStates(states)
       }
-    } catch {
+    }).catch(() => {
+      if (!current()) return
       setLoadError('Impossible de vérifier les vidéos et les publications. Réessaie dans un instant.')
-    } finally {
+    }).finally(() => {
+      if (!current()) return
+      setLoadedUser(userId)
       setLoading(false)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      pending.current = null
+    })
   }, [userId])
 
+
+  const fetchData = useCallback(() => {
+    if (!userId) return
+    setLoading(true)
+    return loadData()
+  }, [userId, loadData])
+
   useEffect(() => {
-    if (userId) fetchData()
-  }, [userId, fetchData])
+    void loadData()
+    return () => { pending.current?.abort(); pending.current = null }
+  }, [loadData])
 
   const togglePlatform = useCallback((videoId: string, platform: PlatformId) => {
     setPublishStates((prev) => ({
@@ -193,7 +210,7 @@ export function usePublish(userId: string | undefined) {
     videos,
     scheduledPosts,
     pastPosts,
-    loading,
+    loading: !!userId && (loading || loadedUser !== userId),
     loadError,
     publishStates,
     publishing,

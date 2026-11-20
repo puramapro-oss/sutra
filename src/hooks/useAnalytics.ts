@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { createClient } from '@/lib/supabase'
 import type { VideoRecord, DailyCount, Stats } from '@/lib/analytics'
 import { COST_PER_VIDEO, ENGINES } from '@/lib/analytics'
@@ -7,6 +7,7 @@ interface UseAnalyticsProps {
   userId?: string
   credits?: number
 }
+const EMPTY_STATS: Stats = { videosThisMonth: 0, totalDuration: 0, totalCost: 0, creditsUsed: 0 }
 
 export function useAnalytics({ userId, credits }: UseAnalyticsProps) {
   const [loading, setLoading] = useState(true)
@@ -19,11 +20,14 @@ export function useAnalytics({ userId, credits }: UseAnalyticsProps) {
   const [recentVideos, setRecentVideos] = useState<VideoRecord[]>([])
   const [dailyCounts, setDailyCounts] = useState<DailyCount[]>([])
   const [allVideos, setAllVideos] = useState<VideoRecord[]>([])
+  const [loadedUser, setLoadedUser] = useState<string | undefined>()
+  const [error, setError] = useState<string | null>(null)
+  const [revision, setRevision] = useState(0)
 
-  const fetchAnalytics = useCallback(async () => {
+  useEffect(() => {
     if (!userId) return
-    setLoading(true)
-    try {
+    const controller = new AbortController()
+    const load = async () => {
       const supabase = createClient()
       const now = new Date()
       const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
@@ -34,11 +38,12 @@ export function useAnalytics({ userId, credits }: UseAnalyticsProps) {
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .limit(500)
+        .abortSignal(controller.signal)
 
-      if (error || !videos) {
-        setLoading(false)
-        return
-      }
+      if (controller.signal.aborted) return
+
+      if (error || !videos) throw new Error('Analytics unavailable')
+      setError(null)
 
       const typedVideos = videos as unknown as VideoRecord[]
       setAllVideos(typedVideos)
@@ -51,7 +56,7 @@ export function useAnalytics({ userId, credits }: UseAnalyticsProps) {
         videosThisMonth: thisMonthVideos.length,
         totalDuration,
         totalCost: typedVideos.length * COST_PER_VIDEO,
-        creditsUsed: credits ?? 0,
+        creditsUsed: 0,
       })
 
       const days: DailyCount[] = []
@@ -63,18 +68,27 @@ export function useAnalytics({ userId, credits }: UseAnalyticsProps) {
         days.push({ date: dateStr, count })
       }
       setDailyCounts(days)
-    } catch {
-      // graceful
-    } finally {
+    }
+    void load().catch(() => {
+      if (controller.signal.aborted) return
+      setStats(EMPTY_STATS)
+      setAllVideos([])
+      setRecentVideos([])
+      setDailyCounts([])
+      setError('Impossible de charger les statistiques. Réessaie dans un instant.')
+    }).finally(() => {
+      if (controller.signal.aborted) return
+      setLoadedUser(userId)
       setLoading(false)
-    }
-  }, [userId, credits])
+    })
+    return () => controller.abort()
+  }, [userId, revision])
 
-  useEffect(() => {
-    if (userId) {
-      fetchAnalytics()
-    }
-  }, [userId, fetchAnalytics])
+  const refresh = useCallback(() => {
+    setLoading(true)
+    setError(null)
+    setRevision(value => value + 1)
+  }, [])
 
   const engineStats = useMemo(() => {
     if (allVideos.length === 0) {
@@ -110,13 +124,15 @@ export function useAnalytics({ userId, credits }: UseAnalyticsProps) {
   }, [dailyCounts])
 
   return {
-    loading,
-    stats,
-    recentVideos,
-    dailyCounts,
-    allVideos,
-    engineStats,
-    chartMax,
-    chartLabels,
+    loading: !!userId && (loading || loadedUser !== userId),
+    stats: { ...(loadedUser === userId ? stats : EMPTY_STATS), creditsUsed: credits ?? 0 },
+    recentVideos: loadedUser === userId ? recentVideos : [],
+    dailyCounts: loadedUser === userId ? dailyCounts : [],
+    allVideos: loadedUser === userId ? allVideos : [],
+    engineStats: loadedUser === userId ? engineStats : [],
+    chartMax: loadedUser === userId ? chartMax : 1,
+    chartLabels: loadedUser === userId ? chartLabels : [],
+    error: loadedUser === userId ? error : null,
+    refresh,
   }
 }

@@ -1,0 +1,316 @@
+(node:11) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ authentication precedes JSON parsing: missing user (5.68948ms)
+✔ authentication precedes JSON parsing: authentication error (0.644098ms)
+✔ an authentication service failure remains a server error (0.884824ms)
+✔ malformed JSON is a client error: empty (1.247457ms)
+✔ malformed JSON is a client error: truncated (0.683136ms)
+✔ malformed JSON is a client error: trailing comma (0.52995ms)
+✔ a JSON object is required: null (0.461079ms)
+✔ a JSON object is required: [] (0.31894ms)
+✔ a JSON object is required: "Bonjour." (0.477603ms)
+✔ a JSON object is required: true (0.499786ms)
+✔ a JSON object is required: 42 (0.365799ms)
+✔ invalid narration is rejected before translation: undefined (0.367902ms)
+✔ invalid narration is rejected before translation: "" (0.21041ms)
+✔ invalid narration is rejected before translation: "  \n\t " (0.337527ms)
+✔ invalid narration is rejected before translation: null (0.279983ms)
+✔ invalid narration is rejected before translation: 42 (0.239713ms)
+✔ invalid duration is rejected before translation: missing (0.277178ms)
+✔ invalid duration is rejected before translation: null (0.171523ms)
+✔ invalid duration is rejected before translation: zero (0.147427ms)
+✔ invalid duration is rejected before translation: negative (0.14956ms)
+✔ invalid duration is rejected before translation: numeric string (0.148489ms)
+✔ invalid duration is rejected before translation: boolean (0.223669ms)
+✔ invalid duration is rejected before translation: finite seconds overflowing milliseconds (0.206013ms)
+✔ invalid duration is rejected before translation: milliseconds beyond exact integer precision (0.220836ms)
+✔ a JSON exponent overflowing to Infinity is rejected before translation (0.231661ms)
+✔ valid classic subtitles and SRT follow their style contract (1.295128ms)
+✔ valid tiktok subtitles and SRT follow their style contract (0.499215ms)
+✔ valid karaoke subtitles and SRT follow their style contract (0.411206ms)
+✔ valid minimal subtitles and SRT follow their style contract (1.360073ms)
+✔ omitting the style preserves the classic default (0.507167ms)
+✔ positive fractional durations remain accepted with millisecond rounding (0.323206ms)
+✔ representable long durations are accepted without a business duration ceiling (0.723175ms)
+✔ valid translation still uses the real subtitle pipeline once (0.543551ms)
+✔ minimal retains the end of a long sentence instead of discarding its words (0.444434ms)
+✔ minimal preserves punctuation and all words: Un deux trois quatre cinq six. (0.65863ms)
+✔ minimal preserves punctuation and all words: Un deux trois quatre cinq six sept ! (0.473878ms)
+✔ minimal preserves punctuation and all words: Je	ne veux pas perdre ces mots.
+Ni les suivants… « Merci ! » (0.397256ms)
+✔ minimal preserves punctuation and all words: Écrire, lire et comprendre : chaque mot compte, y compris « non », 42 et l’apostrophe. (0.432898ms)
+✔ minimal keeps the existing positive-duration contract: 5e-324 (0.296607ms)
+✔ minimal keeps the existing positive-duration contract: 0.0001 (0.246833ms)
+✔ minimal keeps the existing positive-duration contract: 0.001 (0.428862ms)
+✔ minimal keeps the existing positive-duration contract: 0.3333333333333333 (0.213234ms)
+✔ minimal keeps the existing positive-duration contract: 6 (0.188908ms)
+✔ minimal keeps the existing positive-duration contract: 3599.9996 (0.178453ms)
+✔ minimal keeps the existing positive-duration contract: 9007199254740.99 (0.259662ms)
+✔ minimal generation and the existing export endpoint keep the complete text (0.606964ms)
+✔ minimal SRT rounding carries milliseconds correctly at 0.9996s (0.287383ms)
+✔ minimal SRT rounding carries milliseconds correctly at 59.9996s (0.182348ms)
+✔ minimal SRT rounding carries milliseconds correctly at 3599.9996s (0.20405ms)
+✔ SRT import preserves cue text and timestamps with LF (0.110213ms)
+✔ SRT import preserves cue text and timestamps with LF with a UTF-8 BOM (0.057765ms)
+✖ SRT import preserves cue text and timestamps with CRLF (3.599632ms)
+✖ SRT import preserves cue text and timestamps with CRLF with a UTF-8 BOM (0.54951ms)
+✖ SRT import preserves cue text and timestamps with CR (0.234094ms)
+✖ SRT import preserves cue text and timestamps with blank LF separator lines containing spaces and tabs (0.327412ms)
+✖ SRT import preserves cue text and timestamps with blank CRLF separator lines containing spaces and tabs (0.322565ms)
+✖ SRT import preserves cue text and timestamps with mixed line endings (0.275545ms)
+✔ empty SRT files and a BOM with only blank lines contain no cues (0.145635ms)
+✖ a Windows SRT import can be exported without merging cues or changing their timings (0.628626ms)
+ℹ tests 59
+ℹ suites 0
+ℹ pass 52
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 576.31433
+
+✖ failing tests:
+
+test at scripts/test-subtitles-route.mts:3:915
+✖ SRT import preserves cue text and timestamps with CRLF (3.599632ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+        end: 3.5,
+        start: 1.125,
+  +     text: 'Ne traversez pas.\r\n' +
+  +       'Attendez  ici !\r\n' +
+  +       '\r\n' +
+  +       '2\r\n' +
+  +       '00:00:04,250 --> 00:00:06,750\r\n' +
+  +       'Merci,\tÉlodie… سلام'
+  -     text: 'Ne traversez pas.\nAttendez  ici !'
+      },
+  -   {
+  -     end: 6.75,
+  -     start: 4.25,
+  -     text: 'Merci,\tÉlodie… سلام'
+  -   }
+    ]
+  
+      at TestContext.<anonymous> (/workspace/scratch/105cd9664a5e/sutra/scripts/test-subtitles-route.mts:321:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { text: 'Ne traversez pas.\r\nAttendez  ici !\r\n\r\n2\r\n00:00:04,250 --> 00:00:06,750\r\nMerci,\tÉlodie… سلام', start: 1.125, end: 3.5 } ],
+    expected: [ { text: 'Ne traversez pas.\nAttendez  ici !', start: 1.125, end: 3.5 }, { text: 'Merci,\tÉlodie… سلام', start: 4.25, end: 6.75 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-subtitles-route.mts:3:915
+✖ SRT import preserves cue text and timestamps with CRLF with a UTF-8 BOM (0.54951ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+        end: 3.5,
+        start: 1.125,
+  +     text: 'Ne traversez pas.\r\n' +
+  +       'Attendez  ici !\r\n' +
+  +       '\r\n' +
+  +       '2\r\n' +
+  +       '00:00:04,250 --> 00:00:06,750\r\n' +
+  +       'Merci,\tÉlodie… سلام'
+  -     text: 'Ne traversez pas.\nAttendez  ici !'
+      },
+  -   {
+  -     end: 6.75,
+  -     start: 4.25,
+  -     text: 'Merci,\tÉlodie… سلام'
+  -   }
+    ]
+  
+      at TestContext.<anonymous> (/workspace/scratch/105cd9664a5e/sutra/scripts/test-subtitles-route.mts:321:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { text: 'Ne traversez pas.\r\nAttendez  ici !\r\n\r\n2\r\n00:00:04,250 --> 00:00:06,750\r\nMerci,\tÉlodie… سلام', start: 1.125, end: 3.5 } ],
+    expected: [ { text: 'Ne traversez pas.\nAttendez  ici !', start: 1.125, end: 3.5 }, { text: 'Merci,\tÉlodie… سلام', start: 4.25, end: 6.75 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-subtitles-route.mts:3:915
+✖ SRT import preserves cue text and timestamps with CR (0.234094ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   {
+  -     end: 3.5,
+  -     start: 1.125,
+  -     text: 'Ne traversez pas.\nAttendez  ici !'
+  -   },
+  -   {
+  -     end: 6.75,
+  -     start: 4.25,
+  -     text: 'Merci,\tÉlodie… سلام'
+  -   }
+  - ]
+  
+      at TestContext.<anonymous> (/workspace/scratch/105cd9664a5e/sutra/scripts/test-subtitles-route.mts:321:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ { text: 'Ne traversez pas.\nAttendez  ici !', start: 1.125, end: 3.5 }, { text: 'Merci,\tÉlodie… سلام', start: 4.25, end: 6.75 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-subtitles-route.mts:3:915
+✖ SRT import preserves cue text and timestamps with blank LF separator lines containing spaces and tabs (0.327412ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+        end: 3.5,
+        start: 1.125,
+  +     text: 'Ne traversez pas.\n' +
+  +       'Attendez  ici !\n' +
+  +       ' \t\n' +
+  +       '\t \n' +
+  +       '2\n' +
+  +       '00:00:04,250 --> 00:00:06,750\n' +
+  +       'Merci,\tÉlodie… سلام'
+  -     text: 'Ne traversez pas.\nAttendez  ici !'
+      },
+  -   {
+  -     end: 6.75,
+  -     start: 4.25,
+  -     text: 'Merci,\tÉlodie… سلام'
+  -   }
+    ]
+  
+      at TestContext.<anonymous> (/workspace/scratch/105cd9664a5e/sutra/scripts/test-subtitles-route.mts:321:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { text: 'Ne traversez pas.\nAttendez  ici !\n \t\n\t \n2\n00:00:04,250 --> 00:00:06,750\nMerci,\tÉlodie… سلام', start: 1.125, end: 3.5 } ],
+    expected: [ { text: 'Ne traversez pas.\nAttendez  ici !', start: 1.125, end: 3.5 }, { text: 'Merci,\tÉlodie… سلام', start: 4.25, end: 6.75 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-subtitles-route.mts:3:915
+✖ SRT import preserves cue text and timestamps with blank CRLF separator lines containing spaces and tabs (0.322565ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+        end: 3.5,
+        start: 1.125,
+  +     text: 'Ne traversez pas.\r\n' +
+  +       'Attendez  ici !\r\n' +
+  +       ' \t\r\n' +
+  +       '\t \r\n' +
+  +       '2\r\n' +
+  +       '00:00:04,250 --> 00:00:06,750\r\n' +
+  +       'Merci,\tÉlodie… سلام'
+  -     text: 'Ne traversez pas.\nAttendez  ici !'
+      },
+  -   {
+  -     end: 6.75,
+  -     start: 4.25,
+  -     text: 'Merci,\tÉlodie… سلام'
+  -   }
+    ]
+  
+      at TestContext.<anonymous> (/workspace/scratch/105cd9664a5e/sutra/scripts/test-subtitles-route.mts:321:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { text: 'Ne traversez pas.\r\nAttendez  ici !\r\n \t\r\n\t \r\n2\r\n00:00:04,250 --> 00:00:06,750\r\nMerci,\tÉlodie… سلام', start: 1.125, end: 3.5 } ],
+    expected: [ { text: 'Ne traversez pas.\nAttendez  ici !', start: 1.125, end: 3.5 }, { text: 'Merci,\tÉlodie… سلام', start: 4.25, end: 6.75 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-subtitles-route.mts:3:915
+✖ SRT import preserves cue text and timestamps with mixed line endings (0.275545ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+        end: 3.5,
+        start: 1.125,
+  +     text: 'Ne traversez pas.\n' +
+  +       'Attendez  ici !\r\n' +
+  +       '\r\n' +
+  +       '2\n' +
+  +       '00:00:04,250 --> 00:00:06,750\n' +
+  +       'Merci,\tÉlodie… سلام'
+  -     text: 'Ne traversez pas.\nAttendez  ici !'
+      },
+  -   {
+  -     end: 6.75,
+  -     start: 4.25,
+  -     text: 'Merci,\tÉlodie… سلام'
+  -   }
+    ]
+  
+      at TestContext.<anonymous> (/workspace/scratch/105cd9664a5e/sutra/scripts/test-subtitles-route.mts:321:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { text: 'Ne traversez pas.\nAttendez  ici !\r\n\r\n2\n00:00:04,250 --> 00:00:06,750\nMerci,\tÉlodie… سلام', start: 1.125, end: 3.5 } ],
+    expected: [ { text: 'Ne traversez pas.\nAttendez  ici !', start: 1.125, end: 3.5 }, { text: 'Merci,\tÉlodie… سلام', start: 4.25, end: 6.75 } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-subtitles-route.mts:3:1242
+✖ a Windows SRT import can be exported without merging cues or changing their timings (0.628626ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+    '1\n' +
+      '00:00:01,125 --> 00:00:03,500\n' +
+  +   'Ne traversez pas.\r\n' +
+  +   'Attendez  ici !\r\n' +
+  +   '\r\n' +
+  +   '2\r\n' +
+  +   '00:00:04,250 --> 00:00:06,750\r\n' +
+  -   'Ne traversez pas.\n' +
+  -   'Attendez  ici !\n' +
+  -   '\n' +
+  -   '2\n' +
+  -   '00:00:04,250 --> 00:00:06,750\n' +
+      'Merci,\tÉlodie… سلام'
+  
+      at TestContext.<anonymous> (/workspace/scratch/105cd9664a5e/sutra/scripts/test-subtitles-route.mts:340:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '1\n00:00:01,125 --> 00:00:03,500\nNe traversez pas.\r\nAttendez  ici !\r\n\r\n2\r\n00:00:04,250 --> 00:00:06,750\r\nMerci,\tÉlodie… سلام',
+    expected: '1\n00:00:01,125 --> 00:00:03,500\nNe traversez pas.\nAttendez  ici !\n\n2\n00:00:04,250 --> 00:00:06,750\nMerci,\tÉlodie… سلام',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

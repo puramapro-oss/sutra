@@ -1,20 +1,13 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Activity, AlertTriangle, Cpu, Zap, Server, RefreshCw } from 'lucide-react'
 import { Skeleton } from '@/components/ui/Skeleton'
-import { Badge } from '@/components/ui/Badge'
-import { cn, formatPrice, formatRelativeDate } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 import GoldCard from '@/components/admin/GoldCard'
 
-interface ServiceUsage {
-  service: string; requests_today: number; requests_week: number; requests_month: number
-  avg_response_ms: number; error_rate: number; cost_today: number; cost_month: number
-  status: 'operational' | 'degraded' | 'down'
-}
-interface ErrorLog { id: string; service: string; message: string; status_code: number | null; created_at: string }
-interface RunPodMetrics { gpu_time_hours: number; cost_per_video_avg: number; total_videos_processed: number; queue_depth: number }
+interface ServiceUsage { service: string; recordedCost30d: number | null }
 
 const SVC: Record<string, { label: string; color: string; icon: typeof Cpu }> = {
   claude: { label: 'Claude AI', color: '#8B5CF6', icon: Zap },
@@ -24,68 +17,49 @@ const SVC: Record<string, { label: string; color: string; icon: typeof Cpu }> = 
   shotstack: { label: 'Shotstack', color: '#F59E0B', icon: Server },
   pexels: { label: 'Pexels', color: '#06B6D4', icon: Server },
 }
-const ST: Record<string, { bg: string; text: string; label: string }> = {
-  operational: { bg: 'bg-emerald-500', text: 'text-emerald-400', label: 'Operationnel' },
-  degraded: { bg: 'bg-amber-500', text: 'text-amber-400', label: 'Degrade' },
-  down: { bg: 'bg-red-500', text: 'text-red-400', label: 'Hors service' },
-}
-const PERIODS = [
-  { id: 'today', label: 'Aujourd\'hui' }, { id: 'week', label: 'Semaine' }, { id: 'month', label: 'Mois' },
-] as const
-
-type Period = typeof PERIODS[number]['id']
 
 export default function AdminApiUsagePage() {
   const [services, setServices] = useState<ServiceUsage[]>([])
-  const [errors, setErrors] = useState<ErrorLog[]>([])
-  const [runpod, setRunpod] = useState<RunPodMetrics | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [period, setPeriod] = useState<Period>('today')
   const [refreshing, setRefreshing] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    try {
-      const res = await fetch('/api/admin/stats')
-      if (!res.ok) throw new Error('Erreur chargement donnees API')
-
-      const stats = await res.json()
-      const totalCost = stats.total_api_costs_30d ?? 0
-
-      const serviceNames = ['claude', 'elevenlabs', 'runpod', 'suno', 'shotstack', 'pexels']
-      const realServices: ServiceUsage[] = serviceNames.map((service) => ({
-        service,
-        requests_today: 0,
-        requests_week: 0,
-        requests_month: 0,
-        avg_response_ms: 0,
-        error_rate: 0,
-        cost_today: 0,
-        cost_month: 0,
-        status: 'operational' as const,
-      }))
-
-      setServices(realServices)
-      setRunpod({
-        gpu_time_hours: 0,
-        cost_per_video_avg: 0,
-        total_videos_processed: stats.total_videos ?? 0,
-        queue_depth: 0,
-      })
-
-      setError(null)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur inconnue')
-    } finally {
-      setLoading(false)
-      setRefreshing(false)
-    }
+  const dataRequest = useRef<AbortController | null>(null)
+  const fetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/admin/stats?type=service_costs', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
+      if (!res.ok) throw new Error('Impossible de charger les coûts enregistrés')
+      const data = await res.json()
+      if (!data.services || typeof data.services !== 'object' || Array.isArray(data.services)) {
+        throw new Error('Coûts indisponibles')
+      }
+      const costs = data.services as Record<string, unknown>
+      const names = [...new Set([...Object.keys(SVC), ...Object.keys(costs)])]
+      commit(() => setServices(names.map(service => {
+        const cost = costs[service]
+        return { service, recordedCost30d: typeof cost === 'number' && Number.isFinite(cost) && cost >= 0 ? cost : null }
+      })))
+      commit(() => setError(null))
+    }).catch(err => {
+      if (!active()) return
+      commit(() => setServices([]))
+      commit(() => setError(err instanceof Error ? err.message : 'Erreur inconnue'))
+    }).finally(() => {
+      commit(() => setLoading(false))
+      commit(() => setRefreshing(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
   useEffect(() => {
     fetchData()
     const interval = setInterval(fetchData, 120000)
-    return () => clearInterval(interval)
+    return () => { clearInterval(interval); dataRequest.current?.abort(); dataRequest.current = null }
   }, [fetchData])
 
   const handleRefresh = () => {
@@ -93,18 +67,16 @@ export default function AdminApiUsagePage() {
     fetchData()
   }
 
-  if (error && services.length === 0) {
+  if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+      <div role="alert" className="flex flex-col items-center justify-center min-h-[50vh] text-center">
         <AlertTriangle className="h-12 w-12 text-red-400 mb-4" />
-        <h2 className="text-lg font-semibold text-white mb-2">Erreur de chargement</h2>
+        <h2 className="text-lg font-semibold text-white mb-2">Mesures indisponibles</h2>
         <p className="text-white/50 mb-4">{error}</p>
-        <button
-          onClick={fetchData}
-          className="px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-colors"
-          data-testid="admin-api-retry"
-        >
-          Reessayer
+        <button onClick={handleRefresh} disabled={refreshing}
+          className="px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 disabled:opacity-50"
+          data-testid="admin-api-retry">
+          {refreshing ? 'Chargement…' : 'Réessayer'}
         </button>
       </div>
     )
@@ -112,178 +84,66 @@ export default function AdminApiUsagePage() {
 
   return (
     <div className="space-y-6" data-testid="admin-api-usage-page">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-white">API Monitoring</h2>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center rounded-xl bg-white/[0.03] border border-white/[0.06] p-0.5">
-            {PERIODS.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => setPeriod(p.id)}
-                className={cn(
-                  'px-3 py-1.5 text-xs font-medium rounded-lg transition-colors',
-                  period === p.id
-                    ? 'bg-amber-500/15 text-amber-400'
-                    : 'text-white/30 hover:text-white/60'
-                )}
-                data-testid={`admin-api-period-${p.id}`}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-white/40 hover:text-amber-400 hover:bg-amber-500/[0.06] transition-colors"
-            data-testid="admin-api-refresh"
-          >
-            <RefreshCw className={cn('h-3.5 w-3.5', refreshing && 'animate-spin')} />
-          </button>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-bold text-white">Utilisation des API</h2>
+          <p className="text-xs text-white/50 mt-1">Coûts enregistrés — 30 derniers jours</p>
         </div>
+        <button onClick={handleRefresh} disabled={refreshing} aria-label="Actualiser les coûts enregistrés"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/60 hover:text-amber-400 disabled:opacity-50"
+          data-testid="admin-api-refresh">
+          <RefreshCw className={cn('h-4 w-4', refreshing && 'animate-spin')} />
+          Actualiser
+        </button>
+      </div>
+
+      <div role="status" className="rounded-xl border border-white/20 bg-white/5 p-4 text-sm text-white/70" data-testid="admin-api-metrics-unavailable">
+        Seules les estimations de coût présentes dans le journal des API sont disponibles ici.
+        Une valeur absente ne permet de conclure ni à une absence d&apos;usage ni au bon fonctionnement d&apos;un service.
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {loading ? (
-          Array.from({ length: 6 }).map((_, i) => (
-            <Skeleton key={i} height={160} width="100%" rounded="xl" />
-          ))
-        ) : (
-          services.map((s, idx) => {
-            const config = SVC[s.service] ?? { label: s.service, color: '#8B5CF6', icon: Server }
-            const status = ST[s.status] ?? ST.operational
-            const Icon = config.icon
-
-            return (
-              <motion.div
-                key={s.service}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
-              >
-                <GoldCard className="p-4" data-testid={`admin-api-service-${s.service}`}>
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="h-8 w-8 rounded-lg flex items-center justify-center"
-                        style={{ backgroundColor: `${config.color}15` }}
-                      >
-                        <Icon className="h-4 w-4" style={{ color: config.color }} />
-                      </div>
-                      <span className="text-sm font-semibold text-white/90">{config.label}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className={cn('h-2 w-2 rounded-full', status.bg)} />
-                      <span className={cn('text-xs', status.text)}>{status.label}</span>
-                    </div>
+        {loading ? Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} height={190} width="100%" rounded="xl" />) : services.map((service, idx) => {
+          const config = Object.hasOwn(SVC, service.service) ? SVC[service.service] : { label: service.service, color: '#8B5CF6', icon: Server }
+          const Icon = config.icon
+          return (
+            <motion.div key={service.service} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.05 }}>
+              <GoldCard className="p-4" data-testid={`admin-api-service-${service.service}`}>
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <Icon className="h-4 w-4" style={{ color: config.color }} />
+                    <span className="text-sm font-semibold text-white/90">{config.label}</span>
                   </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <p className="text-xs text-white/30">Requetes</p>
-                      <p className="text-lg font-bold text-white/80">
-                        {period === 'today' ? s.requests_today : period === 'week' ? s.requests_week : s.requests_month}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/30">Latence moy.</p>
-                      <p className="text-lg font-bold text-white/80">
-                        {s.avg_response_ms > 0 ? `${s.avg_response_ms}ms` : '--'}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/30">Taux erreur</p>
-                      <p className={cn(
-                        'text-lg font-bold',
-                        s.error_rate > 5 ? 'text-red-400' : s.error_rate > 1 ? 'text-amber-400' : 'text-emerald-400'
-                      )}>
-                        {s.error_rate.toFixed(1)}%
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-white/30">Cout</p>
-                      <p className="text-lg font-bold text-amber-400">
-                        {formatPrice(period === 'today' ? s.cost_today : s.cost_month)}
-                      </p>
-                    </div>
-                  </div>
-                </GoldCard>
-              </motion.div>
-            )
-          })
-        )}
+                  <span className="text-xs text-white/50">État non vérifié</span>
+                </div>
+                <dl className="grid grid-cols-2 gap-3 text-sm">
+                  <div><dt className="text-white/40">Requêtes</dt><dd className="text-white/60">Non disponible</dd></div>
+                  <div><dt className="text-white/40">Latence moyenne</dt><dd className="text-white/60">Non disponible</dd></div>
+                  <div><dt className="text-white/40">Taux d&apos;erreur</dt><dd className="text-white/60">Non disponible</dd></div>
+                  <div><dt className="text-white/40">Coût estimé sur 30 j</dt><dd className={service.recordedCost30d === null ? 'text-white/60' : 'text-amber-400'}>
+                    {service.recordedCost30d === null ? 'Non disponible' : formatPrice(service.recordedCost30d)}
+                  </dd></div>
+                </dl>
+              </GoldCard>
+            </motion.div>
+          )
+        })}
       </div>
 
       <GoldCard className="p-5" data-testid="admin-api-runpod">
-        <div className="flex items-center gap-2 mb-4">
-          <Cpu className="h-4 w-4 text-amber-400" />
-          <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider">RunPod GPU</h3>
-        </div>
-        {loading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} height={70} width="100%" rounded="xl" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              { label: 'Temps GPU', value: `${runpod?.gpu_time_hours ?? 0}h`, color: 'text-white' },
-              { label: 'Cout / video', value: formatPrice(runpod?.cost_per_video_avg ?? 0), color: 'text-amber-400' },
-              { label: 'Videos traitees', value: runpod?.total_videos_processed ?? 0, color: 'text-white' },
-              { label: 'File d\'attente', value: runpod?.queue_depth ?? 0, color: (runpod?.queue_depth ?? 0) > 10 ? 'text-amber-400' : 'text-emerald-400' },
-            ].map((m, i) => (
-              <div key={i} className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
-                <p className="text-xs text-white/40 mb-1">{m.label}</p>
-                <p className={cn('text-xl font-bold', m.color)}>{m.value}</p>
-              </div>
-            ))}
-          </div>
-        )}
+        <h3 className="text-sm font-semibold text-amber-400 mb-4">RunPod GPU</h3>
+        <dl className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+          {['Temps GPU', 'Coût par vidéo', 'Vidéos traitées', 'File d’attente'].map(label => (
+            <div key={label} className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
+              <dt className="text-white/40 mb-1">{label}</dt><dd className="text-white/60">Non disponible</dd>
+            </div>
+          ))}
+        </dl>
       </GoldCard>
 
       <GoldCard className="p-5" data-testid="admin-api-errors">
-        <div className="flex items-center gap-2 mb-4">
-          <AlertTriangle className="h-4 w-4 text-amber-400" />
-          <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider">Erreurs recentes</h3>
-        </div>
-        {loading ? (
-          <div className="space-y-2">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} height={48} width="100%" rounded="lg" />
-            ))}
-          </div>
-        ) : errors.length === 0 ? (
-          <div className="flex flex-col items-center py-12">
-            <Zap className="h-10 w-10 text-emerald-400/20 mb-2" />
-            <p className="text-sm text-white/30">Aucune erreur recente</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/[0.06]">
-                  <th className="text-left px-3 py-2 text-xs font-medium text-white/30 uppercase">Service</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-white/30 uppercase">Erreur</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-white/30 uppercase">Code</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-white/30 uppercase">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {errors.map((err) => (
-                  <tr key={err.id} className="border-b border-white/[0.04]">
-                    <td className="px-3 py-2">
-                      <Badge variant="error" size="sm">{err.service}</Badge>
-                    </td>
-                    <td className="px-3 py-2 text-white/60 truncate max-w-xs">{err.message}</td>
-                    <td className="px-3 py-2 text-white/40 font-mono">{err.status_code ?? '--'}</td>
-                    <td className="px-3 py-2 text-white/30 text-xs">{formatRelativeDate(err.created_at)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        <h3 className="text-sm font-semibold text-amber-400 mb-3">Erreurs récentes</h3>
+        <p className="text-sm text-white/60">Le journal des erreurs n&apos;est pas disponible dans cette vue. L&apos;absence de liste ne confirme pas l&apos;absence d&apos;erreurs.</p>
       </GoldCard>
     </div>
   )

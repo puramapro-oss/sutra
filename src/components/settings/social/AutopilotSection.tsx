@@ -2,29 +2,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Zap, Check, MessageSquare, Hash, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Button from '@/components/ui/Button'
-import { PLATFORM_INFO, type SocialPlatform } from '@/lib/zernio'
 import { ToggleRow } from './ToggleRow'
-
-const PLATFORMS_ORDER: SocialPlatform[] = [
-  'tiktok',
-  'youtube',
-  'instagram',
-  'facebook',
-  'x',
-  'linkedin',
-  'pinterest',
-  'reddit',
-  'threads',
-  'snapchat',
-  'tumblr',
-  'mastodon',
-  'bluesky',
-  'vimeo',
-]
+import { AccountSelection } from './AccountSelection'
+import { isAccountAvailable, type SocialAccount } from './accounts'
 
 export interface AutopilotConfig {
   enabled: boolean
   default_platforms: string[]
+  publish_account_ids: string[]
   auto_caption: boolean
   auto_hashtags: boolean
   caption_style: 'engaging' | 'professional' | 'casual' | 'educational' | 'humorous'
@@ -34,23 +19,23 @@ export interface AutopilotConfig {
 
 export interface AutopilotSectionProps {
   config: AutopilotConfig | null
-  accountsByPlatform: Partial<Record<SocialPlatform, unknown>>
-  connectedCount: number
+  accounts: SocialAccount[]
   savingAutopilot: boolean
   onUpdateConfig: <K extends keyof AutopilotConfig>(key: K, value: AutopilotConfig[K]) => void
-  onTogglePlatformDefault: (platform: SocialPlatform) => void
+  onToggleAccount: (accountId: string) => void
   onSave: () => void
 }
 
 export function AutopilotSection({
   config,
-  accountsByPlatform,
-  connectedCount,
+  accounts,
   savingAutopilot,
   onUpdateConfig,
-  onTogglePlatformDefault,
+  onToggleAccount,
   onSave,
 }: AutopilotSectionProps) {
+  const unavailableSelection = config?.publish_account_ids.some(id => !accounts.some(account => account.id === id && isAccountAvailable(account))) ?? false
+  const missingSelection = config?.enabled && config.publish_account_ids.length === 0
   return (
     <motion.div
       id="autopilot"
@@ -67,7 +52,7 @@ export function AutopilotSection({
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-white">Autopilot IA</h2>
             <p className="text-sm text-white/60">
-              Publication automatique multi-reseaux avec captions et hashtags generes par Claude.
+              Publication automatique sur les comptes choisis, avec légendes et hashtags.
             </p>
           </div>
         </div>
@@ -76,11 +61,14 @@ export function AutopilotSection({
           type="button"
           onClick={() => onUpdateConfig('enabled', !(config?.enabled ?? false))}
           data-testid="toggle-autopilot"
+          disabled={!config || savingAutopilot}
+          role="switch"
+          aria-checked={config?.enabled ?? false}
           className={cn(
             'relative inline-flex h-7 w-12 items-center rounded-full transition-colors flex-shrink-0',
             config?.enabled ? 'bg-violet-500' : 'bg-white/10'
           )}
-          aria-label="Activer l&apos;autopilot"
+          aria-label="Activer l’autopilot"
         >
           <motion.span
             animate={{ x: config?.enabled ? 22 : 4 }}
@@ -99,41 +87,13 @@ export function AutopilotSection({
             transition={{ duration: 0.3 }}
             className="overflow-hidden"
           >
-            <div className="space-y-6 pt-2">
+            <fieldset disabled={savingAutopilot} className="min-w-0 space-y-6 pt-2">
+              <legend className="sr-only">Réglages de l’autopilot</legend>
               <div>
-                <label className="block text-sm font-semibold text-white mb-3">
-                  Plateformes par defaut
-                </label>
-                {connectedCount === 0 ? (
-                  <p className="text-xs text-white/50 italic">
-                    Aucun compte connecte. Connecte au moins un reseau social ci-dessus.
-                  </p>
-                ) : (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                    {PLATFORMS_ORDER.filter((p) => accountsByPlatform[p]).map((p) => {
-                      const info = PLATFORM_INFO[p]
-                      const checked = config.default_platforms.includes(p)
-                      return (
-                        <button
-                          key={p}
-                          type="button"
-                          onClick={() => onTogglePlatformDefault(p)}
-                          data-testid={`autopilot-platform-${p}`}
-                          className={cn(
-                            'flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-all',
-                            checked
-                              ? 'bg-violet-500/15 border-violet-500/50 text-white'
-                              : 'bg-white/[0.02] border-white/[0.06] text-white/70 hover:border-white/[0.12]'
-                          )}
-                        >
-                          <span aria-hidden>{info.icon}</span>
-                          <span className="truncate">{info.label}</span>
-                          {checked && <Check className="w-3.5 h-3.5 ml-auto text-violet-300" />}
-                        </button>
-                      )
-                    })}
-                  </div>
-                )}
+                <h3 className="block text-sm font-semibold text-white mb-3">Comptes de publication</h3>
+                <AccountSelection accounts={accounts} selectedAccountIds={config.publish_account_ids}
+                  onToggle={onToggleAccount} disabled={savingAutopilot} testIdPrefix="autopilot-account" />
+                {missingSelection && <p role="status" className="mt-3 text-sm text-amber-200">Choisis au moins un compte pour activer la publication automatique.</p>}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -191,7 +151,7 @@ export function AutopilotSection({
                 <input
                   id="max-hashtags"
                   type="range"
-                  min={1}
+                  min={0}
                   max={30}
                   value={config.max_hashtags}
                   onChange={(e) => onUpdateConfig('max_hashtags', Number(e.target.value))}
@@ -199,7 +159,7 @@ export function AutopilotSection({
                   className="w-full accent-violet-500"
                 />
               </div>
-            </div>
+            </fieldset>
           </motion.div>
         )}
       </AnimatePresence>
@@ -210,7 +170,7 @@ export function AutopilotSection({
           size="md"
           loading={savingAutopilot}
           onClick={onSave}
-          disabled={!config}
+          disabled={!config || savingAutopilot || !!missingSelection || (config.enabled && unavailableSelection)}
           data-testid="save-autopilot"
         >
           <Check className="w-4 h-4" />

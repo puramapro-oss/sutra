@@ -4,12 +4,14 @@ import { Badge } from '@/components/ui/Badge'
 
 export interface ConnectionSummaryProps {
   connectedCount: number
+  connectedPlatformCount: number
   totalPlatforms: number
   progressPct: number
 }
 
 export function ConnectionSummary({
   connectedCount,
+  connectedPlatformCount,
   totalPlatforms,
   progressPct,
 }: ConnectionSummaryProps) {
@@ -28,8 +30,9 @@ export function ConnectionSummary({
           <div>
             <p className="text-sm text-white/60">Statut de connexion</p>
             <p className="text-lg font-semibold" data-testid="connected-count">
-              {connectedCount} / {totalPlatforms} comptes connectes
+              {connectedCount} compte{connectedCount > 1 ? 's' : ''} connecté{connectedCount > 1 ? 's' : ''}
             </p>
+            <p className="text-xs text-white/70">Sur {connectedPlatformCount} / {totalPlatforms} réseaux</p>
           </div>
         </div>
         <Badge variant="premium">{progressPct}%</Badge>

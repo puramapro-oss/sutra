@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Zap, Plus } from 'lucide-react'
 import { toast } from 'sonner'
@@ -19,7 +19,12 @@ import type { AutopilotSeries } from '@/types'
 const supabase = createClient()
 
 export default function AutopilotPage() {
-  const { profile, plan, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <AutopilotPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function AutopilotPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, plan, loading: authLoading } = auth
 
   const [series, setSeries] = useState<AutopilotSeries[]>([])
   const [loading, setLoading] = useState(true)
@@ -39,27 +44,41 @@ export default function AutopilotPage() {
   const canCreate = series.length < limits.autopilot
   const hasAutopilot = limits.autopilot > 0
 
-  const fetchSeries = useCallback(async () => {
-    if (!profile?.id) return
-    setLoading(true)
-    try {
-      const { data } = await supabase
+  const dataRequest = useRef<AbortController | null>(null)
+  const userId = profile?.id
+  const loadFetchSeries = useCallback(() => {
+    if (!userId) return
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return Promise.resolve(supabase
         .from('autopilot_series')
         .select('*')
-        .eq('user_id', profile.id)
-        .order('created_at', { ascending: false })
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false }).abortSignal(controller.signal)).then(async ({ data }) => {
+      if (!active()) return
+      if (data) commit(() => setSeries(data as AutopilotSeries[]))
+    }).catch(() => {
+      if (!active()) return
+      commit(() => setSeries([]))
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
+  }, [userId])
 
-      if (data) setSeries(data as AutopilotSeries[])
-    } catch {
-      setSeries([])
-    } finally {
-      setLoading(false)
-    }
-  }, [profile?.id])
+  const fetchSeries = useCallback(() => {
+    setLoading(true)
+    return loadFetchSeries()
+  }, [loadFetchSeries])
 
   useEffect(() => {
-    if (!authLoading && profile?.id) fetchSeries()
-  }, [authLoading, profile?.id, fetchSeries])
+    if (!authLoading && profile?.id) loadFetchSeries()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [authLoading, profile?.id, loadFetchSeries])
 
   const resetForm = useCallback(() => {
     setFormName('')

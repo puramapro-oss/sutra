@@ -13,6 +13,8 @@ export function ToggleRow({ label, icon, checked, onChange, testId }: ToggleRowP
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={checked}
       onClick={() => onChange(!checked)}
       data-testid={testId}
       className={cn(

@@ -21,6 +21,36 @@ test('legacy track recovery fails closed on missing, ambiguous or different scen
     assert.throws(() => editorExportScenes(editorScenes(scenes, timeline)), /sources/)
   }
 })
+test('missing or malformed persisted sources cannot reuse an earlier scene export', () => {
+  const previouslyEdited = editorScenes(scenes, { sutraEditorClips: sources })
+  for (const invalid of [null, {}, { url: 'https://' }, { url: 'file:///missing' }]) {
+    const recovered = editorScenes(previouslyEdited, { sutraEditorClips: [sources[0], invalid] })
+    assert.deepEqual(recovered[0], previouslyEdited[0])
+    assert.equal(recovered[1].export_media, undefined)
+    assert.throws(() => editorExportScenes(recovered), /sources/)
+  }
+  assert.deepEqual(editorExportScenes(previouslyEdited), sources)
+})
+test('malformed legacy track collections still allow the editor to open', () => {
+  const track = { clips: sources.map((s, i) => ({ asset: { src: s.url, type: i ? 'image' : 'video' }, start: i * 3, length: s.duration })) }
+  for (const tracks of [{}, [null], [{ clips: { length: 2 } }], [{ clips: [null, null] }]]) {
+    const recovered = editorScenes(scenes, { timeline: { tracks } })
+    assert.deepEqual(recovered, scenes)
+    assert.throws(() => editorExportScenes(recovered), /sources/)
+  }
+  const recovered = editorScenes(scenes, { timeline: { tracks: [null, track] } })
+  assert.deepEqual(editorExportScenes(recovered), sources)
+})
+test('a stored source keeps its origin and the renderer can recognize older images', () => {
+  const clips = [{ url: 'https://media.invalid/picture.jpg?size=720', duration: 4, type: 'ia' }]
+  const recovered = editorExportScenes(editorScenes([scenes[1]], { sutraEditorClips: clips }))
+  assert.equal(recovered[0].type, 'ia')
+  const tracks = buildTracks({ clips: recovered, voiceUrl: '', musicUrl: '', musicVolume: 0,
+    format: '16:9', quality: '720p', subtitles: [], transitions: 'none' })
+  assert.deepEqual(tracks.flatMap(track => track.clips.map(clip => clip.asset)), [
+    { type: 'image', src: clips[0].url },
+  ])
+})
 test('voice gain reaches both renderers and changes the durable render identity', () => {
   const job = { clips: sources, voiceUrl: 'https://media.invalid/voice.mp3', musicUrl: '', musicVolume: 0, voiceVolume: .8, format: '16:9', quality: '720p', subtitles: [], transitions: 'none' }
   const track = buildTracks(job).flatMap(t => t.clips).find(c => (c.asset as {type:string}).type === 'audio')

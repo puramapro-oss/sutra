@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { spawnSync, execFileSync } from 'node:child_process'
 import { join, dirname } from 'node:path'
 import pg from 'pg'
+import { createDrainingPool } from '../t07-autonomy-integrated-20261020/draining-pool.mjs'
 import { setupSchema } from '../../src/data/setup-schema'
 assert.equal(process.env.SUTRA_DISPOSABLE_DB, '1'); assert.equal(process.env.PGHOST,'127.0.0.1')
 const options = { host:'127.0.0.1',port:Number(process.env.PGPORT),user:'fixture',database:'t03_scheduler',options:'-c search_path=sutra,public' }
@@ -13,6 +14,12 @@ const source = (name: string) => readFileSync(name,'utf8')
 const migration = 'migrations/20261020_t03_auto_scheduler.sql', rollback = 'migrations/20261020_t03_auto_scheduler.rollback.sql'
 const table = (text: string, name: string) => { const a=text.indexOf(`CREATE TABLE IF NOT EXISTS sutra.${name} (`), b=text.indexOf('\n);',a); assert.ok(a>=0&&b>a); return text.slice(a,b+3) }
 let pool: pg.Pool
+let closePool: () => Promise<void>
+const openPool = () => {
+  const database = createDrainingPool({ ...options, max: 16 })
+  pool = database.pool
+  closePool = database.close
+}
 const sql = (text: string,args: unknown[] = []) => pool.query(text,args)
 let fault = '', submissions = 0, publications = 0
 let lastParams: Record<string, unknown>
@@ -70,7 +77,7 @@ before(async()=>{
   const admin=new pg.Client({...options,database:'postgres'});await admin.connect()
   for(const role of ['anon','authenticated','service_role']) await admin.query(`DO $$ BEGIN IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='${role}') THEN CREATE ROLE ${role}; END IF; END $$`)
   await admin.query('CREATE DATABASE t03_scheduler');await admin.query('CREATE DATABASE t03_scheduler_restore');await admin.end()
-  pool=new pg.Pool({...options,max:16})
+  openPool()
   await sql(`CREATE SCHEMA sutra; CREATE SCHEMA auth; CREATE TABLE auth.users(id uuid PRIMARY KEY); CREATE TABLE profiles(id uuid PRIMARY KEY);
     CREATE TABLE sutra_auto_themes(id uuid PRIMARY KEY,user_id uuid,times_used int DEFAULT 0,last_used_at timestamptz);
     CREATE TABLE sutra_auto_memory(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid,memory_type text,content text,importance numeric,related_video_id uuid);`)
@@ -100,7 +107,7 @@ after(async()=>{
   const budget=(await sql('SELECT coalesce(sum(reserved),0)::int AS reserved,coalesce(sum(completed),0)::int AS consumed,coalesce(sum(released),0)::int AS released FROM video_quota_counters')).rows[0]
   assert.equal(budget.reserved,0);assert.equal(publications,0)
   writeFileSync(join(process.env.T03_PROOF_DIR!,'recovery-settlement.json'),JSON.stringify({budget,submissions,providerCalls:0,publications},null,2)+'\n')
-  await pool.end()
+  await closePool()
 })
 
 test('R107: the actual cron recovers noon after a 20-hour interruption',async()=>{
@@ -145,9 +152,9 @@ test('read outage gives 503 and an inactive/edit race cannot submit a stale sche
 test('bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart',async()=>{
   const user=await configure('2026-11-01T00:00:00Z');at('2026-11-06T20:00:00Z')
   assert.equal((await tick()).status,'partial_failure');assert.equal((await jobs(user)).length,1)
-  const saved=await cursor(user);await pool.end()
+  const saved=await cursor(user);await closePool()
   const r=spawnSync(join(process.env.T03_PG_BIN!,'pg_ctl'),['-D',process.env.T03_PGDATA!,'-l',join(dirname(process.env.T03_PGDATA!),'restart.log'),'-m','fast','-w','restart'],{encoding:'utf8',timeout:30000})
-  assert.equal(r.status,0);pool=new pg.Pool({...options,max:16});assert.equal(await cursor(user),saved)
+  assert.equal(r.status,0);openPool();assert.equal(await cursor(user),saved)
   for(let i=0;i<5;i++) await tick()
   assert.equal((await jobs(user)).length,6);assert.equal((await tick()).status,'ok');assert.equal((await jobs(user)).length,6)
 })

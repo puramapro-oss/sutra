@@ -67,7 +67,7 @@ export async function startWire(user) {
           if (updates) {
             assert.equal(name, 'sutra_auto_config')
             const entries = Object.entries(updates).filter(([key]) => key !== 'user_id')
-            assert.ok(entries.every(([key]) => ['schedules', 'is_active'].includes(key)))
+            assert.ok(entries.every(([key]) => ['schedules', 'is_active', 'auto_publish', 'require_approval_before_publish'].includes(key)))
             statement = `UPDATE ${name} SET ` + entries.map(([key, value]) => `${key}=${bind(key === 'schedules' ? JSON.stringify(value) : value)}`).join(',')
             if (upsert) filters.push(['user_id', updates.user_id])
           }
