@@ -1,0 +1,61 @@
+name: SUTRA mobile verification
+
+on:
+  pull_request:
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/mobile-verify.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  native-bundles:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: mobile
+    env:
+      EXPO_OFFLINE: '1'
+      EXPO_NO_TELEMETRY: '1'
+      EXPO_NO_DOTENV: '1'
+      EXPO_PUBLIC_API_URL: https://sutra-test.invalid
+      EXPO_PUBLIC_SUPABASE_URL: https://db.fixture.invalid
+      EXPO_PUBLIC_SUPABASE_ANON_KEY: fixture-anon
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm exec -- tsc --noEmit
+      - run: npm exec -- expo install --check
+      - name: Export and check the native route registry
+        run: |
+          for platform in ios android; do
+            destination="$RUNNER_TEMP/sutra-$platform"
+            npm exec -- expo export --platform "$platform" --max-workers 1 --output-dir "$destination"
+            node scripts/check-native-export.mjs "$destination" "$platform"
+          done
+      - name: Check the configured appearance in generated native projects
+        run: |
+          npm exec -- expo prebuild --no-install --template ./node_modules/expo/template.tgz
+          python3 - <<'PY'
+          import json
+          import plistlib
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          config = json.loads(Path('app.json').read_text())['expo']
+          resources = ET.parse('android/app/src/main/res/values/strings.xml')
+          android_style = resources.findtext("string[@name='expo_system_ui_user_interface_style']")
+          assert android_style == config['android'].get('userInterfaceStyle', config['userInterfaceStyle']), android_style
+          plist = plistlib.loads(Path('ios/SUTRA/Info.plist').read_bytes())
+          ios_style = config['ios'].get('userInterfaceStyle', config['userInterfaceStyle'])
+          assert plist['UIUserInterfaceStyle'].lower() == ios_style, plist['UIUserInterfaceStyle']
+          PY
