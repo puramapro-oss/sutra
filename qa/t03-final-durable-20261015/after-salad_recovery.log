@@ -1,0 +1,26 @@
+(node:10035) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ remote timeout: acknowledged intent survives 12 restarts, no second POST or paid fallback (23.543417ms)
+✔ remote worker-disconnect: acknowledged intent survives 12 restarts, no second POST or paid fallback (10.172542ms)
+✔ remote accepted-202: acknowledged intent survives 12 restarts, no second POST or paid fallback (13.636167ms)
+✔ lease expires inside intent RPC: stale worker never submits; new owner may submit once (1.186625ms)
+✔ intent committed but acknowledgement lost: neither old nor replacement worker submits (0.704167ms)
+✔ replacement worker while remote POST is pending cannot resubmit; late owner cannot finalize (2.044375ms)
+✔ 24 concurrent claimants exercise queue RPC contract; only granted snapshot enters worker (2.178167ms)
+✔ unconfirmed intent receipt false prevents any submission (0.334375ms)
+✔ unconfirmed intent receipt null prevents any submission (0.300458ms)
+✔ unconfirmed intent receipt "true" prevents any submission (0.324333ms)
+✔ unconfirmed intent receipt {"message":"fixture unavailable","code":"fixture"} prevents any submission (0.30375ms)
+✔ persisted scene survives lost stage:scenes receipt; replay retains independent checkpoints (1.854ms)
+✔ persisted scene survives lost stage:images receipt; replay retains independent checkpoints (0.866583ms)
+✔ persisted scene survives lost result receipt; replay retains independent checkpoints (0.77675ms)
+✔ event acknowledgement loss propagates; replay is idempotent and does not regenerate cached scene (1.204792ms)
+✔ heartbeat and snapshot ownership refusals stop the real executor before any external work (0.204625ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1159.328125

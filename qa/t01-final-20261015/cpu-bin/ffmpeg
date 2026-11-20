@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+# CI fixture shim: CPU encoder inventory and controllable discovery latency only.
+import os, sys, time
+args = sys.argv[1:]
+if '-encoders' in args:
+    time.sleep(float(os.environ.get('T05_ENCODER_DELAY_MS', '0')) / 1000)
+    print(' V..... libx264 CPU-only fixture inventory')
+    sys.exit(0)
+if any(any(name in arg for name in ('videotoolbox', 'nvenc', 'qsv')) for arg in args):
+    sys.exit(99)
+binary = '/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg' if sys.platform == 'darwin' else '/usr/bin/ffmpeg'
+os.execv(binary, ['ffmpeg', *args])

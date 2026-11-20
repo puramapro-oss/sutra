@@ -16,7 +16,7 @@ export default function CommissionsHistory({ commissions }: CommissionsHistoryPr
       <Card>
         <CardContent className="py-8 text-center">
           <DollarSign className="h-8 w-8 text-white/15 mx-auto mb-2" />
-          <p className="text-sm text-white/30">Aucune commission pour le moment</p>
+          <p className="text-sm text-white/60">Aucune commission pour le moment</p>
         </CardContent>
       </Card>
     )

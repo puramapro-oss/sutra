@@ -1,0 +1,94 @@
+{
+  "serverMode": "development",
+  "productionBenchmark": false,
+  "axeIncluded": true,
+  "cacheAndCompilationNotNormalized": true,
+  "pageMetrics": [
+    {
+      "name": "local-page-metrics",
+      "path": "/signup",
+      "width": 375,
+      "responseMs": 674,
+      "domContentLoadedMs": 713,
+      "resourceCount": 16,
+      "transferredBytes": 5290494,
+      "decodedBytes": 23157046
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/signup",
+      "width": 1440,
+      "responseMs": 105,
+      "domContentLoadedMs": 145,
+      "resourceCount": 15,
+      "transferredBytes": 5290178,
+      "decodedBytes": 23157030
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/login",
+      "width": 375,
+      "responseMs": 37,
+      "domContentLoadedMs": 138,
+      "resourceCount": 15,
+      "transferredBytes": 5279776,
+      "decodedBytes": 23108317
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/login",
+      "width": 1440,
+      "responseMs": 31,
+      "domContentLoadedMs": 54,
+      "resourceCount": 15,
+      "transferredBytes": 5279781,
+      "decodedBytes": 23108317
+    }
+  ],
+  "requestsAndRecovery": [
+    {
+      "name": "signup-375-double-submit",
+      "calls": 1,
+      "recoveryMs": 1184
+    },
+    {
+      "name": "signup-1440-double-submit",
+      "calls": 1,
+      "recoveryMs": 1170
+    },
+    {
+      "name": "login-375-double-submit",
+      "calls": 1,
+      "recoveryMs": 1172
+    },
+    {
+      "name": "login-1440-double-submit",
+      "calls": 1,
+      "recoveryMs": 1169
+    },
+    {
+      "name": "schedule-375-double-submit",
+      "calls": 1,
+      "draftRetained": true
+    },
+    {
+      "name": "schedule-1440-double-submit",
+      "calls": 1,
+      "draftRetained": true
+    },
+    {
+      "name": "save-timeout",
+      "timeoutMs": 10894,
+      "requests": 1
+    },
+    {
+      "name": "social-timeout",
+      "elapsedMs": 10896
+    },
+    {
+      "name": "stalled response recovery",
+      "elapsedMs": 10899
+    }
+  ],
+  "interpretation": "Fresh measurements only; no comparable before/after load gain. recoveryMs contains an explicit 800ms harness wait. Suspended-download timeout uses the browser clock, not a measured 30s wait."
+}

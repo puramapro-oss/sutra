@@ -1,0 +1,151 @@
+{
+  "target": {
+    "name": "GET",
+    "type": "",
+    "filePath": "src/app/api/social/autopilot/route.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 461,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "CRITICAL",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 229,
+    "processes_affected": 2,
+    "modules_affected": 20
+  },
+  "byDepthCounts": {
+    "1": 229,
+    "2": 192,
+    "3": 40
+  },
+  "affected_processes": [
+    {
+      "name": "LotteryScreen",
+      "type": "Function",
+      "filePath": "mobile/app/lottery/index.tsx",
+      "affected_process_count": 2,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "Submit → Blocked",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 21,
+      "impact": "direct"
+    },
+    {
+      "name": "Salad",
+      "hits": 15,
+      "impact": "direct"
+    },
+    {
+      "name": "T01-final-20261015",
+      "hits": 15,
+      "impact": "direct"
+    },
+    {
+      "name": "Callback",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_431",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_462",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_463",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Lottery",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Browser-harness",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "T01-consolidation-20261014",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_425",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_432",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_434",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Hooks",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Layout",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Publish",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Stripe",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "T03-salad-recovery-20261014",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "T07-frontend-journey-20261014",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Ui",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

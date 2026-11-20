@@ -1,0 +1,71 @@
+[
+  {
+    "target": "generateMusic",
+    "risk": "CRITICAL",
+    "summary": {
+      "direct": 5,
+      "processes_affected": 6,
+      "modules_affected": 5
+    },
+    "staleness": {
+      "status": "behind",
+      "commitsBehind": 6,
+      "hint": "\u26a0\ufe0f Index is 6 commits behind HEAD. Run analyze tool to update."
+    },
+    "riskNote": null,
+    "direct_callers": [
+      {
+        "name": "POST",
+        "filePath": "src/app/api/music/generate/route.ts"
+      },
+      {
+        "name": "generateMusicWithProvenance",
+        "filePath": "src/lib/fallbacks.ts"
+      },
+      {
+        "name": "music",
+        "filePath": "src/lib/production-pipeline.ts"
+      },
+      {
+        "name": "generateAutoVideoAssets",
+        "filePath": "src/lib/sutra-auto.ts"
+      },
+      {
+        "name": "executeCreateJob",
+        "filePath": "src/lib/video-pipeline.ts"
+      }
+    ]
+  },
+  {
+    "target": "providerConfigStatus",
+    "risk": "UNKNOWN",
+    "summary": {
+      "direct": 0,
+      "processes_affected": 0,
+      "modules_affected": 0
+    },
+    "staleness": {
+      "status": "behind",
+      "commitsBehind": 6,
+      "hint": "\u26a0\ufe0f Index is 6 commits behind HEAD. Run analyze tool to update."
+    },
+    "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+    "direct_callers": []
+  },
+  {
+    "target": "PROVIDERS",
+    "risk": "UNKNOWN",
+    "summary": {
+      "direct": 0,
+      "processes_affected": 0,
+      "modules_affected": 0
+    },
+    "staleness": {
+      "status": "behind",
+      "commitsBehind": 6,
+      "hint": "\u26a0\ufe0f Index is 6 commits behind HEAD. Run analyze tool to update."
+    },
+    "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+    "direct_callers": []
+  }
+]

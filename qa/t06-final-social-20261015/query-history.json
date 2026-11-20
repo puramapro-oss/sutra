@@ -1,0 +1,194 @@
+{
+  "processes": [
+    {
+      "id": "proc_130_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.096,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_151_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.096,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_168_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.096,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/logger.ts:logApiCall",
+      "name": "logApiCall",
+      "filePath": "src/lib/logger.ts",
+      "startLine": 3,
+      "endLine": 25,
+      "module": "Stripe",
+      "process_id": "proc_130_get",
+      "step_index": 2
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Const:scripts/test-security-rls.mjs:audit",
+      "name": "audit",
+      "filePath": "scripts/test-security-rls.mjs",
+      "startLine": 27,
+      "endLine": 27
+    },
+    {
+      "id": "Const:scripts/test-security-rls.mjs:social",
+      "name": "social",
+      "filePath": "scripts/test-security-rls.mjs",
+      "startLine": 30,
+      "endLine": 30
+    },
+    {
+      "id": "Const:scripts/test-security-rls.mjs:socialPolicy",
+      "name": "socialPolicy",
+      "filePath": "scripts/test-security-rls.mjs",
+      "startLine": 32,
+      "endLine": 32
+    },
+    {
+      "id": "Const:scripts/test-t02-salad-security.mts:logs",
+      "name": "logs",
+      "filePath": "scripts/test-t02-salad-security.mts",
+      "startLine": 15,
+      "endLine": 15
+    },
+    {
+      "id": "Function:scripts/test-t02-salad-security.mts:logVideoGeneration",
+      "name": "logVideoGeneration",
+      "filePath": "scripts/test-t02-salad-security.mts",
+      "startLine": 47,
+      "endLine": 47
+    },
+    {
+      "id": "Function:scripts/test-t02-salad-security.mts:adapterFixture.log@187:15",
+      "name": "log",
+      "filePath": "scripts/test-t02-salad-security.mts",
+      "startLine": 188,
+      "endLine": 188
+    },
+    {
+      "id": "Const:scripts/test-ui-isolated.mjs:log",
+      "name": "log",
+      "filePath": "scripts/test-ui-isolated.mjs",
+      "startLine": 81,
+      "endLine": 81
+    },
+    {
+      "id": "Const:scripts/test-ui-isolated.mjs:build",
+      "name": "build",
+      "filePath": "scripts/test-ui-isolated.mjs",
+      "startLine": 94,
+      "endLine": 94
+    },
+    {
+      "id": "Function:scripts/test-ui-isolated.mjs:context",
+      "name": "context",
+      "filePath": "scripts/test-ui-isolated.mjs",
+      "startLine": 110,
+      "endLine": 132,
+      "module": "Ui-isolated"
+    },
+    {
+      "id": "Property:src/lib/sutra-auto-types.ts:AutoConfig.is_active",
+      "name": "is_active",
+      "filePath": "src/lib/sutra-auto-types.ts",
+      "startLine": 10,
+      "endLine": 10
+    },
+    {
+      "id": "Property:src/lib/sutra-auto-types.ts:AutoSchedule.is_active",
+      "name": "is_active",
+      "filePath": "src/lib/sutra-auto-types.ts",
+      "startLine": 34,
+      "endLine": 34
+    },
+    {
+      "id": "Property:src/lib/sutra-auto-types.ts:AutoTheme.is_active",
+      "name": "is_active",
+      "filePath": "src/lib/sutra-auto-types.ts",
+      "startLine": 56,
+      "endLine": 56
+    },
+    {
+      "id": "Variable:qa/provider-final-audit-20261013/test_audit.py:SPEC",
+      "name": "SPEC",
+      "filePath": "qa/provider-final-audit-20261013/test_audit.py",
+      "startLine": 9,
+      "endLine": 9
+    },
+    {
+      "id": "Variable:qa/provider-final-audit-20261013/test_audit.py:audit",
+      "name": "audit",
+      "filePath": "qa/provider-final-audit-20261013/test_audit.py",
+      "startLine": 10,
+      "endLine": 10
+    },
+    {
+      "id": "Class:qa/provider-final-audit-20261013/test_audit.py:ProviderAuditSafety",
+      "name": "ProviderAuditSafety",
+      "filePath": "qa/provider-final-audit-20261013/test_audit.py",
+      "startLine": 14,
+      "endLine": 67
+    },
+    {
+      "id": "Const:qa/t07-frontend-fixes-20261014/browser.mjs:output",
+      "name": "output",
+      "filePath": "qa/t07-frontend-fixes-20261014/browser.mjs",
+      "startLine": 15,
+      "endLine": 15
+    },
+    {
+      "id": "Const:qa/t07-frontend-fixes-20261014/browser.mjs:log",
+      "name": "log",
+      "filePath": "qa/t07-frontend-fixes-20261014/browser.mjs",
+      "startLine": 68,
+      "endLine": 68
+    },
+    {
+      "id": "Const:qa/t07-frontend-fixes-20261014/browser.mjs:build",
+      "name": "build",
+      "filePath": "qa/t07-frontend-fixes-20261014/browser.mjs",
+      "startLine": 88,
+      "endLine": 88
+    },
+    {
+      "id": "Function:src/lib/pipeline-state.ts:pipelineEvent",
+      "name": "pipelineEvent",
+      "filePath": "src/lib/pipeline-state.ts",
+      "startLine": 85,
+      "endLine": 93,
+      "module": "Cluster_374"
+    },
+    {
+      "id": "Function:src/lib/pipeline-state.ts:pipelineActivity",
+      "name": "pipelineActivity",
+      "filePath": "src/lib/pipeline-state.ts",
+      "startLine": 100,
+      "endLine": 102,
+      "module": "Cluster_374"
+    }
+  ],
+  "timing": {
+    "vector": 2.9,
+    "bm25": 106.2,
+    "merge": 0.1,
+    "symbol_lookup": 11.1,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 118
+  }
+}

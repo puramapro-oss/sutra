@@ -1,12 +1,10 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import {
-  Heart,
   RefreshCw,
   Clock,
-  Wifi,
   Server,
   CheckCircle,
   XCircle,
@@ -29,52 +27,57 @@ export default function AdminHealthPage() {
   const [error, setError] = useState<string | null>(null)
   const [lastRefresh, setLastRefresh] = useState<string | null>(null)
 
-  const fetchHealth = useCallback(async () => {
-    try {
-      const res = await fetch('/api/status')
+  const dataRequest = useRef<AbortController | null>(null)
+  const fetchHealth = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/status', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (!res.ok) throw new Error('Erreur check sante')
-
       const data = await res.json()
-      const now = new Date().toISOString()
-
-      const healthServices: ServiceHealth[] = Object.entries(
-        data.services as Record<string, { status: string; latency_ms?: number }>
-      ).map(([key, value]) => ({
-        name: SERVICE_LABELS[key] ?? key,
-        key,
-        status: value.status as ServiceHealth['status'],
-        latency_ms: value.latency_ms ?? 0,
-        last_checked: now,
-        uptime_30d: value.status === 'operational' ? 99.9 : value.status === 'degraded' ? 95.0 : 0,
-      }))
-
+      if (!data.services || typeof data.services !== 'object' || Array.isArray(data.services)) throw new Error('Mesures indisponibles')
+      const checkedAt = typeof data.timestamp === 'string' && Number.isFinite(Date.parse(data.timestamp)) ? data.timestamp : null
+      const healthServices: ServiceHealth[] = Object.entries(data.services as Record<string, unknown>).map(([key, raw]) => {
+        const value = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {}
+        const status: ServiceHealth['status'] = value.status === 'operational' || value.status === 'degraded' || value.status === 'down'
+          ? value.status : 'unknown'
+        return { name: SERVICE_LABELS[key] ?? key, key, status,
+          latency_ms: typeof value.latency_ms === 'number' && Number.isFinite(value.latency_ms) && value.latency_ms >= 0 ? value.latency_ms : null,
+          last_checked: status === 'unknown' ? null : checkedAt, uptime_30d: null }
+      })
       const fullServices = Object.keys(SERVICE_LABELS).map((key) => {
         const found = healthServices.find((s) => s.key === key)
         return found ?? {
           name: SERVICE_LABELS[key] ?? key,
           key,
-          status: 'operational' as const,
-          latency_ms: 0,
-          last_checked: now,
-          uptime_30d: 99.9,
+          status: 'unknown' as const,
+          latency_ms: null,
+          last_checked: null,
+          uptime_30d: null,
         }
       })
-
-      setServices(fullServices)
-      setLastRefresh(now)
-      setError(null)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur inconnue')
-    } finally {
-      setLoading(false)
-      setTesting(false)
-    }
+      commit(() => setServices(fullServices))
+      commit(() => setLastRefresh(checkedAt))
+      commit(() => setError(null))
+    }).catch(err => {
+      if (!active()) return
+      commit(() => setServices([]))
+      commit(() => setLastRefresh(null))
+      commit(() => setError(err instanceof Error ? err.message : 'Erreur inconnue'))
+    }).finally(() => {
+      commit(() => setLoading(false))
+      commit(() => setTesting(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
   useEffect(() => {
     fetchHealth()
     const interval = setInterval(fetchHealth, 300000) // 5 min
-    return () => clearInterval(interval)
+    return () => { clearInterval(interval); dataRequest.current?.abort(); dataRequest.current = null }
   }, [fetchHealth])
 
   const handleTestAll = () => {
@@ -84,7 +87,8 @@ export default function AdminHealthPage() {
 
   const anyDown = services.some((s) => s.status === 'down')
   const anyDegraded = services.some((s) => s.status === 'degraded')
-  const allOperational = !anyDown && !anyDegraded
+  const anyUnknown = services.some((s) => s.status === 'unknown')
+  const allOperational = services.length > 0 && services.every((s) => s.status === 'operational')
 
   if (error && services.length === 0) {
     return (
@@ -122,7 +126,7 @@ export default function AdminHealthPage() {
           data-testid="admin-health-test-all"
         >
           <RefreshCw className={cn('h-4 w-4', testing && 'animate-spin')} />
-          Tester tous
+          Actualiser les mesures
         </button>
       </div>
 
@@ -159,6 +163,12 @@ export default function AdminHealthPage() {
             </p>
           </div>
         </motion.div>
+      )}
+
+      {!loading && anyUnknown && (
+        <div role="status" className="rounded-xl border border-white/20 bg-white/5 p-4 text-sm text-white/70" data-testid="admin-health-unknown">
+          Mesures indisponibles pour {services.filter(service => service.status === 'unknown').map(service => service.name).join(', ')}.
+        </div>
       )}
 
       {!loading && allOperational && (
@@ -232,10 +242,10 @@ export default function AdminHealthPage() {
                       <span className="text-xs text-white/30">Latence</span>
                       <span className={cn(
                         'text-xs font-medium',
-                        service.latency_ms > 2000 ? 'text-red-400' :
+                        service.latency_ms === null ? 'text-white/50' : service.latency_ms > 2000 ? 'text-red-400' :
                         service.latency_ms > 500 ? 'text-amber-400' : 'text-emerald-400'
                       )}>
-                        {service.latency_ms > 0 ? `${service.latency_ms}ms` : '--'}
+                        {service.latency_ms !== null ? `${service.latency_ms}ms` : 'Non disponible'}
                       </span>
                     </div>
 
@@ -243,29 +253,29 @@ export default function AdminHealthPage() {
                       <span className="text-xs text-white/30">Uptime 30j</span>
                       <span className={cn(
                         'text-xs font-medium',
-                        service.uptime_30d > 99 ? 'text-emerald-400' :
+                        service.uptime_30d === null ? 'text-white/50' : service.uptime_30d > 99 ? 'text-emerald-400' :
                         service.uptime_30d > 95 ? 'text-amber-400' : 'text-red-400'
                       )}>
-                        {service.uptime_30d.toFixed(1)}%
+                        {service.uptime_30d !== null ? `${service.uptime_30d.toFixed(1)}%` : 'Non disponible'}
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-white/30">Verifie</span>
                       <span className="text-xs text-white/30">
-                        {formatRelativeDate(service.last_checked)}
+                        {service.last_checked ? formatRelativeDate(service.last_checked) : 'Non vérifié'}
                       </span>
                     </div>
 
                     {/* Uptime bar */}
-                    <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                    {service.uptime_30d !== null && <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${service.uptime_30d}%` }}
                         transition={{ duration: 0.8, ease: 'easeOut' }}
                         className={cn('h-full rounded-full', statusCfg.dot)}
                       />
-                    </div>
+                    </div>}
                   </div>
                 </GoldCard>
               </motion.div>

@@ -1,0 +1,264 @@
+{
+  "baseCommit": "d5d49a458e9e630ffbc1a433a7693a8cecd7dad5",
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: production double submission has one UUID and a successful step result",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancel queued task once using original requestId and target; strict server ACK",
+      "status": "PASS"
+    },
+    {
+      "name": "375: false and malformed cancellation do not clear the receipt; reload retains intent",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost cancel acknowledgement is recoverable with identical cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: GET reconciles completion racing with a refused cancellation without POST replay",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost submission ACK resumes immutable request after reload, no new identity",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancelled request without jobId can reconcile absence but never replay generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: late inline success never overwrites confirmed cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: acknowledged task resumes with GET after reload and handles server reconciliation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: provider unavailable and credits absent release only rejected pre-submission intent",
+      "status": "PASS"
+    },
+    {
+      "name": "375: submission timeout releases loader but retains immutable intent for recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancellation timeout never claims success and retry keeps same identity",
+      "status": "PASS"
+    },
+    {
+      "name": "375: complete pipeline keeps UUID and normal successful navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: storage write failure prevents submission and exposes an actionable error",
+      "status": "PASS"
+    },
+    {
+      "name": "375: corrupt receipt blocks generation without deleting recovery evidence",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancelled intent without receipt recovers done by GET, double click sends one read",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup 400 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup 401 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup 404 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup 503 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup lost retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup bad-id retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: retry after lookup error restores cancellation status without POST",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup processing persists recovered jobId, polling resumes by job after reload",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost submission without cancel first recovers result by GET, no duplicate POST",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lookup timeout releases loader; retry GET succeeds without creating a task",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: production double submission has one UUID and a successful step result",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: cancel queued task once using original requestId and target; strict server ACK",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: false and malformed cancellation do not clear the receipt; reload retains intent",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost cancel acknowledgement is recoverable with identical cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: GET reconciles completion racing with a refused cancellation without POST replay",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost submission ACK resumes immutable request after reload, no new identity",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: cancelled request without jobId can reconcile absence but never replay generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: late inline success never overwrites confirmed cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: acknowledged task resumes with GET after reload and handles server reconciliation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: provider unavailable and credits absent release only rejected pre-submission intent",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: complete pipeline keeps UUID and normal successful navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: storage write failure prevents submission and exposes an actionable error",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: corrupt receipt blocks generation without deleting recovery evidence",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: cancelled intent without receipt recovers done by GET, double click sends one read",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup 400 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup 401 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup 404 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup 503 retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup lost retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup bad-id retains cancelled intent and never submits generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: retry after lookup error restores cancellation status without POST",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lookup processing persists recovered jobId, polling resumes by job after reload",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost submission without cancel first recovers result by GET, no duplicate POST",
+      "status": "PASS"
+    },
+    {
+      "name": "375: unreadable receipt shows unknown status and visible error, with generation blocked",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: unreadable receipt shows unknown status and visible error, with generation blocked",
+      "status": "PASS"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   \"Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\\n\" +\n+     '\\n' +\n+     \"- A server/client branch `if (typeof window !== 'undefined')`.\\n\" +\n+     \"- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\\n\" +\n+     \"- Date formatting in a user's locale which doesn't match the server.\\n\" +\n+     '- External changing data without sending a snapshot of it along with the HTML.\\n' +\n+     '- Invalid HTML tag nesting.\\n' +\n+     '\\n' +\n+     'It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\\n' +\n+     '\\n' +\n+     'https://react.dev/link/hydration-mismatch\\n' +\n+     '\\n' +\n+     '  ...\\n' +\n+     '    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\\n' +\n+     '      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\\n' +\n+     '        <ErrorBoundaryHandler pathname=\"/production\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\\n' +\n+     '          <LoadingBoundary name=\"/\" loading={null}>\\n' +\n+     '            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\\n' +\n+     '              <HTTPAccessFallbackErrorBoundary pathname=\"/production\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\\n' +\n+     '                <RedirectBoundary>\\n' +\n+     '                  <RedirectErrorBoundary router={{...}}>\\n' +\n+     '                    <InnerLayoutRouter url=\"/production\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\\n' +\n+     '                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\\n' +\n+     '                        <SegmentTrieNode>\\n' +\n+     '                        <DashboardLayout>\\n' +\n+     '                          <DashboardChrome>\\n' +\n+     '                            <div\\n' +\n+     '+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\\n' +\n+     '-                             className={null}\\n' +\n+     '-                             hidden=\"\"\\n' +\n+     '                            >\\n' +\n+     '                              <LoadableComponent>\\n' +\n+     '                              <Sidebar>\\n' +\n+     '                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\\n' +\n+     '+                                 <aside\\n' +\n+     '+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\\n' +\n+     '+                                   data-testid=\"sidebar\"\\n' +\n+     '+                                   style={{}}\\n' +\n+     '+                                   ref={function useMotionRef.useCallback}\\n' +\n+     '+                                 >\\n' +\n+     '                              ...\\n' +\n+     '                    ...\\n' +\n+     '      ...\\n',\n+   \"Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\\n\" +\n+     '\\n' +\n+     \"- A server/client branch `if (typeof window !== 'undefined')`.\\n\" +\n+     \"- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\\n\" +\n+     \"- Date formatting in a user's locale which doesn't match the server.\\n\" +\n+     '- External changing data without sending a snapshot of it along with the HTML.\\n' +\n+     '- Invalid HTML tag nesting.\\n' +\n+     '\\n' +\n+     'It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\\n' +\n+     '\\n' +\n+     'https://react.dev/link/hydration-mismatch\\n' +\n+     '\\n' +\n+     '  ...\\n' +\n+     '    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\\n' +\n+     '      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\\n' +\n+     '        <ErrorBoundaryHandler pathname=\"/production\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\\n' +\n+     '          <LoadingBoundary name=\"/\" loading={null}>\\n' +\n+     '            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\\n' +\n+     '              <HTTPAccessFallbackErrorBoundary pathname=\"/production\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\\n' +\n+     '                <RedirectBoundary>\\n' +\n+     '                  <RedirectErrorBoundary router={{...}}>\\n' +\n+     '                    <InnerLayoutRouter url=\"/production\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\\n' +\n+     '                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\\n' +\n+     '                        <SegmentTrieNode>\\n' +\n+     '                        <DashboardLayout>\\n' +\n+     '                          <DashboardChrome>\\n' +\n+     '                            <div\\n' +\n+     '+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\\n' +\n+     '-                             className={null}\\n' +\n+     '-                             hidden=\"\"\\n' +\n+     '                            >\\n' +\n+     '                              <LoadableComponent>\\n' +\n+     '                              <Sidebar>\\n' +\n+     '                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\\n' +\n+     '+                                 <aside\\n' +\n+     '+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\\n' +\n+     '+                                   data-testid=\"sidebar\"\\n' +\n+     '+                                   style={{}}\\n' +\n+     '+                                   ref={function useMotionRef.useCallback}\\n' +\n+     '+                                 >\\n' +\n+     '                              ...\\n' +\n+     '                    ...\\n' +\n+     '      ...\\n'\n+ ]\n- []\n"
+    }
+  ],
+  "details": [
+    {
+      "width": 375,
+      "measure": "cancellation_ack_ms_300ms_fixture",
+      "value": 365
+    },
+    {
+      "width": 375,
+      "measure": "submission_timeout_ms",
+      "value": 31911
+    },
+    {
+      "width": 375,
+      "measure": "cancellation_timeout_ms",
+      "value": 10899
+    },
+    {
+      "width": 375,
+      "measure": "lost_receipt_reconcile_ms_200ms_fixture",
+      "value": 375
+    },
+    {
+      "width": 375,
+      "measure": "lookup_timeout_ms",
+      "value": 10893
+    },
+    {
+      "width": 1440,
+      "measure": "cancellation_ack_ms_300ms_fixture",
+      "value": 364
+    },
+    {
+      "width": 1440,
+      "measure": "lost_receipt_reconcile_ms_200ms_fixture",
+      "value": 370
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [
+    "Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/production\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/production\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/production\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n",
+    "Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/production\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/production\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/production\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n"
+  ],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

@@ -1,7 +1,7 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 
-const CRON_SECRET = process.env.CRON_SECRET
 
 // 10 email sequences: J0→J30 + events
 const SEQUENCES = [
@@ -15,9 +15,8 @@ const SEQUENCES = [
 ] as const
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
 

@@ -1,0 +1,22 @@
+(node:47859) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47859) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: R107: noon occurrence must survive a 20-hour scheduler interruption
+
+0 !== 1
+
+    at file:///Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/reproduce.mjs:12:10
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 0,
+  expected: 1,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.0.0

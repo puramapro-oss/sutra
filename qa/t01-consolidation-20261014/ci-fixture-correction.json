@@ -1,0 +1,28 @@
+{
+  "source": "ca8470b41c3d698f15a43260c03829ae63d35d18",
+  "ciRun": 38585143336,
+  "before": {
+    "tests": 877,
+    "pass": 853,
+    "fail": 17,
+    "skipped": 7
+  },
+  "cause": "Two T03 test files require db.fixture.invalid; CI supplied sutra-test.invalid. No product defect inferred.",
+  "fix": "Separate durable-submission group with its author fixture URL. Test files and all assertions unchanged.",
+  "after": {
+    "tests": 18,
+    "pass": 18,
+    "fail": 0,
+    "skipped": 0
+  },
+  "command": "node --experimental-test-module-mocks --import tsx --test scripts/test-t03-durable-reliability.mts qa/t03-durable-reliability-20261014/submission.test.mts",
+  "configuration": "Synthetic URL db.fixture.invalid; offline preload qa/t08/offline.cjs; no secret environment inherited.",
+  "lint": "PASS scripts/run-ci.mjs",
+  "syntax": "PASS node --check scripts/run-ci.mjs",
+  "observedAt": "2026-10-14T15:04:23.256523+00:00",
+  "rawLogSha256": {
+    "ci-ca847-contracts.log": "af885585e90a08f2322b20164e38d14ff113f210750e8ec9d6a62db6407b9b83",
+    "ci-t03-environment-after.log": "56a13e3d29ea73b79ea48bf7a708feb97bc263632374b18ded2b32aff3317af6"
+  },
+  "logNormalization": "Only trailing line whitespace stripped for versioned logs; raw hashes above."
+}

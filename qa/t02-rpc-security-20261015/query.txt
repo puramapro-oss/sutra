@@ -1,0 +1,221 @@
+
+  GitNexus Query (1.6.12)
+{
+  "processes": [
+    {
+      "id": "proc_40_get",
+      "summary": "GET → Failure",
+      "priority": 0.114,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_41_get",
+      "summary": "GET → Ok",
+      "priority": 0.114,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_274_get",
+      "summary": "GET → CreateServiceClient",
+      "priority": 0.102,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_25_get",
+      "summary": "GET → FinitePositive",
+      "priority": 0.09,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_39_get",
+      "summary": "GET → AssertMediaProbeAvailable",
+      "priority": 0.09,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 4
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/video-queue.ts:claimJobs",
+      "name": "claimJobs",
+      "filePath": "src/lib/video-queue.ts",
+      "startLine": 174,
+      "endLine": 183,
+      "module": "Stripe",
+      "process_id": "proc_40_get",
+      "step_index": 2
+    },
+    {
+      "id": "Function:qa/t08-integration-journey-20261014/database.mts:journeyDatabase.rpc@34:2",
+      "name": "rpc",
+      "filePath": "qa/t08-integration-journey-20261014/database.mts",
+      "startLine": 35,
+      "endLine": 91,
+      "module": "T08-integration-journey-20261014",
+      "process_id": "proc_40_get",
+      "step_index": 3
+    },
+    {
+      "id": "Function:src/lib/opentimestamps.ts:attemptUpgrade",
+      "name": "attemptUpgrade",
+      "filePath": "src/lib/opentimestamps.ts",
+      "startLine": 115,
+      "endLine": 151,
+      "module": "Types",
+      "process_id": "proc_25_get",
+      "step_index": 2
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Class:scripts/test-t03-salad-recovery.mts:Transport",
+      "name": "Transport",
+      "filePath": "scripts/test-t03-salad-recovery.mts",
+      "startLine": 67,
+      "endLine": 176,
+      "module": "Scripts"
+    },
+    {
+      "id": "Property:scripts/test-t03-salad-recovery.mts:Transport.submissions",
+      "name": "submissions",
+      "filePath": "scripts/test-t03-salad-recovery.mts",
+      "startLine": 71,
+      "endLine": 71
+    },
+    {
+      "id": "File:scripts/test-t03-salad-recovery.mts",
+      "name": "test-t03-salad-recovery.mts",
+      "filePath": "scripts/test-t03-salad-recovery.mts"
+    },
+    {
+      "id": "Function:qa/t02-final-validation-20261014/production-error.test.mts:createServiceClient",
+      "name": "createServiceClient",
+      "filePath": "qa/t02-final-validation-20261014/production-error.test.mts",
+      "startLine": 26,
+      "endLine": 39
+    },
+    {
+      "id": "Function:qa/t02-final-validation-20261014/production-error.test.mts:createServiceClient.rpc@32:2",
+      "name": "rpc",
+      "filePath": "qa/t02-final-validation-20261014/production-error.test.mts",
+      "startLine": 33,
+      "endLine": 38
+    },
+    {
+      "id": "File:qa/t02-final-validation-20261014/production-error.test.mts",
+      "name": "production-error.test.mts",
+      "filePath": "qa/t02-final-validation-20261014/production-error.test.mts"
+    },
+    {
+      "id": "Function:qa/t03-durable-reliability-20261014/production-error.test.mts:createServiceClient",
+      "name": "createServiceClient",
+      "filePath": "qa/t03-durable-reliability-20261014/production-error.test.mts",
+      "startLine": 26,
+      "endLine": 39
+    },
+    {
+      "id": "Function:qa/t03-durable-reliability-20261014/production-error.test.mts:createServiceClient.rpc@32:2",
+      "name": "rpc",
+      "filePath": "qa/t03-durable-reliability-20261014/production-error.test.mts",
+      "startLine": 33,
+      "endLine": 38
+    },
+    {
+      "id": "File:qa/t03-durable-reliability-20261014/production-error.test.mts",
+      "name": "production-error.test.mts",
+      "filePath": "qa/t03-durable-reliability-20261014/production-error.test.mts"
+    },
+    {
+      "id": "Function:qa/t08-closure-20261014/production-error.test.mts:createServiceClient",
+      "name": "createServiceClient",
+      "filePath": "qa/t08-closure-20261014/production-error.test.mts",
+      "startLine": 26,
+      "endLine": 39
+    },
+    {
+      "id": "Function:qa/t08-closure-20261014/production-error.test.mts:createServiceClient.rpc@32:2",
+      "name": "rpc",
+      "filePath": "qa/t08-closure-20261014/production-error.test.mts",
+      "startLine": 33,
+      "endLine": 38
+    },
+    {
+      "id": "File:qa/t08-closure-20261014/production-error.test.mts",
+      "name": "production-error.test.mts",
+      "filePath": "qa/t08-closure-20261014/production-error.test.mts"
+    },
+    {
+      "id": "Function:src/lib/video-queue.ts:claimJobByKey",
+      "name": "claimJobByKey",
+      "filePath": "src/lib/video-queue.ts",
+      "startLine": 190,
+      "endLine": 205,
+      "module": "Production"
+    },
+    {
+      "id": "File:src/lib/video-queue.ts",
+      "name": "video-queue.ts",
+      "filePath": "src/lib/video-queue.ts"
+    },
+    {
+      "id": "Function:scripts/test-salad-worker.mts:fixture",
+      "name": "fixture",
+      "filePath": "scripts/test-salad-worker.mts",
+      "startLine": 62,
+      "endLine": 86,
+      "module": "Salad"
+    },
+    {
+      "id": "Function:scripts/test-salad-worker.mts:fixture.transport@74:2",
+      "name": "transport",
+      "filePath": "scripts/test-salad-worker.mts",
+      "startLine": 75,
+      "endLine": 82,
+      "module": "Scripts"
+    },
+    {
+      "id": "File:scripts/test-salad-worker.mts",
+      "name": "test-salad-worker.mts",
+      "filePath": "scripts/test-salad-worker.mts"
+    },
+    {
+      "id": "Const:qa/t03-final-durable-20261015/cancel-ack.test.mts:transport",
+      "name": "transport",
+      "filePath": "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+      "startLine": 4,
+      "endLine": 4
+    },
+    {
+      "id": "Function:qa/t03-final-durable-20261015/cancel-ack.test.mts:createServiceClient",
+      "name": "createServiceClient",
+      "filePath": "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+      "startLine": 6,
+      "endLine": 8
+    },
+    {
+      "id": "Function:qa/t03-final-durable-20261015/cancel-ack.test.mts:createServiceClient.rpc@6:2",
+      "name": "rpc",
+      "filePath": "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+      "startLine": 7,
+      "endLine": 7
+    }
+  ],
+  "timing": {
+    "vector": 3.1,
+    "bm25": 185.1,
+    "merge": 0.4,
+    "symbol_lookup": 12.9,
+    "ranking": 0.1,
+    "formatting": 0.1,
+    "wall": 199.3
+  }
+}

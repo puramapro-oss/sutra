@@ -1,0 +1,42 @@
+{
+  "target": {
+    "id": "Function:src/lib/social-oauth-state.ts:issueSocialOAuthState",
+    "name": "issueSocialOAuthState",
+    "type": "Function",
+    "filePath": "src/lib/social-oauth-state.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/social/connect/route.ts",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Connect",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ]
+}

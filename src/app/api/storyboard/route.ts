@@ -1,98 +1,61 @@
 import { NextResponse } from 'next/server'
+import { smarana, OpenAIStoryboardError } from '@purama/smarana'
 import { createServerClient } from '@/lib/supabase-server'
-import { askClaude } from '@/lib/claude'
+import { enforceRateLimit } from '@/lib/rate-limit'
+import { boundedBytes } from '@/lib/salad/http'
+import { SaladError } from '@/lib/salad/contracts'
+import { generateStoryboard, storyboardProvider, StoryboardProviderError, storyboardRequest } from '@/lib/storyboard-provider'
 
 export const maxDuration = 120
-
-interface StoryboardScene {
-  visual_prompt: string
-  description: string
-  duration_seconds: number
-  transition: 'fade' | 'cut' | 'slide' | 'zoom'
-}
 
 export async function POST(req: Request) {
   try {
     const supabase = await createServerClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { data: { user }, error } = await supabase.auth.getUser()
+    if (error || !user) return NextResponse.json({ error: 'Non autorisé.' }, { status: 401 })
 
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
+    const provider = storyboardProvider(process.env.SUTRA_STORYBOARD_PROVIDER)
+    if (provider === 'openai') {
+      if (req.headers.get('sec-fetch-site') === 'cross-site') {
+        return NextResponse.json({ error: 'Origine de la requête non autorisée.' }, { status: 403 })
+      }
+      if (req.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
+        return NextResponse.json({ error: 'Un brief JSON est requis.' }, { status: 415 })
+      }
     }
 
-    const body = await req.json()
-    const { idea, format, durationTarget } = body as {
-      idea?: string
-      format?: string
-      durationTarget?: 'short' | 'medium' | 'long'
+    let body: unknown
+    try {
+      const bytes = await boundedBytes(new Response(req.body, { headers: req.headers }), 32_768,
+        AbortSignal.any([req.signal, AbortSignal.timeout(10_000)]))
+      body = JSON.parse(bytes.toString('utf8'))
+    } catch (cause) {
+      const large = cause instanceof SaladError && cause.code === 'SALAD_BODY_LIMIT'
+      return NextResponse.json({ error: large ? 'Le brief est trop volumineux.' : 'Brief JSON invalide.' }, { status: large ? 413 : 400 })
     }
+    const parsed = storyboardRequest.safeParse(body)
+    if (!parsed.success) return NextResponse.json({ error: 'Vérifie le sujet (3 à 5 000 caractères), le format et la durée.' }, { status: 400 })
 
-    if (!idea || typeof idea !== 'string' || idea.trim().length < 3) {
-      return NextResponse.json({ error: 'Idee requise (min 3 caracteres)' }, { status: 400 })
+    if (provider === 'openai') {
+      const limited = enforceRateLimit(`storyboard:${user.id}`, 6, 60_000)
+      if (limited) return limited
     }
-
-    if (!format || !['16:9', '9:16', '1:1'].includes(format)) {
-      return NextResponse.json({ error: 'Format invalide' }, { status: 400 })
+    const storyboard = await generateStoryboard(parsed.data, user.id, provider, req.signal, smarana.ask)
+    return NextResponse.json(storyboard)
+  } catch (cause) {
+    if (cause instanceof StoryboardProviderError) return NextResponse.json({ error: cause.message }, { status: cause.status })
+    if (cause instanceof OpenAIStoryboardError) {
+      const responses = {
+        CONFIG: [503, 'Le moteur de storyboard est indisponible.'],
+        METER: [503, 'Le suivi de consommation du storyboard est indisponible.'],
+        LIMIT: [429, 'Le plafond des storyboards OpenAI est atteint.'],
+        TIMEOUT: [504, 'La génération du storyboard a été interrompue.'],
+        UPSTREAM: [502, 'Le fournisseur du storyboard n’a pas renvoyé de réponse complète.'],
+        INVALID: [400, 'La demande de storyboard est invalide.'],
+      } as const
+      const [status, message] = responses[cause.code]
+      return NextResponse.json({ error: message }, { status })
     }
-
-    if (!durationTarget || !['short', 'medium', 'long'].includes(durationTarget)) {
-      return NextResponse.json({ error: 'Duree cible invalide' }, { status: 400 })
-    }
-
-    const sceneRanges: Record<string, string> = {
-      short: '4 a 6',
-      medium: '8 a 10',
-      long: '10 a 14',
-    }
-
-    const durationLabels: Record<string, string> = {
-      short: '30 secondes',
-      medium: '2 minutes',
-      long: '5 minutes ou plus',
-    }
-
-    const sceneRange = sceneRanges[durationTarget]
-    const durationLabel = durationLabels[durationTarget]
-
-    const system = `Tu es un realisateur professionnel de cinema et de contenu video. Tu crees des storyboards visuels detailles et cinematiques.
-
-REGLES :
-1. Genere exactement ${sceneRange} scenes pour cette idee de video
-2. La duree totale visee est ${durationLabel}
-3. Chaque scene a une description visuelle detaillee EN ANGLAIS (visual_prompt) pour la generation d'image IA
-4. Chaque scene a une description EN FRANCAIS de ce qui se passe (description)
-5. Les transitions varient entre fade, cut, slide et zoom selon le rythme
-6. Le format video est ${format}
-7. Les visual_prompts doivent etre cinematiques, detailles (lumiere, cadrage, couleurs, ambiance)
-
-Reponds UNIQUEMENT en JSON strict, aucun texte autour :
-{"scenes": [{"visual_prompt": "...", "description": "...", "duration_seconds": 5, "transition": "fade"}]}`
-
-    const response = await askClaude(
-      `Cree un storyboard detaille pour cette idee de video : "${idea.trim()}"`,
-      { system, userId: user.id }
-    )
-
-    const cleaned = response.replace(/```json\n?|\n?```/g, '').trim()
-    const parsed = JSON.parse(cleaned) as { scenes: StoryboardScene[] }
-
-    if (!parsed.scenes || !Array.isArray(parsed.scenes) || parsed.scenes.length === 0) {
-      return NextResponse.json({ error: 'Generation echouee, reessayez' }, { status: 500 })
-    }
-
-    const scenes = parsed.scenes.map((s) => ({
-      visual_prompt: s.visual_prompt ?? '',
-      description: s.description ?? '',
-      duration_seconds: typeof s.duration_seconds === 'number' ? s.duration_seconds : 5,
-      transition: ['fade', 'cut', 'slide', 'zoom'].includes(s.transition) ? s.transition : 'cut',
-    }))
-
-    return NextResponse.json({ scenes })
-  } catch (error) {
-    console.error('[storyboard]', error)
-    return NextResponse.json(
-      { error: 'Erreur lors de la generation du storyboard' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'La génération du storyboard a échoué.' }, { status: 500 })
   }
 }

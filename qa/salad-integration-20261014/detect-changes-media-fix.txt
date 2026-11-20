@@ -1,0 +1,26 @@
+Changes: 10 files, 6 symbols
+Affected processes: 359
+Risk level: critical
+
+Changed symbols:
+  Function runT07Flows → scripts/ui-isolated/t07-flows.mjs
+  Property duration → src/lib/media-probe.ts
+  Property fps → src/lib/media-probe.ts
+  Property hasAudio → src/lib/media-probe.ts
+  Property height → src/lib/media-probe.ts
+  Property width → src/lib/media-probe.ts
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • CommunityScreen → ApiFetch (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • AdminContestPage → FetchData (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • AdminUsersPage → FetchUsers (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • CommunityPage → FetchBuddy (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • CommunityPage → FetchCircles (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • CommunityPage → FetchWall (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • JeuCreatifPage → Load (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+  • LightningPage → Load (3 steps) — changed: runT07Flows, runT07Flows, runT07Flows
+... and 349 more
+
+  GitNexus Detect Changes (1.6.12)

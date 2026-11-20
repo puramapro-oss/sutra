@@ -1,0 +1,33 @@
+{
+  "gitleaks": {
+    "command": "git diff --cached --binary | gitleaks stdin --redact=100 --no-banner --report-format=json --report-path=qa/t06-recert-1968-20261020/gitleaks.json",
+    "exit": 1,
+    "reviewedExit": 0,
+    "review": "secrets-review.json",
+    "reviewedIncludesOriginalLogs": true
+  },
+  "diffCheck": {
+    "command": "git diff --cached --check",
+    "exit": 0
+  },
+  "gitnexus": {
+    "staged": {
+      "command": "node /Users/matissdornier/purama/.gitnexus/run.cjs detect-changes --scope staged --repo sutra",
+      "exit": 0,
+      "risk": "MEDIUM",
+      "files": 222,
+      "symbols": 6,
+      "flows": 2
+    },
+    "compareMain": {
+      "command": "node /Users/matissdornier/purama/.gitnexus/run.cjs detect-changes --scope compare --base-ref main --repo sutra",
+      "exit": 0,
+      "risk": "CRITICAL",
+      "files": 6085,
+      "symbols": 12473,
+      "flows": 398,
+      "listing": "capped",
+      "scope": "whole integrated lineage, not this delta"
+    }
+  }
+}

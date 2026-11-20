@@ -1,4 +1,5 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useCreateRequest } from '@/hooks/useCreateRequest'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { getPipelineSteps } from '@/lib/create-utils'
 import type { PipelineStep, VideoFormat, VideoQuality } from '@/types'
 import type { VideoEngine } from '@/lib/ltx'
@@ -11,6 +12,7 @@ interface SceneStockState {
 }
 
 interface UseVideoGenerationProps {
+  userId?: string
   topic: string
   format: VideoFormat
   quality: VideoQuality
@@ -25,6 +27,7 @@ interface UseVideoGenerationProps {
 }
 
 export function useVideoGeneration({
+  userId,
   topic,
   format,
   quality,
@@ -37,24 +40,20 @@ export function useVideoGeneration({
   mediaMode,
   isOverLimit,
 }: UseVideoGenerationProps) {
+  const request = useCreateRequest(userId)
+  const keywordsRequest = useRef<{ body: string; controller: AbortController } | null>(null)
+  const keywordsBody = useRef<string | null>(null)
+  useEffect(() => () => {
+    keywordsRequest.current?.controller.abort()
+  }, [])
   // States
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [pipelineSteps, setPipelineSteps] = useState<PipelineStep[]>(getPipelineSteps('wan-classic'))
-  const [videoId, setVideoId] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const isGenerating = request.busy
+  const pipelineSteps: PipelineStep[] = getPipelineSteps(engine).map(step => ({ ...step, status: request.videoId ? 'completed' : 'pending' }))
+  const { videoId, requestLocked, reset, submit } = request
+  const error = request.noticeError ?? request.error
   const [sceneKeywords, setSceneKeywords] = useState<string[][]>([])
   const [sceneSelections, setSceneSelections] = useState<SceneStockState[]>([])
   const [keywordsLoading, setKeywordsLoading] = useState(false)
-  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  // Cleanup polling on unmount
-  useEffect(() => {
-    return () => {
-      if (pollingRef.current) {
-        clearInterval(pollingRef.current)
-      }
-    }
-  }, [])
 
   // Extract keywords for stock search
   const fetchKeywords = useCallback(
@@ -64,87 +63,60 @@ export function useVideoGeneration({
         .map((l) => l.trim())
         .filter(Boolean)
       if (scenes.length === 0) return
+      const body = JSON.stringify({ scenes })
+      if (keywordsRequest.current?.body === body || (!keywordsRequest.current && keywordsBody.current === body)) return
+      keywordsRequest.current?.controller.abort()
+      const controller = new AbortController()
+      keywordsRequest.current = { body, controller }
       setKeywordsLoading(true)
       try {
         const res = await fetch('/api/stock/keywords', {
           method: 'POST',
+          signal: controller.signal,
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ scenes }),
+          body,
         })
         const data = await res.json()
-        const kws: string[][] = Array.isArray(data.keywords) ? data.keywords : scenes.map(() => [])
+        controller.signal.throwIfAborted()
+        if (!res.ok || !Array.isArray(data.keywords) || data.keywords.length !== scenes.length ||
+          !data.keywords.every((words: unknown) => Array.isArray(words) && words.every(word => typeof word === 'string'))) {
+          throw new Error('Mots-cles indisponibles')
+        }
+        const kws: string[][] = data.keywords
         setSceneKeywords(kws)
         setSceneSelections(scenes.map(() => ({ selected: null, fallbackToAI: false })))
       } catch {
+        if (controller.signal.aborted) return
         setSceneKeywords(scenes.map((s) => s.split(/\s+/).slice(0, 3)))
         setSceneSelections(scenes.map(() => ({ selected: null, fallbackToAI: false })))
       } finally {
-        setKeywordsLoading(false)
+        if (keywordsRequest.current?.controller === controller) {
+          keywordsRequest.current = null
+          if (!controller.signal.aborted) {
+            keywordsBody.current = body
+            setKeywordsLoading(false)
+          }
+        }
       }
     },
     []
   )
 
-  // Poll pipeline status
-  const pollPipeline = useCallback((vid: string) => {
-    const poll = async () => {
-      try {
-        const res = await fetch(`/api/create/status?videoId=${vid}`)
-        if (!res.ok) return
-
-        const data = await res.json()
-
-        if (data.steps) {
-          setPipelineSteps(data.steps)
-        }
-
-        const allDone = data.steps?.every(
-          (s: PipelineStep) => s.status === 'completed' || s.status === 'error'
-        )
-
-        if (allDone) {
-          if (pollingRef.current) {
-            clearInterval(pollingRef.current)
-            pollingRef.current = null
-          }
-          setIsGenerating(false)
-        }
-      } catch {
-        // Silent fail, keep polling
-      }
-    }
-
-    poll()
-    pollingRef.current = setInterval(poll, 3000)
-  }, [])
-
-  // Reset generation state
+  // An uncertain durable request can only be resumed or cancelled, never reset.
   const resetGeneration = useCallback(() => {
-    setIsGenerating(false)
-    setPipelineSteps(getPipelineSteps('wan-classic').map((s) => ({ ...s, status: 'pending' as const })))
-    setVideoId(null)
-    setError(null)
+    if (requestLocked) return
+    reset()
+    keywordsRequest.current?.controller.abort()
+    keywordsRequest.current = null
+    keywordsBody.current = null
+    setKeywordsLoading(false)
     setSceneKeywords([])
     setSceneSelections([])
-    if (pollingRef.current) {
-      clearInterval(pollingRef.current)
-      pollingRef.current = null
-    }
-  }, [])
+  }, [requestLocked, reset])
 
-  // Start generation
   const startGeneration = useCallback(async () => {
-    if (!topic.trim() || isOverLimit) return
-
-    setIsGenerating(true)
-    setError(null)
-    setPipelineSteps(getPipelineSteps(engine).map((s) => ({ ...s, status: 'pending' as const })))
-
-    try {
-      const response = await fetch('/api/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+    if (!topic.trim() || isOverLimit || requestLocked) return
+      const body = JSON.stringify({
           topic: topic.trim(),
           format,
           quality,
@@ -167,35 +139,15 @@ export function useVideoGeneration({
                   quality: s.selected?.quality ?? null,
                   fallbackToAI: s.fallbackToAI,
                 })),
-        }),
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Erreur inconnue' }))
-        throw new Error(errorData.error ?? `Erreur ${response.status}`)
-      }
-
-      const result = await response.json()
-      setVideoId(result.videoId ?? null)
-
-      if (result.videoId) {
-        pollPipeline(result.videoId)
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur lors de la generation'
-      setError(message)
-      setIsGenerating(false)
-    }
-  }, [topic, format, quality, engine, niche, style, voice, mode, script, mediaMode, sceneSelections, isOverLimit, pollPipeline])
+        })
+      await submit(body)
+  }, [topic, format, quality, engine, niche, style, voice, mode, script, mediaMode, sceneSelections, isOverLimit, requestLocked, submit])
 
   return {
     isGenerating,
     pipelineSteps,
-    setPipelineSteps,
     videoId,
-    setVideoId,
     error,
-    setError,
     sceneKeywords,
     sceneSelections,
     setSceneSelections,
@@ -203,5 +155,6 @@ export function useVideoGeneration({
     fetchKeywords,
     startGeneration,
     resetGeneration,
+    request,
   }
 }

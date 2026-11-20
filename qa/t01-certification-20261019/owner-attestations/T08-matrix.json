@@ -1,0 +1,2005 @@
+{
+  "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+  "verdict": "NON PRÊT",
+  "previousCounts": {
+    "PASS": 82,
+    "FAIL": 0,
+    "BLOQUÉ": 5,
+    "NON TESTÉ": 12
+  },
+  "counts": {
+    "PASS": 79,
+    "NON TESTÉ": 12,
+    "BLOQUÉ": 6,
+    "FAIL": 12
+  },
+  "requirements": [
+    {
+      "id": "R01",
+      "requirement": "Session absente refusée avant travail",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "Périmètre: routes du parcours déjà exécuté; aucune assertion universelle sur toutes les routes. Setup échoue séparément R100."
+    },
+    {
+      "id": "R02",
+      "requirement": "Connexion navigateur OAuth réelle complète",
+      "owner": "T01/utilisateur",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "personal-consent",
+      "evidence": "Aucun login OAuth personnel sur ce SHA. Identités synthétiques uniquement ; connexion/consentement personnel restent à effectuer.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R03",
+      "requirement": "GET authentifiés et redirections de connexion existants",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "ci-verification.json :26familles Chromium/WebKit optimisées exactes, desktop/mobile375, garde runtime native et méthodes GET/HEAD bornées. Connexion/double clic, inscription sous JavaScript retardé avec payload unique nom/email, bibliothèque/pagination, lecteur, social/consentement/focus et axe. Rouges social et inscription retestés ; aucune assertion ignorée. Pas appareil physique/VoiceOver.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R04",
+      "requirement": "Création projet client avec quota autorisé",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R05",
+      "requirement": "Quota refusé ou DB indisponible avant soumission",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R06",
+      "requirement": "Budget/autorisation propriétaire Salad et client normal",
+      "owner": "T01/T02/T03",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "modes6 exécutés7d96 et journey13 réexécutésab935e5 + rpc-security19 sources exactes, autres preuves JS bornées f1849, sources exactes au SHA final PASS. Client interdit au mode propriétaire ; API client normale conservée ; Salad OFF refuse avant effet payant, sans fallback. Estimation/réservation/budget synthétiques, aucun solde ou coût réel validé.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R07",
+      "requirement": "Coût réel, solde fournisseur et budget GPU consommé",
+      "owner": "T01/utilisateur",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "absent-authorized-budget",
+      "evidence": "Aucun budget réel consommé ni achat autorisé. Estimation/réservation simulées ne prouvent ni solde ni coût final.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R08",
+      "requirement": "Double clic création et conflit même clé/autre contenu",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R09",
+      "requirement": "Statut queue vers polling frontend",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R10",
+      "requirement": "Génération simulée et checkpoints ordonnés",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R11",
+      "requirement": "Timeout rendu puis reprise ID existant",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R12",
+      "requirement": "Perte reçu après soumission de rendu",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R13",
+      "requirement": "Erreur partielle upload puis reprise",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R14",
+      "requirement": "Échec DB après vérification finale",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R15",
+      "requirement": "Reprise Suno après timeout avec taskId",
+      "owner": "T04/T03",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci",
+      "evidence": "ci-verification.json, contrats Suno/music-recovery/taskId : reprise et erreurs simulées sur SHA final. Aucune musique réelle.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R16",
+      "requirement": "Montage vers export et média vérifié",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R17",
+      "requirement": "Export rejoué et refus validation",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R18",
+      "requirement": "Qualité réelle image/audio/sous-titres exporté",
+      "owner": "T05/T01",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "real-provider-media-absent",
+      "evidence": "Aucun média IA réel pour examiner la qualité image/voix. Les exports CPU synthétiques ne la valident pas.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R19",
+      "requirement": "Validation médias locale CPU intégrée",
+      "owner": "T05/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-invariant-owner",
+      "evidence": "ci-verification.json :17 fichiers MP4 CPU synthétiques, empreintes/octets/décodage complet contrôlés. Concurrence/deadline, image/audio/sous-titres réels CPU. final-owner-binding.json lie82sources T05 inchangées et preuves4K antérieures ; upscale synthétique, pas qualité IA native4K.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R20",
+      "requirement": "Isolation utilisateur aux frontières projet/job/export/publication",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R21",
+      "requirement": "Preuve finale absente et accès révoqué",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R22",
+      "requirement": "OAuth : scénarios replay/ancien consentement/révocation du lot14oct",
+      "owner": "T06",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale : OAuth/revocation/publication/historique SQL et routes PostgreSQL avec trigger canonique. T02 source-manifest lié : mêmes sources sociales ; état à usage unique, utilisateur/session/profil, expiration, reconnexion/revoke, contrôle avant DELETE, purge/historique atomique. Aucun consentement personnel ni DELETE réseau réel.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R23",
+      "requirement": "Stockage et preuve publique : gardes du lot14oct",
+      "owner": "T02",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale security/storage/media/account/OTS et capacités privées : SSRF/IDOR/CSRF/XSS/redirections ciblées et autorité après revoke. Sources T02 inchangées hors deltas documentés, RPC19 retestés T08. Sécurité ciblée seulement, jamais exhaustive.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R24",
+      "requirement": "Planification future sans faux published",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R25",
+      "requirement": "Publication simulée et projections cohérentes",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R26",
+      "requirement": "Publication double clic concurrente",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R27",
+      "requirement": "Échec partiel multi-réseaux",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "Contrats backend partiels PASS; reprise UI nouvelle R104 FAIL, aucune publication réelle."
+    },
+    {
+      "id": "R28",
+      "requirement": "Export modifié après planification",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R29",
+      "requirement": "Date passée ne déclenche aucune publication immédiate",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R30",
+      "requirement": "Ordonnanceur autonome/cron OVH et reprise sans requête",
+      "owner": "T01",
+      "status": "BLOQUÉ",
+      "evidenceKind": "current-owner-receipt-review",
+      "evidence": "T01 observer timer actif/enabled mais dispatch OFF. Application et DB arrêtées; dernières observations UNAVAILABLE. T07:32 contrôles locaux PASS,308 invocations manuelles, aucun cron autonome réel. La perte après longue panne est classée séparément R107 FAIL.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "BLOQUÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "owner-evidence/T01-ovh-state.json",
+        "owner-evidence/T01-backup-db-readonly.json",
+        "owner-evidence/T07-ACK-T07.json"
+      ],
+      "dependencyType": "inactive-configuration"
+    },
+    {
+      "id": "R31",
+      "requirement": "SSRF/IDOR/CSRF/XSS, gardes déjà intégrées",
+      "owner": "T02/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale security/storage/media/account/OTS et capacités privées : SSRF/IDOR/CSRF/XSS/redirections ciblées et autorité après revoke. Sources T02 inchangées hors deltas documentés, RPC19 retestés T08. Sécurité ciblée seulement, jamais exhaustive.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "Gardes antérieures précises seulement; diagnostics/contact/stock sont des contre-exemples nouveaux R100/R101/R102/R106."
+    },
+    {
+      "id": "R32",
+      "requirement": "Redirections dépendance OTS et sécurité exhaustive",
+      "owner": "T02",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "unbounded-claim-not-proven",
+      "evidence": "Aucune sécurité exhaustive démontrée. Les risques ciblés ont des preuves ; ne pas déclarer zéro bug ou lancer un audit général sans delta.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R33",
+      "requirement": "Transactions/RLS PostgreSQL multi-session existantes",
+      "owner": "T01/T03",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-postgresql-ci",
+      "evidence": "CI finale disposable-database : migrations, pipeline concurrence, RLS/ACL, colonnes financières clients, journal Salad, historique social, CAS/revocation/ACK perdu sur PostgreSQL jetable. Aucune migration production. Sources SQL exactes dans candidate-verification.json.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R34",
+      "requirement": "Parcours continu sur DB réelle avec rendu et publication",
+      "owner": "T01",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "real-continuous-journey-not-executed",
+      "evidence": "Aucune chaîne continue navigateur→DB distante→GPU→publication publique. Simulations, SQL privé, navigateur et CPU sont des preuves séparées.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R35",
+      "requirement": "Observabilité états/progrès/erreurs récupérables",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R36",
+      "requirement": "Alertes bout en bout et diagnostics exploitation",
+      "owner": "T01",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "operations-drill-not-executed",
+      "evidence": "Aucune alerte exploitation réellement délivrée suivie d’une reprise intégrale. Observateur et journaux ne suffisent pas.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R37",
+      "requirement": "Charge concurrente bornée isolée",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "journey.json/.log :13 PASS réexécutés surab935e5 après correction finale R99 (candidate-verification.json). Vraies routes/file/worker/pipeline/export/journal social ; identité, SQL, fournisseurs et stockage simulés. J01 chaîne complète, J02/J11 concurrence12, J03–J05/J07/J10 pannes-reprise, J06 isolation. Aucun rendu fournisseur ni post public.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R38",
+      "requirement": "Performance réelle/SLA et charge distante",
+      "owner": "T01",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "remote-performance-not-executed",
+      "evidence": "Aucun SLA/charge distante. Concurrence12 isolée et mesures navigateur instrumentées ne prouvent pas la performance production.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R39",
+      "requirement": "Navigateur/accessibilité de la base, contrôles déjà passés",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "ci-verification.json :26familles Chromium/WebKit optimisées exactes, desktop/mobile375, garde runtime native et méthodes GET/HEAD bornées. Connexion/double clic, inscription sous JavaScript retardé avec payload unique nom/email, bibliothèque/pagination, lecteur, social/consentement/focus et axe. Rouges social et inscription retestés ; aucune assertion ignorée. Pas appareil physique/VoiceOver.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "Écrans de base historiques uniquement; dialogue publication nouveau R103 FAIL. WebKit CI historique, nouveau dialogue retesté Chromium seulement."
+    },
+    {
+      "id": "R40",
+      "requirement": "Pagination/filtre UI et contraste bouton consentement",
+      "owner": "T07",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "ci-verification.json :26familles Chromium/WebKit optimisées exactes, desktop/mobile375, garde runtime native et méthodes GET/HEAD bornées. Connexion/double clic, inscription sous JavaScript retardé avec payload unique nom/email, bibliothèque/pagination, lecteur, social/consentement/focus et axe. Rouges social et inscription retestés ; aucune assertion ignorée. Pas appareil physique/VoiceOver.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R41",
+      "requirement": "Clavier/lecteur écran et parcours visuel complet T08",
+      "owner": "T07/T01",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "physical-manual-accessibility-not-executed",
+      "evidence": "Aucun appareil mobile physique ni parcours manuel intégral VoiceOver/lecteur écran. Clavier/focus/axe/mobile375 en CI restent distincts.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R42",
+      "requirement": "Absence secrets/requête payante/génération Mac/publication réelle",
+      "owner": "T08",
+      "status": "PASS",
+      "evidenceKind": "direct-process-and-delta-scan",
+      "evidence": "run_final.py : allowlist et valeurs synthétiques, preload qa/t08/offline.cjs ; aucun secret master/.env, fournisseur externe, génération IA Mac, GPU, publication ou production. quality.json et scan staged expurgé avant commit.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R43",
+      "requirement": "RunPod/Shotstack accès non génératif existant",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "owner-free-read-bound-to-final-delivery",
+      "evidence": "owner-t04-final-free-reads.json + owner-t04-f360-proof-review.json : GET RunPod health200 et Shotstack stage/v1 templates200 exécutés T04 le15octobre22:25UTC, cinqGET totaux avec SunoAPI200/ElevenLabs401. Reader et reçu hashés dans commit T04, liés au candidat final. Accès limité seulement ; zéro worker prêt RunPod, crédits/GPU/rendu NON TESTÉS. Aucun secret lu ni appel fournisseur T08.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "GET T04 master19/10 RunPodhealth200,Shotstackstage/v1templates200. Ne prouve ni worker disponible ni génération ni runtime arrêté."
+    },
+    {
+      "id": "R44",
+      "requirement": "GPU Salad/RunPod, modèle 24Go, rendu facturé",
+      "owner": "T01/utilisateur",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "real-gpu-and-budget-not-executed",
+      "evidence": "Aucun GPU/VRAM/image CUDA/rendu facturé qualifié. Salad OFF ; saisie manquante R78, qualification réelle et budget distincts.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R45",
+      "requirement": "Publication réelle et consentements sociaux",
+      "owner": "T01/utilisateur",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "personal-social-consent-and-publication-not-executed",
+      "evidence": "Aucun compte social connecté ni publication publique. Connexion, consentement et publication de recette sont simulés.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R46",
+      "requirement": "TS/lint delta T08 et gates produit inchangées",
+      "owner": "T08/T01",
+      "status": "PASS",
+      "evidenceKind": "delta-quality-and-exact-candidate-ci",
+      "evidence": "quality.json : TypeScript et ESLint nouveaux tests, syntaxe Python, diff/scan. CI finale npm run check et build exacts. Aucun second build global local.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R47",
+      "requirement": "Régressions des nouveaux correctifs T02–T07 intégrés",
+      "owner": "T01/T08",
+      "status": "PASS",
+      "evidenceKind": "direct-and-exact-candidate-ci",
+      "evidence": "candidate-verification.json : parcours complet13 réexécutéab935e5, modes6 et create3 exécutés7d96 puis liés à sources produit/SQL/deps/config inchangées, exécutions JS non affectées f1849 et preuves bornées inchangées liées au SHA final, plus harnais modifié6PASS sur e67998b, preuves non affectées réutilisées après vérification des sources et frontières des mocks. CI exacte et manifeste source contrôlés. Anciens rouges RPC/capacités/autorité/SQL/history/UI/harnais rapprochés ; nouveaux rouges R79–88 traités séparément avec contre-épreuves. Aucun échec remplacé par un skip.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "Correctifs intégrés jusqu'au16/10 seulement; corrections T02/T04/T06 du19/10 non intégrées et non acceptées sur ab935."
+    },
+    {
+      "id": "R48",
+      "requirement": "Exports CPU synthétiques image/audio/sous-titres vérifiables",
+      "owner": "T05",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-invariant-owner",
+      "evidence": "ci-verification.json :17 fichiers MP4 CPU synthétiques, empreintes/octets/décodage complet contrôlés. Concurrence/deadline, image/audio/sous-titres réels CPU. final-owner-binding.json lie82sources T05 inchangées et preuves4K antérieures ; upscale synthétique, pas qualité IA native4K.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R49",
+      "requirement": "Réponse production expurgée en panne RPC",
+      "owner": "T03 (signalement T02)",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "rpc-security.json19 PASS : diagnostics privés absents HTTP/last_error, plan/autorité falsifiés refusés, claim/worker/écriture non confirmée contrôlés. auto-config22 étend cette preuve aux nouvelles routes corrigées.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R50",
+      "requirement": "Intégrité résultat durable/checkpoint sous reprise et ACK perdu",
+      "owner": "T03/T01 SQL",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-invariant-owner",
+      "evidence": "candidate-verification.json :11/12anciennes sources T03 invariantes ; video-pipeline modifié retesté par journey13 et stock6. final-owner-binding.json lie17sources de la nouvelle preuve route/SQL T03. CI finale durable/CAS/checkpoint/voix/ACK perdu ; aucune seconde intention fournisseur simulée, aucun GPU.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R51",
+      "requirement": "Publication refuse compte lié à un ancien profil ou révocation pending",
+      "owner": "T06",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale : OAuth/revocation/publication/historique SQL et routes PostgreSQL avec trigger canonique. T02 source-manifest lié : mêmes sources sociales ; état à usage unique, utilisateur/session/profil, expiration, reconnexion/revoke, contrôle avant DELETE, purge/historique atomique. Aucun consentement personnel ni DELETE réseau réel.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R52",
+      "requirement": "Lecteur : états honnêtes et commandes selon média vérifié",
+      "owner": "T07",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "ci-verification.json :26familles Chromium/WebKit optimisées exactes, desktop/mobile375, garde runtime native et méthodes GET/HEAD bornées. Connexion/double clic, inscription sous JavaScript retardé avec payload unique nom/email, bibliothèque/pagination, lecteur, social/consentement/focus et axe. Rouges social et inscription retestés ; aucune assertion ignorée. Pas appareil physique/VoiceOver.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R53",
+      "requirement": "Transport OTS refuse les redirections dangereuses",
+      "owner": "T02",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale security/storage/media/account/OTS et capacités privées : SSRF/IDOR/CSRF/XSS/redirections ciblées et autorité après revoke. Sources T02 inchangées hors deltas documentés, RPC19 retestés T08. Sécurité ciblée seulement, jamais exhaustive.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R54",
+      "requirement": "Panne SQL à l'annulation : réponse publique expurgée",
+      "owner": "T03/T01",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated-and-exact-postgresql-ci",
+      "evidence": "cancellation4 + reconciliation4 + production-status29 PASS : erreurs SQL expurgées, isolation, identité originale, double annulation libère une fois, tâche tardive après404, lecture done sans renvoi. CI PostgreSQL conserve quota/mois et clôture atomique. UI production T07 distinguée de /create R74.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R55",
+      "requirement": "Capacité privée invalidée après revoke/changement de profil",
+      "owner": "T02/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale security/storage/media/account/OTS et capacités privées : SSRF/IDOR/CSRF/XSS/redirections ciblées et autorité après revoke. Sources T02 inchangées hors deltas documentés, RPC19 retestés T08. Sécurité ciblée seulement, jamais exhaustive.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R56",
+      "requirement": "Autorité OAuth revalidée après attente et avant DELETE",
+      "owner": "T06/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale : OAuth/revocation/publication/historique SQL et routes PostgreSQL avec trigger canonique. T02 source-manifest lié : mêmes sources sociales ; état à usage unique, utilisateur/session/profil, expiration, reconnexion/revoke, contrôle avant DELETE, purge/historique atomique. Aucun consentement personnel ni DELETE réseau réel.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R57",
+      "requirement": "Annulation : session/isolation/double clic/quota SQL",
+      "owner": "T08/T03/T01",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated-and-exact-postgresql-ci",
+      "evidence": "cancellation4 + reconciliation4 + production-status29 PASS : erreurs SQL expurgées, isolation, identité originale, double annulation libère une fois, tâche tardive après404, lecture done sans renvoi. CI PostgreSQL conserve quota/mois et clôture atomique. UI production T07 distinguée de /create R74.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R58",
+      "requirement": "Estimation simulée : devis/plafond avant réservation",
+      "owner": "T04/T03",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "modes6 exécutés7d96 et journey13 réexécutésab935e5 + rpc-security19 sources exactes, autres preuves JS bornées f1849, sources exactes au SHA final PASS. Client interdit au mode propriétaire ; API client normale conservée ; Salad OFF refuse avant effet payant, sans fallback. Estimation/réservation/budget synthétiques, aucun solde ou coût réel validé.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R59",
+      "requirement": "Sauvegarde/restauration isolée bornée",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "fresh-owner-receipt-hash-verified",
+      "evidence": "closure-reference.json : reçu T01 du15octobre22:40:56UTC,141tables restaurées et comptages égaux, valide jusqu’au16octobre02:40:56UTC. Sources SQL exactes, aucune DDL production T08. Auth IDs seulement et blobs non figés atomiquement : ne ferme pas R62.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "T03 ACK personnel19/10 ajoute sauvegarde/restauration PostgreSQL synthétique réussie; production actuelle distincte."
+    },
+    {
+      "id": "R60",
+      "requirement": "Migration/rollback isolés et concurrence DDL",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "private-owner-restore-and-exact-ci-simulation",
+      "evidence": "closure-reference.json : trois migrations finales appliquées/rejouées/rollback sur copie privée par T01, empreintes exactes ; CI finale rollback/promotion simulés. Aucun rollback production T08. Restaurer un vieux dump au-dessus de nouvelles écritures n’est pas autorisé.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "T03 ACK personnel19/10 ajoute rollback/replay isolé et conservation des écritures post-migration. Aucun rollback production exécuté T08."
+    },
+    {
+      "id": "R61",
+      "requirement": "Reçu de sauvegarde fraîche au snapshot de recette",
+      "owner": "T01",
+      "status": "BLOQUÉ",
+      "evidenceKind": "current-owner-receipt-review",
+      "evidence": "Sauvegarde15/10 22:40:56UTC restaurée historiquement; expiration du reçu16/10 02:40:56.683048UTC. T01 confirme19/10 six artefacts aux hashes/permissions corrects mais aucun nouveau reçu frais de restauration. Présence/intégrité ne prouvent pas fraîcheur. DB arrêtée. Aucun backup ou restore distant T08.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "operations-receipts-reviewed.json",
+        "owner-evidence/T01-backup-db-readonly.json"
+      ],
+      "dependencyType": "stale-operational-proof"
+    },
+    {
+      "id": "R62",
+      "requirement": "Restauration complète identités/sessions/blobs cohérents",
+      "owner": "T01",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "complete-auth-blob-restore-not-executed",
+      "evidence": "141tables ne couvrent pas restauration complète auth/sessions et snapshot atomique de blobs. Aucune preuve complète réelle.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R63",
+      "requirement": "Migration/rollback réellement appliqués en production",
+      "owner": "T01",
+      "status": "NON TESTÉ",
+      "evidenceKind": "current-candidate-execution-gap",
+      "dependencyType": "production-change-prohibited",
+      "evidence": "Aucune DDL, promotion ou rollback production par T08, interdits ici. Copies privées et simulations ne les remplacent pas.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "NON TESTÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "Sous-point migrations production: trois reçus T01 du16/10 PASS et hashes rapprochés. Sous-point rollback production réel: NON TESTÉ. Catalogue SQL actuel inaccessible(DB arrêtée). Intégrité des scripts/image19/10 PASS ne vaut pas exécution."
+    },
+    {
+      "id": "R64",
+      "requirement": "Révocation confirmée rejouée sans second DELETE",
+      "owner": "T06/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale : OAuth/revocation/publication/historique SQL et routes PostgreSQL avec trigger canonique. T02 source-manifest lié : mêmes sources sociales ; état à usage unique, utilisateur/session/profil, expiration, reconnexion/revoke, contrôle avant DELETE, purge/historique atomique. Aucun consentement personnel ni DELETE réseau réel.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R65",
+      "requirement": "Révocation purge les anciens champs tokens",
+      "owner": "T06/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale : OAuth/revocation/publication/historique SQL et routes PostgreSQL avec trigger canonique. T02 source-manifest lié : mêmes sources sociales ; état à usage unique, utilisateur/session/profil, expiration, reconnexion/revoke, contrôle avant DELETE, purge/historique atomique. Aucun consentement personnel ni DELETE réseau réel.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R66",
+      "requirement": "Droits clients : colonnes financières/statuts protégés",
+      "owner": "T01 SQL",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-postgresql-ci",
+      "evidence": "CI finale disposable-database : migrations, pipeline concurrence, RLS/ACL, colonnes financières clients, journal Salad, historique social, CAS/revocation/ACK perdu sur PostgreSQL jetable. Aucune migration production. Sources SQL exactes dans candidate-verification.json.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R67",
+      "requirement": "Historique OAuth durable après révocation et reconnexion",
+      "owner": "T06/T01 SQL",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-source-bound-security",
+      "evidence": "CI finale : OAuth/revocation/publication/historique SQL et routes PostgreSQL avec trigger canonique. T02 source-manifest lié : mêmes sources sociales ; état à usage unique, utilisateur/session/profil, expiration, reconnexion/revoke, contrôle avant DELETE, purge/historique atomique. Aucun consentement personnel ni DELETE réseau réel.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R68",
+      "requirement": "Export CPU : concurrence et délai total bornés",
+      "owner": "T05/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-invariant-owner",
+      "evidence": "ci-verification.json :17 fichiers MP4 CPU synthétiques, empreintes/octets/décodage complet contrôlés. Concurrence/deadline, image/audio/sous-titres réels CPU. final-owner-binding.json lie82sources T05 inchangées et preuves4K antérieures ; upscale synthétique, pas qualité IA native4K.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R69",
+      "requirement": "UI sociale : panne/timeout explicites et reprise",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "ci-verification.json :26familles Chromium/WebKit optimisées exactes, desktop/mobile375, garde runtime native et méthodes GET/HEAD bornées. Connexion/double clic, inscription sous JavaScript retardé avec payload unique nom/email, bibliothèque/pagination, lecteur, social/consentement/focus et axe. Rouges social et inscription retestés ; aucune assertion ignorée. Pas appareil physique/VoiceOver.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R70",
+      "requirement": "Dialogue de révocation : nom accessible et focus",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "ci-verification.json :26familles Chromium/WebKit optimisées exactes, desktop/mobile375, garde runtime native et méthodes GET/HEAD bornées. Connexion/double clic, inscription sous JavaScript retardé avec payload unique nom/email, bibliothèque/pagination, lecteur, social/consentement/focus et axe. Rouges social et inscription retestés ; aucune assertion ignorée. Pas appareil physique/VoiceOver.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R71",
+      "requirement": "Formulaires connexion/inscription : double soumission et clavier",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "ci-verification.json :26familles Chromium/WebKit optimisées exactes, desktop/mobile375, garde runtime native et méthodes GET/HEAD bornées. Connexion/double clic, inscription sous JavaScript retardé avec payload unique nom/email, bibliothèque/pagination, lecteur, social/consentement/focus et axe. Rouges social et inscription retestés ; aucune assertion ignorée. Pas appareil physique/VoiceOver.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R72",
+      "requirement": "Reprise : validation terminale et intégrité checkpoints voix",
+      "owner": "T03/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci-and-invariant-owner",
+      "evidence": "candidate-verification.json :11/12anciennes sources T03 invariantes ; video-pipeline modifié retesté par journey13 et stock6. final-owner-binding.json lie17sources de la nouvelle preuve route/SQL T03. CI finale durable/CAS/checkpoint/voix/ACK perdu ; aucune seconde intention fournisseur simulée, aucun GPU.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R73",
+      "requirement": "Harnais navigateur : ne pas masquer mutation/issue inconnue par preuve native GET",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-native-browser-ci",
+      "evidence": "CI native-controls + garde finale : POST/PATCH/DELETE/méthode absente restent unexpected ; GET/HEAD bornés et attente de lecture du document courant. Aucun élargissement du classifier. Les rouges historiques et contre-preuves sont conservés.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R74",
+      "requirement": "Commande UI create reliée à l’annulation durable serveur",
+      "owner": "T01/T03/T07",
+      "status": "PASS",
+      "evidenceKind": "independent-boundary-and-source-bound-private-browser-sql",
+      "evidence": "create-final-proof-review.json et create-boundaries.json : correction T01 intégrée7d96, trois contre-tests client→middleware→route→queue (SQL simulé), onze scénarios auteur navigateur375/1440 et PostgreSQL privé, onze empreintes sources vérifiées. Réception conservée avant POST, reload/GET sans recréation, double annulation, ACK perdu503 puis GET,404 incertain, isolation user/kind et CSRF ; six jobs/six audits/six réservations libérées, deux redémarrages PostgreSQL, fin fournisseur simulée tardive refusée. Aucun appel fournisseur ni remboursement réel prouvé. Rouge4ce8 préservé.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R75",
+      "requirement": "Configuration ordonnanceur : droits et diagnostics publics",
+      "owner": "T01/T02",
+      "status": "PASS",
+      "evidenceKind": "direct-simulated",
+      "evidence": "auto-config.json22 PASS : auth user+error/compte révoqué refusés, erreurs privées expurgées GET/PATCH, isolation, champs autorisés, lazy create et succès conservés. Correctifs T01-AUTO-CONFIG-01/02 clos sur SHA final.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R76",
+      "requirement": "Production : reçu durable, reprise GET et annulation UI",
+      "owner": "T01/T07",
+      "status": "PASS",
+      "evidenceKind": "direct-cross-component-and-exact-browser-ci",
+      "evidence": "reconciliation4 + production-status29 + cancellation4 et famille Chromium finale T07. Reçu par utilisateur, reload, même UUID, GETdone sans POST, erreurs/timeout/404 incertains, double clic ; aucune génération rejouée après intention annulation. SQL et fournisseurs simulés dans les scénarios T08.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R77",
+      "requirement": "Ordonnanceur : préférence active/pause sans double écriture",
+      "owner": "T07",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "Famille Chromium finale T07 : GET/PATCH stricts, verrou synchrone, réponse perdue et réconciliation, pas d’état optimiste mensonger. Exécution runtime explicitement non vérifiable ; ne ferme pas R30.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R78",
+      "requirement": "Salad : saisie authentifiée et accès organisation/projet",
+      "owner": "Utilisateur/T04/T01",
+      "status": "BLOQUÉ",
+      "evidenceKind": "current-owner-receipt-review",
+      "evidence": "Reçu T04 master19/10 19:44UTC : SALAD_API_KEY présente mais MALFORMED_LOCAL_CONFIGURATION; noms organisation/projet et alias absents. Zéro GET Salad; authentification non prouvée, aucun HTTP refusé constaté. Configuration worker/gateway/groupe/qualification/devis absente. Activation runtime distincte, GPU réel NON TESTÉ.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "BLOQUÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "owner-evidence/T04-free-reads.json"
+      ],
+      "dependencyType": "local-configuration"
+    },
+    {
+      "id": "R79",
+      "requirement": "Admin et webhook Stripe : diagnostics privés en erreurs",
+      "owner": "T02",
+      "status": "PASS",
+      "evidenceKind": "direct-final-candidate",
+      "evidence": "admin-webhook.json/.log :38tests exécutés sur produit f1849 identique au SHA final ; huit catch admin/auth/service, health et dispatch Stripe signé. Rouge cb3 28PASS10FAIL conservé owner-t02-admin-webhook-red. Auth/signature/succès/retry contrôlés ; aucun webhook Stripe réel.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R80",
+      "requirement": "Pexels : erreurs HTTP et schéma ne deviennent pas stock vide",
+      "owner": "T04",
+      "status": "FAIL",
+      "evidenceKind": "current-independent-counterexample",
+      "evidence": "D102 T08 : searchStock du blob exact reçoit uniquement HTTP500 et retourne [] sans erreur. Le PASS antérieur de lib/pexels.ts ne couvrait pas ce consommateur lib/stock.ts. Erreurs fournisseur distinguées d'une recherche vide requises. Correction T04 non intégrée sur ab935.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "counterexamples.json"
+      ],
+      "dependencyType": "code",
+      "severity": "majeur"
+    },
+    {
+      "id": "R81",
+      "requirement": "ElevenLabs : identités, schéma et bornes de réponse",
+      "owner": "T04",
+      "status": "PASS",
+      "evidenceKind": "direct-final-candidate",
+      "evidence": "provider-contracts.json/.log : clone/list rejettent identités malformées et réponses invalides/bornes. API normale simulée conservée. Aucun clonage ni audio réel ;401lecture gratuite reste R91.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R82",
+      "requirement": "Salad : alias organisation/projet et conflits de configuration",
+      "owner": "T04",
+      "status": "PASS",
+      "evidenceKind": "direct-final-candidate",
+      "evidence": "provider-contracts.json/.log : aliases *_NAME reconnus, conflits refusés sans HTTP. Diagnostic transport local distinct de refus distant. Activation réelle bloquée R78.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R83",
+      "requirement": "Autopilot : erreurs publiques et plateformes sans doublons",
+      "owner": "T06",
+      "status": "PASS",
+      "evidenceKind": "direct-final-candidate",
+      "evidence": "social-autopilot.json/.log :23tests sur produit f1849 identique au candidat final ; rouge auteur12PASS11FAIL conservé. Diagnostics GET/POST expurgés et doublons refusés ; authentification et succès conservés, aucune publication.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R84",
+      "requirement": "Planning UI : fuseau, pause, réponse perdue et CAS",
+      "owner": "T07/T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "CI finale planning/schedule-cas Chromium+WebKit : fuseau IANA, pause individuelle, GET après réponse perdue, expectedSchedules précédent,409 sans écrasement ni resoumission implicite. Payload settings exclut schedules/champs non éditables. Rouge auteur3PASS6FAIL puis CAS1PASS10FAIL conservés.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R85",
+      "requirement": "Réglages sociaux : rechargement de la configuration canonique",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "CI finale social-reload Chromium+WebKit375/1440 : GET autopilot canonique restitue configuration enregistrée ; panne, réponse absente ou invalide produisent état inconnu explicite sans faux défauts éditables ; retry doubleclic une lecture. Pas de consentement ni publication réels.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R86",
+      "requirement": "Mode stock : aucun repli IA implicite après vide ou erreur",
+      "owner": "T01/T04",
+      "status": "PASS",
+      "evidenceKind": "independent-final-candidate",
+      "evidence": "stock-boundary.json/.log :6tests T08, vrais executeCreateJob/searchVideos/checkpoints, I/O fixtures. Cinq rouges cb3 conservés (403/429/500/malformé/200vide) ; correction doit refuser avant intention IA. Stock valide positif conservé. Aucun fournisseur payant appelé.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R87",
+      "requirement": "LTX : annulation et deadline pendant lecture du corps",
+      "owner": "T04",
+      "status": "PASS",
+      "evidenceKind": "direct-final-candidate",
+      "evidence": "ltx-body.json/.log :3tests auteur réexécutés sur produit f1849 identique au candidat final, rouge3FAIL conservé owner-t04-ltx-body-red.log. POST incertain reste journalisé sans second POST ; GET tardif conserve ID et refuse après annulation/deadline. Aucune annulation distante/facture prétendue.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R88",
+      "requirement": "Shotstack : annulation pendant corps de reprise GET",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "direct-final-candidate",
+      "evidence": "shotstack-body.json/.log : GET de reprise, abort10ms et corps done120ms doit rejeter. Rouge auteur0PASS1FAIL conservé ; fixture T01 annule aussi son timer de flux. Aucun POST/rendu réel ; le rouge ne prouvait pas outputVerified=true.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R89",
+      "requirement": "Planning : CAS SQL et récupération après ACK perdu",
+      "owner": "T01/T08",
+      "status": "PASS",
+      "evidenceKind": "private-postgresql-and-loopback-http",
+      "evidence": "CI T01 schedule-postgres :12concurrents un gagnant,11conflits, isolation et extensions historiques. schedule-wire-pg.json T08 : vraie route/client Supabase HTTP→pont SQL privé, écriture commitée/ACK503 perdu→GET récupère→ancien snapshot409 sans deuxième écriture ; autre utilisateur intact. Pont HTTP de fixture, pas PostgREST déployé.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R90",
+      "requirement": "Pexels : configuration permettant authentification réelle",
+      "owner": "Utilisateur/T04",
+      "status": "BLOQUÉ",
+      "evidenceKind": "current-owner-receipt-review",
+      "evidence": "Reçu T04 master19/10 19:44UTC : PEXELS_API_KEY présente mais malformée localement. Zéro requête image/vidéo, aucun401 déduit. Corriger la source master puis faire valider GET gratuit par propriétaire; aucune valeur ni fichier secret lus T08. Défaut consommateur stock distinct R80.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "BLOQUÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "owner-evidence/T04-free-reads.json"
+      ],
+      "dependencyType": "local-configuration"
+    },
+    {
+      "id": "R91",
+      "requirement": "ElevenLabs : accès lecture des voix",
+      "owner": "Utilisateur/T04",
+      "status": "BLOQUÉ",
+      "evidenceKind": "current-owner-receipt-review",
+      "evidence": "GET gratuit ElevenLabs T04 le19/10 : HTTP401 / invalid_api_key, transport local valide. Authentification refusée; cause administrative précise non établie. Nouvelle clé/droits à vérifier par titulaire. Zéro génération.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "BLOQUÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "owner-evidence/T04-free-reads.json"
+      ],
+      "dependencyType": "provider-credential"
+    },
+    {
+      "id": "R92",
+      "requirement": "OVH : provenance déployée, health et HTTPS en lecture seule",
+      "owner": "T01",
+      "status": "FAIL",
+      "evidenceKind": "current-independent-counterexample",
+      "evidence": "T01 observe19/10 19:51UTC conteneur ab935 exited depuis17/10 07:23:14UTC,exit143,pasOOM; DB arrêtée aussi. T08 GET indépendants/login et/api/social/accounts :404/404 attendus200/401,TLS vérifié. Provenance SHA/image et HTTPS restent PASS partiels, disponibilité FAIL majeure; cause initiale non attribuée au code.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "runtime-independent.json",
+        "owner-evidence/T01-ovh-state.json",
+        "owner-evidence/T01-backup-db-readonly.json"
+      ],
+      "dependencyType": "operations",
+      "severity": "majeur"
+    },
+    {
+      "id": "R93",
+      "requirement": "Installation propre et gates intégrées lint/TypeScript/tests/build",
+      "owner": "T01/T08",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-ci",
+      "evidence": "ci-verification.json vérifie installation CI et tous steps des trois jobs sur SHA exact : npm check, contrats, PostgreSQL jetable, médias CPU, navigateur optimisé Chromium/WebKit et legacy. Aucun second build local T08. Skips historiques explicitement conservés dans comptes ; aucun échec ignoré.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ],
+      "scopeNote": "CI38827288351 relue19/10 SUCCESS3jobs, headSha exact. Install/lint/TS/build verts du16/10 conservés, aucun rerun global19/10. CI verte ne couvre pas les nouveaux contre-exemples."
+    },
+    {
+      "id": "R94",
+      "requirement": "Téléchargement privé : corps suspendu, timeout et retry",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-ci",
+      "evidence": "Familles private-download Chromium/WebKit : expiration bornée du corps suspendu, absence de fichier incomplet et reprise contrôlée. Les résultats bruts et la garde runtime sont liés au SHA exact dans ci-verification.json.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R95",
+      "requirement": "Annulation durable : audit canonique transactionnel et idempotent",
+      "owner": "T01/T03/T07",
+      "status": "PASS",
+      "evidenceKind": "owner-executed-private-sql-and-independent-binding",
+      "evidence": "owner-t07-final-proof-review.json : commit57a79f2, deux reçus20/20empreintes conformes à4ce8 ; seule contrainte TypeScript effacée du composant partagé change7d96, contrôle exact dans verify_create_final.py,5PASS navigateur375/1440 et3PASS API/SQL exécutés99dd. Événement acteur/job unique, quota libéré une fois,3redémarragesPG, répétition200/false et fin tardive refusée. Rouges avant conservés. SQL24PASS T01 et rollback22:43hashé ; aucune certification annulation/remboursement fournisseur réel.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R96",
+      "requirement": "Erreur signalée failed to load workspace requirements",
+      "owner": "Utilisateur/T01/T08",
+      "status": "BLOQUÉ",
+      "evidenceKind": "current-owner-receipt-review",
+      "evidence": "Message workspace requirements toujours sans contexte original permettant reproduction. Reçu historique initialize/configRequirements/read réussi(null,0.29s) conservé; aucune preuve que l'erreur originale soit résolue. Dépendance: contexte/horodatage exact de l'incident, aucune modification SUTRA justifiée.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "BLOQUÉ",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "../t08-final-ack-20261015/matrix.json"
+      ],
+      "dependencyType": "missing-original-context"
+    },
+    {
+      "id": "R97",
+      "requirement": "Harnais final : lint du diagnostic de redirection",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "direct-changed-file-and-exact-ci",
+      "evidence": "ci-a70-targeted-lint.json/.log rouge no-console à redirect-probe.mjs:28 conservé ; remplacement du seul affichage diagnostic par stdout. ci-final-targeted-lint.json retest indépendant exact0erreur0warning ; npm check de la CI finale doit également réussir. Aucun produit modifié.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R98",
+      "requirement": "Fixtures SQL finales : dépendance audit canonique",
+      "owner": "T01/T03",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-postgresql-ci",
+      "evidence": "ci-a70-postgres.log conserve SQL42P01 activity_logs absent dans fixture de test. T01 ajoute la table canonique aux trois fixtures minimales et renforce assertion événement unique. CI finale disposable-database, étape Lost completion acknowledgement and OAuth revocation races, doit réussir ; aucune assertion ignorée ni migration production.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R99",
+      "requirement": "Navigation navigateur /create : disponibilité réelle de l’écran",
+      "owner": "T01",
+      "status": "PASS",
+      "evidenceKind": "exact-candidate-browser-redteam",
+      "evidence": "Correction propriétaire R99 intégréeab935e5 et browser-redteam exécuté PASS sur le SHA final exact; attente DOM + contrôle courant, délais/assertions natifs conservés. readiness-delta-review.json et ci-verification.json. Rouge7d96 conservé dans prior-7d96/ et navigation-7d96-failure.json.",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "previousStatus": "PASS",
+      "previousReviewedAt": "2026-10-16T00:42:56.210801+00:00",
+      "reviewMethod": "Evidence review; original execution dates retained, no unchanged suite rerun",
+      "reviewEvidence": [
+        "candidate-identity.json",
+        "proof-integrity.json",
+        "ci-current.json"
+      ]
+    },
+    {
+      "id": "R100",
+      "requirement": "Setup doit refuser l'anonyme avant service-role",
+      "owner": "T02",
+      "severity": "majeur",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "independent-execution",
+      "evidence": "D100 : GET sans session attendu401/0client privilégié, observé200/1client. Middleware public pour/api ne fournit pas l'autorisation manquante.",
+      "reviewEvidence": [
+        "counterexamples.json"
+      ],
+      "minimalFix": "Réutiliser auth serveur propriétaire avant accès DB; no-store et erreur publique fixe."
+    },
+    {
+      "id": "R101",
+      "requirement": "Health public ne divulgue pas les exceptions privées",
+      "owner": "T02",
+      "severity": "majeur",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "independent-execution",
+      "evidence": "D101 : panneDB synthétique →503 avec marqueur privé dans réponse;503 sans diagnostic attendu.",
+      "reviewEvidence": [
+        "counterexamples.json"
+      ],
+      "minimalFix": "Conserver statut de panne mais expurger les diagnostics publics."
+    },
+    {
+      "id": "R102",
+      "requirement": "Stock refuse les URLs de média non sûres",
+      "owner": "T04",
+      "severity": "majeur",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "independent-execution",
+      "evidence": "D103 : réponse Pixabay synthétique portant URL javascript renvoyée comme résultat. Aucun XSS exécuté prétendu.",
+      "reviewEvidence": [
+        "counterexamples.json"
+      ],
+      "minimalFix": "Valider schéma fournisseur et protocole/hôte média autorisé avant retour du résultat."
+    },
+    {
+      "id": "R103",
+      "requirement": "Dialogue publication accessible desktop/mobile",
+      "owner": "T06",
+      "severity": "majeur",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "independent-execution",
+      "evidence": "Chromium320/768 : rôle dialog absent; date sans nom; axe label/nested-interactive, contraste768. Captures affichées. Assertions focus/Escape/fuseau postérieures au premier échec non atteintes, non validées.",
+      "reviewEvidence": [
+        "publication/before/results.json"
+      ],
+      "minimalFix": "Réutiliser Modal existant; nommer date, séparer liens/boutons et corriger contraste; retest clavier/mobile et WebKit après intégration."
+    },
+    {
+      "id": "R104",
+      "requirement": "Publication UI conserve états incertains et succès partiels",
+      "owner": "T06",
+      "severity": "majeur",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "independent-execution",
+      "evidence": "Réponses synthétiques unknown/perdue/erreur : bouton redevient actif; partiel affiche diagnostic brut; après reprise un succès précédent n'est plus affiché. Aucun doublon public réel ni contournement serveur déduit.",
+      "reviewEvidence": [
+        "publication/before/results.json"
+      ],
+      "minimalFix": "Conserver résultat par destination, état incertain et réconciliation; ciblage retry sûr et messages expurgés."
+    },
+    {
+      "id": "R105",
+      "requirement": "Compte révoqué non sélectionnable dans la publication UI",
+      "owner": "T06",
+      "severity": "modéré",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "independent-execution",
+      "evidence": "Compte synthétique révoqué X sélectionnable (bouton enabled). Garde serveur de révocation PASS historique distincte.",
+      "reviewEvidence": [
+        "publication/before/results.json"
+      ],
+      "minimalFix": "Désactiver sélection compte révoqué avec indication et lien de reconnexion accessible."
+    },
+    {
+      "id": "R106",
+      "requirement": "Contact limite les abus et conserve erreurs honnêtes",
+      "owner": "T02",
+      "severity": "majeur",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "owner-execution-independently-reviewed",
+      "evidence": "T02 contact-red.log4FAIL/1PASS, source/hash rapprochés par T08 :25envois anonymes mocked sans plafond, HTML injecté au mail, diagnostic brut, refus fournisseur déclaré succès200. Aucun mail réel.",
+      "reviewEvidence": [
+        "owner-evidence/T02-contact-red.json"
+      ],
+      "minimalFix": "Limiter envois avec mécanisme existant, contenu texte/échappé, échec fournisseur explicite sans diagnostic privé."
+    },
+    {
+      "id": "R107",
+      "requirement": "Reprise longue panne sans occurrence silencieusement perdue",
+      "owner": "T03/T01",
+      "severity": "majeur",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "owner-execution-independently-reviewed",
+      "evidence": "Preuve T07: planning UTC12h, ticks00h puis20h du06/11 simulé; aucune occurrence12h. Code ab935 fenêtre[-1h,+3h], retourne sans travail. PASS de caractérisation conservé, mais exigence reprise sans perte FAIL; décision contractuelle attendue.",
+      "reviewEvidence": [
+        "owner-evidence/T07-first-continuous-results.json"
+      ],
+      "minimalFix": "Définir rattrapage durable borné/idempotent ou signalement durable explicite des occurrences manquées; ne pas activer un rattrapage payant automatique."
+    },
+    {
+      "id": "R108",
+      "requirement": "Routes partenaires refusent erreurs SQL sans divulgation",
+      "owner": "T02",
+      "severity": "majeur",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "owner-execution-independently-reviewed",
+      "evidence": "T02 partner-red:3PASS/5FAIL; blobs des deux routes identiques à ab935 vérifiés T08. QR/scan exposent erreurs; scan continue si lecture quota échoue et pose cookie malgré échec insert. Réseau/SQL simulés; aucune commission ou attribution réelle.",
+      "reviewEvidence": [
+        "owner-evidence/T02-partner-red.json"
+      ],
+      "minimalFix": "Expurger erreurs; refuser503 si lecture quota ou insertion échoue. Atomicité multi-requêtes et IP proxy restent limites distinctes à qualifier."
+    },
+    {
+      "id": "R109",
+      "requirement": "Coverr absent ne doit pas être déclaré configuré",
+      "owner": "T01/T04",
+      "severity": "modéré",
+      "status": "FAIL",
+      "previousStatus": "NEW",
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "reviewedAt": "2026-10-19T20:08:53.377522+00:00",
+      "evidenceKind": "independent-execution",
+      "evidence": "D104 T08 VM exacte env.ts: environnement vide attendu configured=false/missing COVERR_API_KEY, observé true/[]; registre sans clé contradictoire avec contrat Bearer retenu T04. Sonde admin anonyme signalée T01; aucune sonde réseau T08.",
+      "reviewEvidence": [
+        "counterexamples.json"
+      ],
+      "minimalFix": "Aligner registre et sonde authentifiée conditionnelle sur adaptateur Coverr, avec contrat simulé et aucun appel sans clé."
+    }
+  ],
+  "method": "Frozen candidate verified against 1160 product/config/test/dependency paths. Retain executed proofs only within unchanged exact scopes; fresh counterexamples supersede broader conclusions. Dates of source executions are not refreshed by review.",
+  "historicalDirectTests": {
+    "passCount": 241,
+    "executedToday": false,
+    "evidence": "proof-integrity.json"
+  },
+  "freshIndependent": {
+    "vm": {
+      "PASS": 0,
+      "FAIL": 5
+    },
+    "chromium": {
+      "PASS": 1,
+      "FAIL": 10
+    },
+    "publicGET": {
+      "PASS": 0,
+      "FAIL": 2
+    }
+  },
+  "realPaidGeneration": "NON TESTÉ",
+  "realPublicPublication": "NON TESTÉ",
+  "productEdits": 0
+}

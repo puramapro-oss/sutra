@@ -1,0 +1,83 @@
+✔ cumulative canonical migration upgrades v11 directly and replays without changing live jobs or budgets (101.264041ms)
+✔ 12 simultaneous deliveries of one logical request create one job and one reservation, conflicting intent is refused (14.276166ms)
+✔ distinct concurrent submissions contend on one budget; initial video SQL failure rolls back its reservation (11.030583ms)
+✖ SQL write failure at each of ten stage boundaries never advances memory; restart preserves all acknowledged stages (9.186125ms)
+✔ intent SQL failure prevents submission; lost result ACK is recovered from SQL after worker restart (9.541708ms)
+✔ music timeout after acquired video keeps budget and outputs; restart cannot submit again before reconciliation (4.269542ms)
+✔ missing cancellation ledger is SQL failure, never success; repair plus 12 cancellations settle once (15.37ms)
+✔ prior-month cancellation releases only the original reservation while another current-month job remains reserved (3.562042ms)
+✖ invalidated terminal output cannot become ready or done and cannot erase acquired checkpoints (4.75475ms)
+✔ expired owner cannot acknowledge or overwrite results; restarted owner settles disabled music once (9.040667ms)
+T03_FIXTURE_SETTLEMENT {"reserved":0,"consumed":2,"released":9,"syntheticCancellations":6}
+✔ SQL done rejects legacy null result and retains reservation; only explicit music skip succeeds (183.604291ms)
+✔ duplicate final result is idempotent; conflicting result cannot replace the completed output (18.158209ms)
+✔ conflicting concurrent results elect one durable winner without overwriting it (11.660916ms)
+✔ completed stages and scenes survive conflicting late delivery, while provider journal can advance (13.204041ms)
+✔ paid outputs and remote identities are immutable before aggregate stage completion (76.586708ms)
+✔ targeted exhausted claim quarantines atomically and retains uncertain work and budget (15.471084ms)
+✔ canonical SQL CHECKs accept orchestrator states; rejected state rolls back business write (6.723875ms)
+✔ canonical auto ready and pending_approval require final proof, complete stages and requested tracks (6.905959ms)
+✔ separate worker process exits after durable remote ID; replacement polls once and replay does nothing (362.459875ms)
+✔ worker restart after provider ACK lost reconciles persisted ID once, preserves all independent stages (15.938ms)
+✔ provider response without durable ID never resubmits after restart; completed video survives music failure (4.125959ms)
+✔ SQL checkpoint rollback before paid intent prevents any provider call and allows a safe retry (3.665041ms)
+✔ cancellation during remote execution fences late results and releases reservation exactly once (6.016958ms)
+✔ lost finish response plus 12 duplicate completions: one completed debit, read reconciliation only (165.3375ms)
+✔ expired lease after final checkpoint: new owner finishes; old owner cannot alter result or budget (11.130167ms)
+✔ cancel races finish: exactly one quota settlement, cancellation can never reconcile as done (35.60325ms)
+✔ quota settlement DB failure rolls back done, retains result; restoring ledger allows safe finish (7.522833ms)
+✔ explicitly skipped music reconciles its committed null result after a lost ACK (5.839417ms)
+✔ failed outcome with lost ACK and duplicate callbacks releases exactly one reservation (11.755834ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 27
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1755.731416
+
+✖ failing tests:
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:2718
+✖ SQL write failure at each of ten stage boundaries never advances memory; restart preserves all acknowledged stages (9.186125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  
+  undefined !== {}
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-durable-closure-20261015/qa/t03-durable-closure-20261015/postgres.test.mts:141:49)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: {},
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-durable-closure-20261015/postgres.test.mts:15:8904
+✖ invalidated terminal output cannot become ready or done and cannot erase acquired checkpoints (4.75475ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /RECONCILIATION_REQUIRED/. Input:
+  
+  'error: SUTRA_FINAL_MEDIA_PROOF_REQUIRED'
+  
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-durable-closure-20261015/qa/t03-durable-closure-20261015/postgres.test.mts:230:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: error: SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+        at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async waitForActual (node:assert:615:5)
+        at async strict.rejects (node:assert:738:25)
+        at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-durable-closure-20261015/qa/t03-durable-closure-20261015/postgres.test.mts:230:3)
+        at async Test.run (node:internal/test_runner/test:1208:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:831:7),
+    expected: /RECONCILIATION_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

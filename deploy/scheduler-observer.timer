@@ -1,0 +1,11 @@
+[Unit]
+Description=Observe SUTRA health and queue every five minutes, without dispatch
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=15s
+Unit=purama-sutra-observer.service
+
+[Install]
+WantedBy=timers.target

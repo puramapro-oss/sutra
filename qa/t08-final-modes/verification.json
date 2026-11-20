@@ -1,0 +1,246 @@
+{
+  "observedAt": "2026-10-14T00:03:49.203061+00:00",
+  "branch": "codex/sutra-t08-final-modes-20261014",
+  "baseCommit": "14617333bfb21efe1f2a1c91888d3322dde20f5b",
+  "productCommit": "e3b17117256269e281304cd4ab83bc722a6f7894",
+  "testEnvironment": "Node24.21.0, existing matching dependencies; synthetic allowlist and offline preload; no env file, GPU or live provider",
+  "commands": [
+    {
+      "command": "node qa/t08-final-modes/run.mjs",
+      "modes": {
+        "pass": 3,
+        "fail": 1,
+        "skip": 0,
+        "exitCode": 1,
+        "defect": "T08-MODE-03 on base1461733"
+      },
+      "typecheck": "PASS",
+      "lint": "PASS"
+    },
+    {
+      "command": "gitleaks git --pre-commit --staged --redact=100 --no-banner --no-color",
+      "result": "PASS; gitleaks.json and gitleaks.log"
+    },
+    {
+      "command": "gitnexus detect-changes --scope staged --repo sutra-t08-final-modes-20261014",
+      "result": "LOW / 0 processes; new files not mapped by baseline index; direct diff scope review required"
+    },
+    {
+      "command": "git diff --cached --check",
+      "result": "PASS after removing terminal blank line from index log"
+    }
+  ],
+  "reusedModeFix": {
+    "commit": "42b03bace47bd4ee49cb6d2f435deb11a77b2299",
+    "pass": 4,
+    "fail": 0,
+    "exactTestHashMatches": true,
+    "executedBy": "T01; immutable receipt reviewed by T08",
+    "notMergedIntoT08": true
+  },
+  "matrixRows": {
+    "PASS": 39,
+    "FAIL": 3,
+    "BLOQUE": 8,
+    "NON TESTE": 8
+  },
+  "files": [
+    {
+      "path": "scripts/test-t08-final-modes.mts",
+      "sha256": "d78087928340d579cb230c5bf5bf4d5245d6bfb8f9eb6c011dcc63bcc01dbe4d"
+    },
+    {
+      "path": "HANDOFF-SUTRA-T08-FINAL-MODES-20261014.md",
+      "sha256": "57a37bef829c773b39da9e86ee102efd26cf09dad2d360a1ca05c9df091e82e9"
+    },
+    {
+      "path": "BATON.md",
+      "sha256": "6193314ccdbb78a42c9e5ce81ab1ab6b71d43c335cf245e49d976a25ccfaaed8"
+    },
+    {
+      "path": "task_plan.md",
+      "sha256": "6e2ab8034c157b18eab72751b104414048f426c34d4d1590edf4879ed3adcaa0"
+    },
+    {
+      "path": "qa/t08-final-modes/MATRIX.md",
+      "sha256": "ba0dee5cb6e321a615212b562854425d6b4909ec66e26e5b2e83d6e65ce46ce0"
+    },
+    {
+      "path": "qa/t08-final-modes/README.md",
+      "sha256": "efbdcebca7b62e7b41f1e837e31225d3e6fea16facd4f4ee882886613b86d239"
+    },
+    {
+      "path": "qa/t08-final-modes/SMOKE-T01.md",
+      "sha256": "65e47fbd041977f8e429dcd252a21c908395b6013c934e35a2e882e4e50c8bb7"
+    },
+    {
+      "path": "qa/t08-final-modes/coordination/T01-SALAD-COORDINATION-20261014.md",
+      "sha256": "027638ba9e975181d6e4122060b4cdd1d67f2597cd1b88440793980706cac6f0"
+    },
+    {
+      "path": "qa/t08-final-modes/coordination/T02-SALAD-SECURITY-20261014.md",
+      "sha256": "67ac7d1b67cf3a078050380a4df0a13db7610595d6952cc7752193f05ef7ce57"
+    },
+    {
+      "path": "qa/t08-final-modes/coordination/T03-SALAD-RECOVERY-20261014.md",
+      "sha256": "12b77057aedb4b1870044b2d6b4c8ca959a79468c7d87b2ec4f915e649439971"
+    },
+    {
+      "path": "qa/t08-final-modes/coordination/T04-SALAD-20261014.md",
+      "sha256": "17934bb94d6d2be36ea9d383d39a35c0313d3724adf421e67e805869eac4c1cf"
+    },
+    {
+      "path": "qa/t08-final-modes/coordination/T05-SALAD-MEDIA-20261014.md",
+      "sha256": "68b23a857d394300a84a972e5056bff84739ca8b919ba90c4cf7beb375628cf0"
+    },
+    {
+      "path": "qa/t08-final-modes/coordination/T06-SOCIAL-FINAL-20261014.md",
+      "sha256": "4dd9cc55e53c371a9ce9ab96b163eae1fccba1b38028a46f807d2f8533eae1e1"
+    },
+    {
+      "path": "qa/t08-final-modes/coordination/T07-TO-T04-T01-CAPABILITIES-20261014.md",
+      "sha256": "f314b1c1c9c364deb384b1a2a995767456e8e729e877478d233054c800e5b216"
+    },
+    {
+      "path": "qa/t08-final-modes/coordination-snapshot.json",
+      "sha256": "5d115951578fb9b5d7d4d782d4682383cccc5be229065e84a065a529a1886417"
+    },
+    {
+      "path": "qa/t08-final-modes/gitnexus-impact.json",
+      "sha256": "ae56a4de78ecb9be22d00831a8e8990f7fac7c0f6deb2d71085a6f4eaaa67659"
+    },
+    {
+      "path": "qa/t08-final-modes/gitnexus-index.log",
+      "sha256": "cd7f9f434fba47c28ef2335c78791e90b4871a8814575be2dda78858bd0da75f"
+    },
+    {
+      "path": "qa/t08-final-modes/lint.json",
+      "sha256": "df55c0355dd8b9c9a7e152f4cec022d77949cd221f3f2059f4807a5c741f63e9"
+    },
+    {
+      "path": "qa/t08-final-modes/lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "qa/t08-final-modes/modes.json",
+      "sha256": "d05882ec4bb86b4634034b2a7a5d119aeaf52efc5fad2b110390c074e11f6bc3"
+    },
+    {
+      "path": "qa/t08-final-modes/modes.log",
+      "sha256": "ed96b442e1211312d70b27a1c2dd4f70a23a067e217580e53c2aee6fa41e3778"
+    },
+    {
+      "path": "qa/t08-final-modes/owner-evidence.json",
+      "sha256": "609c79a9ab919020423075a475f2f081fe33295dd7c09e71350bdf09e44b4c15"
+    },
+    {
+      "path": "qa/t08-final-modes/owner-receipts/t01-mode-error-milestone.json",
+      "sha256": "a9c6878c99a46981f0aec06e21044bee8f9f44bbf7211672272924c8a9cff5e4"
+    },
+    {
+      "path": "qa/t08-final-modes/owner-receipts/t02-contract-manifest.json",
+      "sha256": "cd061509b3c2fa343ea88772eaea411582367cd32a7e8a2a40ffed79587b8cff"
+    },
+    {
+      "path": "qa/t08-final-modes/owner-receipts/t02-contract-tests.log",
+      "sha256": "29cab50d0217e3e45dab5770752ebcb645422d125b1ed78fa713263a136e17df"
+    },
+    {
+      "path": "qa/t08-final-modes/owner-receipts/t03-adapter-result.json",
+      "sha256": "808e469aa7aeddad970ec261d0f1d358460e17f6ac9d93d9700faa0967ff8b52"
+    },
+    {
+      "path": "qa/t08-final-modes/owner-receipts/t03-adapter.log",
+      "sha256": "2eb24bd38f11c21fdfa62158d2fda765fc042a42418d9ee1f2eab2e1b087107a"
+    },
+    {
+      "path": "qa/t08-final-modes/owner-receipts/t03-recovery-result.json",
+      "sha256": "61e85d844cc28c6b08389014f0236660e268e975a20ce82934ed96519eab5cae"
+    },
+    {
+      "path": "qa/t08-final-modes/owner-receipts/t03-recovery.log",
+      "sha256": "35c8ca7a4f9863b9adb36f4f4fe3f84f9817caadbdceed70e82f6b97a2d9979e"
+    },
+    {
+      "path": "qa/t08-final-modes/reused-evidence.json",
+      "sha256": "8954413cfca5bf0c9601072a0f523665bf8b15704e2da92dde4fa6fafcf02cc0"
+    },
+    {
+      "path": "qa/t08-final-modes/run.mjs",
+      "sha256": "f23a385543c2ef53197628b8e5f993c8b3cfdcbd9b776bad2b582b169104ea43"
+    },
+    {
+      "path": "qa/t08-final-modes/source-equivalence.json",
+      "sha256": "ce3b6eddc4c3f1d800ddfca1a2e9ba8befd99becf40ab436b9234f2d3394420c"
+    },
+    {
+      "path": "qa/t08-final-modes/t01-provider-receipt.json",
+      "sha256": "496d7fed03209b714f26d5c591a7a97a5e06547806784df0756226c084ae79f7"
+    },
+    {
+      "path": "qa/t08-final-modes/tsconfig.json",
+      "sha256": "33b6cc5d712340cb655f41e563eaff9f43ffcf497d35b98e0ca31b8433bec794"
+    },
+    {
+      "path": "qa/t08-final-modes/typecheck.json",
+      "sha256": "bda8fe2ba6673305fcc4cb9a613a486aa812915d951a4ab40379c817560ab385"
+    },
+    {
+      "path": "qa/t08-final-modes/typecheck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "unchangedProductInputs": [
+    {
+      "path": "package.json",
+      "sha256": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e",
+      "matchesBase": true
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+      "matchesBase": true
+    },
+    {
+      "path": "src/app/api/create/route.ts",
+      "sha256": "903c44a7be58893d2e4e57ef25901b56c7ab96b7f54f6168c626170627db6d36",
+      "matchesBase": true
+    },
+    {
+      "path": "src/lib/ltx.ts",
+      "sha256": "a34fb0a5e3cadae989802fbc5ad554e706f221a869271a5992d54d1c5de6a1e2",
+      "matchesBase": true
+    },
+    {
+      "path": "src/lib/local-engine.ts",
+      "sha256": "26bf9cf5edcb586fc0ffa7c4b201857de895a8ab0d24d6f5184f1ca04b870183",
+      "matchesBase": true
+    },
+    {
+      "path": "src/lib/pipeline-submit.ts",
+      "sha256": "aef2059cbb589392bb9ba5dc663fa9aa8b41e16a7208e399d9a92bac678368e5",
+      "matchesBase": true
+    },
+    {
+      "path": "src/lib/constants.ts",
+      "sha256": "82082756b7188489cdb6d790df5292382db9fea8d207635f7d54f6564d73d656",
+      "matchesBase": true
+    },
+    {
+      "path": "src/types/index.ts",
+      "sha256": "f53cf4966852b5de9350e1e0272b07b3f097bb500e3ad27184a78c0f9ddc6d5c",
+      "matchesBase": true
+    },
+    {
+      "path": "qa/t08/offline.cjs",
+      "sha256": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+      "matchesBase": true
+    }
+  ],
+  "limits": [
+    "No final Salad application candidate available in base",
+    "T04 library proofs are exact-source WIP with memory journals; no DB/runtime/GPU certification",
+    "T05 media and T06 reconnect defects routed to T05/T07; no fix proof included",
+    "No global CI/build rerun, push, merge, deployment, publication or production operation"
+  ]
+}

@@ -12,7 +12,9 @@ export default function CinematicIntro() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const seen = localStorage.getItem(STORAGE_KEY)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let seen: string | null = null
+    try { seen = localStorage.getItem(STORAGE_KEY) } catch { return }
     if (seen) return
     queueMicrotask(() => setVisible(true))
 
@@ -21,7 +23,7 @@ export default function CinematicIntro() {
     const t2 = setTimeout(() => setPhase('fade'), 2500)
     const t3 = setTimeout(() => {
       setVisible(false)
-      localStorage.setItem(STORAGE_KEY, '1')
+      try { localStorage.setItem(STORAGE_KEY, '1') } catch { /* Optional visual preference. */ }
     }, INTRO_DURATION)
 
     return () => {
@@ -33,7 +35,7 @@ export default function CinematicIntro() {
 
   const skip = useCallback(() => {
     setVisible(false)
-    localStorage.setItem(STORAGE_KEY, '1')
+    try { localStorage.setItem(STORAGE_KEY, '1') } catch { /* Optional visual preference. */ }
   }, [])
 
   if (!visible) return null
@@ -110,14 +112,16 @@ export default function CinematicIntro() {
           </motion.p>
 
           {/* Skip hint */}
-          <motion.p
+          <motion.button
+            type="button"
+            onClick={skip}
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.3 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="absolute bottom-8 text-xs text-white/30"
+            className="absolute bottom-8 min-h-11 rounded-xl border border-white/20 px-5 text-sm text-white/80"
           >
-            Cliquer pour passer
-          </motion.p>
+            Passer l’introduction
+          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>

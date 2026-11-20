@@ -1,0 +1,538 @@
+{
+  "observed_at": "2026-10-13T20:28:08.181738+00:00",
+  "owner": "T03 pipeline complement; provider requests performed by T01/T04",
+  "base": "48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4",
+  "master_source": "~/.env.purama.master",
+  "master_mode": "0o600",
+  "t03_paid_requests": 0,
+  "t03_remote_mutations": 0,
+  "t03_live_provider_requests": 0,
+  "diagnostic_projection_only": true,
+  "terminal_literal_newline_removed_in_memory": [
+    "RUNPOD_API_KEY",
+    "RUNPOD_ENDPOINT_ID",
+    "SHOTSTACK_API_KEY",
+    "SHOTSTACK_PRODUCTION_KEY",
+    "SUNO_API_KEY",
+    "SUNO_BASE_URL"
+  ],
+  "literal_master_mac_http": [
+    {
+      "http": 401,
+      "tls_verified": true,
+      "method": "GET",
+      "edge_challenge": false,
+      "gateway_forbidden": false,
+      "json": false,
+      "known_error": null,
+      "provider": "RunPod",
+      "credential": "RUNPOD_API_KEY",
+      "operation": "list_endpoints"
+    },
+    {
+      "http": 403,
+      "tls_verified": true,
+      "method": "GET",
+      "edge_challenge": false,
+      "gateway_forbidden": false,
+      "json": true,
+      "known_error": "invalid or disabled",
+      "provider": "Shotstack",
+      "credential": "SHOTSTACK_API_KEY",
+      "operation": "templates_stage"
+    },
+    {
+      "http": 403,
+      "tls_verified": true,
+      "method": "GET",
+      "edge_challenge": false,
+      "gateway_forbidden": false,
+      "json": true,
+      "known_error": "invalid or disabled",
+      "provider": "Shotstack",
+      "credential": "SHOTSTACK_API_KEY",
+      "operation": "templates_v1"
+    },
+    {
+      "http": 403,
+      "tls_verified": true,
+      "method": "GET",
+      "edge_challenge": false,
+      "gateway_forbidden": false,
+      "json": true,
+      "known_error": "invalid or disabled",
+      "provider": "Shotstack",
+      "credential": "SHOTSTACK_PRODUCTION_KEY",
+      "operation": "templates_stage"
+    },
+    {
+      "http": 403,
+      "tls_verified": true,
+      "method": "GET",
+      "edge_challenge": false,
+      "gateway_forbidden": false,
+      "json": true,
+      "known_error": "invalid or disabled",
+      "provider": "Shotstack",
+      "credential": "SHOTSTACK_PRODUCTION_KEY",
+      "operation": "templates_v1"
+    },
+    {
+      "http": 200,
+      "tls_verified": true,
+      "method": "GET",
+      "edge_challenge": false,
+      "gateway_forbidden": false,
+      "json": true,
+      "known_error": null,
+      "provider": "Zernio",
+      "credential": "ZERNIO_API_KEY",
+      "operation": "accounts",
+      "count": 0
+    },
+    {
+      "http": 200,
+      "tls_verified": true,
+      "method": "GET",
+      "edge_challenge": false,
+      "gateway_forbidden": false,
+      "json": true,
+      "known_error": null,
+      "provider": "Zernio",
+      "credential": "ZERNIO_API_KEY",
+      "operation": "profiles",
+      "count": 1
+    }
+  ],
+  "normalized_master_mac_http": {
+    "runpod_list": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 401,
+      "json": false,
+      "recognized_error": null,
+      "edge_challenge": false
+    },
+    "runpod_health": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 401,
+      "json": true,
+      "recognized_error": "INVALID_API_KEY",
+      "edge_challenge": false
+    },
+    "shotstack_api_key_stage": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_api_key_v1": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_production_key_stage": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_production_key_v1": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "suno": {
+      "master_key_present": true,
+      "auth_validated": false,
+      "reason": "NO_VERIFIED_AUTH_CONTRACT",
+      "credentials_sent": false,
+      "base_matches_legacy_code_default": true,
+      "unused_alias_matches_base": false,
+      "public_base": {
+        "method": "GET",
+        "credentials_sent": false,
+        "timeout_seconds": 18,
+        "attempts": 1,
+        "redirects": false,
+        "tls_verified": true,
+        "http_status": 503,
+        "json": false,
+        "recognized_error": null,
+        "edge_challenge": false
+      }
+    },
+    "zernio": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 200,
+      "json": true,
+      "recognized_error": null,
+      "edge_challenge": false,
+      "returned_account_count": 0
+    }
+  },
+  "normalized_master_vps_http": {
+    "runpod_list": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 401,
+      "json": false,
+      "recognized_error": null,
+      "edge_challenge": false
+    },
+    "runpod_health": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 401,
+      "json": true,
+      "recognized_error": "INVALID_API_KEY",
+      "edge_challenge": false
+    },
+    "shotstack_api_key_stage": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_api_key_v1": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_production_key_stage": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "shotstack_production_key_v1": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 403,
+      "json": true,
+      "recognized_error": "INVALID_OR_DISABLED",
+      "edge_challenge": false
+    },
+    "suno": {
+      "master_key_present": true,
+      "auth_validated": false,
+      "reason": "NO_VERIFIED_AUTH_CONTRACT",
+      "credentials_sent": false,
+      "base_matches_legacy_code_default": true,
+      "unused_alias_matches_base": false,
+      "public_base": {
+        "method": "GET",
+        "credentials_sent": false,
+        "timeout_seconds": 18,
+        "attempts": 1,
+        "redirects": false,
+        "tls_verified": true,
+        "http_status": 503,
+        "json": false,
+        "recognized_error": null,
+        "edge_challenge": false
+      }
+    },
+    "zernio": {
+      "method": "GET",
+      "credentials_sent": true,
+      "timeout_seconds": 18,
+      "attempts": 1,
+      "redirects": false,
+      "tls_verified": true,
+      "http_status": 200,
+      "json": true,
+      "recognized_error": null,
+      "edge_challenge": false,
+      "returned_account_count": 0
+    }
+  },
+  "normalized_mac_comparison": [
+    {
+      "name": "RUNPOD_API_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "RUNPOD_ENDPOINT_ID",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "RUNPOD_POD_URL",
+      "master_present": false,
+      "candidate_present": false,
+      "matches_master": null
+    },
+    {
+      "name": "SHOTSTACK_API_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "SHOTSTACK_PRODUCTION_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "SHOTSTACK_ENV",
+      "master_present": false,
+      "candidate_present": false,
+      "matches_master": null
+    },
+    {
+      "name": "SUNO_API_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "SUNO_BASE_URL",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "SUNO_API_BASE_URL",
+      "master_present": true,
+      "candidate_present": false,
+      "matches_master": false
+    },
+    {
+      "name": "ZERNIO_API_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "ZERNIO_BASE_URL",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "ZERNIO_WEBHOOK_SECRET",
+      "master_present": true,
+      "candidate_present": false,
+      "matches_master": false
+    },
+    {
+      "name": "NEXT_PUBLIC_SITE_URL",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": false
+    },
+    {
+      "name": "NEXT_PUBLIC_APP_URL",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": false
+    }
+  ],
+  "normalized_vps_comparison": [
+    {
+      "name": "RUNPOD_API_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "RUNPOD_ENDPOINT_ID",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "RUNPOD_POD_URL",
+      "master_present": false,
+      "candidate_present": false,
+      "matches_master": null
+    },
+    {
+      "name": "SHOTSTACK_API_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "SHOTSTACK_PRODUCTION_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "SHOTSTACK_ENV",
+      "master_present": false,
+      "candidate_present": false,
+      "matches_master": null
+    },
+    {
+      "name": "SUNO_API_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "SUNO_BASE_URL",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "SUNO_API_BASE_URL",
+      "master_present": true,
+      "candidate_present": false,
+      "matches_master": false
+    },
+    {
+      "name": "ZERNIO_API_KEY",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "ZERNIO_BASE_URL",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": true
+    },
+    {
+      "name": "ZERNIO_WEBHOOK_SECRET",
+      "master_present": true,
+      "candidate_present": false,
+      "matches_master": false
+    },
+    {
+      "name": "NEXT_PUBLIC_SITE_URL",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": false
+    },
+    {
+      "name": "NEXT_PUBLIC_APP_URL",
+      "master_present": true,
+      "candidate_present": true,
+      "matches_master": false
+    }
+  ],
+  "vps_read_only": true,
+  "vps_image": "sha256:956b477deb4b7049914db5f51d934cf15fb0c3ea5fe289d6029c23b4c599e417",
+  "oauth_countertests": {
+    "pass": 1,
+    "fail": 5,
+    "includes_suno_error_redaction_failure": true
+  },
+  "sources": {
+    "t01_master": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/qa/provider-resume-master-20261013/mac.json",
+      "sha256": "7a43e6a0f3c24da872fa1f8203c072ab71c3b377e67a147b2b33ece8ffe95f82"
+    },
+    "t01_format": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/qa/provider-resume-master-20261013/master-escape-check.json",
+      "sha256": "b286b06e31025c1a86fbe0be3d8fb862b61839334fb3eb9ab0b1ad9d578d3e85"
+    },
+    "t04_normalized": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013/qa/provider-final-audit-20261013/normalized-live-audit.json",
+      "sha256": "07aa8c46e689bb218f7b130f4d92b93506c801d5995e81727d5f8bdb1d17b691"
+    },
+    "t08_redteam": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/redteam.log",
+      "sha256": "630a5d1f734a96990aabe11a61a25f828204df6dc96cfbafc40d45fc48a490e5"
+    },
+    "t08_typecheck": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/typecheck.json",
+      "sha256": "b2f09c7a5fa7aa2f3d88d2dc7852f3b575a45e8da5be6988d625c0677cef243e"
+    },
+    "t08_lint": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/lint.json",
+      "sha256": "251ec6207b21f6a6c8d5d86a4e06038e49b8701b527d247f3ebef8e8fdc9e359"
+    },
+    "t08_contract": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t08-provider-audit-20261013/qa/t08/providers-20261013/zernio-contract.json",
+      "sha256": "9abc5190f76e827c123aa7ae30ea4c89a4b0015ff169e349f332609d0f7874ec"
+    },
+    "t06_social": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/qa/t06-provider-audit-20261013/SOCIAL-AUDIT.md",
+      "sha256": "9232afefcdfa7e91c8cab466637ac59fcace6f318a86971d495fdfd315e4c0fb"
+    },
+    "t05_contracts": {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/qa/t05/providers-20261013/targeted-results.json",
+      "sha256": "86ad4412542fadc9f9cd6c674ba8560b073fce0a95f64b8f47d5c143af6d9d04"
+    }
+  }
+}

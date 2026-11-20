@@ -22,7 +22,7 @@ export default function ManualFormStep3({ mediaMode, keywordsLoading, sceneSelec
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">Etape 4 — Medias</h2>
-      <p className="text-sm text-white/40">{mediaMode === 'ai' ? 'Tu peux uploader tes propres fichiers ou laisser l’IA les generer.' : 'Choisis un media reel par scene. Bouton "Generer IA" comme fallback.'}</p>
+      <p className="text-sm text-white/65">{mediaMode === 'ai' ? 'Tu peux uploader tes propres fichiers ou laisser l’IA les generer.' : 'Choisis un media reel par scene. Bouton "Generer IA" comme fallback.'}</p>
       {mediaMode === 'ai' ? (
         <>
           <UploadZone icon={Mic} label="Voix off" accept="audio/*" testId="upload-voice" />

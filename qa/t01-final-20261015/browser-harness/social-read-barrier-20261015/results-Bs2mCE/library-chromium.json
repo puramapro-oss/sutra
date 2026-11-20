@@ -1,0 +1,237 @@
+{
+  "engine": "chromium",
+  "browserVersion": "145.0.7632.6",
+  "nativeSafari": false,
+  "scope": "HTML scheduling control only, not a reproduction of React effect timing",
+  "before": {
+    "errors": [],
+    "qualified": [],
+    "unexpected": [],
+    "events": [
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:50201/library",
+        "navigation": 2,
+        "at": 1792445384268
+      }
+    ],
+    "navigations": [
+      {
+        "id": 1,
+        "method": "goto",
+        "from": "nullblank",
+        "to": "https://127.0.0.1:50201/library",
+        "startedAt": 1792445384236,
+        "finishedAt": 1792445384258
+      },
+      {
+        "id": 2,
+        "method": "goto",
+        "from": "https://127.0.0.1:50201/library",
+        "to": "https://127.0.0.1:50201/next",
+        "startedAt": 1792445384258,
+        "finishedAt": 1792445384270
+      }
+    ],
+    "domErrors": []
+  },
+  "after": {
+    "runtime": {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:50201/library",
+          "navigation": 2,
+          "at": 1792445384489
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "https://127.0.0.1:50201/library",
+          "startedAt": 1792445384453,
+          "finishedAt": 1792445384463
+        },
+        {
+          "id": 2,
+          "method": "goto",
+          "from": "https://127.0.0.1:50201/library",
+          "to": "https://127.0.0.1:50201/next",
+          "startedAt": 1792445384486,
+          "finishedAt": 1792445384490
+        }
+      ],
+      "domErrors": []
+    },
+    "barrier": {
+      "documents": [
+        {
+          "id": 1,
+          "url": "https://127.0.0.1:50201/library",
+          "reads": [
+            {
+              "url": "https://127.0.0.1:50200/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+              "method": "GET",
+              "startedAt": 1792445384479,
+              "state": "finished",
+              "status": 200,
+              "finishedAt": 1792445384485
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "url": "https://127.0.0.1:50201/next",
+          "reads": []
+        }
+      ],
+      "waits": [
+        {
+          "document": 1,
+          "from": "https://127.0.0.1:50201/library",
+          "startedAt": 1792445384463,
+          "status": "PASS",
+          "finishedAt": 1792445384486
+        }
+      ]
+    }
+  },
+  "negative": {
+    "runtime": {
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "Failed to fetch",
+          "stack": "TypeError: Failed to fetch\n    at window.fetch (<anonymous>:29:22)\n    at window.runRead (https://127.0.0.1:50201/library:3:30)\n    at eval (eval at evaluate (:290:30), <anonymous>:1:16)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+          "navigation": 1,
+          "at": 1792445384555
+        },
+        {
+          "kind": "pageerror",
+          "message": "BARRIER_REAL_EXCEPTION",
+          "stack": "Error: BARRIER_REAL_EXCEPTION\n    at eval (eval at evaluate (:290:30), <anonymous>:1:34)",
+          "navigation": 1,
+          "at": 1792445384657
+        },
+        {
+          "kind": "pageerror",
+          "message": "BARRIER_REAL_REJECTION",
+          "stack": "Error: BARRIER_REAL_REJECTION\n    at eval (eval at evaluate (:290:30), <anonymous>:1:92)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+          "navigation": 1,
+          "at": 1792445384657
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "Failed to fetch",
+          "stack": "TypeError: Failed to fetch\n    at window.fetch (<anonymous>:29:22)\n    at window.runRead (https://127.0.0.1:50201/library:3:30)\n    at eval (eval at evaluate (:290:30), <anonymous>:1:16)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+          "navigation": 1,
+          "at": 1792445384555
+        },
+        {
+          "kind": "pageerror",
+          "message": "BARRIER_REAL_EXCEPTION",
+          "stack": "Error: BARRIER_REAL_EXCEPTION\n    at eval (eval at evaluate (:290:30), <anonymous>:1:34)",
+          "navigation": 1,
+          "at": 1792445384657
+        },
+        {
+          "kind": "pageerror",
+          "message": "BARRIER_REAL_REJECTION",
+          "stack": "Error: BARRIER_REAL_REJECTION\n    at eval (eval at evaluate (:290:30), <anonymous>:1:92)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+          "navigation": 1,
+          "at": 1792445384657
+        },
+        {
+          "kind": "dom-uncaught",
+          "message": "TypeError: Failed to fetch",
+          "document": "https://127.0.0.1:50201/library",
+          "navigation": 1,
+          "at": 1792445384555
+        },
+        {
+          "kind": "dom-uncaught",
+          "message": "Uncaught Error: BARRIER_REAL_EXCEPTION",
+          "document": "https://127.0.0.1:50201/library",
+          "navigation": 1,
+          "at": 1792445384657
+        },
+        {
+          "kind": "dom-uncaught",
+          "message": "Error: BARRIER_REAL_REJECTION",
+          "document": "https://127.0.0.1:50201/library",
+          "navigation": 1,
+          "at": 1792445384657
+        }
+      ],
+      "events": [],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "https://127.0.0.1:50201/library",
+          "startedAt": 1792445384522,
+          "finishedAt": 1792445384533
+        }
+      ],
+      "domErrors": [
+        {
+          "kind": "unhandledrejection",
+          "message": "TypeError: Failed to fetch",
+          "document": "https://127.0.0.1:50201/library",
+          "navigation": 1,
+          "at": 1792445384555
+        },
+        {
+          "kind": "uncaught",
+          "message": "Uncaught Error: BARRIER_REAL_EXCEPTION",
+          "document": "https://127.0.0.1:50201/library",
+          "navigation": 1,
+          "at": 1792445384657
+        },
+        {
+          "kind": "unhandledrejection",
+          "message": "Error: BARRIER_REAL_REJECTION",
+          "document": "https://127.0.0.1:50201/library",
+          "navigation": 1,
+          "at": 1792445384657
+        }
+      ]
+    },
+    "barrier": {
+      "documents": [
+        {
+          "id": 1,
+          "url": "https://127.0.0.1:50201/library",
+          "reads": [
+            {
+              "url": "https://127.0.0.1:50200/rest/v1/videos?select=*&user_id=eq.11111111-1111-4111-8111-111111111111&order=created_at.desc&offset=0&limit=12",
+              "method": "GET",
+              "startedAt": 1792445384549,
+              "state": "failed",
+              "failure": "net::ERR_FAILED"
+            }
+          ]
+        }
+      ],
+      "waits": [
+        {
+          "document": 1,
+          "from": "https://127.0.0.1:50201/library",
+          "startedAt": 1792445384533,
+          "status": "FAIL",
+          "message": "fixture read barrier: read failed",
+          "finishedAt": 1792445384554
+        }
+      ]
+    }
+  }
+}

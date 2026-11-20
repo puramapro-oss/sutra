@@ -1,0 +1,92 @@
+[
+  {
+    "engine": "chromium",
+    "clock": false,
+    "events": [
+      {
+        "path": "/api/media/test",
+        "status": 307,
+        "type": "fetch"
+      },
+      {
+        "path": "/storage/v1/object/sign/sutra-assets/owners/11111111-1111-4111-8111-111111111111/fixture.mp4",
+        "status": 200,
+        "type": "fetch"
+      }
+    ],
+    "before": {
+      "headers": true
+    },
+    "after": {
+      "headers": true
+    }
+  },
+  {
+    "engine": "chromium",
+    "clock": true,
+    "events": [
+      {
+        "path": "/api/media/test",
+        "status": 307,
+        "type": "fetch"
+      },
+      {
+        "path": "/storage/v1/object/sign/sutra-assets/owners/11111111-1111-4111-8111-111111111111/fixture.mp4",
+        "status": 200,
+        "type": "fetch"
+      }
+    ],
+    "before": {
+      "headers": true
+    },
+    "after": {
+      "headers": true,
+      "error": "AbortError"
+    }
+  },
+  {
+    "engine": "webkit",
+    "clock": false,
+    "events": [
+      {
+        "path": "/api/media/test",
+        "status": 307,
+        "type": "fetch"
+      },
+      {
+        "path": "/storage/v1/object/sign/sutra-assets/owners/11111111-1111-4111-8111-111111111111/fixture.mp4",
+        "status": 200,
+        "type": "fetch"
+      }
+    ],
+    "before": {
+      "headers": true
+    },
+    "after": {
+      "headers": true
+    }
+  },
+  {
+    "engine": "webkit",
+    "clock": true,
+    "events": [
+      {
+        "path": "/api/media/test",
+        "status": 307,
+        "type": "fetch"
+      },
+      {
+        "path": "/storage/v1/object/sign/sutra-assets/owners/11111111-1111-4111-8111-111111111111/fixture.mp4",
+        "status": 200,
+        "type": "fetch"
+      }
+    ],
+    "before": {
+      "headers": true
+    },
+    "after": {
+      "headers": true,
+      "error": "AbortError"
+    }
+  }
+]

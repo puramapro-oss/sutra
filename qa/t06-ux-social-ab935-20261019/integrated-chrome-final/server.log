@@ -1,0 +1,15 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:55629
+- Network:       http://127.0.0.1:55629
+✓ Ready in 331ms
+✓ Running next.config.ts took 168ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+ GET /login 200 in 1102ms (next.js: 387ms, proxy.ts: 474ms, application-code: 241ms)
+ GET /login?next=/library 200 in 53ms (next.js: 9ms, proxy.ts: 8ms, application-code: 36ms)
+[?25h

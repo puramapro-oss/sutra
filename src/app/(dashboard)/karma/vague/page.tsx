@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { Waves, Plus, Loader2, TrendingUp } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -46,20 +46,30 @@ export default function VaguePage() {
   const [submitting, setSubmitting] = useState(false)
   const [showForm, setShowForm] = useState(false)
 
-  const load = useCallback(async () => {
-    try {
-      const res = await fetch('/api/karma/games/vague', { cache: 'no-store' })
+  const dataRequest = useRef<AbortController | null>(null)
+  const load = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/karma/games/vague', { cache: 'no-store', signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (res.status === 401) return
       const data = await res.json()
-      setState(data)
-    } catch {
-      // silent
-    } finally {
-      setLoading(false)
-    }
+      commit(() => setState(data))
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => { load()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [load])
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()

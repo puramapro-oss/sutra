@@ -1,0 +1,26 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 17 files, 6 symbols
+Affected processes: 363
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T06 — recette sociale intégrée, 2026-10-15 → BATON.md
+  Const upsertSchema → src/app/api/social/autopilot/route.ts
+  Function GET → src/app/api/social/autopilot/route.ts
+  Section 2026-10-13 — T05 complément fournisseur livré localement → task_plan.md
+  Section T06 — recette sociale intégrée, 2026-10-15 → task_plan.md
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: GET, GET, GET, GET
+  • CommunityScreen → ApiFetch (3 steps) — changed: GET, GET, GET
+  • AdminContestPage → FetchData (3 steps) — changed: GET, GET, GET
+  • AdminUsersPage → FetchUsers (3 steps) — changed: GET, GET, GET
+  • CommunityPage → FetchBuddy (3 steps) — changed: GET, GET, GET
+  • CommunityPage → FetchCircles (3 steps) — changed: GET, GET, GET
+  • CommunityPage → FetchWall (3 steps) — changed: GET, GET, GET
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: GET, GET, GET
+  • JeuCreatifPage → Load (3 steps) — changed: GET, GET, GET
+  • LightningPage → Load (3 steps) — changed: GET, GET, GET
+... and 353 more

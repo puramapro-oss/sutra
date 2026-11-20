@@ -1,0 +1,25 @@
+{
+  "status": "PREPARED_NOT_INSTALLED",
+  "source": "existing deploy/scheduler_observer.py and service/timer templates",
+  "mode": "observe-only",
+  "checks": [
+    "exact deployed source",
+    "healthy SUTRA container",
+    "six aggregate queue counts in BEGIN READ ONLY / ROLLBACK"
+  ],
+  "runtime": "every five minutes with PrivateNetwork and AF_UNIX only",
+  "conditions": [
+    "all final candidate gates PASS",
+    "new candidate deployed",
+    "systemd unit paths still absent",
+    "exclusive backup of prior state and hashes",
+    "one-shot live PASS before timer enable"
+  ],
+  "rollback": [
+    "disable and stop only purama-sutra-observer.timer if installed by this release",
+    "retain files and receipts; restore previous source pin only if previous unit existed"
+  ],
+  "dispatchEnabled": false,
+  "generationCalls": 0,
+  "publicationCalls": 0
+}

@@ -1,0 +1,99 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "status": "ambiguous",
+  "message": "Found 3 symbols matching 'runT07Flows'. Blast radius differs per candidate (max 158 impacted at risk UNKNOWN; CRITICAL among the candidates that resolved, and at least one could not be walked). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "runT07Flows"
+  },
+  "direction": "upstream",
+  "totalCandidates": 3,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 158,
+  "maxRisk": "UNKNOWN",
+  "knownMaxRisk": "CRITICAL",
+  "candidates": [
+    {
+      "uid": "",
+      "name": "runT07Flows",
+      "kind": "",
+      "filePath": "scripts/ui-isolated/t07-flows.mjs",
+      "line": 5,
+      "score": 0.5,
+      "impactedCount": 158,
+      "risk": "CRITICAL",
+      "riskSharedAxes": "CRITICAL",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 142
+    },
+    {
+      "uid": "",
+      "name": "runT07Flows",
+      "kind": "",
+      "filePath": "qa/t08/integrated/browser-extension.mjs",
+      "line": 20,
+      "score": 0.5,
+      "impactedCount": 158,
+      "risk": "CRITICAL",
+      "riskSharedAxes": "CRITICAL",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 142
+    },
+    {
+      "uid": "Function:qa/t01-consolidation-20261014/browser-diagnostic.mjs:runT07Flows",
+      "name": "runT07Flows",
+      "kind": "Function",
+      "filePath": "qa/t01-consolidation-20261014/browser-diagnostic.mjs",
+      "line": 8,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    }
+  ],
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "failedCandidate": "dd1eec5fd6a0afd5a2fd742642b7587d3ecf1477",
+  "failedRun": 38505099582,
+  "causes": [
+    "T06 PG static Supabase import requires synthetic environment",
+    "T04 provider unit tests require synthetic credentials supplied by owner runner",
+    "Legacy Suno test must assert GET-only recovery after durable ID; no repeated POST",
+    "Missing-scene fixture must provide required music to reach its scene assertion",
+    "Social browser selector corrected to existing Se connecter label; four failures reproduced locally",
+    "CI cold dev login exceeded 30s; successful library HTTP200 observed in server log; bounded cold-start wait60s and redacted failure diagnostic added, CI confirmation required"
+  ],
+  "productChanges": [],
+  "targeted": {
+    "tests": 66,
+    "pass": 66,
+    "fail": 0,
+    "skip": 0
+  },
+  "localPostgres": "BLOCKED: macOS shmget IDs exhausted; no services changed; use CI disposable PostgreSQL",
+  "gitnexus": "UNKNOWN test callbacks unresolved; no product symbols changed",
+  "browserLocalBefore": {
+    "pass": 21,
+    "fail": 4,
+    "cause": "test selector only"
+  },
+  "browserLocalAfter": {
+    "pass": 25,
+    "fail": 0,
+    "command": "SUTRA_T07_OUTPUT=qa/final-delta-20261014/t07-fixed node qa/t07-frontend-fixes-20261014/browser.mjs",
+    "runtime": "v24.21.0"
+  }
+}

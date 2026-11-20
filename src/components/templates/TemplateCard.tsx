@@ -41,16 +41,16 @@ export function TemplateCard({ template, index, onApply }: TemplateCardProps) {
             {template.name}
           </h3>
 
-          <p className="text-[11px] sm:text-xs text-white/35 line-clamp-2 mb-3 min-h-[2.5em]">
+          <p className="text-[11px] sm:text-xs text-white/60 line-clamp-2 mb-3 min-h-[2.5em]">
             {template.description}
           </p>
 
           <div className="flex items-center gap-3 mb-3">
-            <div className="flex items-center gap-1 text-[10px] text-white/25">
+            <div className="flex items-center gap-1 text-[10px] text-white/60">
               <Clock className="h-3 w-3" />
               {template.duration}
             </div>
-            <div className="text-[10px] text-white/20">{FORMAT_LABELS[template.format as VideoFormat]}</div>
+            <div className="text-[10px] text-white/60">{FORMAT_LABELS[template.format as VideoFormat]}</div>
           </div>
 
           <Button

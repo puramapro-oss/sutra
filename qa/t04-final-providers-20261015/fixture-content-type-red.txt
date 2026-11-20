@@ -1,0 +1,59 @@
+✔ disabled default and Mac guard start no engine (1.013792ms)
+✔ single canonical engine/bridge/host; private loopback; account keys absent in all child environments (0.176834ms)
+✔ malformed database and conflicting addresses rejected before spawn (0.102333ms)
+✔ SIGTERM drains host before stopping bridge and Comfy; no restart (1.871417ms)
+✔ bounded host grace kills uncertain process without restarting any computation (5.094291ms)
+✔ cold-start failure cleans up the single started process (0.221791ms)
+✔ child failure drains remaining processes once, no implicit restart (0.16575ms)
+✔ stop during startup cannot start bridge or host later (1.820833ms)
+✔ Comfy readiness GET accepts queue contract and rejects malformed success (21.037334ms)
+✔ Comfy readiness refusal/timeout/cancel do not submit a job (10.219292ms)
+✔ health authenticates using header only and accepts ready/busy contracts (0.476291ms)
+✔ health rejects malformed 200, interruption, wrong protocol, errors and disabled configuration (0.242459ms)
+✖ health and readiness bound stalled bodies and cancel their streams (10.829625ms)
+✔ health rejects oversized responses without logging or accepting successful HTTP status (0.404291ms)
+✔ image source allowlist contains transitive media verification, never copies repository/env (0.778042ms)
+✔ isolated build context contains only exact sources, hashes and restrictive permissions (20.201875ms)
+✔ context rejects missing inputs and source symlinks without creating a destination (1.999416ms)
+✔ Docker COPY and all relative runtime imports are closed over the minimal context (28.524833ms)
+✔ unsupported master syntax is reported by name only without execution or suppressing other fields (1.576458ms)
+✔ selected names only, private values never copied into report (0.473667ms)
+✔ missing scope or mutation name makes zero calls (0.157291ms)
+✔ documented GET and server auth; summarize quotas without raw account data (12.448208ms)
+✔ group discovery redacts nested environment variables and names (0.215625ms)
+✔ HTTP 401 never claims invalid key specifically, no retry, no body echo (0.233375ms)
+✔ HTTP 403 never claims invalid key specifically, no retry, no body echo (0.122667ms)
+✔ HTTP 404 never claims invalid key specifically, no retry, no body echo (0.10275ms)
+✔ HTTP 429 never claims invalid key specifically, no retry, no body echo (0.101042ms)
+✔ HTTP 500 never claims invalid key specifically, no retry, no body echo (0.118209ms)
+✔ malformed JSON, schema and oversized body fail closed (1.069167ms)
+✔ header and stalled-body timeout bounded even if transport ignores abort (21.720292ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 29
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 402.941333
+
+✖ failing tests:
+
+test at qa/t04-final-providers-20261015/container.test.mjs:88:1
+✖ health and readiness bound stalled bodies and cancel their streams (10.829625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  0 !== 2
+
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t04-final-providers-20261015/qa/t04-final-providers-20261015/container.test.mjs:95:12)
+      at runNextTicks (node:internal/process/task_queues:65:5)
+      at process.processTimers (node:internal/timers:615:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

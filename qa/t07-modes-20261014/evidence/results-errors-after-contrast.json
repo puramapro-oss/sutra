@@ -1,0 +1,88 @@
+{
+  "observedAt": "2026-10-13T23:52:59.669Z",
+  "runtime": "v26.0.0",
+  "results": [
+    "/create waiting: visible actionable error, preserved draft, one intercepted request",
+    "/create quota: visible actionable error, preserved draft, one intercepted request",
+    "/create unknown: visible actionable error, preserved draft, one intercepted request",
+    "/production waiting: visible actionable error, preserved draft, one intercepted request",
+    "/production quota: visible actionable error, preserved draft, one intercepted request",
+    "/production unknown: visible actionable error, preserved draft, one intercepted request",
+    "no JS or hydration errors; no live generation, purchase or publication"
+  ],
+  "errors": [],
+  "violations": [
+    {
+      "name": "/create-waiting",
+      "violations": []
+    },
+    {
+      "name": "/create-waiting-error",
+      "violations": []
+    },
+    {
+      "name": "/create-quota-error",
+      "violations": []
+    },
+    {
+      "name": "/create-unknown-error",
+      "violations": []
+    },
+    {
+      "name": "/production-waiting",
+      "violations": []
+    },
+    {
+      "name": "/production-waiting-error",
+      "violations": []
+    },
+    {
+      "name": "/production-quota-error",
+      "violations": []
+    },
+    {
+      "name": "/production-unknown-error",
+      "violations": []
+    }
+  ],
+  "intercepted": [
+    {
+      "path": "/api/create",
+      "method": "POST",
+      "mode": "waiting",
+      "modeField": "auto"
+    },
+    {
+      "path": "/api/create",
+      "method": "POST",
+      "mode": "quota",
+      "modeField": "auto"
+    },
+    {
+      "path": "/api/create",
+      "method": "POST",
+      "mode": "unknown",
+      "modeField": "auto"
+    },
+    {
+      "path": "/api/production",
+      "method": "POST",
+      "mode": "waiting",
+      "modeField": null
+    },
+    {
+      "path": "/api/production",
+      "method": "POST",
+      "mode": "quota",
+      "modeField": null
+    },
+    {
+      "path": "/api/production",
+      "method": "POST",
+      "mode": "unknown",
+      "modeField": null
+    }
+  ],
+  "blockedExternalOrigins": [],
+  "proof": "LOCAL_CHROMIUM_FIXTURES_ONLY; all six generation requests intercepted; no paid route executed; no production build repeated"
+}

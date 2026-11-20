@@ -1,0 +1,114 @@
+{
+  "codeSource": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+  "migrationCommit": "6800a8de49080157b487eec1119d2fb49c194afe",
+  "countsAreNotAdditive": true,
+  "checks": [
+    {
+      "command": "python3 qa/final-delta-20261014/promote.py --source-ref 86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164 --ci-run 38508390596",
+      "status": "PASS",
+      "receipts": [
+        "deployment.json",
+        "promotion.json",
+        "smoke-internal.json",
+        "smoke-public.json",
+        "authenticated-smoke.json"
+      ],
+      "scope": "Backup restore, isolated candidate and rollback, 4 internal + 4 public GET, 7 authenticated GET"
+    },
+    {
+      "command": "python3 qa/final-delta-20261014/security-probe.py",
+      "status": "PASS",
+      "passed": 58,
+      "failed": 0,
+      "scope": "Unauthenticated negative cron/OAuth, no valid cron execution"
+    },
+    {
+      "command": "node qa/final-delta-20261014/media-smoke.mjs",
+      "status": "PASS",
+      "passed": 30,
+      "failed": 0,
+      "scope": "Public media guards"
+    },
+    {
+      "command": "python3 qa/final-delta-20261014/run-free-media.py",
+      "status": "PASS",
+      "passed": 7,
+      "scope": "Invalid generation/export rejected; real CPU subtitles/SRT and private owned fixture. Fixture removed, session revoked"
+    },
+    {
+      "command": "node qa/final-delta-20261014/public-browser.cjs",
+      "status": "PASS",
+      "scope": "1440/375 public login and redirects; viewed screenshots"
+    },
+    {
+      "command": "node qa/final-delta-20261014/authenticated-browser.cjs",
+      "status": "PASS",
+      "scope": "10 authenticated render checks only; legal consent blocks interactive journey"
+    },
+    {
+      "command": "python3 qa/final-delta-20261014/run-runtime-providers.py",
+      "status": "PASS",
+      "scope": "Read-only auth/contracts RunPod endpoint, Shotstack stage/v1, Zernio existing owner/profile. No generation"
+    },
+    {
+      "command": "python3 qa/final-delta-20261014/dns-tls-final.py",
+      "status": "PASS",
+      "scope": "4 DNS resolvers and TLS; Cloudflare API not tested"
+    },
+    {
+      "command": "python3 qa/final-delta-20261014/affirmations-database.py",
+      "status": "PASS",
+      "passed": 8,
+      "scope": "Restored database transaction; active/revoked/unknown roles, idempotence, anonymous/write refusals, rollback"
+    },
+    {
+      "command": "python3 qa/final-delta-20261014/apply-affirmations.py",
+      "status": "PASS",
+      "scope": "Production backup and guarded SELECT grant; rows and policies unchanged"
+    },
+    {
+      "command": "node qa/final-delta-20261014/authenticated-browser.cjs --affirmations",
+      "status": "PASS",
+      "passed": 2,
+      "scope": "Actual filtered GET returns valid rows on desktop/mobile; no consent accepted"
+    },
+    {
+      "command": "python3 qa/final-delta-20261014/runtime-final.py",
+      "status": "FAIL",
+      "scope": "Generic zero-Error-text check found three warnings; retained, classified separately"
+    },
+    {
+      "command": "Bounded unauthenticated empty POST /login with invalid Next-Action identifier; exact request and response in server-action-negative.json",
+      "status": "PASS",
+      "scope": "404 fixed refusal before action execution; no provider"
+    },
+    {
+      "command": "Read-only SSH metadata/SQL/log classification; receipt runtime-final-classified.json",
+      "status": "PASS",
+      "scope": "Healthy, 0 restarts, 4 known malformed-action warnings, 0 unknown errors, DB healthy, runtime and 71 other containers unchanged"
+    }
+  ],
+  "notTested": [
+    "Paid generation, rendered video export and publication",
+    "Real provider OAuth consent and user password login",
+    "Real GPU and 24GB model qualification",
+    "PostgREST HTTP transport OAuth concurrency",
+    "Full manual keyboard/screen-reader journey",
+    "Cloudflare API"
+  ],
+  "blocked": [
+    "User legal consent for connected interactive journey",
+    "No connected social accounts",
+    "Salad resource/budget/qualification absent; disabled",
+    "No autonomous cron/worker OVH"
+  ],
+  "firstFailuresPreserved": [
+    "CI fixtures / old Suno expectations",
+    "T07 dev server login timeout, production bundle harness now PASS",
+    "Browser harness corrections and initial wrong category row count",
+    "Affirmations live403 fixed by guarded GRANT",
+    "Generic log check false-positive warnings classified"
+  ],
+  "requiredAppGatesFailed": 0,
+  "allRealFunctionsValidated": false
+}

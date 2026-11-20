@@ -1,18 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "sonner";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import AppClientProviders from '@/components/layout/AppClientProviders';
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import CookieConsentBannerMount from "@/components/legal/CookieConsentBannerMount";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin", "latin-ext"],
+const spaceGrotesk = localFont({
+  src: "./fonts/SpaceGrotesk-Variable.ttf",
   variable: "--font-space-grotesk",
   display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: "300 700",
 });
 
 const APP_NAME = "SUTRA";
@@ -115,6 +114,7 @@ export default async function RootLayout({
     >
       <body className="min-h-dvh flex flex-col bg-[#06050e] text-[#f8fafc]">
         <NextIntlClientProvider messages={messages}>
+        <AppClientProviders analyticsEnabled={process.env.VERCEL === '1'}>
         {children}
         <Toaster
           position="top-right"
@@ -132,9 +132,8 @@ export default async function RootLayout({
           closeButton
         />
         <CookieConsentBannerMount />
+        </AppClientProviders>
         </NextIntlClientProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

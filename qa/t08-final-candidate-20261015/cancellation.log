@@ -1,0 +1,34 @@
+(node:96925) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96925) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ C01 cancellation requires a session and complete identity before RPC (3.5075ms)
+✔ C02 foreign user cannot cancel the owner job even with its request UUID (0.50275ms)
+✔ C03 double click reaches the same cancel key; fixture releases once (0.552625ms)
+✖ C04 T08-CANCEL-01: SQL failure must not leak backend diagnostics through cancel response (1.067333ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 284.042209
+
+✖ failing tests:
+
+test at qa/t08-final-candidate-20261015/cancellation.test.mts:1:3045
+✖ C04 T08-CANCEL-01: SQL failure must not leak backend diagnostics through cancel response (1.067333ms)
+  AssertionError [ERR_ASSERTION]: Raw cancel RPC diagnostic crossed authenticated HTTP boundary
+  
+  true !== false
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t08-final-candidate-20261015/qa/t08-final-candidate-20261015/cancellation.test.mts:70:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

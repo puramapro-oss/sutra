@@ -1,0 +1,133 @@
+{
+  "observedAt": "2026-10-15T13:30:20.176875+00:00",
+  "base": "56754679abed9aa1e51323c29aed5bef38bc17d0",
+  "productCandidate": "d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2",
+  "branch": "codex/sutra-t04-salad-access-20261015",
+  "status": "LOCAL_PASS_EXTERNAL_INPUT_BLOCKED",
+  "tests": [
+    {
+      "command": "/usr/bin/python3 -m unittest discover -s qa/t04-salad-access-20261015 -p test_secure_setup.py -v",
+      "pass": 21,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "python-tests.txt"
+    },
+    {
+      "command": "node --test qa/t04-salad-access-20261015/validate-access.test.mjs",
+      "pass": 6,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "node-tests.txt"
+    }
+  ],
+  "checks": "checks.json",
+  "redEvidence": "python-red.txt",
+  "defectsCorrected": [
+    "PARTIAL_MULTILINE_REPLACEMENT",
+    "LOST_HTTP_PROOF_ON_FINAL_FAILURE"
+  ],
+  "reuse": {
+    "evidence": "reuse.json",
+    "inputs": 90,
+    "unchanged": 89,
+    "changedByT01Only": "scripts/test-t04-provider-fixes.mts",
+    "existingCI": "38677062190",
+    "globalGatesRerun": false
+  },
+  "secretSource": "~/.env.purama.master",
+  "masterWritten": false,
+  "metadata": "master-metadata.json",
+  "inputReceiptReceived": false,
+  "missingNames": [
+    "SALAD_ORGANIZATION",
+    "SALAD_PROJECT"
+  ],
+  "replacementRequiredNames": [
+    "SALAD_API_KEY"
+  ],
+  "authenticatedRequestsThisTurn": 0,
+  "providerMutations": 0,
+  "paidGenerations": 0,
+  "modelDownloads": 0,
+  "saladAuthentication": "BLOQUE_INPUT_REQUIRED",
+  "saladCredits": "NON_TESTE",
+  "imageBuild": "NON_TESTE",
+  "gpuQualification": "NON_TESTE",
+  "realBilling": "NON_TESTE",
+  "historicalLiveEvidence": {
+    "path": "qa/t04-provider-validation-20261014/live.json",
+    "at": "2026-10-14T13:58:12.735Z",
+    "replayed": false
+  },
+  "gitnexus": {
+    "coverage": "PARTIAL_NOT_EXHAUSTIVE",
+    "preEditRisk": "LOW",
+    "finalReports": [
+      "gitnexus-staged.txt",
+      "gitnexus-compare-main.txt"
+    ],
+    "stagedRisk": "LOW",
+    "stagedFilesAtAnalysis": 29,
+    "stagedSymbols": 86,
+    "stagedAffectedProcesses": 0,
+    "compareMainRisk": "CRITICAL",
+    "compareMainFiles": 3494,
+    "compareMainSymbols": 9422,
+    "compareMainAffectedProcesses": 228,
+    "compareMainListingCapped": true,
+    "warningCommunicated": true
+  },
+  "sourceHashes": [
+    {
+      "path": "secure_setup.py",
+      "sha256": "b563770010de3f54b21ae54e7888dfb90796b4b23c9cd55e7886bafa21ec9feb"
+    },
+    {
+      "path": "test_secure_setup.py",
+      "sha256": "b978fc55d6cdcb5c7f890fd8a1fde17e6e5cc11b851371ec03eaefdb8e1f02ea"
+    },
+    {
+      "path": "validate-access.mjs",
+      "sha256": "5bfe890a8d4027a51fadbf0c00530e8c1f21f4fbe03708117e6348bfd3c558cb"
+    },
+    {
+      "path": "validate-access.test.mjs",
+      "sha256": "2ee591852c01e78b853c6032fa92877f4c3f89bbcdab9d52c1e0be23cc7c31b3"
+    },
+    {
+      "path": "Saisie-Salad.command",
+      "sha256": "6f19a38d23ce933b4430f454fe25575b55f1a24c236aaa003839baba132d7b0a"
+    }
+  ],
+  "securityScan": {
+    "command": "/opt/homebrew/bin/gitleaks dir qa/t04-salad-access-20261015 --redact --report-format json --report-path qa/t04-salad-access-20261015/gitleaks.json --no-banner",
+    "exitCode": 0,
+    "evidence": "gitleaks.json"
+  },
+  "redFinalChecks": {
+    "secretScanner": "staged-scan-red.json",
+    "classification": "two file SHA256 fields misclassified as generic-api-key; each recomputed from source; manifest made explicit path/sha256 pairs; no rule suppressed",
+    "whitespace": "diff-check-red.txt",
+    "correction": "two generated index logs normalized at EOF only"
+  },
+  "finalChecks": {
+    "secretScan": {
+      "command": [
+        "/opt/homebrew/bin/gitleaks",
+        "stdin",
+        "--redact",
+        "--report-format",
+        "json",
+        "--report-path",
+        "qa/t04-salad-access-20261015/final-scan.json",
+        "--no-banner"
+      ],
+      "input": "git diff --cached --no-ext-diff --no-color --binary",
+      "exitCode": 0
+    },
+    "diffCheck": {
+      "command": "git diff --cached --check",
+      "exitCode": 0
+    }
+  }
+}

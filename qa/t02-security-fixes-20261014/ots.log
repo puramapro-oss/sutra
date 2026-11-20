@@ -1,0 +1,49 @@
+✔ A pending proof serialized by 0.4.5 remains readable byte for byte (0.911875ms)
+✔ API surface expected (0.05775ms)
+✔ DetachedTimestampFile.fromHash stores the exact digest (0.392291ms)
+✔ serializeToBytes returns non-empty Uint8Array with magic header (0.11375ms)
+✔ Different payloads produce different SHA-256 (collision sanity) (0.06675ms)
+✔ Base64 encode/decode of proof bytes is lossless (0.074625ms)
+✔ Purama sha256 contract : hex 64 chars lowercase (0.120208ms)
+﹣ NETWORK : real stamp() → deserialize → fileDigest round-trip (0.037667ms) # SKIP
+(node:67552) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:67552) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+(node:67552) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+Unknown operation tag:  73
+✔ calendar submit and lookup retain upstream binary parsing and pinned transport (6.129792ms)
+✔ invalid calendar origins are refused before DNS or transport (0.305167ms)
+✔ calendar redirect denied: http://127.0.0.1/private (0.360208ms)
+✔ calendar redirect denied: http://169.254.169.254/latest/meta-data (0.228292ms)
+✔ calendar redirect denied: https://evil.invalid/private (0.194ms)
+✔ Esplora rejects redirects without requesting an internal destination (0.229792ms)
+✔ private or mixed DNS denies both adapters before connection (0.154333ms)
+✔ calendar responses reject compression, declared/streamed overflow and truncated bodies (0.570375ms)
+✔ raw DNS and parser diagnostics never escape the adapters (0.404292ms)
+✔ DNS and connection stalls have a bounded deadline (2.480458ms)
+Submitting to remote calendar https://a.pool.opentimestamps.org
+Submitting to remote calendar https://b.pool.opentimestamps.org
+Submitting to remote calendar https://a.pool.eternitywall.com
+Submitting to remote calendar https://ots.btc.catallaxy.com
+Calendar https://alice.btc.calendar.opentimestamps.org: SUTRA_OTS_HTTP_REJECTED
+✔ synchronous transport exceptions cannot leak request diagnostics (0.140167ms)
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+✔ Esplora validates block identifiers and response schema (0.357625ms)
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+✔ application stamp and pending verification use protected calendar adapters (2.599625ms)
+Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+Submitting to remote calendar https://a.pool.opentimestamps.org
+Submitting to remote calendar https://b.pool.opentimestamps.org
+Submitting to remote calendar https://a.pool.eternitywall.com
+Submitting to remote calendar https://ots.btc.catallaxy.com
+✔ actual OTS crypto accepts matching Merkle fixture and refuses mismatch; no Bitcoin node access (1.30125ms)
+✔ content digest mismatch refuses network before verification (0.110708ms)
+✔ all calendar failures cannot produce a successful empty stamp (0.401333ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 250.422041

@@ -1,0 +1,9 @@
+PASS login and explicit consent open empty library
+page.goto: Navigation to "https://127.0.0.1:65471/editor/22222222-2222-4222-8222-222222222222" is interrupted by another navigation to "https://127.0.0.1:65471/library"
+Call log:
+[2m  - navigating to "https://127.0.0.1:65471/editor/22222222-2222-4222-8222-222222222222", waiting until "load"[22m
+
+    at page.<computed> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-final-20261015/browser-harness/runtime-guard.mjs:125:26)
+    at privateDownloadChecks (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t07-frontend-journey-20261014/private-download-checks.mjs:21:16)
+    at async runScenario (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t07-final-ux-perf-20261015/boundary-local.mjs:119:52)
+    at async file:///private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t07-final-ux-perf-20261015/boundary-local.mjs:180:5

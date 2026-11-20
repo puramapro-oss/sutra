@@ -1,0 +1,71 @@
+[
+  {
+    "name": "delta",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--experimental-vm-modules",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "scripts/test-t06-final-social.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 235
+  },
+  {
+    "name": "oauth-regressions",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--experimental-vm-modules",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "scripts/test-t06-social-final.mts",
+      "scripts/test-t06-social-routes.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 549
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--project",
+      "qa/t06-final-social-20261015/tsconfig.json"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1350
+  },
+  {
+    "name": "lint",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings=0",
+      "src/app/api/social/callback/route.ts",
+      "src/lib/social-account-revocation.ts",
+      "scripts/test-t06-final-social.mts",
+      "qa/t06-final-social-20261015/run.mjs"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 702
+  }
+]

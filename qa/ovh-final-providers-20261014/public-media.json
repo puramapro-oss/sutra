@@ -1,0 +1,230 @@
+{
+  "deployedSha": "e3b17117256269e281304cd4ab83bc722a6f7894",
+  "observedAt": "2026-10-13T22:28:07.234Z",
+  "scope": "Public production media negative paths only; no credentials, no fixtures, no writes, no provider calls.",
+  "checks": [
+    {
+      "name": "noncanonical-base64",
+      "status": "PASS",
+      "actual": 404,
+      "expected": 404,
+      "headers": {
+        "cache-control": "private, no-store, max-age=0",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Cookie"
+      },
+      "bodyBytes": 0
+    },
+    {
+      "name": "noncanonical-base64:private-cache",
+      "status": "PASS",
+      "actual": "private, no-store, max-age=0",
+      "expected": "private, no-store, max-age=0"
+    },
+    {
+      "name": "noncanonical-base64:no-referrer",
+      "status": "PASS",
+      "actual": "no-referrer",
+      "expected": "no-referrer"
+    },
+    {
+      "name": "noncanonical-base64:nosniff",
+      "status": "PASS",
+      "actual": "nosniff",
+      "expected": "nosniff"
+    },
+    {
+      "name": "noncanonical-base64:vary-cookie",
+      "status": "PASS",
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "dot-segment",
+      "status": "PASS",
+      "actual": 404,
+      "expected": 404,
+      "headers": {
+        "cache-control": "private, no-store, max-age=0",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Cookie"
+      },
+      "bodyBytes": 0
+    },
+    {
+      "name": "dot-segment:private-cache",
+      "status": "PASS",
+      "actual": "private, no-store, max-age=0",
+      "expected": "private, no-store, max-age=0"
+    },
+    {
+      "name": "dot-segment:no-referrer",
+      "status": "PASS",
+      "actual": "no-referrer",
+      "expected": "no-referrer"
+    },
+    {
+      "name": "dot-segment:nosniff",
+      "status": "PASS",
+      "actual": "nosniff",
+      "expected": "nosniff"
+    },
+    {
+      "name": "dot-segment:vary-cookie",
+      "status": "PASS",
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "empty-segment",
+      "status": "PASS",
+      "actual": 404,
+      "expected": 404,
+      "headers": {
+        "cache-control": "private, no-store, max-age=0",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Cookie"
+      },
+      "bodyBytes": 0
+    },
+    {
+      "name": "empty-segment:private-cache",
+      "status": "PASS",
+      "actual": "private, no-store, max-age=0",
+      "expected": "private, no-store, max-age=0"
+    },
+    {
+      "name": "empty-segment:no-referrer",
+      "status": "PASS",
+      "actual": "no-referrer",
+      "expected": "no-referrer"
+    },
+    {
+      "name": "empty-segment:nosniff",
+      "status": "PASS",
+      "actual": "nosniff",
+      "expected": "nosniff"
+    },
+    {
+      "name": "empty-segment:vary-cookie",
+      "status": "PASS",
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "backslash",
+      "status": "PASS",
+      "actual": 404,
+      "expected": 404,
+      "headers": {
+        "cache-control": "private, no-store, max-age=0",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Cookie"
+      },
+      "bodyBytes": 0
+    },
+    {
+      "name": "backslash:private-cache",
+      "status": "PASS",
+      "actual": "private, no-store, max-age=0",
+      "expected": "private, no-store, max-age=0"
+    },
+    {
+      "name": "backslash:no-referrer",
+      "status": "PASS",
+      "actual": "no-referrer",
+      "expected": "no-referrer"
+    },
+    {
+      "name": "backslash:nosniff",
+      "status": "PASS",
+      "actual": "nosniff",
+      "expected": "nosniff"
+    },
+    {
+      "name": "backslash:vary-cookie",
+      "status": "PASS",
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "forged-publication-grant",
+      "status": "PASS",
+      "actual": 404,
+      "expected": 404,
+      "headers": {
+        "cache-control": "private, no-store, max-age=0",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Cookie"
+      },
+      "bodyBytes": 0
+    },
+    {
+      "name": "forged-publication-grant:private-cache",
+      "status": "PASS",
+      "actual": "private, no-store, max-age=0",
+      "expected": "private, no-store, max-age=0"
+    },
+    {
+      "name": "forged-publication-grant:no-referrer",
+      "status": "PASS",
+      "actual": "no-referrer",
+      "expected": "no-referrer"
+    },
+    {
+      "name": "forged-publication-grant:nosniff",
+      "status": "PASS",
+      "actual": "nosniff",
+      "expected": "nosniff"
+    },
+    {
+      "name": "forged-publication-grant:vary-cookie",
+      "status": "PASS",
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "oversized-publication-grant",
+      "status": "PASS",
+      "actual": 404,
+      "expected": 404,
+      "headers": {
+        "cache-control": "private, no-store, max-age=0",
+        "referrer-policy": "no-referrer",
+        "x-content-type-options": "nosniff",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Cookie"
+      },
+      "bodyBytes": 0
+    },
+    {
+      "name": "oversized-publication-grant:private-cache",
+      "status": "PASS",
+      "actual": "private, no-store, max-age=0",
+      "expected": "private, no-store, max-age=0"
+    },
+    {
+      "name": "oversized-publication-grant:no-referrer",
+      "status": "PASS",
+      "actual": "no-referrer",
+      "expected": "no-referrer"
+    },
+    {
+      "name": "oversized-publication-grant:nosniff",
+      "status": "PASS",
+      "actual": "nosniff",
+      "expected": "nosniff"
+    },
+    {
+      "name": "oversized-publication-grant:vary-cookie",
+      "status": "PASS",
+      "actual": true,
+      "expected": true
+    }
+  ],
+  "source": "Unchanged media negative-path probe reused on the final production image."
+}

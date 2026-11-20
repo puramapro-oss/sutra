@@ -1,10 +1,17 @@
 import { ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { type SocialPlatform, PLATFORM_INFO } from '@/lib/zernio'
+import { type SocialPlatform, type PublicationStatus, PLATFORM_INFO, PUBLICATION_STATUS_LABELS } from '@/lib/zernio'
 
 export interface PublishResultUI {
+  accountId?: string
+  localAccountId?: string
+  accountLabel?: string
   platform: SocialPlatform
   success: boolean
+  retryEligible?: boolean
+  canRequestRetry?: boolean
+  deliveryState?: 'queued' | 'blocked'
+  status?: PublicationStatus
   postUrl?: string
   error?: string
 }
@@ -17,32 +24,27 @@ export function PublishResultsSection({ results }: PublishResultsSectionProps) {
   if (!results) return null
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2" role="status" aria-live="polite">
       <h3 className="text-sm font-semibold text-white/90">Resultats</h3>
       <div className="space-y-1.5">
         {results.map((r) => {
           const info = PLATFORM_INFO[r.platform]
+          const status = r.status ?? (r.success ? 'published' : 'unknown')
           return (
             <div
-              key={r.platform}
-              data-testid={`publish-result-${r.platform}`}
+              key={r.localAccountId ?? `${r.platform}:${r.accountId ?? 'unknown'}`}
+              data-testid={`publish-result-${r.localAccountId ?? r.platform}`}
+              data-platform={r.platform}
               className={cn(
-                'flex items-center justify-between p-2.5 rounded-lg border text-xs',
-                r.success ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-red-500/10 border-red-500/20'
+                'flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-lg border text-xs',
+                status === 'published' ? 'bg-emerald-500/10 border-emerald-500/20' : status === 'failed' ? 'bg-red-500/10 border-red-500/20' : 'bg-amber-500/10 border-amber-500/20'
               )}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span>{info.icon}</span>
                 <span className="font-medium text-white/90">{info.label}</span>
-                {r.success ? (
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px]">
-                    Publie
-                  </span>
-                ) : (
-                  <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[10px]">
-                    Echec
-                  </span>
-                )}
+                {r.accountLabel && <span className="break-words text-white/80">{r.accountLabel}</span>}
+                <span className="px-2 py-0.5 rounded-full text-[10px]">{r.deliveryState === 'queued' ? 'En file' : r.deliveryState === 'blocked' ? 'À vérifier' : PUBLICATION_STATUS_LABELS[status]}</span>
               </div>
               {r.postUrl && (
                 <a
@@ -55,13 +57,18 @@ export function PublishResultsSection({ results }: PublishResultsSectionProps) {
                   <ExternalLink className="h-3 w-3" />
                 </a>
               )}
-              {r.error && !r.success && (
-                <span className="text-red-400/80 truncate max-w-[180px]">{r.error}</span>
+              {status === 'failed' && (
+                <span className="text-red-300">{r.retryEligible || r.canRequestRetry ? 'Échec confirmé. Vérifie le compte avant de reprendre.' : 'Échec indiqué lors du contrôle. Consulte le suivi avant toute autre action.'}</span>
+              )}
+              {status === 'unknown' && r.deliveryState === 'blocked' && r.canRequestRetry && (
+                <span className="text-amber-200">Envoi suspendu. Vérifie le compte avant de demander une reprise.</span>
               )}
             </div>
           )
         })}
       </div>
+      {results.some(r => r.deliveryState === 'queued') && <p className="text-sm text-amber-200">Envoi enregistré. Le traitement continue en arrière-plan, même si tu fermes cette fenêtre.</p>}
+      {results.some(r => (r.status === 'unknown' || r.status === 'publishing') && r.deliveryState !== 'queued') && <p className="text-sm text-amber-200">Confirmation en attente. Aucune relance de ces destinations : consulte le suivi.</p>}
     </div>
   )
 }

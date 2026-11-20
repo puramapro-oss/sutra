@@ -30,12 +30,13 @@ export default function MusicStep({
           {MUSIC_STYLES.map((s) => (
             <button
               key={s}
+              aria-pressed={musicStyle === s}
               onClick={() => setMusicStyle(s)}
               className={cn(
                 'px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 capitalize',
                 musicStyle === s
                   ? 'bg-violet-600/20 border-violet-500/40 text-violet-300'
-                  : 'bg-white/[0.03] border-white/[0.06] text-white/50 hover:text-white/70'
+                  : 'bg-white/[0.03] border-white/[0.06] text-white/65 hover:text-white/70'
               )}
             >
               {s}

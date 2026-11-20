@@ -1,0 +1,38 @@
+{
+  "summary": {
+    "changed_count": 103,
+    "affected_count": 22,
+    "changed_files": 262,
+    "risk_level": "critical"
+  },
+  "toolError": null,
+  "partial": false,
+  "indexedBeforeEdits": true,
+  "coverage": "TRUNCATED: 365 flows; 952 entrypoints omitted; not an exhaustive certificate",
+  "changedProductPaths": [
+    "scripts/run-ci.mjs",
+    "scripts/test-api-contracts.mts",
+    "scripts/test-env-contracts.mts",
+    "scripts/test-provider-safety.mts",
+    "scripts/test-release-oauth.mts",
+    "scripts/test-security-routes.mts",
+    "scripts/test-shotstack-contracts.mts",
+    "scripts/test-suno-contract.mts",
+    "scripts/test-t02-oauth-boundaries.mts",
+    "scripts/test-zernio-oauth-contracts.mts",
+    "src/app/api/social/accounts/route.ts",
+    "src/app/api/social/callback/route.ts",
+    "src/app/api/social/connect/route.ts",
+    "src/app/api/webhooks/suno/route.ts",
+    "src/components/settings/social/PlatformGrid.tsx",
+    "src/lib/env.ts",
+    "src/lib/shotstack.ts",
+    "src/lib/social-oauth-state.ts",
+    "src/lib/suno-config.ts",
+    "src/lib/suno.ts",
+    "src/lib/zernio.ts",
+    "vercel.json"
+  ],
+  "publicationFunctionsUnchangedAgainstBase": true,
+  "review": "All product paths belong to authorized provider/OAuth/UI integration and targeted CI/tests. All 22 returned flows reviewed: Suno generation HTTP boundaries, OAuth state/session/rate limits; two publication flows map unchanged functions after shifted lines. Bounded by index freshness and coverage. No migration/dependency/deployment/other-app code changed. New files inspected directly and covered by the recorded tests."
+}

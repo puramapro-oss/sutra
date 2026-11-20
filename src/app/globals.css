@@ -23,6 +23,7 @@
   --error: #ef4444;
   --surface: rgba(255, 255, 255, 0.04);
   --surface-hover: rgba(255, 255, 255, 0.08);
+  --surface-solid: #100d1a;
   --border: rgba(255, 255, 255, 0.10);
   --border-hover: rgba(255, 255, 255, 0.18);
   --glass-bg: rgba(255, 255, 255, 0.04);
@@ -35,6 +36,8 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-soft: var(--surface-solid);
+  --color-primary-on-dark: var(--primary-light);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-light: var(--primary-light);
@@ -547,6 +550,7 @@ body::after {
    ============================================ */
 
 .theme-light {
+  --surface-solid: #ffffff;
   --background: #f8f9fc;
   --foreground: #1a1a2e;
   --foreground-muted: rgba(26, 26, 46, 0.6);
@@ -624,6 +628,7 @@ body::after {
    ============================================ */
 
 .theme-oled {
+  --surface-solid: #080808;
   --background: #000000;
   --foreground: #e2e8f0;
   --foreground-muted: rgba(226, 232, 240, 0.5);

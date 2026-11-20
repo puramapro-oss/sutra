@@ -1,0 +1,46 @@
+{
+  "target": {
+    "id": "Function:src/components/editor/VideoPlayerPanel.tsx:VideoPlayerPanel",
+    "name": "VideoPlayerPanel",
+    "type": "Function",
+    "filePath": "src/components/editor/VideoPlayerPanel.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Hooks",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/app/(dashboard)/editor/[id]/page.tsx:EditorPage",
+        "name": "EditorPage",
+        "filePath": "src/app/(dashboard)/editor/[id]/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

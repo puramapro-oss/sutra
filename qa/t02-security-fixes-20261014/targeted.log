@@ -1,0 +1,48 @@
+(node:56327) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56327) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ private reference stays constant while authorized signatures renew (0.519708ms)
+✔ missing owner and cross-user access are refused before signing (0.231083ms)
+✔ worker authorities are isolated under concurrency (2.075417ms)
+✔ legacy ownership fails closed for ambiguous or missing inventory (0.143792ms)
+✔ route authenticates the owner and never caches redirects or failures (11.067916ms)
+✔ publication capability requires exact durable journal, owner and live profile (1.412083ms)
+✔ malformed references cannot escape their owner prefix (0.113209ms)
+(node:56328) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56328) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ storage result: failed upload/delete/list never report success or expose provider details (0.657458ms)
+✔ storage exception: failed upload/delete/list never report success or expose provider details (0.11575ms)
+✔ uploads return stable owner references, never a public or expiring URL (0.337875ms)
+(node:56329) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56329) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ public proof: service-exception never exposes internal details (2.569833ms)
+✔ public proof: db-error never exposes internal details (0.312708ms)
+✔ public proof: verify-exception never exposes internal details (0.237958ms)
+✔ public proof: parse-error never exposes internal details (0.196667ms)
+✔ public proof: mismatch never exposes internal details (0.2265ms)
+✔ public proof: pending and verified responses keep the public proof contract (3.923666ms)
+✔ public proof: malformed IDs fail before querying, missing rows remain 404 (0.289334ms)
+(node:56330) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56330) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ delete: missing owner must fail before service-role access (1.21325ms)
+✔ delete: another user's object or folder is denied (0.233125ms)
+✔ delete: traversal and malformed paths cannot reach storage (0.218417ms)
+✔ list: missing owner must fail before service-role access (0.205375ms)
+✔ list: another user's object or folder is denied (0.125583ms)
+✔ list: traversal and malformed paths cannot reach storage (0.179125ms)
+✔ delete: owner can remove an exact owned key (0.194416ms)
+✔ list: owner can list their root and a folder, never a sibling prefix (0.185583ms)
+✔ delete: legacy objects require the existing exact ownership inventory (0.17325ms)
+✔ delete: unavailable legacy inventory fails closed without exposing errors (0.090583ms)
+✔ list: legacy inventory cannot authorize a shared prefix (0.063458ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 232.095125

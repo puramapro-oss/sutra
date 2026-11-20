@@ -72,6 +72,7 @@ export const mainNav: NavItem[] = [
     testId: 'sidebar-auto',
   },
   { label: 'Voix', href: '/voices', icon: Mic, testId: 'sidebar-voices' },
+  { label: 'Chat IA', href: '/chat', icon: MessageCircle, testId: 'sidebar-chat' },
   {
     label: 'Templates',
     href: '/templates',
@@ -104,7 +105,7 @@ export const mainNav: NavItem[] = [
   },
   {
     label: 'Partenariat',
-    href: '/dashboard/partenaire',
+    href: '/partenaire',
     icon: Handshake,
     testId: 'sidebar-partner',
   },

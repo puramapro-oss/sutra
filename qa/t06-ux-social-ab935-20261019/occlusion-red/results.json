@@ -1,0 +1,72 @@
+{
+  "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "engine": "chromium",
+  "production": false,
+  "baseline": false,
+  "observedAt": "2026-10-19T19:58:43.502Z",
+  "checks": [
+    {
+      "name": "modal: named dialog, initial focus, focus trap, Escape and focus restoration",
+      "status": "PASS"
+    },
+    {
+      "name": "revoked account cannot be selected; unavailable accounts have accessible connect links",
+      "status": "PASS"
+    },
+    {
+      "name": "schedule: accessible name, selected state, browser IANA timezone and local minimum",
+      "status": "PASS"
+    },
+    {
+      "name": "320px: publish modal fits, controls reachable, axe WCAG AA",
+      "status": "FAIL",
+      "error": "focused date is not covered by footer\n\nfalse !== true\n"
+    },
+    {
+      "name": "375px: publish modal fits, controls reachable, axe WCAG AA",
+      "status": "FAIL",
+      "error": "focused date is not covered by footer\n\nfalse !== true\n"
+    },
+    {
+      "name": "768px: publish modal fits, controls reachable, axe WCAG AA",
+      "status": "PASS"
+    },
+    {
+      "name": "1280px: publish modal fits, controls reachable, axe WCAG AA",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px: publish modal fits, controls reachable, axe WCAG AA",
+      "status": "PASS"
+    }
+  ],
+  "metrics": [],
+  "axes": [
+    {
+      "width": 320,
+      "violations": []
+    },
+    {
+      "width": 375,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "violations": []
+    },
+    {
+      "width": 1280,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "violations": []
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "unexpectedWrites": [],
+  "accountReads": 2,
+  "publications": [],
+  "realPublications": 0
+}

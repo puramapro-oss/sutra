@@ -1,0 +1,26 @@
+
+  GitNexus Analyzer (1.6.12)
+
+  GitNexus Analyzer (1.6.12)
+[2K
+  Skipped 5 large files (>512KB, likely generated/vendored)
+[2K
+  - graphify-out/graph.html
+[2K
+  - graphify-out/graph.json
+[2K
+  - qa/integration-20261012/evidence/legacy-first-results.json
+[2K
+  - qa/release-20261012/evidence/legacy-playwright-results.json
+[2K
+  - qa/t07-reprise/evidence/legacy/results.json
+[2K
+  Set GITNEXUS_MAX_FILE_SIZE=<KB> to include files above the default cap.
+{"level":40,"time":1791935078351,"name":"gitnexus","msg":"[scope-resolution] 521 property read/write site(s) name a field that IS defined in this workspace, but only in another language, so per-language inference declined to link them. Queries for these fields return an empty result that does NOT mean \"unused\" — it means the definition anchor is in a different language. Affected: show (typescript), CI (javascript), NEXT_PUBLIC_APP_SCHEMA (javascript), NEXT_PUBLIC_SUPABASE_ANON_KEY (javascript), NEXT_PUBLIC_SUPABASE_URL (javascript), PGHOST (javascript), PGPORT (javascript), PGUSER (javascript), RESEND_API_KEY (javascript), STRIPE_SECRET_KEY (javascript), …"}
+{"level":40,"time":1791935078417,"name":"gitnexus","truncation":{"truncated":true,"entryPointCandidatesDropped":963,"entryPointsUnexplored":0,"walksCutByBudget":3,"tracesDepthCapped":0,"calleesDropped":533,"processesDropped":0},"msg":"[processes] 357 flows reported, but whole flows are MISSING: 963 of 1163 candidate entry point(s) never ranked in, 0 ranked entry point(s) never traced, 0 deduplicated flow(s) dropped at maxProcesses, 0 trace(s) cut at maxTraceDepth, 533 callee(s) skipped at maxBranching, 3 walk(s) cut by the per-entry trace budget. An absent flow does NOT mean the code path does not exist."}
+{"level":30,"time":1791935086592,"name":"gitnexus","msg":"name-fallback resolution: 40 call sites (14 distinct caller-file/name pairs), 1 refused as impossible (guessed/refused by language: javascript 36/1, typescript 4/0)"}
+
+  Repository indexed successfully (17.1s)
+
+  14,346 nodes | 27,322 edges | 299 clusters | 357 flows
+  /Users/matissdornier/purama-worktrees/sutra-t07-modes-ux-20261014

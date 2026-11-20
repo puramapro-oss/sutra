@@ -1,0 +1,62 @@
+✔ invalid non-null terminal result is refused: false (0.726666ms)
+✔ invalid non-null terminal result is refused: true (0.161709ms)
+✔ invalid non-null terminal result is refused: "" (0.100334ms)
+✔ invalid non-null terminal result is refused: 0 (0.047584ms)
+✔ invalid non-null terminal result is refused: [] (0.045166ms)
+✔ invalid non-null terminal result is refused: {} (0.110125ms)
+✔ invalid non-null terminal result is refused: {"videoUrl":"https://fixture.invalid/raw.mp4"} (0.074792ms)
+✔ terminal replay needs matching measured export and all required stages (0.230375ms)
+✔ production substeps need a result bound to their independent checkpoint (0.711ms)
+✔ pending checkpoint advances durably, completed result remains immutable (0.342541ms)
+✔ failed pending promotion is not reflected in memory or acknowledged (0.076541ms)
+✔ storyboard write interruption preserves script and resumes without paying again (0.283208ms)
+✔ 24 duplicate stage deliveries serialize to one durable receipt; conflict never overwrites it (4.549375ms)
+✔ legacy empty optional checkpoints are retained byte for byte (0.12575ms)
+✔ required tracks cannot be skipped by changing final result alone (0.151334ms)
+✔ production all with disabled music and narration="fixture" completes and replays (1.390167ms)
+✖ production all with disabled music and narration="" completes and replays (5.59875ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"%%%INVALID%%%"} (0.086667ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":""} (0.032167ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64_sha256":"0000000000000000000000000000000000000000000000000000000000000000"} (0.047292ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz"} (0.038959ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1.5,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64:1":"","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.038584ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"???","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.035917ms)
+✔ valid chunked and legacy unchunked voice are preserved without regeneration (0.049584ms)
+✔ new small voice persists integrity before payload and never regenerates on lost payload write (0.099708ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 24
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 360.641375
+
+✖ failing tests:
+
+test at scripts/test-t03-final-durable.mts:1:6543
+✖ production all with disabled music and narration="" completes and replays (5.59875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+      assemble: 1,
+      music: 1,
+      script: 1,
+  +   upload: 1,
+  -   upload: 0,
+      visual: 1,
+  +   voice: 1
+  -   voice: 0
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/scripts/test-t03-final-durable.mts:135:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { script: 1, visual: 1, voice: 1, music: 1, assemble: 1, upload: 1 },
+    expected: { script: 1, visual: 1, voice: 0, music: 1, assemble: 1, upload: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

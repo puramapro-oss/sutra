@@ -1,0 +1,237 @@
+{
+  "processes": [
+    {
+      "id": "proc_11_librarypage",
+      "summary": "LibraryPage → FetchVideos",
+      "priority": 0.13,
+      "symbol_count": 3,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_63_librarypage",
+      "summary": "LibraryPage → LoadFavorites",
+      "priority": 0.115,
+      "symbol_count": 2,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_3_adminuserspage",
+      "summary": "AdminUsersPage → FetchUsers",
+      "priority": 0.107,
+      "symbol_count": 2,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_64_librarypage",
+      "summary": "LibraryPage → LoadFolders",
+      "priority": 0.102,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/app/(dashboard)/library/page.tsx:LibraryPage",
+      "name": "LibraryPage",
+      "filePath": "src/app/(dashboard)/library/page.tsx",
+      "startLine": 25,
+      "endLine": 203,
+      "module": "Hooks",
+      "process_id": "proc_11_librarypage",
+      "step_index": 1
+    },
+    {
+      "id": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos",
+      "name": "useLibraryVideos",
+      "filePath": "src/hooks/useLibraryVideos.ts",
+      "startLine": 9,
+      "endLine": 88,
+      "module": "Hooks",
+      "process_id": "proc_11_librarypage",
+      "step_index": 2
+    },
+    {
+      "id": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.fetchVideos@17:2",
+      "name": "fetchVideos",
+      "filePath": "src/hooks/useLibraryVideos.ts",
+      "startLine": 18,
+      "endLine": 61,
+      "module": "Hooks",
+      "process_id": "proc_11_librarypage",
+      "step_index": 3
+    },
+    {
+      "id": "Function:src/hooks/useLibraryFavorites.ts:useLibraryFavorites",
+      "name": "useLibraryFavorites",
+      "filePath": "src/hooks/useLibraryFavorites.ts",
+      "startLine": 17,
+      "endLine": 34,
+      "module": "Hooks",
+      "process_id": "proc_63_librarypage",
+      "step_index": 2
+    },
+    {
+      "id": "Function:src/hooks/useAdminUsers.ts:useAdminUsers",
+      "name": "useAdminUsers",
+      "filePath": "src/hooks/useAdminUsers.ts",
+      "startLine": 25,
+      "endLine": 99,
+      "module": "Hooks",
+      "process_id": "proc_3_adminuserspage",
+      "step_index": 2
+    },
+    {
+      "id": "Function:src/hooks/useAdminUsers.ts:useAdminUsers.fetchUsers@35:2",
+      "name": "fetchUsers",
+      "filePath": "src/hooks/useAdminUsers.ts",
+      "startLine": 36,
+      "endLine": 59,
+      "module": "Hooks",
+      "process_id": "proc_3_adminuserspage",
+      "step_index": 3
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:src/app/(dashboard)/library/page.tsx:LibraryPage.fn@41:12.timeout@42:4",
+      "name": "timeout",
+      "filePath": "src/app/(dashboard)/library/page.tsx",
+      "startLine": 43,
+      "endLine": 43
+    },
+    {
+      "id": "File:src/app/(dashboard)/library/page.tsx",
+      "name": "page.tsx",
+      "filePath": "src/app/(dashboard)/library/page.tsx"
+    },
+    {
+      "id": "Property:src/components/library/LibraryFilters.tsx:LibraryFiltersProps.search",
+      "name": "search",
+      "filePath": "src/components/library/LibraryFilters.tsx",
+      "startLine": 13,
+      "endLine": 13
+    },
+    {
+      "id": "Function:src/components/library/LibraryFilters.tsx:LibraryFilters",
+      "name": "LibraryFilters",
+      "filePath": "src/components/library/LibraryFilters.tsx",
+      "startLine": 23,
+      "endLine": 119,
+      "module": "Hooks"
+    },
+    {
+      "id": "File:src/components/library/LibraryFilters.tsx",
+      "name": "LibraryFilters.tsx",
+      "filePath": "src/components/library/LibraryFilters.tsx"
+    },
+    {
+      "id": "Function:src/hooks/useLibraryState.ts:useLibraryState",
+      "name": "useLibraryState",
+      "filePath": "src/hooks/useLibraryState.ts",
+      "startLine": 5,
+      "endLine": 32,
+      "module": "Hooks"
+    },
+    {
+      "id": "Function:src/hooks/useLibraryState.ts:useLibraryState.displayedVideos@12:2",
+      "name": "displayedVideos",
+      "filePath": "src/hooks/useLibraryState.ts",
+      "startLine": 13,
+      "endLine": 29
+    },
+    {
+      "id": "File:src/hooks/useLibraryState.ts",
+      "name": "useLibraryState.ts",
+      "filePath": "src/hooks/useLibraryState.ts"
+    },
+    {
+      "id": "Property:src/components/library/VideoList.tsx:VideoListProps.favorites",
+      "name": "favorites",
+      "filePath": "src/components/library/VideoList.tsx",
+      "startLine": 22,
+      "endLine": 22
+    },
+    {
+      "id": "Function:src/components/library/VideoList.tsx:VideoList",
+      "name": "VideoList",
+      "filePath": "src/components/library/VideoList.tsx",
+      "startLine": 29,
+      "endLine": 186,
+      "module": "Hooks"
+    },
+    {
+      "id": "File:src/components/library/VideoList.tsx",
+      "name": "VideoList.tsx",
+      "filePath": "src/components/library/VideoList.tsx"
+    },
+    {
+      "id": "File:src/hooks/useLibraryVideos.ts",
+      "name": "useLibraryVideos.ts",
+      "filePath": "src/hooks/useLibraryVideos.ts"
+    },
+    {
+      "id": "Interface:src/components/library/VideoGrid.tsx:VideoGridProps",
+      "name": "VideoGridProps",
+      "filePath": "src/components/library/VideoGrid.tsx",
+      "startLine": 16,
+      "endLine": 25
+    },
+    {
+      "id": "Property:src/components/library/VideoGrid.tsx:VideoGridProps.favorites",
+      "name": "favorites",
+      "filePath": "src/components/library/VideoGrid.tsx",
+      "startLine": 18,
+      "endLine": 18
+    },
+    {
+      "id": "File:src/components/library/VideoGrid.tsx",
+      "name": "VideoGrid.tsx",
+      "filePath": "src/components/library/VideoGrid.tsx"
+    },
+    {
+      "id": "Function:src/hooks/useLibraryFavorites.ts:saveFavorites",
+      "name": "saveFavorites",
+      "filePath": "src/hooks/useLibraryFavorites.ts",
+      "startLine": 13,
+      "endLine": 15,
+      "module": "Hooks"
+    },
+    {
+      "id": "File:src/hooks/useLibraryFavorites.ts",
+      "name": "useLibraryFavorites.ts",
+      "filePath": "src/hooks/useLibraryFavorites.ts"
+    },
+    {
+      "id": "Const:src/lib/library-constants.ts:FILTER_TABS",
+      "name": "FILTER_TABS",
+      "filePath": "src/lib/library-constants.ts",
+      "startLine": 5,
+      "endLine": 11
+    },
+    {
+      "id": "File:src/lib/library-constants.ts",
+      "name": "library-constants.ts",
+      "filePath": "src/lib/library-constants.ts"
+    },
+    {
+      "id": "TypeAlias:src/types/library.ts:FilterId",
+      "name": "FilterId",
+      "filePath": "src/types/library.ts",
+      "startLine": 3,
+      "endLine": 3
+    }
+  ],
+  "timing": {
+    "vector": 2.7,
+    "bm25": 129.1,
+    "merge": 0.1,
+    "symbol_lookup": 12.8,
+    "ranking": 0,
+    "formatting": 0.1,
+    "wall": 142.8
+  }
+}

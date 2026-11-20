@@ -1,0 +1,68 @@
+{
+  "observedAt": "2026-10-15T22:27:20.717616+00:00",
+  "candidate": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+  "candidateT1HeadAtClosure": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+  "branch": "codex/sutra-t05-final-f360-20261016",
+  "status": "PASS_SCOPED_MEDIA_SYNTHETIC",
+  "correctedProductDefects": [],
+  "productFilesModified": [],
+  "tests": {
+    "command": "node qa/t05-final-f360-20261016/run.mjs media ready concurrency shotstack typecheck lint",
+    "freshLocal": {
+      "media": 5,
+      "ready": 8,
+      "concurrency": 2,
+      "shotstack": 2
+    },
+    "fail": 0,
+    "skipped": 0,
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "Exact candidate CI reused; no duplicate local build"
+  },
+  "integration": {
+    "command": "python3 qa/t05-final-f360-20261016/reconcile.py",
+    "status": "PASS",
+    "finalMediaAuthorFiles": 82,
+    "previousDeliveryBb91575Files": 40,
+    "historicalExportsPreserved": 37,
+    "ciExportsHashVerified": 17
+  },
+  "gitnexus": {
+    "repository": "/Users/matissdornier/purama-worktrees/sutra-t05-final-f360-20261016",
+    "indexedCommit": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+    "indexCommand": "node .gitnexus/run.cjs analyze --index-only",
+    "deltaCommand": "node .gitnexus/run.cjs detect-changes --scope all --repo . --limit 20000",
+    "delta": {
+      "files": 39,
+      "symbols": 65,
+      "processes": 0,
+      "risk": "low"
+    },
+    "compareCommand": "node .gitnexus/run.cjs detect-changes --scope compare --base-ref main --repo . --limit 20000",
+    "compare": {
+      "files": 4736,
+      "symbols": 11297,
+      "processes": 402,
+      "risk": "critical"
+    },
+    "limits": "Process graph partial and result listing capped; compare includes historical integration, not this QA-only delivery. Final result metadata added after graph check; no source changed."
+  },
+  "gitleaks": {
+    "command": "gitleaks git --pre-commit --staged --redact --no-banner --report-format json --report-path qa/t05-final-f360-20261016/gitleaks.json",
+    "status": "PASS",
+    "findings": 0
+  },
+  "pythonAst": "PASS",
+  "tempMediaRemaining": [],
+  "providerCalls": 0,
+  "deployment": false,
+  "push": false,
+  "merge": false,
+  "limits": [
+    "Paid provider renders and remote upload NOT TESTED",
+    "No deployed end-to-end, hard production CPU/RAM or OOM/load proof",
+    "No human lip-sync or native AI 4K generation proof",
+    "T01/T08 own global CI, integration and release decision"
+  ]
+}

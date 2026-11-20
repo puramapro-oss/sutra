@@ -1,269 +1,190 @@
+import { submissionIdentity, submitVideoJob, submissionErrorStatus } from '@/lib/pipeline-submit'
+import { runVideoJob } from '@/lib/video-worker'
 import { NextResponse } from 'next/server'
+import { randomUUID } from 'node:crypto'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
-import { checkLimits } from '@/lib/limits'
-import { generateScript } from '@/lib/claude'
-import { generateVisualWithFallback, generateMusicWithFallback, generateVoiceWithFallback } from '@/lib/fallbacks'
-import { uploadToStorage } from '@/lib/storage'
-import { assembleFinalVideo, generateSubtitlesFromScript } from '@/lib/shotstack'
-import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
-import type { Plan, Profile, ScriptData } from '@/types'
+import {
+  completeQuotaForFinishedJob,
+  claimJobByKey, cancelJobByKey, finishJob,
+} from '@/lib/video-queue'
+import { type ProductionJobInput, type ProductionStep } from '@/lib/production-pipeline'
+import { clampQualityToPlan } from '@/lib/ltx-utils'
+import { type AssembleClip } from '@/lib/shotstack'
+import { productionSchema, sanitizeScriptData } from '@/lib/production-schema'
+import type { Plan, Profile } from '@/types'
+import { shouldUseLocalEngine } from '@/lib/local-engine'
+import { saladApplicationConfig } from '@/lib/salad/application'
+import { requireActive } from '@/lib/salad/config'
+import { getPollinationsUrl } from '@/lib/storyboard'
 
-export const maxDuration = 120
+// Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
+export const maxDuration = 300
 
-const TEMPLATE_CONFIGS: Record<string, { durationHint: string; sceneCount: number }> = {
-  youtube: { durationHint: '8-12 minutes', sceneCount: 12 },
-  tiktok: { durationHint: '30-60 secondes', sceneCount: 4 },
-  reel: { durationHint: '15-30 secondes', sceneCount: 3 },
-  docu: { durationHint: '10-20 minutes', sceneCount: 15 },
-  tuto: { durationHint: '3-8 minutes', sceneCount: 8 },
+/** Étapes à coût fournisseur : exécutées comme TÂCHES DURABLES (reprise sans
+ *  double génération ni double débit — checkpoint par résultat, audit #10/#14). */
+const COST_STEPS = new Set<ProductionStep>(['script', 'video', 'voice', 'music', 'assembly', 'all'])
+
+/** Recover a lost submission receipt without replaying a cancelled intent.
+ * Absence is not cancellation: the original request may still be in flight. */
+export async function GET(req: Request) {
+  const headers = { 'Cache-Control': 'private, no-store' }
+  try {
+    const session = await createServerClient()
+    const { data: { user }, error: authError } = await session.auth.getUser()
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401, headers })
+    const query = new URL(req.url).searchParams
+    const parsed = productionSchema.pick({ requestId: true, targetStep: true }).required().safeParse({
+      requestId: query.get('requestId'), targetStep: query.get('targetStep'),
+    })
+    if (!parsed.success || query.getAll('requestId').length !== 1 || query.getAll('targetStep').length !== 1) {
+      return NextResponse.json({ error: 'Identite de tache invalide' }, { status: 400, headers })
+    }
+    const { requestId, targetStep } = parsed.data
+    const { data: job, error } = await createServiceClient().from('video_jobs')
+      .select('id,status,progress').eq('user_id', user.id).eq('kind', 'production')
+      .eq('idempotency_key', `production-${user.id}-${targetStep}-${requestId}`).maybeSingle()
+    if (error) return NextResponse.json({ error: 'Statut indisponible' }, { status: 503, headers })
+    if (!job) return NextResponse.json({ error: 'Tache introuvable' }, { status: 404, headers })
+    return NextResponse.json({ jobId: job.id, status: job.status,
+      ...(job.status === 'done' ? { data: job.progress?.result } : {}),
+    }, { headers })
+  } catch {
+    return NextResponse.json({ error: 'Statut indisponible' }, { status: 503, headers })
+  }
+}
+
+/** Validations AVANT réservation de quota : une erreur client ne doit jamais
+ *  consommer de place ni partir en worker-retry (400 immédiat). */
+function validateStepInputs(step: string, previousData: Record<string, unknown>): string | null {
+  if (step === 'video' || step === 'voice') {
+    const scriptData = sanitizeScriptData(previousData.script)
+    if (step === 'video' && !scriptData?.scenes?.length) return 'Script requis pour generer les scenes'
+    if (step === 'voice' && !scriptData?.narration) return 'Script requis pour la narration'
+  }
+  if (step === 'assembly') {
+    const videoData = previousData.video as Array<Partial<AssembleClip>> | undefined
+    if (!videoData?.length) return 'Video requise pour l\'assemblage'
+  }
+  return null
 }
 
 export async function POST(req: Request) {
+  const worker = `inline-${randomUUID()}`
+  let jobId: string | null = null
   try {
     const supabase = await createServerClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
 
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
-    }
-
-    const body = await req.json()
-    const { step, idea, template, format, engine, voice, musicStyle, tone, previousData } = body
-
-    if (!idea || !step) {
-      return NextResponse.json({ error: 'Parametres manquants' }, { status: 400 })
-    }
-
-    const serviceClient = createServiceClient()
-    const { data: profile } = await serviceClient
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-
-    if (!profile) {
-      return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
-    }
-
-    const userPlan = (profile as Profile).plan ?? 'free'
-
-    // Step-by-step production
-    if (step === 'script') {
-      const config = TEMPLATE_CONFIGS[template] ?? TEMPLATE_CONFIGS.youtube
-      const script = await generateScript({
-        topic: idea,
-        niche: 'general',
-        style: tone ?? 'professionnel',
-        format: format ?? '16:9',
-        duration: config.durationHint,
-      })
-      await logApiCall(user.id, 'claude', 'production-script', 'success')
-      return NextResponse.json({ data: script })
-    }
-
-    if (step === 'video') {
-      const scriptData = previousData?.script as ScriptData | undefined
-      if (!scriptData?.scenes) {
-        return NextResponse.json({ error: 'Script requis pour generer les scenes' }, { status: 400 })
-      }
-
-      const sceneUrls = await Promise.all(
-        scriptData.scenes
-          .filter((s) => !s.use_stock)
-          .map(async (scene) => {
-            const result = await generateVisualWithFallback(
-              scene.visual_prompt,
-              profile.preferred_quality ?? '1080p',
-              user.email,
-              userPlan as Plan,
-              format ?? '16:9'
-            )
-            await logApiCall(user.id, 'ltx', 'production-video', 'success')
-            return result
-          })
+    const parsed = productionSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Donnees invalides', details: parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`) },
+        { status: 400 }
       )
-      return NextResponse.json({ data: sceneUrls })
     }
+    const { step, idea, template, format, engine, voice, musicStyle, tone, requestId } = parsed.data
+    const previousData = (parsed.data.previousData ?? {}) as Record<string, unknown>
 
-    if (step === 'voice') {
-      const scriptData = previousData?.script as ScriptData | undefined
-      if (!scriptData?.narration) {
-        return NextResponse.json({ error: 'Script requis pour la narration' }, { status: 400 })
+    // Annulation : tâche plus jamais claimable + place réservée libérée (RPC).
+    if (step === 'cancel') {
+      const target = parsed.data.targetStep
+      if (!requestId || !target) {
+        return NextResponse.json({ error: 'requestId et targetStep requis pour annuler une etape' }, { status: 400 })
       }
-
-      const voiceId = voice ?? 'EXAVITQu4vr4xnSDxMaL'
-      const voiceBuffer = await generateVoiceWithFallback(scriptData.narration, voiceId)
-      const voicePath = `production/${user.id}/${Date.now()}.mp3`
-      const voiceUrl = await uploadToStorage(voicePath, voiceBuffer, 'audio/mpeg')
-      await logApiCall(user.id, 'elevenlabs', 'production-voice', 'success')
-      return NextResponse.json({ data: { url: voiceUrl } })
-    }
-
-    if (step === 'music') {
-      const url = await generateMusicWithFallback(
-        `${musicStyle ?? 'cinematic'} background music for ${idea}`,
-        musicStyle ?? 'cinematic',
-        120
-      )
-      await logApiCall(user.id, 'suno', 'production-music', url ? 'success' : 'skipped')
-      return NextResponse.json({ data: { url: url || null } })
-    }
-
-    if (step === 'assembly') {
-      const scriptData = previousData?.script as ScriptData | undefined
-      const videoData = previousData?.video as Array<{ url: string }> | undefined
-      const voiceData = previousData?.voice as { url: string } | undefined
-      const musicData = previousData?.music as { url: string } | undefined
-
-      if (!videoData?.length || !voiceData?.url) {
-        return NextResponse.json({ error: 'Video et voix requises pour l\'assemblage' }, { status: 400 })
-      }
-
-      const clips = videoData.map((v) => ({ url: v.url, type: 'ia' as const }))
-      const subtitles = scriptData?.narration
-        ? generateSubtitlesFromScript(scriptData.narration, scriptData.scenes ?? [])
-        : []
-
-      const assembled = await assembleFinalVideo({
-        clips,
-        voiceUrl: voiceData.url,
-        musicUrl: musicData?.url ?? '',
-        musicVolume: 0.3,
-        subtitles,
-        transitions: 'fade',
-        format: format ?? '16:9',
-        quality: profile.preferred_quality ?? '1080p',
-        brandKit: (profile as Profile).brand_kit ?? null,
-      })
-
-      // Save to videos table
-      const { data: videoRow } = await serviceClient
-        .from('videos')
-        .insert({
-          user_id: user.id,
-          title: scriptData?.title ?? 'Production',
-          description: scriptData?.description ?? '',
-          video_url: assembled.url,
-          duration: assembled.duration,
-          format: format ?? '16:9',
-          quality: profile.preferred_quality ?? '1080p',
-          status: 'ready',
-          tags: scriptData?.tags ?? [],
-          script_data: scriptData ?? null,
-        })
-        .select('id')
-        .single()
-
-      await logApiCall(user.id, 'shotstack', 'production-assembly', 'success')
-      await sendNotification(user.id, {
-        type: 'success',
-        title: 'Production terminee',
-        message: `Ta video "${scriptData?.title ?? 'Production'}" est prete !`,
-      })
-
-      return NextResponse.json({ data: { url: assembled.url, videoId: videoRow?.id } })
+      const cancelled = await cancelJobByKey(`production-${user.id}-${target}-${requestId}`)
+      return NextResponse.json({ data: { cancelled } })
     }
 
     if (step === 'thumbnail') {
-      const scriptData = previousData?.script as ScriptData | undefined
+      const scriptData = sanitizeScriptData(previousData.script)
       const thumbnailPrompt = scriptData?.thumbnail_prompt ?? `cinematic thumbnail for ${idea}`
-      const thumbnailUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(thumbnailPrompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true`
-      return NextResponse.json({ data: { url: thumbnailUrl } })
-    }
-
-    // Generate ALL at once
-    if (step === 'all') {
-      const withinLimits = await checkLimits(profile as Profile)
-      if (!withinLimits) {
-        return NextResponse.json({ error: 'Limite de videos atteinte' }, { status: 403 })
-      }
-
-      const config = TEMPLATE_CONFIGS[template] ?? TEMPLATE_CONFIGS.youtube
-
-      // 1. Script
-      const script = await generateScript({
-        topic: idea,
-        niche: 'general',
-        style: tone ?? 'professionnel',
-        format: format ?? '16:9',
-        duration: config.durationHint,
-      })
-
-      const voiceId = voice ?? 'EXAVITQu4vr4xnSDxMaL'
-
-      // 2. Parallel: voice, music, scenes
-      const [voiceBuffer, musicUrl, sceneResults] = await Promise.all([
-        generateVoiceWithFallback(script.narration, voiceId),
-        generateMusicWithFallback(
-          `${musicStyle ?? 'cinematic'} background music for ${idea}`,
-          musicStyle ?? 'cinematic',
-          script.estimated_duration
-        ),
-        Promise.all(
-          script.scenes
-            .filter((s) => !s.use_stock)
-            .map((scene) =>
-              generateVisualWithFallback(scene.visual_prompt, '1080p', user.email, userPlan as Plan, format ?? '16:9')
-            )
-        ),
-      ])
-
-      // Upload voice
-      const voicePath = `production/${user.id}/${Date.now()}.mp3`
-      const voiceUrl = await uploadToStorage(voicePath, voiceBuffer, 'audio/mpeg')
-
-      // 3. Assembly
-      const clips = sceneResults.map((r) => ({ url: r.url, type: 'ia' as const }))
-      const subtitles = generateSubtitlesFromScript(script.narration, script.scenes)
-
-      const assembled = await assembleFinalVideo({
-        clips,
-        voiceUrl,
-        musicUrl: musicUrl || '',
-        musicVolume: 0.3,
-        subtitles,
-        transitions: 'fade',
-        format: format ?? '16:9',
-        quality: '1080p',
-        brandKit: (profile as Profile).brand_kit ?? null,
-      })
-
-      // 4. Thumbnail
-      const thumbnailUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(script.thumbnail_prompt)}?width=1920&height=1080&model=flux&enhance=true&nologo=true`
-
-      // Save
-      await serviceClient.from('videos').insert({
-        user_id: user.id,
-        title: script.title,
-        description: script.description,
-        video_url: assembled.url,
-        thumbnail_url: thumbnailUrl,
-        duration: assembled.duration,
-        format: format ?? '16:9',
-        quality: '1080p',
-        status: 'ready',
-        tags: script.tags,
-        script_data: script,
-      })
-
-      await logActivity(user.id, 'production_completed', `Production "${script.title}" terminee`)
-
       return NextResponse.json({
-        data: {
-          script,
-          video: sceneResults,
-          voice: { url: voiceUrl },
-          music: { url: musicUrl || null },
-          assembly: { url: assembled.url },
-          thumbnail: { url: thumbnailUrl },
-        },
+        data: { url: getPollinationsUrl(thumbnailPrompt, format ?? '16:9') },
       })
     }
 
-    return NextResponse.json({ error: 'Etape inconnue' }, { status: 400 })
+    if (!COST_STEPS.has(step as ProductionStep)) {
+      return NextResponse.json({ error: 'Etape inconnue' }, { status: 400 })
+    }
+    const invalid = validateStepInputs(step, previousData)
+    if (invalid) return NextResponse.json({ error: invalid }, { status: 400 })
+
+    const serviceClient = createServiceClient()
+    const { data: profile } = await serviceClient.from('profiles').select('*').eq('id', user.id).single()
+    if (!profile) return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
+
+    // Reject an unavailable personal video mode before quota reservation or
+    // any earlier paid script/voice phase in the all-steps pipeline.
+    if ((step === 'all' || step === 'video') && shouldUseLocalEngine(user.email ?? null)) {
+      try {
+        requireActive(saladApplicationConfig().config)
+      } catch {
+        return NextResponse.json({
+          error: 'Moteur GPU distant open source indisponible ; aucun repli API payant.',
+          code: 'SALAD_UNAVAILABLE',
+        }, { status: 503 })
+      }
+    }
+
+    const userPlan = (profile as Profile).plan ?? 'free'
+    // Plafond qualité par plan appliqué AVANT tout appel payant (audit #16).
+    const qualityCap = clampQualityToPlan(profile.preferred_quality ?? '1080p', userPlan, user.email)
+    const mediaFormat = (['9:16', '16:9', '1:1'].includes(format ?? '') ? format : '16:9') as ProductionJobInput['mediaFormat']
+    const genPlan: Plan = engine === 'wan-classic' ? 'free' : userPlan
+
+    const { requestId: _requestId, ...requestContent } = parsed.data
+    const identity = submissionIdentity(`production-${user.id}-${step}`, requestContent, requestId ?? req.headers.get('Idempotency-Key'))
+    const requestKey = identity.key
+    const jobKey = identity.key
+
+    const input: ProductionJobInput = {
+      step: step as ProductionStep,
+      userId: user.id,
+      userEmail: user.email ?? null,
+      userPlan,
+      genPlan,
+      qualityCap,
+      mediaFormat,
+      idea,
+      template: template ?? null,
+      format: format ?? null,
+      voice: voice ?? null,
+      musicStyle: musicStyle ?? null,
+      tone: tone ?? null,
+      previousData,
+      brandKit: (profile as Profile).brand_kit ?? null,
+      requestKey,
+    }
+
+    const submitted = await submitVideoJob(profile as Profile, { kind: 'production', videoId: null, input, ...identity })
+    if (submitted.status === 'done') return NextResponse.json({ data: submitted.progress.result })
+    if (!['queued', 'processing'].includes(submitted.status)) return NextResponse.json({ error: 'Tache terminee ou a reconcilier', status: submitted.status }, { status: 409 })
+    const job = await claimJobByKey(jobKey, worker, 600)
+    if (!job) return NextResponse.json({ jobId: submitted.id, status: submitted.status, jobKey }, { status: 202 })
+    jobId = job.id
+    const finalData = await runVideoJob(job, worker) as unknown
+
+    await finishJob(job.id, worker, 'done')
+    const quotaConfirmed = await completeQuotaForFinishedJob(user.id, jobId!)
+    jobId = null
+    return NextResponse.json({ data: finalData, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: message }, { status: 500 })
+    // Submission is not the only failure boundary: profile, claim and worker
+    // errors may contain RPC diagnostics or credentials. Only exact public
+    // codes may cross HTTP or be persisted in the user-visible task receipt.
+    const candidate = err instanceof Error ? err.message : ''
+    const message = [
+      'SUTRA_QUOTA_EXHAUSTED', 'SUTRA_IDEMPOTENCY_CONFLICT', 'SUTRA_INVALID_REQUEST_ID',
+      'SUTRA_SUBMISSION_UNCONFIRMED', 'SUTRA_JOB_FINISH_UNCONFIRMED',
+      'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.',
+    ].includes(candidate) ? candidate : 'Generation indisponible'
+    try {
+      if (jobId) await finishJob(jobId, worker, 'queued', message)
+    } catch {
+      return NextResponse.json({ error: 'Generation indisponible', status: 'write_unconfirmed' }, { status: 503 })
+    }
+    return NextResponse.json({ error: message }, { status: submissionErrorStatus(message) })
   }
 }

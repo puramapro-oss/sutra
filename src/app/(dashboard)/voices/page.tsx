@@ -20,8 +20,13 @@ import { Input } from '@/components/ui/Input'
 import { VoiceCard } from '@/components/voices/VoiceCard'
 
 export default function VoicesPage() {
+  const auth = useAuth()
+  return <VoicesPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function VoicesPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
   const router = useRouter()
-  const { profile, plan, loading: authLoading } = useAuth()
+  const { profile, plan, loading: authLoading } = auth
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const { clonedVoices, setClonedVoices, loading, playingId, playPreview, deleteVoice, fetchVoices } =
@@ -107,7 +112,7 @@ export default function VoicesPage() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white">Voix</h1>
-            <p className="text-sm text-white/40 mt-1">Clone ta voix ou utilise nos {VOICE_STYLES.length} voix IA ultra-réalistes</p>
+            <p className="text-sm text-white/60 mt-1">Clone ta voix ou utilise nos {VOICE_STYLES.length} voix IA ultra-réalistes</p>
           </div>
           {canClone && (
             <Button onClick={() => setShowCloneForm(true)} disabled={hasReachedLimit}>

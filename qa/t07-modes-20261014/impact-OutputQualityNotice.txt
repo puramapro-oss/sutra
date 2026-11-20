@@ -1,0 +1,57 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "target": {
+    "id": "Function:src/components/create/ExecutionModeNotice.tsx:OutputQualityNotice",
+    "name": "OutputQualityNotice",
+    "type": "Function",
+    "filePath": "src/components/create/ExecutionModeNotice.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Create",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/components/create/AutoForm.tsx:AutoForm",
+        "name": "AutoForm",
+        "filePath": "src/components/create/AutoForm.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/components/create/wizard/ManualFormStep4.tsx:ManualFormStep4",
+        "name": "ManualFormStep4",
+        "filePath": "src/components/create/wizard/ManualFormStep4.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

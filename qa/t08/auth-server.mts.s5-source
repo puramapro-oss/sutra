@@ -1,0 +1,30 @@
+// Loopback-only GoTrue/PostgREST double. No real credentials, DB or provider.
+import http from 'node:http';
+import { MOCK_USER, makeFakeJwt } from '../../e2e/support/mock-auth-server.ts';
+import { CURRENT_LEGAL_VERSIONS } from '../../src/lib/legal/versions.ts';
+const profile = { ...MOCK_USER, name: 'T08 synthetic', full_name: 'T08 synthetic', plan: 'empire', subscription_status: 'active', onboarding_completed: true, tutorial_completed: true, monthly_video_count: 0, credits: 100, is_admin: false, theme_mode: 'dark', brand_kit: null };
+const server = http.createServer(async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:19835');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,OPTIONS');
+  res.setHeader('Content-Type', 'application/json');
+  if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
+  const url = new URL(req.url || '/', 'http://127.0.0.1:19834');
+  let data: unknown = [];
+  if (url.pathname === '/auth/v1/token') {
+    let body = ''; for await (const chunk of req) body += chunk;
+    const credentials = JSON.parse(body || '{}');
+    if (credentials.password && credentials.password !== 'T08-synthetic-password') {
+      res.writeHead(400); res.end(JSON.stringify({ error: 'invalid_grant', error_description: 'Invalid login credentials' })); return;
+    }
+    data = { access_token: makeFakeJwt(MOCK_USER), refresh_token: 'mock-refresh-token', expires_in: 3600, token_type: 'bearer', user: { ...MOCK_USER, aud: 'authenticated', role: 'authenticated', app_metadata: {}, user_metadata: {} } };
+  } else if (url.pathname === '/auth/v1/user') {
+    data = { ...MOCK_USER, aud: 'authenticated', role: 'authenticated', app_metadata: {}, user_metadata: {} };
+  } else if (url.pathname === '/rest/v1/profiles') {
+    data = req.headers.accept?.includes('object') ? profile : [profile];
+  } else if (url.pathname === '/rest/v1/legal_acceptances') {
+    data = Object.entries(CURRENT_LEGAL_VERSIONS).map(([doc_type, version]) => ({ doc_type, version }));
+  } else if (!url.pathname.startsWith('/rest/v1/')) { res.statusCode = 404; }
+  res.end(JSON.stringify(data));
+});
+server.listen(19834, '127.0.0.1');

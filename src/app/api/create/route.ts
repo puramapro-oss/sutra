@@ -1,164 +1,142 @@
+import { submissionIdentity, submitVideoJob, submissionErrorStatus } from '@/lib/pipeline-submit'
+import { randomUUID } from 'node:crypto'
+import { runVideoJob } from '@/lib/video-worker'
 import { NextResponse } from 'next/server'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
-import { createVideoSchema } from '@/lib/validators'
-import { checkLimits } from '@/lib/limits'
-import { generateScript } from '@/lib/claude'
-import { generateVoiceWithFallback, generateVisualWithFallback, generateMusicWithFallback } from '@/lib/fallbacks'
-import { searchVideos } from '@/lib/pexels'
-import { uploadToStorage } from '@/lib/storage'
-import { assembleFinalVideo } from '@/lib/shotstack'
-import { stampVideoWhenReady } from '@/lib/video-proofs'
-import { logApiCall, logActivity, sendNotification } from '@/lib/logger'
-import { publishToPlatforms, getOptimalFormat, type SocialPlatform, type PublishRequest } from '@/lib/zernio'
-import { generateMultiPlatformCaptions } from '@/lib/ai/social-caption'
-import type { Plan, Profile, ScriptData } from '@/types'
+import { createVideoSchema, manualScriptSchema } from '@/lib/validators'
+import { clampQualityToPlan } from '@/lib/ltx-utils'
+import { resolveVoiceProviderId } from '@/lib/constants'
+import { completeQuotaForFinishedJob, claimJobByKey, finishJob } from '@/lib/video-queue'
+import { type CreateJobInput } from '@/lib/video-pipeline'
+import type { Plan, Profile } from '@/types'
+import { shouldUseLocalEngine } from '@/lib/local-engine'
+import { saladApplicationConfig } from '@/lib/salad/application'
+import { requireActive } from '@/lib/salad/config'
 
-function createPublicServiceClient() {
-  return createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { db: { schema: 'public' }, auth: { autoRefreshToken: false, persistSession: false } })
-}
-
-async function triggerAutopilot(args: { userId: string; videoId: string; videoUrl: string; videoTitle: string; videoDescription: string; videoTags: string[] }): Promise<void> {
-  try {
-    const publicClient = createPublicServiceClient()
-    const { data: config, error: configError } = await publicClient.from('social_autopilot_config').select('*').eq('user_id', args.userId).maybeSingle()
-    if (configError || !config || !config.enabled) return
-    const platforms = (config.default_platforms ?? []) as SocialPlatform[]
-    if (platforms.length === 0) return
-    const { data: accounts, error: accountsError } = await publicClient.from('social_accounts').select('id, platform, status').eq('user_id', args.userId).in('platform', platforms).eq('status', 'connected')
-    if (accountsError) { console.error('[autopilot] accounts fetch error:', accountsError.message); return }
-    const connectedSet = new Set((accounts ?? []).map((a) => a.platform as SocialPlatform))
-    const usablePlatforms = platforms.filter((p) => connectedSet.has(p))
-    if (usablePlatforms.length === 0) { console.error('[autopilot] no connected accounts for default platforms'); return }
-    const accountIds = {} as Record<SocialPlatform, string>
-    for (const acc of accounts ?? []) accountIds[acc.platform as SocialPlatform] = acc.id as string
-    let captionsByPlatform: Partial<Record<SocialPlatform, { caption: string; hashtags: string[] }>> = {}
-    if (config.auto_caption) {
-      try { captionsByPlatform = await generateMultiPlatformCaptions(args.videoTitle, args.videoDescription, usablePlatforms, { language: 'fr', style: config.caption_style ?? 'engaging', includeCta: config.include_cta ?? true, maxHashtags: config.max_hashtags ?? 10 }) }
-      catch (err) { console.error('[autopilot] caption gen error:', err instanceof Error ? err.message : err) }
-    }
-    const primary = usablePlatforms[0]
-    const primaryCaption = captionsByPlatform[primary]
-    const finalCaption = primaryCaption?.caption ?? args.videoTitle
-    const finalHashtags = primaryCaption?.hashtags ?? args.videoTags
-    const publishReq: PublishRequest = { videoUrl: args.videoUrl, caption: finalCaption, hashtags: finalHashtags, platforms: usablePlatforms, accountIds, format: getOptimalFormat(primary) }
-    const results = await publishToPlatforms(publishReq)
-    const nowIso = new Date().toISOString()
-    const rows = results.map((r) => {
-      const perPlatform = captionsByPlatform[r.platform]
-      return { user_id: args.userId, video_id: args.videoId, platform: r.platform, account_id: accountIds[r.platform] ?? null, zernio_post_id: r.postId ?? null, external_post_id: r.postId ?? null, post_url: r.postUrl ?? null, caption: perPlatform?.caption ?? finalCaption, hashtags: perPlatform?.hashtags ?? finalHashtags, status: r.success ? 'published' : 'failed', scheduled_for: null, published_at: r.success ? nowIso : null, error_message: r.error ?? null, views: 0, likes: 0, shares: 0, comments: 0, metadata: { source: 'autopilot' }, created_at: nowIso, updated_at: nowIso }
-    })
-    if (rows.length > 0) {
-      const { error: insertError } = await publicClient.from('social_posts').insert(rows)
-      if (insertError) console.error('[autopilot] insert error:', insertError.message)
-    }
-  } catch (err) { console.error('[autopilot] unexpected error:', err instanceof Error ? err.message : err) }
-}
-
-export const maxDuration = 120
+// Aligné sur les fournisseurs les plus lents (Shotstack/WAN 300s) — audit #14.
+// Le pipeline est enregistré en tâche DURABLE avant exécution : si la requête
+// meurt, le worker (/api/cron/video-worker) REPREND sans régénérer les scènes
+// déjà obtenues (checkpoint par scène).
+export const maxDuration = 300
 
 export async function POST(req: Request) {
+  const worker = `inline-${randomUUID()}`
+  let jobId: string | null = null
+  let submissionAttempted = false
   try {
     const supabase = await createServerClient()
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
-    const body = await req.json()
-    const parsed = createVideoSchema.safeParse(body)
-    if (!parsed.success) return NextResponse.json({ error: 'Donnees invalides', details: parsed.error.flatten().fieldErrors }, { status: 400 })
+
+    const parsed = createVideoSchema.safeParse(await req.json())
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Donnees invalides', details: parsed.error.flatten().fieldErrors }, { status: 400 })
+    }
+
+    const manual = parsed.data.mode === 'manual' ? manualScriptSchema.safeParse(parsed.data.script) : null
+    if (manual && !manual.success) {
+      return NextResponse.json({
+        error: 'Script manuel invalide',
+        details: { script: manual.error.issues.map((issue) => issue.message) },
+      }, { status: 400 })
+    }
+
     const serviceClient = createServiceClient()
     const { data: profile } = await serviceClient.from('profiles').select('*').eq('id', user.id).single()
     if (!profile) return NextResponse.json({ error: 'Profil introuvable' }, { status: 404 })
-    const withinLimits = await checkLimits(profile as Profile)
-    if (!withinLimits) return NextResponse.json({ error: 'Limite de videos atteinte pour votre plan. Passez au plan superieur.' }, { status: 403 })
 
-    const { topic, format, quality, voice_id, niche, style, mediaMode, stockSelections } = parsed.data
-    const { data: videoRow } = await serviceClient.from('videos').insert({ user_id: user.id, status: 'generating', format, quality, tags: [], media_mode: mediaMode, stock_sources: stockSelections ?? [] }).select('id').single()
-    if (!videoRow) return NextResponse.json({ error: 'Erreur creation video' }, { status: 500 })
-    const videoId = videoRow.id
-    const scriptStart = Date.now()
-    const script: ScriptData = await generateScript({ topic, niche: niche ?? 'general', style: style ?? 'dynamique', format, duration: '60-90 secondes' })
-    await logApiCall(user.id, 'claude', 'generateScript', 'success', Date.now() - scriptStart)
-    await serviceClient.from('videos').update({ title: script.title, description: script.description, tags: script.tags, script_data: script }).eq('id', videoId)
-    const selectedVoiceId = voice_id ?? 'EXAVITQu4vr4xnSDxMaL'
+    const { topic, format, quality: requestedQuality, voice_id, voice, engine, script: manualScript, niche, style, mode, mediaMode, stockSelections } = parsed.data
     const userPlan = (profile as Profile).plan ?? 'free'
-    const stockByIndex = new Map<number, (typeof stockSelections)[number]>()
-    for (const sel of stockSelections ?? []) stockByIndex.set(sel.sceneIndex, sel)
+    const quality = clampQualityToPlan(requestedQuality, userPlan, user.email)
+    const genPlan: Plan = engine === 'wan-classic' ? 'free' : userPlan
+    const voiceId = resolveVoiceProviderId(voice_id ?? voice)
 
-    const resolveSceneClip = async (scene: ScriptData['scenes'][number], idx: number): Promise<{ url: string; type: 'ia' | 'stock' } | null> => {
-      const sel = stockByIndex.get(idx)
-      const userChoseStock = sel && !sel.fallbackToAI && sel.url
-      if (mediaMode === 'stock') {
-        if (userChoseStock) return { url: sel!.url!, type: 'stock' }
-        const results = await searchVideos(scene.visual_prompt, 1)
-        await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'fallback')
-        if (results[0]) return { url: results[0].url, type: 'stock' }
-        const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-        await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'fallback')
-        return { url: ai.url, type: 'ia' }
-      }
-      if (mediaMode === 'mixed') {
-        if (userChoseStock) return { url: sel!.url!, type: 'stock' }
-        if (sel?.fallbackToAI || !sel) {
-          const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-          await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
-          return { url: ai.url, type: 'ia' }
-        }
-      }
-      if (scene.use_stock) {
-        const results = await searchVideos(scene.visual_prompt, 1)
-        await logApiCall(user.id, 'pexels', 'searchVideos', results[0] ? 'success' : 'skipped')
-        return results[0] ? { url: results[0].url, type: 'stock' } : null
-      }
-      const ai = await generateVisualWithFallback(scene.visual_prompt, quality, user.email, userPlan, format)
-      await logApiCall(user.id, ai.engine === 'wan-classic' ? 'runpod' : 'ltx', 'generateVisual', 'success')
-      return { url: ai.url, type: 'ia' }
+    // Refuse an impossible personal AI request before quota reservation and the
+    // script/voice/music API phases. Stock-only creation needs no GPU worker.
+    if (mediaMode !== 'stock' && shouldUseLocalEngine(user.email ?? null)) {
+      requireActive(saladApplicationConfig().config)
     }
 
-    const [voiceBuffer, musicUrl, resolvedClips] = await Promise.all([
-      generateVoiceWithFallback(script.narration, selectedVoiceId).then(async (buf) => { await logApiCall(user.id, 'elevenlabs', 'generateVoice', 'success'); return buf }),
-      generateMusicWithFallback(script.music_prompt, script.music_style, script.estimated_duration).then(async (url) => { await logApiCall(user.id, 'suno', 'generateMusic', url ? 'success' : 'skipped'); return url }),
-      Promise.all(script.scenes.map((s, i) => resolveSceneClip(s, i))).then((clips) => clips.filter(Boolean) as Array<{ url: string; type: 'ia' | 'stock' }>)
-    ])
-    const sceneUrls = resolvedClips.filter((c) => c.type === 'ia') as Array<{ url: string; type: 'ia' }>
-    const stockVideos = resolvedClips.filter((c) => c.type === 'stock') as Array<{ url: string; type: 'stock' }>
-    const voicePath = `voices/${user.id}/${videoId}.mp3`
-    const voiceUrl = await uploadToStorage(voicePath, voiceBuffer, 'audio/mpeg')
-    await serviceClient.from('videos').update({ voice_url: voiceUrl, music_url: musicUrl || null }).eq('id', videoId)
-    const allClips = resolvedClips
-    const subtitles = generateSubtitles(script.narration, script.estimated_duration)
-    const assembleStart = Date.now()
-    const assembled = await assembleFinalVideo({ clips: allClips, voiceUrl, musicUrl: musicUrl || '', musicVolume: 0.3, subtitles, transitions: 'fade', format, quality, brandKit: (profile as Profile).brand_kit ?? null })
-    await logApiCall(user.id, 'shotstack', 'assembleFinalVideo', 'success', Date.now() - assembleStart)
-    const thumbnailUrl = sceneUrls[0]?.url ?? stockVideos[0]?.url ?? null
-    await serviceClient.from('videos').update({ video_url: assembled.url, thumbnail_url: thumbnailUrl, shotstack_json: assembled.timeline, duration: assembled.duration, status: 'ready', cost_estimate: estimateTotalCost(script) }).eq('id', videoId)
+    const videoId = randomUUID()
 
-    try {
-      const stampOutcome = await stampVideoWhenReady({ videoId, userId: user.id, videoUrl: assembled.url })
-      await logApiCall(user.id, 'opentimestamps', 'stampVideoWhenReady', stampOutcome.status === 'stamped' ? 'success' : 'error', 0, stampOutcome.status === 'stamped' ? undefined : JSON.stringify(stampOutcome))
-    } catch (stampErr) {
-      await logApiCall(user.id, 'opentimestamps', 'stampVideoWhenReady', 'error', 0, stampErr instanceof Error ? stampErr.message : String(stampErr))
+    const input: CreateJobInput = {
+      videoId,
+      userId: user.id,
+      userEmail: user.email ?? null,
+      userPlan,
+      genPlan,
+      quality,
+      format,
+      mediaFormat: (['9:16', '16:9', '1:1'].includes(format) ? format : '16:9') as CreateJobInput['mediaFormat'],
+      topic,
+      niche,
+      style,
+      mode,
+      mediaMode,
+      voiceId,
+      manualScript,
+      stockSelections: stockSelections ?? [],
+      brandKit: (profile as Profile).brand_kit ?? null,
     }
-    await sendNotification(user.id, { type: 'success', title: 'Video prete !', message: `Ta video "${script.title}" est prete a etre visionnee.` })
-    await logActivity(user.id, 'video_created', `Video "${script.title}" generee`, { video_id: videoId, quality, format, duration: assembled.duration })
-    const { data: video } = await serviceClient.from('videos').select('*').eq('id', videoId).single()
-    try {
-      await triggerAutopilot({ userId: user.id, videoId, videoUrl: assembled.url, videoTitle: script.title ?? '', videoDescription: script.description ?? '', videoTags: script.tags ?? [] })
-    } catch (err) { console.error('[create] autopilot trigger failed:', err instanceof Error ? err.message : err) }
-    return NextResponse.json({ success: true, video })
+
+    const identity = submissionIdentity(`create-${user.id}`, parsed.data, req.headers.get('Idempotency-Key'))
+    submissionAttempted = true
+    const submitted = await submitVideoJob(profile as Profile, {
+      kind: 'create', videoId, input, ...identity,
+      initialVideo: { format, quality, tags: [], media_mode: mediaMode, stock_sources: stockSelections ?? [] },
+    })
+    const resultVideoId = (submitted.payload.input as CreateJobInput).videoId
+    if (submitted.status === 'done') {
+      const { data: video, error } = await serviceClient.from('videos').select('*').eq('id', resultVideoId).eq('user_id', user.id).single()
+      if (error || !video) throw new Error('Lecture du resultat indisponible')
+      return NextResponse.json({ success: true, video, jobId: submitted.id })
+    }
+    if (!['queued', 'processing'].includes(submitted.status)) return NextResponse.json({ error: 'Tache terminee ou a reconcilier', jobId: submitted.id, status: submitted.status }, { status: 409 })
+    const claimedJob = await claimJobByKey(identity.key, worker, 600)
+    if (!claimedJob) return NextResponse.json({ success: false, videoId: resultVideoId, jobId: submitted.id, status: submitted.status }, { status: 202 })
+    jobId = claimedJob.id
+    await runVideoJob(claimedJob, worker)
+
+    if (jobId) await finishJob(jobId, worker, 'done')
+    const quotaConfirmed = await completeQuotaForFinishedJob(user.id, claimedJob.id)
+    jobId = null
+
+    const { data: video, error: readError } = await serviceClient.from('videos').select('*').eq('id', resultVideoId).eq('user_id', user.id).single()
+    if (readError || !video) return NextResponse.json({ error: 'Lecture du resultat indisponible', videoId: resultVideoId, jobId: claimedJob.id, status: 'done' }, { status: 503 })
+    return NextResponse.json({ success: true, video, jobId: claimedJob.id, quotaReconciliationRequired: !quotaConfirmed })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
-    await logApiCall(null, 'create', 'POST /api/create', 'error', undefined, message).catch(() => {})
-    return NextResponse.json({ error: 'Erreur lors de la generation de la video', details: message }, { status: 500 })
+    try {
+      if (jobId) await finishJob(jobId, worker, 'queued', message)
+    } catch {
+      return NextResponse.json({ error: 'Generation indisponible', status: 'write_unconfirmed' }, { status: 503 })
+    }
+    // Only fixed, public mode errors may cross the HTTP boundary. Never return
+    // the provider message, which can contain an endpoint, prompt or credential.
+    const modeErrors: Record<string, string> = {
+      SUTRA_LOCAL_NOT_CONFIGURED: 'Moteur personnel non configure ; aucun repli API payant.',
+      SUTRA_LOCAL_FAILED: 'Moteur personnel indisponible ; aucun repli API payant.',
+      SUTRA_SALAD_NOT_CONFIGURED: 'GPU distant open source non configure ; aucun repli API payant.',
+      SUTRA_SALAD_DISABLED: 'GPU distant open source desactive ; aucun repli API payant.',
+      SUTRA_SALAD_UNAVAILABLE: 'GPU distant open source indisponible ; aucun repli API payant.',
+      SALAD_DISABLED: 'Moteur GPU distant open source desactive ; aucun repli API payant.',
+      SALAD_INVALID_CONFIG: 'Moteur GPU distant open source non configure ; aucun repli API payant.',
+      SALAD_NOT_QUALIFIED: 'Moteur GPU distant open source non qualifie pour cette demande.',
+      SALAD_UNSUPPORTED_PROFILE: 'Format, qualite ou duree non qualifies sur le GPU distant.',
+      SALAD_UNSUPPORTED_OPERATION: 'Operation non prise en charge par le GPU distant.',
+      SALAD_CAPABILITIES_UNREACHABLE: 'Moteur GPU distant open source indisponible ; aucun repli API payant.',
+      SALAD_CAPABILITIES_HTTP: 'Moteur GPU distant open source indisponible ; aucun repli API payant.',
+      SALAD_STALE_QUOTE: 'Devis GPU expire ; nouvelle validation du budget necessaire.',
+      SALAD_ESTIMATE_EXCEEDS_BUDGET: 'Estimation GPU superieure au budget autorise.',
+      SALAD_ENGINE_BUSY: 'GPU distant occupe ; aucune nouvelle generation lancee.',
+      SALAD_RECONCILIATION_REQUIRED: 'Generation distante a reconcilier ; reprendre cette meme tache.',
+      SALAD_UPLOAD_FAILED_RESUME_SAME_JOB: 'Resultat distant a recuperer ; reprendre cette meme tache.',
+    }
+    const modeCode = message.split(':', 1)[0]
+    if (Object.hasOwn(modeErrors, modeCode)) {
+      return NextResponse.json({ error: modeErrors[modeCode], code: modeCode, ...(!submissionAttempted ? { submissionState: 'not_submitted' } : {}) }, { status: 503 })
+    }
+    return NextResponse.json({ error: 'Erreur lors de la generation de la video', code: 'SUTRA_GENERATION_FAILED' }, { status: submissionErrorStatus(message) })
   }
-}
-
-function generateSubtitles(narration: string, totalDuration: number): Array<{ text: string; start: number; end: number }> {
-  const sentences = narration.split(/[.!?]+/).filter((s) => s.trim().length > 0)
-  const segmentDuration = totalDuration / sentences.length
-  return sentences.map((text, i) => ({ text: text.trim(), start: i * segmentDuration, end: (i + 1) * segmentDuration }))
-}
-
-function estimateTotalCost(script: ScriptData): number {
-  return 0.05 + 0.1 + 0.08 + script.scenes.filter((s) => !s.use_stock).length * 0.015 + 0.07
 }

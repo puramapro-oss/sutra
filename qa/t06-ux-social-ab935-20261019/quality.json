@@ -1,0 +1,26 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exitCode": 0,
+    "status": "PASS",
+    "durationMs": 7767
+  },
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "."
+    ],
+    "exitCode": 0,
+    "status": "PASS",
+    "durationMs": 11989
+  }
+]

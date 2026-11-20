@@ -1,0 +1,879 @@
+﻿2026-10-14T03:13:12.4409512Z Current runner version: '2.337.0'
+2026-10-14T03:13:12.4429275Z ##[group]Runner Image Provisioner
+2026-10-14T03:13:12.4429998Z Hosted Compute Agent
+2026-10-14T03:13:12.4430414Z Version: 20261002.596
+2026-10-14T03:13:12.4430857Z Commit: c3d12f3313a95f25162a1503be624f3b0617f8c0
+2026-10-14T03:13:12.4431370Z Build Date: 2026-10-02T22:28:27Z
+2026-10-14T03:13:12.4431855Z Worker ID: {7f0766ef-d2ac-4c1e-80e1-74becde30078}
+2026-10-14T03:13:12.4432373Z Region: centralus
+2026-10-14T03:13:12.4432760Z Cloud: Azure
+2026-10-14T03:13:12.4433134Z ##[endgroup]
+2026-10-14T03:13:12.4434393Z ##[group]Operating System
+2026-10-14T03:13:12.4435034Z Ubuntu
+2026-10-14T03:13:12.4435383Z 24.04.5
+2026-10-14T03:13:12.4435809Z LTS
+2026-10-14T03:13:12.4436198Z ##[endgroup]
+2026-10-14T03:13:12.4436651Z ##[group]Runner Image
+2026-10-14T03:13:12.4437085Z Image: ubuntu-24.04
+2026-10-14T03:13:12.4437516Z Version: 20261004.327.1
+2026-10-14T03:13:12.4438425Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261004.327/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-14T03:13:12.4439466Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261004.327
+2026-10-14T03:13:12.4440132Z ##[endgroup]
+2026-10-14T03:13:12.4440913Z ##[group]GITHUB_TOKEN Permissions
+2026-10-14T03:13:12.4442696Z Contents: read
+2026-10-14T03:13:12.4443104Z Metadata: read
+2026-10-14T03:13:12.4443519Z ##[endgroup]
+2026-10-14T03:13:12.4445234Z Secret source: Actions
+2026-10-14T03:13:12.4445900Z Cache mode: write
+2026-10-14T03:13:12.4446589Z Prepare workflow directory
+2026-10-14T03:13:12.4737659Z Prepare all required actions
+2026-10-14T03:13:12.4773606Z Getting action download info
+2026-10-14T03:13:12.7155198Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-14T03:13:12.8938689Z Complete job name: disposable-database
+2026-10-14T03:13:12.9301882Z ##[group]Checking docker version
+2026-10-14T03:13:12.9313296Z ##[command]/usr/bin/docker version --format '{{.Server.APIVersion}}'
+2026-10-14T03:13:13.0114170Z '1.48'
+2026-10-14T03:13:13.0123994Z Docker daemon API version: '1.48'
+2026-10-14T03:13:13.0124790Z ##[command]/usr/bin/docker version --format '{{.Client.APIVersion}}'
+2026-10-14T03:13:13.0264923Z '1.48'
+2026-10-14T03:13:13.0271751Z Docker client API version: '1.48'
+2026-10-14T03:13:13.0276515Z ##[endgroup]
+2026-10-14T03:13:13.0279001Z ##[group]Clean up resources from previous jobs
+2026-10-14T03:13:13.0283104Z ##[command]/usr/bin/docker ps --all --quiet --no-trunc --filter "label=b5c5f0"
+2026-10-14T03:13:13.0401548Z ##[command]/usr/bin/docker network prune --force --filter "label=b5c5f0"
+2026-10-14T03:13:13.0508673Z ##[endgroup]
+2026-10-14T03:13:13.0509227Z ##[group]Create local container network
+2026-10-14T03:13:13.0516477Z ##[command]/usr/bin/docker network create --label b5c5f0 github_network_3e1827bcb4e74f6c90340ad6e0880296
+2026-10-14T03:13:13.1308225Z 69b28ddc7c19844b7f53bd57167f1d0d0585d2560473db0d926004474ed7af4c
+2026-10-14T03:13:13.1320987Z ##[endgroup]
+2026-10-14T03:13:13.1343260Z ##[group]Starting postgres service container
+2026-10-14T03:13:13.1360721Z ##[command]/usr/bin/docker pull postgres:16
+2026-10-14T03:13:13.6994237Z 16: Pulling from library/postgres
+2026-10-14T03:13:13.8930749Z ecc510c1e359: Pulling fs layer
+2026-10-14T03:13:13.8932051Z 79faf13a8736: Pulling fs layer
+2026-10-14T03:13:13.8933035Z 6456bfbf35e7: Pulling fs layer
+2026-10-14T03:13:13.8934034Z b353db459ed1: Pulling fs layer
+2026-10-14T03:13:13.8934977Z 99f49de4fe2b: Pulling fs layer
+2026-10-14T03:13:13.8935767Z 83d1a2a3917c: Pulling fs layer
+2026-10-14T03:13:13.8936430Z 715ea0948cb1: Pulling fs layer
+2026-10-14T03:13:13.8937055Z 486e8305f56f: Pulling fs layer
+2026-10-14T03:13:13.8937628Z e7d675f11ded: Pulling fs layer
+2026-10-14T03:13:13.8938226Z c49864c27f35: Pulling fs layer
+2026-10-14T03:13:13.8938757Z 770ef8b308ea: Pulling fs layer
+2026-10-14T03:13:13.8939348Z 50c25daa0302: Pulling fs layer
+2026-10-14T03:13:13.8939894Z 8309db3ae5b6: Pulling fs layer
+2026-10-14T03:13:13.8940697Z 9731e27f2541: Pulling fs layer
+2026-10-14T03:13:13.8941243Z 486e8305f56f: Waiting
+2026-10-14T03:13:13.8941794Z e7d675f11ded: Waiting
+2026-10-14T03:13:13.8942323Z c49864c27f35: Waiting
+2026-10-14T03:13:13.8942805Z 770ef8b308ea: Waiting
+2026-10-14T03:13:13.8943305Z 50c25daa0302: Waiting
+2026-10-14T03:13:13.8943782Z 8309db3ae5b6: Waiting
+2026-10-14T03:13:13.8944252Z 9731e27f2541: Waiting
+2026-10-14T03:13:13.8944963Z 99f49de4fe2b: Waiting
+2026-10-14T03:13:13.8945492Z 83d1a2a3917c: Waiting
+2026-10-14T03:13:13.8945977Z 715ea0948cb1: Waiting
+2026-10-14T03:13:13.8946460Z b353db459ed1: Waiting
+2026-10-14T03:13:14.0420979Z 79faf13a8736: Verifying Checksum
+2026-10-14T03:13:14.1872995Z 79faf13a8736: Download complete
+2026-10-14T03:13:14.1879550Z 6456bfbf35e7: Verifying Checksum
+2026-10-14T03:13:14.1882242Z 6456bfbf35e7: Download complete
+2026-10-14T03:13:14.1979779Z ecc510c1e359: Download complete
+2026-10-14T03:13:14.2851194Z b353db459ed1: Verifying Checksum
+2026-10-14T03:13:14.2852534Z b353db459ed1: Download complete
+2026-10-14T03:13:14.4071446Z 83d1a2a3917c: Verifying Checksum
+2026-10-14T03:13:14.4073150Z 83d1a2a3917c: Download complete
+2026-10-14T03:13:14.4165642Z 715ea0948cb1: Verifying Checksum
+2026-10-14T03:13:14.4167468Z 715ea0948cb1: Download complete
+2026-10-14T03:13:14.4650081Z 99f49de4fe2b: Verifying Checksum
+2026-10-14T03:13:14.4651577Z 99f49de4fe2b: Download complete
+2026-10-14T03:13:14.5731735Z 486e8305f56f: Verifying Checksum
+2026-10-14T03:13:14.5733212Z 486e8305f56f: Download complete
+2026-10-14T03:13:14.6065953Z c49864c27f35: Download complete
+2026-10-14T03:13:14.7282564Z 770ef8b308ea: Download complete
+2026-10-14T03:13:14.7601043Z 50c25daa0302: Verifying Checksum
+2026-10-14T03:13:14.7602507Z 50c25daa0302: Download complete
+2026-10-14T03:13:14.8465888Z 8309db3ae5b6: Verifying Checksum
+2026-10-14T03:13:14.8467322Z 8309db3ae5b6: Download complete
+2026-10-14T03:13:14.8531387Z e7d675f11ded: Verifying Checksum
+2026-10-14T03:13:14.8532717Z e7d675f11ded: Download complete
+2026-10-14T03:13:14.8987696Z 9731e27f2541: Verifying Checksum
+2026-10-14T03:13:14.8989258Z 9731e27f2541: Download complete
+2026-10-14T03:13:14.9178635Z ecc510c1e359: Pull complete
+2026-10-14T03:13:18.9930681Z 79faf13a8736: Pull complete
+2026-10-14T03:13:19.2296599Z 6456bfbf35e7: Pull complete
+2026-10-14T03:13:19.2822602Z b353db459ed1: Pull complete
+2026-10-14T03:13:19.6450653Z 99f49de4fe2b: Pull complete
+2026-10-14T03:13:19.7486244Z 83d1a2a3917c: Pull complete
+2026-10-14T03:13:19.7583766Z 715ea0948cb1: Pull complete
+2026-10-14T03:13:19.7680296Z 486e8305f56f: Pull complete
+2026-10-14T03:13:23.2927772Z e7d675f11ded: Pull complete
+2026-10-14T03:13:23.3075220Z c49864c27f35: Pull complete
+2026-10-14T03:13:23.3203140Z 770ef8b308ea: Pull complete
+2026-10-14T03:13:23.3359103Z 50c25daa0302: Pull complete
+2026-10-14T03:13:23.3456529Z 8309db3ae5b6: Pull complete
+2026-10-14T03:13:23.3539975Z 9731e27f2541: Pull complete
+2026-10-14T03:13:23.3580679Z Digest: sha256:ca0bd484cb98bf4b24eb1010e73fb3fcbd6714d240fbc1a10eea5b7dbecb641d
+2026-10-14T03:13:23.3603924Z Status: Downloaded newer image for postgres:16
+2026-10-14T03:13:23.3613391Z docker.io/library/postgres:16
+2026-10-14T03:13:23.3664589Z ##[command]/usr/bin/docker create --name c711e381ff3b4b72afb3cc1ab83f2e97_postgres16_defec3 --label b5c5f0 --network github_network_3e1827bcb4e74f6c90340ad6e0880296 --network-alias postgres -p 5432:5432 --health-cmd "pg_isready -U fixture -d sutra_ci_actions" --health-interval 5s --health-timeout 5s --health-retries 10 -e "POSTGRES_USER=fixture" -e "POSTGRES_PASSWORD=fixture" -e "POSTGRES_DB=sutra_ci_actions" -e GITHUB_ACTIONS=true -e CI=true postgres:16
+2026-10-14T03:13:23.4127582Z 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:13:23.4143001Z ##[command]/usr/bin/docker start 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:13:23.5930049Z 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:13:23.5957209Z ##[command]/usr/bin/docker ps --all --filter id=508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39 --filter status=running --no-trunc --format "{{.ID}} {{.Status}}"
+2026-10-14T03:13:23.6076812Z 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39 Up Less than a second (health: starting)
+2026-10-14T03:13:23.6091867Z ##[command]/usr/bin/docker port 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:13:23.6199635Z 5432/tcp -> 0.0.0.0:5432
+2026-10-14T03:13:23.6200579Z 5432/tcp -> [::]:5432
+2026-10-14T03:13:23.6232996Z ##[endgroup]
+2026-10-14T03:13:23.6239788Z ##[group]Waiting for all services to be ready
+2026-10-14T03:13:23.6250090Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:13:23.6354951Z starting
+2026-10-14T03:13:23.6366192Z postgres service is starting, waiting 2 seconds before checking again.
+2026-10-14T03:13:25.6372200Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:13:25.6489593Z starting
+2026-10-14T03:13:25.6497211Z postgres service is starting, waiting 3 seconds before checking again.
+2026-10-14T03:13:29.4886528Z ##[command]/usr/bin/docker inspect --format="{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{end}}" 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:13:29.5018160Z healthy
+2026-10-14T03:13:29.5040457Z postgres service is healthy.
+2026-10-14T03:13:29.5040979Z ##[endgroup]
+2026-10-14T03:13:29.5285286Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-14T03:13:29.5285894Z with:
+2026-10-14T03:13:29.5286158Z   persist-credentials: false
+2026-10-14T03:13:29.5286497Z   repository: puramapro-oss/sutra
+2026-10-14T03:13:29.5288827Z   token: ***
+2026-10-14T03:13:29.5289071Z   ssh-strict: true
+2026-10-14T03:13:29.5289369Z   ssh-user: git
+2026-10-14T03:13:29.5289587Z   clean: true
+2026-10-14T03:13:29.5289882Z   sparse-checkout-cone-mode: true
+2026-10-14T03:13:29.5290159Z   fetch-depth: 1
+2026-10-14T03:13:29.5290394Z   fetch-tags: false
+2026-10-14T03:13:29.5290662Z   show-progress: true
+2026-10-14T03:13:29.5290921Z   lfs: false
+2026-10-14T03:13:29.5291168Z   submodules: false
+2026-10-14T03:13:29.5291412Z   set-safe-directory: true
+2026-10-14T03:13:29.5291692Z   allow-unsafe-pr-checkout: false
+2026-10-14T03:13:29.5292090Z ##[endgroup]
+2026-10-14T03:13:29.6117116Z Syncing repository: puramapro-oss/sutra
+2026-10-14T03:13:29.6118975Z ##[group]Getting Git version info
+2026-10-14T03:13:29.6119455Z Working directory is '/home/runner/work/sutra/sutra'
+2026-10-14T03:13:29.6120347Z [command]/usr/bin/git version
+2026-10-14T03:13:29.6143939Z git version 2.55.0
+2026-10-14T03:13:29.6192540Z ##[endgroup]
+2026-10-14T03:13:29.6202788Z Temporarily overriding HOME='/home/runner/work/_temp/1f65c8a4-4218-4627-997b-63077047969c' before making global git config changes
+2026-10-14T03:13:29.6203999Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T03:13:29.6208272Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sutra/sutra
+2026-10-14T03:13:29.6248096Z Deleting the contents of '/home/runner/work/sutra/sutra'
+2026-10-14T03:13:29.6252658Z ##[group]Initializing the repository
+2026-10-14T03:13:29.6254979Z [command]/usr/bin/git init /home/runner/work/sutra/sutra
+2026-10-14T03:13:29.6337046Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-14T03:13:29.6338681Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-14T03:13:29.6339613Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-14T03:13:29.6340200Z hint: call:
+2026-10-14T03:13:29.6340544Z hint:
+2026-10-14T03:13:29.6341013Z hint: 	git config --global init.defaultBranch <name>
+2026-10-14T03:13:29.6341505Z hint:
+2026-10-14T03:13:29.6342118Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-14T03:13:29.6343085Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-14T03:13:29.6343673Z hint:
+2026-10-14T03:13:29.6343994Z hint: 	git branch -m <name>
+2026-10-14T03:13:29.6344336Z hint:
+2026-10-14T03:13:29.6345090Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-14T03:13:29.6345906Z Initialized empty Git repository in /home/runner/work/sutra/sutra/.git/
+2026-10-14T03:13:29.6347374Z [command]/usr/bin/git remote add origin https://github.com/puramapro-oss/sutra
+2026-10-14T03:13:29.6389323Z ##[endgroup]
+2026-10-14T03:13:29.6390177Z ##[group]Disabling automatic garbage collection
+2026-10-14T03:13:29.6391386Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-14T03:13:29.6415143Z ##[endgroup]
+2026-10-14T03:13:29.6415697Z ##[group]Setting up auth
+2026-10-14T03:13:29.6420136Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T03:13:29.6447614Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T03:13:29.6725445Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T03:13:29.6750759Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-14T03:13:29.6925259Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T03:13:29.6948985Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T03:13:29.7105764Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-14T03:13:29.7137132Z ##[endgroup]
+2026-10-14T03:13:29.7137704Z ##[group]Fetching the repository
+2026-10-14T03:13:29.7145550Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +dd1eec5fd6a0afd5a2fd742642b7587d3ecf1477:refs/remotes/origin/codex/sutra-final-providers-20261013
+2026-10-14T03:13:31.2913415Z From https://github.com/puramapro-oss/sutra
+2026-10-14T03:13:31.2914807Z  * [new ref]         dd1eec5fd6a0afd5a2fd742642b7587d3ecf1477 -> origin/codex/sutra-final-providers-20261013
+2026-10-14T03:13:31.2917859Z ##[endgroup]
+2026-10-14T03:13:31.2918444Z ##[group]Determining the checkout info
+2026-10-14T03:13:31.2920262Z ##[endgroup]
+2026-10-14T03:13:31.2925877Z [command]/usr/bin/git sparse-checkout disable
+2026-10-14T03:13:31.2975889Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-14T03:13:31.3025736Z ##[group]Checking out the ref
+2026-10-14T03:13:31.3026898Z [command]/usr/bin/git checkout --progress --force -B codex/sutra-final-providers-20261013 refs/remotes/origin/codex/sutra-final-providers-20261013
+2026-10-14T03:13:31.4593055Z Switched to a new branch 'codex/sutra-final-providers-20261013'
+2026-10-14T03:13:31.4594177Z branch 'codex/sutra-final-providers-20261013' set up to track 'origin/codex/sutra-final-providers-20261013'.
+2026-10-14T03:13:31.4604826Z ##[endgroup]
+2026-10-14T03:13:31.4641370Z [command]/usr/bin/git log -1 --format=%H
+2026-10-14T03:13:31.4661856Z dd1eec5fd6a0afd5a2fd742642b7587d3ecf1477
+2026-10-14T03:13:31.4668474Z ##[group]Removing auth
+2026-10-14T03:13:31.4671879Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T03:13:31.4696203Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T03:13:31.4859084Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T03:13:31.4879041Z http.https://github.com/.extraheader
+2026-10-14T03:13:31.4884235Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-14T03:13:31.4909717Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-14T03:13:31.5067526Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T03:13:31.5089203Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T03:13:31.5249588Z ##[endgroup]
+2026-10-14T03:13:31.5499315Z Prepare all required actions
+2026-10-14T03:13:31.5499856Z Getting action download info
+2026-10-14T03:13:31.6499302Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-14T03:13:31.7742910Z ##[group]Run ./.github/actions/setup-sutra
+2026-10-14T03:13:31.7743289Z with:
+2026-10-14T03:13:31.7743937Z   smarana-read-token: ***
+
+2026-10-14T03:13:31.7744232Z ##[endgroup]
+2026-10-14T03:13:31.7798020Z ##[start-action display=Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020;id=__self.__actions_setup-node]
+2026-10-14T03:13:31.7875818Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+2026-10-14T03:13:31.7876256Z with:
+2026-10-14T03:13:31.7876534Z   node-version-file: .nvmrc
+2026-10-14T03:13:31.7876821Z   cache: npm
+2026-10-14T03:13:31.7877062Z   always-auth: false
+2026-10-14T03:13:31.7877346Z   check-latest: false
+2026-10-14T03:13:31.7879536Z   token: ***
+2026-10-14T03:13:31.7879881Z ##[endgroup]
+2026-10-14T03:13:31.8977620Z Resolved .nvmrc as 24
+2026-10-14T03:13:31.9019960Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-10-14T03:13:31.9023142Z (node:2587) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-14T03:13:31.9023955Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-14T03:13:31.9025054Z ##[group]Environment details
+2026-10-14T03:13:32.2240523Z node: v24.21.0
+2026-10-14T03:13:32.2241359Z npm: 11.19.0
+2026-10-14T03:13:32.2242198Z yarn: 1.22.22
+2026-10-14T03:13:32.2243012Z ##[endgroup]
+2026-10-14T03:13:32.2285991Z [command]/opt/hostedtoolcache/node/24.21.0/x64/bin/npm config get cache
+2026-10-14T03:13:32.3167710Z /home/runner/.npm
+2026-10-14T03:13:32.4864422Z Cache hit for: node-cache-Linux-x64-npm-825ec6bda71794fb8352c73093cd4d76f2421210700afff0578b44f578ccd843
+2026-10-14T03:13:32.4948230Z (node:2587) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-14T03:13:33.6496070Z Received 83886080 of 331264212 (25.3%), 79.9 MBs/sec
+2026-10-14T03:13:34.6492042Z Received 222298112 of 331264212 (67.1%), 106.0 MBs/sec
+2026-10-14T03:13:35.4725814Z Received 331264212 of 331264212 (100.0%), 111.9 MBs/sec
+2026-10-14T03:13:35.4726916Z Cache Size: ~316 MB (331264212 B)
+2026-10-14T03:13:35.4831070Z [command]/usr/bin/tar -xf /home/runner/work/_temp/859ef9c6-d0b6-4e65-8b41-530b7fc699b5/cache.tzst -P -C /home/runner/work/sutra/sutra --use-compress-program unzstd
+2026-10-14T03:13:35.7955801Z Cache restored successfully
+2026-10-14T03:13:35.8077641Z Cache restored from key: node-cache-Linux-x64-npm-825ec6bda71794fb8352c73093cd4d76f2421210700afff0578b44f578ccd843
+2026-10-14T03:13:35.8180787Z ##[end-action id=__self.__actions_setup-node;outcome=success;conclusion=success;duration_ms=4038]
+2026-10-14T03:13:35.8203720Z ##[start-action display=Install from lockfile;id=__self.__run]
+2026-10-14T03:13:35.8238515Z ##[group]Run if [ -z "$SMARANA_READ_TOKEN" ]; then
+2026-10-14T03:13:35.8238992Z [36;1mif [ -z "$SMARANA_READ_TOKEN" ]; then[0m
+2026-10-14T03:13:35.8239524Z [36;1m  echo '::error::SMARANA_READ_TOKEN with read-only access to purama-smarana is required.'[0m
+2026-10-14T03:13:35.8239979Z [36;1m  exit 1[0m
+2026-10-14T03:13:35.8240415Z [36;1mfi[0m
+2026-10-14T03:13:35.8240681Z [36;1mchmod +x tooling/git-askpass.sh[0m
+2026-10-14T03:13:35.8241057Z [36;1mnpm ci --ignore-scripts --no-audit --no-fund[0m
+2026-10-14T03:13:35.8374109Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-14T03:13:35.8374579Z env:
+2026-10-14T03:13:35.8375626Z   SMARANA_READ_TOKEN: ***
+
+2026-10-14T03:13:35.8375922Z   GIT_TERMINAL_PROMPT: 0
+2026-10-14T03:13:35.8376314Z   GIT_ASKPASS: /home/runner/work/sutra/sutra/tooling/git-askpass.sh
+2026-10-14T03:13:35.8376648Z ##[endgroup]
+2026-10-14T03:13:42.1110856Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2026-10-14T03:13:42.1739405Z npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+2026-10-14T03:13:42.2169107Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2026-10-14T03:13:42.2173131Z npm warn deprecated request-promise@4.2.6: request-promise has been deprecated because it extends the now deprecated request package, see https://github.com/request/request/issues/3142
+2026-10-14T03:13:42.2859826Z npm warn deprecated har-validator@5.1.5: this library is no longer supported
+2026-10-14T03:13:42.2953946Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-10-14T03:13:42.2961476Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-10-14T03:13:42.7016415Z npm warn deprecated tsparticles-plugin-easing-quad@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:42.7448829Z npm warn deprecated uuid@3.4.0: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+2026-10-14T03:13:42.8725611Z npm warn deprecated tsparticles-shape-line@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:42.8727152Z npm warn deprecated tsparticles-shape-square@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:42.8730385Z npm warn deprecated tsparticles-move-parallax@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:42.8904954Z npm warn deprecated tsparticles-interaction-particles-attract@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:42.8907001Z npm warn deprecated tsparticles-interaction-external-pause@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:42.9203326Z npm warn deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+2026-10-14T03:13:43.0333349Z npm warn deprecated tsparticles-updater-size@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.0334963Z npm warn deprecated tsparticles-updater-opacity@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.0337389Z npm warn deprecated tsparticles-updater-color@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.0485678Z npm warn deprecated tsparticles-basic@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.1950888Z npm warn deprecated tsparticles-shape-star@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.1952424Z npm warn deprecated tsparticles-shape-circle@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.2091991Z npm warn deprecated tsparticles-updater-stroke-color@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.2251603Z npm warn deprecated tsparticles-shape-text@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.4464375Z npm warn deprecated tsparticles-slim@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.6586039Z npm warn deprecated tsparticles-interaction-particles-collisions@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.6705106Z npm warn deprecated tsparticles-move-base@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.7026625Z npm warn deprecated tsparticles-interaction-external-remove@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.7028291Z npm warn deprecated tsparticles-interaction-external-push@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.7184107Z npm warn deprecated tsparticles-shape-polygon@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.7703109Z npm warn gitignore-fallback No .npmignore file found, using .gitignore for file exclusion. Consider creating a .npmignore file to explicitly control published files.
+2026-10-14T03:13:43.8383374Z npm warn deprecated tsparticles-particles.js@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.9070785Z npm warn deprecated tsparticles-interaction-external-slow@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.9262272Z npm warn deprecated tsparticles-interaction-external-attract@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.9268890Z npm warn deprecated tsparticles-interaction-external-bounce@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:43.9565940Z npm warn deprecated tsparticles-updater-out-modes@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:44.0305652Z npm warn deprecated tsparticles-updater-rotate@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:44.3000410Z npm warn deprecated tsparticles-interaction-external-connect@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:44.3168928Z npm warn deprecated tsparticles-interaction-external-grab@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:44.3879949Z npm warn deprecated tsparticles-updater-life@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:44.5309898Z npm warn deprecated tsparticles-interaction-external-repulse@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:44.5703028Z npm warn deprecated uuid@9.0.1: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+2026-10-14T03:13:44.6656613Z npm warn deprecated tsparticles-interaction-external-bubble@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:44.7141264Z npm warn deprecated tsparticles-interaction-particles-links@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:45.3225338Z npm warn deprecated tsparticles-shape-image@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:50.9424307Z npm warn deprecated tsparticles-engine@2.12.0: starting from tsparticles v3 the packages are now moved to @tsparticles/package-name instead of tsparticles-package-name
+2026-10-14T03:13:55.4363082Z
+2026-10-14T03:13:55.4364187Z added 1121 packages in 20s
+2026-10-14T03:13:55.5054175Z ##[end-action id=__self.__run;outcome=success;conclusion=success;duration_ms=19684]
+2026-10-14T03:13:55.5057044Z ##[start-action display=Run dependency install scripts without repository credentials;id=__self.__run_2]
+2026-10-14T03:13:55.5272327Z ##[group]Run npm rebuild --no-audit --no-fund
+2026-10-14T03:13:55.5272726Z [36;1mnpm rebuild --no-audit --no-fund[0m
+2026-10-14T03:13:55.5308539Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-14T03:13:55.5309428Z ##[endgroup]
+2026-10-14T03:13:56.0984976Z npm warn rebuild 8 packages have install scripts not yet covered by allowScripts. Run `npm install-scripts ls` to review.
+2026-10-14T03:13:56.0985976Z rebuilt dependencies successfully
+2026-10-14T03:13:56.1065835Z ##[end-action id=__self.__run_2;outcome=success;conclusion=success;duration_ms=600]
+2026-10-14T03:13:56.1102099Z ##[group]Run npm run test:migration-local
+2026-10-14T03:13:56.1102435Z [36;1mnpm run test:migration-local[0m
+2026-10-14T03:13:56.1138217Z shell: /usr/bin/bash -e {0}
+2026-10-14T03:13:56.1138535Z env:
+2026-10-14T03:13:56.1138792Z   SUTRA_DISPOSABLE_DB: 1
+2026-10-14T03:13:56.1139347Z   DATABASE_URL_LOCAL: ***127.0.0.1:5432/sutra_ci_actions
+2026-10-14T03:13:56.1139676Z ##[endgroup]
+2026-10-14T03:13:56.1840229Z
+2026-10-14T03:13:56.1840840Z > sutra@0.1.0 test:migration-local
+2026-10-14T03:13:56.1841353Z > node scripts/test-migration-local.mjs
+2026-10-14T03:13:56.1841579Z
+2026-10-14T03:13:56.2859046Z ✓ migration v10 appliquée (search_path sutra, backfill exécuté)
+2026-10-14T03:13:56.2891984Z ✓ backfill : consommations du mois reprises, quota immédiatement borné
+2026-10-14T03:13:56.2929223Z ✓ rejouabilité : re-run sans double comptage, réservations vivantes intactes
+2026-10-14T03:13:56.2987620Z ✓ quota atomique : course limite 1 → exactement 1 réservée, 1 refusée
+2026-10-14T03:13:56.3024884Z ✓ settlement : complete consomme la place, release la libère
+2026-10-14T03:13:56.3051892Z ✓ illimité (limite 0) : traçable sans blocage
+2026-10-14T03:13:56.3084784Z ✓ claim exclusif : 2 workers → 2 tâches distinctes
+2026-10-14T03:13:56.3103149Z ✓ reprise : bail expiré → repris par un autre worker, tentative tracée
+2026-10-14T03:13:56.3137228Z ✓ claim par clé : ciblé, exclusif, borné par tentatives
+2026-10-14T03:13:56.3181749Z ✓ checkpoint (reprise sans régénérer) + heartbeat + idempotence UNIQUE
+2026-10-14T03:13:56.3225871Z ✓ annulation (queued) : cancelled + place libérée atomiquement, jamais re-claimable
+2026-10-14T03:13:56.3254024Z ✓ annulation en vol : place libérée, tâche jamais reprise
+2026-10-14T03:13:56.3280619Z ✓ checkpoint MERGE : morceaux successifs cumulés sans écrasement
+2026-10-14T03:13:56.3281601Z MIGRATION v10 : tous les tests passent
+2026-10-14T03:13:56.3392976Z ##[group]Run node --import tsx --test scripts/test-pipeline-postgres.mts
+2026-10-14T03:13:56.3393439Z [36;1mnode --import tsx --test scripts/test-pipeline-postgres.mts[0m
+2026-10-14T03:13:56.3428118Z shell: /usr/bin/bash -e {0}
+2026-10-14T03:13:56.3428395Z env:
+2026-10-14T03:13:56.3428643Z   SUTRA_DISPOSABLE_DB: 1
+2026-10-14T03:13:56.3428930Z   PGHOST: 127.0.0.1
+2026-10-14T03:13:56.3429155Z   PGPORT: 5432
+2026-10-14T03:13:56.3429413Z   PGUSER: fixture
+2026-10-14T03:13:56.3429624Z   PGPASSWORD: fixture
+2026-10-14T03:13:56.3429859Z ##[endgroup]
+2026-10-14T03:13:56.6526697Z ✔ 12 concurrent claims obtain one owner; 24 independent checkpoints survive parallel writes (140.991064ms)
+2026-10-14T03:13:56.6689551Z ✔ expired/replaced/cancelled owner cannot heartbeat, checkpoint, finish or write business output (16.784901ms)
+2026-10-14T03:13:56.7297963Z ✔ ready refuses raw URL, missing proof, missing stage and mandatory audio; verified export persists (60.777679ms)
+2026-10-14T03:13:56.7629020Z ✔ AUTO ready effects are atomic and once-only across concurrent replays (33.150347ms)
+2026-10-14T03:13:56.7724482Z ✔ finish requires result, settles once; missing quota rolls back status; exhausted jobs quarantine (9.578804ms)
+2026-10-14T03:13:56.7938332Z ✔ notification writes deduplicate atomically; owner mismatch and missing row refuse success (17.039928ms)
+2026-10-14T03:13:56.8076073Z ✔ 12 same-intent submissions atomically create one job, one video and one quota reservation (17.85244ms)
+2026-10-14T03:13:56.8122887Z ✔ failed initial video insert rolls back quota and task; retry after lost response reuses committed task (4.880348ms)
+2026-10-14T03:13:56.8170084Z ✔ cancellation settles original month once and never consumes a new month reservation (4.544416ms)
+2026-10-14T03:13:56.8466367Z ✔ NULL lease or owner cannot authorize any mutation, even with a matching worker (29.48718ms)
+2026-10-14T03:13:57.0646410Z ✔ ready refuses unfinished checkpoints, invalid track values and zero-size export (217.83675ms)
+2026-10-14T03:13:57.0991854Z LOCAL_TEST_DATABASE=sutra_t03_2897_1791947636505
+2026-10-14T03:13:57.0993025Z ✔ silent export can skip optional tracks, but cannot skip scenes or use string validation flags (34.643637ms)
+2026-10-14T03:13:57.1102624Z ℹ tests 12
+2026-10-14T03:13:57.1103490Z ℹ suites 0
+2026-10-14T03:13:57.1104080Z ℹ pass 12
+2026-10-14T03:13:57.1105064Z ℹ fail 0
+2026-10-14T03:13:57.1105451Z ℹ cancelled 0
+2026-10-14T03:13:57.1105679Z ℹ skipped 0
+2026-10-14T03:13:57.1105888Z ℹ todo 0
+2026-10-14T03:13:57.1106149Z ℹ duration_ms 739.373874
+2026-10-14T03:13:57.1174463Z ##[group]Run SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-security-rls.mjs
+2026-10-14T03:13:57.1175174Z [36;1mSUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-security-rls.mjs[0m
+2026-10-14T03:13:57.1208788Z shell: /usr/bin/bash -e {0}
+2026-10-14T03:13:57.1209050Z ##[endgroup]
+2026-10-14T03:14:00.6370258Z RLS_LOCAL_PASS 254 assertions; baseline escalation reproduced; migration replayed; no remote DB
+2026-10-14T03:14:00.7391663Z Local-only fixture retained: /tmp/sutra-t02-pg-teZI6S
+2026-10-14T03:14:00.7536707Z ##[group]Run node --import tsx --test scripts/test-salad-persistence.mts
+2026-10-14T03:14:00.7537173Z [36;1mnode --import tsx --test scripts/test-salad-persistence.mts[0m
+2026-10-14T03:14:00.7569496Z shell: /usr/bin/bash -e {0}
+2026-10-14T03:14:00.7569834Z env:
+2026-10-14T03:14:00.7570097Z   SUTRA_DISPOSABLE_DB: 1
+2026-10-14T03:14:00.7570371Z   PGHOST: 127.0.0.1
+2026-10-14T03:14:00.7570633Z   PGPORT: 5432
+2026-10-14T03:14:00.7570980Z   PGUSER: fixture
+2026-10-14T03:14:00.7571232Z   PGPASSWORD: fixture
+2026-10-14T03:14:00.7571453Z ##[endgroup]
+2026-10-14T03:14:01.5743651Z ✔ 24 independent sessions reserve one execution; replay and foreign input fail closed (546.531727ms)
+2026-10-14T03:14:01.6763464Z ✔ distinct jobs race for one global slot, including UNKNOWN after deadline (102.433692ms)
+2026-10-14T03:14:01.8343157Z ✔ lost acknowledgment and stale complete-record CAS cannot erase a committed checkpoint (157.501046ms)
+2026-10-14T03:14:01.9131449Z ✔ only an immutable hash-verified external artifact releases the slot (79.065477ms)
+2026-10-14T03:14:01.9274795Z ✔ restricted role has only five functions, no table mutation or other application access (14.30008ms)
+2026-10-14T03:14:02.0355093Z ✔ actual PostgreSQL adapter survives reconnect and expunges persistence failure details (107.836344ms)
+2026-10-14T03:14:02.1559012Z PRIVATE_DATABASE_PRESERVED=sutra_ci_salad_3758_1791947641020
+2026-10-14T03:14:02.1559939Z ✔ actual worker with external PostgreSQL executes once, survives restart and downloads immutable bytes (120.151342ms)
+2026-10-14T03:14:02.1679008Z ℹ tests 7
+2026-10-14T03:14:02.1686120Z ℹ suites 0
+2026-10-14T03:14:02.1686434Z ℹ pass 7
+2026-10-14T03:14:02.1686754Z ℹ fail 0
+2026-10-14T03:14:02.1687010Z ℹ cancelled 0
+2026-10-14T03:14:02.1687267Z ℹ skipped 0
+2026-10-14T03:14:02.1687536Z ℹ todo 0
+2026-10-14T03:14:02.1687827Z ℹ duration_ms 1380.094547
+2026-10-14T03:14:02.1815064Z ##[group]Run node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts
+2026-10-14T03:14:02.1816339Z [36;1mnode --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts[0m
+2026-10-14T03:14:02.1853410Z shell: /usr/bin/bash -e {0}
+2026-10-14T03:14:02.1853755Z env:
+2026-10-14T03:14:02.1854022Z   SUTRA_DISPOSABLE_DB: 1
+2026-10-14T03:14:02.1854282Z   PGHOST: 127.0.0.1
+2026-10-14T03:14:02.1854555Z   PGPORT: 5432
+2026-10-14T03:14:02.1854906Z   PGUSER: fixture
+2026-10-14T03:14:02.1855158Z   PGPASSWORD: fixture
+2026-10-14T03:14:02.1855425Z   NODE_OPTIONS: --require=./qa/t08/offline.cjs
+2026-10-14T03:14:02.1855771Z ##[endgroup]
+2026-10-14T03:14:03.0488820Z ✔ lost finish response plus 12 duplicate completions: one completed debit, read reconciliation only (386.47232ms)
+2026-10-14T03:14:03.0967675Z ✔ expired lease after final checkpoint: new owner finishes; old owner cannot alter result or budget (49.990763ms)
+2026-10-14T03:14:03.4334010Z ✔ cancel races finish: exactly one quota settlement, cancellation can never reconcile as done (336.531096ms)
+2026-10-14T03:14:03.5797007Z ✔ quota settlement DB failure rolls back done, retains result; restoring ledger allows safe finish (146.11829ms)
+2026-10-14T03:14:03.6216351Z ✔ explicitly skipped music reconciles its committed null result after a lost ACK (42.149344ms)
+2026-10-14T03:14:03.6997485Z ✔ failed outcome with lost ACK and duplicate callbacks releases exactly one reservation (76.111318ms)
+2026-10-14T03:14:03.8940645Z /home/runner/work/sutra/sutra/node_modules/@supabase/ssr/src/createBrowserClient.ts:111
+2026-10-14T03:14:03.8941540Z     throw new Error(
+2026-10-14T03:14:03.8942078Z           ^
+2026-10-14T03:14:03.8942980Z
+2026-10-14T03:14:03.8943626Z Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+2026-10-14T03:14:03.8945163Z
+2026-10-14T03:14:03.8946141Z Check your Supabase project's API settings to find these values
+2026-10-14T03:14:03.8946532Z
+2026-10-14T03:14:03.8946778Z https://supabase.com/dashboard/project/_/settings/api
+2026-10-14T03:14:03.8947509Z     at createBrowserClient (/home/runner/work/sutra/sutra/node_modules/@supabase/ssr/src/createBrowserClient.ts:111:11)
+2026-10-14T03:14:03.8948090Z     at createClient (/home/runner/work/sutra/sutra/src/lib/supabase.ts:14:10)
+2026-10-14T03:14:03.8948570Z     at createSupabaseClient (/home/runner/work/sutra/sutra/src/lib/supabase.ts:44:25)
+2026-10-14T03:14:03.8949318Z     at Object.<anonymous> (/home/runner/work/sutra/sutra/src/lib/supabase.ts:44:38)
+2026-10-14T03:14:03.8949760Z     at Module._compile (node:internal/modules/cjs/loader:1929:14)
+2026-10-14T03:14:03.8950251Z     at Object.transformer (/home/runner/work/sutra/sutra/node_modules/tsx/dist/register-OY9cqBEN.cjs:9:3619)
+2026-10-14T03:14:03.8950763Z     at Module.load (node:internal/modules/cjs/loader:1651:32)
+2026-10-14T03:14:03.8951118Z     at Module._load (node:internal/modules/cjs/loader:1443:12)
+2026-10-14T03:14:03.8951496Z     at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+2026-10-14T03:14:03.8951892Z     at Module.require (node:internal/modules/cjs/loader:1674:12)
+2026-10-14T03:14:03.8952105Z
+2026-10-14T03:14:03.8952205Z Node.js v24.21.0
+2026-10-14T03:14:03.8997618Z ✖ qa/t06-social-recovery-20261014/test-postgres.mts (183.429307ms)
+2026-10-14T03:14:03.9000412Z ℹ tests 7
+2026-10-14T03:14:03.9000899Z ℹ suites 0
+2026-10-14T03:14:03.9001256Z ℹ pass 6
+2026-10-14T03:14:03.9001571Z ℹ fail 1
+2026-10-14T03:14:03.9001918Z ℹ cancelled 0
+2026-10-14T03:14:03.9002186Z ℹ skipped 0
+2026-10-14T03:14:03.9002409Z ℹ todo 0
+2026-10-14T03:14:03.9002681Z ℹ duration_ms 1662.04717
+2026-10-14T03:14:03.9003137Z
+2026-10-14T03:14:03.9003280Z ✖ failing tests:
+2026-10-14T03:14:03.9003470Z
+2026-10-14T03:14:03.9003741Z test at qa/t06-social-recovery-20261014/test-postgres.mts:1:1
+2026-10-14T03:14:03.9004934Z ✖ qa/t06-social-recovery-20261014/test-postgres.mts (183.429307ms)
+2026-10-14T03:14:03.9005390Z   'test failed'
+2026-10-14T03:14:03.9053242Z ##[error]Process completed with exit code 1.
+2026-10-14T03:14:03.9202781Z Post job cleanup.
+2026-10-14T03:14:03.9206434Z ##[start-action display=Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020;id=__3eb4a0f3-b53b-48a2-962f-2e6a480e0dc4.__actions_setup-node]
+2026-10-14T03:14:03.9209643Z ##[end-action id=__3eb4a0f3-b53b-48a2-962f-2e6a480e0dc4.__actions_setup-node;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-10-14T03:14:03.9281483Z Post job cleanup.
+2026-10-14T03:14:04.0020196Z [command]/usr/bin/git version
+2026-10-14T03:14:04.0056707Z git version 2.55.0
+2026-10-14T03:14:04.0088867Z Temporarily overriding HOME='/home/runner/work/_temp/f20a79a3-9da0-47ca-848e-33003669f06d' before making global git config changes
+2026-10-14T03:14:04.0089975Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-14T03:14:04.0091672Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/sutra/sutra
+2026-10-14T03:14:04.0285336Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-14T03:14:04.0320170Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-14T03:14:04.0510056Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-14T03:14:04.0522247Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-14T03:14:04.0676090Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-14T03:14:04.0697585Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-14T03:14:04.0922991Z Print service container logs: c711e381ff3b4b72afb3cc1ab83f2e97_postgres16_defec3
+2026-10-14T03:14:04.0927101Z ##[command]/usr/bin/docker logs --details 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:14:04.1036181Z  The files belonging to this database system will be owned by user "postgres".
+2026-10-14T03:14:04.1036907Z  This user must also own the server process.
+2026-10-14T03:14:04.1037247Z
+2026-10-14T03:14:04.1037746Z  The database cluster will be initialized with locale "en_US.utf8".
+2026-10-14T03:14:04.1038564Z  The default database encoding has accordingly been set to "UTF8".
+2026-10-14T03:14:04.1039166Z  The default text search configuration will be set to "english".
+2026-10-14T03:14:04.1039562Z
+2026-10-14T03:14:04.1039943Z  Data page checksums are disabled.
+2026-10-14T03:14:04.1040326Z
+2026-10-14T03:14:04.1040778Z  fixing permissions on existing directory /var/lib/postgresql/data ... ok
+2026-10-14T03:14:04.1041457Z  creating subdirectories ... ok
+2026-10-14T03:14:04.1041882Z  selecting dynamic shared memory implementation ... posix
+2026-10-14T03:14:04.1042444Z  selecting default max_connections ... 100
+2026-10-14T03:14:04.1042909Z  selecting default shared_buffers ... 128MB
+2026-10-14T03:14:04.1043319Z  selecting default time zone ... Etc/UTC
+2026-10-14T03:14:04.1043766Z  creating configuration files ... ok
+2026-10-14T03:14:04.1044167Z  running bootstrap script ... ok
+2026-10-14T03:14:04.1044937Z  performing post-bootstrap initialization ... ok
+2026-10-14T03:14:04.1046730Z  initdb: warning: enabling "trust" authentication for local connections
+2026-10-14T03:14:04.1047584Z  initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+2026-10-14T03:14:04.1062753Z  2026-10-14 03:13:24.552 UTC [1] LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-10-14T03:14:04.1063857Z  2026-10-14 03:13:24.552 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-10-14T03:14:04.1064371Z  2026-10-14 03:13:24.552 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2026-10-14T03:14:04.1065154Z  2026-10-14 03:13:24.553 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-14T03:14:04.1065802Z  2026-10-14 03:13:24.555 UTC [63] LOG:  database system was shut down at 2026-10-14 03:13:24 UTC
+2026-10-14T03:14:04.1066531Z  2026-10-14 03:13:24.558 UTC [1] LOG:  database system is ready to accept connections
+2026-10-14T03:14:04.1067282Z  2026-10-14 03:13:56.317 UTC [116] ERROR:  duplicate key value violates unique constraint "video_jobs_idempotency_key_key"
+2026-10-14T03:14:04.1068291Z  2026-10-14 03:13:56.317 UTC [116] DETAIL:  Key (idempotency_key)=(becf09a1-f8fb-40cc-bb89-d940f87f331d-used) already exists.
+2026-10-14T03:14:04.1069313Z  2026-10-14 03:13:56.317 UTC [116] STATEMENT:  insert into video_jobs (user_id, kind, idempotency_key) values ($1,'create',$2)
+2026-10-14T03:14:04.1070084Z  2026-10-14 03:13:56.654 UTC [129] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1070826Z  2026-10-14 03:13:56.654 UTC [129] CONTEXT:  PL/pgSQL function heartbeat_video_job_v2(uuid,text,integer) line 5 at RAISE
+2026-10-14T03:14:04.1071654Z  2026-10-14 03:13:56.654 UTC [129] STATEMENT:  SELECT heartbeat_video_job_v2($1,'w',600)
+2026-10-14T03:14:04.1072297Z  2026-10-14 03:13:56.655 UTC [121] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1073081Z  2026-10-14 03:13:56.655 UTC [121] CONTEXT:  PL/pgSQL function checkpoint_video_job_v2(uuid,text,jsonb,jsonb) line 13 at RAISE
+2026-10-14T03:14:04.1073961Z  2026-10-14 03:13:56.655 UTC [121] STATEMENT:  SELECT checkpoint_video_job_v2($1,$2,$3,'{}')
+2026-10-14T03:14:04.1074443Z  2026-10-14 03:13:56.656 UTC [128] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1075468Z  2026-10-14 03:13:56.656 UTC [128] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1076578Z  2026-10-14 03:13:56.656 UTC [128] STATEMENT:  SELECT finish_video_job($1,'w','queued')
+2026-10-14T03:14:04.1077232Z  2026-10-14 03:13:56.657 UTC [126] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1078035Z  2026-10-14 03:13:56.657 UTC [126] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 6 at RAISE
+2026-10-14T03:14:04.1078857Z  2026-10-14 03:13:56.657 UTC [126] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1079475Z  syncing data to disk ... ok
+2026-10-14T03:14:04.1079794Z
+2026-10-14T03:14:04.1080149Z
+2026-10-14T03:14:04.1080578Z  Success. You can now start the database server using:
+2026-10-14T03:14:04.1081076Z
+2026-10-14T03:14:04.1081520Z      pg_ctl -D /var/lib/postgresql/data -l logfile start
+2026-10-14T03:14:04.1081905Z
+2026-10-14T03:14:04.1082665Z  waiting for server to start....2026-10-14 03:13:24.257 UTC [47] LOG:  starting PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-10-14T03:14:04.1083456Z  2026-10-14 03:13:24.257 UTC [47] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-10-14T03:14:04.1084158Z  2026-10-14 03:13:24.259 UTC [50] LOG:  database system was shut down at 2026-10-14 03:13:23 UTC
+2026-10-14T03:14:04.1085191Z  2026-10-14 03:13:24.262 UTC [47] LOG:  database system is ready to accept connections
+2026-10-14T03:14:04.1086077Z   done
+2026-10-14T03:14:04.1086645Z  server started
+2026-10-14T03:14:04.1087231Z  CREATE DATABASE
+2026-10-14T03:14:04.1087581Z
+2026-10-14T03:14:04.1087810Z
+2026-10-14T03:14:04.1088133Z  /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+2026-10-14T03:14:04.1088485Z
+2026-10-14T03:14:04.1088832Z  waiting for server to shut down....2026-10-14 03:13:24.438 UTC [47] LOG:  received fast shutdown request
+2026-10-14T03:14:04.1089275Z  2026-10-14 03:13:24.438 UTC [47] LOG:  aborting any active transactions
+2026-10-14T03:14:04.1089719Z  2026-10-14 03:13:24.439 UTC [47] LOG:  background worker "logical replication launcher" (PID 53) exited with exit code 1
+2026-10-14T03:14:04.1090168Z  2026-10-14 03:13:24.440 UTC [48] LOG:  shutting down
+2026-10-14T03:14:04.1090500Z  2026-10-14 03:13:24.441 UTC [48] LOG:  checkpoint starting: shutdown immediate
+2026-10-14T03:14:04.1091295Z  2026-10-14 03:13:24.528 UTC [48] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.068 s, sync=0.019 s, total=0.089 s; sync files=301, longest=0.016 s, average=0.001 s; distance=4273 kB, estimate=4273 kB; lsn=0/191F0F0, redo lsn=0/191F0F0
+2026-10-14T03:14:04.1092085Z  2026-10-14 03:13:24.532 UTC [47] LOG:  database system is shut down
+2026-10-14T03:14:04.1092406Z   done
+2026-10-14T03:14:04.1092624Z  server stopped
+2026-10-14T03:14:04.1092836Z
+2026-10-14T03:14:04.1093114Z  PostgreSQL init process complete; ready for start up.
+2026-10-14T03:14:04.1093396Z
+2026-10-14T03:14:04.1093721Z  2026-10-14 03:13:56.659 UTC [123] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1094228Z  2026-10-14 03:13:56.659 UTC [123] CONTEXT:  PL/pgSQL function record_video_job_event(uuid,text,text,text,jsonb) line 6 at RAISE
+2026-10-14T03:14:04.1094926Z  2026-10-14 03:13:56.659 UTC [123] STATEMENT:  SELECT record_video_job_event($1,'w','user_notifications','ready',$2)
+2026-10-14T03:14:04.1095407Z  2026-10-14 03:13:56.661 UTC [125] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1095827Z  2026-10-14 03:13:56.661 UTC [125] CONTEXT:  PL/pgSQL function heartbeat_video_job_v2(uuid,text,integer) line 5 at RAISE
+2026-10-14T03:14:04.1096334Z  2026-10-14 03:13:56.661 UTC [125] STATEMENT:  SELECT heartbeat_video_job_v2($1,'w',600)
+2026-10-14T03:14:04.1096698Z  2026-10-14 03:13:56.661 UTC [120] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1097147Z  2026-10-14 03:13:56.661 UTC [120] CONTEXT:  PL/pgSQL function checkpoint_video_job_v2(uuid,text,jsonb,jsonb) line 13 at RAISE
+2026-10-14T03:14:04.1097680Z  2026-10-14 03:13:56.661 UTC [120] STATEMENT:  SELECT checkpoint_video_job_v2($1,$2,$3,'{}')
+2026-10-14T03:14:04.1098236Z  2026-10-14 03:13:56.662 UTC [119] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1098710Z  2026-10-14 03:13:56.662 UTC [119] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1099194Z  2026-10-14 03:13:56.662 UTC [119] STATEMENT:  SELECT finish_video_job($1,'w','queued')
+2026-10-14T03:14:04.1099554Z  2026-10-14 03:13:56.664 UTC [122] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1100079Z  2026-10-14 03:13:56.664 UTC [122] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 6 at RAISE
+2026-10-14T03:14:04.1101028Z  2026-10-14 03:13:56.664 UTC [122] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1101515Z  2026-10-14 03:13:56.664 UTC [118] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1101966Z  2026-10-14 03:13:56.664 UTC [118] CONTEXT:  PL/pgSQL function record_video_job_event(uuid,text,text,text,jsonb) line 6 at RAISE
+2026-10-14T03:14:04.1102576Z  2026-10-14 03:13:56.664 UTC [118] STATEMENT:  SELECT record_video_job_event($1,'w','user_notifications','ready',$2)
+2026-10-14T03:14:04.1103004Z  2026-10-14 03:13:56.667 UTC [124] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1103449Z  2026-10-14 03:13:56.667 UTC [124] CONTEXT:  PL/pgSQL function checkpoint_video_job_v2(uuid,text,jsonb,jsonb) line 13 at RAISE
+2026-10-14T03:14:04.1104019Z  2026-10-14 03:13:56.667 UTC [124] STATEMENT:  SELECT checkpoint_video_job_v2($1,$2,$3,'{}')
+2026-10-14T03:14:04.1104401Z  2026-10-14 03:13:56.671 UTC [127] ERROR:  SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+2026-10-14T03:14:04.1105102Z  2026-10-14 03:13:56.671 UTC [127] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 33 at RAISE
+2026-10-14T03:14:04.1105638Z  2026-10-14 03:13:56.671 UTC [127] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1106050Z  2026-10-14 03:13:56.679 UTC [130] ERROR:  SUTRA_RAW_MEDIA_FORBIDDEN
+2026-10-14T03:14:04.1106596Z  2026-10-14 03:13:56.679 UTC [130] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 45 at RAISE
+2026-10-14T03:14:04.1107127Z  2026-10-14 03:13:56.679 UTC [130] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1107584Z  2026-10-14 03:13:56.691 UTC [131] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1108058Z  2026-10-14 03:13:56.691 UTC [131] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1108690Z  2026-10-14 03:13:56.691 UTC [131] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1109072Z  2026-10-14 03:13:56.697 UTC [132] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1109550Z  2026-10-14 03:13:56.697 UTC [132] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1110094Z  2026-10-14 03:13:56.697 UTC [132] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1110541Z  2026-10-14 03:13:56.708 UTC [133] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: subtitles
+2026-10-14T03:14:04.1111091Z  2026-10-14 03:13:56.708 UTC [133] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1111585Z  2026-10-14 03:13:56.708 UTC [133] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1112025Z  2026-10-14 03:13:56.764 UTC [141] ERROR:  SUTRA_RESULT_CHECKPOINT_REQUIRED
+2026-10-14T03:14:04.1112457Z  2026-10-14 03:13:56.764 UTC [141] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 10 at RAISE
+2026-10-14T03:14:04.1112927Z  2026-10-14 03:13:56.764 UTC [141] STATEMENT:  SELECT finish_video_job($1,'w','done')
+2026-10-14T03:14:04.1113302Z  2026-10-14 03:13:56.766 UTC [135] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1113713Z  2026-10-14 03:13:56.766 UTC [135] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1114260Z  2026-10-14 03:13:56.766 UTC [135] STATEMENT:  SELECT finish_video_job($1,'w','done')
+2026-10-14T03:14:04.1114745Z  2026-10-14 03:13:56.768 UTC [140] ERROR:  SUTRA_QUOTA_RECONCILIATION_REQUIRED
+2026-10-14T03:14:04.1115231Z  2026-10-14 03:13:56.768 UTC [140] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 20 at RAISE
+2026-10-14T03:14:04.1115708Z  2026-10-14 03:13:56.768 UTC [140] STATEMENT:  SELECT finish_video_job($1,'w','failed')
+2026-10-14T03:14:04.1116086Z  2026-10-14 03:13:56.786 UTC [142] ERROR:  SUTRA_VIDEO_PERSISTENCE_FAILED
+2026-10-14T03:14:04.1116658Z  2026-10-14 03:13:56.786 UTC [142] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 79 at RAISE
+2026-10-14T03:14:04.1117181Z  2026-10-14 03:13:56.786 UTC [142] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1117594Z  2026-10-14 03:13:56.788 UTC [143] ERROR:  SUTRA_VIDEO_OWNER_MISMATCH
+2026-10-14T03:14:04.1118060Z  2026-10-14 03:13:56.788 UTC [143] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 68 at RAISE
+2026-10-14T03:14:04.1118586Z  2026-10-14 03:13:56.788 UTC [143] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1119051Z  2026-10-14 03:13:56.803 UTC [147] ERROR:  SUTRA_IDEMPOTENCY_CONFLICT
+2026-10-14T03:14:04.1119566Z  2026-10-14 03:13:56.803 UTC [147] CONTEXT:  PL/pgSQL function submit_video_job(uuid,text,uuid,jsonb,text,text,integer,jsonb) line 11 at RAISE
+2026-10-14T03:14:04.1120167Z  2026-10-14 03:13:56.803 UTC [147] STATEMENT:  SELECT * FROM submit_video_job($1,'create',$2,$3,$4,$5,1,$6)
+2026-10-14T03:14:04.1120583Z  2026-10-14 03:13:56.804 UTC [148] ERROR:  SUTRA_IDEMPOTENCY_CONFLICT
+2026-10-14T03:14:04.1121104Z  2026-10-14 03:13:56.804 UTC [148] CONTEXT:  PL/pgSQL function submit_video_job(uuid,text,uuid,jsonb,text,text,integer,jsonb) line 11 at RAISE
+2026-10-14T03:14:04.1121694Z  2026-10-14 03:13:56.804 UTC [148] STATEMENT:  SELECT * FROM submit_video_job($1,'create',$2,$3,$4,$5,1,$6)
+2026-10-14T03:14:04.1122134Z  2026-10-14 03:13:56.805 UTC [149] ERROR:  SUTRA_QUOTA_EXHAUSTED
+2026-10-14T03:14:04.1122650Z  2026-10-14 03:13:56.805 UTC [149] CONTEXT:  PL/pgSQL function submit_video_job(uuid,text,uuid,jsonb,text,text,integer,jsonb) line 18 at RAISE
+2026-10-14T03:14:04.1123221Z  2026-10-14 03:13:56.805 UTC [149] STATEMENT:  SELECT * FROM submit_video_job($1,'create',$2,$3,$4,$5,1,$6)
+2026-10-14T03:14:04.1123743Z  2026-10-14 03:13:56.808 UTC [150] ERROR:  duplicate key value violates unique constraint "videos_pkey"
+2026-10-14T03:14:04.1124216Z  2026-10-14 03:13:56.808 UTC [150] DETAIL:  Key (id)=(b5f415e4-4080-4cc3-8a53-f62505f78449) already exists.
+2026-10-14T03:14:04.1125077Z  2026-10-14 03:13:56.808 UTC [150] CONTEXT:  SQL statement "INSERT INTO sutra.videos(id,status,user_id) SELECT r.id,r.status,r.user_id FROM jsonb_populate_record(NULL::sutra.videos,$1) r RETURNING id"
+2026-10-14T03:14:04.1125812Z  	PL/pgSQL function submit_video_job(uuid,text,uuid,jsonb,text,text,integer,jsonb) line 27 at EXECUTE
+2026-10-14T03:14:04.1126349Z  2026-10-14 03:13:56.808 UTC [150] STATEMENT:  SELECT * FROM submit_video_job($1,'create',$2,$3,$4,$5,1,$6)
+2026-10-14T03:14:04.1126805Z  2026-10-14 03:13:56.818 UTC [134] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1127260Z  2026-10-14 03:13:56.818 UTC [134] CONTEXT:  PL/pgSQL function heartbeat_video_job_v2(uuid,text,integer) line 5 at RAISE
+2026-10-14T03:14:04.1127769Z  2026-10-14 03:13:56.818 UTC [134] STATEMENT:  SELECT heartbeat_video_job_v2($1,$2,600)
+2026-10-14T03:14:04.1128141Z  2026-10-14 03:13:56.819 UTC [139] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1128627Z  2026-10-14 03:13:56.819 UTC [139] CONTEXT:  PL/pgSQL function checkpoint_video_job_v2(uuid,text,jsonb,jsonb) line 13 at RAISE
+2026-10-14T03:14:04.1129148Z  2026-10-14 03:13:56.819 UTC [139] STATEMENT:  SELECT checkpoint_video_job_v2($1,$2,'{}','{}')
+2026-10-14T03:14:04.1129561Z  2026-10-14 03:13:56.820 UTC [145] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1130097Z  2026-10-14 03:13:56.820 UTC [145] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1130681Z  2026-10-14 03:13:56.820 UTC [145] STATEMENT:  SELECT finish_video_job($1,$2,'failed')
+2026-10-14T03:14:04.1131234Z  2026-10-14 03:13:56.821 UTC [138] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1131904Z  2026-10-14 03:13:56.821 UTC [138] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 6 at RAISE
+2026-10-14T03:14:04.1132511Z  2026-10-14 03:13:56.821 UTC [138] STATEMENT:  SELECT persist_video_job_video($1,$2,'videos',$3,$4,false)
+2026-10-14T03:14:04.1132991Z  2026-10-14 03:13:56.821 UTC [137] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1133529Z  2026-10-14 03:13:56.821 UTC [137] CONTEXT:  PL/pgSQL function record_video_job_event(uuid,text,text,text,jsonb) line 6 at RAISE
+2026-10-14T03:14:04.1134560Z  2026-10-14 03:13:56.821 UTC [137] STATEMENT:  SELECT record_video_job_event($1,$2,'user_notifications','ready',$3)
+2026-10-14T03:14:04.1135180Z  2026-10-14 03:13:56.828 UTC [136] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1135617Z  2026-10-14 03:13:56.828 UTC [136] CONTEXT:  PL/pgSQL function heartbeat_video_job_v2(uuid,text,integer) line 5 at RAISE
+2026-10-14T03:14:04.1136105Z  2026-10-14 03:13:56.828 UTC [136] STATEMENT:  SELECT heartbeat_video_job_v2($1,$2,600)
+2026-10-14T03:14:04.1136530Z  2026-10-14 03:13:56.830 UTC [144] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1136969Z  2026-10-14 03:13:56.830 UTC [144] CONTEXT:  PL/pgSQL function checkpoint_video_job_v2(uuid,text,jsonb,jsonb) line 13 at RAISE
+2026-10-14T03:14:04.1137539Z  2026-10-14 03:13:56.830 UTC [144] STATEMENT:  SELECT checkpoint_video_job_v2($1,$2,'{}','{}')
+2026-10-14T03:14:04.1137923Z  2026-10-14 03:13:56.830 UTC [146] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1138413Z  2026-10-14 03:13:56.830 UTC [146] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1138886Z  2026-10-14 03:13:56.830 UTC [146] STATEMENT:  SELECT finish_video_job($1,$2,'failed')
+2026-10-14T03:14:04.1139256Z  2026-10-14 03:13:56.836 UTC [151] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1139780Z  2026-10-14 03:13:56.836 UTC [151] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 6 at RAISE
+2026-10-14T03:14:04.1140360Z  2026-10-14 03:13:56.836 UTC [151] STATEMENT:  SELECT persist_video_job_video($1,$2,'videos',$3,$4,false)
+2026-10-14T03:14:04.1140798Z  2026-10-14 03:13:56.841 UTC [152] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1141221Z  2026-10-14 03:13:56.841 UTC [152] CONTEXT:  PL/pgSQL function record_video_job_event(uuid,text,text,text,jsonb) line 6 at RAISE
+2026-10-14T03:14:04.1141751Z  2026-10-14 03:13:56.841 UTC [152] STATEMENT:  SELECT record_video_job_event($1,$2,'user_notifications','ready',$3)
+2026-10-14T03:14:04.1142223Z  2026-10-14 03:13:56.851 UTC [153] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: scenes
+2026-10-14T03:14:04.1142757Z  2026-10-14 03:13:56.851 UTC [153] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1143301Z  2026-10-14 03:13:56.851 UTC [153] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1143687Z  2026-10-14 03:13:56.858 UTC [154] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: scenes
+2026-10-14T03:14:04.1144217Z  2026-10-14 03:13:56.858 UTC [154] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1144875Z  2026-10-14 03:13:56.858 UTC [154] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1145350Z  2026-10-14 03:13:56.865 UTC [155] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: scenes
+2026-10-14T03:14:04.1145861Z  2026-10-14 03:13:56.865 UTC [155] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1146431Z  2026-10-14 03:13:56.865 UTC [155] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1146897Z  2026-10-14 03:13:56.873 UTC [156] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: composition
+2026-10-14T03:14:04.1147437Z  2026-10-14 03:13:56.873 UTC [156] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1147997Z  2026-10-14 03:13:56.873 UTC [156] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1148407Z  2026-10-14 03:13:56.880 UTC [157] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: composition
+2026-10-14T03:14:04.1148957Z  2026-10-14 03:13:56.880 UTC [157] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1149506Z  2026-10-14 03:13:56.880 UTC [157] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1149899Z  2026-10-14 03:13:56.887 UTC [158] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: composition
+2026-10-14T03:14:04.1150473Z  2026-10-14 03:13:56.887 UTC [158] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1150969Z  2026-10-14 03:13:56.887 UTC [158] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1151433Z  2026-10-14 03:13:56.895 UTC [159] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: export
+2026-10-14T03:14:04.1151908Z  2026-10-14 03:13:56.895 UTC [159] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1152410Z  2026-10-14 03:13:56.895 UTC [159] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1152828Z  2026-10-14 03:13:56.902 UTC [160] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: export
+2026-10-14T03:14:04.1153306Z  2026-10-14 03:13:56.902 UTC [160] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1153860Z  2026-10-14 03:13:56.902 UTC [160] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1154234Z  2026-10-14 03:13:56.909 UTC [161] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: export
+2026-10-14T03:14:04.1154908Z  2026-10-14 03:13:56.909 UTC [161] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1155455Z  2026-10-14 03:13:56.909 UTC [161] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1155881Z  2026-10-14 03:13:56.917 UTC [162] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: voice
+2026-10-14T03:14:04.1156520Z  2026-10-14 03:13:56.917 UTC [162] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1157021Z  2026-10-14 03:13:56.917 UTC [162] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1157443Z  2026-10-14 03:13:56.925 UTC [163] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1157901Z  2026-10-14 03:13:56.925 UTC [163] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1158433Z  2026-10-14 03:13:56.925 UTC [163] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1158857Z  2026-10-14 03:13:56.932 UTC [164] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: voice
+2026-10-14T03:14:04.1159349Z  2026-10-14 03:13:56.932 UTC [164] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1159884Z  2026-10-14 03:13:56.932 UTC [164] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1160277Z  2026-10-14 03:13:56.939 UTC [165] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: music
+2026-10-14T03:14:04.1160808Z  2026-10-14 03:13:56.939 UTC [165] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1161364Z  2026-10-14 03:13:56.939 UTC [165] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1161768Z  2026-10-14 03:13:56.962 UTC [166] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1162267Z  2026-10-14 03:13:56.962 UTC [166] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1162799Z  2026-10-14 03:13:56.962 UTC [166] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1163218Z  2026-10-14 03:13:56.969 UTC [167] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: music
+2026-10-14T03:14:04.1163702Z  2026-10-14 03:13:56.969 UTC [167] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 37 at RAISE
+2026-10-14T03:14:04.1164283Z  2026-10-14 03:13:56.969 UTC [167] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1164782Z  2026-10-14 03:13:56.977 UTC [168] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1165281Z  2026-10-14 03:13:56.977 UTC [168] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1165813Z  2026-10-14 03:13:56.977 UTC [168] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1166189Z  2026-10-14 03:13:56.985 UTC [169] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1166691Z  2026-10-14 03:13:56.985 UTC [169] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1167202Z  2026-10-14 03:13:56.985 UTC [169] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1167615Z  2026-10-14 03:13:56.993 UTC [170] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1168060Z  2026-10-14 03:13:56.993 UTC [170] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1168588Z  2026-10-14 03:13:56.993 UTC [170] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1169003Z  2026-10-14 03:13:57.000 UTC [171] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1169466Z  2026-10-14 03:13:57.000 UTC [171] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1169991Z  2026-10-14 03:13:57.000 UTC [171] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1170356Z  2026-10-14 03:13:57.007 UTC [172] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1170823Z  2026-10-14 03:13:57.007 UTC [172] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1171411Z  2026-10-14 03:13:57.007 UTC [172] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1171825Z  2026-10-14 03:13:57.014 UTC [173] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1172346Z  2026-10-14 03:13:57.014 UTC [173] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1172880Z  2026-10-14 03:13:57.014 UTC [173] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1173333Z  2026-10-14 03:13:57.021 UTC [174] ERROR:  SUTRA_REQUIRED_TRACK_MISSING
+2026-10-14T03:14:04.1174147Z  2026-10-14 03:13:57.021 UTC [174] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 62 at RAISE
+2026-10-14T03:14:04.1174846Z  2026-10-14 03:13:57.021 UTC [174] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1175281Z  2026-10-14 03:13:57.028 UTC [175] ERROR:  SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+2026-10-14T03:14:04.1175807Z  2026-10-14 03:13:57.028 UTC [175] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 33 at RAISE
+2026-10-14T03:14:04.1176364Z  2026-10-14 03:13:57.028 UTC [175] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1176838Z  2026-10-14 03:13:57.034 UTC [176] ERROR:  SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+2026-10-14T03:14:04.1177431Z  2026-10-14 03:13:57.034 UTC [176] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 33 at RAISE
+2026-10-14T03:14:04.1177952Z  2026-10-14 03:13:57.034 UTC [176] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1178383Z  2026-10-14 03:13:57.041 UTC [177] ERROR:  SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+2026-10-14T03:14:04.1178898Z  2026-10-14 03:13:57.041 UTC [177] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 33 at RAISE
+2026-10-14T03:14:04.1179495Z  2026-10-14 03:13:57.041 UTC [177] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1179926Z  2026-10-14 03:13:57.047 UTC [178] ERROR:  SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+2026-10-14T03:14:04.1180443Z  2026-10-14 03:13:57.047 UTC [178] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 33 at RAISE
+2026-10-14T03:14:04.1180992Z  2026-10-14 03:13:57.047 UTC [178] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1181393Z  2026-10-14 03:13:57.053 UTC [179] ERROR:  SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+2026-10-14T03:14:04.1181938Z  2026-10-14 03:13:57.053 UTC [179] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 33 at RAISE
+2026-10-14T03:14:04.1182462Z  2026-10-14 03:13:57.053 UTC [179] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1182876Z  2026-10-14 03:13:57.059 UTC [180] ERROR:  SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+2026-10-14T03:14:04.1183374Z  2026-10-14 03:13:57.059 UTC [180] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 33 at RAISE
+2026-10-14T03:14:04.1183882Z  2026-10-14 03:13:57.059 UTC [180] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1184268Z  2026-10-14 03:13:57.069 UTC [181] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: scenes
+2026-10-14T03:14:04.1184969Z  2026-10-14 03:13:57.069 UTC [181] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 40 at RAISE
+2026-10-14T03:14:04.1185486Z  2026-10-14 03:13:57.069 UTC [181] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1185904Z  2026-10-14 03:13:57.076 UTC [182] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: scenes
+2026-10-14T03:14:04.1186408Z  2026-10-14 03:13:57.076 UTC [182] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 42 at RAISE
+2026-10-14T03:14:04.1186958Z  2026-10-14 03:13:57.076 UTC [182] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1187362Z  2026-10-14 03:13:57.083 UTC [183] ERROR:  SUTRA_STAGE_CHECKPOINT_REQUIRED: scenes
+2026-10-14T03:14:04.1187842Z  2026-10-14 03:13:57.083 UTC [183] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 40 at RAISE
+2026-10-14T03:14:04.1188381Z  2026-10-14 03:13:57.083 UTC [183] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1188770Z  2026-10-14 03:13:57.090 UTC [184] ERROR:  SUTRA_FINAL_MEDIA_PROOF_REQUIRED
+2026-10-14T03:14:04.1189265Z  2026-10-14 03:13:57.090 UTC [184] CONTEXT:  PL/pgSQL function persist_video_job_video(uuid,text,text,uuid,jsonb,boolean) line 33 at RAISE
+2026-10-14T03:14:04.1189784Z  2026-10-14 03:13:57.090 UTC [184] STATEMENT:  SELECT persist_video_job_video($1,$2,$3,$4,$5,$6)
+2026-10-14T03:14:04.1190190Z  2026-10-14 03:14:01.570 UTC [217] ERROR:  SALAD_IDEMPOTENCY_CONFLICT
+2026-10-14T03:14:04.1190578Z  2026-10-14 03:14:01.570 UTC [217] CONTEXT:  PL/pgSQL function reserve_job(jsonb) line 16 at RAISE
+2026-10-14T03:14:04.1190993Z  2026-10-14 03:14:01.570 UTC [217] STATEMENT:  SELECT salad_worker.reserve_job($1) value
+2026-10-14T03:14:04.1191404Z  2026-10-14 03:14:01.830 UTC [230] ERROR:  SALAD_INVALID_TRANSITION
+2026-10-14T03:14:04.1191808Z  2026-10-14 03:14:01.830 UTC [230] CONTEXT:  PL/pgSQL function compare_job(jsonb,jsonb) line 11 at RAISE
+2026-10-14T03:14:04.1192325Z  2026-10-14 03:14:01.830 UTC [230] STATEMENT:  SELECT salad_worker.compare_job($1,$2) value
+2026-10-14T03:14:04.1192717Z  2026-10-14 03:14:01.832 UTC [231] ERROR:  SALAD_INVALID_TRANSITION
+2026-10-14T03:14:04.1193123Z  2026-10-14 03:14:01.832 UTC [231] CONTEXT:  PL/pgSQL function compare_job(jsonb,jsonb) line 11 at RAISE
+2026-10-14T03:14:04.1193583Z  2026-10-14 03:14:01.832 UTC [231] STATEMENT:  SELECT salad_worker.compare_job($1,$2) value
+2026-10-14T03:14:04.1193969Z  2026-10-14 03:14:01.884 UTC [228] ERROR:  SALAD_DURABLE_ARTIFACT_REQUIRED
+2026-10-14T03:14:04.1194457Z  2026-10-14 03:14:01.884 UTC [228] CONTEXT:  PL/pgSQL function compare_job(jsonb,jsonb) line 16 at RAISE
+2026-10-14T03:14:04.1195176Z  2026-10-14 03:14:01.884 UTC [228] STATEMENT:  SELECT salad_worker.compare_job($1,$2) value
+2026-10-14T03:14:04.1195558Z  2026-10-14 03:14:01.885 UTC [225] ERROR:  SALAD_INVALID_ARTIFACT
+2026-10-14T03:14:04.1196013Z  2026-10-14 03:14:01.885 UTC [225] CONTEXT:  PL/pgSQL function put_artifact(text,bytea,text) line 6 at RAISE
+2026-10-14T03:14:04.1196457Z  2026-10-14 03:14:01.885 UTC [225] STATEMENT:  SELECT salad_worker.put_artifact($1,$2,$3) value
+2026-10-14T03:14:04.1196876Z  2026-10-14 03:14:01.894 UTC [227] ERROR:  SALAD_ARTIFACT_CONFLICT
+2026-10-14T03:14:04.1197282Z  2026-10-14 03:14:01.894 UTC [227] CONTEXT:  PL/pgSQL function put_artifact(text,bytea,text) line 11 at RAISE
+2026-10-14T03:14:04.1197763Z  2026-10-14 03:14:01.894 UTC [227] STATEMENT:  SELECT salad_worker.put_artifact($1,$2,$3) value
+2026-10-14T03:14:04.1198167Z  2026-10-14 03:14:01.923 UTC [226] ERROR:  permission denied for table jobs
+2026-10-14T03:14:04.1198525Z  2026-10-14 03:14:01.923 UTC [226] STATEMENT:  SELECT * FROM salad_worker.jobs
+2026-10-14T03:14:04.1198931Z  2026-10-14 03:14:01.923 UTC [226] ERROR:  permission denied for table jobs
+2026-10-14T03:14:04.1199282Z  2026-10-14 03:14:01.923 UTC [226] STATEMENT:  DELETE FROM salad_worker.jobs
+2026-10-14T03:14:04.1199670Z  2026-10-14 03:14:01.924 UTC [226] ERROR:  permission denied for table artifacts
+2026-10-14T03:14:04.1200030Z  2026-10-14 03:14:01.924 UTC [226] STATEMENT:  SELECT * FROM salad_worker.artifacts
+2026-10-14T03:14:04.1200406Z  2026-10-14 03:14:01.924 UTC [226] ERROR:  permission denied for schema app_private at character 15
+2026-10-14T03:14:04.1200866Z  2026-10-14 03:14:01.924 UTC [226] STATEMENT:  SELECT * FROM app_private.fixture
+2026-10-14T03:14:04.1201221Z  2026-10-14 03:14:03.013 UTC [248] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1201673Z  2026-10-14 03:14:03.013 UTC [248] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1202117Z  2026-10-14 03:14:03.013 UTC [248] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1202465Z  2026-10-14 03:14:03.013 UTC [257] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1202938Z  2026-10-14 03:14:03.013 UTC [257] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1203357Z  2026-10-14 03:14:03.013 UTC [257] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1203749Z  2026-10-14 03:14:03.014 UTC [249] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1204155Z  2026-10-14 03:14:03.014 UTC [249] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1204813Z  2026-10-14 03:14:03.014 UTC [249] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1205161Z  2026-10-14 03:14:03.014 UTC [250] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1205575Z  2026-10-14 03:14:03.014 UTC [250] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1206054Z  2026-10-14 03:14:03.014 UTC [250] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1206380Z  2026-10-14 03:14:03.014 UTC [247] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1206844Z  2026-10-14 03:14:03.014 UTC [247] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1208382Z  2026-10-14 03:14:03.014 UTC [247] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1208738Z  2026-10-14 03:14:03.014 UTC [252] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1209203Z  2026-10-14 03:14:03.014 UTC [252] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1209650Z  2026-10-14 03:14:03.014 UTC [252] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1210028Z  2026-10-14 03:14:03.015 UTC [253] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1210416Z  2026-10-14 03:14:03.015 UTC [253] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1210932Z  2026-10-14 03:14:03.015 UTC [253] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1211318Z  2026-10-14 03:14:03.015 UTC [251] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1211740Z  2026-10-14 03:14:03.015 UTC [251] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1212204Z  2026-10-14 03:14:03.015 UTC [251] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1212539Z  2026-10-14 03:14:03.015 UTC [258] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1212997Z  2026-10-14 03:14:03.015 UTC [258] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1213416Z  2026-10-14 03:14:03.015 UTC [258] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1213823Z  2026-10-14 03:14:03.016 UTC [254] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1214265Z  2026-10-14 03:14:03.016 UTC [254] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1214898Z  2026-10-14 03:14:03.016 UTC [254] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1215292Z  2026-10-14 03:14:03.016 UTC [256] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1215708Z  2026-10-14 03:14:03.016 UTC [256] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1216158Z  2026-10-14 03:14:03.016 UTC [256] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1216517Z  2026-10-14 03:14:03.080 UTC [269] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1216942Z  2026-10-14 03:14:03.080 UTC [269] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1217420Z  2026-10-14 03:14:03.080 UTC [269] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1217763Z  2026-10-14 03:14:03.091 UTC [270] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1218193Z  2026-10-14 03:14:03.091 UTC [270] CONTEXT:  PL/pgSQL function checkpoint_video_job_v2(uuid,text,jsonb,jsonb) line 13 at RAISE
+2026-10-14T03:14:04.1218722Z  2026-10-14 03:14:03.091 UTC [270] STATEMENT:  SELECT checkpoint_video_job_v2($1,'first',$2,'{}')
+2026-10-14T03:14:04.1219118Z  2026-10-14 03:14:03.159 UTC [266] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1219536Z  2026-10-14 03:14:03.159 UTC [266] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1219988Z  2026-10-14 03:14:03.159 UTC [266] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1220355Z  2026-10-14 03:14:03.188 UTC [263] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1220763Z  2026-10-14 03:14:03.188 UTC [263] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1221214Z  2026-10-14 03:14:03.188 UTC [263] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1221585Z  2026-10-14 03:14:03.299 UTC [272] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1222002Z  2026-10-14 03:14:03.299 UTC [272] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1222456Z  2026-10-14 03:14:03.299 UTC [272] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1222838Z  2026-10-14 03:14:03.337 UTC [265] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1223374Z  2026-10-14 03:14:03.337 UTC [265] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1223977Z  2026-10-14 03:14:03.337 UTC [265] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1224454Z  2026-10-14 03:14:03.386 UTC [271] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1225118Z  2026-10-14 03:14:03.386 UTC [271] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1225581Z  2026-10-14 03:14:03.386 UTC [271] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1226186Z  2026-10-14 03:14:03.429 UTC [274] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1226655Z  2026-10-14 03:14:03.429 UTC [274] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1227216Z  2026-10-14 03:14:03.429 UTC [274] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1227751Z  2026-10-14 03:14:03.567 UTC [276] ERROR:  SUTRA_QUOTA_RECONCILIATION_REQUIRED
+2026-10-14T03:14:04.1228267Z  2026-10-14 03:14:03.567 UTC [276] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 20 at RAISE
+2026-10-14T03:14:04.1228842Z  2026-10-14 03:14:03.567 UTC [276] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1229191Z  2026-10-14 03:14:03.657 UTC [275] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1229620Z  2026-10-14 03:14:03.657 UTC [275] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1230082Z  2026-10-14 03:14:03.657 UTC [275] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1230477Z  2026-10-14 03:14:03.657 UTC [259] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1231015Z  2026-10-14 03:14:03.657 UTC [259] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1231481Z  2026-10-14 03:14:03.657 UTC [259] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1231838Z  2026-10-14 03:14:03.658 UTC [264] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1232254Z  2026-10-14 03:14:03.658 UTC [264] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1232713Z  2026-10-14 03:14:03.658 UTC [264] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1233062Z  2026-10-14 03:14:03.661 UTC [278] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1233483Z  2026-10-14 03:14:03.661 UTC [278] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1233955Z  2026-10-14 03:14:03.661 UTC [278] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1234326Z  2026-10-14 03:14:03.662 UTC [260] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1234917Z  2026-10-14 03:14:03.662 UTC [260] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1235357Z  2026-10-14 03:14:03.662 UTC [260] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1235732Z  2026-10-14 03:14:03.662 UTC [255] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1236168Z  2026-10-14 03:14:03.662 UTC [255] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1236617Z  2026-10-14 03:14:03.662 UTC [255] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1236974Z  2026-10-14 03:14:03.662 UTC [262] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1237380Z  2026-10-14 03:14:03.662 UTC [262] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1237868Z  2026-10-14 03:14:03.662 UTC [262] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1238208Z  2026-10-14 03:14:03.667 UTC [277] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1238790Z  2026-10-14 03:14:03.667 UTC [277] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1344455Z  2026-10-14 03:14:03.667 UTC [277] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1345037Z  2026-10-14 03:14:03.668 UTC [268] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1345403Z  2026-10-14 03:14:03.668 UTC [268] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1345786Z  2026-10-14 03:14:03.668 UTC [268] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1346073Z  2026-10-14 03:14:03.668 UTC [261] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1346515Z  2026-10-14 03:14:03.668 UTC [261] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1347147Z  2026-10-14 03:14:03.668 UTC [261] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1347422Z  2026-10-14 03:14:03.668 UTC [273] ERROR:  SUTRA_JOB_LEASE_LOST
+2026-10-14T03:14:04.1347762Z  2026-10-14 03:14:03.668 UTC [273] CONTEXT:  PL/pgSQL function finish_video_job(uuid,text,text,text) line 7 at RAISE
+2026-10-14T03:14:04.1348182Z  2026-10-14 03:14:03.668 UTC [273] STATEMENT:  SELECT finish_video_job($1,$2,$3,$4)
+2026-10-14T03:14:04.1352881Z Stop and remove container: c711e381ff3b4b72afb3cc1ab83f2e97_postgres16_defec3
+2026-10-14T03:14:04.1356829Z ##[command]/usr/bin/docker rm --force 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:14:08.9060012Z 508d78eb0b91dbfa68b7eb4ee7be9b0d2ea8be6d6b3ec9ecbdc41ff9aec52e39
+2026-10-14T03:14:08.9080546Z Remove container network: github_network_3e1827bcb4e74f6c90340ad6e0880296
+2026-10-14T03:14:08.9083583Z ##[command]/usr/bin/docker network rm github_network_3e1827bcb4e74f6c90340ad6e0880296
+2026-10-14T03:14:08.9903809Z github_network_3e1827bcb4e74f6c90340ad6e0880296
+2026-10-14T03:14:08.9968367Z Cleaning up orphan processes
+2026-10-14T03:14:09.0163825Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

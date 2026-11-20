@@ -1,0 +1,51 @@
+[
+  {
+    "phase": "gitnexus-staged",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "/Users/matissdornier/.npm/_npx/e46929201c1128dd/node_modules/gitnexus/dist/cli/index.js",
+      "detect-changes",
+      "--scope",
+      "staged",
+      "--repo",
+      "/Users/matissdornier/purama-worktrees/sutra-t08-closure-20261014"
+    ],
+    "exitCode": 0,
+    "utc": "2026-10-14T14:25:34.333978+00:00"
+  },
+  {
+    "phase": "gitnexus-compare",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "/Users/matissdornier/.npm/_npx/e46929201c1128dd/node_modules/gitnexus/dist/cli/index.js",
+      "detect-changes",
+      "--scope",
+      "compare",
+      "--base-ref",
+      "main",
+      "--repo",
+      "/Users/matissdornier/purama-worktrees/sutra-t08-closure-20261014"
+    ],
+    "exitCode": 0,
+    "utc": "2026-10-14T14:25:35.255605+00:00"
+  },
+  {
+    "phase": "secrets",
+    "command": [
+      "gitleaks",
+      "git",
+      "--pre-commit",
+      "--staged",
+      "--redact=100",
+      "--no-banner",
+      "--no-color",
+      "--report-format",
+      "json",
+      "--report-path",
+      "/Users/matissdornier/purama-worktrees/sutra-t08-closure-20261014/qa/t08-closure-20261014/secrets.json",
+      "."
+    ],
+    "exitCode": 0,
+    "utc": "2026-10-14T14:25:35.299836+00:00"
+  }
+]

@@ -1,0 +1,342 @@
+(node:42723) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42723) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ GET rejects anonymous before privileged access (1.827709ms)
+✖ GET rejects expired before privileged access (1.297084ms)
+✔ GET rejects revoked before privileged access (0.197916ms)
+✖ GET redacts Error at auth (1.51025ms)
+✖ GET redacts object at auth (0.274833ms)
+✖ GET redacts Error at service (0.219375ms)
+✖ GET redacts object at service (0.244791ms)
+✖ GET redacts Error at read (0.213083ms)
+✖ GET redacts object at read (0.192459ms)
+✔ PATCH rejects anonymous before privileged access (0.583833ms)
+✖ PATCH rejects expired before privileged access (0.292583ms)
+✔ PATCH rejects revoked before privileged access (0.113292ms)
+✖ PATCH redacts Error at auth (0.196958ms)
+✖ PATCH redacts object at auth (0.199542ms)
+✖ PATCH redacts Error at service (0.212292ms)
+✖ PATCH redacts object at service (0.164208ms)
+✖ PATCH redacts Error at write (0.194167ms)
+✖ PATCH redacts object at write (0.170292ms)
+✔ two identities read only their own configuration (0.154208ms)
+✖ lazy configuration creation retains defaults and hides insertion diagnostics (0.199291ms)
+✔ patch uses authenticated owner and accepted fields only (0.159208ms)
+✔ unknown fields cannot trigger a write (0.092791ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 7
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 328.227041
+
+✖ failing tests:
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:2875
+✖ GET rejects expired before privileged access (1.297084ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  200 !== 401
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:64:14)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 401,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ GET redacts Error at auth (1.51025ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC',
+      error: 'Erreur config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur config', details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC' },
+    expected: { error: 'Erreur config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ GET redacts object at auth (0.274833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'Erreur interne',
+      error: 'Erreur config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur config', details: 'Erreur interne' },
+    expected: { error: 'Erreur config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ GET redacts Error at service (0.219375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC',
+      error: 'Erreur config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur config', details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC' },
+    expected: { error: 'Erreur config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ GET redacts object at service (0.244791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'Erreur interne',
+      error: 'Erreur config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur config', details: 'Erreur interne' },
+    expected: { error: 'Erreur config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ GET redacts Error at read (0.213083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC',
+      error: 'Erreur config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur config', details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC' },
+    expected: { error: 'Erreur config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ GET redacts object at read (0.192459ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'Erreur interne',
+      error: 'Erreur config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur config', details: 'Erreur interne' },
+    expected: { error: 'Erreur config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:2875
+✖ PATCH rejects expired before privileged access (0.292583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  200 !== 401
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:64:14)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 401,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ PATCH redacts Error at auth (0.196958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC',
+      error: 'Erreur mise a jour config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur mise a jour config', details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC' },
+    expected: { error: 'Erreur mise a jour config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ PATCH redacts object at auth (0.199542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'Erreur interne',
+      error: 'Erreur mise a jour config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur mise a jour config', details: 'Erreur interne' },
+    expected: { error: 'Erreur mise a jour config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ PATCH redacts Error at service (0.212292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC',
+      error: 'Erreur mise a jour config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur mise a jour config', details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC' },
+    expected: { error: 'Erreur mise a jour config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ PATCH redacts object at service (0.164208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'Erreur interne',
+      error: 'Erreur mise a jour config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur mise a jour config', details: 'Erreur interne' },
+    expected: { error: 'Erreur mise a jour config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ PATCH redacts Error at write (0.194167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC',
+      error: 'Erreur mise a jour config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur mise a jour config', details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC' },
+    expected: { error: 'Erreur mise a jour config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3245
+✖ PATCH redacts object at write (0.170292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'Erreur interne',
+      error: 'Erreur mise a jour config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:73:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur mise a jour config', details: 'Erreur interne' },
+    expected: { error: 'Erreur mise a jour config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/auto-config.test.mts:1:3767
+✖ lazy configuration creation retains defaults and hides insertion diagnostics (0.199291ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC',
+      error: 'Erreur config'
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/auto-config.test.mts:85:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'Erreur config', details: 'T01_SYNTHETIC_PRIVATE_AUTOCONFIG_DIAGNOSTIC' },
+    expected: { error: 'Erreur config' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

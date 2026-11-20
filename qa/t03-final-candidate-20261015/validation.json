@@ -1,0 +1,73 @@
+{
+  "recorded_at": "2026-10-15T20:35:21.383804+00:00",
+  "base": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "checks": [
+    {
+      "name": "api_sql_initial",
+      "command": "node qa/t03-final-candidate-20261015/run.mjs",
+      "exit_code": 1,
+      "pass": 11,
+      "fail": 2,
+      "fail_classification": "fixture defects corrected; raw evidence preserved"
+    },
+    {
+      "name": "api_sql_affected_replay",
+      "command": "node qa/t03-final-candidate-20261015/run.mjs 'still-uncommitted|12 cancellations'",
+      "exit_code": 0,
+      "pass": 2,
+      "fail": 0
+    },
+    {
+      "name": "typecheck_final",
+      "command": "node --require ./qa/t08/offline.cjs node_modules/typescript/bin/tsc -p qa/t03-final-candidate-20261015/tsconfig.json",
+      "exit_code": 0,
+      "log": "typecheck-final.log"
+    },
+    {
+      "name": "lint_final",
+      "command": "node --require ./qa/t08/offline.cjs node_modules/eslint/bin/eslint.js qa/t03-final-candidate-20261015/api-postgres.test.mts qa/t03-final-candidate-20261015/run.mjs qa/t03-final-candidate-20261015/settle.mjs --max-warnings 0",
+      "exit_code": 0,
+      "log": "lint-final.log"
+    },
+    {
+      "name": "security_code",
+      "exit_code": 0,
+      "log": "gitleaks-code.log",
+      "report": "gitleaks-code-redacted.json"
+    },
+    {
+      "name": "security_full",
+      "exit_code": 1,
+      "result_after_triage": "PASS",
+      "false_positive_source_hashes": 3,
+      "report": "gitleaks-full-redacted.json",
+      "triage": "gitleaks-triage.json"
+    },
+    {
+      "name": "gitnexus",
+      "risk": "CRITICAL",
+      "completeness": "UNKNOWN",
+      "scope": "QA/docs only by exact Git diff",
+      "logs": [
+        "detect-staged.log",
+        "detect-main.log"
+      ]
+    },
+    {
+      "name": "whitespace_without_raw_logs",
+      "command": "git diff --cached --check -- . ':!qa/t03-final-candidate-20261015/*.log'",
+      "exit_code": 0,
+      "log": "diff-check.log"
+    }
+  ],
+  "distinct_new_tests": 13,
+  "previous_tests_reused_by_14_matching_hashes": 29,
+  "single_run_13_pass_claimed": false,
+  "fixture_reserved_remaining": 0,
+  "private_clusters_stopped": 2,
+  "production_access": false,
+  "provider_calls": 0,
+  "product_changes": 0,
+  "remaining_demonstrated_product_defects_in_controlled_paths": 0,
+  "proof_limits": "See README; reuse is not a new run, mocked transport is not production or supplier billing proof."
+}

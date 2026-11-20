@@ -1,0 +1,71 @@
+import datetime,hashlib,importlib.util,json,pathlib,shlex,subprocess,sys,time
+root=pathlib.Path('/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012');proof=root/'qa/postdeploy-20261013/root';sys.path.insert(0,str(root/'deploy'))
+import ovh
+sha='f770e272d2d8e3bb3dde5b523fe7aa37f122399d';previous='3e5596ea287f36427f687d3f3882d35c3f7c407b'
+ci=json.loads(subprocess.check_output(['gh','run','view','38330861913','--json','headSha,status,conclusion,jobs,url'],cwd=root))
+assert ci['headSha']==sha and ci['status']=='completed' and ci['conclusion']=='success'
+assert len(ci['jobs'])==3 and all(j['conclusion']=='success' for j in ci['jobs'])
+(proof/'ci-final.json').write_text(json.dumps(ci,indent=2)+'\n')
+candidate=json.loads((proof/'candidate.json').read_text());assert candidate['source']==sha and candidate['status']=='PASS'
+origin=json.loads((proof/'candidate-origin.json').read_text());assert origin['passed']==14 and origin['failed']==0
+operations=json.loads((proof/'operations.json').read_text());assert operations['backup']['allHashesMatch'] and operations['container']['health']=='healthy'
+backup=json.loads((root/'qa/deployment-20261013/backup-release.json').read_text());assert backup['rowCountsMatch'] and backup['restoredTables']==140
+assert hashlib.sha256(ovh.HELPER.read_bytes()).hexdigest()==ovh.HELPER_SHA256
+spec=importlib.util.spec_from_file_location('helper',ovh.HELPER);helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper)
+snapshot=ovh.REMOTE_ROOT+'/rollback-'+sha
+old_image=json.loads((root/'qa/deployment-20261013/deployment-release.json').read_text())['imageId']
+# Refuse if another operator changed the production image. Snapshot creation is exclusive.
+remote="""import pathlib,subprocess,shutil,os,json
+os.umask(0o077)
+root=pathlib.Path('/opt/purama/apps/sutra');snapshot=root/('rollback-'+SHA)
+actual=subprocess.check_output(['docker','inspect','--format={{.Image}}','purama-sutra'],text=True).strip();assert actual==OLD_IMAGE
+assert subprocess.check_output(['docker','inspect','--format={{.State.Health.Status}}','purama-sutra'],text=True).strip()=='healthy'
+snapshot.mkdir(mode=0o700)
+shutil.copy2(root/'compose.yml',snapshot/'compose.yml');shutil.copy2(root/'runtime/.env',snapshot/'runtime.env')
+for p in snapshot.iterdir():p.chmod(0o600)
+(snapshot/'complete').touch(mode=0o600,exist_ok=False)
+print('SNAPSHOT_READY')
+"""
+helper.ssh('python3 -c '+shlex.quote('SHA='+repr(sha)+'\nOLD_IMAGE='+repr(old_image)+'\n'+remote))
+try:
+ remote="""import pathlib,subprocess,re
+root=pathlib.Path('/opt/purama/apps/sutra');backup=root/('rollback-'+SHA)
+assert (backup/'complete').exists()
+assert (root/'compose.yml').read_bytes()==(backup/'compose.yml').read_bytes()
+assert (root/'runtime/.env').read_bytes()==(backup/'runtime.env').read_bytes()
+assert subprocess.check_output(['docker','image','inspect','--format={{.Id}}',IMAGE],text=True).strip()==IMAGE_ID
+assert subprocess.check_output(['docker','image','inspect','--format={{index .Config.Labels "dev.purama.commit"}}',IMAGE],text=True).strip()==SHA
+old=(root/'compose.yml').read_text();new,n=re.subn(r'(?m)^    image: .*$', '    image: '+IMAGE,old);assert n==1
+assert 'traefik.http.routers.sutra.tls.certresolver: mytlschallenge' in new
+candidate=root/('compose.promotion-'+SHA+'.yml')
+with candidate.open('x') as file:file.write(new)
+candidate.chmod(0o600)
+subprocess.run(['docker','compose','--project-directory',str(root),'-f',str(candidate),'config','-q'],check=True)
+(root/'compose.yml').write_text(new)
+subprocess.run(['docker','compose','-f',str(root/'compose.yml'),'up','-d','--no-deps','--pull','never','sutra'],check=True)
+"""
+ helper.ssh('python3 -c '+shlex.quote('SHA='+repr(sha)+'\nIMAGE='+repr(candidate['image'])+'\nIMAGE_ID='+repr(candidate['imageId'])+'\n'+remote))
+ for attempt in range(18):
+  state=json.loads(helper.ssh("docker inspect --format='{{json .State}}' purama-sutra",capture=True).stdout)
+  if state.get('Health',{}).get('Status')=='healthy':break
+  time.sleep(5)
+ else:raise RuntimeError('Production candidate health failed')
+ actual=helper.ssh("docker inspect --format='{{.Image}}' purama-sutra",capture=True).stdout.strip();assert actual==candidate['imageId']
+ ovh.smoke(helper)
+ probe=(proof/'origin-runtime-probe.cjs.txt').read_text()
+ for kind,base in [('internal','http://127.0.0.1:3000'),('public','https://sutra.purama.dev')]:
+  r=helper.ssh('docker exec purama-sutra node -e '+shlex.quote(probe)+' '+shlex.quote(base),capture=True)
+  result=json.loads(r.stdout);assert result['passed']==14 and result['failed']==0
+  (proof/('origin-'+kind+'-final.json')).write_text(json.dumps(result,indent=2)+'\n')
+ ovh.smoke(helper,public=True)
+ sql=(root/'qa/deployment-20261013/permissions-live-check.sql').read_text()
+ checks=json.loads(helper.ssh('docker exec supabase-db psql -X -qAt -U supabase_admin -d postgres -v ON_ERROR_STOP=1 -c '+shlex.quote(sql),capture=True).stdout);assert len(checks)==120 and all(checks.values())
+ (proof/'sql-final.json').write_text(json.dumps({'source':sha,'passed':len(checks),'checks':checks},indent=2)+'\n')
+ runtime_unchanged=helper.ssh('cmp -s '+ovh.REMOTE_ROOT+'/runtime/.env '+snapshot+'/runtime.env',capture=True).returncode==0;assert runtime_unchanged
+ result={'source':sha,'previous':previous,'image':candidate['image'],'imageId':actual,'health':state['Health']['Status'],'runtimeUnchanged':runtime_unchanged,'rollbackSnapshot':snapshot,'databaseBackup':backup['directory'],'schemaUnchanged':True,'sqlPassed':120,'originChecks':28,'smokeGetChecks':10,'paidCalls':0,'observedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+ (proof/'deployment-final.json').write_text(json.dumps(result,indent=2)+'\n')
+ print('PROMOTION_PASS '+sha)
+except Exception:
+ ovh.restore_previous(helper,snapshot)
+ (proof/'failed-promotion-rollback.json').write_text(json.dumps({'source':sha,'rollback':'PASS','observedAt':datetime.datetime.now(datetime.timezone.utc).isoformat()},indent=2)+'\n')
+ raise

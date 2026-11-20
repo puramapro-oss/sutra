@@ -1,0 +1,72 @@
+{
+  "status": "ambiguous",
+  "message": "Found 2 symbols matching 'PartnerCommissionsChart'. Blast radius differs per candidate (max 229 impacted at risk CRITICAL). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "PartnerCommissionsChart"
+  },
+  "direction": "upstream",
+  "totalCandidates": 2,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 229,
+  "maxRisk": "CRITICAL",
+  "candidates": [
+    {
+      "uid": "",
+      "name": "PartnerCommissionsChart",
+      "kind": "",
+      "filePath": "",
+      "line": 13,
+      "score": 0.5,
+      "impactedCount": 229,
+      "risk": "CRITICAL",
+      "riskSharedAxes": "CRITICAL",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 169
+    },
+    {
+      "uid": "",
+      "name": "PartnerCommissionsChart",
+      "kind": "",
+      "filePath": "",
+      "line": 30,
+      "score": 0.5,
+      "impactedCount": 229,
+      "risk": "CRITICAL",
+      "riskSharedAxes": "CRITICAL",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 169
+    }
+  ],
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 2,
+    "hint": "⚠️ Index is 2 commits behind HEAD. Run analyze tool to update."
+  }
+}
+
+  GitNexus Impact (1.6.12)

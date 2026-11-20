@@ -1,0 +1,31 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 45 files, 44 symbols
+Affected processes: 6
+Risk level: high
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-13 — livraison T04 fournisseurs, sans déploiement → BATON.md
+  Section Complément T04 — audit final du 13 octobre 2026 → HANDOFF-SUTRA-T04-20261012.md
+  Section SUTRA T04 — audit fournisseurs, 13 octobre 2026 → qa/provider-final-audit-20261013/README.md
+  Section Résultats gratuits réels → qa/provider-final-audit-20261013/README.md
+  Section Provenance et configuration → qa/provider-final-audit-20261013/README.md
+  Section Contrats, reprise et coût → qa/provider-final-audit-20261013/README.md
+  Section Audit OAuth et tokens → qa/provider-final-audit-20261013/README.md
+  Section Corrections T04 et tests → qa/provider-final-audit-20261013/README.md
+  Section Actions minimales restantes → qa/provider-final-audit-20261013/README.md
+  Variable NAMES → qa/provider-final-audit-20261013/audit.py
+  Variable HOSTS → qa/provider-final-audit-20261013/audit.py
+  Function read_config → qa/provider-final-audit-20261013/audit.py
+  Function compare → qa/provider-final-audit-20261013/audit.py
+  Class NoRedirect → qa/provider-final-audit-20261013/audit.py
+... and 29 more
+
+Affected execution flows:
+  • POST → OptionalEnv (3 steps) — changed: generateMusic
+  • POST → HttpErrorMessage (3 steps) — changed: generateMusic
+  • POST → FetchWithRetry (3 steps) — changed: generateMusic
+  • POST → BreakerKey (5 steps) — changed: generateMusic
+  • POST → Abort (5 steps) — changed: generateMusic
+  • POST → MissingEnvError (4 steps) — changed: generateMusic

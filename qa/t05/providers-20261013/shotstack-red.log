@@ -1,0 +1,121 @@
+✔ Shotstack: 4K autorisee — preset demande, fichier encore non verifie (3.301208ms)
+✔ Shotstack: 1080p 16:9 exporte en 1920×1080 (0.555167ms)
+✔ Shotstack: horloge de montage — intro décale voix et sous-titres, durées par clip (0.925542ms)
+✔ Shotstack: une PHOTO devient un asset image, pas vidéo (0.434416ms)
+✔ Shotstack: transition fade demandée = fade appliquée (pas none) (0.398917ms)
+✔ Shotstack: 429 au submit -> erreur explicite (0.490417ms)
+✔ Shotstack: rendu failed -> erreur explicite (0.373625ms)
+✔ Shotstack: cle absente -> erreur explicite (0.147083ms)
+▶ Shotstack: environnement et cle restent lies au submit et au polling
+  ✔ selection stage (0.389583ms)
+  ✖ selection v1 (1.708458ms)
+  ✔ selection stage par defaut (0.295416ms)
+  ✖ production fonctionne sans cle sandbox et reprend par GET uniquement (0.084584ms)
+  ✔ stage: cle propre absente, aucun secours vers l'autre cle (0.076417ms)
+  ✖ v1: cle propre absente, aucun secours vers l'autre cle (0.233958ms)
+  ✖ environnement inconnu refuse avant toute mesure media (0.138625ms)
+✖ Shotstack: environnement et cle restent lies au submit et au polling (3.471916ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 11
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 319.938084
+
+✖ failing tests:
+
+test at scripts/test-shotstack-contracts.mts:1:7212
+✖ selection v1 (1.708458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'fixture-stage-only'
+  - 'fixture-production-only'
+             ^
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:253:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:243:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'fixture-stage-only',
+    expected: 'fixture-production-only',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-shotstack-contracts.mts:1:7888
+✖ production fonctionne sans cle sandbox et reprend par GET uniquement (0.084584ms)
+  Error [MissingEnvError]: Configuration manquante : la variable SHOTSTACK_API_KEY est requise (montage final Shotstack). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+      at requireEnv (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/src/lib/env.ts:42:11)
+      at assembleFinalVideo (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/src/lib/shotstack.ts:162:18)
+      at assembleFinalVideo (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:51:61)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:265:11)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at TestContext.test (node:internal/test_runner/test:377:20)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:260:11)
+      at async Test.run (node:internal/test_runner/test:1208:7) {
+    code: 'SUTRA_ENV_MISSING',
+    varName: 'SHOTSTACK_API_KEY'
+  }
+
+test at scripts/test-shotstack-contracts.mts:1:8568
+✖ v1: cle propre absente, aucun secours vers l'autre cle (0.233958ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+
+  Caught error:
+
+  Error: Echec reseau : https://api.shotstack.io
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:280:7)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:272:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Echec reseau : https://api.shotstack.io
+        at fetchWithRetry (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/src/lib/utils/api.ts:108:15)
+        at assembleFinalVideo (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/src/lib/shotstack.ts:171:23)
+        ... 5 lines matching cause stack trace ...
+        at async Test.run (node:internal/test_runner/test:1208:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+      [cause]: Error: HTTP interdit avant validation configuration
+          at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:279:31)
+          at globalThis.fetch (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:21:12)
+          at fetchWithRetry (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/src/lib/utils/api.ts:102:28)
+          at assembleFinalVideo (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/src/lib/shotstack.ts:171:23)
+          at async waitForActual (node:assert:615:5)
+          at async strict.rejects (node:assert:738:25)
+          at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:280:7)
+          at async Test.run (node:internal/test_runner/test:1208:7)
+          at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:272:5)
+          at async Test.run (node:internal/test_runner/test:1208:7)
+    },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-shotstack-contracts.mts:1:9259
+✖ environnement inconnu refuse avant toute mesure media (0.138625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:296:12)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-provider-contract-20261013/scripts/test-shotstack-contracts.mts:287:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

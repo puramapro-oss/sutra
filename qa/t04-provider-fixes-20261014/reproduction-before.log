@@ -1,0 +1,71 @@
+✖ Salad shutdown waits for an in-flight durable reservation and its execution (29.536625ms)
+✖ RunPod rejects missing/coerced job identity and malformed media (0.871459ms)
+✖ RunPod rejects numeric submission IDs without retry (0.422541ms)
+✖ voice refuses HTTP 200 JSON masquerading as MP3 without retry (0.219667ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 285.2595
+
+✖ failing tests:
+
+test at scripts/test-t04-provider-fixes.mts:1:4246
+✖ Salad shutdown waits for an in-flight durable reservation and its execution (29.536625ms)
+  AssertionError [ERR_ASSERTION]: drain must not finish while reserve can still start compute
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-provider-fixes.mts:109:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:5048
+✖ RunPod rejects missing/coerced job identity and malformed media (0.871459ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection (RunpodJobError).
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-provider-fixes.mts:122:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:5593
+✖ RunPod rejects numeric submission IDs without retry (0.422541ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection (RunpodJobError).
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-provider-fixes.mts:130:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:5898
+✖ voice refuses HTTP 200 JSON masquerading as MP3 without retry (0.219667ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-provider-fixes.mts:138:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /INVALID_AUDIO/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

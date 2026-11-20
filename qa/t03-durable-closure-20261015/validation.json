@@ -1,0 +1,45 @@
+{
+  "source_head": "56754679abed9aa1e51323c29aed5bef38bc17d0",
+  "new_fixture": {
+    "pass": 10,
+    "fail": 0,
+    "skip": 0,
+    "receipt": "postgres-new.json"
+  },
+  "postintegration_existing_fixtures": {
+    "pass": 19,
+    "fail": 0,
+    "skip": 0,
+    "receipt": "postgres.json",
+    "note": "combined first invocation 27PASS 2FAIL; two new-fixture assertions corrected, only new fixture rerun"
+  },
+  "typecheck": {
+    "command": "./node_modules/.bin/tsc -p qa/t03-durable-closure-20261015/tsconfig.json",
+    "exit_code": 0
+  },
+  "lint": {
+    "command": "./node_modules/.bin/eslint qa/t03-durable-closure-20261015/postgres.test.mts qa/t03-durable-closure-20261015/run.mjs qa/t03-durable-closure-20261015/settle.mjs --max-warnings 0",
+    "exit_code": 0
+  },
+  "fixture_clusters_stopped": 2,
+  "fixture_databases_with_zero_reserved": 4,
+  "open_demonstrated_product_defects": 0,
+  "no_exhaustive_bug_guarantee": true,
+  "gitnexus": {
+    "staged_risk": "low",
+    "compare_main_risk": "critical (entire integrated history, not T03 delta)",
+    "exhaustive_coverage": "UNKNOWN (process truncation and degraded FTS)",
+    "product_symbols_modified": 0
+  },
+  "secret_scan": {
+    "tool": "gitleaks stdin --redact",
+    "exit_code": 0,
+    "findings": 0,
+    "scope": "owned staged diff"
+  },
+  "diff_check": {
+    "source_docs": "PASS",
+    "raw_log_whitespace": "preserved verbatim; EOF blank lines and assertion renderer spaces only",
+    "command": "git diff --cached --check -- . ':(exclude)qa/t03-durable-closure-20261015/*.log'"
+  }
+}

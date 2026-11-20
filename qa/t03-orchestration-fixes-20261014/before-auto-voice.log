@@ -1,0 +1,57 @@
+(node:60479) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:60479) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+(node:60479) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t03-orchestration-fixes-20261014/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+✔ finish done rejects incompatible DB receipt failed (3.38175ms)
+✔ finish done rejects incompatible DB receipt queued (0.56075ms)
+✔ finish done rejects incompatible DB receipt reconciliation_required (0.337041ms)
+✔ finish queued still accepts SQL quarantine receipt (0.34275ms)
+✔ finish done lost ACK: reconcile persisted result with one GET, never repeat quota mutation (0.788875ms)
+✔ duplicate completion after lost ACK reads existing outcome; no second successful mutation (2.615208ms)
+✔ unconfirmed finish cannot promote processing to done (0.296792ms)
+✔ unconfirmed finish cannot promote queued to done (0.231792ms)
+✔ unconfirmed finish cannot promote cancelled to done (0.206083ms)
+✔ unconfirmed finish cannot promote failed to done (0.214791ms)
+✔ unconfirmed finish cannot promote reconciliation_required to done (0.169209ms)
+✔ unconfirmed finish with unreadable DB remains blocked (0.184375ms)
+✔ terminal status without result undefined cannot reconcile as successful media (0.183625ms)
+✔ terminal status without result null cannot reconcile as successful media (0.161708ms)
+✔ worker interrupted after final checkpoint: production resumes result without replaying effects (0.387125ms)
+✔ worker interrupted after final checkpoint: create resumes result without replaying effects (0.19775ms)
+✔ worker interrupted after final checkpoint: export resumes result without replaying effects (0.142375ms)
+✔ worker interrupted after final checkpoint: auto resumes result without replaying effects (0.131083ms)
+✔ cached result never bypasses owner guard (0.105084ms)
+✔ cached result never bypasses lease guard (0.056417ms)
+✔ cached result never bypasses expired guard (0.137917ms)
+✔ cached result never bypasses video guard (0.047708ms)
+✔ cached result never bypasses auto-video guard (0.047666ms)
+✔ cached result never bypasses kind guard (0.04675ms)
+✔ acquired scene survives event-after-visual: no generation replay and no lost visual (2.234042ms)
+✔ acquired scene survives scene-checkpoint: no generation replay and no lost visual (0.879417ms)
+✔ music fails after video acquired: preserve completed scene, no second paid music submission or ready (3.462333ms)
+✔ production music: required music absent cannot succeed or start downstream paid work (0.100958ms)
+✔ production all: required music absent cannot succeed or start downstream paid work (0.059917ms)
+✔ production explicit no-music remains a skipped checkpoint (0.05175ms)
+✔ checkpoint write is always required before final worker success (2.349459ms)
+✔ fresh DB checkpoint is still lease-fenced (0.149291ms)
+✖ AUTO voice received then storage fails: retry upload from checkpoint, synthesize exactly once (0.257917ms)
+✔ AUTO legacy uncertain voice remains quarantined, never synthesized again (0.03675ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 33
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 548.463542
+
+✖ failing tests:
+
+test at scripts/test-t03-orchestration-fixes.mts:1:12626
+✖ AUTO voice received then storage fails: retry upload from checkpoint, synthesize exactly once (0.257917ms)
+  Error: SUTRA_RECONCILIATION_REQUIRED: asset:voice
+      at asset (/Users/matissdornier/purama-worktrees/sutra-t03-orchestration-fixes-20261014/src/lib/sutra-auto.ts:220:81)
+      at generateAutoVideoAssets (/Users/matissdornier/purama-worktrees/sutra-t03-orchestration-fixes-20261014/src/lib/sutra-auto.ts:258:29)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-orchestration-fixes-20261014/scripts/test-t03-orchestration-fixes.mts:236:17)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)

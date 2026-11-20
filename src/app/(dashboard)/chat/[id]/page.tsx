@@ -181,7 +181,7 @@ export default function ChatPage() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-4 pb-3 border-b border-white/[0.06]">
         <Link
-          href="/chat"
+          href="/chat" aria-label="Retour aux conversations"
           className="p-2 rounded-lg hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -189,10 +189,10 @@ export default function ChatPage() {
         <h1 className="text-lg font-semibold text-white truncate">{title || 'Nouvelle conversation'}</h1>
       </div>
 
-      <AIDisclosure appName="SUTRA" className="text-xs text-white/40 mb-3" />
+      <AIDisclosure appName="SUTRA" className="text-xs text-white/60 mb-3" />
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto space-y-4 pb-4 no-scrollbar">
+      <div role="region" aria-label="Messages de la conversation" tabIndex={0} className="flex-1 overflow-y-auto space-y-4 pb-4 no-scrollbar focus-visible:outline-2 focus-visible:outline-violet-400">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center">
             <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center mb-4">
@@ -282,6 +282,7 @@ export default function ChatPage() {
             onClick={sendMessage}
             disabled={!input.trim() || sending}
             data-testid="chat-send-btn"
+                aria-label="Envoyer le message"
             className={cn(
               'flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center',
               'bg-gradient-to-r from-violet-600 to-purple-600 text-white',

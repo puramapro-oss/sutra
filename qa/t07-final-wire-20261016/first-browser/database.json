@@ -1,0 +1,2841 @@
+{
+  "jobs": [
+    {
+      "id": "e7113226-2f48-4ad8-a5e2-04011753bac4",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-f515ae97-5e76-41ad-aad9-94bd7ee6a648",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T22:25:59.081Z",
+      "updated_at": "2026-10-15T22:25:59.190Z"
+    },
+    {
+      "id": "2e497795-4ec2-49e9-80ef-5e6c04864ac3",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-9bba40e8-e055-4ae9-ace4-f810a5e16530",
+      "provider_job_ids": {
+        "fixture": "synthetic-remote-already-submitted"
+      },
+      "created_at": "2026-10-15T22:26:01.514Z",
+      "updated_at": "2026-10-15T22:26:01.638Z"
+    },
+    {
+      "id": "b2ea3a7b-dc2e-45a3-8bfb-ca5a2a0a6b00",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-eb408c48-d184-40dc-9ca9-5da9fe63e5e2",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T22:26:06.765Z",
+      "updated_at": "2026-10-15T22:26:06.880Z"
+    },
+    {
+      "id": "cf9a77ae-39aa-46e9-9437-b7abc60e6e9d",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-7c8754ed-c598-4931-8489-5de62d371d5a",
+      "provider_job_ids": {
+        "fixture": "synthetic-remote-already-submitted"
+      },
+      "created_at": "2026-10-15T22:26:09.168Z",
+      "updated_at": "2026-10-15T22:26:09.291Z"
+    }
+  ],
+  "beforeCleanup": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 4
+    }
+  ],
+  "counters": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 4
+    }
+  ],
+  "cleanupCancellations": 0,
+  "evidence": {
+    "requests": [
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "name": "daily-375",
+              "is_active": true,
+              "frequency": "daily",
+              "days": [
+                "MO"
+              ],
+              "time": "02:30",
+              "timezone": "Europe/Paris"
+            }
+          ],
+          "expectedSchedules": []
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "name": "weekly-375",
+              "is_active": true,
+              "frequency": "weekly",
+              "days": [
+                "MO"
+              ],
+              "time": "02:30",
+              "timezone": "Europe/Paris"
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "name": "biweekly-375",
+              "is_active": true,
+              "frequency": "biweekly",
+              "days": [
+                "MO"
+              ],
+              "time": "02:30",
+              "timezone": "Europe/Paris"
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "name": "monthly-375",
+              "is_active": true,
+              "frequency": "monthly",
+              "days": [
+                "MO"
+              ],
+              "time": "02:30",
+              "timezone": "Europe/Paris"
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "is_active": true
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "f515ae97-5e76-41ad-aad9-94bd7ee6a648"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "f515ae97-5e76-41ad-aad9-94bd7ee6a648",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "9bba40e8-e055-4ae9-ace4-f810a5e16530"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "9bba40e8-e055-4ae9-ace4-f810a5e16530",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "name": "daily-1440",
+              "is_active": true,
+              "frequency": "daily",
+              "days": [
+                "MO"
+              ],
+              "time": "02:30",
+              "timezone": "Europe/Paris"
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "name": "weekly-1440",
+              "is_active": true,
+              "frequency": "weekly",
+              "days": [
+                "MO"
+              ],
+              "time": "02:30",
+              "timezone": "Europe/Paris"
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "name": "biweekly-1440",
+              "is_active": true,
+              "frequency": "biweekly",
+              "days": [
+                "MO"
+              ],
+              "time": "02:30",
+              "timezone": "Europe/Paris"
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "name": "monthly-1440",
+              "is_active": true,
+              "frequency": "monthly",
+              "days": [
+                "MO"
+              ],
+              "time": "02:30",
+              "timezone": "Europe/Paris"
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": true
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "is_active": false
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "is_active": true
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "eb408c48-d184-40dc-9ca9-5da9fe63e5e2"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "eb408c48-d184-40dc-9ca9-5da9fe63e5e2",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "7c8754ed-c598-4931-8489-5de62d371d5a"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "7c8754ed-c598-4931-8489-5de62d371d5a",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": true
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": true
+            }
+          ]
+        }
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/auto/config",
+        "method": "PATCH",
+        "body": {
+          "schedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "22:26",
+              "timezone": "UTC",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            }
+          ],
+          "expectedSchedules": [
+            {
+              "id": "47f9f13d-a433-4461-b7e9-25b6fe92fedf",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": false
+            },
+            {
+              "id": "f83e892c-aa1a-4110-9016-1d6c713a59f9",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "668a21c7-3e77-4f26-bd79-b1ef26fe48d1",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "48a6961e-9cb2-49a2-8c79-9306741a6ef1",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-375",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            },
+            {
+              "id": "628fcdc8-a7ff-4533-afea-650f158111e5",
+              "days": [
+                "MO"
+              ],
+              "name": "daily-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "daily",
+              "is_active": true
+            },
+            {
+              "id": "93abd049-63a8-4bf0-a780-d7f1e50e228e",
+              "days": [
+                "MO"
+              ],
+              "name": "weekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "weekly",
+              "is_active": false
+            },
+            {
+              "id": "335cbbbb-7298-429d-8816-7aab98bf79f5",
+              "days": [
+                "MO"
+              ],
+              "name": "biweekly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "biweekly",
+              "is_active": false
+            },
+            {
+              "id": "8e190d0f-fc7e-499a-8306-cb6a5fd3258f",
+              "days": [
+                "MO"
+              ],
+              "name": "monthly-1440",
+              "time": "02:30",
+              "timezone": "Europe/Paris",
+              "frequency": "monthly",
+              "is_active": false
+            }
+          ]
+        }
+      }
+    ],
+    "rpc": [
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "claim_video_job_by_key",
+      "checkpoint_video_job_v2",
+      "cancel_video_job",
+      "finish_video_job",
+      "claim_video_job_by_key",
+      "finish_video_job",
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "claim_video_job_by_key",
+      "checkpoint_video_job_v2",
+      "cancel_video_job",
+      "finish_video_job",
+      "claim_video_job_by_key",
+      "finish_video_job"
+    ],
+    "workerCalls": 2,
+    "providerCalls": 0,
+    "publicationCalls": 0,
+    "restartedPools": 4
+  }
+}

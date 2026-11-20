@@ -1,0 +1,48 @@
+PASS 375: subtitle add/edit/delete undo redo preserves initial narration
+PASS 375: script edit after undo replaces future history
+PASS 1440: subtitle add/edit/delete undo redo preserves initial narration
+PASS 1440: script edit after undo replaces future history
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS 375: settled social error and dialog visuals, labels and contrast
+PASS 1440: settled social error and dialog visuals, labels and contrast
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS settled library has no runtime errors
+PASS normal client navigation library to create to library has no runtime errors
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS 375: subtitle add/edit/delete undo redo preserves initial narration
+PASS 375: script edit after undo replaces future history
+PASS 1440: subtitle add/edit/delete undo redo preserves initial narration
+PASS 1440: script edit after undo replaces future history
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS 375: settled social error and dialog visuals, labels and contrast
+PASS 1440: settled social error and dialog visuals, labels and contrast
+FAIL no unexpected mutation, uncaught error or hydration mismatch: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   '/127.0.0.1:52052/voices?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/chat?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/templates?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/styles?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/storyboard?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/karma?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/referral?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/partenaire?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/contest?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/classement?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/analytics?_rsc=X6bKcBj4Narm8enU due to access control checks.',
++   '/127.0.0.1:52052/wallet?_rsc=X6bKcBj4Narm8enU due to access control checks.'
++ ]
+- []
+
+PASS settled library has no runtime errors
+PASS normal client navigation library to create to library has no runtime errors
+FAIL no unexpected mutation, uncaught error or hydration mismatch: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   '/127.0.0.1:52052/api/social/accounts due to access control checks.',
++   '/127.0.0.1:52052/api/status due to access control checks.'
++ ]
+- []
+

@@ -1,0 +1,28 @@
+PASS baseline metadata distinguishes absent history without query failure
+PASS schema guard refuses an unrelated shared table atomically
+PASS migration applies without changing public table ACL or RLS
+PASS stable metadata verifies definer, strict search path, enabled triggers and restricted ACL
+PASS foreign app and legacy rows remain writable and unaudited
+PASS legacy Zernio without revision revokes without inventing historical consent
+PASS legacy revocation rejects foreign missing malformed and pending provenance atomically
+PASS legacy revocation cannot transfer identity or profile or insert a fabricated request
+PASS eight legacy CAS revocation writers record exactly one operation
+PASS fresh connection produces one posting request with unknown actual grants
+PASS pre-migration authorization is preserved as observation on reconnect
+PASS revoke request is unknown; confirmation retains the same operation revision
+PASS idempotent cleanup does not duplicate confirmation or erase history
+PASS reconnect retains the first authorization and revocation facts
+PASS eight concurrent real CAS writers produce one new account revision and fact
+PASS audit insertion failure rolls back the account mutation
+PASS explicit transaction rollback removes both new fact and account change
+PASS history rejects direct insert update delete truncate by every application role
+PASS owner-only read rejects cross-user anonymous revoked and missing identities
+PASS shared browser writer cannot forge SUTRA facts even if parent ACL drifts
+PASS other application writer cannot claim SUTRA audit authority
+PASS strict search path ignores shadow profiles and history; trigger scope is exact
+PASS ownership provenance and revision reuse fail closed without partial history
+PASS pending revoke cannot be bypassed by reconnect or fabricated confirmation
+PASS migration replay preserves events and identical privilege metadata
+PASS physical account deletion cannot cascade into historical facts
+PASS rollback retains history immutable ACL and RLS; reapply resumes observation safely
+{"status":"PASS","checks":27,"failures":0,"skips":0,"remote":false,"ownClusterStopped":true}

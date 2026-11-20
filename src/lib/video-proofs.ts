@@ -1,5 +1,6 @@
 import { stampMp4 } from '@/lib/opentimestamps'
 import { createServiceClient } from '@/lib/supabase'
+import { downloadVideoBytes } from '@/lib/media-download'
 
 // ---------------------------------------------------------------------------
 // Video Proofs — orchestration OpenTimestamps + Supabase Storage + DB.
@@ -52,23 +53,9 @@ export async function stampVideoWhenReady(params: {
   // 1. Fetch MP4 avec timeout + garde taille.
   let buffer: Buffer
   try {
-    const ctrl = new AbortController()
-    const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS)
-    const res = await fetch(videoUrl, { signal: ctrl.signal })
-    clearTimeout(timer)
-    if (!res.ok) {
-      return { status: 'skipped', reason: 'fetch_failed' }
-    }
-    const contentLength = Number(res.headers.get('content-length') ?? 0)
-    if (contentLength && contentLength > MAX_MP4_BYTES) {
-      return { status: 'skipped', reason: 'too_large' }
-    }
-    const arr = await res.arrayBuffer()
-    if (arr.byteLength > MAX_MP4_BYTES) {
-      return { status: 'skipped', reason: 'too_large' }
-    }
-    buffer = Buffer.from(arr)
+    buffer = await downloadVideoBytes(videoUrl, { maxBytes: MAX_MP4_BYTES, timeoutMs: FETCH_TIMEOUT_MS })
   } catch (err) {
+    if (err instanceof Error && err.message === 'SUTRA_MEDIA_INVALID_SIZE') return { status: 'skipped', reason: 'too_large' }
     return {
       status: 'failed',
       reason: err instanceof Error ? err.message : 'fetch exception',

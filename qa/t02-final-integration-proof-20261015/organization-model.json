@@ -1,0 +1,21 @@
+{
+  "head": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+  "command": [
+    "rg",
+    "-n",
+    "organization_id|organisation_id|tenant_id|org_id|CREATE TABLE.*organi",
+    "src",
+    "migrations",
+    "sql",
+    "-g",
+    "*.ts",
+    "-g",
+    "*.tsx",
+    "-g",
+    "*.sql"
+  ],
+  "exitCode": 1,
+  "matches": 0,
+  "status": "NON_TESTE",
+  "finding": "No native organization dimension found in canonical source/migrations; two users/provider profiles are not two organizations"
+}

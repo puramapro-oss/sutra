@@ -1,22 +1,28 @@
+import { submissionIdentity, submitVideoJob, submissionErrorStatus } from '@/lib/pipeline-submit'
+import type { Profile } from '@/types'
+import { randomUUID } from 'node:crypto'
+import { runVideoJob } from '@/lib/video-worker'
 /**
  * /api/auto/generate
- * Declenche manuellement la generation de la prochaine video pour un user.
- * Pipeline complet: plan → assets → ready (status pending_approval ou publishing).
+ * Declenche la generation de la prochaine video pour un user — TÂCHE
+ * DURABLE (kind 'auto', clé auto-{videoRowId}) : reprise sans double
+ * génération ni double débit (checkpoints plan/assets/assembly, audit
+ * #10/#14). Pipeline: plan → assets → montage → ready/pending_approval.
  */
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
 import { createServiceClient } from '@/lib/supabase'
 import {
-  loadAutoContext,
-  planNextVideo,
-  generateAutoVideoAssets,
-  recordMemory,
-  type AutoConfig,
-} from '@/lib/sutra-auto'
+  completeQuotaForFinishedJob, claimJobByKey, finishJob,
+} from '@/lib/video-queue'
+import { type AutoJobInput } from '@/lib/auto-pipeline'
+import { loadAutoContext, type AutoConfig } from '@/lib/sutra-auto'
 
 export const maxDuration = 300
 
 export async function POST(req: Request) {
+  const worker = `inline-${randomUUID()}`
+  let jobId: string | null = null
   try {
     const supabase = await createServerClient()
     const { data: { user } } = await supabase.auth.getUser()
@@ -29,103 +35,58 @@ export async function POST(req: Request) {
     if (!ctx.config) {
       return NextResponse.json({ error: 'Configuration auto introuvable' }, { status: 400 })
     }
+    const config = ctx.config as AutoConfig
 
     const service = createServiceClient()
 
-    // 1. Plan
-    const plan = await planNextVideo({
-      config: ctx.config,
-      themes: ctx.themes,
-      memories: ctx.memories,
-      recentVideos: ctx.recentVideos,
-      topVideos: ctx.topVideos,
-    })
-
-    // 2. Insert video record (planning)
-    const { data: videoRow, error: insErr } = await service
-      .from('sutra_auto_videos')
-      .insert({
-        user_id: user.id,
-        schedule_id: scheduleId,
-        theme_id: plan.theme_id,
-        status: 'generating_video',
-        title: plan.title,
-        description: plan.description,
-        hashtags: plan.hashtags,
-        script: plan.script,
-        prompt_used: plan.video_prompt,
-        music_prompt: plan.music_prompt,
-        ai_reasoning: plan.reasoning,
-        ai_confidence: plan.expected_engagement === 'high' ? 0.9 : plan.expected_engagement === 'medium' ? 0.6 : 0.3,
-        generation_started_at: new Date().toISOString(),
-      })
-      .select()
-      .single()
-
-    if (insErr || !videoRow) throw insErr ?? new Error('Insert echoue')
-
-    // 3. Generate assets (long running)
-    const { data: profile } = await service
+    // Garde de quota AVANT tout appel payant (audit #8).
+    const { data: quotaProfile, error: quotaProfileError } = await service
       .from('profiles')
-      .select('plan, email')
+      .select('*')
       .eq('id', user.id)
       .single()
+    if (quotaProfileError || !quotaProfile) throw new Error('Profil et quota non verifiables')
+    const startedAt = new Date().toISOString()
+    const videoRowId = randomUUID()
 
-    try {
-      const assets = await generateAutoVideoAssets({
-        videoId: videoRow.id,
-        plan,
-        config: ctx.config as AutoConfig,
-        userEmail: profile?.email ?? null,
-        plan_tier: (profile?.plan ?? 'free') as 'free' | 'starter' | 'creator' | 'pro' | 'enterprise',
-      })
-
-      const finalStatus = ctx.config.require_approval_before_publish ? 'pending_approval' : 'ready'
-      await service
-        .from('sutra_auto_videos')
-        .update({
-          status: finalStatus,
-          video_raw_url: assets.video_raw_url,
-          video_final_url: assets.video_raw_url, // sans compositing avance, on prend le brut
-          audio_music_url: assets.audio_music_url,
-          audio_voice_url: assets.audio_voice_url,
-          generation_completed_at: new Date().toISOString(),
-          generation_duration_seconds: Math.floor(
-            (Date.now() - new Date(videoRow.generation_started_at).getTime()) / 1000
-          ),
-        })
-        .eq('id', videoRow.id)
-
-      await recordMemory({
-        userId: user.id,
-        type: 'preference',
-        content: `Video generee: "${plan.title}" — theme: ${plan.theme_id ?? 'libre'}, raison: ${plan.reasoning}`,
-        importance: 0.5,
-        related_video_id: videoRow.id,
-      })
-
-      // Bump theme usage
-      if (plan.theme_id) {
-        await service
-          .from('sutra_auto_themes')
-          .update({ last_used_at: new Date().toISOString(), times_used: (ctx.themes.find((t) => t.id === plan.theme_id)?.times_used ?? 0) + 1 })
-          .eq('id', plan.theme_id)
-          .eq('user_id', user.id)
-      }
-
-      return NextResponse.json({ video: { ...videoRow, status: finalStatus, ...assets } })
-    } catch (genErr) {
-      await service
-        .from('sutra_auto_videos')
-        .update({
-          status: 'failed',
-          error_message: genErr instanceof Error ? genErr.message : 'Erreur generation',
-        })
-        .eq('id', videoRow.id)
-      throw genErr
+    const input: AutoJobInput = {
+      userId: user.id,
+      videoRowId,
+      scheduleId,
+      userEmail: quotaProfile.email ?? null,
+      planTier: (quotaProfile.plan ?? 'free') as never,
+      config,
+      generationStartedAt: startedAt,
     }
+
+    const identity = submissionIdentity(`auto-${user.id}`, { schedule_id: scheduleId, config }, body.requestId ?? req.headers.get('Idempotency-Key'))
+    const submitted = await submitVideoJob(quotaProfile as Profile, {
+      kind: 'auto', videoId: null, input, ...identity,
+      initialVideo: { schedule_id: scheduleId, generation_started_at: startedAt },
+    })
+    const resultVideoId = (submitted.payload.input as AutoJobInput).videoRowId
+    if (submitted.status === 'done') {
+      const { data: video, error } = await service.from('sutra_auto_videos').select('*').eq('id', resultVideoId).eq('user_id', user.id).single()
+      if (error || !video) throw new Error('Lecture du resultat indisponible')
+      return NextResponse.json({ video })
+    }
+    if (!['queued', 'processing'].includes(submitted.status)) return NextResponse.json({ error: 'Tache terminee ou a reconcilier', status: submitted.status }, { status: 409 })
+    const job = await claimJobByKey(identity.key, worker, 600)
+    if (!job) return NextResponse.json({ jobId: submitted.id, status: submitted.status, video: { id: resultVideoId, status: 'planning' }, jobStatus: submitted.status, queued: true }, { status: 202 })
+    jobId = job.id
+    const final = await runVideoJob(job, worker) as import('@/lib/auto-pipeline').AutoFinalState
+
+    await finishJob(job.id, worker, 'done')
+    const quotaConfirmed = await completeQuotaForFinishedJob(user.id, job.id)
+    jobId = null
+    return NextResponse.json({ quotaReconciliationRequired: !quotaConfirmed, video: { id: resultVideoId, schedule_id: scheduleId, status: final.status, video_final_url: final.videoFinalUrl, video_raw_url: final.assets.video_raw_url, audio_voice_url: final.assets.audio_voice_url, audio_music_url: final.assets.audio_music_url, error_message: final.assemblyError } })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur generation', details: message }, { status: 500 })
+    try {
+      if (jobId) await finishJob(jobId, worker, 'queued', message)
+    } catch {
+      return NextResponse.json({ error: 'Generation indisponible', status: 'write_unconfirmed' }, { status: 503 })
+    }
+    return NextResponse.json({ error: 'Erreur generation', code: 'SUTRA_GENERATION_FAILED' }, { status: submissionErrorStatus(message) })
   }
 }

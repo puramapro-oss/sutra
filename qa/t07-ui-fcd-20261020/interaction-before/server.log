@@ -1,0 +1,27 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:51359
+- Network:       http://127.0.0.1:51359
+✓ Ready in 255ms
+✓ Running next.config.ts took 24ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+(node:36926) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ GET /login 200 in 410ms (next.js: 4ms, proxy.ts: 58ms, application-code: 348ms)
+ GET /login?next=/library 200 in 33ms (next.js: 1.3ms, proxy.ts: 3ms, application-code: 29ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 891ms (next.js: 810ms, proxy.ts: 20ms, application-code: 60ms)
+ GET /library 200 in 32ms (next.js: 1.1ms, proxy.ts: 5ms, application-code: 26ms)
+ POST /api/legal/accept 200 in 579ms (next.js: 269ms, proxy.ts: 2ms, application-code: 308ms)
+ POST /api/legal/accept 200 in 259ms (next.js: 0.8ms, proxy.ts: 2ms, application-code: 256ms)
+ POST /api/legal/accept 200 in 259ms (next.js: 0.8ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 261ms (next.js: 0.8ms, proxy.ts: 2ms, application-code: 258ms)
+ GET /settings/notifications 200 in 640ms (next.js: 437ms, proxy.ts: 6ms, application-code: 198ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /settings/notifications 200 in 27ms (next.js: 1.6ms, proxy.ts: 10ms, application-code: 16ms)
+[?25h

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Ticket, Trophy, Clock, Coins, Users, CalendarDays, Gift } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
@@ -37,28 +37,45 @@ const ticketSources = [
 ]
 
 export default function LotteryPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <LotteryPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function LotteryPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const [loading, setLoading] = useState(true)
   const [currentDraw, setCurrentDraw] = useState<Draw | null>(null)
   const [userTickets, setUserTickets] = useState(0)
   const [pastWinners, setPastWinners] = useState<Winner[]>([])
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/lottery')
+  const dataRequest = useRef<AbortController | null>(null)
+  const fetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/lottery', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (res.ok) {
         const data = await res.json()
-        setCurrentDraw(data.currentDraw || null)
-        setUserTickets(data.userTickets || 0)
-        setPastWinners(data.pastWinners || [])
+        commit(() => setCurrentDraw(data.currentDraw || null))
+        commit(() => setUserTickets(data.userTickets || 0))
+        commit(() => setPastWinners(data.pastWinners || []))
       }
-    } catch { /* empty */ }
-    finally { setLoading(false) }
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
   useEffect(() => {
     if (!authLoading && profile?.id) fetchData()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
   }, [authLoading, profile?.id, fetchData])
 
   if (loading) {
@@ -104,14 +121,14 @@ export default function LotteryPage() {
                   <div className="text-2xl font-bold text-amber-400">
                     {formatPrice(currentDraw.pool_amount)}
                   </div>
-                  <div className="text-xs text-white/40">Cagnotte</div>
+                  <div className="text-xs text-white/60">Cagnotte</div>
                 </div>
               )}
               <div className="text-center glass rounded-xl px-4 py-2">
                 <div className="text-2xl font-bold text-white">
                   <AnimatedCounter value={userTickets} />
                 </div>
-                <div className="text-xs text-white/40">Tes tickets</div>
+                <div className="text-xs text-white/60">Tes tickets</div>
               </div>
             </div>
           </div>

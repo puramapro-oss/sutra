@@ -1,0 +1,36 @@
+✓ interruption : acquis avant crash checkpointé (script+musique+scène 0)
+✓ reprise : aucun acquis régénéré, chaque ressource payée une fois (scène tuée: 2 appels max)
+✓ étape video : reprise complète, scènes saines jamais régénérées
+✓ voix : reprise après crash upload sans resynthèse (1 seul débit ElevenLabs)
+✓ annulation : nouvelle requête repart de zéro, aucun résultat annulé réutilisé
+✔ INTERRUPTION : crash à la scène 1 — les résultats déjà payés sont checkpointés (1.681584ms)
+✔ REPRISE : seules les scènes manquantes sont générées — AUCUN double appel (0.994916ms)
+✔ étape VIDEO step-by-step : interruption scène 0 puis reprise complète (0.240209ms)
+✔ VOIX : buffer checkpointé — crash avant upload ne re-paie pas la synthèse (0.320208ms)
+✔ ANNULATION (niveau pipeline) : une tâche annulée ne rejoue pas depuis ses checkpoints (0.4095ms)
+(node:81341) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t03-orchestration-fixes-20261014/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ remote timeout: acknowledged intent survives 12 restarts, no second POST or paid fallback (22.629167ms)
+✔ remote worker-disconnect: acknowledged intent survives 12 restarts, no second POST or paid fallback (8.923ms)
+✔ remote accepted-202: acknowledged intent survives 12 restarts, no second POST or paid fallback (13.287542ms)
+✔ lease expires inside intent RPC: stale worker never submits; new owner may submit once (1.162208ms)
+✔ intent committed but acknowledgement lost: neither old nor replacement worker submits (0.682541ms)
+✔ replacement worker while remote POST is pending cannot resubmit; late owner cannot finalize (1.989292ms)
+✔ 24 concurrent claimants exercise queue RPC contract; only granted snapshot enters worker (2.431083ms)
+✔ unconfirmed intent receipt false prevents any submission (0.37475ms)
+✔ unconfirmed intent receipt null prevents any submission (0.339666ms)
+✔ unconfirmed intent receipt "true" prevents any submission (0.321667ms)
+✔ unconfirmed intent receipt {"message":"fixture unavailable","code":"fixture"} prevents any submission (0.291833ms)
+✔ persisted scene survives lost stage:scenes receipt; replay retains independent checkpoints (1.835292ms)
+✔ persisted scene survives lost stage:images receipt; replay retains independent checkpoints (1.015417ms)
+✔ persisted scene survives lost result receipt; replay retains independent checkpoints (0.828625ms)
+✔ event acknowledgement loss propagates; replay is idempotent and does not regenerate cached scene (1.348291ms)
+✔ heartbeat and snapshot ownership refusals stop the real executor before any external work (0.261291ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 494.28275

@@ -1,104 +1,71 @@
 import { sleep } from '@/lib/utils/api'
+import { musicResponse, MusicProviderJobError, validMusicJobId, validMusicUrl, type MusicJobContext } from './music-provider-job'
 
-// ---------------------------------------------------------------------------
-// Riffusion (musicalapi.com gateway) — Music generation provider.
-//
-// Used as **secondary** music provider in fallbacks.ts when Suno is down.
-// Endpoint reference: https://musicalapi.com/docs/ (private beta gateway,
-//   formerly riffusionapi.com — domain redirect 301).
-//
-// Async pattern: POST { prompt } → request_id → poll same endpoint with
-// { request_id } until status === 'complete' (or 'failed').
-//
-// Env: RIFFUSION_API_KEY (optional — provider gracefully skipped when unset)
-// ---------------------------------------------------------------------------
-
+// Existing "riffusion" selection uses MusicalAPI (Lannetech), NOT official Riffusion.
+// https://musicalapi.com/docs/ : POST prompt once, then POST request_id for status.
+// Explicit selection only; never a fallback after another paid submission.
 const RIFFUSION_BASE_URL = 'https://musicalapi.com/api'
 const RIFFUSION_GENERATE_PATH = '/generate-music'
-const POLL_INTERVAL_MS = 3_000
-const POLL_TIMEOUT_MS = 180_000 // 3 min
+const POLL_INTERVAL_MS = 13_000 // standard plan: 5 requests/minute including submit
+const POLL_TIMEOUT_MS = 180_000
 
-export type RiffusionResult = {
-  audio_url: string
-  title: string
-  provider: 'riffusion'
-}
-
-interface InitialResponse {
-  request_id?: string
-  status?: 'pending' | 'complete' | 'failed' | string
-  text?: string
-  model?: string
-}
-
-interface PollResponse {
-  status?: 'pending' | 'complete' | 'failed' | string
-  audio_url?: string
-  data?: {
-    stream_audio_url?: string
-    title?: string
-  }
-  error?: string
-}
+export type RiffusionResult = { id: string; audio_url: string; title: string; provider: 'riffusion' }
 
 export function isRiffusionConfigured(): boolean {
   return Boolean(process.env.RIFFUSION_API_KEY)
 }
 
-export async function generateRiffusionMusic(params: {
-  prompt: string
-}): Promise<RiffusionResult> {
+export async function generateRiffusionMusic(params: { prompt: string }): Promise<RiffusionResult> {
   const apiKey = process.env.RIFFUSION_API_KEY
   if (!apiKey) throw new Error('RIFFUSION_API_KEY not configured')
-
-  const headers = {
-    'x-api-key': apiKey,
-    'Content-Type': 'application/json',
-    accept: 'application/json',
-  }
-
-  const initRes = await fetch(`${RIFFUSION_BASE_URL}${RIFFUSION_GENERATE_PATH}`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ prompt: params.prompt }),
-    signal: AbortSignal.timeout(15_000),
-  })
-  if (!initRes.ok) {
-    throw new Error(`Riffusion init failed: HTTP ${initRes.status}`)
-  }
-  const initData = (await initRes.json()) as InitialResponse
+  if (!params.prompt.trim()) throw new Error('RIFFUSION_INVALID_REQUEST')
+  const context: MusicJobContext = { provider: 'riffusion', timeoutMs: 208_000, jobId: null, remoteStatus: 'unknown' }
+  const headers = { 'x-api-key': apiKey, 'Content-Type': 'application/json', accept: 'application/json' }
+  const endpoint = `${RIFFUSION_BASE_URL}${RIFFUSION_GENERATE_PATH}`
+  const initData = await musicResponse(endpoint, {
+    method: 'POST', headers, body: JSON.stringify({ prompt: params.prompt }), signal: AbortSignal.timeout(15_000),
+  }, context)
+  if (!validMusicJobId(initData.request_id)) throw new MusicProviderJobError('INVALID_RESPONSE', context)
   const requestId = initData.request_id
-  if (!requestId) {
-    throw new Error('Riffusion init: no request_id returned')
+  context.jobId = requestId
+  if (initData.status !== 'pending' && initData.status !== 'complete' && initData.status !== 'failed') {
+    throw new MusicProviderJobError('INVALID_RESPONSE', context)
   }
-
-  const start = Date.now()
-  while (Date.now() - start < POLL_TIMEOUT_MS) {
-    await sleep(POLL_INTERVAL_MS)
-    const pollRes = await fetch(`${RIFFUSION_BASE_URL}${RIFFUSION_GENERATE_PATH}`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ request_id: requestId }),
-      signal: AbortSignal.timeout(10_000),
-    })
-    if (!pollRes.ok) continue
-
-    const pollData = (await pollRes.json()) as PollResponse
-    const status = pollData.status
-
-    if (status === 'complete') {
-      const url = pollData.data?.stream_audio_url ?? pollData.audio_url
-      if (!url) throw new Error('Riffusion complete but no audio URL')
-      return {
-        audio_url: url,
-        title: pollData.data?.title ?? 'Riffusion track',
-        provider: 'riffusion',
+  context.remoteStatus = initData.status
+  if (initData.status === 'failed') throw new MusicProviderJobError('NOT_COMPLETED', context)
+  const waiting = AbortSignal.timeout(POLL_TIMEOUT_MS)
+  try {
+    for (;;) {
+      await sleep(POLL_INTERVAL_MS, waiting)
+      waiting.throwIfAborted()
+      const pollData = await musicResponse(endpoint, {
+        method: 'POST', headers, body: JSON.stringify({ request_id: requestId }),
+        signal: AbortSignal.any([waiting, AbortSignal.timeout(10_000)]),
+      }, context)
+      if (pollData.request_id !== undefined && pollData.request_id !== requestId) {
+        throw new MusicProviderJobError('INVALID_RESPONSE', context)
       }
+      const status = pollData.status
+      if (status !== 'pending' && status !== 'complete' && status !== 'failed') {
+        throw new MusicProviderJobError('INVALID_RESPONSE', context)
+      }
+      context.remoteStatus = status
+      if (status === 'failed') throw new MusicProviderJobError('NOT_COMPLETED', context)
+      if (status !== 'complete') continue
+      const data = pollData.data
+      const record = data && typeof data === 'object' && !Array.isArray(data) ? data as Record<string, unknown> : undefined
+      if (record?.task_id !== undefined && record.task_id !== requestId) throw new MusicProviderJobError('INVALID_RESPONSE', context)
+      if (record?.status !== undefined && record.status !== 'complete') throw new MusicProviderJobError('INVALID_RESPONSE', context)
+      const first: unknown = Array.isArray(record?.data) ? record.data[0] : record
+      const track = first && typeof first === 'object' && !Array.isArray(first) ? first as Record<string, unknown> : undefined
+      const url = track?.stream_audio_url || pollData.audio_url
+      if (!validMusicUrl(url) || (track?.title !== undefined && typeof track.title !== 'string')) {
+        throw new MusicProviderJobError('INVALID_RESPONSE', context)
+      }
+      return { id: requestId, audio_url: url, title: typeof track?.title === 'string' ? track.title : 'Riffusion track', provider: 'riffusion' }
     }
-    if (status === 'failed') {
-      throw new Error(`Riffusion failed: ${pollData.error ?? 'unknown'}`)
-    }
+  } catch (error) {
+    if (error instanceof MusicProviderJobError) throw error
+    throw new MusicProviderJobError('TRANSPORT_OR_TIMEOUT', context)
   }
-
-  throw new Error('Riffusion timeout (>3 min)')
 }

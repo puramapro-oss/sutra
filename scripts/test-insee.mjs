@@ -14,26 +14,8 @@
 
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
-import { resolve, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const rootDir = resolve(__dirname, '..')
-
-const envRaw = readFileSync(resolve(rootDir, '.env.local'), 'utf8')
-const env = Object.fromEntries(
-  envRaw
-    .split('\n')
-    .filter((l) => l && !l.startsWith('#') && l.includes('='))
-    .map((l) => {
-      const idx = l.indexOf('=')
-      return [l.slice(0, idx).trim(), l.slice(idx + 1).trim().replace(/^["']|["']$/g, '')]
-    }),
-)
-
 const LIVE = process.env.INSEE_LIVE === '1'
-const API_KEY = env.INSEE_API_KEY
+const API_KEY = process.env.INSEE_API_KEY
 const INSEE_BASE = 'https://api.insee.fr/api-sirene/3.11'
 
 const SIRET_RE = /^\d{14}$/
@@ -53,8 +35,8 @@ test('SIREN format validator', () => {
   assert.equal(SIREN_RE.test('552032228a'), false)
 })
 
-test('INSEE_API_KEY presente dans .env.local', () => {
-  assert.ok(API_KEY, 'INSEE_API_KEY should be in .env.local')
+test('LIVE: INSEE_API_KEY configured', { skip: !LIVE }, () => {
+  assert.ok(API_KEY, 'INSEE_API_KEY is required for explicitly enabled live tests')
   assert.match(API_KEY, /^[0-9a-f-]{36}$/, 'looks like a UUID')
 })
 

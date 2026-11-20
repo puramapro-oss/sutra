@@ -36,13 +36,15 @@ export function OptionCard({
   return (
     <button
       data-testid={testId}
+      type="button"
+      aria-pressed={selected}
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'flex flex-col items-center gap-1.5 p-4 rounded-xl border transition-all duration-200 text-center',
+        'min-w-0 flex flex-col items-center gap-1.5 p-3 sm:p-4 rounded-xl border transition-all duration-200 text-center',
         selected
           ? 'bg-violet-600/15 border-violet-500/40 text-white shadow-sm shadow-violet-500/10'
-          : 'bg-white/[0.02] border-white/[0.06] text-white/50 hover:border-white/[0.12] hover:text-white/70',
+          : 'bg-white/[0.02] border-white/[0.06] text-white/65 hover:border-white/[0.12] hover:text-white/70',
         disabled && 'opacity-40 cursor-not-allowed'
       )}
     >
@@ -70,27 +72,28 @@ export function UploadZone({
     <label
       data-testid={testId}
       className={cn(
-        'flex items-center gap-4 p-4 rounded-xl border border-dashed cursor-pointer transition-all duration-200',
+        'relative flex items-center gap-4 p-4 rounded-xl border border-dashed cursor-pointer focus-within:ring-2 focus-within:ring-violet-400 transition-all duration-200',
         fileName
           ? 'bg-violet-500/5 border-violet-500/30'
           : 'bg-white/[0.02] border-white/[0.08] hover:border-white/[0.15]'
       )}
     >
       <div className="h-10 w-10 rounded-xl bg-white/[0.04] flex items-center justify-center shrink-0">
-        <Icon className="h-5 w-5 text-white/40" />
+        <Icon className="h-5 w-5 text-white/65" />
       </div>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-white/70">{label}</p>
-        <p className="text-xs text-white/30 truncate">
-          {fileName ?? 'Clique pour uploader ou glisse un fichier'}
+        <p className="text-xs text-white/65 truncate">
+          {fileName ?? 'Choisir un fichier'}
         </p>
       </div>
-      <Upload className="h-4 w-4 text-white/20 shrink-0" />
+      <Upload className="h-4 w-4 text-white/65 shrink-0" />
       <input
         type="file"
         accept={accept}
         multiple={multiple}
-        className="hidden"
+        aria-label={label}
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         onChange={(e) => {
           const files = e.target.files
           if (files && files.length > 0) {
@@ -108,22 +111,22 @@ export function UploadZone({
 
 export function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between text-sm">
-      <span className="text-white/40">{label}</span>
-      <span className="text-white/80 font-medium">{value}</span>
+    <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 text-sm">
+      <span className="text-white/65">{label}</span>
+      <span className="min-w-0 break-words text-white/80 font-medium">{value}</span>
     </div>
   )
 }
 
 export function CreateSkeleton() {
   return (
-    <div className="max-w-3xl mx-auto space-y-8">
+    <div role="status" aria-label="Chargement de la création" className="max-w-3xl mx-auto space-y-8">
       <div className="text-center space-y-2">
-        <Skeleton width="240px" height={32} rounded="lg" className="mx-auto" />
-        <Skeleton width="320px" height={16} rounded="md" className="mx-auto" />
+        <Skeleton width="240px" height={32} rounded="lg" className="mx-auto max-w-full" />
+        <Skeleton width="320px" height={16} rounded="md" className="mx-auto max-w-full" />
       </div>
       <div className="flex justify-center">
-        <Skeleton width={280} height={48} rounded="xl" />
+        <Skeleton width={280} height={48} rounded="xl" className="max-w-full" />
       </div>
       <Skeleton width="100%" height={120} rounded="xl" />
       <div className="grid grid-cols-3 gap-3">

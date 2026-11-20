@@ -1,0 +1,230 @@
+{
+  "jobs": [
+    {
+      "id": "8a7b4a1d-9c3f-4542-9b4e-97febb256b93",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-27dedeab-385b-46de-b7cf-fdea83d56049",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T22:43:06.543Z",
+      "updated_at": "2026-10-15T22:43:06.653Z"
+    },
+    {
+      "id": "7d98a19b-c81e-48f4-a5d9-476bd50e7818",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-ab69a993-270c-49ea-8514-cae429f0d6b6",
+      "provider_job_ids": {
+        "fixture": "synthetic-remote-already-submitted"
+      },
+      "created_at": "2026-10-15T22:43:09.841Z",
+      "updated_at": "2026-10-15T22:43:09.968Z"
+    },
+    {
+      "id": "f71d3140-2b76-4f55-96a2-3060145d82a5",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-1e50bf37-61b0-4784-a7d9-408e379bbd49",
+      "provider_job_ids": {},
+      "created_at": "2026-10-15T22:43:11.420Z",
+      "updated_at": "2026-10-15T22:43:11.534Z"
+    },
+    {
+      "id": "44036d9a-f7ac-445d-9997-746891b5569e",
+      "status": "cancelled",
+      "kind": "production",
+      "idempotency_key": "production-11111111-1111-4111-8111-111111111111-script-5b947202-f000-456a-81e8-6d4979bb6b5b",
+      "provider_job_ids": {
+        "fixture": "synthetic-remote-already-submitted"
+      },
+      "created_at": "2026-10-15T22:43:14.502Z",
+      "updated_at": "2026-10-15T22:43:14.627Z"
+    }
+  ],
+  "beforeCleanup": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 4
+    }
+  ],
+  "counters": [
+    {
+      "reserved": 0,
+      "completed": 0,
+      "released": 4
+    }
+  ],
+  "cleanupCancellations": 0,
+  "activityLogs": [],
+  "evidence": {
+    "requests": [
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "27dedeab-385b-46de-b7cf-fdea83d56049"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "27dedeab-385b-46de-b7cf-fdea83d56049",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "ab69a993-270c-49ea-8514-cae429f0d6b6"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "ab69a993-270c-49ea-8514-cae429f0d6b6",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "1e50bf37-61b0-4784-a7d9-408e379bbd49"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "1e50bf37-61b0-4784-a7d9-408e379bbd49",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "GET",
+        "body": null
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "script",
+          "idea": "Preuve gratuite : fournisseur strictement simulé",
+          "template": "youtube",
+          "format": "16:9",
+          "engine": "ltx-fast",
+          "voice": "rachel",
+          "musicStyle": "cinematic",
+          "tone": "professionnel",
+          "previousData": {},
+          "requestId": "5b947202-f000-456a-81e8-6d4979bb6b5b"
+        }
+      },
+      {
+        "path": "/api/production",
+        "method": "POST",
+        "body": {
+          "step": "cancel",
+          "targetStep": "script",
+          "requestId": "5b947202-f000-456a-81e8-6d4979bb6b5b",
+          "idea": "Preuve gratuite : fournisseur strictement simulé"
+        }
+      }
+    ],
+    "rpc": [
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "claim_video_job_by_key",
+      "checkpoint_video_job_v2",
+      "cancel_video_job",
+      "finish_video_job",
+      "claim_video_job_by_key",
+      "finish_video_job",
+      "submit_video_job",
+      "cancel_video_job",
+      "claim_video_job_by_key",
+      "submit_video_job",
+      "claim_video_job_by_key",
+      "checkpoint_video_job_v2",
+      "cancel_video_job",
+      "finish_video_job",
+      "claim_video_job_by_key",
+      "finish_video_job"
+    ],
+    "workerCalls": 2,
+    "providerCalls": 0,
+    "publicationCalls": 0,
+    "restartedPools": 2,
+    "restarts": [
+      {
+        "before": "2026-10-15T22:42:54.085Z",
+        "after": "2026-10-15T22:43:06.894Z",
+        "status": 0,
+        "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+        "stderr": ""
+      },
+      {
+        "before": "2026-10-15T22:43:06.894Z",
+        "after": "2026-10-15T22:43:11.769Z",
+        "status": 0,
+        "stdout": "waiting for server to shut down.... done\nserver stopped\nwaiting for server to start.... done\nserver started\n",
+        "stderr": ""
+      }
+    ]
+  }
+}

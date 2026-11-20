@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-10-14T04:21:50.238144+00:00",
+  "findings": [
+    "GET-only QA rejected HEAD used by Supabase count; allowing HEAD alone did not resolve recipe.",
+    "QA cookie refusal click was covered by tutorial and mandatory legal dialogs; read-only route evidence now leaves all consents untouched."
+  ],
+  "before": [
+    "authenticated-browser-first.json",
+    "authenticated-browser-second.json",
+    "authenticated-browser-third.json"
+  ],
+  "after": "authenticated-browser.json",
+  "safeMethods": [
+    "GET",
+    "HEAD"
+  ],
+  "mutationsBlocked": true,
+  "gitnexus": {
+    "target": "authenticated-browser",
+    "risk": "UNKNOWN",
+    "scope": "unindexed standalone QA; direct references only itself; no product change"
+  },
+  "limits": "Does not assert interactive usability before user legal acceptance."
+}

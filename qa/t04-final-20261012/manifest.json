@@ -1,0 +1,90 @@
+{
+  "base": "589732cb49959c1a576a3ba381b310cd594600ac",
+  "codeCommit": "449150e4daa6e9e608b6b2ee0a490ca626d311bd",
+  "branch": "codex/sutra-t04-providers-final-20261012",
+  "node": "24.21.0",
+  "sources": [
+    {
+      "path": "scripts/test-api-contracts.mts",
+      "sha256": "ddb1426344a3636d1ee59e48925c252ab0fd55d2d185b4d7dc7eaea260bd882a"
+    },
+    {
+      "path": "scripts/test-ltx-v2-contracts.mts",
+      "sha256": "0ad34d8ea6bba8bfca17acc139bad9370495b9896f5cda1d731834475b8573ab"
+    },
+    {
+      "path": "scripts/test-ltx-v2-media.mts",
+      "sha256": "f575bbcc0951d4cb1d407bb7bae09f4779bf0c414db1afdbd2fc2e128fa2c61d"
+    },
+    {
+      "path": "scripts/test-provider-safety.mts",
+      "sha256": "0b594456903e6060869d44e430314b6673f19808b70dc404296a29fccf0aefc2"
+    },
+    {
+      "path": "src/lib/fallbacks.ts",
+      "sha256": "9d3e8a0659c0d3ac954b40f92e92fcda04eb3c512c972d3f9538d31d7d8b6bf7"
+    },
+    {
+      "path": "src/lib/ltx-checkpoint.ts",
+      "sha256": "69d207261ac56ad5aacb49df6f3c7a8783bd98539f0381770604c190f75426ba"
+    },
+    {
+      "path": "src/lib/ltx-v2.ts",
+      "sha256": "3cd6c7d310fa11f826bd3ff56d9b4f882056f5c4974f61712a4d5fd2559549af"
+    },
+    {
+      "path": "src/lib/ltx-workflow.ts",
+      "sha256": "62d84283bde8f7df9a648e61006dfb185ed49eed12d35764b3af8f49e601f917"
+    },
+    {
+      "path": "src/lib/ltx.ts",
+      "sha256": "a34fb0a5e3cadae989802fbc5ad554e706f221a869271a5992d54d1c5de6a1e2"
+    },
+    {
+      "path": "vercel.json",
+      "sha256": "9923ada67e8b7b35dd6f8421ec26baf868373eafc828fbaae04284ad2ea45511"
+    }
+  ],
+  "paidCalls": 0,
+  "deployments": 0,
+  "scope": "T04 provider delta; no orchestration, database, UI, CI or dependency change",
+  "dependencyLockSha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+  "gates": {
+    "targeted": {
+      "pass": 147,
+      "fail": 0,
+      "skip": 0
+    },
+    "contracts": {
+      "pass": 432,
+      "fail": 0,
+      "skip": 7
+    },
+    "scheduleCompositionPublication": "PASS",
+    "media": {
+      "pass": 33,
+      "fail": 0,
+      "localEngine": 3,
+      "compositor": 30
+    },
+    "typecheck": "PASS",
+    "lint": {
+      "errors": 0,
+      "warnings": 111
+    },
+    "build": {
+      "status": "PASS",
+      "pages": 197,
+      "fontSource": "real Google Fonts files cached, hashes in fonts.json, Next fixture transport; offline network guard active"
+    }
+  },
+  "notRerun": [
+    "unchanged SQL/browser/legacy/deploy gates already evidenced at the exact T01 base; not counted as fresh T04 tests"
+  ],
+  "diagnosticFailures": [
+    "red.log: four defects fail; callback isolation passes",
+    "red-id.log: valid ID lost",
+    "quality-build.log: network denied Google Fonts",
+    "media-compositor.log: six failures, system FFmpeg lacks text filters"
+  ]
+}

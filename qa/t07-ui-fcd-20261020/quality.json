@@ -1,0 +1,51 @@
+{
+  "candidate": "fcd0559f611831a57909c693694b92ccb81eba45",
+  "recordedAt": "2026-10-20T11:04:59.698539+00:00",
+  "sourceFiles": 65,
+  "sourceHashesVerified": true,
+  "typecheck": {
+    "exit": 0,
+    "receipt": "typecheck.json",
+    "laterProductDelta": "class-only wrapping and authorized label string; targeted lint/browser passed"
+  },
+  "lint65": {
+    "exit": 0,
+    "warnings": 30,
+    "receipt": "lint.json"
+  },
+  "lintFinalDelta": {
+    "exit": 0,
+    "receipt": "lint-final-delta.log"
+  },
+  "lintFinalHarnessAndAnalytics": {
+    "exit": 0,
+    "receipt": "lint-final-harness.log"
+  },
+  "syntax": {
+    "command": "node --check qa/t07-ui-fcd-20261020/browser.mjs",
+    "exit": 0
+  },
+  "browserExits": {
+    "before": 1,
+    "interaction-before": 1,
+    "after": 1,
+    "after-targeted": 1,
+    "after-partner-success": 0,
+    "after-analytics-balance": 1,
+    "after-analytics-balance-fixed": 0
+  },
+  "gitnexus": {
+    "stagedExit": 0,
+    "stagedIndexedSymbols": 2,
+    "stagedProcesses": 0,
+    "stagedRisk": "LOW_PARTIAL",
+    "compareExit": 0,
+    "compareRisk": "CRITICAL_HISTORY_CAPPED",
+    "compareFiles": 6217,
+    "compareSymbols": 3667,
+    "compareProcesses": 399,
+    "coverage": "partial/stale, no exhaustive certification"
+  },
+  "ciFullNewDelta": "NOT_RUN_OWNER_T01",
+  "activation": false
+}

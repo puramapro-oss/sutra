@@ -1,0 +1,60 @@
+{
+  "gitleaks": [
+    {
+      "file": "qa/t03-final-candidate-20261015/api-postgres.json",
+      "line": 17,
+      "classification": "TEST_SOURCE_SHA256_HISTORICAL_OWNER_TRIAGE",
+      "current_source_reproduced": false
+    },
+    {
+      "file": "qa/t03-final-candidate-20261015/replay-two-api-postgres.json",
+      "line": 18,
+      "classification": "TEST_SOURCE_SHA256_HISTORICAL_OWNER_TRIAGE",
+      "current_source_reproduced": false
+    },
+    {
+      "file": "qa/t04-providers-final-20261015/contracts.test.mts",
+      "line": 72,
+      "classification": "SYNTHETIC_OFFLINE_FIXTURE",
+      "current_source_reproduced": true
+    },
+    {
+      "file": "qa/t04-providers-final-20261015/contracts.test.mts",
+      "line": 82,
+      "classification": "SYNTHETIC_OFFLINE_FIXTURE",
+      "current_source_reproduced": true
+    },
+    {
+      "file": "qa/t03-final-candidate-20261015/integration-proof.json",
+      "line": 175,
+      "classification": "TEST_SOURCE_SHA256_CURRENT",
+      "current_source_reproduced": true
+    },
+    {
+      "receipt": "boundary-before-valid.txt",
+      "normalization": "trailing whitespace only; raw gzip retained",
+      "raw_sha256": "379aca4382f9f1be86b6dd7440a75414249ee4314550f1e4e4c868872962db86",
+      "normalized_sha256": "e1ccb6337a974c05a9ae4f546644785f8bc0c325ed2568b93e70c99ff9869810"
+    },
+    {
+      "receipt": "delta-lint.txt",
+      "normalization": "trailing whitespace only; raw gzip retained",
+      "raw_sha256": "de43c65e14378f6a15ff19c56996bfdd1569668c67693544c0b73143ed080bc3",
+      "normalized_sha256": "ce6af612218e0251335b224bb5b78ee5f59664e9b68a634457110d5e036ed211"
+    },
+    {
+      "receipt": "schedule-before.txt",
+      "normalization": "trailing whitespace only; raw gzip retained",
+      "raw_sha256": "fbf07de67422325484ad09d432980b2a83c5144b9b68d383718e29aa51b93212",
+      "normalized_sha256": "3d86104aaebef17f7d990733af3e93644f872c70513a7c68bee4df048e156991"
+    },
+    {
+      "receipt": "shotstack-submit-before.txt",
+      "normalization": "trailing whitespace only; raw gzip retained",
+      "raw_sha256": "41efb642c8eb032ccecbf8886bfba42493e46edc83f535d51467569bd4ae3576",
+      "normalized_sha256": "c300c835a8bae5f18196922c7267b2ed9fddb65d673873b099a871539ae39fd1"
+    }
+  ],
+  "whitespace_remaining": "T07 imported scan-input.txt / cas-scan-input.txt: exact author patch proofs retained, no product whitespace error",
+  "gitnexus": "CRITICAL partial graph includes foreign homonyms; direct review bounded to staged SUTRA product paths"
+}

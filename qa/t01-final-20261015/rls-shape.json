@@ -1,0 +1,246 @@
+{
+  "policies": [
+    {
+      "tablename": "contest_submissions",
+      "policyname": "own_contests",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "contest_submissions",
+      "policyname": "t02_active_account",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "referral_commissions",
+      "policyname": "own_commissions",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "referral_commissions",
+      "policyname": "t02_active_account",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "own_referrals",
+      "permissive": "PERMISSIVE"
+    },
+    {
+      "tablename": "referrals",
+      "policyname": "t02_active_account",
+      "permissive": "RESTRICTIVE"
+    }
+  ],
+  "columns": [
+    {
+      "table_name": "contest_submissions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "user_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "video_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "contest_id",
+      "data_type": "text",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "ai_score",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "community_votes",
+      "data_type": "integer",
+      "is_nullable": "YES",
+      "column_default": "0"
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'submitted'::text"
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "title",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "description",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "contest_submissions",
+      "column_name": "content_data",
+      "data_type": "jsonb",
+      "is_nullable": "YES",
+      "column_default": "'{}'::jsonb"
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "referrer_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "referred_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "amount",
+      "data_type": "numeric",
+      "is_nullable": "NO",
+      "column_default": null
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'pending'::text"
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "type",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'first_payment'::text"
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "beneficiary_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "referral_commissions",
+      "column_name": "level",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": "1"
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "id",
+      "data_type": "uuid",
+      "is_nullable": "NO",
+      "column_default": "gen_random_uuid()"
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "referrer_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "referred_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "referral_code",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "status",
+      "data_type": "text",
+      "is_nullable": "YES",
+      "column_default": "'pending'::text"
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "created_at",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": "now()"
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "first_payment_processed",
+      "data_type": "boolean",
+      "is_nullable": "YES",
+      "column_default": "false"
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "referral_code_id",
+      "data_type": "uuid",
+      "is_nullable": "YES",
+      "column_default": null
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "level",
+      "data_type": "integer",
+      "is_nullable": "NO",
+      "column_default": "1"
+    },
+    {
+      "table_name": "referrals",
+      "column_name": "active_since",
+      "data_type": "timestamp with time zone",
+      "is_nullable": "YES",
+      "column_default": null
+    }
+  ]
+}

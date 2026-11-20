@@ -1,0 +1,2212 @@
+{
+  "repo": "sutra-t07-20261012",
+  "coverage": "TRUNCATED",
+  "exhaustive": false,
+  "impacts": [
+    {
+      "symbol": "AbonnementTab",
+      "result": {
+        "target": {
+          "id": "Function:src/components/settings/AbonnementTab.tsx:AbonnementTab",
+          "name": "AbonnementTab",
+          "type": "Function",
+          "filePath": "src/components/settings/AbonnementTab.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "AmbassadorBlock",
+      "result": {
+        "target": {
+          "id": "Function:src/components/home/AmbassadorBlock.tsx:AmbassadorBlock",
+          "name": "AmbassadorBlock",
+          "type": "Function",
+          "filePath": "src/components/home/AmbassadorBlock.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 1,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [
+          {
+            "name": "DashboardPage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/dashboard/page.tsx",
+            "affected_process_count": 2,
+            "total_hits": 2,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Dashboard",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/app/(dashboard)/dashboard/page.tsx:DashboardPage",
+              "name": "DashboardPage",
+              "filePath": "src/app/(dashboard)/dashboard/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_163_dashboardpage",
+                  "label": "DashboardPage \u2192 UseHydrated",
+                  "processType": "cross_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_179_dashboardpage",
+                  "label": "DashboardPage \u2192 Cn",
+                  "processType": "cross_community",
+                  "step": 1
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "AutoForm",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/AutoForm.tsx:AutoForm",
+          "name": "AutoForm",
+          "type": "Function",
+          "filePath": "src/components/create/AutoForm.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "CreateSkeleton",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/CreateHelpers.tsx:CreateSkeleton",
+          "name": "CreateSkeleton",
+          "type": "Function",
+          "filePath": "src/components/create/CreateHelpers.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 1,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [
+          {
+            "name": "CreatePage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/create/page.tsx",
+            "affected_process_count": 5,
+            "total_hits": 5,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Status",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ]
+      }
+    },
+    {
+      "symbol": "DashboardChrome",
+      "result": {
+        "target": {
+          "id": "Function:src/components/layout/DashboardChrome.tsx:DashboardChrome",
+          "name": "DashboardChrome",
+          "type": "Function",
+          "filePath": "src/components/layout/DashboardChrome.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "DonneesTab",
+      "result": {
+        "target": {
+          "id": "Function:src/components/settings/DonneesTab.tsx:DonneesTab",
+          "name": "DonneesTab",
+          "type": "Function",
+          "filePath": "src/components/settings/DonneesTab.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "FolderModal",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/FolderModal.tsx:FolderModal",
+          "name": "FolderModal",
+          "type": "Function",
+          "filePath": "src/components/library/FolderModal.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "FolderPills",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/FolderPills.tsx:FolderPills",
+          "name": "FolderPills",
+          "type": "Function",
+          "filePath": "src/components/library/FolderPills.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "IdeaStep",
+      "result": {
+        "target": {
+          "id": "Function:src/components/production/IdeaStep.tsx:IdeaStep",
+          "name": "IdeaStep",
+          "type": "Function",
+          "filePath": "src/components/production/IdeaStep.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "LibraryFilters",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/LibraryFilters.tsx:LibraryFilters",
+          "name": "LibraryFilters",
+          "type": "Function",
+          "filePath": "src/components/library/LibraryFilters.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "LibraryHeader",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/LibraryHeader.tsx:LibraryHeader",
+          "name": "LibraryHeader",
+          "type": "Function",
+          "filePath": "src/components/library/LibraryHeader.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "LibraryPage",
+      "result": {
+        "target": {
+          "id": "Function:src/app/(dashboard)/library/page.tsx:LibraryPage",
+          "name": "LibraryPage",
+          "type": "Function",
+          "filePath": "src/app/(dashboard)/library/page.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "LibrarySkeleton",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/LibrarySkeleton.tsx:LibrarySkeleton",
+          "name": "LibrarySkeleton",
+          "type": "Function",
+          "filePath": "src/components/library/LibrarySkeleton.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "ManualFormStep1",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/wizard/ManualFormStep1.tsx:ManualFormStep1",
+          "name": "ManualFormStep1",
+          "type": "Function",
+          "filePath": "src/components/create/wizard/ManualFormStep1.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "ManualFormStep3",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/wizard/ManualFormStep3.tsx:ManualFormStep3",
+          "name": "ManualFormStep3",
+          "type": "Function",
+          "filePath": "src/components/create/wizard/ManualFormStep3.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "ManualFormStep4",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/wizard/ManualFormStep4.tsx:ManualFormStep4",
+          "name": "ManualFormStep4",
+          "type": "Function",
+          "filePath": "src/components/create/wizard/ManualFormStep4.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "MediaModeCards",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/MediaModeCards.tsx:MediaModeCards",
+          "name": "MediaModeCards",
+          "type": "Function",
+          "filePath": "src/components/create/MediaModeCards.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 2,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 2,
+          "processes_affected": 0,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 2
+        },
+        "affected_processes": [],
+        "affected_modules": [
+          {
+            "name": "Create",
+            "hits": 2,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/components/create/AutoForm.tsx:AutoForm",
+              "name": "AutoForm",
+              "filePath": "src/components/create/AutoForm.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            },
+            {
+              "depth": 1,
+              "id": "Function:src/components/create/ManualForm.tsx:ManualForm",
+              "name": "ManualForm",
+              "filePath": "src/components/create/ManualForm.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "ModeToggle",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/ModeToggle.tsx:ModeToggle",
+          "name": "ModeToggle",
+          "type": "Function",
+          "filePath": "src/components/create/ModeToggle.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 1,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [
+          {
+            "name": "CreatePage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/create/page.tsx",
+            "affected_process_count": 5,
+            "total_hits": 5,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Status",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/app/(dashboard)/create/page.tsx:CreatePage",
+              "name": "CreatePage",
+              "filePath": "src/app/(dashboard)/create/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_108_createpage",
+                  "label": "CreatePage \u2192 TikTokIcon",
+                  "processType": "intra_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_107_createpage",
+                  "label": "CreatePage \u2192 TikTokIcon",
+                  "processType": "intra_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_170_createpage",
+                  "label": "CreatePage \u2192 Cn",
+                  "processType": "cross_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_45_createpage",
+                  "label": "CreatePage \u2192 GetPipelineSteps",
+                  "processType": "cross_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_106_createpage",
+                  "label": "CreatePage \u2192 TikTokIcon",
+                  "processType": "intra_community",
+                  "step": 1
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "MusicStep",
+      "result": {
+        "target": {
+          "id": "Function:src/components/production/MusicStep.tsx:MusicStep",
+          "name": "MusicStep",
+          "type": "Function",
+          "filePath": "src/components/production/MusicStep.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "NotificationsTab",
+      "result": {
+        "target": {
+          "id": "Function:src/components/settings/NotificationsTab.tsx:NotificationsTab",
+          "name": "NotificationsTab",
+          "type": "Function",
+          "filePath": "src/components/settings/NotificationsTab.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "OptionCard",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/CreateHelpers.tsx:OptionCard",
+          "name": "OptionCard",
+          "type": "Function",
+          "filePath": "src/components/create/CreateHelpers.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 2,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 2,
+          "processes_affected": 0,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 2
+        },
+        "affected_processes": [],
+        "affected_modules": [
+          {
+            "name": "Create",
+            "hits": 2,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/components/create/AutoForm.tsx:AutoForm",
+              "name": "AutoForm",
+              "filePath": "src/components/create/AutoForm.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            },
+            {
+              "depth": 1,
+              "id": "Function:src/components/create/wizard/ManualFormStep4.tsx:ManualFormStep4",
+              "name": "ManualFormStep4",
+              "filePath": "src/components/create/wizard/ManualFormStep4.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "ProductionPage",
+      "result": {
+        "target": {
+          "id": "Function:src/app/(dashboard)/production/page.tsx:ProductionPage",
+          "name": "ProductionPage",
+          "type": "Function",
+          "filePath": "src/app/(dashboard)/production/page.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "ProfilTab",
+      "result": {
+        "target": {
+          "id": "Function:src/components/settings/ProfilTab.tsx:ProfilTab",
+          "name": "ProfilTab",
+          "type": "Function",
+          "filePath": "src/components/settings/ProfilTab.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "ScriptStep",
+      "result": {
+        "target": {
+          "id": "Function:src/components/production/ScriptStep.tsx:ScriptStep",
+          "name": "ScriptStep",
+          "type": "Function",
+          "filePath": "src/components/production/ScriptStep.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "SpiritualLayer",
+      "result": {
+        "target": {
+          "id": "Function:src/components/shared/SpiritualLayer.tsx:SpiritualLayer",
+          "name": "SpiritualLayer",
+          "type": "Function",
+          "filePath": "src/components/shared/SpiritualLayer.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "StepGenerateCard",
+      "result": {
+        "target": {
+          "id": "Function:src/components/production/StepGenerateCard.tsx:StepGenerateCard",
+          "name": "StepGenerateCard",
+          "type": "Function",
+          "filePath": "src/components/production/StepGenerateCard.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "StepProgressBar",
+      "result": {
+        "target": {
+          "id": "Function:src/components/production/StepProgressBar.tsx:StepProgressBar",
+          "name": "StepProgressBar",
+          "type": "Function",
+          "filePath": "src/components/production/StepProgressBar.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "SummaryRow",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/CreateHelpers.tsx:SummaryRow",
+          "name": "SummaryRow",
+          "type": "Function",
+          "filePath": "src/components/create/CreateHelpers.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 0,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [],
+        "affected_modules": [
+          {
+            "name": "Create",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ]
+      }
+    },
+    {
+      "symbol": "Tabs",
+      "result": {
+        "target": {
+          "id": "Function:src/components/ui/Tabs.tsx:Tabs",
+          "name": "Tabs",
+          "type": "Function",
+          "filePath": "src/components/ui/Tabs.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 2,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 2,
+          "processes_affected": 2,
+          "modules_affected": 2
+        },
+        "byDepthCounts": {
+          "1": 2
+        },
+        "affected_processes": [
+          {
+            "name": "SettingsPage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/settings/page.tsx",
+            "affected_process_count": 2,
+            "total_hits": 2,
+            "earliest_broken_step": 1
+          },
+          {
+            "name": "InfluencerDashboard",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/influencer/page.tsx",
+            "affected_process_count": 1,
+            "total_hits": 1,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Hooks",
+            "hits": 1,
+            "impact": "direct"
+          },
+          {
+            "name": "Status",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/app/(dashboard)/influencer/page.tsx:InfluencerDashboard",
+              "name": "InfluencerDashboard",
+              "filePath": "src/app/(dashboard)/influencer/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_279_influencerdashboard",
+                  "label": "InfluencerDashboard \u2192 Cn",
+                  "processType": "cross_community",
+                  "step": 1
+                }
+              ]
+            },
+            {
+              "depth": 1,
+              "id": "Function:src/app/(dashboard)/settings/page.tsx:SettingsPage",
+              "name": "SettingsPage",
+              "filePath": "src/app/(dashboard)/settings/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_52_settingspage",
+                  "label": "SettingsPage \u2192 UseAuth",
+                  "processType": "intra_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_288_settingspage",
+                  "label": "SettingsPage \u2192 Cn",
+                  "processType": "intra_community",
+                  "step": 1
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "UploadZone",
+      "result": {
+        "target": {
+          "id": "Function:src/components/create/CreateHelpers.tsx:UploadZone",
+          "name": "UploadZone",
+          "type": "Function",
+          "filePath": "src/components/create/CreateHelpers.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 0,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [],
+        "affected_modules": [
+          {
+            "name": "Create",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/components/create/wizard/ManualFormStep3.tsx:ManualFormStep3",
+              "name": "ManualFormStep3",
+              "filePath": "src/components/create/wizard/ManualFormStep3.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "VideoCard",
+      "result": {
+        "target": {
+          "id": "Function:src/components/dashboard/VideoCard.tsx:VideoCard",
+          "name": "VideoCard",
+          "type": "Function",
+          "filePath": "src/components/dashboard/VideoCard.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 2,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 2,
+          "processes_affected": 1,
+          "modules_affected": 2
+        },
+        "byDepthCounts": {
+          "1": 2
+        },
+        "affected_processes": [
+          {
+            "name": "DashboardPage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/dashboard/page.tsx",
+            "affected_process_count": 2,
+            "total_hits": 2,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Dashboard",
+            "hits": 1,
+            "impact": "direct"
+          },
+          {
+            "name": "Hooks",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/app/(dashboard)/dashboard/page.tsx:DashboardPage",
+              "name": "DashboardPage",
+              "filePath": "src/app/(dashboard)/dashboard/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_163_dashboardpage",
+                  "label": "DashboardPage \u2192 UseHydrated",
+                  "processType": "cross_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_179_dashboardpage",
+                  "label": "DashboardPage \u2192 Cn",
+                  "processType": "cross_community",
+                  "step": 1
+                }
+              ]
+            },
+            {
+              "depth": 1,
+              "id": "Function:src/components/library/VideoGrid.tsx:VideoGrid",
+              "name": "VideoGrid",
+              "filePath": "src/components/library/VideoGrid.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "VideoGrid",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/VideoGrid.tsx:VideoGrid",
+          "name": "VideoGrid",
+          "type": "Function",
+          "filePath": "src/components/library/VideoGrid.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "VideoList",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/VideoList.tsx:VideoList",
+          "name": "VideoList",
+          "type": "Function",
+          "filePath": "src/components/library/VideoList.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "VoiceStep",
+      "result": {
+        "target": {
+          "id": "Function:src/components/production/VoiceStep.tsx:VoiceStep",
+          "name": "VoiceStep",
+          "type": "Function",
+          "filePath": "src/components/production/VoiceStep.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "auditAccessibility",
+      "result": {
+        "target": {
+          "id": "Function:scripts/test-ui-isolated.mjs:auditAccessibility",
+          "name": "auditAccessibility",
+          "type": "Function",
+          "filePath": "scripts/test-ui-isolated.mjs"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "File:scripts/test-ui-isolated.mjs",
+              "name": "test-ui-isolated.mjs",
+              "filePath": "scripts/test-ui-isolated.mjs",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "context",
+      "result": {
+        "target": {
+          "id": "Function:scripts/test-ui-isolated.mjs:context",
+          "name": "context",
+          "type": "Function",
+          "filePath": "scripts/test-ui-isolated.mjs"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "File:scripts/test-ui-isolated.mjs",
+              "name": "test-ui-isolated.mjs",
+              "filePath": "scripts/test-ui-isolated.mjs",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "fetchVideos",
+      "result": {
+        "target": {
+          "id": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.fetchVideos@20:2",
+          "name": "fetchVideos",
+          "type": "Function",
+          "filePath": "src/hooks/useLibraryVideos.ts"
+        },
+        "direction": "upstream",
+        "impactedCount": 5,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 3,
+          "processes_affected": 1,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 3,
+          "2": 2
+        },
+        "affected_processes": [
+          {
+            "name": "LibraryPage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/library/page.tsx",
+            "affected_process_count": 3,
+            "total_hits": 4,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Hooks",
+            "hits": 4,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos",
+              "name": "useLibraryVideos",
+              "filePath": "src/hooks/useLibraryVideos.ts",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_50_librarypage",
+                  "label": "LibraryPage \u2192 FetchVideos",
+                  "processType": "cross_community",
+                  "step": 2
+                }
+              ]
+            },
+            {
+              "depth": 1,
+              "id": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.loadMore@80:2",
+              "name": "loadMore",
+              "filePath": "src/hooks/useLibraryVideos.ts",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            },
+            {
+              "depth": 1,
+              "id": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.refetch@97:2",
+              "name": "refetch",
+              "filePath": "src/hooks/useLibraryVideos.ts",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ],
+          "2": [
+            {
+              "depth": 2,
+              "id": "File:scripts/test-auth-session.mts",
+              "name": "test-auth-session.mts",
+              "filePath": "scripts/test-auth-session.mts",
+              "relationType": "CALLS",
+              "confidence": 0.7,
+              "processes": []
+            },
+            {
+              "depth": 2,
+              "id": "Function:src/app/(dashboard)/library/page.tsx:LibraryPage",
+              "name": "LibraryPage",
+              "filePath": "src/app/(dashboard)/library/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_50_librarypage",
+                  "label": "LibraryPage \u2192 FetchVideos",
+                  "processType": "cross_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_48_librarypage",
+                  "label": "LibraryPage \u2192 LoadFavorites",
+                  "processType": "intra_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_49_librarypage",
+                  "label": "LibraryPage \u2192 LoadFolders",
+                  "processType": "intra_community",
+                  "step": 1
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "handleClick",
+      "result": {
+        "target": {
+          "id": "Function:src/components/dashboard/VideoCard.tsx:VideoCard.handleClick@55:2",
+          "name": "handleClick",
+          "type": "Function",
+          "filePath": "src/components/dashboard/VideoCard.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "handleClose",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/FolderModal.tsx:FolderModal.handleClose@18:2",
+          "name": "handleClose",
+          "type": "Function",
+          "filePath": "src/components/library/FolderModal.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {}
+      }
+    },
+    {
+      "symbol": "handleCreate",
+      "result": {
+        "target": {
+          "id": "Function:src/components/library/FolderModal.tsx:FolderModal.handleCreate@29:2",
+          "name": "handleCreate",
+          "type": "Function",
+          "filePath": "src/components/library/FolderModal.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 0,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [],
+        "affected_modules": [
+          {
+            "name": "Signup",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/components/library/FolderModal.tsx:FolderModal",
+              "name": "FolderModal",
+              "filePath": "src/components/library/FolderModal.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.8,
+              "processes": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "handleDelete",
+      "result": {
+        "status": "ambiguous",
+        "message": "Found 2 symbols matching 'handleDelete'. Blast radius differs per candidate (max 2 impacted at risk UNKNOWN; LOW among the candidates that resolved, and at least one could not be walked). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+        "target": {
+          "name": "handleDelete"
+        },
+        "direction": "upstream",
+        "totalCandidates": 2,
+        "impactedCount": null,
+        "risk": "UNKNOWN",
+        "maxImpactedCount": 2,
+        "maxRisk": "UNKNOWN",
+        "knownMaxRisk": "LOW",
+        "candidates": [
+          {
+            "uid": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.handleDelete@86:2",
+            "name": "handleDelete",
+            "kind": "Function",
+            "filePath": "src/hooks/useLibraryVideos.ts",
+            "line": 87,
+            "score": 0.96,
+            "impactedCount": 2,
+            "risk": "LOW",
+            "riskSharedAxes": "LOW",
+            "riskScale": {
+              "comparableAcrossKinds": false,
+              "unusedAxes": [
+                {
+                  "axis": "processes",
+                  "reason": "enrichment-skipped"
+                },
+                {
+                  "axis": "modules",
+                  "reason": "enrichment-skipped"
+                }
+              ]
+            },
+            "direct": 1
+          },
+          {
+            "uid": "Property:src/hooks/useLibraryVideos.ts:useLibraryVideos.handleDelete@108:4",
+            "name": "handleDelete",
+            "kind": "",
+            "filePath": "src/hooks/useLibraryVideos.ts",
+            "line": 109,
+            "score": 0.9,
+            "impactedCount": 0,
+            "risk": "UNKNOWN",
+            "riskSharedAxes": "UNKNOWN",
+            "riskScale": {
+              "comparableAcrossKinds": false,
+              "unusedAxes": [
+                {
+                  "axis": "processes",
+                  "reason": "enrichment-skipped"
+                },
+                {
+                  "axis": "modules",
+                  "reason": "enrichment-skipped"
+                }
+              ]
+            },
+            "direct": 0,
+            "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe."
+          }
+        ]
+      }
+    },
+    {
+      "symbol": "handleDismiss",
+      "result": {
+        "target": {
+          "id": "Function:src/components/shared/SpiritualLayer.tsx:SpiritualLayer.handleDismiss@63:2",
+          "name": "handleDismiss",
+          "type": "Function",
+          "filePath": "src/components/shared/SpiritualLayer.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "handleIntegrate",
+      "result": {
+        "target": {
+          "id": "Function:src/components/shared/SpiritualLayer.tsx:SpiritualLayer.handleIntegrate@53:2",
+          "name": "handleIntegrate",
+          "type": "Function",
+          "filePath": "src/components/shared/SpiritualLayer.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 0,
+        "risk": "UNKNOWN",
+        "riskSharedAxes": "UNKNOWN",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe.",
+        "epistemic": "exact",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {},
+        "affected_processes": [],
+        "affected_modules": []
+      }
+    },
+    {
+      "symbol": "handleTabClick",
+      "result": {
+        "target": {
+          "id": "Function:src/components/ui/Tabs.tsx:Tabs.handleTabClick@53:2",
+          "name": "handleTabClick",
+          "type": "Function",
+          "filePath": "src/components/ui/Tabs.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 3,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 2,
+          "modules_affected": 2
+        },
+        "byDepthCounts": {
+          "1": 1,
+          "2": 2
+        },
+        "affected_processes": [
+          {
+            "name": "SettingsPage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/settings/page.tsx",
+            "affected_process_count": 2,
+            "total_hits": 2,
+            "earliest_broken_step": 1
+          },
+          {
+            "name": "InfluencerDashboard",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/influencer/page.tsx",
+            "affected_process_count": 1,
+            "total_hits": 1,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Status",
+            "hits": 2,
+            "impact": "direct"
+          },
+          {
+            "name": "Hooks",
+            "hits": 1,
+            "impact": "indirect"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/components/ui/Tabs.tsx:Tabs",
+              "name": "Tabs",
+              "filePath": "src/components/ui/Tabs.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.8,
+              "processes": []
+            }
+          ],
+          "2": [
+            {
+              "depth": 2,
+              "id": "Function:src/app/(dashboard)/influencer/page.tsx:InfluencerDashboard",
+              "name": "InfluencerDashboard",
+              "filePath": "src/app/(dashboard)/influencer/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_279_influencerdashboard",
+                  "label": "InfluencerDashboard \u2192 Cn",
+                  "processType": "cross_community",
+                  "step": 1
+                }
+              ]
+            },
+            {
+              "depth": 2,
+              "id": "Function:src/app/(dashboard)/settings/page.tsx:SettingsPage",
+              "name": "SettingsPage",
+              "filePath": "src/app/(dashboard)/settings/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_52_settingspage",
+                  "label": "SettingsPage \u2192 UseAuth",
+                  "processType": "intra_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_288_settingspage",
+                  "label": "SettingsPage \u2192 Cn",
+                  "processType": "intra_community",
+                  "step": 1
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "loadMore",
+      "result": {
+        "status": "ambiguous",
+        "message": "Found 2 symbols matching 'loadMore'. Blast radius differs per candidate (max 2 impacted at risk UNKNOWN; LOW among the candidates that resolved, and at least one could not be walked). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+        "target": {
+          "name": "loadMore"
+        },
+        "direction": "upstream",
+        "totalCandidates": 2,
+        "impactedCount": null,
+        "risk": "UNKNOWN",
+        "maxImpactedCount": 2,
+        "maxRisk": "UNKNOWN",
+        "knownMaxRisk": "LOW",
+        "candidates": [
+          {
+            "uid": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.loadMore@80:2",
+            "name": "loadMore",
+            "kind": "Function",
+            "filePath": "src/hooks/useLibraryVideos.ts",
+            "line": 81,
+            "score": 0.96,
+            "impactedCount": 2,
+            "risk": "LOW",
+            "riskSharedAxes": "LOW",
+            "riskScale": {
+              "comparableAcrossKinds": false,
+              "unusedAxes": [
+                {
+                  "axis": "processes",
+                  "reason": "enrichment-skipped"
+                },
+                {
+                  "axis": "modules",
+                  "reason": "enrichment-skipped"
+                }
+              ]
+            },
+            "direct": 1
+          },
+          {
+            "uid": "Property:src/hooks/useLibraryVideos.ts:useLibraryVideos.loadMore@107:4",
+            "name": "loadMore",
+            "kind": "",
+            "filePath": "src/hooks/useLibraryVideos.ts",
+            "line": 108,
+            "score": 0.9,
+            "impactedCount": 0,
+            "risk": "UNKNOWN",
+            "riskSharedAxes": "UNKNOWN",
+            "riskScale": {
+              "comparableAcrossKinds": false,
+              "unusedAxes": [
+                {
+                  "axis": "processes",
+                  "reason": "enrichment-skipped"
+                },
+                {
+                  "axis": "modules",
+                  "reason": "enrichment-skipped"
+                }
+              ]
+            },
+            "direct": 0,
+            "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record \u2014 plain-object property access, a bare-identifier read of a module-scope const \u2014 produces no edge to find. Confirm with a text search before treating the change as safe."
+          }
+        ]
+      }
+    },
+    {
+      "symbol": "noOverflow",
+      "result": {
+        "target": {
+          "id": "Function:scripts/test-ui-isolated.mjs:noOverflow",
+          "name": "noOverflow",
+          "type": "Function",
+          "filePath": "scripts/test-ui-isolated.mjs"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 0,
+          "modules_affected": 0
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [],
+        "affected_modules": [],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "File:scripts/test-ui-isolated.mjs",
+              "name": "test-ui-isolated.mjs",
+              "filePath": "scripts/test-ui-isolated.mjs",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "updateIndicator",
+      "result": {
+        "target": {
+          "id": "Function:src/components/ui/Tabs.tsx:Tabs.updateIndicator@34:2",
+          "name": "updateIndicator",
+          "type": "Function",
+          "filePath": "src/components/ui/Tabs.tsx"
+        },
+        "direction": "upstream",
+        "impactedCount": 3,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 2,
+          "modules_affected": 2
+        },
+        "byDepthCounts": {
+          "1": 1,
+          "2": 2
+        },
+        "affected_processes": [
+          {
+            "name": "SettingsPage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/settings/page.tsx",
+            "affected_process_count": 2,
+            "total_hits": 2,
+            "earliest_broken_step": 1
+          },
+          {
+            "name": "InfluencerDashboard",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/influencer/page.tsx",
+            "affected_process_count": 1,
+            "total_hits": 1,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Status",
+            "hits": 2,
+            "impact": "direct"
+          },
+          {
+            "name": "Hooks",
+            "hits": 1,
+            "impact": "indirect"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/components/ui/Tabs.tsx:Tabs",
+              "name": "Tabs",
+              "filePath": "src/components/ui/Tabs.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": []
+            }
+          ],
+          "2": [
+            {
+              "depth": 2,
+              "id": "Function:src/app/(dashboard)/influencer/page.tsx:InfluencerDashboard",
+              "name": "InfluencerDashboard",
+              "filePath": "src/app/(dashboard)/influencer/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_279_influencerdashboard",
+                  "label": "InfluencerDashboard \u2192 Cn",
+                  "processType": "cross_community",
+                  "step": 1
+                }
+              ]
+            },
+            {
+              "depth": 2,
+              "id": "Function:src/app/(dashboard)/settings/page.tsx:SettingsPage",
+              "name": "SettingsPage",
+              "filePath": "src/app/(dashboard)/settings/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_52_settingspage",
+                  "label": "SettingsPage \u2192 UseAuth",
+                  "processType": "intra_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_288_settingspage",
+                  "label": "SettingsPage \u2192 Cn",
+                  "processType": "intra_community",
+                  "step": 1
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "useLibraryVideos",
+      "result": {
+        "target": {
+          "id": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos",
+          "name": "useLibraryVideos",
+          "type": "Function",
+          "filePath": "src/hooks/useLibraryVideos.ts"
+        },
+        "direction": "upstream",
+        "impactedCount": 1,
+        "risk": "LOW",
+        "riskSharedAxes": "LOW",
+        "riskScale": {
+          "comparableAcrossKinds": true,
+          "unusedAxes": []
+        },
+        "epistemic": "exact",
+        "summary": {
+          "direct": 1,
+          "processes_affected": 1,
+          "modules_affected": 1
+        },
+        "byDepthCounts": {
+          "1": 1
+        },
+        "affected_processes": [
+          {
+            "name": "LibraryPage",
+            "type": "Function",
+            "filePath": "src/app/(dashboard)/library/page.tsx",
+            "affected_process_count": 3,
+            "total_hits": 3,
+            "earliest_broken_step": 1
+          }
+        ],
+        "affected_modules": [
+          {
+            "name": "Hooks",
+            "hits": 1,
+            "impact": "direct"
+          }
+        ],
+        "byDepth": {
+          "1": [
+            {
+              "depth": 1,
+              "id": "Function:src/app/(dashboard)/library/page.tsx:LibraryPage",
+              "name": "LibraryPage",
+              "filePath": "src/app/(dashboard)/library/page.tsx",
+              "relationType": "CALLS",
+              "confidence": 0.85,
+              "processes": [
+                {
+                  "id": "proc_50_librarypage",
+                  "label": "LibraryPage \u2192 FetchVideos",
+                  "processType": "cross_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_48_librarypage",
+                  "label": "LibraryPage \u2192 LoadFavorites",
+                  "processType": "intra_community",
+                  "step": 1
+                },
+                {
+                  "id": "proc_49_librarypage",
+                  "label": "LibraryPage \u2192 LoadFolders",
+                  "processType": "intra_community",
+                  "step": 1
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "symbol": "CompteTab",
+      "result": {
+        "risk": "UNKNOWN",
+        "summary": {
+          "direct": 0,
+          "processes_affected": 0
+        },
+        "note": "CLI impact before text contrast edit: no resolved callers; not evidence of absence."
+      }
+    }
+  ]
+}

@@ -1,74 +1,227 @@
 import { fetchWithRetry } from '@/lib/utils/api'
+import { boundedProviderJson } from '@/lib/provider-json'
 
-const ZERNIO_API_KEY = process.env.ZERNIO_API_KEY ?? ''
 const ZERNIO_BASE = process.env.ZERNIO_BASE_URL ?? 'https://zernio.com/api/v1'
-const IS_DEV = process.env.NODE_ENV !== 'production'
 
 export type SocialPlatform = 'tiktok' | 'youtube' | 'instagram' | 'facebook' | 'x' | 'linkedin' | 'pinterest' | 'reddit' | 'threads' | 'snapchat' | 'tumblr' | 'mastodon' | 'bluesky' | 'vimeo'
 
 export interface OAuthUrlResponse { url: string; state: string }
 export interface AccountProfile { platform: SocialPlatform; externalId: string; username: string; displayName: string; avatarUrl?: string; accessToken?: string; refreshToken?: string; tokenExpiresAt?: string }
-export interface PublishRequest { videoUrl: string; caption: string; hashtags: string[]; platforms: SocialPlatform[]; accountIds: Record<SocialPlatform, string>; scheduledAt?: string; format?: string }
-export interface PublishResult { platform: SocialPlatform; success: boolean; postId?: string; postUrl?: string; error?: string }
+export interface PublishRequest { videoUrl: string; providerMediaUrl?: string; verifiedSha256?: string; caption: string; hashtags: string[]; platforms: SocialPlatform[]; accountIds: Record<SocialPlatform, string>; scheduledAt?: string; format?: string; idempotencyKey?: string; captionsByPlatform?: Partial<Record<SocialPlatform, { caption: string; hashtags: string[] }>> }
+export type PublicationStatus = 'published' | 'scheduled' | 'publishing' | 'failed' | 'unknown'
+export const PUBLICATION_STATUS_LABELS: Record<PublicationStatus, string> = {
+  published: 'Publie', scheduled: 'Programme', publishing: 'En cours', failed: 'Echec', unknown: 'A verifier',
+}
+export interface PublishResult { platform: SocialPlatform; accountId?: string; localAccountId?: string; success: boolean; status?: PublicationStatus; postId?: string; postUrl?: string; externalPostId?: string; publishedAt?: string; error?: string }
 export interface AnalyticsData { views: number; likes: number; shares: number; comments: number; engagementRate?: number }
 
-function headers(): HeadersInit { return { Authorization: `Bearer ${ZERNIO_API_KEY}`, 'Content-Type': 'application/json' } }
-function logError(context: string, err: unknown): void { if (IS_DEV) console.error(`[zernio:${context}]`, err instanceof Error ? err.message : err) }
+function headers(): HeadersInit {
+  const key = process.env.ZERNIO_API_KEY?.trim()
+  if (!key) throw new Error('SUTRA_ZERNIO_NOT_CONFIGURED')
+  return { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }
+}
+// Toujours logger (prod inclus) : une erreur Zernio avalée silencieusement en
+// prod = publication sociale qui échoue sans aucune trace. Jamais de secret.
+function logError(context: string, err: unknown): void { void err; console.error(`[zernio:${context}]`, 'SUTRA_PROVIDER_REQUEST_FAILED') }
 
-export async function getOAuthUrl(platform: SocialPlatform, userId: string, redirectUri: string): Promise<OAuthUrlResponse> {
+/** Only these platforms use the documented hosted OAuth flow in SUTRA. */
+export const OAUTH_PLATFORMS = ['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest', 'reddit', 'threads'] as const
+const providerId = (value: unknown): value is string => typeof value === 'string' && /^[a-f0-9]{24}$/.test(value)
+
+/** Explicit server-side tenancy. Never select the team's first/default profile. */
+export function getAuthorizedProfileId(userId: string): string {
   try {
-    const qs = new URLSearchParams({ platform, user_id: userId, redirect_uri: redirectUri })
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/oauth/url?${qs.toString()}`, { method: 'GET', headers: headers() }, 2)
-    if (!res.ok) { logError('getOAuthUrl', `HTTP ${res.status}`); return { url: '', state: '' } }
-    const data = await res.json()
-    return { url: String(data.url ?? ''), state: String(data.state ?? '') }
-  } catch (err) { logError('getOAuthUrl', err); return { url: '', state: '' } }
+    const bindings: unknown = JSON.parse(process.env.ZERNIO_PROFILE_BINDINGS ?? '{}')
+    if (!bindings || typeof bindings !== 'object' || Array.isArray(bindings)) throw new Error()
+    const entries = Object.entries(bindings)
+    if (!entries.length || entries.some(([user, profile]) => !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(user) || !providerId(profile))
+      || new Set(entries.map(([, profile]) => profile)).size !== entries.length) throw new Error()
+    const profile = entries.find(([user]) => user === userId)?.[1]
+    if (!providerId(profile)) throw new Error()
+    return profile
+  } catch { throw new Error('SUTRA_ZERNIO_PROFILE_BINDING_REQUIRED') }
 }
 
-export async function exchangeOAuthCode(platform: SocialPlatform, code: string, state: string): Promise<AccountProfile> {
-  const empty: AccountProfile = { platform, externalId: '', username: '', displayName: '' }
+export async function getOAuthUrl(platform: SocialPlatform, profileId: string, redirectUri: string, reconnectAccountId?: string): Promise<OAuthUrlResponse> {
   try {
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/oauth/exchange`, { method: 'POST', headers: headers(), body: JSON.stringify({ platform, code, state }) }, 2)
-    if (!res.ok) { logError('exchangeOAuthCode', `HTTP ${res.status}`); return empty }
-    const data = await res.json()
-    return { platform, externalId: String(data.external_id ?? data.externalId ?? ''), username: String(data.username ?? ''), displayName: String(data.display_name ?? data.displayName ?? data.username ?? ''), avatarUrl: data.avatar_url ?? data.avatarUrl, accessToken: data.access_token ?? data.accessToken, refreshToken: data.refresh_token ?? data.refreshToken, tokenExpiresAt: data.token_expires_at ?? data.tokenExpiresAt }
-  } catch (err) { logError('exchangeOAuthCode', err); return empty }
+    if (!(OAUTH_PLATFORMS as readonly string[]).includes(platform) || !providerId(profileId)
+      || (reconnectAccountId !== undefined && !providerId(reconnectAccountId))) throw new Error()
+    const redirect = new URL(redirectUri)
+    if (redirect.protocol !== 'https:' || redirect.username || redirect.password) throw new Error()
+    const qs = new URLSearchParams({ profileId, redirect_url: redirectUri, scopes: 'posting' })
+    // The provider refuses a different login before mutating its account. The
+    // local callback still independently verifies identity and consent revision.
+    if (reconnectAccountId) qs.set('reconnectAccountId', reconnectAccountId)
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/connect/${providerPlatform(platform)}?${qs}`, {
+      method: 'GET', headers: headers(), redirect: 'error', timeoutMs: 20_000,
+    }, 1)
+    if (!res.ok) throw new Error()
+    const data = await boundedProviderJson(res)
+    if (typeof data.authUrl !== 'string' || data.authUrl.length > 16384) throw new Error()
+    const destination = new URL(data.authUrl)
+    if (destination.protocol !== 'https:' || destination.username || destination.password) throw new Error()
+    return { url: destination.href, state: typeof data.state === 'string' ? data.state : '' }
+  } catch { throw new Error('SUTRA_ZERNIO_CONNECT_UNAVAILABLE') }
 }
 
-function buildPublishPayload(req: PublishRequest): Record<string, unknown> {
-  return { video_url: req.videoUrl, caption: req.caption, hashtags: req.hashtags, platforms: req.platforms, account_ids: req.accountIds, scheduled_at: req.scheduledAt, format: req.format }
+/** Read provider-owned identity after hosted consent. Callback fields are not identity proof. */
+export async function getConnectedAccount(platform: SocialPlatform, profileId: string, accountId: string): Promise<AccountProfile> {
+  try {
+    if (!providerId(profileId) || !providerId(accountId)) throw new Error()
+    const query = new URLSearchParams({ profileId })
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/accounts?${query}`, {
+      method: 'GET', headers: headers(), redirect: 'error', timeoutMs: 20_000,
+    }, 1)
+    if (!res.ok) throw new Error()
+    const data = await boundedProviderJson(res)
+    if (!Array.isArray(data.accounts)) throw new Error()
+    const matches = data.accounts.filter((value): value is Record<string, unknown> =>
+      Boolean(value && typeof value === 'object' && value._id === accountId))
+    const account = matches.length === 1 ? matches[0] : undefined
+    const owner = typeof account?.profileId === 'string' ? account.profileId
+      : (account?.profileId as { _id?: unknown } | undefined)?._id
+    if (!account || owner !== profileId || account.platform !== providerPlatform(platform)
+      || account.isActive !== true || typeof account.username !== 'string' || !account.username.trim()
+      || account.username.length > 512) throw new Error()
+    return { platform, externalId: accountId, username: account.username,
+      displayName: typeof account.displayName === 'string' ? account.displayName.slice(0, 512) : account.username,
+      avatarUrl: publicPostUrl(account.profilePicture ?? account.avatarUrl) }
+  } catch { throw new Error('SUTRA_ZERNIO_ACCOUNT_VERIFICATION_FAILED') }
 }
 
-async function callPublishEndpoint(endpoint: 'publish' | 'schedule', req: PublishRequest): Promise<PublishResult[]> {
-  try {
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/${endpoint}`, { method: 'POST', headers: headers(), body: JSON.stringify(buildPublishPayload(req)) }, 3)
-    if (!res.ok) {
-      const errText = await res.text().catch(() => 'Unknown error')
-      logError(endpoint, `HTTP ${res.status}: ${errText}`)
-      return req.platforms.map((platform) => ({ platform, success: false, error: `Zernio ${endpoint} error ${res.status}` }))
-    }
-    const data = await res.json()
-    const results = (data.results ?? []) as Array<{ platform: SocialPlatform; success: boolean; post_id?: string; postId?: string; post_url?: string; postUrl?: string; error?: string }>
-    return results.map((r) => ({ platform: r.platform, success: Boolean(r.success), postId: r.post_id ?? r.postId, postUrl: r.post_url ?? r.postUrl, error: r.error }))
-  } catch (err) {
-    logError(endpoint, err)
-    const message = err instanceof Error ? err.message : `Erreur reseau Zernio ${endpoint}`
-    return req.platforms.map((platform) => ({ platform, success: false, error: message }))
+const SUPPORTED_PUBLICATION_PLATFORMS = new Set(['tiktok', 'youtube', 'instagram', 'facebook', 'x', 'linkedin', 'pinterest', 'reddit', 'threads', 'bluesky'])
+const providerPlatform = (platform: SocialPlatform) => platform === 'x' ? 'twitter' : platform
+const contentWithTags = (caption: string, tags: string[]) => [caption, tags.map(tag => tag.startsWith('#') ? tag : `#${tag}`).join(' ')].filter(Boolean).join('\n\n')
+function publicPostUrl(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined
+  try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password ? url.href : undefined } catch { return undefined }
+}
+
+export function buildPublishPayload(req: PublishRequest): Record<string, unknown> {
+  const platforms = [...new Set(req.platforms)]
+  if (!platforms.length || platforms.some(p => !SUPPORTED_PUBLICATION_PLATFORMS.has(p))) throw new Error('SUTRA_ZERNIO_PLATFORM_UNAVAILABLE')
+  // Zernio account IDs are provider IDs, never the UUID of public.social_accounts.
+  if (platforms.some(p => !/^[a-f\d]{24}$/i.test(req.accountIds[p] ?? ''))) throw new Error('SUTRA_ZERNIO_ACCOUNT_RECONNECTION_REQUIRED')
+  const url = new URL(req.providerMediaUrl ?? req.videoUrl)
+  if (url.protocol !== 'https:' || url.username || url.password) throw new Error('SUTRA_ZERNIO_INVALID_MEDIA_URL')
+  if (!req.idempotencyKey || req.idempotencyKey.length > 255) throw new Error('SUTRA_ZERNIO_IDEMPOTENCY_REQUIRED')
+  if (req.scheduledAt && (!/(Z|[+-]\d\d:\d\d)$/.test(req.scheduledAt) || !Number.isFinite(Date.parse(req.scheduledAt)) || Date.parse(req.scheduledAt) <= Date.now())) {
+    // Provider silently publishes a past schedule immediately. Refuse that change of intent.
+    throw new Error('SUTRA_ZERNIO_SCHEDULE_MUST_BE_FUTURE')
+  }
+  return { content: contentWithTags(req.caption, req.hashtags), mediaItems: [{ type: 'video', url: req.providerMediaUrl ?? req.videoUrl }],
+    platforms: platforms.map(platform => ({ platform: providerPlatform(platform), accountId: req.accountIds[platform],
+      ...(req.captionsByPlatform?.[platform] ? { customContent: contentWithTags(req.captionsByPlatform[platform]!.caption, req.captionsByPlatform[platform]!.hashtags) } : {}),
+    })), ...(req.scheduledAt ? { scheduledFor: req.scheduledAt } : { publishNow: true }),
   }
 }
 
-export async function publishToPlatforms(req: PublishRequest): Promise<PublishResult[]> { return callPublishEndpoint('publish', req) }
-export async function schedulePublication(req: PublishRequest): Promise<PublishResult[]> { return callPublishEndpoint('schedule', req) }
+/** Accepted, scheduled and partially published are not a global publication success. */
+export function parsePublicationResults(data: unknown, req: PublishRequest): PublishResult[] {
+  const post = (data as { post?: { _id?: unknown; status?: string; platforms?: Array<{ platform?: string; accountId?: string | { _id?: string }; status?: string; platformPostUrl?: string; platformPostId?: string; publishedAt?: string }> } })?.post
+  if (typeof post?._id !== 'string' || !/^[a-f\d]{24}$/i.test(post._id)) throw new Error('SUTRA_RECONCILIATION_REQUIRED: reponse publication sans identifiant')
+  return [...new Set(req.platforms)].map(platform => {
+    const matches = post.platforms?.filter(target => target.platform === providerPlatform(platform)
+      && (typeof target.accountId === 'string' ? target.accountId : target.accountId?._id) === req.accountIds[platform]) ?? []
+    const target = matches.length === 1 ? matches[0] : undefined
+    const status: PublicationStatus = target?.status === 'published' ? 'published'
+      : target?.status === 'failed' ? 'failed'
+      : post.status === 'scheduled' && target?.status === 'pending' ? 'scheduled'
+      : target && ['pending', 'processing', 'uploading', 'publishing'].includes(target.status ?? '') ? 'publishing' : 'unknown'
+    return { platform, accountId: req.accountIds[platform], status, success: status === 'published', postId: post._id as string,
+      postUrl: publicPostUrl(target?.platformPostUrl), externalPostId: target?.platformPostId,
+      publishedAt: target?.publishedAt && Number.isFinite(Date.parse(target.publishedAt)) ? target.publishedAt : undefined,
+      ...(status === 'failed' ? { error: 'Publication refusee par la plateforme' } : status === 'unknown' ? { error: 'Resultat distant a reconcilier' } : {}),
+    }
+  })
+}
 
-export async function getAccountAnalytics(platform: SocialPlatform, accountId: string, postId: string): Promise<AnalyticsData> {
-  const empty: AnalyticsData = { views: 0, likes: 0, shares: 0, comments: 0 }
+export async function publishToPlatforms(req: PublishRequest): Promise<PublishResult[]> {
+  const body = buildPublishPayload(req)
+  const auth = headers()
   try {
-    const qs = new URLSearchParams({ platform, account_id: accountId, post_id: postId })
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/analytics?${qs.toString()}`, { method: 'GET', headers: headers() }, 2)
-    if (!res.ok) { logError('getAccountAnalytics', `HTTP ${res.status}`); return empty }
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/posts`, { method: 'POST', headers: auth,
+      body: JSON.stringify(body), idempotencyKey: req.idempotencyKey, providerSupportsIdempotency: true,
+      redirect: 'error', timeoutMs: 90_000 }, 1)
+    if (!res.ok) throw new Error(`SUTRA_ZERNIO_HTTP_${res.status}`)
+    return parsePublicationResults(await res.json(), req)
+  } catch {
+    // An ambiguous request remains unresolved; never translate a transport error into "failed, retry".
+    throw new Error('SUTRA_RECONCILIATION_REQUIRED: publication distante non confirmee')
+  }
+}
+/** Replays only the original request; the durable caller enforces the 24h window. */
+export async function replayPublication(req: PublishRequest): Promise<PublishResult[]> {
+  return publishToPlatforms(req)
+}
+
+/** The original post owns the destination set. Zernio skips published targets. */
+export async function retryPublication(postId: string, req: PublishRequest): Promise<PublishResult[]> {
+  if (!/^[a-f\d]{24}$/i.test(postId)) throw new Error('SUTRA_ZERNIO_INVALID_POST_ID')
+  try {
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/posts/${postId}/retry`, {
+      method: 'POST', headers: headers(), redirect: 'error', timeoutMs: 90_000,
+    }, 1)
+    if (!res.ok) throw new Error('SUTRA_RECONCILIATION_REQUIRED')
     const data = await res.json()
-    return { views: Number(data.views ?? 0), likes: Number(data.likes ?? 0), shares: Number(data.shares ?? 0), comments: Number(data.comments ?? 0), engagementRate: data.engagement_rate !== undefined ? Number(data.engagement_rate) : data.engagementRate !== undefined ? Number(data.engagementRate) : undefined }
-  } catch (err) { logError('getAccountAnalytics', err); return empty }
+    if (data?.post?._id !== postId) throw new Error('SUTRA_RECONCILIATION_REQUIRED')
+    return parsePublicationResults(data, req)
+  } catch { throw new Error('SUTRA_RECONCILIATION_REQUIRED: reprise distante non confirmee') }
+}
+
+export async function schedulePublication(req: PublishRequest): Promise<PublishResult[]> {
+  if (!req.scheduledAt) throw new Error('SUTRA_ZERNIO_SCHEDULE_REQUIRED')
+  return publishToPlatforms(req)
+}
+
+export async function getPublicationResults(postId: string, req: PublishRequest): Promise<PublishResult[]> {
+  if (!/^[a-f\d]{24}$/i.test(postId)) throw new Error('SUTRA_ZERNIO_INVALID_POST_ID')
+  const res = await fetchWithRetry(`${ZERNIO_BASE}/posts/${postId}`, { method: 'GET', headers: headers(), redirect: 'error' }, 2)
+    .catch(() => { throw new Error('SUTRA_ZERNIO_STATUS_UNAVAILABLE') })
+  if (!res.ok) throw new Error(`SUTRA_ZERNIO_STATUS_HTTP_${res.status}`)
+  const data = await res.json().catch(() => { throw new Error('SUTRA_ZERNIO_STATUS_INVALID_RESPONSE') })
+  if (data?.post?._id !== postId) throw new Error('SUTRA_RECONCILIATION_REQUIRED: identifiant publication incoherent')
+  // /retry replays every failed remote target, so an imported post must have
+  // exactly the authorized destination set before the journal may retry it.
+  const targets = data.post.platforms as Array<{ platform?: string; accountId?: string | { _id?: string } }> | undefined
+  if (!Array.isArray(targets) || targets.length !== req.platforms.length || req.platforms.some(platform =>
+    targets.filter(target => target.platform === providerPlatform(platform)
+      && (typeof target.accountId === 'string' ? target.accountId : target.accountId?._id) === req.accountIds[platform]).length !== 1)) {
+    throw new Error('SUTRA_RECONCILIATION_REQUIRED: destinations distantes incoherentes')
+  }
+  return parsePublicationResults(data, req)
+}
+
+export async function getAccountAnalytics(platform: SocialPlatform, accountId: string, postId: string, userId: string): Promise<AnalyticsData> {
+  try {
+    if (!Object.hasOwn(PLATFORM_INFO, platform) || !providerId(accountId) || !providerId(postId)) throw new Error()
+    const profileId = getAuthorizedProfileId(userId)
+    // The single-post contract uses camelCase filters and account-scoped metrics.
+    // A 202 response means sync pending; even HTTP success is not a measurement.
+    const qs = new URLSearchParams({ platform: providerPlatform(platform), accountId, postId, profileId })
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/analytics?${qs}`, {
+      method: 'GET', headers: headers(), redirect: 'error', timeoutMs: 20_000,
+    }, 1)
+    if (res.status !== 200) throw new Error()
+    const data = await boundedProviderJson(res)
+    if (getAuthorizedProfileId(userId) !== profileId) throw new Error()
+    if ((data.postId !== postId && data.latePostId !== postId) || !Array.isArray(data.platformAnalytics)) throw new Error()
+    const targets = data.platformAnalytics.filter((value): value is Record<string, unknown> =>
+      Boolean(value && typeof value === 'object' && value.platform === providerPlatform(platform) && value.accountId === accountId))
+    const target = targets.length === 1 ? targets[0] : undefined
+    if (!target || target.status !== 'published' || target.syncStatus !== 'synced'
+      || !target.analytics || typeof target.analytics !== 'object' || Array.isArray(target.analytics)) throw new Error()
+    const metrics = target.analytics as Record<string, unknown>
+    if (['views', 'likes', 'comments', 'shares'].some(key => typeof metrics[key] !== 'number'
+      || !Number.isSafeInteger(metrics[key]) || (metrics[key] as number) < 0)) throw new Error()
+    const engagementRate = metrics.engagementRate
+    if (engagementRate != null && (typeof engagementRate !== 'number' || !Number.isFinite(engagementRate) || engagementRate < 0)) throw new Error()
+    return { views: metrics.views as number, likes: metrics.likes as number, comments: metrics.comments as number,
+      shares: metrics.shares as number, ...(typeof engagementRate === 'number' ? { engagementRate } : {}) }
+  } catch (err) {
+    logError('getAccountAnalytics', err)
+    throw new Error('SUTRA_ZERNIO_ANALYTICS_UNAVAILABLE')
+  }
 }
 
 export async function deletePost(platform: SocialPlatform, accountId: string, postId: string): Promise<boolean> {
@@ -83,18 +236,11 @@ export async function disconnectAccount(platform: SocialPlatform, accountId: str
   try {
     const qs = new URLSearchParams({ platform })
     const res = await fetchWithRetry(`${ZERNIO_BASE}/accounts/${encodeURIComponent(accountId)}?${qs.toString()}`, { method: 'DELETE', headers: headers() }, 2)
-    return res.ok
+    return res.ok || res.status === 404
   } catch (err) { logError('disconnectAccount', err); return false }
 }
 
-export async function refreshAccessToken(platform: SocialPlatform, refreshToken: string): Promise<{ accessToken: string; expiresAt: string }> {
-  try {
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/oauth/refresh`, { method: 'POST', headers: headers(), body: JSON.stringify({ platform, refresh_token: refreshToken }) }, 2)
-    if (!res.ok) { logError('refreshAccessToken', `HTTP ${res.status}`); return { accessToken: '', expiresAt: '' } }
-    const data = await res.json()
-    return { accessToken: String(data.access_token ?? data.accessToken ?? ''), expiresAt: String(data.expires_at ?? data.expiresAt ?? '') }
-  } catch (err) { logError('refreshAccessToken', err); return { accessToken: '', expiresAt: '' } }
-}
+// Hosted Zernio connections own token refresh. Reconnection requires fresh user consent.
 
 export function getOptimalFormat(platform: SocialPlatform): string {
   const formats: Record<SocialPlatform, string> = { tiktok: '9:16', youtube: '16:9', instagram: '1:1', facebook: '16:9', x: '16:9', linkedin: '16:9', pinterest: '1:1', reddit: '16:9', threads: '9:16', snapchat: '9:16', tumblr: '1:1', mastodon: '16:9', bluesky: '16:9', vimeo: '16:9' }

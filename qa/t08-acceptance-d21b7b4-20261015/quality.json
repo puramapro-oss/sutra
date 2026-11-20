@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-15T13:28:35.247541+00:00",
+  "checks": [
+    {
+      "file": "qa/t08-acceptance-d21b7b4-20261015/run.py",
+      "command": "ast.parse",
+      "exitCode": 0
+    },
+    {
+      "file": "qa/t08-acceptance-d21b7b4-20261015/verify_evidence.py",
+      "command": "ast.parse",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--check",
+        "qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "node_modules/eslint/bin/eslint.js",
+        "--max-warnings=0",
+        "qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "productGates": "CI38677062190 exact d21 reused; no duplicate build/typecheck/global suite"
+}

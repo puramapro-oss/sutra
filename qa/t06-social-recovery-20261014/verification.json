@@ -1,0 +1,72 @@
+{
+  "scope": "SUTRA-T06-20261014:SOCIAL-RECOVERY",
+  "base": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "integratedProductAtStart": "d8691d8ac6cf885f8e5522f361f45ebe229ec20d",
+  "branch": "codex/sutra-t06-social-recovery-20261014",
+  "tests": {
+    "status": "PASS",
+    "distinctPassed": 162,
+    "contracts": 149,
+    "publicationConsumers": 6,
+    "postgresql": 7,
+    "remainingFailed": 0,
+    "skipped": 0,
+    "resolution": "contracts.log: 147/149 PASS, two outdated security fixtures FAIL. The 10 security tests were rerun after the fixture changes: 10 PASS. The other 139 unchanged tests retain their results; no full rerun claimed."
+  },
+  "receipts": {
+    "historical": "results.json",
+    "resolvedSecurityFixtures": "results-security-fixture-lint-security-typecheck.json",
+    "finalTypesAndQaLint": "results-lint-qa-typecheck.json",
+    "postgres": "postgres-result.json",
+    "unchangedSchedule": "reused-proof.json"
+  },
+  "typecheck": {
+    "status": "PASS",
+    "scope": "QA tsconfig includes affected source through imports and targeted tests; Next global types explicitly loaded"
+  },
+  "lint": {
+    "status": "PASS",
+    "warnings": 0,
+    "receipts": [
+      "results.json:lint",
+      "results-security-fixture-lint-security-typecheck.json:lint-security",
+      "results-lint-qa-typecheck.json:lint-qa"
+    ]
+  },
+  "reusedSchedulingProof": "PASS integrated; source, test, dependencies and runner hashes verified unchanged",
+  "gitnexus": {
+    "coverage": "TRUNCATED; not exhaustive certification",
+    "entryPointCandidatesDropped": 1099,
+    "calleesDropped": 599,
+    "walksCutByBudget": 3,
+    "stagedChangesReceipt": "detect-changes.txt",
+    "risk": "HIGH",
+    "changedFilesAtAnalysis": 64,
+    "changedSymbols": 93,
+    "affectedProcesses": 7,
+    "limitation": "CLI displays 15 symbols despite limit=1000. Ambiguous GET/POST flow names; direct file and diff review confines product changes to the five reserved social files."
+  },
+  "blocked": [
+    "Autonomous OVH scheduling: T01 found no active SUTRA cron/worker; no activation authorized."
+  ],
+  "notTested": [
+    "Real PostgREST HTTP transport",
+    "Real hosted OAuth consent and token renewal/revocation",
+    "Real publication and scheduling",
+    "Browser reproduction of UI 409 message loss; sent to T07",
+    "Integrated build/campaign for this delta: T01 ownership"
+  ],
+  "ownerFollowup": {
+    "T07": "settings/social page drops non-2xx JSON reason; source observation only, no UI edit by T06",
+    "T01": "Integrate and run the final campaign; existing OAuth states need new consent; ambiguous revocation requires explicit reconciliation"
+  },
+  "secrets": {
+    "realSecretsRead": false,
+    "environment": "synthetic values and system allowlist only",
+    "remoteActions": false,
+    "initialScan": "Four false positives in SHA256 manifest, hashes recomputed and verified. Reformatted to explicit path/sha256 fields; no allowlist or scanner rule disabled.",
+    "finalStagedGitleaks": "PASS: zero findings, default rules, redacted output, gitleaks.json"
+  },
+  "logFormatting": "Trailing whitespace and final blank lines normalized in text receipts; content and outcomes preserved.",
+  "diffCheck": "PASS"
+}

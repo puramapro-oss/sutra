@@ -1,0 +1,72 @@
+{
+  "target": {
+    "id": "Function:qa/t04-final-providers-20261015/salad-read.mjs:audit",
+    "name": "audit",
+    "type": "Function",
+    "filePath": "qa/t04-final-providers-20261015/salad-read.mjs"
+  },
+  "direction": "upstream",
+  "impactedCount": 4,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 3
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:qa/t04-final-providers-20261015/salad-read.mjs",
+        "name": "salad-read.mjs",
+        "filePath": "qa/t04-final-providers-20261015/salad-read.mjs",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:qa/t04-final-providers-20261015/salad-read.test.mjs",
+        "name": "salad-read.test.mjs",
+        "filePath": "qa/t04-final-providers-20261015/salad-read.test.mjs",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:qa/t04-salad-access-20261015/validate-access.mjs",
+        "name": "validate-access.mjs",
+        "filePath": "qa/t04-salad-access-20261015/validate-access.mjs",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:qa/t04-salad-access-20261015/validate-access.test.mjs",
+        "name": "validate-access.test.mjs",
+        "filePath": "qa/t04-salad-access-20261015/validate-access.test.mjs",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ]
+  }
+}
+
+  GitNexus Impact (1.6.12)

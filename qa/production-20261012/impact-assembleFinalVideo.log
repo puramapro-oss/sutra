@@ -1,0 +1,100 @@
+{
+  "status": "ambiguous",
+  "message": "Found 3 symbols matching 'assembleFinalVideo'. Blast radius differs per candidate (max 13 impacted at risk UNKNOWN; MEDIUM among the candidates that resolved, and at least one could not be walked). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "assembleFinalVideo"
+  },
+  "direction": "upstream",
+  "totalCandidates": 3,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 13,
+  "maxRisk": "UNKNOWN",
+  "knownMaxRisk": "MEDIUM",
+  "candidates": [
+    {
+      "uid": "Function:src/lib/final-composition.ts:assembleFinalVideo",
+      "name": "assembleFinalVideo",
+      "kind": "Function",
+      "filePath": "src/lib/final-composition.ts",
+      "line": 7,
+      "score": 0.56,
+      "impactedCount": 13,
+      "risk": "MEDIUM",
+      "riskSharedAxes": "MEDIUM",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 7
+    },
+    {
+      "uid": "Function:scripts/test-shotstack-contracts.mts:assembleFinalVideo",
+      "name": "assembleFinalVideo",
+      "kind": "Function",
+      "filePath": "scripts/test-shotstack-contracts.mts",
+      "line": 51,
+      "score": 0.56,
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    },
+    {
+      "uid": "Function:src/lib/shotstack.ts:assembleFinalVideo",
+      "name": "assembleFinalVideo",
+      "kind": "Function",
+      "filePath": "src/lib/shotstack.ts",
+      "line": 154,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    }
+  ],
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 3,
+    "hint": "⚠️ Index is 3 commits behind HEAD. Run analyze tool to update."
+  }
+}
+
+  GitNexus Impact (1.6.12)
+{"level":40,"time":1791839723429,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}

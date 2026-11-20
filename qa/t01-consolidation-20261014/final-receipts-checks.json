@@ -1,0 +1,38 @@
+{
+  "observedAt": "2026-10-14T16:57:21.899071+00:00",
+  "source": "3855665fa79e3cc2171124d864a834214d6ac617",
+  "documentaryOnly": true,
+  "gitleaks": {
+    "command": "gitleaks git --pre-commit --staged --redact=100 --no-banner --log-level error --report-format json --report-path qa/t01-consolidation-20261014/final-receipts-gitleaks.json .",
+    "exitCode": 0,
+    "findings": 0
+  },
+  "gitnexus": {
+    "staged": {
+      "files": 22,
+      "symbols": 2,
+      "processes": 0,
+      "risk": "LOW"
+    },
+    "all": {
+      "files": 23,
+      "symbols": 8,
+      "processes": 0,
+      "risk": "LOW",
+      "foreignAgentsFileExcludedFromCommit": true
+    },
+    "compareMain": {
+      "files": 2662,
+      "symbols": 2878,
+      "processes": 99,
+      "risk": "CRITICAL",
+      "listingCapped": true,
+      "scope": "Historical branch, not this documentation delta"
+    },
+    "limits": "Existing partial/stale graph; no exhaustive certification. Staged diff reviewed directly."
+  },
+  "foreignWipPreserved": true,
+  "manifestFilesMatched": 66,
+  "sourceCodeChanged": false,
+  "ciRerunNeeded": false
+}

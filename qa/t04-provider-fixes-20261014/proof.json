@@ -1,0 +1,333 @@
+{
+  "schema": 1,
+  "mission": "SUTRA-T04-20261014:PROVIDER-FIXES",
+  "created_utc": "2026-10-14T02:58:55.153535+00:00",
+  "branch": "codex/sutra-t04-provider-fixes-20261014",
+  "base_sha": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "commit_identity": "The commit containing this manifest; final SHA in shared T04 handoff.",
+  "node": "v24.21.0",
+  "node_modules_source": "/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules",
+  "checks": {
+    "images": {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t04-pollinations.mts"
+      ],
+      "log": "qa/t04-provider-fixes-20261014/images.log",
+      "log_sha256": "6c3f3c70be706f665d7b7333def5ad43bf63bd5936b325ae27bb941a012c351c",
+      "log_modified_utc": "2026-10-14T02:59:27.006381+00:00",
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "contracts": {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t04-provider-fixes.mts"
+      ],
+      "log": "qa/t04-provider-fixes-20261014/contracts.log",
+      "log_sha256": "df6242111d71100b63033e8b65786e4b5460b4282a30bdc875842fee68f72483",
+      "log_modified_utc": "2026-10-14T02:59:27.006278+00:00",
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "skipped": 0
+    },
+    "regressions": {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-salad-worker.mts",
+        "scripts/test-salad-host.mts"
+      ],
+      "log": "qa/t04-provider-fixes-20261014/regressions.log",
+      "log_sha256": "33dd7b2a36eb97b45a3bf7db2b1410a46bc461e6f6aa02f57ccf1825adb91eae",
+      "log_modified_utc": "2026-10-14T02:59:27.007595+00:00",
+      "tests": 44,
+      "pass": 44,
+      "fail": 0,
+      "skipped": 0
+    },
+    "provider-regressions": {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-name-pattern=RunPod|runpod|WAN|voice|Voice|ElevenLabs|Suno|suno|music",
+        "scripts/test-provider-safety.mts",
+        "scripts/test-api-contracts.mts"
+      ],
+      "log": "qa/t04-provider-fixes-20261014/provider-regressions.log",
+      "log_sha256": "cd6de9446a7828ecf70b260d7979c746a2a388bf5f5074d3edf109c831cc4d32",
+      "log_modified_utc": "2026-10-14T02:59:27.007316+00:00",
+      "tests": 32,
+      "pass": 32,
+      "fail": 0,
+      "skipped": 0
+    },
+    "typecheck": {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "qa/t04-provider-fixes-20261014/tsconfig.json"
+      ],
+      "log": "qa/t04-provider-fixes-20261014/typecheck.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_modified_utc": "2026-10-14T02:59:27.007015+00:00"
+    },
+    "lint": {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "node_modules/eslint/bin/eslint.js",
+        "src/lib/salad",
+        "src/lib/runpod.ts",
+        "src/lib/elevenlabs.ts",
+        "src/lib/provider-response.ts",
+        "src/lib/suno.ts",
+        "scripts/test-t04-provider-fixes.mts",
+        "scripts/test-salad-host.mts",
+        "scripts/test-api-contracts.mts",
+        "scripts/test-provider-safety.mts",
+        "scripts/test-t04-pollinations.mts",
+        "src/lib/storyboard.ts",
+        "src/app/api/production/route.ts"
+      ],
+      "log": "qa/t04-provider-fixes-20261014/lint.log",
+      "log_sha256": "aa184531f3dcd8d61b9f2c1b3614af7d12ea15dd3b63318f9cde7395bb2e56c8",
+      "log_modified_utc": "2026-10-14T02:59:27.006554+00:00",
+      "errors": 0,
+      "preexisting_warnings": 2
+    }
+  },
+  "total_tests_pass": 91,
+  "source_sha256": [
+    {
+      "path": "package-lock.json",
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+    },
+    {
+      "path": "package.json",
+      "sha256": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e"
+    },
+    {
+      "path": "qa/t04-provider-fixes-20261014/run.py",
+      "sha256": "9081e48694a950213377e5684171ec2f28aaa672f2405819fda72d695bb6b5ea"
+    },
+    {
+      "path": "qa/t04-provider-fixes-20261014/tsconfig.json",
+      "sha256": "afa76e1411b1243fee88156c722306df2cf798999a49b4579fa77e84cf4d061a"
+    },
+    {
+      "path": "qa/t08/offline.cjs",
+      "sha256": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465"
+    },
+    {
+      "path": "scripts/comfyui-engine-server.mjs",
+      "sha256": "3bd5d41a4f5b8d8ea5ed553ca2f8b72094fec98b33aa9d6921dfafc7083408f1"
+    },
+    {
+      "path": "scripts/test-api-contracts.mts",
+      "sha256": "ad782079ecaa72c36106a99646023a788e7c96eddfea91335cae2d7a98921770"
+    },
+    {
+      "path": "scripts/test-provider-safety.mts",
+      "sha256": "300ad1ad0924bcde417c56e9bec1b20479e1359bbd811324fbc17a9949b3d764"
+    },
+    {
+      "path": "scripts/test-salad-host.mts",
+      "sha256": "ee8d536e4d99000c703a38c82b852f5c0036344454030f0ca90a8e2f1a965936"
+    },
+    {
+      "path": "scripts/test-salad-worker.mts",
+      "sha256": "6a174109a58621ac7936edcfead0ae4b0f241b122c48a68f7a3b3009b04d70a5"
+    },
+    {
+      "path": "scripts/test-t04-pollinations.mts",
+      "sha256": "97c7dde3adb076856918c1022c144be785ed811ba881a75732bc7c85460d590e"
+    },
+    {
+      "path": "scripts/test-t04-provider-fixes.mts",
+      "sha256": "05ae0cbce1abcb11851d63a61d3692bcb97cba01c60b679abc83a915580f975b"
+    },
+    {
+      "path": "src/app/api/production/route.ts",
+      "sha256": "d0ba06cb35edda7ad8af1aa3670fe7eac83e13ea21489a207e5a0c3608fb987f"
+    },
+    {
+      "path": "src/lib/elevenlabs.ts",
+      "sha256": "8219f6d8425d9b283c3496f3098a2e9ebb09e3ec47d145601b4f6a5bca2367f2"
+    },
+    {
+      "path": "src/lib/local-engine.ts",
+      "sha256": "3735031abb5eea0e6f273c4b29d5558a1420afce3105f985b65c01368c2ebadc"
+    },
+    {
+      "path": "src/lib/ltx-v2-contract.ts",
+      "sha256": "9a2aea996e3d823b6e93f092dd98a544b4b3fd5d1861ddc246f115c655263a90"
+    },
+    {
+      "path": "src/lib/ltx-v2.ts",
+      "sha256": "3cd6c7d310fa11f826bd3ff56d9b4f882056f5c4974f61712a4d5fd2559549af"
+    },
+    {
+      "path": "src/lib/provider-response.ts",
+      "sha256": "44be114ceef7191ba0fa2dc50ee5689c2e56aa0a06a557f8324f9259c319e265"
+    },
+    {
+      "path": "src/lib/runpod.ts",
+      "sha256": "8fe0ec8e2f188bf6349cb87e33e07b67de87b0081856a82d8a7cd7332f5b3fc5"
+    },
+    {
+      "path": "src/lib/salad/application.ts",
+      "sha256": "f6a8b7dd40efd22c3bc7b3c19cf137980066e1490204fb9b7e345ea615a86261"
+    },
+    {
+      "path": "src/lib/salad/checkpoint.ts",
+      "sha256": "bf64c2c1db1bb1c2f00e15c0806192dadb178b84c4efd76a0e0f07fdb94640cd"
+    },
+    {
+      "path": "src/lib/salad/client.ts",
+      "sha256": "6ad7f910855200e9080415e89861750fac4fe11ac0a5d0381eb46b92cda9ec46"
+    },
+    {
+      "path": "src/lib/salad/config.ts",
+      "sha256": "e3d03ede3241d98a5851c2fb0d6f883af52e7134bedec821977b8916aa7c97ec"
+    },
+    {
+      "path": "src/lib/salad/contracts.ts",
+      "sha256": "ff890267317cdfdc65c57ebf0b0d89372b04aee34efb258be9984be8a4a6d2c9"
+    },
+    {
+      "path": "src/lib/salad/engine.ts",
+      "sha256": "b9dbc655f35ceb78e4793d21489027705d696820b2c53d5394dba3277ce22c15"
+    },
+    {
+      "path": "src/lib/salad/host.ts",
+      "sha256": "6317af812f23abb5f52bfbfb38572455be5799173f3075db1a5d2cb1d584b961"
+    },
+    {
+      "path": "src/lib/salad/http.ts",
+      "sha256": "86a5677bce713d915e8bcd082272b697f7b63a996327d7a2ddd35098b082352f"
+    },
+    {
+      "path": "src/lib/salad/inspection.ts",
+      "sha256": "ab540cb378399e497c05009e0b57961e218b7f9fb4c53444ce2dcc76cdb9a6fe"
+    },
+    {
+      "path": "src/lib/salad/serve.mts",
+      "sha256": "adc47a3ebd9f1d858bba4f81ab172acac87489c2ed4590a25259fb1bb69db243"
+    },
+    {
+      "path": "src/lib/salad/worker.ts",
+      "sha256": "ff5a4854e084c92f8832719db3116dad793b3c43b7972e9d07b0923fa8628b52"
+    },
+    {
+      "path": "src/lib/salad/workflow-contract.ts",
+      "sha256": "1c46b1b87e05f0fd805f8ef320b1788730c6a043d84b09e978f8dcbe8f6d8ec2"
+    },
+    {
+      "path": "src/lib/storyboard.ts",
+      "sha256": "17ffc54c14a5fabdf3ebe44f75049ce47e61bd220a02c886b1e4d9a05abcb911"
+    },
+    {
+      "path": "src/lib/suno-config.ts",
+      "sha256": "95a6978f2e2552b48294837643d8f0ed281d642c04bd27fbb5db8850a3245cbc"
+    },
+    {
+      "path": "src/lib/suno.ts",
+      "sha256": "ecc40b6e2e8cf10d180584d04065956259a191f3fb10a9d22f13e25d53827b9c"
+    },
+    {
+      "path": "src/lib/utils/api.ts",
+      "sha256": "04976ce28f53c6b48a89888fcf062082244f72851d9ee84f5f71ca35adedfab9"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "9945bb222ec3063c73dfb0e2225f7463621070d5307b3bd970c13da1382f66ce"
+    }
+  ],
+  "gitnexus": {
+    "storage": "test-results/gitnexus",
+    "pre_edit_impacts": "impact-*.json",
+    "initial": {
+      "changed_count": 32,
+      "affected_count": 16,
+      "changed_files": 46,
+      "risk_level": "critical"
+    },
+    "final": {
+      "changed_count": 87,
+      "affected_count": 359,
+      "changed_files": 46,
+      "risk_level": "critical"
+    },
+    "coverage": "UNKNOWN: truncated index, overinclusive final flows and incomplete symbol matching; manually reviewed exact diff and reservations.",
+    "command": [
+      "node",
+      "/Users/matissdornier/purama/.gitnexus/run.cjs",
+      "detect-changes",
+      "--scope",
+      "staged",
+      "--repo",
+      "/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014",
+      "--limit",
+      "200"
+    ],
+    "full_result": "detect-changes-final.json",
+    "full_result_sha256": "49e6188c7750930582e787a2cf75549c77a0bd2401e338c323843f2dd98a8499"
+  },
+  "security": {
+    "gitleaks": "PASS: zero findings, redacted staged-diff stdin scan",
+    "diff_check": "PASS",
+    "secrets_read": false,
+    "authenticated_provider_calls": 0,
+    "paid_calls": 0,
+    "gpu_runs": 0,
+    "model_downloads": 0,
+    "deployments": 0,
+    "initial_manifest_scan": "Two generic-api-key findings are verified SHA-256 hashes of test-api-contracts.mts and utils/api.ts. Manifest changed to path/sha256 records without exemptions; redacted initial report retained."
+  },
+  "limits": [
+    "Salad disabled; Linux image, dependencies, weights, GPU VRAM and actual inference not qualified.",
+    "T03 fe99ebe26f409bf9eccfddf6346004b601e9bac1 consumer integration requires this Suno port; integration gate belongs T01.",
+    "Remote cancellation not exposed for RunPod; local abort never proves billing stopped.",
+    "Full graph coverage UNKNOWN; no global gate rerun.",
+    "No new live-provider authentication or production proof."
+  ],
+  "evidence_normalization": "Log trailing whitespace and empty EOF lines normalized; diagnostic text preserved."
+}

@@ -5,7 +5,7 @@ test.describe("V3 Features — /financer", () => {
     await page.goto("/financer");
     await expect(page).toHaveTitle(/Financer|SUTRA/i);
     // Step 1 visible
-    await expect(page.locator("text=Ton profil")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 2, name: "Ton profil", exact: true })).toBeVisible();
     // Profile buttons visible
     await expect(page.locator("text=Particulier")).toBeVisible();
     await expect(page.locator("text=Entreprise")).toBeVisible();
@@ -16,10 +16,9 @@ test.describe("V3 Features — /financer", () => {
   test("financer wizard step 1 — profile buttons visible", async ({
     page,
   }) => {
-    // Set cookie to dismiss banner
-    await page.context().addCookies([
-      { name: "sutra_cookies_consent", value: "accepted", domain: "sutra.purama.dev", path: "/" },
-    ]);
+    // Consentement pré-donné (vraie clé localStorage du bandeau) pour écarter
+    // le bandeau avant les assertions du wizard.
+    await page.addInitScript(() => localStorage.setItem("purama_cookie_consent_v1", JSON.stringify({ necessaire: true, mesure: false, marketing: false, updatedAt: new Date().toISOString() })));
     await page.goto("/financer");
     // Profile buttons should be visible
     await expect(page.getByText("Particulier", { exact: true })).toBeVisible();

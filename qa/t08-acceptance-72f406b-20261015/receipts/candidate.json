@@ -1,0 +1,51 @@
+{
+  "source": "72f406b940b7e3cdfb27873751a4059375646f25",
+  "image": "purama/sutra-candidate:72f406b940b7e3cdfb27873751a4059375646f25-1792071899854852000",
+  "container": "sutra-candidate-72f406b940b7e3cdfb27873751a4059375646f25-1792071899854852000",
+  "remoteDirectory": "/opt/purama/apps/sutra/candidates/72f406b940b7e3cdfb27873751a4059375646f25-1792071899854852000",
+  "vendoredDependencies": [
+    {
+      "dependency": "@purama/smarana",
+      "repository": "purama-smarana",
+      "commit": "bc3469eb595485714b2044790105acfc5e3b0f31"
+    },
+    {
+      "dependency": "@purama/eslint-config",
+      "repository": "unversioned-local-build-only",
+      "commit": "",
+      "sourceContentSha256": "1069027bde138344b11e883bbad69edc3c87f721d6162ce3360003473fc4b36f"
+    }
+  ],
+  "productionChanged": false,
+  "network": "none",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "path": "/api/points",
+      "status": 401,
+      "expected": 401
+    },
+    {
+      "path": "/api/video/status/00000000-0000-0000-0000-000000000000",
+      "status": 401,
+      "expected": 401
+    },
+    {
+      "path": "/api/media/b3duZXJzL3UvdGVzdC5tcDQ",
+      "status": 401,
+      "expected": 401
+    }
+  ],
+  "ffmpegSubtitlesDrawtextFfprobe": true,
+  "imageId": "sha256:dc58eb67480fe355291184730e09fada29b42dcb36a55c4c29a8d4c76b36b83e",
+  "status": "PASS"
+}

@@ -1,0 +1,21 @@
+✔ disabled default and Mac guard start no engine (1.130583ms)
+✔ single canonical engine/bridge/host; private loopback; account keys absent in all child environments (0.163583ms)
+✔ malformed database and conflicting addresses rejected before spawn (0.090917ms)
+✔ SIGTERM drains host before stopping bridge and Comfy; no restart (2.546708ms)
+✔ bounded host grace kills uncertain process without restarting any computation (5.011667ms)
+✔ cold-start failure cleans up the single started process (0.235916ms)
+✔ child failure drains remaining processes once, no implicit restart (0.195375ms)
+✔ stop during startup cannot start bridge or host later (0.594125ms)
+✔ Comfy readiness GET accepts queue contract and rejects malformed success (23.311875ms)
+✔ Comfy readiness refusal/timeout/cancel do not submit a job (10.524791ms)
+✔ health authenticates using header only and accepts ready/busy contracts (0.477042ms)
+✔ health rejects malformed 200, interruption, wrong protocol, errors and disabled configuration (0.257125ms)
+✔ image source allowlist contains transitive media verification, never copies repository/env (0.963708ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 332.681916

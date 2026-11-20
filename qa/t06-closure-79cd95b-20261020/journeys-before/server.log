@@ -1,0 +1,105 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:49412
+- Network:       http://127.0.0.1:49412
+✓ Ready in 376ms
+✓ Running next.config.ts took 27ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+(node:73248) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ GET /login 200 in 293ms (next.js: 4ms, proxy.ts: 49ms, application-code: 240ms)
+ GET /login?next=/library 200 in 130ms (next.js: 9ms, proxy.ts: 12ms, application-code: 109ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 905ms (next.js: 824ms, proxy.ts: 17ms, application-code: 63ms)
+ GET /library 200 in 31ms (next.js: 1.5ms, proxy.ts: 5ms, application-code: 25ms)
+ POST /api/legal/accept 200 in 664ms (next.js: 327ms, proxy.ts: 3ms, application-code: 334ms)
+ POST /api/legal/accept 200 in 262ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 259ms)
+ POST /api/legal/accept 200 in 259ms (next.js: 0.7ms, proxy.ts: 1.9ms, application-code: 256ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.8ms, proxy.ts: 2ms, application-code: 257ms)
+ GET /create 200 in 705ms (next.js: 374ms, proxy.ts: 5ms, application-code: 327ms)
+ GET /settings/social 200 in 636ms (next.js: 406ms, proxy.ts: 7ms, application-code: 223ms)
+ GET /settings/social 200 in 68ms (next.js: 2.0ms, proxy.ts: 5ms, application-code: 61ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] sutra-harness-d77f5337-a6b3-4477-8305-448d62ad4236{"kind":"pagehide","document":"http://127.0.0.1:49412/settings/social"} (<anonymous>:4:33)
+ GET /settings/social?error=fixture_private_token_never_display 200 in 75ms (next.js: 1.1ms, proxy.ts: 9ms, application-code: 65ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /settings/social 200 in 78ms (next.js: 1.4ms, proxy.ts: 6ms, application-code: 71ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /settings/social 200 in 25ms (next.js: 1.3ms, proxy.ts: 6ms, application-code: 17ms)
+ GET /create 200 in 205ms (next.js: 14ms, proxy.ts: 15ms, application-code: 176ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /create 200 in 100ms (next.js: 5ms, proxy.ts: 17ms, application-code: 79ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /create 200 in 23ms (next.js: 1.2ms, proxy.ts: 5ms, application-code: 17ms)
+ GET /create 200 in 150ms (next.js: 4ms, proxy.ts: 17ms, application-code: 130ms)
+[browser] Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously tries to update the component. Move this work to useEffect instead. 
+ GET /create 200 in 34ms (next.js: 4ms, proxy.ts: 7ms, application-code: 23ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] sutra-harness-0e9f2379-d342-4ee0-8adc-576b65e1e780{"kind":"uncaught","message":"Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/create\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/create\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/create\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n","document":"http://127.0.0.1:49412/create"} (<anonymous>:4:33)
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>
+      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>
+        <ErrorBoundaryHandler pathname="/create" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>
+          <LoadingBoundary name="/" loading={null}>
+            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>
+              <HTTPAccessFallbackErrorBoundary pathname="/create" notFound={<SegmentViewNode>} forbidden={undefined} ...>
+                <RedirectBoundary>
+                  <RedirectErrorBoundary router={{...}}>
+                    <InnerLayoutRouter url="/create" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>
+                      <SegmentViewNode type="layout" pagePath="(dashboard...">
+                        <SegmentTrieNode>
+                        <DashboardLayout>
+                          <DashboardChrome>
+                            <div
++                             className="relative flex min-h-dvh bg-[#06050e]"
+-                             className={null}
+-                             hidden=""
+                            >
+                              <LoadableComponent>
+                              <Sidebar>
+                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>
++                                 <aside
++                                   className="hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu..."
++                                   data-testid="sidebar"
++                                   style={{}}
++                                   ref={function useMotionRef.useCallback}
++                                 >
+                              ...
+                    ...
+      ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at aside (<anonymous>)
+    at DashboardLayout (src/app/(dashboard)/layout.tsx:45:5)
+  43 |
+  44 |   return (
+> 45 |     <DashboardChrome>
+     |     ^
+  46 |       {docsEnAttente.length > 0 && <LegalReacceptanceGateMount docsEnAttente={docsEnAttente} />}
+  47 |       {children}
+  48 |     </DashboardChrome>
+ GET /create 200 in 167ms (next.js: 4ms, proxy.ts: 15ms, application-code: 148ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /create 200 in 81ms (next.js: 1.1ms, proxy.ts: 4ms, application-code: 76ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /create 200 in 67ms (next.js: 1.4ms, proxy.ts: 5ms, application-code: 61ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] sutra-harness-a74b31d7-7cca-4750-a20d-2067402b8fee{"kind":"pagehide","document":"http://127.0.0.1:49412/create"} (<anonymous>:4:33)
+[?25h

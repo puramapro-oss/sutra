@@ -33,17 +33,20 @@ export default function NotificationsTab({
         {EMAIL_PREFS.map((pref) => (
           <div
             key={pref.key}
-            className="flex items-center justify-between py-2"
+            className="flex items-center justify-between gap-3 py-2"
           >
             <div>
               <p className="text-sm text-white/70">{pref.label}</p>
-              <p className="text-xs text-white/30">{pref.desc}</p>
+              <p className="text-xs text-white/65">{pref.desc}</p>
             </div>
             <button
               onClick={() => toggleEmailPref(pref.key)}
               data-testid={`toggle-notif-${pref.key}`}
+              role="switch"
+              aria-label={pref.label}
+              aria-checked={emailPrefs[pref.key]}
               className={cn(
-                'relative w-11 h-6 rounded-full transition-colors',
+                'relative shrink-0 w-11 h-6 rounded-full transition-colors',
                 emailPrefs[pref.key] ? 'bg-violet-500' : 'bg-white/10'
               )}
             >

@@ -1,6 +1,7 @@
-import { useRef } from 'react'
+'use client'
+
 import Link from 'next/link'
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import {
   ArrowRight,
   ArrowUpRight,
@@ -100,22 +101,19 @@ function PreviewCard({
 
 export function LandingHero() {
   const prefersReducedMotion = useReducedMotion()
-  const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -60])
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.3])
 
   return (
     <section
-      ref={ref}
+      id="main-content"
+      tabIndex={-1}
       data-testid="hero-section"
-      className="relative min-h-[100vh] flex flex-col items-center justify-center px-6 pt-32 pb-32 overflow-hidden"
+      className="relative min-h-svh flex flex-col items-center justify-center px-5 sm:px-6 pt-32 pb-16 overflow-hidden"
     >
       <HeroOrbs />
 
-      <motion.div style={{ y, opacity }} className="relative z-10 max-w-5xl text-center">
+      <motion.div initial={false} className="relative z-10 w-full max-w-5xl text-center">
         <motion.div
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={fade}
           custom={0}
@@ -129,11 +127,11 @@ export function LandingHero() {
         </motion.div>
 
         <motion.h1
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={fade}
           custom={1}
-          className="text-[44px] sm:text-6xl md:text-7xl lg:text-[92px] font-semibold tracking-[-0.035em] leading-[0.96]"
+          className="text-[clamp(2.25rem,8vw,5.75rem)] font-semibold tracking-[-0.035em] leading-[1.04] text-balance"
         >
           La vidéo,
           <br />
@@ -141,7 +139,7 @@ export function LandingHero() {
         </motion.h1>
 
         <motion.p
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={fade}
           custom={2}
@@ -152,7 +150,7 @@ export function LandingHero() {
         </motion.p>
 
         <motion.div
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={fade}
           custom={3}
@@ -179,13 +177,13 @@ export function LandingHero() {
             data-testid="hero-cta-secondary"
             className="group inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl border border-white/[0.10] bg-white/[0.04] text-white/85 hover:bg-white/[0.08] hover:border-white/[0.18] hover:text-white text-[15px] transition-all duration-200 backdrop-blur-md"
           >
-            Voir une démo
+            Découvrir le fonctionnement
             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </motion.div>
 
         <motion.p
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={fade}
           custom={4}
@@ -195,28 +193,31 @@ export function LandingHero() {
         </motion.p>
       </motion.div>
 
-      <div className="hidden md:flex absolute bottom-12 left-1/2 -translate-x-1/2 w-[92%] max-w-3xl flex-col gap-3 z-10">
+      <div className="relative z-10 mt-12 w-full max-w-5xl" aria-label="Exemple des étapes de création">
+        <p className="mb-3 text-center text-xs text-white/60">Aperçu du parcours de création</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <PreviewCard
           icon={PenLine}
           title="Script · Hook → Promesse → CTA"
-          status="Généré par Claude · 312 mots · 28s lecture"
-          delay={0.5}
+          status="Structure et narration à valider"
+          delay={prefersReducedMotion ? 0 : 0.1}
           accent="bg-gradient-to-br from-violet-500/20 to-violet-500/0"
         />
         <PreviewCard
           icon={Mic}
           title="Voix · Narration FR studio"
-          status="ElevenLabs · pitch ajusté · 28s"
-          delay={0.65}
+          status="Voix et langue selon ton brief"
+          delay={prefersReducedMotion ? 0 : 0.2}
           accent="bg-gradient-to-br from-fuchsia-500/20 to-fuchsia-500/0"
         />
         <PreviewCard
           icon={Clapperboard}
-          title="Scènes · 8 plans synchronisés"
-          status="WAN 2.2 · 1080p · ratio 9:16"
-          delay={0.8}
+          title="Scènes · Montage et export"
+          status="Format et fichier final vérifiés"
+          delay={prefersReducedMotion ? 0 : 0.3}
           accent="bg-gradient-to-br from-cyan-500/20 to-cyan-500/0"
         />
+        </div>
       </div>
     </section>
   )

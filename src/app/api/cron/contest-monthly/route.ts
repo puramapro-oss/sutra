@@ -1,18 +1,17 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { creditWallet } from '@/lib/smart-split'
 import Stripe from 'stripe'
 
-const CRON_SECRET = process.env.CRON_SECRET
 const MONTHLY_POOL_PCT = 0.04 // 4% du CA
 const MONTHLY_MIN = 50
 // Distribution: 1er=1.2%, 2eme=0.8%, 3eme=0.6%, 4eme=0.4%, 5-10eme=0.2% each = 1.0%
 const PRIZE_DISTRIBUTION = [0.30, 0.20, 0.15, 0.10, 0.05, 0.05, 0.05, 0.05, 0.025, 0.025]
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-03-25.dahlia' })

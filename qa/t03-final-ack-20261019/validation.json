@@ -1,0 +1,36 @@
+{
+  "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "distinct_pass": 211,
+  "fail": 0,
+  "skip": 0,
+  "overlapping_repeats": 4,
+  "product_changes": [],
+  "quality": [
+    {
+      "command": "node --require ./qa/t08/offline.cjs node_modules/typescript/bin/tsc -p qa/t03-final-ack-20261019/tsconfig.json",
+      "exit_code": 0,
+      "log": "typecheck-final.log"
+    },
+    {
+      "command": "node --require ./qa/t08/offline.cjs node_modules/eslint/bin/eslint.js qa/t03-final-ack-20261019/run.mjs qa/t03-final-ack-20261019/settle.mjs qa/t03-final-ack-20261019/migration.test.mts qa/t03-final-ack-20261019/port.test.mts --max-warnings 0",
+      "exit_code": 0,
+      "log": "lint-final.log"
+    }
+  ],
+  "initial_lint": {
+    "exit_code": 1,
+    "reason": "no-console on new QA settlement log",
+    "corrected": true,
+    "log": "lint.log"
+  },
+  "versions": {
+    "node": "v26.0.0",
+    "postgres": "postgres (PostgreSQL) 18.4 (Homebrew)"
+  },
+  "sha256": {
+    "qa/t03-final-ack-20261019/run.mjs": "25e60edd843cbffcddb34b0a76ea745815a191e4b930da43a73a3fa44b295f54",
+    "qa/t03-final-ack-20261019/settle.mjs": "790e1745dff701359255eec97bd09d5db5ec0fea31feaca79103783bc3d5d73c",
+    "qa/t03-final-ack-20261019/port.test.mts": "72f2d94556f3a421bc935c285e5dc21d84106c24b2b6a34f78088fd38b6dbf0e",
+    "qa/t03-final-ack-20261019/migration.test.mts": "a03a4e87a8ac9e50873c8a3bc9a94692be11aef79a982a4d85568ac115bc266c"
+  }
+}

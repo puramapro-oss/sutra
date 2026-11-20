@@ -24,7 +24,7 @@ export default function MentionsLegalesPage() {
           <Link href="/" className="text-xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">SUTRA</span>
           </Link>
-          <Link href="/legal" className="text-sm text-white/40 hover:text-white/60 transition-colors">Retour</Link>
+          <Link href="/legal" className="text-sm text-white/60 hover:text-white/60 transition-colors">Retour</Link>
         </div>
       </nav>
 
@@ -32,7 +32,7 @@ export default function MentionsLegalesPage() {
         <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-display)' }}>
           Mentions <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">legales</span>
         </h1>
-        <p className="text-white/40 text-sm mb-12">Dernieres mise a jour : 2 avril 2026</p>
+        <p className="text-white/60 text-sm mb-12">Dernieres mise a jour : 2 avril 2026</p>
 
         <div className="space-y-10">
           <Section title="1. Editeur du site">

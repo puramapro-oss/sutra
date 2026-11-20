@@ -1,0 +1,170 @@
+{
+  "status": "ambiguous",
+  "message": "Found 7 symbols matching 'handleDelete' (showing 6 of 7). Blast radius differs per candidate (max 2 impacted at risk UNKNOWN; LOW among the candidates that resolved, and at least one could not be walked). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "handleDelete"
+  },
+  "direction": "upstream",
+  "totalCandidates": 7,
+  "candidatesTruncated": true,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 2,
+  "maxRisk": "UNKNOWN",
+  "knownMaxRisk": "LOW",
+  "candidates": [
+    {
+      "uid": "Function:src/hooks/useLibraryVideos.ts:useLibraryVideos.handleDelete@78:2",
+      "name": "handleDelete",
+      "kind": "Function",
+      "filePath": "src/hooks/useLibraryVideos.ts",
+      "line": 79,
+      "score": 0.56,
+      "impactedCount": 2,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    },
+    {
+      "uid": "Function:src/app/(dashboard)/auto/memory/page.tsx:MemoryPage.handleDelete@76:2",
+      "name": "handleDelete",
+      "kind": "Function",
+      "filePath": "src/app/(dashboard)/auto/memory/page.tsx",
+      "line": 77,
+      "score": 0.56,
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    },
+    {
+      "uid": "Function:src/app/(dashboard)/auto/themes/page.tsx:ThemesPage.handleDelete@87:2",
+      "name": "handleDelete",
+      "kind": "Function",
+      "filePath": "src/app/(dashboard)/auto/themes/page.tsx",
+      "line": 88,
+      "score": 0.56,
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    },
+    {
+      "uid": "Function:src/app/(dashboard)/auto/videos/page.tsx:VideosPage.handleDelete@80:2",
+      "name": "handleDelete",
+      "kind": "Function",
+      "filePath": "src/app/(dashboard)/auto/videos/page.tsx",
+      "line": 81,
+      "score": 0.56,
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    },
+    {
+      "uid": "Function:src/app/(dashboard)/auto/schedules/page.tsx:SchedulesPage.handleDelete@140:2",
+      "name": "handleDelete",
+      "kind": "Function",
+      "filePath": "src/app/(dashboard)/auto/schedules/page.tsx",
+      "line": 142,
+      "score": 0.56,
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    },
+    {
+      "uid": "Function:src/app/(dashboard)/voices/page.tsx:VoicesPage.handleDelete@84:2",
+      "name": "handleDelete",
+      "kind": "Function",
+      "filePath": "src/app/(dashboard)/voices/page.tsx",
+      "line": 85,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    }
+  ]
+}
+
+  GitNexus Impact (1.6.12)

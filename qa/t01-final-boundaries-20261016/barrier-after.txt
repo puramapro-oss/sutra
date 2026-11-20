@@ -1,0 +1,29 @@
+✔ waits for an exact current-document GET and its complete body, not just response headers (1.555ms)
+✔ a read completed before goto is retained (0.165584ms)
+✔ POST never satisfies the GET barrier (41.214ms)
+✔ PATCH never satisfies the GET barrier (40.799041ms)
+✔ DELETE never satisfies the GET barrier (41.612791ms)
+✔ HEAD never satisfies the GET barrier (41.490042ms)
+✔ missing read cannot satisfy the barrier (41.48925ms)
+✔ origin read cannot satisfy the barrier (41.462042ms)
+✔ query read cannot satisfy the barrier (41.497167ms)
+✔ duplicate read cannot satisfy the barrier (41.383ms)
+✔ failed read {"status":503} prevents navigation (0.324708ms)
+✔ failed read {"fail":true} prevents navigation (0.142125ms)
+✔ a previous document success cannot satisfy the next document (40.518ms)
+✔ completion of an old document request cannot satisfy the new document (41.450583ms)
+✔ an exact GET from a child frame cannot satisfy the main-document barrier (41.557125ms)
+✔ a document change during the wait fails instead of navigating from stale state (0.21675ms)
+✔ reload waits for the current exact GET body, then requires a new read in the new document (40.568167ms)
+✔ reload preserves failed read {"status":503} (0.242958ms)
+✔ reload preserves failed read {"fail":true} (0.189375ms)
+✔ chromium: native deferred read, barrier, genuine CORS and JS failures (1238.949834ms)
+✔ webkit: native deferred read, barrier, genuine CORS and JS failures (1446.422833ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3611.645416

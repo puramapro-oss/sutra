@@ -1,0 +1,70 @@
+FAIL signup: inputs cannot lose text before client hydration: expect(locator).toBeDisabled() failed
+
+Locator:  getByTestId('name-input')
+Expected: disabled
+Received: enabled
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.be.disabled" with timeout 5000ms
+  - waiting for getByTestId('name-input')
+    9 × locator resolved to <input value="" type="text" id="_R_66hbsnpfbb_" data-testid="name-input" autocomplete="given-name" class="w-full py-3 rounded-xl text-sm text-white/90 placeholder-white/30 pl-11 pr-4 bg-white/[0.03] backdrop-blur-xl border transition-all duration-200 outline-none border-white/[0.06] hover:border-white/[0.12] focus-visible:ring-0"/>
+      - unexpected value "enabled"
+
+PASS signup 375: password visibility reachable by keyboard
+PASS signup 375: duplicate form submission produces one auth request
+PASS signup 375: API rejection remains visible and retry available
+PASS signup 375: interrupted network releases loading and preserves retry
+PASS signup 375: labels, contrast and no horizontal overflow
+PASS signup 1440: password visibility reachable by keyboard
+PASS signup 1440: duplicate form submission produces one auth request
+PASS signup 1440: API rejection remains visible and retry available
+PASS signup 1440: interrupted network releases loading and preserves retry
+PASS signup 1440: labels, contrast and no horizontal overflow
+PASS login 375: password visibility reachable by keyboard
+PASS login 375: duplicate form submission produces one auth request
+PASS login 375: API rejection remains visible and retry available
+PASS login 375: interrupted network releases loading and preserves retry
+PASS login 375: labels, contrast and no horizontal overflow
+PASS login 1440: password visibility reachable by keyboard
+PASS login 1440: duplicate form submission produces one auth request
+PASS login 1440: API rejection remains visible and retry available
+PASS login 1440: interrupted network releases loading and preserves retry
+PASS login 1440: labels, contrast and no horizontal overflow
+PASS signup: confirmation and legal notice use a synthetic identity only
+PASS no unexpected mutation, uncaught error or hydration mismatch
+FAIL signup: inputs cannot lose text before client hydration: expect(locator).toBeDisabled() failed
+
+Locator:  getByTestId('name-input')
+Expected: disabled
+Received: enabled
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.be.disabled" with timeout 5000ms
+  - waiting for getByTestId('name-input')
+    9 × locator resolved to <input value="" type="text" id="_R_66hbsnpfbb_" data-testid="name-input" autocomplete="given-name" class="w-full py-3 rounded-xl text-sm text-white/90 placeholder-white/30 pl-11 pr-4 bg-white/[0.03] backdrop-blur-xl border transition-all duration-200 outline-none border-white/[0.06] hover:border-white/[0.12] focus-visible:ring-0"/>
+      - unexpected value "enabled"
+
+PASS signup 375: password visibility reachable by keyboard
+PASS signup 375: duplicate form submission produces one auth request
+PASS signup 375: API rejection remains visible and retry available
+PASS signup 375: interrupted network releases loading and preserves retry
+PASS signup 375: labels, contrast and no horizontal overflow
+PASS signup 1440: password visibility reachable by keyboard
+PASS signup 1440: duplicate form submission produces one auth request
+PASS signup 1440: API rejection remains visible and retry available
+PASS signup 1440: interrupted network releases loading and preserves retry
+PASS signup 1440: labels, contrast and no horizontal overflow
+PASS login 375: password visibility reachable by keyboard
+PASS login 375: duplicate form submission produces one auth request
+PASS login 375: API rejection remains visible and retry available
+PASS login 375: interrupted network releases loading and preserves retry
+PASS login 375: labels, contrast and no horizontal overflow
+PASS login 1440: password visibility reachable by keyboard
+PASS login 1440: duplicate form submission produces one auth request
+PASS login 1440: API rejection remains visible and retry available
+PASS login 1440: interrupted network releases loading and preserves retry
+PASS login 1440: labels, contrast and no horizontal overflow
+PASS signup: confirmation and legal notice use a synthetic identity only
+PASS no unexpected mutation, uncaught error or hydration mismatch

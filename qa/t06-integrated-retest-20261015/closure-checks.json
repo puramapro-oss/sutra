@@ -1,0 +1,35 @@
+{
+  "status": "PASS_LOCAL_COMPOSITE_PENDING_T01_INTEGRATION",
+  "recordedAt": "2026-10-15T13:38:24.338612+00:00",
+  "base": "56754679abed9aa1e51323c29aed5bef38bc17d0",
+  "productFiles": [
+    "src/lib/social-account-revocation.ts"
+  ],
+  "phases": {
+    "oauth": "PASS",
+    "publication": "PASS",
+    "schedule": "PASS",
+    "auto-publication": "PASS",
+    "postgres-cas": "PASS",
+    "revocation-consumer": "PASS",
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "history": "FAIL",
+    "history-t01": "PASS"
+  },
+  "compositePostgres": {
+    "tests": "9",
+    "pass": "9",
+    "fail": "0",
+    "skipped": "0"
+  },
+  "sourceManifest": "PASS",
+  "diffCheck": "PASS",
+  "gitleaks": "PASS no findings; staged diff only",
+  "privateClustersStopped": true,
+  "gitnexus": "pre-edit LOW; later UNKNOWN; detect_changes critical with unrelated flow associations; partial graph not certified",
+  "externalIO": "No provider requests; synthetic transports; loopback PostgreSQL only",
+  "realConsent": "NOT_TESTED",
+  "realPublication": "NOT_TESTED",
+  "globalDeltaBuild": "NOT_TESTED; T01 integration gate pending"
+}

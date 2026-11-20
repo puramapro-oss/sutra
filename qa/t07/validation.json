@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-12",
+  "node": "26.0.0",
+  "npm": "11.12.1",
+  "next": "16.3.8",
+  "base": "7088a0a3e733de8d2e85f3576bd86627127da369",
+  "productionBuild": {
+    "command": "next build --webpack (spawned by test-ui-isolated.mjs with local service fixtures)",
+    "exitCode": 0,
+    "staticPages": "197/197",
+    "warnings": [
+      "Next Edge Runtime process.cwd import",
+      "Node module.register deprecation"
+    ]
+  },
+  "typecheck": {
+    "command": "node_modules/.bin/tsc --noEmit",
+    "exitCode": 0
+  },
+  "authSession": {
+    "command": "npm run test:auth-session",
+    "tests": 31,
+    "passed": 31,
+    "failed": 0
+  },
+  "browser": {
+    "command": "SUTRA_CHROMIUM_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' SUTRA_UI_PRODUCTION=1 SUTRA_UI_OUTPUT=/tmp/sutra-t07-production node scripts/test-ui-isolated.mjs",
+    "exitCode": 0,
+    "version": "154.0.8037.94",
+    "widths": [
+      320,
+      375,
+      768,
+      1280,
+      1440
+    ],
+    "checks": 200,
+    "axeAudits": 145,
+    "axeTags": [
+      "wcag2a",
+      "wcag2aa"
+    ],
+    "violations": 0,
+    "uncaughtOrHydrationErrors": 0
+  },
+  "lintDelta": {
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 4
+  },
+  "lintGlobal": {
+    "command": "node_modules/.bin/eslint --ignore-pattern '.gitnexus/**' .",
+    "exitCode": 1,
+    "errors": 7,
+    "warnings": 108,
+    "allErrorFilesIdenticalToPR3": true
+  },
+  "externalServices": "SIMULATED",
+  "screenReaderNative": "NON_TESTE",
+  "release": "NON_CERTIFIEE"
+}

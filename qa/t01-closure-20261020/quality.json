@@ -1,0 +1,34 @@
+[
+  {
+    "name": "typecheck",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exit": 0,
+    "seconds": 8.03
+  },
+  {
+    "name": "lint",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "."
+    ],
+    "exit": 0,
+    "seconds": 11.03
+  },
+  {
+    "name": "callback",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "--test",
+      "qa/t06-closure-79cd95b-20261020/callback-errors.mjs"
+    ],
+    "exit": 0,
+    "seconds": 0.13
+  }
+]

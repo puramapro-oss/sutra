@@ -1,0 +1,33 @@
+Changes: 22 files, 55 symbols
+Affected processes: 10
+Risk level: high
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-14 — T01 clôture intégration et OVH, d8691d8 → BATON.md
+  Function journeyDatabase → qa/t08-integration-journey-20261014/database.mts
+  Const settlements → qa/t08-integration-journey-20261014/database.mts
+  Function failure → qa/t08-integration-journey-20261014/database.mts
+  Function ok → qa/t08-integration-journey-20261014/database.mts
+  Function rpc → qa/t08-integration-journey-20261014/database.mts
+  Function accounting → qa/t08-integration-journey-20261014/database.mts
+  Const root → qa/t08-integration-journey-20261014/run.mjs
+  Const environment → qa/t08-integration-journey-20261014/run.mjs
+  Const directory → qa/t08-integration-journey-20261014/run.mjs
+  Const checks → qa/t08-integration-journey-20261014/run.mjs
+  Const selected → qa/t08-integration-journey-20261014/run.mjs
+  Const result → qa/t08-integration-journey-20261014/run.mjs
+  TypeAlias Session → scripts/test-t08-integration-journey.mts
+... and 40 more
+
+Affected execution flows:
+  • GET → Failure (4 steps) — changed: rpc, failure
+  • GET → Ok (4 steps) — changed: rpc, ok
+  • POST → Failure (4 steps) — changed: rpc, failure
+  • POST → Ok (4 steps) — changed: rpc, ok
+  • POST → Failure (3 steps) — changed: rpc, failure
+  • POST → Ok (3 steps) — changed: rpc, ok
+  • POST → Failure (3 steps) — changed: rpc, failure
+  • POST → Ok (3 steps) — changed: rpc, ok
+  • POST → Failure (3 steps) — changed: rpc, failure
+  • POST → Ok (3 steps) — changed: rpc, ok

@@ -1,0 +1,29 @@
+name: Install pinned SUTRA dependencies
+description: Reproducible install including the private SMARANA commit
+inputs:
+  smarana-read-token:
+    description: Read-only access token for puramapro-oss/purama-smarana
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+    - name: Install from lockfile
+      shell: bash
+      env:
+        SMARANA_READ_TOKEN: ${{ inputs.smarana-read-token }}
+        GIT_TERMINAL_PROMPT: '0'
+        GIT_ASKPASS: ${{ github.workspace }}/tooling/git-askpass.sh
+      run: |
+        if [ -z "$SMARANA_READ_TOKEN" ]; then
+          echo '::error::SMARANA_READ_TOKEN with read-only access to purama-smarana is required.'
+          exit 1
+        fi
+        chmod +x tooling/git-askpass.sh
+        npm ci --ignore-scripts --no-audit --no-fund
+    - name: Run dependency install scripts without repository credentials
+      shell: bash
+      run: npm rebuild --no-audit --no-fund

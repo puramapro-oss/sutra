@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { AlertTriangle } from 'lucide-react'
 import { RefreshButton } from '@/components/admin/RefreshButton'
 import { MRRCard } from '@/components/admin/MRRCard'
@@ -40,50 +40,54 @@ export default function AdminDashboard() {
   const [error, setError] = useState<string | null>(null)
   const [refreshing, setRefreshing] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    try {
-      const [statsRes, activityRes, costsRes, refRes] = await Promise.all([
-        fetch('/api/admin/stats'),
-        fetch('/api/admin/stats?type=activity').catch(() => null),
-        fetch('/api/admin/stats?type=service_costs').catch(() => null),
-        fetch('/api/admin/stats?type=referral_stats').catch(() => null),
-      ])
-
+  const dataRequest = useRef<AbortController | null>(null)
+  const fetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return Promise.all([
+        fetch('/api/admin/stats', { signal: controller.signal }),
+        fetch('/api/admin/stats?type=activity', { signal: controller.signal }).catch(() => null),
+        fetch('/api/admin/stats?type=service_costs', { signal: controller.signal }).catch(() => null),
+        fetch('/api/admin/stats?type=referral_stats', { signal: controller.signal }).catch(() => null),
+      ]).then(async ([statsRes, activityRes, costsRes, refRes]) => {
+      if (!active()) return
       if (!statsRes.ok) throw new Error('Erreur chargement stats')
-
       const statsData = await statsRes.json()
-      setStats(statsData)
-
+      commit(() => setStats(statsData))
       if (activityRes?.ok) {
         const activityData = await activityRes.json()
-        setActivity(activityData.events ?? [])
+        commit(() => setActivity(activityData.events ?? []))
       }
       if (costsRes?.ok) {
         const costsData = await costsRes.json()
-        setServiceCosts({ services: costsData.services ?? {} })
+        commit(() => setServiceCosts({ services: costsData.services ?? {} }))
       }
       if (refRes?.ok) {
         const refData = await refRes.json()
-        setReferralStats({
+        commit(() => setReferralStats({
           commissions_paid: refData.commissions_paid ?? 0,
           commissions_pending: refData.commissions_pending ?? 0,
           top_partners: refData.top_partners ?? [],
-        })
+        }))
       }
-
-      setError(null)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur inconnue')
-    } finally {
-      setLoading(false)
-      setRefreshing(false)
-    }
+      commit(() => setError(null))
+    }).catch(err => {
+      if (!active()) return
+      commit(() => setError(err instanceof Error ? err.message : 'Erreur inconnue'))
+    }).finally(() => {
+      commit(() => setLoading(false))
+      commit(() => setRefreshing(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
   useEffect(() => {
     fetchData()
     const interval = setInterval(fetchData, 60000)
-    return () => clearInterval(interval)
+    return () => { clearInterval(interval); dataRequest.current?.abort(); dataRequest.current = null }
   }, [fetchData])
 
   const handleRefresh = () => {

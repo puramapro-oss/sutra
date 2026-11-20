@@ -55,7 +55,7 @@ export function AmbassadorTierBadge({ filleulsCount }: { filleulsCount: number }
             className={`p-2 rounded-lg border ${
               i <= currentIdx
                 ? 'bg-amber-400/15 border-amber-400/40 text-amber-200'
-                : 'bg-white/[0.02] border-white/10 text-white/40'
+                : 'bg-white/[0.02] border-white/10 text-white/60'
             }`}
           >
             <div className="font-semibold">{t.display}</div>

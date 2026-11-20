@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { smarana, type SmaranaMessage } from '@purama/smarana'
-import { buildMuseSystem, NAMA_MUSE_SYSTEM_PROMPT } from '@/lib/nama-muse'
+import { buildMuseSystem } from '@/lib/nama-muse'
 
 const PLAN_LIMITS: Record<string, { maxTokens: number; model: string }> = {
   free: { maxTokens: 2048, model: process.env.ANTHROPIC_MODEL_FAST ?? 'claude-haiku-4-5-20251001' },
@@ -89,5 +89,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
-
-export { NAMA_MUSE_SYSTEM_PROMPT }

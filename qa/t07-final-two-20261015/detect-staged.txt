@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 53 files, 97 symbols
+Affected processes: 372
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 2026-10-15T19:55:14.965312+00:00 — contre-epreuve corrigee → BATON.md
+  Section T07 — 2026-10-15 — FINAL-TWO frontend local → BATON.md
+  Section HANDOFF SUTRA T07 — FINAL-TWO — 2026-10-15 → HANDOFF-SUTRA-T07-FINAL-TWO-20261015.md
+  Section T07 — deux fonctions finales, 15 octobre 2026 → qa/t07-final-two-20261015/README.md
+  Section Intégration antérieure et défauts reproduits → qa/t07-final-two-20261015/README.md
+  Section Tests exécutés et preuves → qa/t07-final-two-20261015/README.md
+  Section Mesures → qa/t07-final-two-20261015/README.md
+  Section Critères demandés et limites exactes → qa/t07-final-two-20261015/README.md
+  Section Intégration T01 / revue T08 → qa/t07-final-two-20261015/README.md
+  Function checks → qa/t07-final-two-20261015/checks.mjs
+  Const reads → qa/t07-final-two-20261015/checks.mjs
+  Const writes → qa/t07-final-two-20261015/checks.mjs
+  Const base → qa/t07-final-two-20261015/contracts.test.mjs
+  Property days → qa/t07-final-two-20261015/contracts.test.mjs
+... and 82 more
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: checks, checks, checks, checks
+  • CommunityScreen → ApiFetch (3 steps) — changed: checks, checks, checks
+  • AdminContestPage → FetchData (3 steps) — changed: checks, checks, checks
+  • AdminUsersPage → FetchUsers (3 steps) — changed: checks, checks, checks
+  • AutoPage → RequestClientJson (3 steps) — changed: checks, checks, checks
+  • CommunityPage → FetchBuddy (3 steps) — changed: checks, checks, checks
+  • CommunityPage → FetchCircles (3 steps) — changed: checks, checks, checks
+  • CommunityPage → FetchWall (3 steps) — changed: checks, checks, checks
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: checks, checks, checks
+  • JeuCreatifPage → Load (3 steps) — changed: checks, checks, checks
+... and 362 more

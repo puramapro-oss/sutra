@@ -1,0 +1,35 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 42 files, 15 symbols
+Affected processes: 372
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T07 — 2026-10-15 — FINAL-TWO frontend local → BATON.md
+  Section T07 — 2026-10-15 — addendum contrat CAS FINAL-TWO → BATON.md
+  Section HANDOFF SUTRA T07 — FINAL-TWO — 2026-10-15 → HANDOFF-SUTRA-T07-FINAL-TWO-20261015.md
+  Section Addendum attendu avec contrat CAS T01 → HANDOFF-SUTRA-T07-FINAL-TWO-20261015.md
+  Section T07 — deux fonctions finales, 15 octobre 2026 → qa/t07-final-two-20261015/README.md
+  Section Contrôles de livraison → qa/t07-final-two-20261015/README.md
+  Section Addendum CAS — contrat T01 du 15 octobre à20:26UTC → qa/t07-final-two-20261015/README.md
+  Function casChecks → qa/t07-final-two-20261015/cas-checks.mjs
+  Const mode → qa/t07-final-two-20261015/cas-checks.mjs
+  Const reads → qa/t07-final-two-20261015/cas-checks.mjs
+  Const writes → qa/t07-final-two-20261015/cas-checks.mjs
+  Section 2026-10-13 — T05 complément fournisseur livré localement → task_plan.md
+  Section T07 — 2026-10-15 — FINAL-TWO frontend local → task_plan.md
+  Section T07 — 2026-10-15 — addendum contrat CAS FINAL-TWO → task_plan.md
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: casChecks, casChecks, casChecks, casChecks
+  • CommunityScreen → ApiFetch (3 steps) — changed: casChecks, casChecks, casChecks
+  • AdminContestPage → FetchData (3 steps) — changed: casChecks, casChecks, casChecks
+  • AdminUsersPage → FetchUsers (3 steps) — changed: casChecks, casChecks, casChecks
+  • AutoPage → RequestClientJson (3 steps) — changed: casChecks, casChecks, casChecks
+  • CommunityPage → FetchBuddy (3 steps) — changed: casChecks, casChecks, casChecks
+  • CommunityPage → FetchCircles (3 steps) — changed: casChecks, casChecks, casChecks
+  • CommunityPage → FetchWall (3 steps) — changed: casChecks, casChecks, casChecks
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: casChecks, casChecks, casChecks
+  • JeuCreatifPage → Load (3 steps) — changed: casChecks, casChecks, casChecks
+... and 362 more

@@ -1,0 +1,58 @@
+✔ secret guard rejects /virtual/.env before all instrumented I/O (2.13575ms)
+✔ secret guard rejects /virtual/.env.local before all instrumented I/O (0.299709ms)
+✔ secret guard rejects /virtual/.env.test before all instrumented I/O (0.263167ms)
+✔ secret guard rejects file:///virtual/.env before all instrumented I/O (0.268375ms)
+✖ secret guard rejects file:///virtual/%2Eenv before all instrumented I/O (0.455208ms)
+✖ secret guard rejects file:///virtual/%2Eenv%2Elocal before all instrumented I/O (0.2355ms)
+✔ ordinary source files remain readable (0.219542ms)
+✔ network guard rejects api.example.invalid before fetch and socket I/O (0.315584ms)
+✔ network guard rejects 169.254.169.254 before fetch and socket I/O (0.793125ms)
+✔ network guard rejects 10.0.0.1 before fetch and socket I/O (0.453791ms)
+✔ network guard rejects 127.0.0.1.example.invalid before fetch and socket I/O (0.37225ms)
+✔ loopback fixture access remains allowed (0.337542ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 10
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 43.656583
+
+✖ failing tests:
+
+test at qa/t08/integrated/offline.test.mjs:28:3
+✖ secret guard rejects file:///virtual/%2Eenv before all instrumented I/O (0.455208ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t08-qa-integrated-20261012/qa/t08/integrated/offline.test.mjs:30:80)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /T08_ENV_FILE_DENIED/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at qa/t08/integrated/offline.test.mjs:28:3
+✖ secret guard rejects file:///virtual/%2Eenv%2Elocal before all instrumented I/O (0.2355ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t08-qa-integrated-20261012/qa/t08/integrated/offline.test.mjs:30:80)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /T08_ENV_FILE_DENIED/,
+    operator: 'throws',
+    diff: 'simple'
+  }

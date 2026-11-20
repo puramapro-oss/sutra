@@ -27,7 +27,7 @@ const statusIcon = {
 }
 
 const statusColor = {
-  pending: 'text-white/30',
+  pending: 'text-white/70',
   running: 'text-violet-400',
   completed: 'text-emerald-400',
   error: 'text-red-400',
@@ -96,7 +96,7 @@ export function PipelineProgress({
             <div className="absolute left-0 top-2 bottom-2 w-px bg-violet-500/20 ml-[18px]" />
             <div className="flex items-center gap-2 mb-2 ml-1">
               <Sparkles className="h-3 w-3 text-violet-400/60" />
-              <span className="text-[11px] text-violet-400/60 font-medium uppercase tracking-wider">
+              <span className="text-[11px] text-violet-300 font-medium uppercase tracking-wider">
                 En parallele
               </span>
             </div>
@@ -138,7 +138,7 @@ export function PipelineProgress({
                 ? 'Erreur lors de la generation'
                 : 'Generation en cours...'}
           </h3>
-          <p className="text-xs text-white/40 mt-0.5">
+          <p className="text-xs text-white/70 mt-0.5">
             {completedCount}/{steps.length} etapes completees
             {isRunning && ` - ${formatElapsed(elapsed)}`}
           </p>
@@ -172,7 +172,7 @@ export function PipelineProgress({
                 <p className="text-sm font-semibold text-emerald-400">
                   Ta video est prete !
                 </p>
-                <p className="text-xs text-white/40">
+                <p className="text-xs text-white/70">
                   Temps total : {formatElapsed(elapsed)}
                 </p>
               </div>
@@ -214,13 +214,13 @@ function StepRow({ step }: { step: PipelineStep }) {
               ? 'text-white'
               : step.status === 'error'
                 ? 'text-red-400'
-                : 'text-white/30'
+                : 'text-white/70'
         )}
       >
         {step.label}
       </span>
       {step.duration && (
-        <span className="text-xs text-white/30 tabular-nums">
+        <span className="text-xs text-white/70 tabular-nums">
           {step.duration}
         </span>
       )}

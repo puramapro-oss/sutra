@@ -1,0 +1,43 @@
+✔ ElevenLabs generateVoice: succes (3.282458ms)
+✔ ElevenLabs generateVoice: 401 remonte explicitement (0.510625ms)
+✔ ElevenLabs generateVoice: 429 non rejoue, erreur explicite (0.192375ms)
+✔ ElevenLabs generateVoice: cle absente -> erreur SUTRA_ENV_MISSING explicite (0.077875ms)
+✔ ElevenLabs listVoices: 403 refuse + reponse invalide detectee (0.339875ms)
+✔ Suno: succes apres polling (3002.009375ms)
+✔ Suno: POST 500 = UNE SEULE tentative (pas de rejeu génératif payant) (0.398167ms)
+✔ Suno: 401 au poll -> abandon immediat (pas de boucle 2 min) (0.424167ms)
+✔ Suno: reponse invalide (id absent) -> detail fournisseur expurge (0.182ms)
+✔ Suno: cle absente -> erreur explicite (0.088583ms)
+✔ RunPod submit: succes avec jobId (0.330333ms)
+✔ RunPod submit: 401 explicite (0.124375ms)
+✔ RunPod submit: reponse invalide (pas de job ID) (0.140583ms)
+✔ RunPod: endpoint absent -> erreur explicite (pas de crash import) (0.053833ms)
+✔ generateVoiceWithFallback: 500 ne soumet jamais une seconde synthese (0.176375ms)
+✔ generateVoiceWithFallback: erreur permanente preservee sans attente ni retry (0.086375ms)
+(node:66458) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:66458) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ Suno ambiguous submission never reflects provider payload or resubmits (4.124209ms)
+✔ Suno polling bounds and redacts malformed responses without resubmission (1.784ms)
+✔ smart paid timeout never invokes WAN and restart reuses submission barrier (7.065625ms)
+✔ visual fallback never converts an uncertain paid outcome to stock or WAN (0.262083ms)
+✔ a configured WAN cannot replace an explicit LTX execution (0.088083ms)
+✔ music: no configured provider means explicit error, never empty success (0.113542ms)
+✔ music: failed primary submission never cascades to other paid providers (0.182708ms)
+✔ RunPod: terminal FAILED retains job and never invokes retry/cancel (0.298417ms)
+✔ RunPod: terminal CANCELLED retains job and never invokes retry/cancel (0.125291ms)
+✔ RunPod: terminal TIMED_OUT retains job and never invokes retry/cancel (0.108042ms)
+✔ RunPod: network/unknown status/404/local timeout retain remote identity for explicit resumption (0.242083ms)
+✔ RunPod: uncertain submit is one request with explicit unknown outcome (0.164917ms)
+✔ WAN: success carries job/status/unknown GPU cost; download failure resumes that job (0.589875ms)
+✔ music: legacy URL API never silently substitutes another configured provider (0.195791ms)
+✔ voice/music: uncertain spend is permanent for the existing queue, with safe provenance (0.319167ms)
+✔ visual: storage failure after paid WAN/LTX success retains job, never generates a fallback (0.869125ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3632.105667

@@ -135,7 +135,7 @@ export default function ChangelogPage() {
                   <div className="absolute left-2.5 sm:left-4.5 top-1 w-3 h-3 rounded-full bg-violet-500 border-2 border-[#06050e]" />
 
                   {/* Date */}
-                  <time className="block text-xs text-white/30 mb-2 font-mono">
+                  <time className="block text-xs text-white/60 mb-2 font-mono">
                     {formatDate(entry.date)}
                   </time>
 
@@ -170,7 +170,7 @@ export default function ChangelogPage() {
       <div className="border-t border-white/[0.06] py-8 text-center">
         <Link
           href="/"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Retour a l&apos;accueil
         </Link>

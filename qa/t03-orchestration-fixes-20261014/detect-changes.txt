@@ -1,0 +1,28 @@
+Changes: 38 files, 198 symbols
+Affected processes: 3
+Risk level: medium
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-14 — T01 clôture intégration et OVH, d8691d8 → BATON.md
+  Const host → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Const port → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Const database → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Const connection → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Const pool → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Function query → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Const originalFetch → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Const transport → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Function json → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Function newJob → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Const user → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Function counters → qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts
+  Const here → qa/t03-orchestration-fixes-20261014/postgres.mjs
+... and 183 more
+
+Affected execution flows:
+  • GET → Run (4 steps) — changed: runVideoJob, run
+  • GET → Music (4 steps) — changed: runVideoJob, executeProductionStep
+  • GET → Script (4 steps) — changed: runVideoJob, executeProductionStep
+
+  GitNexus Detect Changes (1.6.12)

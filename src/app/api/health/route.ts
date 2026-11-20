@@ -24,11 +24,11 @@ async function checkService(
       ),
     ])
     return { status: 'ok', latency: Date.now() - start }
-  } catch (err) {
+  } catch {
     return {
       status: 'down',
       latency: Date.now() - start,
-      details: err instanceof Error ? err.message : 'unknown',
+      details: 'service_unavailable',
     }
   }
 }

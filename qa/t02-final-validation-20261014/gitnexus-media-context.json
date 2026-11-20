@@ -1,0 +1,159 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/lib/private-media.ts:authorizePublicationMedia",
+    "name": "authorizePublicationMedia",
+    "kind": "Function",
+    "filePath": "src/lib/private-media.ts",
+    "startLine": 89,
+    "endLine": 123
+  },
+  "epistemic": "exact",
+  "incoming": {
+    "calls": [
+      {
+        "uid": "Function:src/app/api/media/[reference]/route.ts:GET",
+        "name": "GET",
+        "filePath": "src/app/api/media/[reference]/route.ts"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Function:src/lib/private-media.ts:assertMediaOwner",
+        "name": "assertMediaOwner",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Function:src/lib/private-media.ts:mediaPath",
+        "name": "mediaPath",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Function:src/lib/private-media.ts:signature",
+        "name": "signature",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Function:src/lib/supabase.ts:createServiceClient",
+        "name": "createServiceClient",
+        "filePath": "src/lib/supabase.ts"
+      }
+    ],
+    "uses": [
+      {
+        "uid": "Interface:src/lib/private-media.ts:PublicationGrant",
+        "name": "PublicationGrant",
+        "filePath": "src/lib/private-media.ts"
+      }
+    ],
+    "accesses": [
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.expires",
+        "name": "expires",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.expires",
+        "name": "expires",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.kind",
+        "name": "kind",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.kind",
+        "name": "kind",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.kind",
+        "name": "kind",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.kind",
+        "name": "kind",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.operationId",
+        "name": "operationId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.pathHash",
+        "name": "pathHash",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.productionId",
+        "name": "productionId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.productionId",
+        "name": "productionId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.userId",
+        "name": "userId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.userId",
+        "name": "userId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.userId",
+        "name": "userId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.userId",
+        "name": "userId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.userId",
+        "name": "userId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.userId",
+        "name": "userId",
+        "filePath": "src/lib/private-media.ts"
+      },
+      {
+        "uid": "Property:src/lib/private-media.ts:PublicationGrant.userId",
+        "name": "userId",
+        "filePath": "src/lib/private-media.ts"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "proc_108_get",
+      "name": "GET → Origin",
+      "step_index": 2,
+      "step_count": 4
+    },
+    {
+      "id": "proc_115_get",
+      "name": "GET → Signature",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_195_get",
+      "name": "GET → CreateServiceClient",
+      "step_index": 2,
+      "step_count": 4
+    }
+  ]
+}

@@ -16,7 +16,7 @@ export default function ScheduledPostsTable({ posts }: ScheduledPostsTableProps)
       <Card>
         <CardContent className="py-8 text-center">
           <Calendar className="h-8 w-8 text-white/15 mx-auto mb-2" />
-          <p className="text-sm text-white/30">Aucune publication programmee</p>
+          <p className="text-sm text-white/60">Aucune publication programmee</p>
         </CardContent>
       </Card>
     )
@@ -24,14 +24,19 @@ export default function ScheduledPostsTable({ posts }: ScheduledPostsTableProps)
 
   return (
     <Card>
-      <div className="overflow-x-auto">
+      <div
+        className="overflow-x-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500"
+        tabIndex={0}
+        role="region"
+        aria-label="Publications programmées"
+      >
         <table className="w-full" data-testid="scheduled-table">
           <thead>
             <tr className="border-b border-white/[0.06]">
-              <th className="text-left text-xs font-medium text-white/40 px-4 py-3">Video</th>
-              <th className="text-left text-xs font-medium text-white/40 px-4 py-3">Plateforme</th>
-              <th className="text-left text-xs font-medium text-white/40 px-4 py-3">Date</th>
-              <th className="text-left text-xs font-medium text-white/40 px-4 py-3">Statut</th>
+              <th className="text-left text-xs font-medium text-white/60 px-4 py-3">Video</th>
+              <th className="text-left text-xs font-medium text-white/60 px-4 py-3">Plateforme</th>
+              <th className="text-left text-xs font-medium text-white/60 px-4 py-3">Date</th>
+              <th className="text-left text-xs font-medium text-white/60 px-4 py-3">Statut</th>
             </tr>
           </thead>
           <tbody>

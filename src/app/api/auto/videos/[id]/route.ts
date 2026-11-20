@@ -6,8 +6,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   try {
     const { id } = await params
     const supabase = await createServerClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
 
     const body = await req.json().catch(() => ({}))
     const updates: Record<string, unknown> = {}
@@ -22,15 +22,29 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     }
 
     const service = createServiceClient()
+    const current = await service.from('sutra_auto_videos').select('status,published_platforms').eq('id', id).eq('user_id', user.id).maybeSingle()
+    if (current.error || !current.data) return NextResponse.json({ error: 'Video indisponible' }, { status: 404 })
+    if (updates.status && (!['ready', 'pending_approval'].includes(current.data.status)
+      || (current.data.published_platforms?.length ?? 0) > 0)) {
+      return NextResponse.json({ error: 'Une publication engagee ne peut pas etre remise a zero' }, { status: 409 })
+    }
+    if (updates.status) {
+      const journal = await service.from('social_publication_journals').select('operations').eq('kind', 'auto')
+        .eq('production_id', id).eq('user_id', user.id).maybeSingle()
+      if (journal.error || journal.data?.operations?.length) {
+        return NextResponse.json({ error: 'Une publication engagee ne peut pas etre remise a zero' }, { status: 409 })
+      }
+    }
     const { data, error } = await service
       .from('sutra_auto_videos')
       .update(updates)
+      .eq('status', current.data.status)
       .eq('id', id)
       .eq('user_id', user.id)
       .select()
       .single()
 
-    if (error) throw error
+    if (error || !data) return NextResponse.json({ error: 'Transition non confirmee' }, { status: 409 })
     return NextResponse.json({ video: data })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'
@@ -42,17 +56,27 @@ export async function DELETE(_req: Request, { params }: { params: Promise<{ id: 
   try {
     const { id } = await params
     const supabase = await createServerClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
 
     const service = createServiceClient()
-    const { error } = await service
+    // Occurrence identity and submission evidence must survive deletion attempts.
+    const current = await service.from('sutra_auto_videos').select('status,schedule_id,published_platforms').eq('id', id).eq('user_id', user.id).maybeSingle()
+    if (current.error || !current.data) return NextResponse.json({ error: 'Video indisponible' }, { status: 404 })
+    const journal = await service.from('social_publication_journals').select('production_id').eq('kind', 'auto')
+      .eq('production_id', id).eq('user_id', user.id).maybeSingle()
+    if (journal.error || journal.data || current.data.schedule_id || (current.data.published_platforms?.length ?? 0) > 0
+      || !['ready', 'pending_approval', 'failed'].includes(current.data.status)) {
+      return NextResponse.json({ error: 'Occurrence ou historique de publication a conserver' }, { status: 409 })
+    }
+    const { data: deleted, error } = await service
       .from('sutra_auto_videos')
       .delete()
+      .eq('status', current.data.status)
       .eq('id', id)
-      .eq('user_id', user.id)
+      .eq('user_id', user.id).select('id').maybeSingle()
 
-    if (error) throw error
+    if (error || !deleted) return NextResponse.json({ error: 'Suppression non confirmee' }, { status: 409 })
     return NextResponse.json({ success: true })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Erreur interne'

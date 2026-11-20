@@ -1,0 +1,58 @@
+[
+  {
+    "name": "routes",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "scripts/test-t06-social-routes.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 439
+  },
+  {
+    "name": "consumers",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^PUBLICATION",
+      "scripts/test-release-regressions.mts"
+    ],
+    "status": "FAIL",
+    "exitCode": 1,
+    "signal": null,
+    "durationMs": 517
+  },
+  {
+    "name": "journey",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^J(01|05|06|08|09|11|12|13)",
+      "scripts/test-t08-integration-journey.mts"
+    ],
+    "status": "FAIL",
+    "exitCode": 1,
+    "signal": null,
+    "durationMs": 568
+  }
+]

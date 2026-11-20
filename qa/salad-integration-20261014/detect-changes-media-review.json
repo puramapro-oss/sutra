@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-10-14T01:06:14.492829+00:00",
+  "scope": "staged",
+  "changedFiles": 10,
+  "changedSymbols": 6,
+  "graphRisk": "critical",
+  "graphReportedFlows": 359,
+  "actualEditedSourcePaths": [
+    "src/lib/media-probe.ts",
+    "scripts/ui-isolated/t07-flows.mjs"
+  ],
+  "limitations": [
+    "Shared graph associates generic properties and test-flow function with unrelated app flows",
+    "CLI display is truncated; no exhaustive impact certification claimed"
+  ],
+  "review": "Only media decoder error diagnostics and the browser error assertion changed; all other staged paths are bounded evidence/manifest. Local contracts/media/quality pass; full browser gate pending."
+}

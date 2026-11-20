@@ -1,0 +1,60 @@
+{
+  "observedAt": "2026-10-14T04:14:21.745Z",
+  "checks": [
+    {
+      "path": "/library",
+      "http": 200,
+      "contract": true
+    },
+    {
+      "path": "/api/create",
+      "http": 400,
+      "contract": true,
+      "invalidPayload": true,
+      "providerCalls": 0
+    },
+    {
+      "path": "/api/production",
+      "http": 400,
+      "contract": true,
+      "invalidPayload": true,
+      "providerCalls": 0
+    },
+    {
+      "path": "/api/video/export",
+      "http": 400,
+      "contract": true,
+      "invalidPayload": true,
+      "providerCalls": 0
+    },
+    {
+      "path": "/api/subtitles",
+      "http": 200,
+      "contract": true,
+      "providerCalls": 0
+    },
+    {
+      "path": "/api/subtitles/export",
+      "http": 200,
+      "contract": true,
+      "exactContent": true,
+      "providerCalls": 0
+    },
+    {
+      "path": "/api/media/[owned-fixture]",
+      "http": 307,
+      "contract": true,
+      "exactBytes": true,
+      "sha256Matches": true,
+      "rangeStatus": 206,
+      "anonymousStatus": 401,
+      "foreignOwnerStatus": 404,
+      "providerCalls": 0
+    }
+  ],
+  "generationRequests": 0,
+  "identityVerified": true,
+  "pass": true,
+  "fixtureRemoved": true,
+  "testSessionRevoked": true
+}

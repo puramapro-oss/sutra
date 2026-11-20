@@ -7,18 +7,25 @@ import { usePublish } from '@/hooks/usePublish'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { LoadingTimeout } from '@/components/ui/LoadingTimeout'
 import { EmptyState } from '@/components/ui/EmptyState'
+import { Button } from '@/components/ui/Button'
 import VideoPublishCard from '@/components/publish/VideoPublishCard'
 import ScheduledPostsTable from '@/components/publish/ScheduledPostsTable'
 import PastPostsList from '@/components/publish/PastPostsList'
 import type { PlatformId } from '@/components/publish/constants'
 
 export default function PublishPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <PublishPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function PublishPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const {
     videos,
     scheduledPosts,
     pastPosts,
     loading,
+    loadError,
     publishStates,
     publishing,
     zernioResults,
@@ -44,6 +51,16 @@ export default function PublishPage() {
 
   if (authLoading) return publishSkeleton
 
+  if (loadError && !loading) {
+    return (
+      <div className="space-y-4 max-w-5xl mx-auto">
+        <h1 className="text-2xl font-bold text-white" data-testid="publish-title">Publication</h1>
+        <p role="alert" className="text-sm text-white/70">{loadError}</p>
+        <Button onClick={fetchData}>Réessayer</Button>
+      </div>
+    )
+  }
+
   return (
     <LoadingTimeout loading={loading} onRetry={fetchData} skeleton={publishSkeleton}>
       <motion.div
@@ -57,7 +74,7 @@ export default function PublishPage() {
           <h1 className="text-2xl font-bold text-white" data-testid="publish-title">
             Publication
           </h1>
-          <p className="text-sm text-white/40 mt-1">
+          <p className="text-sm text-white/60 mt-1">
             Publie tes videos sur YouTube, TikTok, Instagram, Facebook, X et LinkedIn
           </p>
         </div>

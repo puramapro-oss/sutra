@@ -1,0 +1,46 @@
+{
+  "target": {
+    "id": "Function:src/lib/storyboard.ts:getPollinationsUrl",
+    "name": "getPollinationsUrl",
+    "type": "Function",
+    "filePath": "src/lib/storyboard.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Hooks",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/components/storyboard/SceneCard.tsx:SceneCard",
+        "name": "SceneCard",
+        "filePath": "src/components/storyboard/SceneCard.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

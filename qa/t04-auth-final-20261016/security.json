@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "findingCount": 0,
+  "tool": "gitleaks 8.30.1",
+  "scope": "staged diff excluding only scanner own three receipts; no historical whole-branch claim",
+  "excludedReceipts": [
+    "qa/t04-auth-final-20261016/gitleaks.json",
+    "qa/t04-auth-final-20261016/gitleaks.txt",
+    "qa/t04-auth-final-20261016/security.json"
+  ],
+  "redact": 100,
+  "stagedDiffSha256": "2a95874c63df61ea1749e8c6603660271ce1a0951ec8e532d490ef87f48dd036",
+  "diffCheck": "PASS after removing surplus EOF whitespace from index log"
+}

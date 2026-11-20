@@ -1,0 +1,351 @@
+{
+  "status": "PASS_LOCAL_FIXTURES",
+  "uniqueAssertions": 61,
+  "pass": 61,
+  "fail": 0,
+  "campaigns": [
+    {
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json",
+      "pass": 15,
+      "fail": 0
+    },
+    {
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json",
+      "pass": 30,
+      "fail": 4
+    },
+    {
+      "evidence": "qa/t07-frontend-journey-20261014/journey-retry/results.json",
+      "pass": 6,
+      "fail": 0
+    },
+    {
+      "evidence": "qa/t07-frontend-journey-20261014/visual/results.json",
+      "pass": 6,
+      "fail": 0
+    },
+    {
+      "evidence": "qa/t07-frontend-journey-20261014/private-download-after/results.json",
+      "pass": 9,
+      "fail": 0
+    },
+    {
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json",
+      "pass": 18,
+      "fail": 0
+    },
+    {
+      "evidence": "qa/t07-frontend-journey-20261014/visual-download/results.json",
+      "pass": 4,
+      "fail": 0
+    }
+  ],
+  "assertions": [
+    {
+      "name": "unaccepted test identity sees gate and no implicit acceptance",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "mentions link opens actual legal document (HTTP 200)",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "375: modal semantics and initial focus",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "375: keyboard remains in consent without dismissing on Escape",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "375: no horizontal overflow",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "1440: modal semantics and initial focus",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "1440: keyboard remains in consent without dismissing on Escape",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "1440: no horizontal overflow",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "consent contrast dark",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "consent contrast light",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "consent contrast oled",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "failed acceptance retains document and retry; no grant persisted",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "four explicit acceptances persist through actual local API and reload",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "stalled consent recovers within 12 seconds and never advances",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/after/results.json"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/visual-download/results.json"
+    },
+    {
+      "name": "login and explicit consent open empty library",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/visual-download/results.json"
+    },
+    {
+      "name": "375: API account notice and keyboard generation form",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "375: queued request, uncertain status, retry preserves intent without duplicate",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "375: remote GPU disabled and production failure remains actionable",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "375: library failure is not an empty success and retry works",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "375: failed video never pretends to be generating and player is disabled",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "375: missing sources refuse export with visible reason and no request",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-retry/results.json"
+    },
+    {
+      "name": "375: draft without media has truthful state and disabled controls",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "375: generating without media has truthful state and disabled controls",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "375: ready without media has truthful state and disabled controls",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "375: unverified result cannot be downloaded",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "375: mismatched proof is not validation",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "375: verified saved result downloads existing bytes without a render",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "375: failed status with stale verified bytes never offers final download",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "375: simulated export outage recovers, one request for simultaneous clicks",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "375: editor no horizontal overflow",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "375: social account absent; simulated consent unavailable does not navigate",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "1440: API account notice and keyboard generation form",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "1440: queued request, uncertain status, retry preserves intent without duplicate",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "1440: remote GPU disabled and production failure remains actionable",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "1440: library failure is not an empty success and retry works",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "1440: failed video never pretends to be generating and player is disabled",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "1440: missing sources refuse export with visible reason and no request",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-retry/results.json"
+    },
+    {
+      "name": "1440: draft without media has truthful state and disabled controls",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "1440: generating without media has truthful state and disabled controls",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "1440: ready without media has truthful state and disabled controls",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "1440: unverified result cannot be downloaded",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "1440: mismatched proof is not validation",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "1440: verified saved result downloads existing bytes without a render",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "1440: failed status with stale verified bytes never offers final download",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "1440: simulated export outage recovers, one request for simultaneous clicks",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/player-regression/results.json"
+    },
+    {
+      "name": "1440: editor no horizontal overflow",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "1440: social account absent; simulated consent unavailable does not navigate",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/journey-after/results.json"
+    },
+    {
+      "name": "375: settled unverified player has readable notice and no lingering consent modal",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/visual/results.json"
+    },
+    {
+      "name": "375: all 14 social cards finish entrance animation and remain in viewport width",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/visual/results.json"
+    },
+    {
+      "name": "1440: settled unverified player has readable notice and no lingering consent modal",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/visual/results.json"
+    },
+    {
+      "name": "1440: all 14 social cards finish entrance animation and remain in viewport width",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/visual/results.json"
+    },
+    {
+      "name": "375: private media 307 to inline cross-origin storage downloads at keyboard",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/private-download-after/results.json"
+    },
+    {
+      "name": "1440: private media 307 to inline cross-origin storage downloads at keyboard",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/private-download-after/results.json"
+    },
+    {
+      "name": "download denied: no file, sanitized visible error and retry enabled",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/private-download-after/results.json"
+    },
+    {
+      "name": "download html: no file, sanitized visible error and retry enabled",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/private-download-after/results.json"
+    },
+    {
+      "name": "download corrupt: no file, sanitized visible error and retry enabled",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/private-download-after/results.json"
+    },
+    {
+      "name": "download retry after failure: one fetch for simultaneous clicks, hash preserved",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/private-download-after/results.json"
+    },
+    {
+      "name": "download suspended body: bounded timeout and retry; no file",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/private-download-after/results.json"
+    },
+    {
+      "name": "375: settled verified download control has focus, contrast and no overflow",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/visual-download/results.json"
+    },
+    {
+      "name": "1440: settled verified download control has focus, contrast and no overflow",
+      "status": "PASS",
+      "evidence": "qa/t07-frontend-journey-20261014/visual-download/results.json"
+    }
+  ],
+  "rule": "Latest named assertion only; previous FAIL preserved in original evidence. Shared setup/error checks count once. No production or provider assertion."
+}

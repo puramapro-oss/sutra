@@ -1,0 +1,27 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:63537
+- Network:       http://127.0.0.1:63537
+✓ Ready in 228ms
+✓ Running next.config.ts took 108ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+○ Compiling /login ...
+ GET /login 200 in 1320ms (next.js: 1000ms, proxy.ts: 32ms, application-code: 289ms)
+ GET /login?next=/library 200 in 29ms (next.js: 1.3ms, proxy.ts: 4ms, application-code: 24ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 1941ms (next.js: 1875ms, proxy.ts: 20ms, application-code: 45ms)
+ GET /library 200 in 27ms (next.js: 1.3ms, proxy.ts: 5ms, application-code: 21ms)
+ POST /api/legal/accept 200 in 729ms (next.js: 420ms, proxy.ts: 2ms, application-code: 306ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.9ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 259ms (next.js: 0.7ms, proxy.ts: 2.0ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 259ms (next.js: 0.8ms, proxy.ts: 2.0ms, application-code: 256ms)
+ GET /ma-memoire 200 in 438ms (next.js: 283ms, proxy.ts: 5ms, application-code: 150ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /ma-memoire 200 in 23ms (next.js: 1.2ms, proxy.ts: 4ms, application-code: 18ms)
+[?25h

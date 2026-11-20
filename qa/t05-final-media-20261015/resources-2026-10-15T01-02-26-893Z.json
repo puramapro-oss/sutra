@@ -1,0 +1,44 @@
+{
+  "exports": [],
+  "checks": [
+    {
+      "case": "slot-transfer-race",
+      "observed": {
+        "active": 2,
+        "waiting": 0,
+        "max": 1
+      }
+    },
+    {
+      "case": "queue-timeout",
+      "beforeRelease": {
+        "settled": false,
+        "state": {
+          "active": 1,
+          "waiting": 0,
+          "max": 1
+        }
+      },
+      "elapsedMs": 726.1899169999999
+    },
+    {
+      "case": "stalled-download-deadline",
+      "elapsedMs": 251.81216700000004,
+      "reason": "Telechargement media refuse ou interrompu",
+      "cleanup": "PASS"
+    },
+    {
+      "case": "actual-child-timeouts",
+      "elapsedMs": 83.87537499999985,
+      "active": 0
+    },
+    {
+      "case": "resumable-retention-and-success-cleanup",
+      "created": [
+        "sutra-compose-t05-final-media-owned-resume-71aa818a9cd8c408"
+      ],
+      "retainedOnFailure": true,
+      "removedOnSuccess": true
+    }
+  ]
+}

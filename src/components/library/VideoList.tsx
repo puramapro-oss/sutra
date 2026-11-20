@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import {
   Film,
@@ -34,7 +34,6 @@ export default function VideoList({
   onRegenerate,
   onToggleFavorite,
 }: VideoListProps) {
-  const router = useRouter()
 
   return (
     <div className="space-y-2">
@@ -47,23 +46,16 @@ export default function VideoList({
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: Math.min(index * 0.03, 0.4) }}
             data-testid={`video-list-${video.id}`}
-            onClick={() => {
-              if (video.status === 'ready' || video.status === 'published') {
-                router.push(`/library/${video.id}`)
-              } else if (video.status === 'draft') {
-                router.push(`/create?draft=${video.id}`)
-              }
-            }}
             className={cn(
-              'group flex items-center gap-4 p-3 rounded-xl cursor-pointer',
+              'group grid grid-cols-[5rem_minmax(0,1fr)] sm:flex items-center gap-3 p-3 rounded-xl',
               'bg-white/[0.02] backdrop-blur-xl border border-white/[0.06]',
               'hover:border-violet-500/20 hover:bg-white/[0.04] transition-all duration-200'
             )}
           >
             {/* Thumbnail */}
-            <div className="relative w-24 sm:w-32 aspect-video rounded-lg overflow-hidden shrink-0 bg-white/[0.02]">
+            <div className="relative w-20 sm:w-32 aspect-video rounded-lg overflow-hidden shrink-0 bg-white/[0.02]">
               {video.thumbnail_url ? (
-                <img
+                <img loading="lazy" decoding="async"
                   src={video.thumbnail_url}
                   alt={video.title ?? 'Video'}
                   className="w-full h-full object-cover"
@@ -81,9 +73,11 @@ export default function VideoList({
             {/* Info */}
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-semibold text-white/90 truncate">
-                {video.title ?? 'Video sans titre'}
+                {video.status === 'draft' || video.status === 'ready' || video.status === 'published' ? (
+                  <Link href={video.status === 'draft' ? `/create?draft=${video.id}` : `/library/${video.id}`} className="hover:underline">{video.title ?? 'Video sans titre'}</Link>
+                ) : (video.title ?? 'Video sans titre')}
               </h3>
-              <div className="flex items-center gap-2 mt-1 text-xs text-white/40 flex-wrap">
+              <div className="flex items-center gap-2 mt-1 text-xs text-white/65 flex-wrap">
                 <span className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
                   {formatRelativeDate(video.created_at)}
@@ -113,14 +107,14 @@ export default function VideoList({
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="col-span-2 flex flex-wrap items-center justify-end gap-1 shrink-0">
               <button
                 data-testid={`list-share-${video.id}`}
                 onClick={(e) => {
                   e.stopPropagation()
                   onShare(video.id)
                 }}
-                className="p-1.5 rounded-lg text-white/30 hover:text-violet-400 transition-colors"
+                className="p-1.5 rounded-lg text-white/65 hover:text-violet-400 transition-colors"
                 aria-label="Partager"
               >
                 <Share2 className="h-4 w-4" />
@@ -142,7 +136,7 @@ export default function VideoList({
                     e.stopPropagation()
                     onRegenerate(video)
                   }}
-                  className="p-1.5 rounded-lg text-white/30 hover:text-violet-400 transition-colors"
+                  className="p-1.5 rounded-lg text-white/65 hover:text-violet-400 transition-colors"
                   aria-label="Regenerer"
                 >
                   <RefreshCw className="h-4 w-4" />
@@ -159,9 +153,10 @@ export default function VideoList({
                   'p-1.5 rounded-lg transition-colors',
                   favorites.has(video.id)
                     ? 'text-red-400'
-                    : 'text-white/30 hover:text-red-400'
+                    : 'text-white/65 hover:text-red-400'
                 )}
                 aria-label="Favori"
+                aria-pressed={favorites.has(video.id)}
               >
                 <Heart
                   className={cn(
@@ -177,7 +172,7 @@ export default function VideoList({
                   e.stopPropagation()
                   onDelete(video.id)
                 }}
-                className="p-1.5 rounded-lg text-white/30 hover:text-red-400 transition-colors"
+                className="p-1.5 rounded-lg text-white/65 hover:text-red-400 transition-colors"
                 aria-label="Supprimer"
               >
                 <Trash2 className="h-4 w-4" />

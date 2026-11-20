@@ -1,0 +1,44 @@
+✔ SQL refuses invalid terminal result false without consuming quota (83.601041ms)
+✔ SQL refuses invalid terminal result true without consuming quota (6.602ms)
+✔ SQL refuses invalid terminal result "" without consuming quota (5.946792ms)
+✔ SQL refuses invalid terminal result 0 without consuming quota (6.152917ms)
+✔ SQL refuses invalid terminal result [] without consuming quota (5.736667ms)
+✔ SQL refuses invalid terminal result {} without consuming quota (6.00875ms)
+✔ SQL refuses invalid terminal result {"videoUrl":"raw.mp4"} without consuming quota (6.003291ms)
+✔ generation RPC cannot enter social states without media or publication journal (17.34275ms)
+✔ retry has durable backoff shared by targeted and batch claims, including concurrent restart (13.794209ms)
+✔ uncertain operation is quarantined directly, with reservation and completed video retained (2.791875ms)
+✔ completed prior-month reservation is settled once, current-month budget untouched (3.245625ms)
+✔ expired lease cannot cancel the new worker result through stale finish or checkpoint (10.984458ms)
+✔ valid measured results finish once for every generation kind and production assembly (9.634667ms)
+✔ substep results agree with their complete checkpoint; invalid string sentinels are refused (15.700833ms)
+✔ SQL rejects missing stages, missing required tracks, raw or unmeasured final output (43.822459ms)
+✔ quota SQL failure rolls back done, preserves acquired result and permits settlement-only retry (8.976708ms)
+✔ legacy compositing_failed is refused; generation states remain SQL-compatible and acquired data survives failure (12.569709ms)
+✔ backoff grows on retry and exhausted jobs are quarantined without releasing uncertain budget (3.132125ms)
+✖ ready rejects malformed scene receipts and missing audio for an acquired optional track (2.835542ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 18
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 400.754625
+
+✖ failing tests:
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:12759
+✖ ready rejects malformed scene receipts and missing audio for an acquired optional track (2.835542ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:220:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /STAGE_CHECKPOINT_REQUIRED|REQUIRED_TRACK_MISSING/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

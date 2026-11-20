@@ -1,0 +1,9 @@
+{
+  "finding": "SUTRA_OAUTH_STATE_TABLE_MISSING",
+  "productionSource": "f770e272d2d8e3bb3dde5b523fe7aa37f122399d",
+  "codeMigrationDelta": false,
+  "existingMigrationRequired": "migrations/20261011_social_oauth_state.sql",
+  "firstPreflight": "FAIL before any production mutation",
+  "correction": "Existing additive migration tested twice on fresh private restoration; production application gated by CI, snapshot and rollback checks.",
+  "secretsExported": false
+}

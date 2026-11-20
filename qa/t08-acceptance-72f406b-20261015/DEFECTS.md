@@ -1,0 +1,22 @@
+# T08 — défauts transmis et retestés après intégration
+
+SHA retesté : `72f406b940b7e3cdfb27873751a4059375646f25`. Les rouges d21/385 restent conservés dans les dossiers historiques. Aucun fichier produit propriétaire édité par T08 ; aucun FAIL transformé en SKIP.
+
+| Défaut / propriétaire | Reproduction minimale et attendu | Observé avant | Correctif intégré et preuve après |
+|---|---|---|---|
+| T02-RPC-02 — T02 | POST réel `/api/production`, session synthétique autorisée ; faire échouer claim RPC/profil/worker avec diagnostic privé. Attendu : code public exact dans HTTP et `last_error`. | Diagnostic interne propagé ; test auteur 12 PASS / 7 FAIL, reçu rouge dans le dossier d21. | Commit auteur `8c416290ebdabe9b0e8a1fa9708f537c8c0a45f5`, catch seul, bytes intégrés vérifiés. `python3 qa/t08-acceptance-72f406b-20261015/run.py rpc` :19 PASS,0 FAIL,0 SKIP. R49 fermé. |
+| T06-INTEGRATED-01 — T06 | Connexion puis DELETE fournisseur simulé200 via routes réelles, PostgreSQL18 avec trigger `updated_at` canonique. Attendu :200, confirmation durable, reconnexion ; répéter ne fait pas second DELETE. |503 et état pending : timestamp JavaScript remplacé par trigger SQL, CAS impossible. Fixture avant4 PASS /2 FAIL. | Commit auteur `3edae7ae1d3c13ed2b385a9602a9ad8da6ca5b6d`, snapshot SQL rechargé et autorité vérifiée. `run.py history-routes` :9 PASS. R64/R67 fermés, incluant race/révision/identité/échec audit. |
+| T06-INTEGRATED-02 — T01 SQL | Compte legacy connected, provenance Zernio/profil valide, révision absente ; DELETE via routes réelles. Attendu :révocation et purge tokens sans inventer consentement historique. |503 `SUTRA_SOCIAL_HISTORY_REVOCATION_INVALID` avant fence, compte toujours connecté. Helper seul :8 PASS /1 FAIL. | SQL historique hash `d2f6a9cb380a15285759085cdf602701f0d9d785d4a7f76f2061438d38ab9ddc`. `run.py history-routes history-sql` :9+27 PASS, copie privée/apply/replay/rollback. R65 fermé. Null/invalide/provenance ou identité changée refusés atomiquement. |
+| T08-HARNESS-01 — T01 harnais | Erreur WebKit pendant navigation, preuve native GET ; événement POST/PATCH/DELETE ou méthode absente. Attendu :unexpected1/qualified0. | Inverse :4 contre-exemples masqués,2 PASS /4 FAIL. Aucun défaut produit réellement observé en CI déduit de ce défaut de harnais. | Assertions T08 inchangées :`run.py harness`6 PASS. T01 preuve native GET/HEAD séparée ; mutation/méthode inconnue non qualifiées. R73 fermé. |
+
+Les transmissions aux propriétaires et l'ACK T01 du13:22UTC sont conservés dans les handoffs canoniques T02/T06/T08/T01. T01 a fourni ce nouveau SHA à13:44UTC ; T08 a exécuté les corrections et consommateurs affectés, puis le parcours13 à13:46UTC. Les huit phases totalisent112 PASS,0 FAIL,0 SKIP. Ne pas additionner à ce total les suites CI/auteurs recouvrantes.
+
+Les12 anciens FAIL (R54–R56 etR64–R72) ont des preuves liées à ce candidat dans MATRIX.md. Les deux BLOQUÉS sont réexaminés :R47 dépend de la CI exacte, R30 reste configuration ordonnanceur inactive. Les13 NON TESTÉS sont réévalués explicitement ; aucun manque de consentement/budget/preuve GPU n'est changé en PASS.
+
+## T08-CI-WEBKIT-01 — FAIL sur72f, propriétaire T01 harnais
+
+Reproduction : CI38745298450, job quality, commande `node qa/t07-final-ux-perf-20261015/run.mjs --final-integrated` telle que lancée par la gate intégrée ; famille webkit/social. Les9assertions fonctionnelles passent, puis « no unexpected mutation, uncaught error or hydration mismatch » échoue à14:01:12UTC. Un pageerror CORS concerne GET `/rest/v1/user_notifications?select=*&user_id=eq.<identité-fixture>&order=created_at.desc&limit=10` sur HTTPS loopback pendant navigation6 ;0erreurDOM. Les diagnostics bruts sont conservés chez T01, leurs SHA256 dans `ci-verification.json`.
+
+Attendu : aucune erreur runtime inexpliquée ; si diagnostic natif de teardown, contre-preuve native exacte avec vraie erreur négative, méthode/identité/origine/navigation/délai bornés avant toute qualification. Observé : erreur hors qualification actuelle, garde rouge. Cause à confirmer par T01 ; aucun défaut produit ou panne utilisateur attribué sans preuve. Transmission immédiate au miroir T08 à14:10UTC environ ; T01 avait gelé la promotion à14:04UTC.
+
+Rejeu affecté attendu après correction intégrée et nouveau SHA : frontière harnais6, contre-preuve native et famille sociale affectée, puis parcours intégré final par T01. Ne pas relancer les112tests backend inchangés ni un build parallèle T08. R47 et R69 FAIL représentent cette même cause, pas deux bugs distincts.

@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { sendNotification } from '@/lib/logger'
@@ -14,10 +15,8 @@ const PALIERS = [
 
 export async function POST(req: Request) {
   // Protection CRON : header authorization
-  const auth = req.headers.get('authorization')
-  if (auth !== `Bearer ${process.env.CRON_SECRET ?? 'dev'}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(req)
+  if (authError) return authError
 
   const service = createServiceClient()
   const yearStart = new Date(new Date().getFullYear(), 0, 1).toISOString()

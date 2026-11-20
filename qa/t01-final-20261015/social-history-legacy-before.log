@@ -1,0 +1,23 @@
+PASS baseline metadata distinguishes absent history without query failure
+PASS schema guard refuses an unrelated shared table atomically
+PASS migration applies without changing public table ACL or RLS
+PASS stable metadata verifies definer, strict search path, enabled triggers and restricted ACL
+PASS foreign app and legacy rows remain writable and unaudited
+{"status":"FAIL","checks":5,"failures":1,"skips":0,"remote":false,"ownClusterStopped":true}
+file:///Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-final-social-history.mjs:21
+    const failure = new Error((error.stderr || 'Local PostgreSQL command failed').slice(0, 1200))
+                    ^
+
+Error: ERROR:  SUTRA_SOCIAL_HISTORY_REVOCATION_INVALID
+CONTEXT:  PL/pgSQL function sutra.capture_social_authorization_history() line 87 at RAISE
+
+    at sql (file:///Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-final-social-history.mjs:21:21)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-final-social-history.mjs:133:5
+    at async check (file:///Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-final-social-history.mjs:50:37)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/scripts/test-final-social-history.mjs:128:3 {
+  stderr: 'ERROR:  SUTRA_SOCIAL_HISTORY_REVOCATION_INVALID\n' +
+    'CONTEXT:  PL/pgSQL function sutra.capture_social_authorization_history() line 87 at RAISE\n'
+}
+
+Node.js v24.21.0

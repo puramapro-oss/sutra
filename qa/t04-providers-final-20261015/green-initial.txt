@@ -1,0 +1,331 @@
+✔ unsupported master syntax is reported by name only without execution or suppressing other fields (1.536792ms)
+✔ selected names only, private values never copied into report (0.450916ms)
+✔ missing scope or mutation name makes zero calls (0.168167ms)
+✔ documented GET and server auth; summarize quotas without raw account data (10.002792ms)
+✔ group discovery redacts nested environment variables and names (0.240333ms)
+✔ HTTP 401 never claims invalid key specifically, no retry, no body echo (0.254417ms)
+✔ HTTP 403 never claims invalid key specifically, no retry, no body echo (0.127208ms)
+✔ HTTP 404 never claims invalid key specifically, no retry, no body echo (0.10525ms)
+✔ HTTP 429 never claims invalid key specifically, no retry, no body echo (0.184083ms)
+✔ HTTP 500 never claims invalid key specifically, no retry, no body echo (0.160458ms)
+✔ malformed JSON, schema and oversized body fail closed (0.529ms)
+✔ header and stalled-body timeout bounded even if transport ignores abort (21.906917ms)
+/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/@supabase/ssr/src/createBrowserClient.ts:111
+    throw new Error(
+          ^
+
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at createBrowserClient (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/@supabase/ssr/src/createBrowserClient.ts:111:11)
+    at createClient (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/supabase.ts:14:10)
+    at createSupabaseClient (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/supabase.ts:44:25)
+    at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/supabase.ts:44:38)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object.transformer (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/tsx/dist/register-OY9cqBEN.cjs:9:3619)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.require (node:internal/modules/cjs/loader:1674:12)
+
+Node.js v24.22.0
+✖ qa/t04-providers-final-20261015/contracts.test.mts (178.500708ms)
+✔ two scoped GETs; never POST, retry, raw environment, or secret output (10.136167ms)
+✔ organization HTTP refusals stop project lookup and preserve unproven authentication (0.612ms)
+✔ malformed JSON and schema never save configuration (0.420208ms)
+✔ project denial keeps organization proof but blocks overall success (0.218416ms)
+✔ request timeout stops before project; no hidden retry (20.496208ms)
+✔ missing scope performs zero requests, no invented organization discovery (0.157708ms)
+/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/@supabase/ssr/src/createBrowserClient.ts:111
+    throw new Error(
+          ^
+
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at createBrowserClient (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/@supabase/ssr/src/createBrowserClient.ts:111:11)
+    at createClient (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/supabase.ts:14:10)
+    at createSupabaseClient (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/supabase.ts:44:25)
+    at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/supabase.ts:44:38)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object.transformer (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/tsx/dist/register-OY9cqBEN.cjs:9:3619)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.require (node:internal/modules/cjs/loader:1674:12)
+
+Node.js v24.22.0
+✖ scripts/test-api-contracts.mts (166.944416ms)
+✔ Salad shutdown waits for an in-flight durable reservation and its execution (28.364209ms)
+✖ RunPod rejects missing/coerced job identity and malformed media (1.395875ms)
+✖ RunPod rejects numeric submission IDs without retry (0.177542ms)
+✖ voice refuses HTTP 200 JSON masquerading as MP3 without retry (0.206ms)
+✖ Suno checkpoints accepted task before polling; ACK failure preserves ID and blocks GET (0.366708ms)
+✖ Suno resumes a durable task with GET only (0.068917ms)
+✔ bounded provider bodies reject empty, oversized, malformed and stalled streams (10.371584ms)
+✖ RunPod accepts only matching completed jobs and valid worker media envelopes (0.178542ms)
+✖ RunPod poll errors and deadlines retain job identity without resubmission (3.625875ms)
+✖ voice bounds empty and oversized audio; valid MP3 transport succeeds once (0.300042ms)
+✖ Suno awaits durable ACK before GET and returns unchanged legacy result shape (0.080083ms)
+✖ Suno recovery validates checkpoint before I/O and retains ID on timeout or malformed replies (0.4395ms)
+✖ Suno pending recovery stops at its deadline without resubmission or fallback (0.206667ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 20
+ℹ fail 13
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 463.820667
+
+✖ failing tests:
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1
+✖ qa/t04-providers-final-20261015/contracts.test.mts (178.500708ms)
+  'test failed'
+
+test at scripts/test-api-contracts.mts:1:1
+✖ scripts/test-api-contracts.mts (166.944416ms)
+  'test failed'
+
+test at scripts/test-t04-provider-fixes.mts:1:5181
+✖ RunPod rejects missing/coerced job identity and malformed media (1.395875ms)
+  AssertionError [ERR_ASSERTION]: The error is expected to be an instance of "RunpodJobError". Received "MissingEnvError"
+
+  Error message:
+
+  Configuration manquante : la variable RUNPOD_API_KEY est requise (generation video WAN/RunPod). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:124:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: MissingEnvError: Configuration manquante : la variable RUNPOD_API_KEY est requise (generation video WAN/RunPod). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+        at requireEnv (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/env.ts:43:11)
+        at pollVideoJob (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/runpod.ts:125:18)
+        at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:124:32)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1402:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+        at Test.postRun (node:internal/test_runner/test:1542:19)
+        at Test.run (node:internal/test_runner/test:1467:12)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:5726
+✖ RunPod rejects numeric submission IDs without retry (0.177542ms)
+  AssertionError [ERR_ASSERTION]: The error is expected to be an instance of "RunpodJobError". Received "MissingEnvError"
+
+  Error message:
+
+  Configuration manquante : la variable RUNPOD_API_KEY est requise (generation video WAN/RunPod). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:132:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: MissingEnvError: Configuration manquante : la variable RUNPOD_API_KEY est requise (generation video WAN/RunPod). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+        at requireEnv (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/env.ts:43:11)
+        at submitVideoJob (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/runpod.ts:84:18)
+        at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:132:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1402:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+        at Test.postRun (node:internal/test_runner/test:1542:19)
+        at Test.run (node:internal/test_runner/test:1467:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:6031
+✖ voice refuses HTTP 200 JSON masquerading as MP3 without retry (0.206ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /INVALID_AUDIO/. Input:
+
+  'MissingEnvError: Configuration manquante : la variable ELEVENLABS_API_KEY est requise (synthese vocale ElevenLabs). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.'
+
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:140:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: MissingEnvError: Configuration manquante : la variable ELEVENLABS_API_KEY est requise (synthese vocale ElevenLabs). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+        at requireEnv (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/env.ts:43:11)
+        at generateVoice (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/elevenlabs.ts:15:18)
+        at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:140:26)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1402:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+        at Test.postRun (node:internal/test_runner/test:1542:19)
+        at Test.run (node:internal/test_runner/test:1467:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /INVALID_AUDIO/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:6659
+✖ Suno checkpoints accepted task before polling; ACK failure preserves ID and blocks GET (0.366708ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + undefined
+  - 'task-fixture'
+
+      at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:160:14)
+      at expectedException (node:assert:578:17)
+      at expectsError (node:assert:703:21)
+      at strict.rejects (node:assert:769:3)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:157:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'task-fixture',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:7316
+✖ Suno resumes a durable task with GET only (0.068917ms)
+  Error [MissingEnvError]: Configuration manquante : la variable SUNO_API_KEY est requise (generation musicale SunoAPI). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+      at requireEnv (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/env.ts:43:11)
+      at generateMusic (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/suno.ts:53:18)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:173:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    code: 'SUTRA_ENV_MISSING',
+    varName: 'SUNO_API_KEY'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:8534
+✖ RunPod accepts only matching completed jobs and valid worker media envelopes (0.178542ms)
+  Error [MissingEnvError]: Configuration manquante : la variable RUNPOD_API_KEY est requise (generation video WAN/RunPod). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+      at requireEnv (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/env.ts:43:11)
+      at pollVideoJob (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/runpod.ts:125:18)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:204:30)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    code: 'SUTRA_ENV_MISSING',
+    varName: 'RUNPOD_API_KEY'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:9099
+✖ RunPod poll errors and deadlines retain job identity without resubmission (3.625875ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(error instanceof RunpodJobError)
+
+      at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:221:18)
+      at expectedException (node:assert:578:17)
+      at expectsError (node:assert:703:21)
+      at strict.rejects (node:assert:769:3)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:220:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:10028
+✖ voice bounds empty and oversized audio; valid MP3 transport succeeds once (0.300042ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /INVALID_AUDIO/. Input:
+
+  'MissingEnvError: Configuration manquante : la variable ELEVENLABS_API_KEY est requise (synthese vocale ElevenLabs). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.'
+
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:235:11)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: MissingEnvError: Configuration manquante : la variable ELEVENLABS_API_KEY est requise (synthese vocale ElevenLabs). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+        at requireEnv (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/env.ts:43:11)
+        at generateVoice (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/elevenlabs.ts:15:18)
+        at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:235:32)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1402:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+        at Test.postRun (node:internal/test_runner/test:1542:19)
+        at Test.run (node:internal/test_runner/test:1467:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /INVALID_AUDIO/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:10854
+✖ Suno awaits durable ACK before GET and returns unchanged legacy result shape (0.080083ms)
+  Error [MissingEnvError]: Configuration manquante : la variable SUNO_API_KEY est requise (generation musicale SunoAPI). Définis-la dans .env.local puis redémarre le serveur. Voir .env.example pour la liste commentée.
+      at requireEnv (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/env.ts:43:11)
+      at generateMusic (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/suno.ts:53:18)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:253:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    code: 'SUTRA_ENV_MISSING',
+    varName: 'SUNO_API_KEY'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:11415
+✖ Suno recovery validates checkpoint before I/O and retains ID on timeout or malformed replies (0.4395ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(error instanceof SunoJobError)
+
+      at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:269:18)
+      at expectedException (node:assert:578:17)
+      at expectsError (node:assert:703:21)
+      at strict.rejects (node:assert:769:3)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:267:9)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:13017
+✖ Suno pending recovery stops at its deadline without resubmission or fallback (0.206667ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+    assert.ok(error instanceof SunoJobError)
+
+      at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:300:14)
+      at expectedException (node:assert:578:17)
+      at expectsError (node:assert:703:21)
+      at strict.rejects (node:assert:769:3)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/scripts/test-t04-provider-fixes.mts:298:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

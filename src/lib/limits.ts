@@ -3,10 +3,24 @@ import { createServiceClient } from '@/lib/supabase'
 import { PLAN_LIMITS } from '@/lib/constants'
 import type { Plan, Profile } from '@/types'
 
+/**
+ * Garde budgétaire AVANT toute génération payante.
+ *
+ * Fail-closed : si le quota mensuel ne peut pas être vérifié (erreur base de
+ * données), on REFUSE la génération plutôt que de l'autoriser aveuglément
+ * (audit #9 : `count:null` ne doit jamais devenir 0 → autorisation).
+ */
 export async function checkLimits(user: Profile): Promise<boolean> {
   if (isAdmin(user.email)) return true
-  const limits = PLAN_LIMITS[user.plan as Plan]
-  const count = await getMonthlyVideoCount(user.id)
+  const limits = PLAN_LIMITS[user.plan as Plan] ?? PLAN_LIMITS.free
+  let count: number
+  try {
+    count = await getMonthlyVideoCount(user.id)
+  } catch {
+    throw new Error(
+      'Impossible de verifier ton quota mensuel (base indisponible). Aucune generation lancee — reessaie dans un instant.'
+    )
+  }
   return count < limits.videos
 }
 
@@ -16,12 +30,15 @@ export async function getMonthlyVideoCount(userId: string): Promise<number> {
   startOfMonth.setDate(1)
   startOfMonth.setHours(0, 0, 0, 0)
 
-  const { count } = await supabase
+  const { count, error } = await supabase
     .from('videos')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', userId)
     .gte('created_at', startOfMonth.toISOString())
 
+  if (error) {
+    throw new Error(`Quota illisible : ${error.message}`)
+  }
   return count ?? 0
 }
 

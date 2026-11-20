@@ -1,0 +1,195 @@
+{
+  "processes": [
+    {
+      "id": "proc_26_request",
+      "summary": "Request → Ipv6Number",
+      "priority": 0.091,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_114_get",
+      "summary": "GET → Signature",
+      "priority": 0.088,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_22_get",
+      "summary": "GET → Signature",
+      "priority": 0.088,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/media-download.ts:validateMediaUrl",
+      "name": "validateMediaUrl",
+      "filePath": "src/lib/media-download.ts",
+      "startLine": 36,
+      "endLine": 44,
+      "module": "Cluster_325",
+      "process_id": "proc_26_request",
+      "step_index": 2
+    },
+    {
+      "id": "Function:src/lib/private-media.ts:signature",
+      "name": "signature",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 75,
+      "endLine": 79,
+      "module": "[reference]",
+      "process_id": "proc_114_get",
+      "step_index": 3
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:qa/postdeploy-20261013/media/free-runtime-probes.mjs:publicMediaChecks",
+      "name": "publicMediaChecks",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "startLine": 28,
+      "endLine": 48,
+      "module": "Media"
+    },
+    {
+      "id": "Function:qa/postdeploy-20261013/media/free-runtime-probes.mjs:ownedMediaChecks",
+      "name": "ownedMediaChecks",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "startLine": 74,
+      "endLine": 99,
+      "module": "Media"
+    },
+    {
+      "id": "File:qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "name": "free-runtime-probes.mjs",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs"
+    },
+    {
+      "id": "Function:src/lib/media-download.ts:resolvePublic",
+      "name": "resolvePublic",
+      "filePath": "src/lib/media-download.ts",
+      "startLine": 46,
+      "endLine": 62,
+      "module": "Cluster_325"
+    },
+    {
+      "id": "File:src/lib/media-download.ts",
+      "name": "media-download.ts",
+      "filePath": "src/lib/media-download.ts"
+    },
+    {
+      "id": "Function:src/lib/private-media.ts:resolveMediaUrl",
+      "name": "resolveMediaUrl",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 62,
+      "endLine": 65,
+      "module": "[reference]"
+    },
+    {
+      "id": "File:src/lib/private-media.ts",
+      "name": "private-media.ts",
+      "filePath": "src/lib/private-media.ts"
+    },
+    {
+      "id": "Function:src/lib/salad/engine.ts:createComfyBridge",
+      "name": "createComfyBridge",
+      "filePath": "src/lib/salad/engine.ts",
+      "startLine": 9,
+      "endLine": 46,
+      "module": "Salad"
+    },
+    {
+      "id": "Function:src/lib/salad/engine.ts:createComfyBridge.generate@23:2",
+      "name": "generate",
+      "filePath": "src/lib/salad/engine.ts",
+      "startLine": 24,
+      "endLine": 44,
+      "module": "Salad"
+    },
+    {
+      "id": "File:src/lib/salad/engine.ts",
+      "name": "engine.ts",
+      "filePath": "src/lib/salad/engine.ts"
+    },
+    {
+      "id": "Const:scripts/test-private-media.mts:media",
+      "name": "media",
+      "filePath": "scripts/test-private-media.mts",
+      "startLine": 32,
+      "endLine": 32
+    },
+    {
+      "id": "Const:scripts/test-private-media.mts:url",
+      "name": "url",
+      "filePath": "scripts/test-private-media.mts",
+      "startLine": 34,
+      "endLine": 34
+    },
+    {
+      "id": "File:scripts/test-private-media.mts",
+      "name": "test-private-media.mts",
+      "filePath": "scripts/test-private-media.mts"
+    },
+    {
+      "id": "Function:scripts/test-t02-salad-security.mts:from.createSignedUrl@34:6",
+      "name": "createSignedUrl",
+      "filePath": "scripts/test-t02-salad-security.mts",
+      "startLine": 35,
+      "endLine": 38
+    },
+    {
+      "id": "Const:scripts/test-t02-salad-security.mts:media",
+      "name": "media",
+      "filePath": "scripts/test-t02-salad-security.mts",
+      "startLine": 73,
+      "endLine": 73
+    },
+    {
+      "id": "File:scripts/test-t02-salad-security.mts",
+      "name": "test-t02-salad-security.mts",
+      "filePath": "scripts/test-t02-salad-security.mts"
+    },
+    {
+      "id": "Const:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts:MARKER",
+      "name": "MARKER",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "startLine": 21,
+      "endLine": 21
+    },
+    {
+      "id": "Function:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts:fn@121:98.client@130:2",
+      "name": "client",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "startLine": 131,
+      "endLine": 137,
+      "module": "Scripts"
+    },
+    {
+      "id": "File:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "name": "test-t02-salad-security-contract.mts",
+      "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts"
+    },
+    {
+      "id": "Function:scripts/test-storage-video-proofs.mjs:testServiceUpload",
+      "name": "testServiceUpload",
+      "filePath": "scripts/test-storage-video-proofs.mjs",
+      "startLine": 58,
+      "endLine": 73,
+      "module": "Scripts"
+    }
+  ],
+  "timing": {
+    "vector": 2.7,
+    "bm25": 121.9,
+    "merge": 0.1,
+    "symbol_lookup": 11.1,
+    "ranking": 0,
+    "formatting": 0.1,
+    "wall": 133.6
+  }
+}

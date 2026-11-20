@@ -4,6 +4,7 @@ import { forwardRef, useCallback, useRef, useState } from 'react'
 import { motion, type HTMLMotionProps } from 'framer-motion'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useHydrated } from '@/hooks/useHydrated'
 
 const variants = {
   primary:
@@ -52,10 +53,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       children,
       onClick,
+      type = 'button',
       ...props
     },
     ref
   ) => {
+    const hydrated = useHydrated()
     const [ripples, setRipples] = useState<RippleItem[]>([])
     const nextId = useRef(0)
 
@@ -83,8 +86,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <motion.button
         ref={ref}
+        type={type}
+        aria-busy={loading || undefined}
         whileTap={disabled || loading ? undefined : { scale: 0.97 }}
-        disabled={disabled || loading}
+        disabled={disabled || loading || (type === 'submit' && !hydrated)}
         className={cn(
           'relative inline-flex items-center justify-center font-medium transition-all duration-200 overflow-hidden select-none',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06050e]',
@@ -99,7 +104,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {loading && (
           <Loader2 className="h-4 w-4 animate-spin shrink-0" />
         )}
-        <span className={cn(loading && 'opacity-80')}>{children}</span>
+        <span className={cn('inline-flex items-center justify-center gap-[inherit]', loading && 'opacity-80')}>{children}</span>
 
         {ripples.map((ripple) => (
           <span

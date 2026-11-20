@@ -1,0 +1,104 @@
+[zernio:getOAuthUrl] SUTRA_PROVIDER_REQUEST_FAILED
+(node:83867) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:83867) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ T08-Z01 current connect endpoint must replace undocumented /oauth/url (2.893041ms)
+✖ T08-Z02 initiation must carry owned profileId, redirect_url and posting scopes (0.889459ms)
+✖ T08-Z03 documented authUrl response must survive adapter parsing (0.256417ms)
+✖ T08-Z04 hosted callback must reach session verification without requiring an obsolete code (0.674167ms)
+✔ T08-S01 provider 2xx error payload must never reach the music API caller (1.128542ms)
+✔ T08-S02 provider 401 payload stays redacted at the same music API boundary (0.334208ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 2
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 352.795125
+
+✖ failing tests:
+
+test at test-results/t04-provider-audit/owner-redteam.test.mts:1:2078
+✖ T08-Z01 current connect endpoint must replace undocumented /oauth/url (2.893041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + '/api/v1/oauth/url'
+  - '/api/v1/connect/youtube'
+             ^
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013/test-results/t04-provider-audit/owner-redteam.test.mts:50:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '/api/v1/oauth/url',
+    expected: '/api/v1/connect/youtube',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test-results/t04-provider-audit/owner-redteam.test.mts:1:2524
+✖ T08-Z02 initiation must carry owned profileId, redirect_url and posting scopes (0.889459ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   profileId: null,
+  +   redirect: null,
+  +   scopes: null
+  -   profileId: 'aaaaaaaaaaaaaaaaaaaaaaaa',
+  -   redirect: 'https://sutra.invalid/api/social/callback',
+  -   scopes: 'posting'
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013/test-results/t04-provider-audit/owner-redteam.test.mts:61:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { profileId: null, redirect: null, scopes: null },
+    expected: { profileId: 'aaaaaaaaaaaaaaaaaaaaaaaa', redirect: 'https://sutra.invalid/api/social/callback', scopes: 'posting' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test-results/t04-provider-audit/owner-redteam.test.mts:1:2954
+✖ T08-Z03 documented authUrl response must survive adapter parsing (0.256417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+      state: 't08-fixture-unpredictable-state',
+  +   url: ''
+  -   url: 'https://oauth.invalid/authorize'
+    }
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013/test-results/t04-provider-audit/owner-redteam.test.mts:67:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { url: '', state: 't08-fixture-unpredictable-state' },
+    expected: { url: 'https://oauth.invalid/authorize', state: 't08-fixture-unpredictable-state' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test-results/t04-provider-audit/owner-redteam.test.mts:1:3175
+✖ T08-Z04 hosted callback must reach session verification without requiring an obsolete code (0.674167ms)
+  AssertionError [ERR_ASSERTION]: current callback is rejected as missing_params before authentication
+
+  0 !== 1
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013/test-results/t04-provider-audit/owner-redteam.test.mts:76:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

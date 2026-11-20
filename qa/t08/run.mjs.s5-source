@@ -1,0 +1,31 @@
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
+const root = fileURLToPath(new URL('../../', import.meta.url));
+const mode = process.argv[2] || 'contracts';
+const guard = path.join(root, 'qa/t08/offline.cjs');
+// Deliberate allowlist: never inherit a provider credential from the terminal.
+const env = {
+  PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: process.env.TMPDIR,
+  NODE_ENV: mode === 'server' ? 'development' : 'test', NEXT_TELEMETRY_DISABLED: '1',
+  NEXT_PUBLIC_SUPABASE_URL: 'http://127.0.0.1:19834',
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: 't08-synthetic-anon',
+  SUPABASE_SERVICE_ROLE_KEY: 't08-synthetic-service',
+  NEXT_PUBLIC_APP_URL: 'http://127.0.0.1:19835',
+  MOCK_AUTH_PORT: '19834', CRON_SECRET: 't08-synthetic-cron',
+  NODE_OPTIONS: `--require=${guard}`,
+  T08_CHROMIUM: process.env.T08_CHROMIUM,
+};
+const commands = {
+  contracts: ['--import', 'tsx', '--experimental-test-module-mocks', '--test', '--test-reporter=tap', '--test-concurrency=1', ...process.argv.slice(3), 'qa/t08/contracts.test.mts', 'qa/t08/infrastructure.test.mts'],
+  server: ['node_modules/next/dist/bin/next', 'dev', '--webpack', '--hostname', '127.0.0.1', '--port', '19835'],
+  auth: ['--import', 'tsx', 'qa/t08/auth-server.mts'],
+  browser: ['node_modules/@playwright/test/cli.js', 'test', '--config', 'qa/t08/playwright.config.ts'],
+  typecheck: ['node_modules/typescript/bin/tsc', '--noEmit', '--incremental', 'false'],
+  lint: ['node_modules/eslint/bin/eslint.js', 'qa/t08', '--no-cache'],
+};
+if (!(mode in commands)) throw new Error(`Unknown T08 mode: ${mode}`);
+const result = spawnSync(process.execPath, [...commands[mode], ...(mode === 'contracts' ? [] : process.argv.slice(3))], { cwd: root, env, stdio: 'inherit' });
+if (result.error) throw result.error;
+process.exitCode = result.status ?? 1;

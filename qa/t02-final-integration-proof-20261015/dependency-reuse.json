@@ -1,0 +1,34 @@
+{
+  "status": "PASS_REACHABILITY_RECHECK_WITH_ALERTS_RETAINED",
+  "comparisons": [
+    {
+      "current": "npm-audit-production.json",
+      "prior": "qa/t02-rpc-security-20261015/npm-audit.json",
+      "sameVulnerabilities": true,
+      "currentCounts": {
+        "info": 0,
+        "low": 2,
+        "moderate": 5,
+        "high": 0,
+        "critical": 0,
+        "total": 7
+      }
+    },
+    {
+      "current": "npm-audit-all.json",
+      "prior": "qa/t02-rpc-security-20261015/npm-audit-all.json",
+      "sameVulnerabilities": true,
+      "currentCounts": {
+        "info": 0,
+        "low": 4,
+        "moderate": 8,
+        "high": 17,
+        "critical": 1,
+        "total": 30
+      }
+    }
+  ],
+  "reachabilityProof": "ssrf.json: OTS request/ECDSA/Bitcoin RPC tripwires",
+  "triage": "qa/t02-rpc-security-20261015/README.md",
+  "packageLockUnchanged": true
+}

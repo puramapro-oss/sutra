@@ -1,0 +1,23 @@
+{
+  "all": {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "exit_code": 2
+  },
+  "source-docs": {
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check",
+      "--",
+      ".",
+      ":(exclude)qa/**/*.log"
+    ],
+    "exit_code": 0
+  }
+}

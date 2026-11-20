@@ -14,12 +14,19 @@ export default function LegalReacceptanceGateMount({
   docsEnAttente: LegalDocType[]
 }) {
   async function handleAccept(docType: LegalDocType) {
-    const res = await fetch('/api/legal/accept', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ docType }),
-    })
-    if (!res.ok) throw new Error('Enregistrement impossible.')
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 10000)
+    try {
+      const res = await fetch('/api/legal/accept', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ docType }),
+        signal: controller.signal,
+      })
+      if (!res.ok) throw new Error('Enregistrement impossible.')
+    } finally {
+      clearTimeout(timeout)
+    }
   }
 
   return (

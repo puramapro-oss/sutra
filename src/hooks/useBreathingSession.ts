@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { toast } from 'sonner'
-import { useAwakening } from '@/hooks/useAwakening'
-import { type Phase, PHASE_DURATIONS, SESSION_DURATION, XP_REWARD } from '@/app/(dashboard)/breathe/constants'
+import { type Phase, PHASE_DURATIONS, SESSION_DURATION } from '@/app/(dashboard)/breathe/constants'
 
-export function useBreathingSession(profileId?: string) {
-  const { addXp } = useAwakening(profileId)
+export function useBreathingSession() {
   const [phase, setPhase] = useState<Phase>('idle')
   const [secondsLeft, setSecondsLeft] = useState(0)
   const [totalElapsed, setTotalElapsed] = useState(0)
@@ -90,18 +88,9 @@ export function useBreathingSession(profileId?: string) {
       })
       cleanup()
 
-      if (profileId) {
-        addXp('breathe_session', XP_REWARD)
-        // Award points via API
-        fetch('/api/points', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'earn', amount: XP_REWARD, source: 'breathe_session' }),
-        }).catch(() => {})
-      }
-      toast.success(`Session terminee ! +${XP_REWARD} points`)
+      toast.success('Session terminee. Les recompenses sont temporairement suspendues.')
     }
-  }, [totalElapsed, isRunning, completed, profileId, addXp, cleanup])
+  }, [totalElapsed, isRunning, completed, cleanup])
 
   useEffect(() => {
     return cleanup

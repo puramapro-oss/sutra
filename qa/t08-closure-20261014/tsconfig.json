@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false
+  },
+  "files": [
+    "../../node_modules/next/types/global.d.ts"
+  ],
+  "include": [
+    "./*.test.mts",
+    "../../src/types/*.d.ts",
+    "../../scripts/test-t08-integration-journey.mts"
+  ],
+  "exclude": [
+    "../../node_modules"
+  ]
+}

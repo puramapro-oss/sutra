@@ -1,0 +1,147 @@
+{
+  "base": "e09fdaeafbf1ec8554a7b689fe3c44dd696d0140",
+  "branch": "codex/sutra-t04-provider-validation-20261014",
+  "commit": "commit containing this file; exact SHA in coordinator handoff",
+  "node": {
+    "version": "v24.21.0",
+    "binary": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node"
+  },
+  "checks": [
+    {
+      "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node --require ./qa/t08/offline.cjs --test qa/t04-provider-validation-20261014/probe.test.mjs",
+      "exit": 0,
+      "status": "PASS",
+      "pass": 14,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "offline-tests.log"
+    },
+    {
+      "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node node_modules/eslint/bin/eslint.js qa/t04-provider-validation-20261014/probe.mjs qa/t04-provider-validation-20261014/probe.test.mjs",
+      "exit": 0,
+      "status": "PASS",
+      "evidence": "lint.log"
+    },
+    {
+      "command": "gitleaks dir qa/t04-provider-validation-20261014 --redact --no-banner --report-format json --report-path qa/t04-provider-validation-20261014/gitleaks.json",
+      "exit": 0,
+      "status": "PASS",
+      "findings": 0,
+      "evidence": "gitleaks.json"
+    },
+    {
+      "command": "git diff --check; git diff --cached --check",
+      "status": "PASS",
+      "exit": 0,
+      "note": "Initial failure on log whitespace only; normalized without altering diagnostics, both checks then exit0."
+    },
+    {
+      "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node qa/t04-provider-validation-20261014/probe.mjs --read-only-master",
+      "exit": 0,
+      "status": "PASS_READ_ONLY",
+      "requests": 4,
+      "mutations": 0,
+      "retries": 0,
+      "evidence": "live.json",
+      "note": "Successful reads preceded final error-only classifier correction; success branch unchanged, no repeated live request."
+    }
+  ],
+  "historical_failures_fixed": [
+    {
+      "evidence": "parser-red.log",
+      "cause": "Audit parser rejected dotenv boundary whitespace normalized by T01",
+      "product_change": false
+    },
+    {
+      "evidence": "classifier-red.log",
+      "cause": "Audit classified Suno application code429 generically instead of insufficient credits",
+      "product_change": false
+    }
+  ],
+  "reused": {
+    "evidence": "reuse.json",
+    "matching_t04_inputs": 36,
+    "t04_tests": 91,
+    "application_delta_since_ci": [],
+    "ci_tests": {
+      "pass": 805,
+      "skip": 7
+    },
+    "ci": "https://github.com/puramapro-oss/sutra/actions/runs/38508390596",
+    "note": "Not re-executed or additive; TypeScript/lint/build/deps unchanged."
+  },
+  "gitnexus": {
+    "index": "gitnexus-index-final.log",
+    "impact": [
+      "gitnexus-impact-parser.json",
+      "gitnexus-impact-classifier.json"
+    ],
+    "staged": "gitnexus-detect-staged.json",
+    "compare_main": "gitnexus-detect-compare.json",
+    "delta_risk": "LOW",
+    "compare_main_risk": "CRITICAL",
+    "exhaustiveness": "UNKNOWN",
+    "note": "Main comparison includes historical integration, not this QA-only delta. Truncation retained."
+  },
+  "product_files_modified": [],
+  "not_tested": [
+    "LTX authentication and balance",
+    "RunPod/Shotstack generation permissions and balance",
+    "Any paid generation, render, cancellation, result acquisition or bill",
+    "Salad image/GPU/model qualification",
+    "New OVH read by T04"
+  ],
+  "blocked": [
+    "Salad activation: 14 named variables absent, no qualified Linux/amd64 image or real GPU manifest"
+  ],
+  "delivered_files": [
+    "BATON.md",
+    "task_plan.md",
+    "HANDOFF-SUTRA-T04-PROVIDER-VALIDATION-20261014.md",
+    "qa/t04-provider-validation-20261014/README.md",
+    "qa/t04-provider-validation-20261014/classifier-red.log",
+    "qa/t04-provider-validation-20261014/gitleaks.json",
+    "qa/t04-provider-validation-20261014/gitleaks.log",
+    "qa/t04-provider-validation-20261014/gitnexus-detect-compare.json",
+    "qa/t04-provider-validation-20261014/gitnexus-detect-staged.json",
+    "qa/t04-provider-validation-20261014/gitnexus-impact-classifier.json",
+    "qa/t04-provider-validation-20261014/gitnexus-impact-parser.json",
+    "qa/t04-provider-validation-20261014/gitnexus-index-final.log",
+    "qa/t04-provider-validation-20261014/gitnexus-index-probe.log",
+    "qa/t04-provider-validation-20261014/gitnexus-index.log",
+    "qa/t04-provider-validation-20261014/gitnexus-query.json",
+    "qa/t04-provider-validation-20261014/lint.log",
+    "qa/t04-provider-validation-20261014/live.json",
+    "qa/t04-provider-validation-20261014/offline-tests.log",
+    "qa/t04-provider-validation-20261014/parser-red.log",
+    "qa/t04-provider-validation-20261014/probe.mjs",
+    "qa/t04-provider-validation-20261014/probe.test.mjs",
+    "qa/t04-provider-validation-20261014/reuse.json",
+    "qa/t04-provider-validation-20261014/proof.json"
+  ],
+  "sha256": {
+    "BATON.md": "0f173c0323136d1629025b235157348c406f496ac0a546783e0376c22f440f50",
+    "task_plan.md": "acce490b7a88438c813614f53c1bb5b71f623a95985fd3d3d4879358f6e16fdd",
+    "HANDOFF-SUTRA-T04-PROVIDER-VALIDATION-20261014.md": "4a1be8fbdabbf805304c5d339c22599e38d8ee0517344b9635f7438491164340",
+    "qa/t04-provider-validation-20261014/README.md": "450981df6c1134453612d286666b0659ff5079064ba044d91d186dfe1d2ef5a4",
+    "qa/t04-provider-validation-20261014/classifier-red.log": "de5f8b94ddac991e17f29eca0afc0af9314ae0111ab5c4b95965cd748c7ccc54",
+    "qa/t04-provider-validation-20261014/gitleaks.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "qa/t04-provider-validation-20261014/gitleaks.log": "d419b0686ad121cbc07a06defe5f25768bb16790adc3eb610f0c948c06e7974f",
+    "qa/t04-provider-validation-20261014/gitnexus-detect-compare.json": "c1b7644e7ec643200aa4a802d00fe9ef5aa93c30226ffc41e44240100697ea9c",
+    "qa/t04-provider-validation-20261014/gitnexus-detect-staged.json": "4fc7ce66ce7de82392211f46440963f26d6b006e4523f4cfe4cf48990311051e",
+    "qa/t04-provider-validation-20261014/gitnexus-impact-classifier.json": "1c6ce1c3e25ebf4f3b28463d0d0838a64205c76451b7d2d5fe783142bfad7768",
+    "qa/t04-provider-validation-20261014/gitnexus-impact-parser.json": "c70565c0c6c843951b1149c599c69578dda7b95325f36e534c7046b8d8e5f9db",
+    "qa/t04-provider-validation-20261014/gitnexus-index-final.log": "db61df042ccfcfa9064fb802e7c1a49739aefa03a2bb4a339b120d13c0207cf7",
+    "qa/t04-provider-validation-20261014/gitnexus-index-probe.log": "d5c90bc831ee2045faba5f9340720b212814bfe664761740d36b4921f1eba5eb",
+    "qa/t04-provider-validation-20261014/gitnexus-index.log": "3f20f756a63bf67f43a045c609aa3afa88cb8175d535c4e38f216dd76b13340d",
+    "qa/t04-provider-validation-20261014/gitnexus-query.json": "0b086860afa52b69395f2991e7136dad598be90d7d1fa255bfdeac031ac11995",
+    "qa/t04-provider-validation-20261014/lint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qa/t04-provider-validation-20261014/live.json": "cdf8a4e389eb32637ba7f19eb65eba4e4d8cbaf89a747ce3ae6ac3dba7b8e152",
+    "qa/t04-provider-validation-20261014/offline-tests.log": "36fa1cf032084fc1ca89527cb401671bc248780e41f8ad78f378d73494b45505",
+    "qa/t04-provider-validation-20261014/parser-red.log": "306075a908b80f5630d5a339c90ce84e47fb198fb5a488c6752adb2533a37f64",
+    "qa/t04-provider-validation-20261014/probe.mjs": "0b8d61cfb8731c42fd9f3ec27c897a29d674b799780fdcbea58cc19009df5d2f",
+    "qa/t04-provider-validation-20261014/probe.test.mjs": "4be32fc080bb55b7ad0a2d19d5179f433c902f67cd8d2d4f4d34259dc54251da",
+    "qa/t04-provider-validation-20261014/reuse.json": "943f322bc557db551f2c233a8be6159a606e7070371146b11a0bf58b2ba7778e"
+  },
+  "log_normalization": "Trailing whitespace/terminal carriage returns normalized for git diff --check; diagnostic content retained."
+}

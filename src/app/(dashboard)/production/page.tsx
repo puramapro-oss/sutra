@@ -1,22 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
-  Check,
-  Loader2,
-  Play,
-  Download,
-  FileText,
   Film,
-  Mic,
-  Music,
   Layers,
-  ImageIcon,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useProductionGeneration } from '@/hooks/useProductionGeneration'
@@ -24,14 +16,17 @@ import { VIDEO_ENGINES } from '@/lib/constants'
 import { TEMPLATES, STEPS } from '@/lib/production-constants'
 import { Button } from '@/components/ui/Button'
 import { Skeleton } from '@/components/ui/Skeleton'
+import ProductionRequestStatus from '@/components/production/ProductionRequestStatus'
 import StepProgressBar from '@/components/production/StepProgressBar'
 import IdeaStep from '@/components/production/IdeaStep'
+import { ExecutionModeNotice } from '@/components/create/ExecutionModeNotice'
 import ScriptStep from '@/components/production/ScriptStep'
 import StepGenerateCard from '@/components/production/StepGenerateCard'
 import VoiceStep from '@/components/production/VoiceStep'
 import MusicStep from '@/components/production/MusicStep'
 import ThumbnailStep from '@/components/production/ThumbnailStep'
 import type { Plan } from '@/types'
+import type { DurableStep } from '@/lib/production-intent-client'
 import type { VideoEngine } from '@/lib/ltx'
 import type { TemplateId } from '@/types/production'
 
@@ -58,7 +53,20 @@ export default function ProductionPage() {
 
   const selectedTemplate = TEMPLATES.find((t) => t.id === template) ?? TEMPLATES[0]
 
-  const { stepStatus, generatedData, error, isGenerating, generateStep, generateAll } = useProductionGeneration({
+  const restoreRequest = useCallback((body: string, step: DurableStep) => {
+    const saved = JSON.parse(body)
+    setIdea(saved.idea)
+    if (TEMPLATES.some(item => item.id === saved.template)) setTemplate(saved.template)
+    if (saved.engine) setEngine(saved.engine)
+    if (saved.voice) setVoice(saved.voice)
+    if (saved.musicStyle) setMusicStyle(saved.musicStyle)
+    if (saved.tone) setTone(saved.tone)
+    setCurrentStep(step === 'all' ? 0 : Math.max(0, STEPS.findIndex(item => item.id === step)))
+  }, [])
+
+  const { stepStatus, generatedData, error, isGenerating, generateStep, generateAll, intent, message, isCancelling, requestLocked, cancel, resume } = useProductionGeneration({
+    userId: profile?.id,
+    onRestore: restoreRequest,
     idea,
     template,
     format: selectedTemplate.format,
@@ -73,7 +81,7 @@ export default function ProductionPage() {
   if (authLoading) {
     return (
       <div className="max-w-4xl mx-auto space-y-8 py-8">
-        <Skeleton width="300px" height={32} rounded="lg" className="mx-auto" />
+        <Skeleton width="300px" height={32} rounded="lg" className="mx-auto max-w-full" />
         <Skeleton width="100%" height={200} rounded="xl" />
       </div>
     )
@@ -96,6 +104,9 @@ export default function ProductionPage() {
         </p>
       </div>
 
+      <ExecutionModeNotice isGenerating={isGenerating} />
+      <ProductionRequestStatus intent={intent} busy={isGenerating} cancelling={isCancelling} message={message} error={error} onResume={resume} onCancel={cancel} />
+
       {/* Step Progress Bar */}
       <StepProgressBar
         currentStep={currentStep}
@@ -104,6 +115,7 @@ export default function ProductionPage() {
       />
 
       {/* Step Content */}
+      <fieldset disabled={requestLocked} className="min-w-0">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentStep}
@@ -212,20 +224,10 @@ export default function ProductionPage() {
           )}
         </motion.div>
       </AnimatePresence>
-
-      {/* Error */}
-      {error && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="rounded-xl bg-red-500/10 border border-red-500/20 p-4 text-sm text-red-400"
-        >
-          {error}
-        </motion.div>
-      )}
+      </fieldset>
 
       {/* Navigation + Generate All */}
-      <div className="flex items-center justify-between pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
         <Button
           variant="ghost"
           size="md"
@@ -241,10 +243,11 @@ export default function ProductionPage() {
             data-testid="generate-all"
             variant="primary"
             size="lg"
-            disabled={!idea.trim() || isGenerating}
+            disabled={!idea.trim() || requestLocked}
+            loading={isGenerating}
             onClick={generateAll}
           >
-            {isGenerating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Sparkles className="h-5 w-5" />}
+            <Sparkles className="h-5 w-5" />
             Tout generer
           </Button>
         )}

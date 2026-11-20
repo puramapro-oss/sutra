@@ -1,0 +1,58 @@
+{
+  "target": {
+    "id": "Function:scripts/test-t03-orchestration-fixes.mts:job",
+    "name": "job",
+    "type": "Function",
+    "filePath": "scripts/test-t03-orchestration-fixes.mts"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-t03-orchestration-fixes.mts:db",
+        "name": "db",
+        "filePath": "scripts/test-t03-orchestration-fixes.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:scripts/test-t03-orchestration-fixes.mts",
+        "name": "test-t03-orchestration-fixes.mts",
+        "filePath": "scripts/test-t03-orchestration-fixes.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

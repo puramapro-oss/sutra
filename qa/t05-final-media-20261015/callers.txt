@@ -1,0 +1,50 @@
+src/lib/ffmpeg-compositor.test.ts:10:import { composeVideo, FfmpegCompositorError, isCancelledError } from './ffmpeg-compositor.ts'
+src/lib/ffmpeg-compositor.test.ts:92:    const result = await composeVideo({
+src/lib/ffmpeg-compositor.test.ts:113:    const result = await composeVideo({
+src/lib/ffmpeg-compositor.test.ts:125:    const result = await composeVideo({
+src/lib/ffmpeg-compositor.test.ts:139:      () => composeVideo({ clips: [], format: '16:9', quality: '1080p' }),
+src/lib/ffmpeg-compositor.test.ts:147:        composeVideo({
+src/lib/ffmpeg-compositor.test.ts:156:        composeVideo({
+src/lib/ffmpeg-compositor.test.ts:168:        composeVideo({
+src/lib/ffmpeg-compositor.test.ts:181:        composeVideo({
+src/lib/ffmpeg-compositor.test.ts:195:        composeVideo({
+src/lib/ffmpeg-compositor.test.ts:210:        composeVideo({
+src/lib/ffmpeg-compositor.test.ts:234:      await assert.rejects(() => composeVideo(params))
+src/lib/ffmpeg-compositor.test.ts:240:      await assert.rejects(() => composeVideo(changed), /Telechargement media refuse/)
+src/lib/ffmpeg-compositor.test.ts:241:      const result = await composeVideo(params)
+src/lib/final-composition.ts:1:import { composeVideoWithFallback } from './video-compositor'
+src/lib/final-composition.ts:10:  const result = await composeVideoWithFallback({ ...contract,
+src/lib/ffmpeg-encoder.ts:39:async function listEncoders(bin: string): Promise<string> {
+src/lib/ffmpeg-encoder.ts:52:export function detectVideoEncoder(ffmpegBin: string): Promise<VideoEncoder> {
+src/lib/ffmpeg-encoder.ts:58:        const list = await listEncoders(ffmpegBin)
+src/lib/video-compositor.ts:15:import { composeVideo, isCancelledError, isValidationError, FfmpegCompositorError, type ComposeVideoParams } from '@/lib/ffmpeg-compositor'
+src/lib/video-compositor.ts:65:  compose?: (params: ComposeVideoParams) => ReturnType<typeof composeVideo>
+src/lib/video-compositor.ts:72:export async function composeVideoWithFallback(
+src/lib/video-compositor.ts:78:  const compose = deps.compose ?? composeVideo
+src/lib/ffmpeg-compositor-formats.test.ts:10:import { composeVideo } from './ffmpeg-compositor.ts'
+src/lib/ffmpeg-compositor-formats.test.ts:79:        const result = await composeVideo({
+src/lib/ffmpeg-compositor-formats.test.ts:95:    const result4k = await composeVideo({ clips: [{ url: `${baseUrl}/src.mp4`, durationSeconds: 1 }], format: '16:9', quality: '4k', timeoutMs: 60_000 })
+src/lib/ffmpeg-compositor-formats.test.ts:96:    const result1080 = await composeVideo({ clips: [{ url: `${baseUrl}/src.mp4`, durationSeconds: 1 }], format: '16:9', quality: '1080p', timeoutMs: 60_000 })
+src/lib/ffmpeg-compositor-formats.test.ts:139:      const result = await composeVideo({
+src/lib/ffmpeg-compositor.ts:37:import { detectVideoEncoder } from './ffmpeg-encoder.ts'
+src/lib/ffmpeg-compositor.ts:38:import { acquireFfmpegSlot } from './ffmpeg-concurrency.ts'
+src/lib/ffmpeg-compositor.ts:120:export async function composeVideo(params: ComposeVideoParams): Promise<ComposeVideoResult> {
+src/lib/ffmpeg-compositor.ts:159:  const encoder = await detectVideoEncoder(ffmpegBin)
+src/lib/ffmpeg-compositor.ts:170:  const release = await acquireFfmpegSlot()
+src/lib/media-validation.test.ts:9:import { composeVideo, type ComposeVideoParams } from './ffmpeg-compositor.ts'
+src/lib/media-validation.test.ts:54:  const result = await composeVideo({ ...contract(), format: '1:1', quality: '720p', transitions: 'none',
+src/lib/media-validation.test.ts:81:  const result = await composeVideo({ ...contract(), format: '1:1', quality: '720p', musicUrl: `${base}/music.wav`, requirements: { music: 'required' } })
+src/lib/media-validation.test.ts:87:  await assert.rejects(() => composeVideo({ ...contract(), format: '1:1', quality: '720p', clips: [{ url: `${base}/black.mp4`, durationSeconds: 0.2 }], voiceUrl: `${base}/voice.wav` }), /Voix/)
+src/lib/media-validation.test.ts:91:  const result = await composeVideo({ clips: [{ url: `${base}/sar.mp4`, durationSeconds: 0.2 }], format: '1:1', quality: '720p', transitions: 'none' })
+src/lib/media-validation.test.ts:101:  const result = await composeVideo({ ...contract(), format: '1:1', quality: '720p', transitions: 'none',
+src/lib/media-validation.test.ts:109:  const result = await composeVideo({ clips: [{ url: `${base}/black.mp4`, durationSeconds: 0.2,
+src/lib/media-validation.test.ts:117:  const native = await composeVideo({ clips: [{ url: `${base}/uhd.mp4`, durationSeconds: 0.2,
+src/lib/media-validation.test.ts:126:  const result = await composeVideo({ ...contract(), format: '1:1', quality: '720p' })
+src/lib/media-validation.test.ts:148:  const rendered = await composeVideo(brief)
+src/lib/ffmpeg-concurrency.test.ts:3:import { acquireFfmpegSlot, getFfmpegConcurrencyState } from './ffmpeg-concurrency.ts'
+src/lib/ffmpeg-concurrency.test.ts:9:      const release1 = await acquireFfmpegSlot()
+src/lib/ffmpeg-concurrency.test.ts:10:      const release2 = await acquireFfmpegSlot()
+src/lib/ffmpeg-concurrency.test.ts:14:      const third = acquireFfmpegSlot().then((release) => {
+src/lib/ffmpeg-concurrency.test.ts:39:      const release = await acquireFfmpegSlot()
+src/lib/ffmpeg-concurrency.ts:4: * Chaque composeVideo() lance 5 process ffmpeg sequentiels ; le risque n'est
+src/lib/ffmpeg-concurrency.ts:28:export async function acquireFfmpegSlot(): Promise<() => void> {

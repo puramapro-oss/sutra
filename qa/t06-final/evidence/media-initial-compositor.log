@@ -1,0 +1,139 @@
+(node:46657) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:46657) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+▶ ffmpeg-compositor — matrice formats x qualites (export strict)
+  ✔ 16:9 @ 720p -> sortie exactement 1280x720 (export strict, source 320x240 4:3) (443.992959ms)
+  ✔ 16:9 @ 1080p -> sortie exactement 1920x1080 (export strict, source 320x240 4:3) (482.590542ms)
+  ✔ 16:9 @ 4k -> sortie exactement 3840x2160 (export strict, source 320x240 4:3) (917.268083ms)
+  ✔ 9:16 @ 720p -> sortie exactement 720x1280 (export strict, source 320x240 4:3) (415.459625ms)
+  ✔ 9:16 @ 1080p -> sortie exactement 1080x1920 (export strict, source 320x240 4:3) (470.877ms)
+  ✔ 9:16 @ 4k -> sortie exactement 2160x3840 (export strict, source 320x240 4:3) (893.527291ms)
+  ✔ 1:1 @ 720p -> sortie exactement 720x720 (export strict, source 320x240 4:3) (362.985917ms)
+  ✔ 1:1 @ 1080p -> sortie exactement 1080x1080 (export strict, source 320x240 4:3) (431.044708ms)
+  ✔ 1:1 @ 4k -> sortie exactement 2160x2160 (export strict, source 320x240 4:3) (739.844292ms)
+  ✔ 4K demande == 4K produit, jamais silencieusement degrade vers 1080p/hd (bug Shotstack corrige, verifie ici cote FFmpeg) (1366.830542ms)
+✔ ffmpeg-compositor — matrice formats x qualites (export strict) (6569.654417ms)
+▶ ffmpeg-compositor — pipeline complet realiste (multi-scenes + voix + musique + watermark + intro/outro + sous-titres)
+  ✖ simule un /api/create complet en 16:9 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (2133.88975ms)
+  ✖ simule un /api/create complet en 9:16 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (2500.723ms)
+  ✖ simule un /api/create complet en 1:1 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (2216.8675ms)
+✖ ffmpeg-compositor — pipeline complet realiste (multi-scenes + voix + musique + watermark + intro/outro + sous-titres) (7198.643ms)
+(node:47881) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:47881) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+▶ ffmpeg-compositor
+  ✖ assemble 2 clips + voix + musique + watermark + sous-titres -> mp4 valide, duree exacte (737.502459ms)
+  ✔ fonctionne sans aucun audio (silence genere) (393.38125ms)
+  ✔ intro + outro rallongent la duree totale (878.657583ms)
+  ✔ rejette un job sans clip (0.339292ms)
+  ✔ rejette un clip de duree nulle ou negative avant tout telechargement (0.104583ms)
+  ✔ rejette une duree totale au-dela du plafond de la qualite demandee (garde-fou CPU/RAM) (0.076625ms)
+  ✔ libere toujours le slot de concurrence meme si le pipeline echoue apres l acquisition (ex: asset introuvable) (1.326708ms)
+  ✔ maxDurationSeconds permet de surcharger explicitement le plafond par defaut (0.126459ms)
+  ✔ un signal deja annule rejette immediatement avec step=cancelled, jamais de secours declenche par l appelant (0.375166ms)
+  ✔ reprise identique reutilise les etapes completes; un brief modifie ne reutilise rien (778.819834ms)
+✖ ffmpeg-compositor (2955.856083ms)
+(node:48017) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48017) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ brief : voix/musique facultatives, obligatoires, desactivees; durees et sous-titres invalides (250.280167ms)
+✖ rendu : voix decalee, intro/outro silencieuses, logo visible et sous-titre seulement dans sa fenetre (713.4115ms)
+✔ musique courte boucle jusqu a la fin; voix trop longue refusee (516.260583ms)
+✔ pixels carres ET conservation du ratio affiche d une source anamorphique (322.466542ms)
+✖ logo texte : ponctuation et expressions percent restent litterales (251.635333ms)
+✔ mesures source/native/amelioree et 4K native attestee distinctes de l upscale (1242.079208ms)
+✔ final : corruption, troncature et reponse HTML refusees; controles metadonnees sans faux vert (366.646458ms)
+ℹ tests 30
+ℹ suites 3
+ℹ pass 24
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20717.135458
+
+✖ failing tests:
+
+test at src/lib/ffmpeg-compositor-formats.test.ts:2:7532
+✖ simule un /api/create complet en 16:9 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (2133.88975ms)
+  Error [FfmpegCompositorError]: ffmpeg a echoue (code 234) a l'etape "overlay": [AVFilterGraph @ 0xc66c08000] No option name near '/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-lsRYIu/subtitles.srt:original_size=1920x1080:force_style=FontSize=40,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'
+  [AVFilterGraph @ 0xc66c08000] Error parsing a filter description around: [sub];[1:v]scale=230:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  [AVFilterGraph @ 0xc66c08000] Error parsing filterchain '[0:v]subtitles=/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-lsRYIu/subtitles.srt:original_size=1920x1080:force_style='FontSize=40,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'[sub];[1:v]scale=230:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]' around: [sub];[1:v]scale=230:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  Error : Invalid argument
+      at ChildProcess.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/src/lib/ffmpeg-io.ts:105:16)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at Socket.<anonymous> (node:internal/child_process:498:11)
+      at Socket.emit (node:events:514:28)
+      at Pipe.<anonymous> (node:net:362:12) {
+    step: 'overlay'
+  }
+
+test at src/lib/ffmpeg-compositor-formats.test.ts:2:7532
+✖ simule un /api/create complet en 9:16 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (2500.723ms)
+  Error [FfmpegCompositorError]: ffmpeg a echoue (code 234) a l'etape "overlay": [AVFilterGraph @ 0x912c14000] No option name near '/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-5Zy8gK/subtitles.srt:original_size=1080x1920:force_style=FontSize=71,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'
+  [AVFilterGraph @ 0x912c14000] Error parsing a filter description around: [sub];[1:v]scale=130:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  [AVFilterGraph @ 0x912c14000] Error parsing filterchain '[0:v]subtitles=/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-5Zy8gK/subtitles.srt:original_size=1080x1920:force_style='FontSize=71,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'[sub];[1:v]scale=130:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]' around: [sub];[1:v]scale=130:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  Error : Invalid argument
+      at ChildProcess.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/src/lib/ffmpeg-io.ts:105:16)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+    step: 'overlay'
+  }
+
+test at src/lib/ffmpeg-compositor-formats.test.ts:2:7532
+✖ simule un /api/create complet en 1:1 : 3 scenes (durees reelles distinctes) + intro/outro + voix + musique + watermark + sous-titres (2216.8675ms)
+  Error [FfmpegCompositorError]: ffmpeg a echoue (code 234) a l'etape "overlay": [AVFilterGraph @ 0x816c14000] No option name near '/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-OBuijo/subtitles.srt:original_size=1080x1080:force_style=FontSize=40,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'
+  [AVFilterGraph @ 0x816c14000] Error parsing a filter description around: [sub];[1:v]scale=130:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  [AVFilterGraph @ 0x816c14000] Error parsing filterchain '[0:v]subtitles=/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-OBuijo/subtitles.srt:original_size=1080x1080:force_style='FontSize=40,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'[sub];[1:v]scale=130:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]' around: [sub];[1:v]scale=130:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  Error : Invalid argument
+      at ChildProcess.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/src/lib/ffmpeg-io.ts:105:16)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at Socket.<anonymous> (node:internal/child_process:498:11)
+      at Socket.emit (node:events:514:28)
+      at Pipe.<anonymous> (node:net:362:12) {
+    step: 'overlay'
+  }
+
+test at src/lib/ffmpeg-compositor.test.ts:2:4121
+✖ assemble 2 clips + voix + musique + watermark + sous-titres -> mp4 valide, duree exacte (737.502459ms)
+  Error [FfmpegCompositorError]: ffmpeg a echoue (code 234) a l'etape "overlay": [AVFilterGraph @ 0x87e804000] No option name near '/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-I4TQeg/subtitles.srt:original_size=1280x720:force_style=FontSize=27,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'
+  [AVFilterGraph @ 0x87e804000] Error parsing a filter description around: [sub];[1:v]scale=154:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  [AVFilterGraph @ 0x87e804000] Error parsing filterchain '[0:v]subtitles=/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-I4TQeg/subtitles.srt:original_size=1280x720:force_style='FontSize=27,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'[sub];[1:v]scale=154:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]' around: [sub];[1:v]scale=154:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  Error : Invalid argument
+      at ChildProcess.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/src/lib/ffmpeg-io.ts:105:16)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at Socket.<anonymous> (node:internal/child_process:498:11)
+      at Socket.emit (node:events:514:28)
+      at Pipe.<anonymous> (node:net:362:12) {
+    step: 'overlay'
+  }
+
+test at src/lib/media-validation.test.ts:2:4654
+✖ rendu : voix decalee, intro/outro silencieuses, logo visible et sous-titre seulement dans sa fenetre (713.4115ms)
+  Error [FfmpegCompositorError]: ffmpeg a echoue (code 234) a l'etape "overlay": [AVFilterGraph @ 0x784c14000] No option name near '/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-v4slHP/subtitles.srt:original_size=720x720:force_style=FontSize=27,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'
+  [AVFilterGraph @ 0x784c14000] Error parsing a filter description around: [sub];[1:v]scale=86:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  [AVFilterGraph @ 0x784c14000] Error parsing filterchain '[0:v]subtitles=/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-compose-v4slHP/subtitles.srt:original_size=720x720:force_style='FontSize=27,PrimaryColour=&HFFFFFF&,OutlineColour=&H000000&,BorderStyle=1,Outline=2,Alignment=2,MarginV=60'[sub];[1:v]scale=86:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]' around: [sub];[1:v]scale=86:-1,format=rgba,colorchannelmixer=aa=0.85[wm];[sub][wm]overlay=W-w-24:H-h-24[outv]
+  Error : Invalid argument
+      at ChildProcess.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/src/lib/ffmpeg-io.ts:105:16)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at ChildProcess._handle.onexit (node:internal/child_process:306:5) {
+    step: 'overlay'
+  }
+
+test at src/lib/media-validation.test.ts:2:8197
+✖ logo texte : ponctuation et expressions percent restent litterales (251.635333ms)
+  Error [FfmpegCompositorError]: ffmpeg a echoue (code 8) a l'etape "overlay": [AVFilterGraph @ 0xb6d014400] No such filter: 'drawtext'
+  Error : Filter not found
+      at ChildProcess.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/src/lib/ffmpeg-io.ts:105:16)
+      at ChildProcess.emit (node:events:514:28)
+      at maybeClose (node:internal/child_process:1141:16)
+      at Socket.<anonymous> (node:internal/child_process:498:11)
+      at Socket.emit (node:events:514:28)
+      at Pipe.<anonymous> (node:net:362:12) {
+    step: 'overlay'
+  }

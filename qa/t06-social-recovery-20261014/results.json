@@ -1,0 +1,82 @@
+[
+  {
+    "name": "contracts",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=2",
+      "scripts/test-t06-social-final.mts",
+      "scripts/test-release-oauth.mts",
+      "scripts/test-t02-oauth-boundaries.mts",
+      "scripts/test-t06-social-autonomy.mts",
+      "scripts/test-social-publication.mts",
+      "scripts/test-t06-social-routes.mts",
+      "scripts/test-security-routes.mts"
+    ],
+    "status": "FAIL",
+    "exitCode": 1,
+    "signal": null,
+    "durationMs": 1732
+  },
+  {
+    "name": "publication-consumers",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^PUBLICATION",
+      "scripts/test-release-regressions.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 499
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--project",
+      "qa/t06-social-recovery-20261014/tsconfig.json"
+    ],
+    "status": "FAIL",
+    "exitCode": 2,
+    "signal": null,
+    "durationMs": 1405
+  },
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings=0",
+      "src/app/api/social/callback/route.ts",
+      "src/app/api/social/connect/route.ts",
+      "src/lib/social-oauth-state.ts",
+      "src/lib/social-oauth-account.ts",
+      "src/lib/social-account-revocation.ts",
+      "scripts/helpers/social-database.mts",
+      "scripts/test-release-oauth.mts",
+      "scripts/test-t02-oauth-boundaries.mts",
+      "scripts/test-t06-social-final.mts",
+      "scripts/test-t06-social-autonomy.mts"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1510
+  }
+]

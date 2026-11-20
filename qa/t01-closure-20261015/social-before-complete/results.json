@@ -1,0 +1,53 @@
+{
+  "baseCommit": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: saved autopilot comes from its authoritative GET and survives reload",
+      "status": "FAIL",
+      "message": "expect(locator).toHaveValue(expected) failed\n\nLocator: getByTestId('select-caption-style')\nExpected: \"professional\"\nTimeout: 3500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.have.value\" with timeout 3500ms\n  - waiting for getByTestId('select-caption-style')\n"
+    },
+    {
+      "name": "1440: saved autopilot comes from its authoritative GET and survives reload",
+      "status": "FAIL",
+      "message": "expect(locator).toHaveValue(expected) failed\n\nLocator: getByTestId('select-caption-style')\nExpected: \"professional\"\nTimeout: 3500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.have.value\" with timeout 3500ms\n  - waiting for getByTestId('select-caption-style')\n"
+    },
+    {
+      "name": "autopilot failure is unknown, never a default editable state",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('social-load-error')\nExpected: visible\nTimeout: 3500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 3500ms\n  - waiting for getByTestId('social-load-error')\n"
+    },
+    {
+      "name": "autopilot missing is unknown, never a default editable state",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('social-load-error')\nExpected: visible\nTimeout: 3500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 3500ms\n  - waiting for getByTestId('social-load-error')\n"
+    },
+    {
+      "name": "autopilot invalid is unknown, never a default editable state",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('social-load-error')\nExpected: visible\nTimeout: 3500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 3500ms\n  - waiting for getByTestId('social-load-error')\n"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "autopilot-read-contract",
+      "reads": 0,
+      "writes": 0,
+      "realAccountsConnected": 0,
+      "publications": 0
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

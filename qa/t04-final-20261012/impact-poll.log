@@ -1,0 +1,59 @@
+
+  GitNexus Impact (1.6.12)
+{"level":40,"time":1791831814070,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}
+{
+  "target": {
+    "id": "Function:src/lib/ltx-v2.ts:createLtxClient.poll@148:2",
+    "name": "poll",
+    "type": "Function",
+    "filePath": "src/lib/ltx-v2.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 20,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "lower-bound",
+  "boundaries": [
+    "1 call site invoking `poll` was dropped at index time because the receiver's type could not be established (e.g. an unresolved constructor, factory or chained expression). Those callers are absent from this result — actual impact may be higher."
+  ],
+  "causes": {
+    "scopeExtractionFiles": 0,
+    "receiverTyping": 1,
+    "dispatchBoundary": 0,
+    "externalBoundary": 0,
+    "undecidedSatisfaction": 0,
+    "callableValueReferences": 0
+  },
+  "summary": {
+    "direct": 3,
+    "processes_affected": 0,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 3,
+    "2": 4,
+    "3": 13
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 7,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_246",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_3",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ]
+}

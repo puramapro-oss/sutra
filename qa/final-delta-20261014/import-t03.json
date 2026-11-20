@@ -1,0 +1,315 @@
+{
+  "source": "fe99ebe26f409bf9eccfddf6346004b601e9bac1",
+  "base": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "paths": [
+    "BATON.md",
+    "HANDOFF-SUTRA-T03-ORCHESTRATION-FIXES-20261014.md",
+    "qa/t03-orchestration-fixes-20261014/FILES.txt",
+    "qa/t03-orchestration-fixes-20261014/README.md",
+    "qa/t03-orchestration-fixes-20261014/after-affected.json",
+    "qa/t03-orchestration-fixes-20261014/after-affected.log",
+    "qa/t03-orchestration-fixes-20261014/after-auto.json",
+    "qa/t03-orchestration-fixes-20261014/after-auto.log",
+    "qa/t03-orchestration-fixes-20261014/after-lint.json",
+    "qa/t03-orchestration-fixes-20261014/after-lint.log",
+    "qa/t03-orchestration-fixes-20261014/after-regression.json",
+    "qa/t03-orchestration-fixes-20261014/after-regression.log",
+    "qa/t03-orchestration-fixes-20261014/after-suno.json",
+    "qa/t03-orchestration-fixes-20261014/after-suno.log",
+    "qa/t03-orchestration-fixes-20261014/after-typecheck.json",
+    "qa/t03-orchestration-fixes-20261014/after-typecheck.log",
+    "qa/t03-orchestration-fixes-20261014/before-auto-voice.json",
+    "qa/t03-orchestration-fixes-20261014/before-auto-voice.log",
+    "qa/t03-orchestration-fixes-20261014/before-regression.json",
+    "qa/t03-orchestration-fixes-20261014/before-regression.log",
+    "qa/t03-orchestration-fixes-20261014/before-suno.json",
+    "qa/t03-orchestration-fixes-20261014/before-suno.log",
+    "qa/t03-orchestration-fixes-20261014/detect-changes.txt",
+    "qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts",
+    "qa/t03-orchestration-fixes-20261014/gitleaks.json",
+    "qa/t03-orchestration-fixes-20261014/gitleaks.log",
+    "qa/t03-orchestration-fixes-20261014/gitnexus-analyze.log",
+    "qa/t03-orchestration-fixes-20261014/gitnexus-final-index.log",
+    "qa/t03-orchestration-fixes-20261014/harness-lint.json",
+    "qa/t03-orchestration-fixes-20261014/harness-lint.log",
+    "qa/t03-orchestration-fixes-20261014/impact-auto-assets.json",
+    "qa/t03-orchestration-fixes-20261014/impact-create.json",
+    "qa/t03-orchestration-fixes-20261014/impact-finish.json",
+    "qa/t03-orchestration-fixes-20261014/impact-production.json",
+    "qa/t03-orchestration-fixes-20261014/impact-providers-wiring.json",
+    "qa/t03-orchestration-fixes-20261014/impact-test-transport.json",
+    "qa/t03-orchestration-fixes-20261014/impact-voice-checkpoint.json",
+    "qa/t03-orchestration-fixes-20261014/impact-worker.json",
+    "qa/t03-orchestration-fixes-20261014/pg-init.log",
+    "qa/t03-orchestration-fixes-20261014/pg-start.log",
+    "qa/t03-orchestration-fixes-20261014/pg-stop.log",
+    "qa/t03-orchestration-fixes-20261014/postgres.json",
+    "qa/t03-orchestration-fixes-20261014/postgres.log",
+    "qa/t03-orchestration-fixes-20261014/postgres.mjs",
+    "qa/t03-orchestration-fixes-20261014/security.json",
+    "qa/t03-orchestration-fixes-20261014/tsconfig.json",
+    "qa/t03-orchestration-fixes-20261014/typecheck-with-t04.json",
+    "qa/t03-orchestration-fixes-20261014/typecheck-with-t04.log",
+    "qa/t03-orchestration-fixes-20261014/typecheck-with-t04.mjs",
+    "qa/t03-orchestration-fixes-20261014/verification.json",
+    "qa/t03-orchestration-fixes-20261014/verify.py",
+    "scripts/test-t03-orchestration-fixes.mts",
+    "scripts/test-t03-salad-recovery.mts",
+    "scripts/test-t03-suno-recovery.mts",
+    "src/lib/music-checkpoint.ts",
+    "src/lib/production-pipeline.ts",
+    "src/lib/sutra-auto.ts",
+    "src/lib/video-pipeline.ts",
+    "src/lib/video-queue.ts",
+    "src/lib/video-worker.ts",
+    "task_plan.md"
+  ],
+  "sourceHashes": [
+    {
+      "path": "BATON.md",
+      "sha256": "c5a5c0973b57b5761959da852eebf9b41f16d01f4db0c1030c6057ef86517ffe"
+    },
+    {
+      "path": "HANDOFF-SUTRA-T03-ORCHESTRATION-FIXES-20261014.md",
+      "sha256": "4e70e6e7aa97d2ced28dade6fdbfd8d608373356b29d0cae3f8bf0b284cd6d93"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/FILES.txt",
+      "sha256": "4de5dde416e39f769598bfd432938e78214ad5e62cd8b21962672042b2bd8868"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/README.md",
+      "sha256": "240d631beb0173ea8bd680d55e1c60336478e7aec970a073a3f4ac6e1d26e4e8"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-affected.json",
+      "sha256": "635f4eff1e587882e2ec8378199eeeecc12bdb67aa415b1b34af5da80ecbecf6"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-affected.log",
+      "sha256": "6d4b18ced5835c486d3988cf2831f19105e9578fa02022a0422c6966b260c4fa"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-auto.json",
+      "sha256": "3af91d64d2f2721bbdfa991fb7fcd904899d0925a5a826ad54a447fb9d35b9a0"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-auto.log",
+      "sha256": "70800ae69b6e08a7aff87de237fa721a9a41b2ab91f8302bea40f4ba89af8bcc"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-lint.json",
+      "sha256": "f1b3ff002c18b3281470ea5b67c14ebec5d66dc2de89a195b1773bd00671f641"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-regression.json",
+      "sha256": "c86756579d43f45f65bfadfb3ce600eefbc111a888b2ff33c7a752bae83a96c0"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-regression.log",
+      "sha256": "e77ac9955ab16bff7326f3566fc9af1b365a051ae1e6f55907c6ccc69bf2e826"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-suno.json",
+      "sha256": "57b05dd924475e0334b3cfa5388238a8b620e7c5b61fc91275019c0d0df4a8d9"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-suno.log",
+      "sha256": "adab15c387acd8a660af3c3964f8fec1b28f20ac6e28e367ac58abf54849c04a"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-typecheck.json",
+      "sha256": "a738631b21e8293efd930d27203c872024255ef19877ae04eb51bdc249f96450"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/after-typecheck.log",
+      "sha256": "38f2750eca54ea28c2b28ec6849ac75aeacafd5ca6e98cbf787f940b55f0a519"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/before-auto-voice.json",
+      "sha256": "8a23684bf225a8a948cb39765acbfcffdfd43b89176d763d374e54ae7dd458c2"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/before-auto-voice.log",
+      "sha256": "8c053a2db267de771480623c04e1e738ae2bd403a06bde18b68991f4f5bd03ec"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/before-regression.json",
+      "sha256": "ec3345f3d488971fbf6c3a816e3efae6b0269d83e53a19c628ec33a8c676fc85"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/before-regression.log",
+      "sha256": "94c8f9da365e217ee3b94e14866b114a6eb51b8938604d2fa3ea88e55947a996"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/before-suno.json",
+      "sha256": "6a35e1aee190e373a4952f6fd0a68876fcda886a6340a5d5e5cc3ce1772af11e"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/before-suno.log",
+      "sha256": "ee6b877730743d6e6a9615e584f64c5ba86d02f4b50d4b68475f419f23c0997e"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/detect-changes.txt",
+      "sha256": "50a1782d12965704dde5d1b7c2943deed71464af08df20c9f1f89209b5e6d042"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts",
+      "sha256": "1ba0db1300bee00f4ede3d15ab168ea75ed27fe23d17e585d5cc3acea19e881e"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/gitleaks.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/gitleaks.log",
+      "sha256": "748e1818dba49c2b8013e270f76f85c6948c4e957e093146cd847fe4f69403a1"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/gitnexus-analyze.log",
+      "sha256": "b4f031e36b3a91dc3596647852ccb9cf2ad9cf44ebea13460e287370e5b75b34"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/gitnexus-final-index.log",
+      "sha256": "97bd7b76f0af8a4c394a9fe81b1ae1a44ebc8264060408f7e5167d48e7b0edeb"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/harness-lint.json",
+      "sha256": "f442935bb97138cb68328bdd36173527370ace138c34aa489237e28c7071e9aa"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/harness-lint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/impact-auto-assets.json",
+      "sha256": "37b188fa31cc9915cef0a7381856bcdacd336ed442687e317c5aa73117ba814d"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/impact-create.json",
+      "sha256": "4cffc45140e473765a494adf10413117d8bcccae2b41727a72c359b39d4aae64"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/impact-finish.json",
+      "sha256": "3c52075092081c50c6176b2ed6bb4b17a89b8bbc7201031633ae118c7c93134d"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/impact-production.json",
+      "sha256": "6fa47d8ed8c56b0341bb45ddeafaaf907e114318e3841eb98588f1624109e25e"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/impact-providers-wiring.json",
+      "sha256": "ae416e41275ec5cad724565ca66244adb4aee28d5864c069b9d46852a5b29f7b"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/impact-test-transport.json",
+      "sha256": "8183d3b76f4f9d89b69e4cdeee61d01f2cb49a2f15e55f99870a6c979a3752c1"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/impact-voice-checkpoint.json",
+      "sha256": "7ba69184fc1ce7f0b863502f31d03c37f11582043a958e137ae2fd4bfff4d3a9"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/impact-worker.json",
+      "sha256": "b66f6d248dc01b073383aee483a3e6ca840730c301461f72a3d8942a59ebc62b"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/pg-init.log",
+      "sha256": "818ecd29890aa4db5c4a4385771e7dda8f951338c6a454ff40b83be1b9d1b414"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/pg-start.log",
+      "sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/pg-stop.log",
+      "sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/postgres.json",
+      "sha256": "bd58508f1c8ef2a3c37cceca4cdb90a94f0452ae090df960b899c9d302bd05fc"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/postgres.log",
+      "sha256": "7668250c58ebe55912f9916df50907276fb566b1700e7b97b0b6716f6da4208c"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/postgres.mjs",
+      "sha256": "5196a00fea5856c4d36179cc0ceac9bd5e7698d6cc491fad7f99d415f9f8cfa9"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/security.json",
+      "sha256": "0e156dcd8530010a25cb2b14d336071e82631dd4c7308b4d43f70d97ae416a22"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/tsconfig.json",
+      "sha256": "2be9772cd6d22b68344b22f0aaf66622840bb9f1ef8d74613e0cceef63c84dda"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/typecheck-with-t04.json",
+      "sha256": "6545d2d8ddb9fa279acd9f6b05e3e0947e7174eddae06939d871644169942364"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/typecheck-with-t04.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/typecheck-with-t04.mjs",
+      "sha256": "dc2bf7644d9d458da77d1d29f4cba1fb4c3d608686adfd28c9191988b5460dd5"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/verification.json",
+      "sha256": "4a41500b5408d626c6398041f42677125ca875b8feffdfc65b6d4e91c6fa5ccf"
+    },
+    {
+      "path": "qa/t03-orchestration-fixes-20261014/verify.py",
+      "sha256": "9d4ecf8a775967b97e2b110f2f32a1d10b3d96b5b55f11a50c3dc8261efff114"
+    },
+    {
+      "path": "scripts/test-t03-orchestration-fixes.mts",
+      "sha256": "a0430fb88e5d5911a239c5f67d59efdb4c5784fc57eb10de1c7ac6a37de9d63b"
+    },
+    {
+      "path": "scripts/test-t03-salad-recovery.mts",
+      "sha256": "c84a3bd9842dc86dfa1e4c9a96f2bea9865ae262605f9d497e38ad8ee7885487"
+    },
+    {
+      "path": "scripts/test-t03-suno-recovery.mts",
+      "sha256": "85083214d0fb32bcd7bda029bd0baaf0d63bbf525f4e8d968d6ea63e3dad634b"
+    },
+    {
+      "path": "src/lib/music-checkpoint.ts",
+      "sha256": "5a8220bc8e02a3bd6ddd9e971c26e6c25615038292f42e95d944278cccde01c6"
+    },
+    {
+      "path": "src/lib/production-pipeline.ts",
+      "sha256": "a0e898d3601c9e9958b8621aca95364f5906634f85bd5f340bdf14b4559e864b"
+    },
+    {
+      "path": "src/lib/sutra-auto.ts",
+      "sha256": "b727f627ef53a18ea41c915975bbf9aca62baf5296e398fafb2dc77beeb13c59"
+    },
+    {
+      "path": "src/lib/video-pipeline.ts",
+      "sha256": "5e1e1e5cc0b3b155505800b83aca6d94de0227d2c297e01ccce31fa216813ec7"
+    },
+    {
+      "path": "src/lib/video-queue.ts",
+      "sha256": "de9ca43304aa8dcba8ff7a9ef8390305ad667d2dc48991101dbdc30aeef743aa"
+    },
+    {
+      "path": "src/lib/video-worker.ts",
+      "sha256": "bf0592430076dae6fd47a514082900072922fe58977cf1c60c1b7bfe68d07225"
+    },
+    {
+      "path": "task_plan.md",
+      "sha256": "988d89a7e5f4de1a39f599f3da8d0c83a9d21e4e649aa9e760287a2ef97b3317"
+    }
+  ],
+  "mode": "reviewed exact committed bytes; shared docs append only",
+  "cleanOwner": true
+}

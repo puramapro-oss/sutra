@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Wallet, ArrowDownLeft, ArrowUpRight, Clock, CheckCircle, XCircle, Send, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -39,7 +39,12 @@ interface WithdrawalRecord {
 }
 
 export default function WalletPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <WalletPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function WalletPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const [loading, setLoading] = useState(true)
   const [wallet, setWallet] = useState<WalletData>({ balance: 0, pending_balance: 0, total_earned: 0, currency: 'EUR' })
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -49,25 +54,39 @@ export default function WalletPage() {
   const [amount, setAmount] = useState('')
   const [withdrawing, setWithdrawing] = useState(false)
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/wallet')
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/wallet', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (!res.ok) throw new Error()
       const data = await res.json()
-      setWallet(data.wallet)
-      setTransactions(data.transactions)
-      setWithdrawals(data.withdrawals)
-    } catch {
-      // defaults
-    } finally {
-      setLoading(false)
-    }
+      commit(() => setWallet(data.wallet))
+      commit(() => setTransactions(data.transactions))
+      commit(() => setWithdrawals(data.withdrawals))
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    return loadFetchData()
+  }, [loadFetchData])
+
   useEffect(() => {
-    if (!authLoading && profile?.id) fetchData()
-  }, [authLoading, profile?.id, fetchData])
+    if (!authLoading && profile?.id) loadFetchData()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [authLoading, profile?.id, loadFetchData])
 
   const handleWithdraw = async () => {
     const numAmount = parseFloat(amount)
@@ -134,7 +153,7 @@ export default function WalletPage() {
     >
       <div>
         <h1 className="text-2xl font-bold text-white">Wallet</h1>
-        <p className="text-sm text-white/40 mt-1">Tes gains de parrainage et concours</p>
+        <p className="text-sm text-white/60 mt-1">Tes gains de parrainage et concours</p>
       </div>
 
       {/* V6 — Smart Split 6 sous-wallets */}
@@ -149,7 +168,7 @@ export default function WalletPage() {
                 <Wallet className="h-5 w-5 text-emerald-400" />
               </div>
               <div>
-                <p className="text-xs text-white/40">Solde disponible</p>
+                <p className="text-xs text-white/60">Solde disponible</p>
                 <p className="text-xl font-bold text-white">
                   <AnimatedCounter value={wallet.balance} decimals={2} suffix=" EUR" />
                 </p>
@@ -164,7 +183,7 @@ export default function WalletPage() {
                 <Clock className="h-5 w-5 text-amber-400" />
               </div>
               <div>
-                <p className="text-xs text-white/40">En attente</p>
+                <p className="text-xs text-white/60">En attente</p>
                 <p className="text-xl font-bold text-white">{formatPrice(wallet.pending_balance)}</p>
               </div>
             </div>
@@ -177,7 +196,7 @@ export default function WalletPage() {
                 <ArrowDownLeft className="h-5 w-5 text-violet-400" />
               </div>
               <div>
-                <p className="text-xs text-white/40">Total gagne</p>
+                <p className="text-xs text-white/60">Total gagne</p>
                 <p className="text-xl font-bold text-white">{formatPrice(wallet.total_earned)}</p>
               </div>
             </div>

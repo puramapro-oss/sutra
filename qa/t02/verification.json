@@ -1,0 +1,165 @@
+{
+  "recordedAt": "2026-10-12T00:28:03.914907+00:00",
+  "baseCommit": "7088a0a3e733de8d2e85f3576bd86627127da369",
+  "branch": "codex/sutra-t02-security-pr3-20261012",
+  "payloadCommit": "The commit containing this manifest; final SHA is in the external T02 coordination pointer.",
+  "status": "LOCAL_DELTA_VERIFIED_INTEGRATION_BLOCKED",
+  "policyCheck": "POLICY_OK",
+  "node": "v26.0.0",
+  "next": "16.3.8",
+  "typescript": "5.9.3",
+  "supabase": "2.100.1",
+  "dependencySource": {
+    "commit": "19ea35fbbfe99a978f119f3939ff9935362191dc",
+    "path": "/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules",
+    "readOnly": true,
+    "committedManifestHashes": {
+      "package.json": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e",
+      "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+    },
+    "pr3LockfileChanged": false
+  },
+  "payloadSha256": {
+    "migrations/20261012_t02_account_permissions.sql": "b1c26b76c4f3d979d9e23122f9ce4750945c5a1e0f2773b8a10b367a31e2e5e5",
+    "scripts/test-security-account.mts": "2963e58e035a2323ef0a4e62964b21428dfd83857d7be9f084ac3adfbcb5ab14",
+    "scripts/test-security-media.mts": "871858f45c6f8c17b96f33250005c9608a2a66f6398568ea356878c96980b9d2",
+    "scripts/test-security-rls.mjs": "efd4ad7a31005f5b5b0b6bceec5c10c39ea264bd9f60af32978194450a4258f3",
+    "scripts/test-security-routes.mts": "50f947a247d61451b059b72a152384978c79ba34a35c627de43b9ba7c33cdd3f",
+    "scripts/test-security-storage.mts": "76537c27530914b82e9747f6d4a5744213b9ce10184bde865c09a4f31469079f",
+    "src/app/api/admin/users/[id]/route.ts": "9c57c89bc779c9933e7eb656ebb0bbde620779b483303e8bf8151d408e7d21a4",
+    "src/app/api/social/callback/route.ts": "64664c0cbe73d5630a3f6404dc09e5fea01925eed6cab754a6caff8dd55e3137",
+    "src/app/api/social/connect/route.ts": "377616c913f03984f3d50ffa3b10aa64285b87ce47a96cf34464b6f7745184f6",
+    "src/lib/account-access.ts": "7c53d3a9deef87ede391b6058dcde6238f571adce640482d6b25913b4034f111",
+    "src/lib/media-download.ts": "ad53c82b31ce272bb7eedad1f155d307a39f7a8bcf67932bd666db680acfb303",
+    "src/lib/storage.ts": "b9bd1c792251f2688557ca23aef12aa220adc2ab8ceb6d1745f2349ed873f071",
+    "src/lib/supabase-server.ts": "15f3d6946136e7b26cf4a29de3f07a9d7f704c288d41b83d50300ee543de56b7",
+    "src/middleware.ts": "57bb1cd57ab79bd15ba7b8b325553584bce0b93837dba31e1e70de8d43546fb8"
+  },
+  "evidenceSha256": {
+    "qa/t02/evidence/tests.txt": "34eb1f45c29faea34c30d14c095ca62a54fd070c993cbf649ecb98072775fdb2",
+    "qa/t02/evidence/rls.txt": "ae144cba4a0e421e63e7c42797791a11f661706da2a0a82b1eb05f85bb3dec17",
+    "qa/t02/evidence/typecheck.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qa/t02/evidence/lint-scoped.txt": "69a093547c05979983932cb1529fdf1f06a24fe58734555f66e078c980110b63",
+    "qa/t02/evidence/lint-rls.txt": "735e75c461dadaf3fd55752cbf5c54d8fcd3571c43875a44263e6322ccd33da8",
+    "qa/t02/evidence/lint-global.txt": "df1ad812b9b774db450debc60b20d94b03090e07cbb4abcfb2f00f4f89cf4b2f",
+    "qa/t02/evidence/build.txt": "5321def64e4b4374821800f961509deae49b8b4b83dfc712dd286f27856507d9",
+    "qa/t02/evidence/detect-changes.txt": "afa19021a496a87e62a389067e541c18a6d030a295820340673caf7c8c7f8ca6"
+  },
+  "tests": {
+    "command": "node --experimental-test-module-mocks --import tsx --test scripts/test-security-account.mts scripts/test-security-routes.mts scripts/test-security-media.mts scripts/test-security-storage.mts scripts/test-release-regressions.mts scripts/test-auth-session.mts scripts/test-ltx-v2-media.mts",
+    "pass": 169,
+    "fail": 0,
+    "skip": 0,
+    "newT02Tests": 31,
+    "providerAndHttpsTransport": "SIMULATED"
+  },
+  "sql": {
+    "command": "node scripts/test-security-rls.mjs",
+    "assertions": 36,
+    "result": "PASS",
+    "postgres": "18.4",
+    "network": "private Unix socket, no TCP, no remote URL",
+    "clusterStopped": true,
+    "provenance": "Canonical profile/social policies and V7 award function extracted by the test; synthetic grants/roles/users."
+  },
+  "typecheck": {
+    "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "node node_modules/next/dist/bin/next build --webpack",
+    "exitCode": 0,
+    "staticPages": "197/197",
+    "env": "Allowlisted OS variables and synthetic fixtures; no local env files; no deployment",
+    "warnings": [
+      "middleware/edge-runtime deprecated",
+      "module.register deprecated",
+      "edge page static generation disabled"
+    ]
+  },
+  "lintScope": {
+    "command": "node node_modules/eslint/bin/eslint.js src/lib/account-access.ts src/lib/supabase-server.ts src/lib/media-download.ts src/lib/storage.ts src/middleware.ts src/app/api/social/connect/route.ts src/app/api/social/callback/route.ts 'src/app/api/admin/users/[id]/route.ts' scripts/test-security-*",
+    "result": "PASS",
+    "note": "test-security-rls.mjs rerun after V7 test addition, PASS; inherited ESLintIgnoreWarning"
+  },
+  "lintGlobal": {
+    "command": "node node_modules/eslint/bin/eslint.js .",
+    "exitCode": 1,
+    "errors": 12,
+    "warnings": 131,
+    "result": "FAIL_OUTSIDE_T02",
+    "paths": [
+      ".gitnexus/run.cjs",
+      "scripts/test-auto-composition.mjs",
+      "scripts/test-auto-publication.mjs",
+      "scripts/test-auto-schedule.mjs",
+      "scripts/test-release-regressions.mts",
+      "scripts/test-ui-isolated.mjs",
+      "src/lib/ltx.ts",
+      "src/lib/production-pipeline.ts",
+      "src/lib/sutra-auto.ts"
+    ]
+  },
+  "graph": {
+    "analyze": "node /Users/matissdornier/purama/.gitnexus/run.cjs analyze --index-only --name sutra-t02-security-pr3-20261012 --workers 2",
+    "detectChanges": "node /Users/matissdornier/purama/.gitnexus/run.cjs detect-changes --scope staged -r sutra-t02-security-pr3-20261012 --limit 250",
+    "filesAtDetection": 17,
+    "symbolsReported": 127,
+    "processesReported": 254,
+    "risk": "CRITICAL",
+    "expectedReason": "Shared SSR auth and shared media/storage functions",
+    "sourcePathsReviewed": [
+      "migrations/20261012_t02_account_permissions.sql",
+      "scripts/test-security-account.mts",
+      "scripts/test-security-media.mts",
+      "scripts/test-security-rls.mjs",
+      "scripts/test-security-routes.mts",
+      "scripts/test-security-storage.mts",
+      "src/app/api/admin/users/[id]/route.ts",
+      "src/app/api/social/callback/route.ts",
+      "src/app/api/social/connect/route.ts",
+      "src/lib/account-access.ts",
+      "src/lib/media-download.ts",
+      "src/lib/storage.ts",
+      "src/lib/supabase-server.ts",
+      "src/middleware.ts"
+    ],
+    "truncated": true,
+    "entryPointsDropped": 855,
+    "calleesDropped": 624,
+    "walksCut": 4,
+    "cliDisplayAlsoTruncated": true,
+    "exhaustiveCertification": false
+  },
+  "credentialPatternCheck": {
+    "scope": "T02 staged sources/migration/tests only",
+    "findings": 0,
+    "completeSecretAudit": false
+  },
+  "limits": [
+    "No remote database/grants/storage/Auth/provider proof.",
+    "Private storage/signed URL ownership and persistence contract blocked with T01/T05/T06.",
+    "public.social_accounts shared-schema permissions unverified; migration applies only to sutra.",
+    "Organization model absent from PR3; organizational isolation unverified.",
+    "Existing in-memory rate limiter is not distributed.",
+    "T06 revocation/logger and T01 dependency residuals await owner integration.",
+    "No push, deployment or real publication."
+  ],
+  "verificationNotes": [
+    "No source changes after successful applicable tests.",
+    "First typecheck/build attempt failed because own temporary packages symlink included unrelated source tests; link only removed and typecheck/build rerun PASS.",
+    "Final documentation/evidence added after graph indexing; source/test payload unchanged.",
+    "Local delta is not a global release certification.",
+    "Committed logs normalize only line endings and trailing whitespace; raw evidence SHA256 retained separately."
+  ],
+  "rawEvidenceSha256": {
+    "qa/t02/evidence/tests.txt": "34eb1f45c29faea34c30d14c095ca62a54fd070c993cbf649ecb98072775fdb2",
+    "qa/t02/evidence/rls.txt": "ae144cba4a0e421e63e7c42797791a11f661706da2a0a82b1eb05f85bb3dec17",
+    "qa/t02/evidence/typecheck.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qa/t02/evidence/lint-scoped.txt": "69a093547c05979983932cb1529fdf1f06a24fe58734555f66e078c980110b63",
+    "qa/t02/evidence/lint-rls.txt": "735e75c461dadaf3fd55752cbf5c54d8fcd3571c43875a44263e6322ccd33da8",
+    "qa/t02/evidence/lint-global.txt": "28db79e2922d2eb9e320ad3f611bb251078fcccdebc9d09a996d7d49fc45bb15",
+    "qa/t02/evidence/build.txt": "3d45dc580a63f5901d3550d9f43204aad48bbe3fef7b357a06d0048dbf542c33",
+    "qa/t02/evidence/detect-changes.txt": "afa19021a496a87e62a389067e541c18a6d030a295820340673caf7c8c7f8ca6"
+  }
+}

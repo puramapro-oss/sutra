@@ -1,0 +1,283 @@
+(node:94762) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:94762) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ 20 concurrent real handlers at 99 scans admit exactly one, independent DB sessions (64.002667ms)
+✖ 20 concurrent same-IP requests record only once and keep idempotent redirect (1.140709ms)
+✖ expired history does not consume rolling quota and is preserved (0.05975ms)
+✖ inactive and unknown partners do not record or set attribution cookie (0.026ms)
+✖ anon cannot execute service-only RPC (0.023917ms)
+✖ authenticated cannot execute service-only RPC (0.0175ms)
+✖ malformed address and network prefix fail closed, no DB diagnostic or cookie (0.02225ms)
+✖ read-only transaction and missing RPC both fail closed (0.018584ms)
+✖ non-default snapshot isolation explicitly rejects instead of accepting stale quota (0.025125ms)
+✖ apply replay and rollback preserve historical rows, RLS and least privileges (0.028459ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 0
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 456.06325
+
+✖ failing tests:
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:7:327
+✖ 20 concurrent real handlers at 99 scans admit exactly one, independent DB sessions (64.002667ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:8:411
+✖ 20 concurrent same-IP requests record only once and keep idempotent redirect (1.140709ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:8:667
+✖ expired history does not consume rolling quota and is preserved (0.05975ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:9:193
+✖ inactive and unknown partners do not record or set attribution cookie (0.026ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:9:590
+✖ anon cannot execute service-only RPC (0.023917ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:9:590
+✖ authenticated cannot execute service-only RPC (0.0175ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:9:747
+✖ malformed address and network prefix fail closed, no DB diagnostic or cookie (0.02225ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:9:1119
+✖ read-only transaction and missing RPC both fail closed (0.018584ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:9:1589
+✖ non-default snapshot isolation explicitly rejects instead of accepting stale quota (0.025125ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:9:2000
+✖ apply replay and rollback preserve historical rows, RLS and least privileges (0.028459ms)
+  error: syntax error at end of input
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:58:3)
+      at async TestHook.run (node:internal/test_runner/test:1208:7) {
+    length: 93,
+    severity: 'ERROR',
+    code: '42601',
+    detail: undefined,
+    hint: undefined,
+    position: '1246',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'scan.l',
+    line: '1232',
+    routine: 'scanner_yyerror'
+  }

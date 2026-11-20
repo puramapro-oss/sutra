@@ -1,0 +1,54 @@
+(node:84016) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:84016) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ Coverr absent: unconfigured and no anonymous probe (2.754042ms)
+✖ Coverr configured: one bounded Bearer GET, no credential in output or URL (3.479917ms)
+✔ Coverr owner boundary: anonymous request performs no probe (0.186125ms)
+✔ Coverr provider denial remains explicit and does not return its body (0.423875ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 2
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1000.141417
+
+✖ failing tests:
+
+test at qa/t01-certification-20261019/coverr.test.mts:1:1590
+✖ Coverr absent: unconfigured and no anonymous probe (2.754042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/coverr.test.mts:29:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-certification-20261019/coverr.test.mts:1:1866
+✖ Coverr configured: one bounded Bearer GET, no credential in output or URL (3.479917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + null
+  - 'Bearer synthetic-coverr-only'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/coverr.test.mts:40:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'Bearer synthetic-coverr-only',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

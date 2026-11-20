@@ -206,7 +206,7 @@ export default function EcosystemPage() {
                     <h3 className="text-sm font-bold text-white group-hover:text-violet-300 transition-colors">
                       {app.name}
                     </h3>
-                    <p className="text-xs text-white/40 mt-1">{app.description}</p>
+                    <p className="text-xs text-white/60 mt-1">{app.description}</p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0 mt-1" />
                 </div>
@@ -223,7 +223,7 @@ export default function EcosystemPage() {
       <div className="border-t border-white/[0.06] py-8 text-center">
         <Link
           href="/"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Retour a l&apos;accueil
         </Link>

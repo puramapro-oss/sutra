@@ -2,6 +2,7 @@ import { VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constants'
 import { FORMAT_OPTIONS, QUALITY_OPTIONS } from '@/lib/create-constants'
 import { cn } from '@/lib/utils'
 import { OptionSection, OptionCard } from '../CreateHelpers'
+import { OutputQualityNotice } from '../ExecutionModeNotice'
 import type { Plan, VideoFormat, VideoQuality } from '@/types'
 import type { VideoEngine } from '@/lib/ltx'
 
@@ -34,31 +35,32 @@ export default function ManualFormStep4({
     <div className="space-y-6">
       <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">Etape 5 — Options</h2>
       <OptionSection title="Format">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 min-[375px]:grid-cols-3 gap-3">
           {FORMAT_OPTIONS.map((opt) => (
             <OptionCard key={opt.id} selected={format === opt.id} onClick={() => setFormat(opt.id)}>
               {opt.icon}
               <span className="text-sm font-semibold">{opt.label}</span>
-              <span className="text-[11px] text-white/40">{opt.desc}</span>
+              <span className="text-[11px] text-white/65">{opt.desc}</span>
             </OptionCard>
           ))}
         </div>
       </OptionSection>
       <OptionSection title="Qualite">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 min-[375px]:grid-cols-3 gap-3">
           {QUALITY_OPTIONS.map((opt) => {
             const available = isQualityAvailable(opt.minPlan)
             return (
               <OptionCard key={opt.id} selected={quality === opt.id} onClick={() => available && setQuality(opt.id)} disabled={!available}>
-                <span className="text-sm font-semibold">{opt.label}</span>
+                <span className="text-sm font-semibold">{opt.id === '4k' ? '4K (sortie)' : opt.label}</span>
                 {!available && <span className="text-[10px] text-violet-400">Plan {opt.minPlan}+</span>}
               </OptionCard>
             )
           })}
         </div>
+        <OutputQualityNotice />
       </OptionSection>
       <OptionSection title="Moteur video">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {VIDEO_ENGINES.map((eng) => {
             const available = isEngineAvailable(eng.minPlan)
             return (
@@ -72,7 +74,7 @@ export default function ManualFormStep4({
         </div>
       </OptionSection>
       <OptionSection title="Voix">
-        <select value={voice} onChange={(e) => setVoice(e.target.value)} className={cn('w-full px-4 py-3 rounded-xl text-sm text-white/90', 'bg-white/[0.03] border border-white/[0.06]', 'focus:border-violet-500/60 outline-none transition-all duration-200', 'appearance-none cursor-pointer')}>
+        <select aria-label="Voix" value={voice} onChange={(e) => setVoice(e.target.value)} className={cn('w-full px-4 py-3 rounded-xl text-sm text-white/90', 'bg-white/[0.03] border border-white/[0.06]', 'focus:border-violet-500/60 outline-none transition-all duration-200', 'appearance-none cursor-pointer')}>
           {VOICE_STYLES.map((v) => (
             <option key={v.id} value={v.id} className="bg-[#0c0b14]">{v.name} ({v.gender === 'male' ? 'Homme' : 'Femme'})</option>
           ))}

@@ -1,0 +1,275 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { test, beforeEach, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import { FakeDb, type Row } from './fake-db.mts';
+import type { CreateJobInput } from '../../src/lib/video-pipeline.ts';
+import type { PublishAdapter, PublishJob, PublishOutcome } from '../../src/lib/publishing/types.ts';
+
+const U1 = '11111111-1111-4111-8111-111111111111';
+const U2 = '99999999-9999-4999-8999-999999999999';
+const V1 = '22222222-2222-4222-8222-222222222222';
+const TOKEN = '33333333-3333-4333-8333-333333333333';
+const HASH = 'a'.repeat(64);
+let db: FakeDb;
+let user: Row | null;
+let quota: { reserved: number; released: number; completed: number; allowed: boolean };
+let claim: Row | null;
+let visuals: string[], checkpoints: Row[], publishing: PublishJob[];
+let voiceCalls: number, renderCalls: number;
+let visualFailure: string | null, renderFailure: string | null;
+let publishOutcome: (job: PublishJob) => Promise<PublishOutcome>;
+const adapter: PublishAdapter = {
+  name: 't08-memory-only', validateConfig: () => ({ ok: true }),
+  publish: async job => { publishing.push(job); return publishOutcome(job); },
+};
+mock.module('@/lib/supabase', { namedExports: { createServiceClient: () => db } });
+mock.module('@/lib/supabase-server', { namedExports: { createServerClient: async () => ({ auth: { getUser: async () => ({ data: { user }, error: null }) } }) } });
+mock.module('@/lib/video-queue', { namedExports: {
+  reserveQuota: async () => { if (!quota.allowed) return false; quota.reserved++; return true; },
+  completeQuota: async () => { quota.completed++; }, releaseQuota: async () => { quota.released++; },
+  enqueueJob: async () => 't08-job', claimJobByKey: async () => claim,
+  checkpoint: async (_id: string, _worker: string, progress: Row) => { checkpoints.push(structuredClone(progress)); },
+  finishJob: async () => true, heartbeat: async () => {},
+} });
+mock.module('@/lib/claude', { namedExports: { generateScript: async () => { throw new Error('T08 unexpected script provider'); } } });
+mock.module('@/lib/fallbacks', { namedExports: {
+  generateVoiceWithFallback: async () => { voiceCalls++; return Buffer.from('synthetic voice'); },
+  generateMusicWithFallback: async () => 'https://assets.invalid/music.mp3',
+  generateVisualWithFallback: async (prompt: string) => {
+    visuals.push(prompt); if (visualFailure === prompt) throw new Error('T08 simulated provider timeout');
+    return { source: 'ai', engine: 'wan-classic', url: `https://assets.invalid/clip-${visuals.length}.mp4` };
+  },
+} });
+mock.module('@/lib/pexels', { namedExports: { searchVideos: async () => [] } });
+mock.module('@/lib/storage', { namedExports: { uploadToStorage: async () => 'https://assets.invalid/voice.mp3' } });
+mock.module('@/lib/shotstack', { namedExports: {
+  assembleFinalVideo: async () => {
+    renderCalls++; if (renderFailure) throw new Error(renderFailure);
+    return { url: 'https://assets.invalid/final.mp4', duration: 10, outputQuality: '1080p', timeline: timeline() };
+  },
+  actualQualityFor: (quality: string) => quality,
+  generateSubtitlesFromScript: () => [{ text: 'Synthetic subtitle', start: 0, end: 5 }],
+} });
+mock.module('@/lib/video-hybrid-branch', { namedExports: { makeHybridSceneResolver: () => { throw new Error('T08 unexpected hybrid provider'); } } });
+mock.module('@/lib/video-proofs', { namedExports: { stampVideoWhenReady: async () => ({ status: 'stamped' }) } });
+mock.module('@/lib/video-autopilot', { namedExports: { triggerAutopilot: async () => {} } });
+mock.module('@/lib/logger', { namedExports: { logApiCall: async () => {}, sendNotification: async () => {} } });
+mock.module('@/lib/sutra-auto', { namedExports: { recordMemory: async () => {} } });
+mock.module('@/lib/publishing/registry', { namedExports: { getPublishAdapter: () => adapter } });
+
+const create = await import('../../src/app/api/create/route.ts');
+const exporting = await import('../../src/app/api/video/export/route.ts');
+const approvalRoute = await import('../../src/app/api/auto/videos/[id]/route.ts');
+const configRoute = await import('../../src/app/api/auto/config/route.ts');
+const publishRoute = await import('../../src/app/api/auto/publish/route.ts');
+const { executeCreateJob } = await import('../../src/lib/video-pipeline.ts');
+const { validateAndConsumeApproval, SupabaseApprovalStore } = await import('../../src/lib/hybrid-approval.ts');
+const { processPublications, enqueuePublications } = await import('../../src/lib/autonomy/publisher.ts');
+
+function timeline() { return { timeline: { tracks: [{ clips: [{ asset: { type: 'video', src: 'https://assets.invalid/clip.mp4' }, start: 0, length: 5 }] }] } }; }
+function req(path: string, body: Row, extra: HeadersInit = {}, method = 'POST') {
+  return new Request(`http://127.0.0.1:19835${path}`, { method, headers: { 'content-type': 'application/json', ...extra }, body: JSON.stringify(body) });
+}
+function input(): CreateJobInput {
+  return { videoId: V1, userId: U1, userEmail: 'qa@sutra.test', userPlan: 'free', genPlan: 'free', quality: '720p', format: '16:9', mediaFormat: '16:9', topic: 'T08 simulated movie', mode: 'manual', mediaMode: 'ai', voiceId: 'synthetic', manualScript: 'A synthetic first scene.\nA synthetic second scene.', stockSelections: [], brandKit: null };
+}
+function createBody() { return { topic: input().topic, mode: 'manual', script: input().manualScript, quality: '720p' }; }
+function seedVideo(owner = U1) {
+  const video = { id: V1, user_id: owner, status: 'ready', video_url: 'https://assets.invalid/final.mp4', voice_url: '', music_url: '', format: '16:9', quality: '720p', shotstack_json: timeline(), script_data: {} };
+  db.rows('videos').push(video); return video;
+}
+function autoVideo(id = V1, owner = U1): Row {
+  const video = { id, user_id: owner, status: 'pending_approval', video_final_url: 'https://assets.invalid/final.mp4', title: 'Synthetic', description: '', hashtags: [], scheduled_for: null };
+  db.rows('sutra_auto_videos').push(video); return video;
+}
+function config(): any { return { user_id: U1, publish_platforms: ['youtube', 'tiktok'], zernio_connected_platforms: [{ platform: 'youtube', account_id: 'fake-youtube' }, { platform: 'tiktok', account_id: 'fake-tiktok' }] }; }
+function seedApproval() {
+  db.rows('render_approvals').push({ token: TOKEN, estimate_id: 'synthetic-estimate', plan_hash: HASH, budget_cap_eur: 0, total_cost_eur: 0, status: 'active', expires_at: new Date(Date.now() + 60_000).toISOString() });
+}
+beforeEach(() => {
+  db = new FakeDb(); user = { id: U1, email: 'qa@sutra.test' };
+  db.rows('profiles').push({ id: U1, plan: 'free' });
+  quota = { reserved: 0, released: 0, completed: 0, allowed: true };
+  claim = { id: 't08-job', progress: {} }; visuals = []; checkpoints = []; publishing = [];
+  voiceCalls = 0; renderCalls = 0; visualFailure = null; renderFailure = null;
+  publishOutcome = async job => ({ outcome: 'success', externalPostId: `simulated-${job.idempotencyKey}` });
+});
+
+test('T08-01 authenticated create / checkpoints / assembly / export (simulated boundaries)', async () => {
+  const response = await create.POST(req('/api/create', createBody()));
+  assert.equal(response.status, 200);
+  const data = await response.json(); assert.ok(data.videoId);
+  assert.equal(visuals.length, 2); assert.equal(checkpoints.length, 2); assert.equal(voiceCalls, 1);
+  assert.equal(Object.keys(checkpoints[1].scenes).length, 2); assert.equal(quota.completed, 1);
+  const exported = await exporting.POST(req('/api/video/export', { videoId: data.videoId, quality: '720p' }));
+  assert.equal(exported.status, 200); assert.equal((await exported.json()).versionNumber, 1);
+  assert.equal(db.rows('videos')[0].status, 'ready'); assert.equal(renderCalls, 2);
+});
+test('T08-02 unauthenticated create and export reject before side effects', async () => {
+  user = null;
+  assert.equal((await create.POST(req('/api/create', createBody()))).status, 401);
+  assert.equal((await exporting.POST(req('/api/video/export', { videoId: V1, quality: '720p' }))).status, 401);
+  assert.equal(db.journal.length, 0); assert.equal(visuals.length, 0);
+});
+test('T08-03 exhausted quota blocks generation', async () => {
+  quota.allowed = false;
+  assert.equal((await create.POST(req('/api/create', createBody()))).status, 403);
+  assert.equal(visuals.length, 0); assert.equal(db.rows('videos').length, 0);
+});
+test('T08-04 hybrid without approval must release its reservation', async () => {
+  const response = await create.POST(req('/api/create', { ...createBody(), mediaMode: 'hybrid', budgetEur: 0 }));
+  assert.equal(response.status, 402); assert.equal(visuals.length, 0);
+  assert.equal(quota.reserved - quota.released, 0, 'quota leaked on early 402');
+});
+test('T08-05 failed video INSERT must release its reservation', async () => {
+  db.fail = (table, op) => table === 'videos' && op === 'insert' ? 'T08_DB_UNAVAILABLE' : null;
+  assert.equal((await create.POST(req('/api/create', createBody()))).status, 500);
+  assert.equal(visuals.length, 0); assert.equal(quota.reserved - quota.released, 0, 'quota leaked on early 500');
+});
+test('T08-06 missing worker claim must not execute generation', async () => {
+  claim = null;
+  await create.POST(req('/api/create', createBody()));
+  assert.equal(visuals.length, 0, 'pipeline ran without owning a lease');
+});
+test('T08-07 concurrent duplicate creation with same Idempotency-Key generates once', async () => {
+  const responses = await Promise.all(Array.from({ length: 2 }, () => create.POST(req('/api/create', createBody(), { 'Idempotency-Key': 't08-same-intent' }))));
+  assert.ok(responses.every(r => [200, 202, 409].includes(r.status)));
+  assert.equal(db.rows('videos').length, 1, 'same client intent created two videos');
+});
+test('T08-08 interrupted scene preserves checkpoint and recovery only regenerates missing visual', async () => {
+  visualFailure = 'A synthetic second scene.';
+  const saved: Row = {};
+  await assert.rejects(executeCreateJob(input(), { scenes: {} }, { onSceneResolved: async (i, clip) => { saved[String(i)] = clip; } }), /timeout/);
+  assert.deepEqual(Object.keys(saved), ['0']);
+  visualFailure = null; visuals = [];
+  await executeCreateJob(input(), { scenes: saved });
+  assert.deepEqual(visuals, ['A synthetic second scene.']);
+});
+test('T08-09 checkpoint rejection stops assembly and provider failure releases quota', async () => {
+  await assert.rejects(executeCreateJob(input(), { scenes: {} }, { onSceneResolved: async () => { throw new Error('checkpoint unavailable'); } }), /checkpoint unavailable/);
+  assert.equal(renderCalls, 0);
+  visualFailure = 'A synthetic first scene.';
+  assert.equal((await create.POST(req('/api/create', createBody()))).status, 500);
+  assert.equal(quota.released, 1);
+});
+test('T08-10 create response must redact provider credential-shaped errors', async () => {
+  renderFailure = 'Authorization: Bearer T08_SYNTHETIC_CANARY_ONLY';
+  const response = await create.POST(req('/api/create', createBody()));
+  assert.equal(response.status, 500);
+  assert.doesNotMatch(await response.text(), /T08_SYNTHETIC_CANARY_ONLY/);
+});
+test('T08-11 export IDOR rejects foreign video before render', async () => {
+  seedVideo(U2);
+  assert.equal((await exporting.POST(req('/api/video/export', { videoId: V1, quality: '720p' }))).status, 404);
+  assert.equal(renderCalls, 0);
+});
+test('T08-12 export rejects a version attached to another video', async () => {
+  seedVideo(); db.rows('video_versions').push({ id: TOKEN, video_id: U2, shotstack_json: timeline() });
+  assert.equal((await exporting.POST(req('/api/video/export', { videoId: V1, versionId: TOKEN, quality: '720p' }))).status, 404);
+  assert.equal(renderCalls, 0);
+});
+test('T08-13 export DB UPDATE failure must not return success', async () => {
+  seedVideo(); db.fail = (table, op) => table === 'videos' && op === 'update' ? 'T08_DB_UNAVAILABLE' : null;
+  const response = await exporting.POST(req('/api/video/export', { videoId: V1, quality: '720p' }));
+  assert.ok(response.status >= 500, `reported ${response.status} despite failed persistence`);
+});
+test('T08-14 export version INSERT failure must not return success', async () => {
+  seedVideo(); db.fail = (table, op) => table === 'video_versions' && op === 'insert' ? 'T08_DB_UNAVAILABLE' : null;
+  const response = await exporting.POST(req('/api/video/export', { videoId: V1, quality: '720p' }));
+  assert.ok(response.status >= 500, `reported ${response.status} despite failed version persistence`);
+});
+test('T08-15 concurrent exports allocate distinct durable version numbers', async () => {
+  seedVideo();
+  await Promise.all(Array.from({ length: 2 }, () => exporting.POST(req('/api/video/export', { videoId: V1, quality: '720p' }))));
+  const versions = db.rows('video_versions').map(row => row.version_number);
+  assert.equal(new Set(versions).size, 2, `duplicate versions: ${versions}`);
+});
+test('T08-16 approval consumption is one-shot under 8 concurrent callers', async () => {
+  seedApproval();
+  const checks = await Promise.all(Array.from({ length: 8 }, () => validateAndConsumeApproval({ token: TOKEN, expectedPlanHash: HASH, store: new SupabaseApprovalStore() })));
+  assert.equal(checks.filter(check => check.ok).length, 1);
+});
+test('T08-17 approval DB outage prevents generation authorization', async () => {
+  db.fail = () => 'T08_DB_UNAVAILABLE';
+  assert.equal((await validateAndConsumeApproval({ token: TOKEN, expectedPlanHash: HASH, store: new SupabaseApprovalStore() })).ok, false);
+});
+test('T08-18 expired or altered approval cannot authorize generation', async () => {
+  seedApproval();
+  assert.equal((await validateAndConsumeApproval({ token: TOKEN, expectedPlanHash: 'b'.repeat(64), store: new SupabaseApprovalStore() })).ok, false);
+  db.rows('render_approvals')[0].expires_at = '2020-01-01T00:00:00Z';
+  assert.equal((await validateAndConsumeApproval({ token: TOKEN, expectedPlanHash: HASH, store: new SupabaseApprovalStore() })).ok, false);
+});
+test('T08-19 validate / schedule / publish two platforms through real handlers', async () => {
+  autoVideo(); db.rows('sutra_auto_config').push(config());
+  const validated = await approvalRoute.PATCH(req('/api/auto/videos/' + V1, { status: 'ready' }, {}, 'PATCH'), { params: Promise.resolve({ id: V1 }) });
+  assert.equal(validated.status, 200);
+  const schedule = { id: 't08', name: 'Synthetic schedule', frequency: 'daily', days: [], time: '12:00', timezone: 'Europe/Paris', is_active: true };
+  assert.equal((await configRoute.PATCH(req('/api/auto/config', { schedules: [schedule] }, {}, 'PATCH'))).status, 200);
+  const response = await publishRoute.POST(req('/api/auto/publish', { video_id: V1 }));
+  assert.equal(response.status, 200); assert.equal((await response.json()).status, 'published');
+  assert.equal(publishing.length, 2); assert.ok(publishing.every(job => job.videoUrl.endsWith('/final.mp4')));
+});
+test('T08-20 invalid schedule is rejected without DB write', async () => {
+  const response = await configRoute.PATCH(req('/api/auto/config', { schedules: [{ id: 'bad', time: '29:99', timezone: 'Mars/Olympus' }] }, {}, 'PATCH'));
+  assert.equal(response.status, 400); assert.equal(db.journal.length, 0);
+});
+test('T08-21 account ownership configuration cannot be forged by PATCH', async () => {
+  const response = await configRoute.PATCH(req('/api/auto/config', { user_id: U2, zernio_connected_platforms: [{ platform: 'youtube', account_id: 'victim' }] }, {}, 'PATCH'));
+  assert.equal(response.status, 400); assert.equal(db.journal.length, 0);
+});
+test('T08-22 foreign approval and publication produce zero mutations', async () => {
+  autoVideo(V1, U2);
+  assert.equal((await approvalRoute.PATCH(req('/api/auto/videos/' + V1, { status: 'ready' }, {}, 'PATCH'), { params: Promise.resolve({ id: V1 }) })).status, 404);
+  assert.equal((await publishRoute.POST(req('/api/auto/publish', { video_id: V1 }))).status, 404);
+  assert.equal(publishing.length, 0); assert.equal(db.rows('sutra_auto_videos')[0].status, 'pending_approval');
+});
+test('T08-23 approval must not overwrite a worker transition after its read', async () => {
+  const video = autoVideo();
+  db.before = (table, op) => { if (table === 'sutra_auto_videos' && op === 'update') video.status = 'publishing'; };
+  await approvalRoute.PATCH(req('/api/auto/videos/' + V1, { status: 'ready' }, {}, 'PATCH'), { params: Promise.resolve({ id: V1 }) });
+  assert.equal(video.status, 'publishing', 'non-CAS approval stole active worker state');
+});
+test('T08-24 bounded load: 8 workers / 32 videos / 64 simulated publications', async t => {
+  const started = performance.now();
+  for (let i = 0; i < 32; i++) await enqueuePublications(db as any, autoVideo(`load-${i}`, i % 2 ? U1 : U2) as any, config());
+  const batches = await Promise.all(Array.from({ length: 8 }, (_, i) => processPublications(db as any, `worker-${i}`, adapter, 8)));
+  assert.equal(batches.reduce((sum, batch) => sum + batch.claimed, 0), 64);
+  assert.equal(publishing.length, 64); assert.equal(new Set(publishing.map(job => job.idempotencyKey)).size, 64);
+  assert.ok(db.rows('sutra_auto_videos').every(video => video.status === 'published'));
+  t.diagnostic(JSON.stringify({ elapsedMs: Math.round(performance.now() - started), workers: 8, videos: 32, publications: 64, dbQueries: db.journal.length, proof: 'in-memory RPC model, not PostgreSQL load' }));
+});
+test('T08-25 partial publication and retry retain successful platforms', async () => {
+  const video = autoVideo();
+  publishOutcome = async job => job.platform === 'tiktok' ? { outcome: 'retryable', error: 'synthetic timeout' } : { outcome: 'success', externalPostId: 'simulated-youtube' };
+  await enqueuePublications(db as any, video as any, config());
+  await processPublications(db as any, 'first', adapter);
+  assert.equal(video.status, 'publishing'); assert.equal(db.rows('sutra_auto_publications')[0].status, 'published');
+  const retry = db.rows('sutra_auto_publications').find(row => row.platform === 'tiktok')!;
+  retry.run_after = '2020-01-01T00:00:00Z';
+  publishOutcome = async () => ({ outcome: 'success', externalPostId: 'simulated-tiktok' });
+  await processPublications(db as any, 'second', adapter);
+  assert.equal(video.status, 'published'); assert.equal(publishing.filter(job => job.platform === 'youtube').length, 1);
+});
+test('T08-26 claim DB failure has zero publication effects', async () => {
+  db.rpcFailure = 'claim_auto_publications';
+  await assert.rejects(processPublications(db as any, 'worker', adapter), /T08_DB_UNAVAILABLE/);
+  assert.equal(publishing.length, 0);
+});
+test('T08-27 finish RPC failure must not report confirmed provider success', async () => {
+  await enqueuePublications(db as any, autoVideo() as any, config());
+  db.rpcFailure = 'finish_auto_publication';
+  const result = await processPublications(db as any, 'worker', adapter);
+  assert.ok(result.results.every(row => row.outcome !== 'success'), 'success reported although durable acknowledgement failed');
+});
+test('T08-28 publication video-read DB outage must not become permanent content failure', async () => {
+  await enqueuePublications(db as any, autoVideo() as any, config());
+  db.fail = (table, op) => table === 'sutra_auto_videos' && op === 'select' ? 'T08_DB_UNAVAILABLE' : null;
+  await processPublications(db as any, 'worker', adapter);
+  assert.equal(publishing.length, 0);
+  assert.ok(db.rows('sutra_auto_publications').every(row => row.error_class !== 'permanent'), 'transient DB read outage converted to permanent failure');
+});
+test('T08-39 authenticated text/plain cross-origin creation must reject before effects', async () => {
+  const response = await create.POST(req('/api/create', createBody(), { 'content-type': 'text/plain', origin: 'https://attacker.invalid', 'sec-fetch-site': 'cross-site' }));
+  assert.ok([400, 403, 415].includes(response.status), `cross-origin simple request accepted: ${response.status}`);
+  assert.equal(visuals.length, 0);
+});

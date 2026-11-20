@@ -1,0 +1,34 @@
+Changes: 165 files, 46 symbols
+Affected processes: 184
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 R99 readiness navigateur — 2026-10-16 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T01 — consolidation finale 2026-10-15 → ERRORS.md
+  Property ? → qa/t03-closure-20261020/recovery.test.mts
+  Function source → qa/t03-closure-20261020/recovery.test.mts
+  Function table → qa/t03-closure-20261020/recovery.test.mts
+  Function sql → qa/t03-closure-20261020/recovery.test.mts
+  Function rpc → qa/t03-closure-20261020/recovery.test.mts
+  Function from → qa/t03-closure-20261020/recovery.test.mts
+  Function execute → qa/t03-closure-20261020/recovery.test.mts
+  Function eq → qa/t03-closure-20261020/recovery.test.mts
+  Function select → qa/t03-closure-20261020/recovery.test.mts
+  Function in → qa/t03-closure-20261020/recovery.test.mts
+  Function lte → qa/t03-closure-20261020/recovery.test.mts
+... and 31 more
+
+Affected execution flows:
+  • CommunityScreen → ApiFetch (3 steps) — changed: , , 
+  • AdminContestPage → FetchData (3 steps) — changed: , , 
+  • AdminUsersPage → FetchUsers (3 steps) — changed: , , 
+  • CommunityPage → FetchBuddy (3 steps) — changed: , , 
+  • CommunityPage → FetchCircles (3 steps) — changed: , , 
+  • CommunityPage → FetchWall (3 steps) — changed: , , 
+  • JeuCreatifPage → Load (3 steps) — changed: , , 
+  • LightningPage → Load (3 steps) — changed: , , 
+  • POST → CreateIntentKey (8 steps) — changed: , 
+  • GET → Blocked (7 steps) — changed: GET
+... and 174 more

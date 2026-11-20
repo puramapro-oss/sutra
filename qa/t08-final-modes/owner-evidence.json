@@ -1,0 +1,89 @@
+{
+  "observedAt": "2026-10-14T00:00:47.936620+00:00",
+  "sourceState": "T02/T03 test receipts on T04 WIP; not integrated or runtime qualification",
+  "receipts": [
+    {
+      "source": "/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/qa/t02-salad-security-20261014/contract-manifest.json",
+      "snapshot": "owner-receipts/t02-contract-manifest.json",
+      "sha256": "cd061509b3c2fa343ea88772eaea411582367cd32a7e8a2a40ffed79587b8cff"
+    },
+    {
+      "source": "/Users/matissdornier/purama-worktrees/sutra-t02-salad-security-20261014/qa/t02-salad-security-20261014/contract-tests.log",
+      "snapshot": "owner-receipts/t02-contract-tests.log",
+      "sha256": "29cab50d0217e3e45dab5770752ebcb645422d125b1ed78fa713263a136e17df"
+    },
+    {
+      "source": "/Users/matissdornier/purama-worktrees/sutra-t03-salad-recovery-20261014/qa/t03-salad-recovery-20261014/adapter-result.json",
+      "snapshot": "owner-receipts/t03-adapter-result.json",
+      "sha256": "808e469aa7aeddad970ec261d0f1d358460e17f6ac9d93d9700faa0967ff8b52"
+    },
+    {
+      "source": "/Users/matissdornier/purama-worktrees/sutra-t03-salad-recovery-20261014/qa/t03-salad-recovery-20261014/adapter.log",
+      "snapshot": "owner-receipts/t03-adapter.log",
+      "sha256": "2eb24bd38f11c21fdfa62158d2fda765fc042a42418d9ee1f2eab2e1b087107a"
+    },
+    {
+      "source": "/Users/matissdornier/purama-worktrees/sutra-t03-salad-recovery-20261014/qa/t03-salad-recovery-20261014/recovery-result.json",
+      "snapshot": "owner-receipts/t03-recovery-result.json",
+      "sha256": "61e85d844cc28c6b08389014f0236660e268e975a20ce82934ed96519eab5cae"
+    },
+    {
+      "source": "/Users/matissdornier/purama-worktrees/sutra-t03-salad-recovery-20261014/qa/t03-salad-recovery-20261014/recovery.log",
+      "snapshot": "owner-receipts/t03-recovery.log",
+      "sha256": "35c8ca7a4f9863b9adb36f4f4fe3f84f9817caadbdceed70e82f6b97a2d9979e"
+    }
+  ],
+  "t04SourceComparison": [
+    {
+      "file": "src/lib/salad/client.ts",
+      "expected": "df69690bc1887e759b0557a6f090ac501d0d39118f91e32c783668d2653423dc",
+      "actual": "df69690bc1887e759b0557a6f090ac501d0d39118f91e32c783668d2653423dc",
+      "match": true
+    },
+    {
+      "file": "src/lib/salad/config.ts",
+      "expected": "3e0f7e14ec6ffdda9c8a297bb6ff832c2cb2781b74767ecad20e0178f9b44ec2",
+      "actual": "3e0f7e14ec6ffdda9c8a297bb6ff832c2cb2781b74767ecad20e0178f9b44ec2",
+      "match": true
+    },
+    {
+      "file": "src/lib/salad/contracts.ts",
+      "expected": "6801838f8d76a515482685313a9e95b13de741bb8972ae14516cfd432dffafe6",
+      "actual": "6801838f8d76a515482685313a9e95b13de741bb8972ae14516cfd432dffafe6",
+      "match": true
+    },
+    {
+      "file": "src/lib/salad/engine.ts",
+      "expected": "b9dbc655f35ceb78e4793d21489027705d696820b2c53d5394dba3277ce22c15",
+      "actual": "b9dbc655f35ceb78e4793d21489027705d696820b2c53d5394dba3277ce22c15",
+      "match": true
+    },
+    {
+      "file": "src/lib/salad/http.ts",
+      "expected": "86a5677bce713d915e8bcd082272b697f7b63a996327d7a2ddd35098b082352f",
+      "actual": "86a5677bce713d915e8bcd082272b697f7b63a996327d7a2ddd35098b082352f",
+      "match": true
+    },
+    {
+      "file": "src/lib/salad/worker.ts",
+      "expected": "6e1e135ef4fa200b760ee8ff2134a28d258d6df6605eef3bd1199b86be1839db",
+      "actual": "6e1e135ef4fa200b760ee8ff2134a28d258d6df6605eef3bd1199b86be1839db",
+      "match": true
+    }
+  ],
+  "t04AllComparedSourcesMatch": true,
+  "t01ModeFix": {
+    "commit": "42b03bace47bd4ee49cb6d2f435deb11a77b2299",
+    "source": "qa/salad-integration-20261014/mode-error-milestone.json",
+    "receiptSha256": "a9c6878c99a46981f0aec06e21044bee8f9f44bbf7211672272924c8a9cff5e4",
+    "snapshot": "owner-receipts/t01-mode-error-milestone.json",
+    "testSourceSha256": "d78087928340d579cb230c5bf5bf4d5245d6bfb8f9eb6c011dcc63bcc01dbe4d",
+    "testSourceMatches": true,
+    "result": "4 PASS / 0 FAIL / 0 SKIP; T01 executed, T08 receipt and exact-source review only",
+    "finalIntegration": false
+  },
+  "otherCommittedOwners": {
+    "t05": "cca76a2b9cf4e88f78d4ad0dc231a7ef48650648",
+    "t06": "48c3191aa76b7ce7a42aa008250d7fc829fffc15"
+  }
+}

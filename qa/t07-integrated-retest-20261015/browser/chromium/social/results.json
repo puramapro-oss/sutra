@@ -1,0 +1,111 @@
+{
+  "baseline": false,
+  "multiScenario": true,
+  "finalIntegrated": true,
+  "results": [
+    {
+      "name": "375: social unavailable is persistent, never a disconnected summary",
+      "status": "PASS"
+    },
+    {
+      "name": "375: explicit retry recovers and ignores duplicate requests",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: social unavailable is persistent, never a disconnected summary",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: explicit retry recovers and ignores duplicate requests",
+      "status": "PASS"
+    },
+    {
+      "name": "disconnect dialog is named",
+      "status": "PASS"
+    },
+    {
+      "name": "disconnect dialog traps focus, Escape restores trigger",
+      "status": "PASS"
+    },
+    {
+      "name": "unconfirmed revocation survives failed account refresh without false empty state",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed account response is unavailable, not an empty account list",
+      "status": "PASS"
+    },
+    {
+      "name": "social slow response recovers within 12 seconds without late overwrite",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "social-timeout",
+      "elapsedMs": 10896
+    }
+  ],
+  "errors": [],
+  "unexpectedErrors": [],
+  "qualifiedEngineDiagnostics": [],
+  "blocked": [],
+  "mutations": [],
+  "readOnlyProbes": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

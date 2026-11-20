@@ -1,0 +1,91 @@
+{
+  "baseline": true,
+  "productionSuite": false,
+  "results": [
+    {
+      "name": "375: subtitle add/edit/delete undo redo preserves initial narration",
+      "status": "FAIL",
+      "message": "page.goto: Navigation to \"http://127.0.0.1:51029/editor/33333333-3333-4333-8333-333333333333\" is interrupted by another navigation to \"http://127.0.0.1:51029/library\"\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:51029/editor/33333333-3333-4333-8333-333333333333\", waiting until \"load\"\u001b[22m\n"
+    },
+    {
+      "name": "375: script edit after undo replaces future history",
+      "status": "FAIL",
+      "message": "expect(locator).toBeDisabled() failed\n\nLocator:  getByTestId('editor-redo')\nExpected: disabled\nReceived: enabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.disabled\" with timeout 5000ms\n  - waiting for getByTestId('editor-redo')\n    9 × locator resolved to <button data-testid=\"editor-redo\" title=\"Retablir (Ctrl+Y)\" class=\"p-2 rounded-xl border border-white/[0.06] transition-colors text-white/70 hover:text-white hover:bg-white/10\">…</button>\n      - unexpected value \"enabled\"\n"
+    },
+    {
+      "name": "1440: subtitle add/edit/delete undo redo preserves initial narration",
+      "status": "FAIL",
+      "message": "expect(locator).toBeEnabled() failed\n\nLocator:  getByTestId('editor-undo')\nExpected: enabled\nReceived: disabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.enabled\" with timeout 5000ms\n  - waiting for getByTestId('editor-undo')\n    9 × locator resolved to <button disabled title=\"Annuler (Ctrl+Z)\" data-testid=\"editor-undo\" class=\"p-2 rounded-xl border border-white/[0.06] transition-colors text-white/20 cursor-not-allowed\">…</button>\n      - unexpected value \"disabled\"\n"
+    },
+    {
+      "name": "1440: script edit after undo replaces future history",
+      "status": "FAIL",
+      "message": "expect(locator).toBeDisabled() failed\n\nLocator:  getByTestId('editor-redo')\nExpected: disabled\nReceived: enabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.disabled\" with timeout 5000ms\n  - waiting for getByTestId('editor-redo')\n    9 × locator resolved to <button data-testid=\"editor-redo\" title=\"Retablir (Ctrl+Y)\" class=\"p-2 rounded-xl border border-white/[0.06] transition-colors text-white/70 hover:text-white hover:bg-white/10\">…</button>\n      - unexpected value \"enabled\"\n"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   '/127.0.0.1:51029/_next/static/webpack/12cc6126bf10a65d.webpack.hot-update.json due to access control checks.',\n+   '/127.0.0.1:51029/library?_rsc=NdCdoW25v-He95L9 due to access control checks.',\n+   '/127.0.0.1:51029/__nextjs_original-stack-frames due to access control checks.'\n+ ]\n- []\n"
+    }
+  ],
+  "details": [],
+  "errors": [
+    "/127.0.0.1:51029/_next/static/webpack/12cc6126bf10a65d.webpack.hot-update.json due to access control checks.",
+    "/127.0.0.1:51029/library?_rsc=NdCdoW25v-He95L9 due to access control checks.",
+    "/127.0.0.1:51029/__nextjs_original-stack-frames due to access control checks."
+  ],
+  "blocked": [],
+  "mutations": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

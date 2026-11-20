@@ -1,0 +1,31 @@
+⚠ Self-signed certificates are currently an experimental feature, use with caution.
+▲ Next.js 16.3.8 (webpack)
+- Local:         https://127.0.0.1:65485
+- Network:       https://127.0.0.1:65485
+✓ Ready in 351ms
+✓ Running next.config.ts took 102ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+(node:81336) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ GET /login 200 in 2.2s (next.js: 1890ms, proxy.ts: 96ms, application-code: 177ms)
+ GET /login 200 in 48ms (next.js: 5ms, proxy.ts: 14ms, application-code: 29ms)
+ GET /login?next=/library 200 in 27ms (next.js: 1.1ms, proxy.ts: 3ms, application-code: 24ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 1471ms (next.js: 1391ms, proxy.ts: 24ms, application-code: 56ms)
+ GET /library 200 in 29ms (next.js: 1.3ms, proxy.ts: 5ms, application-code: 22ms)
+ POST /api/legal/accept 200 in 710ms (next.js: 376ms, proxy.ts: 3ms, application-code: 331ms)
+ POST /api/legal/accept 200 in 261ms (next.js: 1.0ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 261ms (next.js: 1.1ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 262ms (next.js: 1.2ms, proxy.ts: 3ms, application-code: 258ms)
+ GET /auto/schedules 200 in 656ms (next.js: 371ms, proxy.ts: 5ms, application-code: 281ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /auto/schedules 200 in 198ms (next.js: 3ms, proxy.ts: 8ms, application-code: 186ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[?25h

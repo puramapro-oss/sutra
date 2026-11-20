@@ -1,0 +1,104 @@
+{
+  "target": {
+    "id": "Function:src/lib/opentimestamps.ts:attemptUpgrade",
+    "name": "attemptUpgrade",
+    "type": "Function",
+    "filePath": "src/lib/opentimestamps.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "src/app/api/cron/upgrade-ots-proofs/route.ts",
+      "affected_process_count": 8,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Stripe",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/cron/upgrade-ots-proofs/route.ts:GET",
+        "name": "GET",
+        "filePath": "src/app/api/cron/upgrade-ots-proofs/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_80_get",
+            "label": "GET → Deserialize",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_294_get",
+            "label": "GET → Blocked",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_79_get",
+            "label": "GET → DigestFromHex",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_164_get",
+            "label": "GET → EstimateCost",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_25_get",
+            "label": "GET → FinitePositive",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_39_get",
+            "label": "GET → AssertMediaProbeAvailable",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_81_get",
+            "label": "GET → FromHash",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_265_get",
+            "label": "GET → CreateServiceClient",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,123 @@
+(node:13744) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13744) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ 20 concurrent real handlers at 99 scans admit exactly one, independent DB sessions (38.564041ms)
+✖ 20 concurrent same-IP requests record only once and keep idempotent redirect (10.438916ms)
+✖ expired history does not consume rolling quota and is preserved (3.184542ms)
+✖ inactive and unknown partners do not record or set attribution cookie (1.885791ms)
+✔ anon cannot execute service-only RPC (2.330875ms)
+✔ authenticated cannot execute service-only RPC (2.320875ms)
+✔ malformed address and network prefix fail closed, no DB diagnostic or cookie (2.48575ms)
+✔ read-only transaction and missing RPC both fail closed (2.528334ms)
+✔ non-default snapshot isolation explicitly rejects instead of accepting stale quota (1.556041ms)
+✖ apply replay and rollback preserve historical rows, RLS and least privileges (4.344ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 5
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 480.898875
+
+✖ failing tests:
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:5:327
+✖ 20 concurrent real handlers at 99 scans admit exactly one, independent DB sessions (38.564041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:69:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:6:411
+✖ 20 concurrent same-IP requests record only once and keep idempotent redirect (10.438916ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(responses.every(r => r.status === 302))
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:76:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:6:667
+✖ expired history does not consume rolling quota and is preserved (3.184542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  503 !== 302
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:81:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 503,
+    expected: 302,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:7:193
+✖ inactive and unknown partners do not record or set attribution cookie (1.885791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  503 !== 404
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:87:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 503,
+    expected: 404,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-certification-20261019/partner-postgres.test.mts:7:2000
+✖ apply replay and rollback preserve historical rows, RLS and least privileges (4.344ms)
+  error: permission denied for table partners
+      at /Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/pg/lib/client.js:631:17
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async record (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:21:20)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t01-certification-20261019/partner-postgres.test.mts:137:16)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 301,
+    severity: 'ERROR',
+    code: '42501',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: 'SQL statement "SELECT id, status                              FROM sutra.partners WHERE code = p_code FOR UPDATE"\nPL/pgSQL function sutra.record_partner_scan(text,text,text,text) line 24 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'aclchk.c',
+    line: '2795',
+    routine: 'aclcheck_error'
+  }

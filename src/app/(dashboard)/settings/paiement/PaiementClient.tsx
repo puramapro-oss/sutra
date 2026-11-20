@@ -265,7 +265,7 @@ export function PaiementClient({
       )}
 
       {!hasAccount && (
-        <p className="text-xs text-white/40">
+        <p className="text-xs text-white/60">
           Compte Connect créé automatiquement lors de la première visite.
         </p>
       )}

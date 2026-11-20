@@ -1,0 +1,28 @@
+FAIL 375: scheduler double click sends one explicit preference: Expected values to be strictly equal:
+
+2 !== 1
+
+FAIL 375: saved preference never claims running scheduler: expect(locator).toHaveCount(expected) failed
+
+Locator:  getByText('SUTRA produit selon ton planning.', { exact: true })
+Expected: 0
+Received: 1
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.have.count" with timeout 5000ms
+  - waiting for getByText('SUTRA produit selon ton planning.', { exact: true })
+    9 × locator resolved to 1 element
+      - unexpected value "1"
+
+FAIL 375: production exposes durable request cancellation: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('production-request-status')
+Expected: visible
+Timeout: 2000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 2000ms
+  - waiting for getByTestId('production-request-status')
+

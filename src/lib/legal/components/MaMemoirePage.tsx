@@ -82,7 +82,7 @@ export default function MaMemoirePage({
           type="button"
           onClick={handleExport}
           disabled={exporting}
-          className="min-h-11 rounded-pill bg-primary px-5 text-sm font-medium text-white disabled:opacity-60"
+          className="min-h-11 rounded-pill bg-purple-700 px-5 text-sm font-medium text-white disabled:opacity-60"
         >
           {exporting ? 'Préparation…' : 'Exporter mes données (JSON)'}
         </button>

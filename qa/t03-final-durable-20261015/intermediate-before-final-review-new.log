@@ -1,0 +1,32 @@
+✔ invalid non-null terminal result is refused: false (0.704583ms)
+✔ invalid non-null terminal result is refused: true (0.149208ms)
+✔ invalid non-null terminal result is refused: "" (0.099833ms)
+✔ invalid non-null terminal result is refused: 0 (0.048834ms)
+✔ invalid non-null terminal result is refused: [] (0.041583ms)
+✔ invalid non-null terminal result is refused: {} (0.102542ms)
+✔ invalid non-null terminal result is refused: {"videoUrl":"https://fixture.invalid/raw.mp4"} (0.071833ms)
+✔ terminal replay needs matching measured export and all required stages (0.251625ms)
+✔ production substeps need a result bound to their independent checkpoint (0.648167ms)
+✔ pending checkpoint advances durably, completed result remains immutable (0.362708ms)
+✔ failed pending promotion is not reflected in memory or acknowledged (0.084666ms)
+✔ storyboard write interruption preserves script and resumes without paying again (0.291917ms)
+✔ 24 duplicate stage deliveries serialize to one durable receipt; conflict never overwrites it (4.513ms)
+✔ legacy empty optional checkpoints are retained byte for byte (0.137542ms)
+✔ required tracks cannot be skipped by changing final result alone (0.160916ms)
+✔ production all with disabled music completes and replays without duplicate providers (1.416875ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"%%%INVALID%%%"} (0.097375ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":""} (0.041417ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64_sha256":"0000000000000000000000000000000000000000000000000000000000000000"} (0.051083ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz"} (0.050167ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1.5,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64:1":"","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.04225ms)
+✔ corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"???","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"} (0.040541ms)
+✔ valid chunked and legacy unchunked voice are preserved without regeneration (0.056334ms)
+✔ new small voice persists integrity before payload and never regenerates on lost payload write (0.139416ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 440.689208

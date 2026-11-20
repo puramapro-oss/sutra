@@ -1,0 +1,68 @@
+{
+  "recordedAt": "2026-10-15T13:10:33.708017+00:00",
+  "baseHead": "56754679abed9aa1e51323c29aed5bef38bc17d0",
+  "candidateApplication": "d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2",
+  "browserCommand": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node qa/t07-integrated-retest-20261015/run.mjs",
+  "browserExitCode": 0,
+  "checks": 142,
+  "pass": 142,
+  "fail": 0,
+  "axeScans": 39,
+  "axeViolations": 0,
+  "rawRuntimeErrors": 0,
+  "unexpectedRuntimeErrors": 0,
+  "unexpectedMutations": 0,
+  "externalAttemptsBlocked": 0,
+  "ownedServer": {
+    "pid": 53731,
+    "base": "https://127.0.0.1:60848",
+    "cwd": "/Users/matissdornier/purama-worktrees/sutra-t07-integrated-retest-20261015",
+    "stopped": true
+  },
+  "node": "24.21.0",
+  "next": "16.3.8",
+  "react": "19.2.4",
+  "playwright": "1.58.2",
+  "nativeSafari": "NON TESTE",
+  "physicalDevice": "NON TESTE",
+  "productionBuildPerformed": false,
+  "productChanges": [],
+  "syntax": {
+    "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node --check qa/t07-integrated-retest-20261015/run.mjs",
+    "exitCode": 0
+  },
+  "lint": {
+    "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node node_modules/eslint/bin/eslint.js qa/t07-integrated-retest-20261015/run.mjs",
+    "exitCode": 0,
+    "timing": "Before browser run; runner unchanged since lint"
+  },
+  "secretScan": {
+    "firstExitCode": 1,
+    "reviewedSyntheticUUIDFindings": 2,
+    "reviewedExitCode": 0,
+    "exactIgnore": "gitleaks-reviewed.ignore",
+    "finalExitCode": 0
+  },
+  "gitnexus": {
+    "delta": {
+      "files": 73,
+      "symbols": 6,
+      "processes": 0,
+      "risk": "LOW",
+      "note": "Document-section overlap on append; new QA outside graph, no product symbols changed"
+    },
+    "compareMain": {
+      "files": 3539,
+      "symbols": 9344,
+      "processes": 228,
+      "risk": "CRITICAL",
+      "listingCapped": true,
+      "scope": "Historical integration, not this lot"
+    },
+    "indexBase": "56754679abed9aa1e51323c29aed5bef38bc17d0"
+  },
+  "whitespaceCheck": {
+    "sourceAndDocs": "PASS",
+    "rawLogException": "gitnexus-index.log has one trailing blank line retained as original evidence"
+  }
+}

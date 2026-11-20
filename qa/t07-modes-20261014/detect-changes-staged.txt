@@ -1,0 +1,35 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 97 files, 97 symbols
+Affected processes: 10
+Risk level: high
+
+Changed symbols:
+  Section T07 — jalon UI distinct, 2026-10-14 → BATON.md
+  Section Livraison T07 UI — 14 octobre 2026 → HANDOFF-SUTRA-T07-MODES-20261014.md
+  Section T07 — modes de génération et reconnexion sociale, 14 octobre 2026 → qa/t07-modes-20261014/README.md
+  Section Périmètre et provenance → qa/t07-modes-20261014/README.md
+  Section Corrections → qa/t07-modes-20261014/README.md
+  Section Validation ciblée → qa/t07-modes-20261014/README.md
+  Section Preuves antérieures conservées → qa/t07-modes-20261014/README.md
+  Section GitNexus / sécurité → qa/t07-modes-20261014/README.md
+  Section Dépendance restante, T01/T04 → qa/t07-modes-20261014/README.md
+  Const require → qa/t07-modes-20261014/browser.mjs
+  Const socialOnly → qa/t07-modes-20261014/browser.mjs
+  Const capabilitiesOnly → qa/t07-modes-20261014/browser.mjs
+  Const visualOnly → qa/t07-modes-20261014/browser.mjs
+  Const output → qa/t07-modes-20261014/browser.mjs
+  Const user → qa/t07-modes-20261014/browser.mjs
+... and 82 more
+
+Affected execution flows:
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: ExecutionModeNotice, fetchPublicCapabilities, CreatePage
+  • CreatePage → ParsePublicCapabilities (4 steps) — changed: ExecutionModeNotice, fetchPublicCapabilities, parsePublicCapabilities, CreatePage
+  • CreatePage → GetPipelineSteps (3 steps) — changed: CreatePage
+  • ProductionPage → FetchPublicCapabilities (3 steps) — changed: ExecutionModeNotice, fetchPublicCapabilities, ProductionPage
+  • ProductionPage → ParsePublicCapabilities (4 steps) — changed: ExecutionModeNotice, fetchPublicCapabilities, parsePublicCapabilities, ProductionPage
+  • CreatePage → Cn (4 steps) — changed: CreatePage
+  • SocialAccountsPage → Cn (4 steps) — changed: SocialAccountsPage
+  • SocialAccountsPage → Error (3 steps) — changed: SocialAccountsPage
+  • HandleDisconnect → Error (3 steps) — changed: handleDisconnect
+  • ProductionPage → Cn (3 steps) — changed: ProductionPage

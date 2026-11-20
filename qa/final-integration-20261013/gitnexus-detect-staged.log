@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 262 files, 103 symbols
+Affected processes: 22
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section SUTRA T01 — production OVH, 2026-10-13 → HANDOFF-SUTRA-T01-20261012.md
+  Section Limites et reprise → HANDOFF-SUTRA-T01-20261012.md
+  Section SUTRA T02 — sécurité — reprise finale du 2026-10-12 → HANDOFF-SUTRA-T02-20261012.md
+  Section Livraison et provenance → HANDOFF-SUTRA-T02-20261012.md
+  Section Vulnérabilités résiduelles reproduites et corrigées → HANDOFF-SUTRA-T02-20261012.md
+  Section SUTRA T04 — reprise fournisseurs sur intégration, 12 octobre 2026 → HANDOFF-SUTRA-T04-20261012.md
+  Section Coordination → HANDOFF-SUTRA-T04-20261012.md
+  Section SUTRA T05 — média et export — reprise du 2026-10-12 → HANDOFF-SUTRA-T05-20261012.md
+  Section Ownership et reprise → HANDOFF-SUTRA-T05-20261012.md
+  Section HANDOFF SUTRA T08 — QA intégrée — 2026-10-12 → HANDOFF-SUTRA-T08-20261012.md
+  Section Preuves réutilisées et blocages réels → HANDOFF-SUTRA-T08-20261012.md
+  Const nodeTests → scripts/run-ci.mjs
+  Function mock → scripts/test-provider-safety.mts
+  Function save → scripts/test-provider-safety.mts
+... and 88 more
+
+Affected execution flows:
+  • GET → ContentWithTags (5 steps) — changed: buildPublishPayload, contentWithTags
+  • GET → ProviderPlatform (5 steps) — changed: buildPublishPayload, providerPlatform
+  • POST → OptionalEnv (3 steps) — changed: generateMusic
+  • POST → HttpErrorMessage (3 steps) — changed: generateMusic
+  • GET → Digest (3 steps) — changed: GET, consumeSocialOAuthState
+  • GET → ValidState (3 steps) — changed: GET, consumeSocialOAuthState, validState
+  • POST → FetchWithRetry (3 steps) — changed: generateMusic
+  • POST → BreakerKey (5 steps) — changed: generateMusic
+  • POST → Abort (5 steps) — changed: generateMusic
+  • POST → MissingEnvError (4 steps) — changed: generateMusic
+... and 12 more

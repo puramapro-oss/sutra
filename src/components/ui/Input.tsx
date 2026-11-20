@@ -13,7 +13,7 @@ export interface InputProps
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, iconLeft, iconRight, className, id, onFocus, onBlur, ...props }, ref) => {
+  ({ label, error, iconLeft, iconRight, className, id, onFocus, onBlur, onChange, 'aria-describedby': describedBy, 'aria-invalid': invalid, ...props }, ref) => {
     const generatedId = useId()
     const inputId = id ?? generatedId
     const [focused, setFocused] = useState(false)
@@ -32,10 +32,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       onBlur?.(e)
     }
 
-    const isFloating = focused || hasValue
+    const isFloating = focused || (props.value !== undefined ? String(props.value).length > 0 : hasValue) || Boolean(props.placeholder)
+    const errorId = `${inputId}-error`
 
     return (
       <div className="relative w-full">
+        <div className="relative">
         {label && (
           <label
             htmlFor={inputId}
@@ -50,7 +52,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 ? 'text-violet-400'
                 : error
                   ? 'text-red-400'
-                  : 'text-white/40'
+                  : 'text-white/65'
             )}
           >
             {label}
@@ -70,8 +72,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           onBlur={handleBlur}
           onChange={(e) => {
             setHasValue(Boolean(e.target.value))
-            props.onChange?.(e)
+            onChange?.(e)
           }}
+          aria-invalid={error ? true : invalid}
+          aria-describedby={[describedBy, error ? errorId : undefined].filter(Boolean).join(' ') || undefined}
           className={cn(
             'w-full py-3 rounded-xl text-sm text-white/90 placeholder-white/30',
             iconLeft ? 'pl-11' : 'pl-4',
@@ -94,9 +98,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {iconRight}
           </span>
         )}
+        </div>
 
         {error && (
-          <p className="mt-1.5 text-xs text-red-400 pl-1">{error}</p>
+          <p id={errorId} role="alert" className="mt-1.5 text-xs text-red-400 pl-1">{error}</p>
         )}
       </div>
     )

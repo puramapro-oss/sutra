@@ -1,0 +1,217 @@
+TAP version 13
+# (node:58043) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:58043) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: cancel transport failure is scrubbed and never acknowledged
+ok 1 - cancel transport failure is scrubbed and never acknowledged
+  ---
+  duration_ms: 0.845041
+  type: 'test'
+  ...
+# Subtest: cancel malformed ACK null requires reconciliation
+ok 2 - cancel malformed ACK null requires reconciliation
+  ---
+  duration_ms: 0.126708
+  type: 'test'
+  ...
+# Subtest: cancel malformed ACK undefined requires reconciliation
+ok 3 - cancel malformed ACK undefined requires reconciliation
+  ---
+  duration_ms: 0.054208
+  type: 'test'
+  ...
+# Subtest: cancel malformed ACK "true" requires reconciliation
+ok 4 - cancel malformed ACK "true" requires reconciliation
+  ---
+  duration_ms: 0.045334
+  type: 'test'
+  ...
+# Subtest: cancel malformed ACK "false" requires reconciliation
+ok 5 - cancel malformed ACK "false" requires reconciliation
+  ---
+  duration_ms: 0.052583
+  type: 'test'
+  ...
+# Subtest: cancel malformed ACK 0 requires reconciliation
+ok 6 - cancel malformed ACK 0 requires reconciliation
+  ---
+  duration_ms: 0.044375
+  type: 'test'
+  ...
+# Subtest: cancel malformed ACK {} requires reconciliation
+ok 7 - cancel malformed ACK {} requires reconciliation
+  ---
+  duration_ms: 0.0585
+  type: 'test'
+  ...
+# Subtest: cancel malformed ACK [] requires reconciliation
+ok 8 - cancel malformed ACK [] requires reconciliation
+  ---
+  duration_ms: 0.049917
+  type: 'test'
+  ...
+# Subtest: cancel literal boolean ACK remains authoritative
+ok 9 - cancel literal boolean ACK remains authoritative
+  ---
+  duration_ms: 0.071125
+  type: 'test'
+  ...
+# Subtest: invalid non-null terminal result is refused: false
+ok 10 - invalid non-null terminal result is refused: false
+  ---
+  duration_ms: 0.763583
+  type: 'test'
+  ...
+# Subtest: invalid non-null terminal result is refused: true
+ok 11 - invalid non-null terminal result is refused: true
+  ---
+  duration_ms: 0.182
+  type: 'test'
+  ...
+# Subtest: invalid non-null terminal result is refused: ""
+ok 12 - invalid non-null terminal result is refused: ""
+  ---
+  duration_ms: 0.105375
+  type: 'test'
+  ...
+# Subtest: invalid non-null terminal result is refused: 0
+ok 13 - invalid non-null terminal result is refused: 0
+  ---
+  duration_ms: 0.048333
+  type: 'test'
+  ...
+# Subtest: invalid non-null terminal result is refused: []
+ok 14 - invalid non-null terminal result is refused: []
+  ---
+  duration_ms: 0.050541
+  type: 'test'
+  ...
+# Subtest: invalid non-null terminal result is refused: {}
+ok 15 - invalid non-null terminal result is refused: {}
+  ---
+  duration_ms: 0.110416
+  type: 'test'
+  ...
+# Subtest: invalid non-null terminal result is refused: {"videoUrl":"https://fixture.invalid/raw.mp4"}
+ok 16 - invalid non-null terminal result is refused: {"videoUrl":"https://fixture.invalid/raw.mp4"}
+  ---
+  duration_ms: 0.074708
+  type: 'test'
+  ...
+# Subtest: terminal replay needs matching measured export and all required stages
+ok 17 - terminal replay needs matching measured export and all required stages
+  ---
+  duration_ms: 0.209584
+  type: 'test'
+  ...
+# Subtest: production substeps need a result bound to their independent checkpoint
+ok 18 - production substeps need a result bound to their independent checkpoint
+  ---
+  duration_ms: 0.378833
+  type: 'test'
+  ...
+# Subtest: pending checkpoint advances durably, completed result remains immutable
+ok 19 - pending checkpoint advances durably, completed result remains immutable
+  ---
+  duration_ms: 0.355584
+  type: 'test'
+  ...
+# Subtest: failed pending promotion is not reflected in memory or acknowledged
+ok 20 - failed pending promotion is not reflected in memory or acknowledged
+  ---
+  duration_ms: 0.075083
+  type: 'test'
+  ...
+# Subtest: storyboard write interruption preserves script and resumes without paying again
+ok 21 - storyboard write interruption preserves script and resumes without paying again
+  ---
+  duration_ms: 0.267375
+  type: 'test'
+  ...
+# Subtest: 24 duplicate stage deliveries serialize to one durable receipt; conflict never overwrites it
+ok 22 - 24 duplicate stage deliveries serialize to one durable receipt; conflict never overwrites it
+  ---
+  duration_ms: 3.481833
+  type: 'test'
+  ...
+# Subtest: legacy empty optional checkpoints are retained byte for byte
+ok 23 - legacy empty optional checkpoints are retained byte for byte
+  ---
+  duration_ms: 0.114917
+  type: 'test'
+  ...
+# Subtest: required tracks cannot be skipped by changing final result alone
+ok 24 - required tracks cannot be skipped by changing final result alone
+  ---
+  duration_ms: 0.143708
+  type: 'test'
+  ...
+# Subtest: production all with disabled music and narration="fixture" completes and replays
+ok 25 - production all with disabled music and narration="fixture" completes and replays
+  ---
+  duration_ms: 2.058375
+  type: 'test'
+  ...
+# Subtest: production all with disabled music and narration="" completes and replays
+ok 26 - production all with disabled music and narration="" completes and replays
+  ---
+  duration_ms: 0.466166
+  type: 'test'
+  ...
+# Subtest: corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"%%%INVALID%%%"}
+ok 27 - corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"%%%INVALID%%%"}
+  ---
+  duration_ms: 0.086875
+  type: 'test'
+  ...
+# Subtest: corrupt voice checkpoint quarantines without synthesis: {"voice_b64":""}
+ok 28 - corrupt voice checkpoint quarantines without synthesis: {"voice_b64":""}
+  ---
+  duration_ms: 0.03975
+  type: 'test'
+  ...
+# Subtest: corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64_sha256":"0000000000000000000000000000000000000000000000000000000000000000"}
+ok 29 - corrupt voice checkpoint quarantines without synthesis: {"voice_b64":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64_sha256":"0000000000000000000000000000000000000000000000000000000000000000"}
+  ---
+  duration_ms: 0.048292
+  type: 'test'
+  ...
+# Subtest: corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz"}
+ok 30 - corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz"}
+  ---
+  duration_ms: 0.044292
+  type: 'test'
+  ...
+# Subtest: corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1.5,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64:1":"","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"}
+ok 31 - corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1.5,"voice_b64:0":"c3ludGhldGljIGF1ZGlvIGJ5dGVz","voice_b64:1":"","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"}
+  ---
+  duration_ms: 0.040917
+  type: 'test'
+  ...
+# Subtest: corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"???","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"}
+ok 32 - corrupt voice checkpoint quarantines without synthesis: {"voice_b64_parts":1,"voice_b64:0":"???","voice_b64_sha256":"8e06a1f11c466de71d9b126c563dfeec87053b989f9d020e179d44a882500ea5"}
+  ---
+  duration_ms: 0.036875
+  type: 'test'
+  ...
+# Subtest: valid chunked and legacy unchunked voice are preserved without regeneration
+ok 33 - valid chunked and legacy unchunked voice are preserved without regeneration
+  ---
+  duration_ms: 0.053583
+  type: 'test'
+  ...
+# Subtest: new small voice persists integrity before payload and never regenerates on lost payload write
+ok 34 - new small voice persists integrity before payload and never regenerates on lost payload write
+  ---
+  duration_ms: 0.142417
+  type: 'test'
+  ...
+1..34
+# tests 34
+# suites 0
+# pass 34
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 761.2115

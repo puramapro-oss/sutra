@@ -1,0 +1,295 @@
+▲ Next.js 16.3.8 (webpack)
+✓ Running next.config.ts took 112ms
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+⚠ The Edge Runtime is deprecated. You can use the "nodejs" runtime instead. Learn more: https://nextjs.org/docs/messages/edge-runtime-deprecated
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (215kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+⚠ Compiled with warnings in 13.7s
+
+./node_modules/next/dist/esm/server/app-render/dynamic-rendering.js
+A Node.js API is used (process.cwd at line: 1044) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/next/dist/esm/server/app-render/dynamic-rendering.js
+./node_modules/next/dist/esm/server/request/connection.js
+./node_modules/next/dist/esm/server/web/exports/index.js
+./node_modules/next/dist/esm/api/server.js
+
+./node_modules/next/dist/esm/server/app-render/dynamic-rendering.js
+A Node.js API is used (process.cwd at line: 1044) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/next/dist/esm/server/app-render/dynamic-rendering.js
+./node_modules/next/dist/esm/server/request/connection.js
+./node_modules/next/dist/esm/server/web/exports/index.js
+./node_modules/next/dist/esm/api/server.js
+
+  Running TypeScript ...
+  Finished TypeScript in 10.0s ...
+  Collecting page data using 15 workers ...
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 15 workers (0/199) ...
+  Generating static pages using 15 workers (49/199) 
+  Generating static pages using 15 workers (99/199) 
+  Generating static pages using 15 workers (149/199) 
+✓ Generating static pages using 15 workers (199/199) in 334ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /achievements
+├ ƒ /admin
+├ ƒ /admin/api-usage
+├ ƒ /admin/classement
+├ ƒ /admin/config
+├ ƒ /admin/contest
+├ ƒ /admin/finances
+├ ƒ /admin/health
+├ ƒ /admin/users
+├ ƒ /admin/withdrawals
+├ ƒ /aide
+├ ƒ /ambassadeur
+├ ƒ /analytics
+├ ƒ /api/account/delete
+├ ƒ /api/achievements
+├ ƒ /api/admin/health
+├ ƒ /api/admin/stats
+├ ƒ /api/admin/users
+├ ƒ /api/admin/users/[id]
+├ ƒ /api/ai/chat
+├ ƒ /api/auto/config
+├ ƒ /api/auto/generate
+├ ƒ /api/auto/memory
+├ ƒ /api/auto/publish
+├ ƒ /api/auto/themes
+├ ƒ /api/auto/themes/[id]
+├ ƒ /api/auto/videos
+├ ƒ /api/auto/videos/[id]
+├ ƒ /api/boutique
+├ ƒ /api/chatbot
+├ ƒ /api/community/buddy
+├ ƒ /api/community/buddy/checkin
+├ ƒ /api/community/circles
+├ ƒ /api/community/circles/join
+├ ƒ /api/community/wall
+├ ƒ /api/community/wall/react
+├ ƒ /api/connect/account-session
+├ ƒ /api/connect/onboard
+├ ƒ /api/contact
+├ ƒ /api/create
+├ ƒ /api/create/status
+├ ƒ /api/cron/account-deletion
+├ ƒ /api/cron/ambassador-check
+├ ƒ /api/cron/asso-transfer
+├ ƒ /api/cron/auto-learn
+├ ƒ /api/cron/auto-plan
+├ ƒ /api/cron/auto-trends
+├ ƒ /api/cron/contest-judge
+├ ƒ /api/cron/contest-monthly
+├ ƒ /api/cron/contest-weekly
+├ ƒ /api/cron/email-sequences
+├ ƒ /api/cron/fiscal-palier
+├ ƒ /api/cron/karma-defi
+├ ƒ /api/cron/karma-lightning
+├ ƒ /api/cron/karma-split-distribute
+├ ƒ /api/cron/karma-tournoi
+├ ƒ /api/cron/smart-split
+├ ƒ /api/cron/streak-update
+├ ƒ /api/cron/sutra-auto
+├ ƒ /api/cron/upgrade-ots-proofs
+├ ƒ /api/cron/video-worker
+├ ƒ /api/daily-gift
+├ ƒ /api/drafts
+├ ƒ /api/dream-goals
+├ ƒ /api/email
+├ ƒ /api/feedback
+├ ƒ /api/financer
+├ ƒ /api/fiscal/status
+├ ƒ /api/fiscal/summary
+├ ƒ /api/flywheel
+├ ƒ /api/gratitude
+├ ƒ /api/health
+├ ƒ /api/internal/stripe-fulfillment
+├ ƒ /api/karma/games/creatif
+├ ƒ /api/karma/games/creatif/vote
+├ ƒ /api/karma/games/defi
+├ ƒ /api/karma/games/dharma
+├ ƒ /api/karma/games/lightning
+├ ƒ /api/karma/games/lightning/claim
+├ ƒ /api/karma/games/quete
+├ ƒ /api/karma/games/tournoi
+├ ƒ /api/karma/games/vague
+├ ƒ /api/karma/missions
+├ ƒ /api/karma/seeds
+├ ƒ /api/legal/accept
+├ ƒ /api/legal/cookie-consent
+├ ƒ /api/legal/my-data
+├ ƒ /api/locale
+├ ƒ /api/lottery
+├ ƒ /api/magic-moment/ack
+├ ƒ /api/magic-moment/check
+├ ƒ /api/media/[reference]
+├ ƒ /api/music/generate
+├ ƒ /api/notifications
+├ ƒ /api/og
+├ ƒ /api/partner/coach
+├ ƒ /api/partner/commissions
+├ ƒ /api/partner/payout
+├ ƒ /api/partner/qr/[code]
+├ ƒ /api/partner/referrals
+├ ƒ /api/partner/register
+├ ƒ /api/partner/scan/[code]
+├ ƒ /api/partner/stats
+├ ƒ /api/points
+├ ƒ /api/production
+├ ƒ /api/publish
+├ ƒ /api/publish/social
+├ ƒ /api/purama-score
+├ ƒ /api/referral
+├ ƒ /api/settings
+├ ƒ /api/setup
+├ ƒ /api/share
+├ ƒ /api/social-feed
+├ ƒ /api/social/accounts
+├ ƒ /api/social/autopilot
+├ ƒ /api/social/callback
+├ ƒ /api/social/connect
+├ ƒ /api/social/publish
+├ ƒ /api/status
+├ ƒ /api/stock/keywords
+├ ƒ /api/stock/search
+├ ƒ /api/storyboard
+├ ƒ /api/stripe/checkout
+├ ƒ /api/stripe/portal
+├ ƒ /api/stripe/subscription/cancel
+├ ƒ /api/stripe/subscription/pause
+├ ƒ /api/stripe/webhook
+├ ƒ /api/subtitles
+├ ƒ /api/subtitles/export
+├ ƒ /api/subtitles/translate
+├ ƒ /api/sutra/auto/generate
+├ ƒ /api/templates
+├ ƒ /api/verify-siret
+├ ƒ /api/verify/[videoId]
+├ ƒ /api/video/capabilities
+├ ƒ /api/video/export
+├ ƒ /api/video/status/[jobId]
+├ ƒ /api/voice/clone
+├ ƒ /api/voice/generate
+├ ƒ /api/voice/list
+├ ƒ /api/wallet
+├ ƒ /api/wallet/withdraw
+├ ƒ /api/wallet/withdraw/stripe
+├ ƒ /api/webhooks/suno
+├ ƒ /auth/callback
+├ ƒ /auto
+├ ƒ /auto/memory
+├ ƒ /auto/schedules
+├ ƒ /auto/settings
+├ ƒ /auto/themes
+├ ƒ /auto/videos
+├ ƒ /autopilot
+├ ƒ /batch
+├ ƒ /boutique
+├ ƒ /breathe
+├ ƒ /cgu
+├ ƒ /cgv
+├ ƒ /changelog
+├ ƒ /chat
+├ ƒ /chat/[id]
+├ ƒ /classement
+├ ƒ /classement-points
+├ ƒ /classement/engagement
+├ ƒ /community
+├ ƒ /confidentialite
+├ ƒ /confirmation
+├ ƒ /contact
+├ ƒ /contest
+├ ƒ /create
+├ ƒ /dashboard
+├ ƒ /devenir-ambassadeur
+├ ƒ /devenir-influenceur
+├ ƒ /ecosystem
+├ ƒ /editor/[id]
+├ ƒ /financer
+├ ƒ /fiscal
+├ ƒ /forgot-password
+├ ƒ /go/[slug]
+├ ƒ /gratitude
+├ ƒ /guide
+├ ƒ /help
+├ ƒ /how-it-works
+├ ƒ /influencer
+├ ƒ /invoices
+├ ƒ /karma
+├ ƒ /karma/defi-collectif
+├ ƒ /karma/dharma
+├ ƒ /karma/jeu-creatif
+├ ƒ /karma/lightning
+├ ƒ /karma/missions
+├ ƒ /karma/quete-rare
+├ ƒ /karma/tournoi
+├ ƒ /karma/vague
+├ ƒ /legal
+├ ƒ /legal/cgv
+├ ƒ /legal/cookies
+├ ƒ /legal/mentions
+├ ƒ /legal/privacy
+├ ƒ /legal/terms
+├ ƒ /library
+├ ƒ /library/[id]
+├ ƒ /login
+├ ƒ /lottery
+├ ƒ /ma-memoire
+├ ƒ /mentions-legales
+├ ƒ /notifications
+├ ƒ /offline
+├ ƒ /partenaire
+├ ƒ /partenaire/coach
+├ ƒ /partenaire/outils
+├ ƒ /partenariat
+├ ƒ /partenariat/[canal]
+├ ƒ /politique-confidentialite
+├ ƒ /pricing
+├ ƒ /production
+├ ƒ /profile
+├ ƒ /publish
+├ ƒ /referral
+├ ƒ /reset-password
+├ ○ /robots.txt
+├ ƒ /scan/[code]
+├ ƒ /settings
+├ ƒ /settings/abonnement
+├ ƒ /settings/notifications
+├ ƒ /settings/paiement
+├ ƒ /settings/social
+├ ƒ /signup
+├ ○ /sitemap.xml
+├ ƒ /status
+├ ƒ /storyboard
+├ ƒ /styles
+├ ƒ /templates
+├ ƒ /voices
+└ ƒ /wallet
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+▲ Next.js 16.3.8
+- Local:         http://127.0.0.1:53704
+- Network:       http://127.0.0.1:53704
+✓ Ready in 76ms
+✓ Running next.config.ts took 38ms

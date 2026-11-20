@@ -4,7 +4,7 @@ import { createServiceClient } from '@/lib/supabase'
 
 // 12 segments — distribution prosociale (moyenne ~80 graines/tour)
 // Index 0..11, chacun a un label, un reward, et un badge optionnel
-export const DHARMA_SEGMENTS = [
+const DHARMA_SEGMENTS = [
   { index: 0, label: 'Souffle',       seeds: 10,   badge: null,                weight: 18 },
   { index: 1, label: 'Étincelle',     seeds: 25,   badge: null,                weight: 16 },
   { index: 2, label: 'Présent',       seeds: 50,   badge: null,                weight: 14 },

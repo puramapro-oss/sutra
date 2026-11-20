@@ -1,0 +1,30 @@
+{
+  "repository": "sutra-t08-20261012",
+  "version": "1.6.12",
+  "index": {
+    "nodes": 13395,
+    "edges": 29185,
+    "clusters": 330,
+    "flows": 517,
+    "truncated": true,
+    "entryPointCandidatesDropped": 966,
+    "calleesDropped": 3091,
+    "walksCutByBudget": 8
+  },
+  "detectChanges": {
+    "command": "gitnexus detect-changes --scope staged --repo sutra-t08-20261012 --limit 500",
+    "exitCode": 0,
+    "changedFiles": 17,
+    "changedSymbols": 111,
+    "affectedProcessesResolved": 0,
+    "reportedRisk": "low"
+  },
+  "qualification": "NON_EXHAUSTIVE: truncated graph; zero resolved processes is not absence of impact",
+  "scopeCheck": "Only qa/t08/**, BATON.md, HANDOFF-SUTRA-T08-20261012.md and appended task_plan.md; product diff empty",
+  "impact": {
+    "target": "FakeDb",
+    "risk": "UNKNOWN",
+    "directCallersResolved": 0,
+    "limitation": "test callers not resolved; not proof of no usage"
+  }
+}

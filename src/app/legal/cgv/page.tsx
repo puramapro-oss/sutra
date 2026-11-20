@@ -24,7 +24,7 @@ export default function CGVPage() {
           <Link href="/" className="text-xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>
             <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">SUTRA</span>
           </Link>
-          <Link href="/legal" className="text-sm text-white/40 hover:text-white/60 transition-colors">Retour</Link>
+          <Link href="/legal" className="text-sm text-white/60 hover:text-white/60 transition-colors">Retour</Link>
         </div>
       </nav>
 
@@ -34,7 +34,7 @@ export default function CGVPage() {
           <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-display)' }}>
             Conditions Generales de <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Vente</span>
           </h1>
-          <p className="text-white/40 text-sm">Derniere mise a jour : 2 avril 2026</p>
+          <p className="text-white/60 text-sm">Derniere mise a jour : 2 avril 2026</p>
         </div>
 
         <div className="space-y-10">
@@ -97,7 +97,7 @@ export default function CGVPage() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/[0.06]">
-          <Link href="/legal" className="text-sm text-white/40 hover:text-white/60 transition-colors">Retour aux informations legales</Link>
+          <Link href="/legal" className="text-sm text-white/60 hover:text-white/60 transition-colors">Retour aux informations legales</Link>
         </div>
       </div>
     </main>

@@ -1,0 +1,127 @@
+TAP version 13
+# (node:29770) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:29770) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: two users and two provider tenants: each exact capability authorizes only its own object
+ok 1 - two users and two provider tenants: each exact capability authorizes only its own object
+  ---
+  duration_ms: 8.762708
+  type: 'test'
+  ...
+# Subtest: signed capability cannot move to the other user object
+ok 2 - signed capability cannot move to the other user object
+  ---
+  duration_ms: 0.366666
+  type: 'test'
+  ...
+# Subtest: journal ownership cannot be replaced by another user
+ok 3 - journal ownership cannot be replaced by another user
+  ---
+  duration_ms: 0.21525
+  type: 'test'
+  ...
+# Subtest: project ownership cannot be replaced by another user
+ok 4 - project ownership cannot be replaced by another user
+  ---
+  duration_ms: 0.266834
+  type: 'test'
+  ...
+# Subtest: social account ownership cannot be replaced by another user
+ok 5 - social account ownership cannot be replaced by another user
+  ---
+  duration_ms: 0.708041
+  type: 'test'
+  ...
+# Subtest: pending revoke closes an already emitted capability before remote revocation finishes
+ok 6 - pending revoke closes an already emitted capability before remote revocation finishes
+  ---
+  duration_ms: 0.396167
+  type: 'test'
+  ...
+# Subtest: changing the live provider tenant invalidates the old capability
+ok 7 - changing the live provider tenant invalidates the old capability
+  ---
+  duration_ms: 0.17775
+  type: 'test'
+  ...
+# Subtest: capability refuses foreign-profile account provenance
+ok 8 - capability refuses foreign-profile account provenance
+  ---
+  duration_ms: 0.194916
+  type: 'test'
+  ...
+# Subtest: capability refuses missing-profile account provenance
+ok 9 - capability refuses missing-profile account provenance
+  ---
+  duration_ms: 0.1465
+  type: 'test'
+  ...
+# Subtest: capability refuses foreign-credential-owner account provenance
+ok 10 - capability refuses foreign-credential-owner account provenance
+  ---
+  duration_ms: 0.140125
+  type: 'test'
+  ...
+# Subtest: capability refuses missing-metadata account provenance
+ok 11 - capability refuses missing-metadata account provenance
+  ---
+  duration_ms: 0.139916
+  type: 'test'
+  ...
+# Subtest: capability fails closed when tenant bindings are absent
+ok 12 - capability fails closed when tenant bindings are absent
+  ---
+  duration_ms: 0.14025
+  type: 'test'
+  ...
+# Subtest: capability fails closed when tenant bindings are invalid
+ok 13 - capability fails closed when tenant bindings are invalid
+  ---
+  duration_ms: 0.10625
+  type: 'test'
+  ...
+# Subtest: capability fails closed when tenant bindings are duplicate
+ok 14 - capability fails closed when tenant bindings are duplicate
+  ---
+  duration_ms: 0.109375
+  type: 'test'
+  ...
+# Subtest: expired grant refuses before storage signing
+ok 15 - expired grant refuses before storage signing
+  ---
+  duration_ms: 0.117375
+  type: 'test'
+  ...
+# Subtest: missing signing secret fails closed
+ok 16 - missing signing secret fails closed
+  ---
+  duration_ms: 0.103416
+  type: 'test'
+  ...
+# Subtest: social account DB diagnostic is not exposed by media route
+ok 17 - social account DB diagnostic is not exposed by media route
+  ---
+  duration_ms: 0.12
+  type: 'test'
+  ...
+# Subtest: no capability and no authenticated session cannot sign
+ok 18 - no capability and no authenticated session cannot sign
+  ---
+  duration_ms: 0.089916
+  type: 'test'
+  ...
+# Subtest: another authenticated user cannot sign the owner reference
+ok 19 - another authenticated user cannot sign the owner reference
+  ---
+  duration_ms: 0.078
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 143.855041

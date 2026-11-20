@@ -1,0 +1,40 @@
+[
+  {
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "qa/t06-final-integration-20261015/autopilot.test.mts"
+    ],
+    "exitCode": 0,
+    "name": "autopilot",
+    "status": "PASS"
+  },
+  {
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--project",
+      "qa/t06-final-integration-20261015/tsconfig.json"
+    ],
+    "exitCode": 0,
+    "name": "typecheck",
+    "status": "PASS"
+  },
+  {
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings=0",
+      "src/app/api/social/autopilot/route.ts",
+      "qa/t06-final-integration-20261015/autopilot.test.mts"
+    ],
+    "exitCode": 0,
+    "name": "lint",
+    "status": "PASS"
+  }
+]

@@ -1,0 +1,377 @@
+(node:19592) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19592) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ lost submission ACK is reconciled by GET, then cancelled without a second logical job (208.412791ms)
+✖ a still-uncommitted submission remains absent; false cancel is not evidence of cancellation (11.719833ms)
+✖ lost cancel ACK after commit stays 503 until the durable receipt is read (10.769375ms)
+✖ malformed cancel ACK after commit stays 503 until the durable receipt is read (12.393125ms)
+✖ SQL cancellation failure rolls back quota release and job state; the same intent can cancel later (12.852291ms)
+✖ an SQL read error is 503 without a mutation; user binding prevents observing another owner (10.684ms)
+✖ cancellation wins between a persisted checkpoint and finish: no success, no reacquisition (11.100625ms)
+✖ finish wins before cancellation; disabled music null is a valid reusable terminal receipt (8.610459ms)
+✖ 12 concurrent HTTP deliveries share one worker, checkpoint and reservation (16.788375ms)
+✖ 12 cancellations after lease expiry release once and fence the obsolete worker checkpoint (8.202959ms)
+✖ an uncertain remote intention stays quarantined on HTTP redelivery and keeps acquired output (12.013583ms)
+✖ lost finish ACK is recovered from a valid SQL receipt without a second quota mutation (7.729916ms)
+✖ SQL failure during finish never returns success or consumes quota despite the acquired checkpoint (15.603875ms)
+✖ /Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts (2.920542ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 0
+ℹ fail 14
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 998.926583
+
+✖ failing tests:
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:33
+✖ lost submission ACK is reconciled by GET, then cancelled without a second logical job (208.412791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.'
+  -   data: {
+  -     cancelled: true
+  -   }
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:153:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.' },
+    expected: { data: { cancelled: true } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:836
+✖ a still-uncommitted submission remains absent; false cancel is not evidence of cancellation (11.719833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.'
+  -   data: {
+  -     cancelled: true
+  -   }
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:168:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.' },
+    expected: { data: { cancelled: true } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:1727
+✖ lost cancel ACK after commit stays 503 until the durable receipt is read (10.769375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'queued'
+  - 'cancelled'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:179:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'queued',
+    expected: 'cancelled',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:1727
+✖ malformed cancel ACK after commit stays 503 until the durable receipt is read (12.393125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'queued'
+  - 'cancelled'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:179:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'queued',
+    expected: 'cancelled',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:2441
+✖ SQL cancellation failure rolls back quota release and job state; the same intent can cancel later (12.852291ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.'
+  -   data: {
+  -     cancelled: true
+  -   }
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:193:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.' },
+    expected: { data: { cancelled: true } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:3172
+✖ an SQL read error is 503 without a mutation; user binding prevents observing another owner (10.684ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:131:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:3786
+✖ cancellation wins between a persisted checkpoint and finish: no success, no reacquisition (11.100625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.'
+  -   data: {
+  -     cancelled: true
+  -   }
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:214:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.' },
+    expected: { data: { cancelled: true } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:4633
+✖ finish wins before cancellation; disabled music null is a valid reusable terminal receipt (8.610459ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:131:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:5233
+✖ 12 concurrent HTTP deliveries share one worker, checkpoint and reservation (16.788375ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:131:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:5857
+✖ 12 cancellations after lease expiry release once and fence the obsolete worker checkpoint (8.202959ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  503 !== 200
+  
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:251:62)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Promise.all (index 0)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:250:19)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 503,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:6687
+✖ an uncertain remote intention stays quarantined on HTTP redelivery and keeps acquired output (12.013583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.'
+  -   data: {
+  -     cancelled: true
+  -   }
+    }
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:271:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { error: 'SUTRA_CANCEL_FAILED: annulation non confirmée. Réessayez la même demande.' },
+    expected: { data: { cancelled: true } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:7779
+✖ lost finish ACK is recovered from a valid SQL receipt without a second quota mutation (7.729916ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:131:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:10:8252
+✖ SQL failure during finish never returns success or consumes quota despite the acquired checkpoint (15.603875ms)
+  error: relation "activity_logs" does not exist
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:131:19)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async node:internal/test_runner/test:1164:9
+      at async Test.run (node:internal/test_runner/test:1226:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 482,
+    severity: 'ERROR',
+    code: '42P01',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: '13',
+    internalQuery: "INSERT INTO activity_logs(user_id,type,description,metadata)\n VALUES(j.user_id,'video_cancelled','Annulation de la tâche vidéo',jsonb_build_object(\n   'job_id',j.id,'kind',j.kind,'previous_status',j.status,\n   'provider_submitted',coalesce(j.provider_job_ids,'{}'::jsonb)<>'{}'::jsonb)) RETURNING id",
+    where: 'PL/pgSQL function cancel_video_job(text) line 10 at SQL statement',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_relation.c',
+    line: '1469',
+    routine: 'parserOpenTable'
+  }
+
+test at qa/t03-final-candidate-20261015/api-postgres.test.mts:8:891
+✖ /Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts (2.920542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  9 !== 0
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t03-final-candidate-20261015/api-postgres.test.mts:140:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestHook.run (node:internal/test_runner/test:1208:7)
+      at async Test.runHook (node:internal/test_runner/test:1117:9)
+      at async after (node:internal/test_runner/test:1159:9)
+      at async Test.run (node:internal/test_runner/test:1227:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 9,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

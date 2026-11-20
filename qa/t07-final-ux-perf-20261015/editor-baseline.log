@@ -1,0 +1,53 @@
+FAIL 375: subtitle add/edit/delete undo redo preserves initial narration: page.goto: Navigation to "http://127.0.0.1:51029/editor/33333333-3333-4333-8333-333333333333" is interrupted by another navigation to "http://127.0.0.1:51029/library"
+Call log:
+[2m  - navigating to "http://127.0.0.1:51029/editor/33333333-3333-4333-8333-333333333333", waiting until "load"[22m
+
+FAIL 375: script edit after undo replaces future history: expect(locator).toBeDisabled() failed
+
+Locator:  getByTestId('editor-redo')
+Expected: disabled
+Received: enabled
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.be.disabled" with timeout 5000ms
+  - waiting for getByTestId('editor-redo')
+    9 × locator resolved to <button data-testid="editor-redo" title="Retablir (Ctrl+Y)" class="p-2 rounded-xl border border-white/[0.06] transition-colors text-white/70 hover:text-white hover:bg-white/10">…</button>
+      - unexpected value "enabled"
+
+FAIL 1440: subtitle add/edit/delete undo redo preserves initial narration: expect(locator).toBeEnabled() failed
+
+Locator:  getByTestId('editor-undo')
+Expected: enabled
+Received: disabled
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.be.enabled" with timeout 5000ms
+  - waiting for getByTestId('editor-undo')
+    9 × locator resolved to <button disabled title="Annuler (Ctrl+Z)" data-testid="editor-undo" class="p-2 rounded-xl border border-white/[0.06] transition-colors text-white/20 cursor-not-allowed">…</button>
+      - unexpected value "disabled"
+
+FAIL 1440: script edit after undo replaces future history: expect(locator).toBeDisabled() failed
+
+Locator:  getByTestId('editor-redo')
+Expected: disabled
+Received: enabled
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.be.disabled" with timeout 5000ms
+  - waiting for getByTestId('editor-redo')
+    9 × locator resolved to <button data-testid="editor-redo" title="Retablir (Ctrl+Y)" class="p-2 rounded-xl border border-white/[0.06] transition-colors text-white/70 hover:text-white hover:bg-white/10">…</button>
+      - unexpected value "enabled"
+
+FAIL no unexpected mutation, uncaught error or hydration mismatch: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   '/127.0.0.1:51029/_next/static/webpack/12cc6126bf10a65d.webpack.hot-update.json due to access control checks.',
++   '/127.0.0.1:51029/library?_rsc=NdCdoW25v-He95L9 due to access control checks.',
++   '/127.0.0.1:51029/__nextjs_original-stack-frames due to access control checks.'
++ ]
+- []
+

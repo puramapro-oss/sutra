@@ -1,0 +1,118 @@
+{
+  "status": "ambiguous",
+  "message": "Found 4 symbols matching 'submitVideoJob'. Blast radius differs per candidate (max 5 impacted at risk UNKNOWN; MEDIUM among the candidates that resolved, and at least one could not be walked). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "submitVideoJob"
+  },
+  "direction": "upstream",
+  "totalCandidates": 4,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 5,
+  "maxRisk": "UNKNOWN",
+  "knownMaxRisk": "MEDIUM",
+  "candidates": [
+    {
+      "uid": "Function:src/lib/pipeline-submit.ts:submitVideoJob",
+      "name": "submitVideoJob",
+      "kind": "Function",
+      "filePath": "src/lib/pipeline-submit.ts",
+      "line": 25,
+      "score": 0.56,
+      "impactedCount": 5,
+      "risk": "MEDIUM",
+      "riskSharedAxes": "MEDIUM",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 5
+    },
+    {
+      "uid": "Function:src/lib/runpod.ts:submitVideoJob",
+      "name": "submitVideoJob",
+      "kind": "Function",
+      "filePath": "src/lib/runpod.ts",
+      "line": 58,
+      "score": 0.56,
+      "impactedCount": 4,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 2
+    },
+    {
+      "uid": "Function:scripts/test-t08-final-modes.mts:submitVideoJob",
+      "name": "submitVideoJob",
+      "kind": "Function",
+      "filePath": "scripts/test-t08-final-modes.mts",
+      "line": 26,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    },
+    {
+      "uid": "Function:scripts/test-t02-salad-security.mts:submitVideoJob",
+      "name": "submitVideoJob",
+      "kind": "Function",
+      "filePath": "scripts/test-t02-salad-security.mts",
+      "line": 57,
+      "score": 0.56,
+      "impactedCount": 0,
+      "risk": "UNKNOWN",
+      "riskSharedAxes": "UNKNOWN",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 0,
+      "riskNote": "No callers resolved. Absence of edges is not evidence the symbol is unused: a caller reaching it through a reference class this index does not record — plain-object property access, a bare-identifier read of a module-scope const — produces no edge to find. Confirm with a text search before treating the change as safe."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+#!/bin/sh
+# Test-only encoder inventory: keep the production compositor on libx264.
+# Reject hardware explicitly; all actual media commands use the installed binary.
+case " $* " in
+  *" -encoders "*) printf ' V..... libx264 synthetic test CPU encoder inventory\n'; exit 0 ;;
+  *videotoolbox*|*nvenc*|*qsv*) exit 99 ;;
+esac
+exec "${T05_FFMPEG_BINARY:-/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg}" "$@"

@@ -56,11 +56,11 @@ export default function WalletCard({
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-white/40">En attente</span>
+              <span className="text-sm text-white/60">En attente</span>
               <span className="text-sm text-amber-400">{formatPrice(wallet.pending_balance)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-white/40">Total gagne</span>
+              <span className="text-sm text-white/60">Total gagne</span>
               <span className="text-sm text-emerald-400">{formatPrice(wallet.total_earned)}</span>
             </div>
           </div>
@@ -92,7 +92,7 @@ export default function WalletCard({
 
             {/* Method selector */}
             <div>
-              <label className="text-xs font-medium text-white/40 mb-2 block">Methode</label>
+              <label className="text-xs font-medium text-white/60 mb-2 block">Methode</label>
               <div className="flex gap-2">
                 {[
                   { id: 'bank' as const, label: 'Virement bancaire', icon: Building2 },
@@ -106,7 +106,7 @@ export default function WalletCard({
                       'flex-1 flex items-center gap-2 px-3 py-2.5 rounded-xl border text-sm transition-all',
                       withdrawMethod === m.id
                         ? 'bg-violet-500/20 border-violet-500/40 text-violet-400'
-                        : 'bg-white/[0.02] border-white/[0.06] text-white/40 hover:text-white/60'
+                        : 'bg-white/[0.02] border-white/[0.06] text-white/60 hover:text-white/60'
                     )}
                   >
                     <m.icon className="h-4 w-4" />

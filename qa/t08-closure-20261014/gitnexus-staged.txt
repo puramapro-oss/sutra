@@ -1,0 +1,35 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 64 files, 22 symbols
+Affected processes: 10
+Risk level: high
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 — clôture finale OVH, 14 octobre 2026 04:41 UTC → BATON.md
+  Variable ROOT → qa/t08-closure-20261014/run.py
+  Variable OUT → qa/t08-closure-20261014/run.py
+  Variable NODE → qa/t08-closure-20261014/run.py
+  Variable CONFIG → qa/t08-closure-20261014/run.py
+  Variable FLAGS → qa/t08-closure-20261014/run.py
+  Variable TESTS → qa/t08-closure-20261014/run.py
+  Function journeyDatabase → qa/t08-integration-journey-20261014/database.mts
+  Property checkpoint → qa/t08-integration-journey-20261014/database.mts
+  Property persistReady → qa/t08-integration-journey-20261014/database.mts
+  Property quota → qa/t08-integration-journey-20261014/database.mts
+  Property submit → qa/t08-integration-journey-20261014/database.mts
+  Const settlements → qa/t08-integration-journey-20261014/database.mts
+  Function failure → qa/t08-integration-journey-20261014/database.mts
+... and 7 more
+
+Affected execution flows:
+  • GET → Failure (4 steps) — changed: rpc, failure
+  • GET → Ok (4 steps) — changed: rpc, ok
+  • POST → Failure (4 steps) — changed: rpc, failure
+  • POST → Ok (4 steps) — changed: rpc, ok
+  • POST → Failure (3 steps) — changed: rpc, failure
+  • POST → Ok (3 steps) — changed: rpc, ok
+  • POST → Failure (3 steps) — changed: rpc, failure
+  • POST → Ok (3 steps) — changed: rpc, ok
+  • POST → Failure (3 steps) — changed: rpc, failure
+  • POST → Ok (3 steps) — changed: rpc, ok

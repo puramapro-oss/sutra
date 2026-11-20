@@ -1,0 +1,26 @@
+{
+  "candidate": "fcd0559f611831a57909c693694b92ccb81eba45",
+  "automationProofCommit": "cabae2c155f54d095202df0494e2c17b41339e3d",
+  "productCommit": "e011b10919ada972d132956175fa2f26ef6dc794",
+  "branch": "codex/sutra-t07-ui-fcd-20261020",
+  "supplement": "Evidence-only commit containing ignored logs and delivery manifest; no product delta.",
+  "secretScanAdditionalLogs": {
+    "files": 124,
+    "exit": 0,
+    "findings": 0,
+    "receipt": "gitleaks-logs-receipt.json"
+  },
+  "gitnexusProofStage": {
+    "exit": 0,
+    "filesAtCheck": 127,
+    "indexedSymbols": 0,
+    "coverage": "partial/stale, not exhaustive; subsequent additions are this receipt, that log and manifest only"
+  },
+  "integration": "Awaiting T01 next candidate; fcd CI does not certify this UI delta.",
+  "diffCheck": {
+    "rawLogsExit": 2,
+    "reason": "Unmodified tool stdout contains trailing whitespace / terminal blank lines. Raw evidence preserved.",
+    "excludingRawLogsExit": 0,
+    "command": "git diff --cached --check -- . :(exclude)*.log"
+  }
+}

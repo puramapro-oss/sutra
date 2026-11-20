@@ -1,0 +1,91 @@
+✖ checkpoint adapter refuses spend when durable persistence is absent (18.578375ms)
+✖ separate journal wrappers for one scene serialize before the paid POST (4.880125ms)
+✔ journal coordination keeps scene scopes and current lease callbacks distinct (0.507459ms)
+(node:42766) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42766) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ existing LTX intent or execution never becomes stock when credentials or plan change (2.985292ms)
+✖ a configured WAN cannot replace an explicit LTX execution (0.844667ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 1
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 685.524167
+
+✖ failing tests:
+
+test at scripts/test-ltx-v2-contracts.mts:1:15799
+✖ checkpoint adapter refuses spend when durable persistence is absent (18.578375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012/scripts/test-ltx-v2-contracts.mts:287:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-ltx-v2-contracts.mts:1:16131
+✖ separate journal wrappers for one scene serialize before the paid POST (4.880125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  16 !== 1
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012/scripts/test-ltx-v2-contracts.mts:303:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 16,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-provider-safety.mts:1:3838
+✖ existing LTX intent or execution never becomes stock when credentials or plan change (2.985292ms)
+  AssertionError [ERR_ASSERTION]: no stock or new provider request for creator
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012/scripts/test-provider-safety.mts:77:16)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-provider-safety.mts:1:4569
+✖ a configured WAN cannot replace an explicit LTX execution (0.844667ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /RESUME_CONFLICT/. Input:
+
+  'RunpodJobError: RunPod: SUBMISSION_UNKNOWN; resoumission non autorisee'
+
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012/scripts/test-provider-safety.mts:87:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: RunpodJobError: RunPod: SUBMISSION_UNKNOWN; resoumission non autorisee
+        at submitVideoJob (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012/src/lib/runpod.ts:84:22)
+        at async generateWanVideo (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012/src/lib/wan.ts:69:30)
+        at async generateWanVideoWithTracking (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012/src/lib/ltx-helpers.ts:31:20)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261012/scripts/test-provider-safety.mts:87:5)
+        at async Test.run (node:internal/test_runner/test:1409:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:974:7),
+    expected: /RESUME_CONFLICT/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

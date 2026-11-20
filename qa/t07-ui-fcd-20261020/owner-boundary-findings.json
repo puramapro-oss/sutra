@@ -1,0 +1,9 @@
+{
+  "candidate": "fcd0559f611831a57909c693694b92ccb81eba45",
+  "route": "/analytics",
+  "status": "FAIL_OWNER_BOUNDARY",
+  "reproduction": "Synthetic profile credits=40, videos=[], rendered Credits utilises=40; screenshot after/_analytics-1440.png personally viewed.",
+  "cause": "AnalyticsPage passes profile.credits into useAnalytics; src/hooks/useAnalytics.ts:54 assigns creditsUsed: credits ?? 0; KpiCards labels Credits utilises.",
+  "boundary": "No financial semantics or backend contract changed. T01/T02 to confirm balance vs usage canonical field before relabel or usage source.",
+  "maMemoireCorrection": "Exact class is bg-primary (var(--primary) resolves #a855f7), not literal bg-[var(--primary)]."
+}

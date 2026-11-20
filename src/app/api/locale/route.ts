@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { locales, type Locale } from '@/i18n/request'
 
 export async function POST(req: Request) {
-  const { locale } = await req.json()
+  const body = await req.json().catch(() => null)
+  const locale = body?.locale
 
   if (!locale || !locales.includes(locale as Locale)) {
     return NextResponse.json({ error: 'Locale invalide' }, { status: 400 })
