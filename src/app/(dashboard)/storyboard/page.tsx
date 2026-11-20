@@ -12,8 +12,10 @@ import { useStoryboard } from '@/hooks/useStoryboard'
 import StoryboardInput from '@/components/storyboard/StoryboardInput'
 import SceneCard from '@/components/storyboard/SceneCard'
 import CinemaExport from '@/components/storyboard/CinemaExport'
+import StoryboardExchange from '@/components/storyboard/StoryboardExchange'
+import StoryboardRenderReview from '@/components/storyboard/StoryboardRenderReview'
 import { prepareStoryboardDraft, StoryboardDraftError } from '@/lib/storyboard-create-draft'
-import type { VideoFormat, DurationTarget } from '@/lib/storyboard'
+import { storyboardProjectTitle, type VideoFormat, type DurationTarget } from '@/lib/storyboard'
 
 // ---------------------------------------------------------------------------
 // Component
@@ -42,6 +44,7 @@ function StoryboardWorkspace({ userId, authLoading }: { userId?: string; authLoa
     dragIndex,
     totalDuration,
     handleGenerate: generate,
+    replaceScenes,
     updateScene,
     deleteScene,
     addScene,
@@ -104,7 +107,7 @@ function StoryboardWorkspace({ userId, authLoading }: { userId?: string; authLoa
             Storyboard IA
           </h1>
           <p className="text-white/50 mt-1">
-            Decris ton idee, Claude genere un storyboard visuel complet
+            Prépare les plans de ta vidéo, puis anime-les ou vérifie le montage.
           </p>
         </motion.div>
       </div>
@@ -122,10 +125,12 @@ function StoryboardWorkspace({ userId, authLoading }: { userId?: string; authLoa
           onGenerate={handleGenerate}
         />
 
+        <StoryboardExchange source={{ idea, format, durationTarget, scenes }} busy={isGenerating} onImport={replaceScenes} />
+
         {scenes.length === 0 && !isGenerating && (
           <section aria-labelledby="manual-storyboard-heading" className="rounded-xl border border-white/10 bg-white/[0.02] p-5 space-y-3">
             <h2 id="manual-storyboard-heading" className="font-semibold text-white">Composer les plans soi-même</h2>
-            <p className="text-sm text-white/70">Ajoute un premier plan, règle sa durée et prépare ton projet pour Blender.</p>
+            <p className="text-sm text-white/70">Ajoute un premier plan, écris son texte et règle sa durée.</p>
             <Button onClick={addScene} variant="secondary" data-testid="add-first-scene-btn">
               <Plus className="h-4 w-4" aria-hidden="true" />
               Ajouter le premier plan
@@ -176,7 +181,7 @@ function StoryboardWorkspace({ userId, authLoading }: { userId?: string; authLoa
                 </h2>
               </div>
 
-              <CinemaExport title={idea} format={format} scenes={scenes} />
+              <CinemaExport title={storyboardProjectTitle(idea)} format={format} scenes={scenes} />
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {scenes.map((scene, idx) => (
@@ -215,6 +220,7 @@ function StoryboardWorkspace({ userId, authLoading }: { userId?: string; authLoa
             </motion.div>
           )}
         </AnimatePresence>
+        <StoryboardRenderReview format={format} scenes={scenes} />
       </div>
 
       {/* ------------------------------------------------------------------- */}

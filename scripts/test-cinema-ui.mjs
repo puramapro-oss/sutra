@@ -5,6 +5,7 @@ import { dirname, isAbsolute, resolve } from 'node:path'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { build } from 'esbuild'
 import { chromium, expect } from '@playwright/test'
+import { verifyStoryboardMp4 } from './test-storyboard-mp4-ui.mjs'
 
 // Real storyboard page, hook and export components in an isolated React host.
 // Auth/navigation/Image are fixtures. No backend, paid generation or provider is contacted.
@@ -84,6 +85,13 @@ if (staticPath) {
 const servedRequests = { api: [], preview: [] }
 const server = http.createServer((req, res) => {
   const url = new URL(req.url ?? '/', 'http://127.0.0.1')
+  if (['/motion/storyboard-frame.mjs', '/motion/lancer-motionlab.mjs'].includes(url.pathname)) {
+    readFile(resolve(root, 'public', url.pathname.slice(1))).then(source => {
+      res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8' })
+      res.end(source)
+    }).catch(() => { res.writeHead(404); res.end() })
+    return
+  }
   res.setHeader('Cache-Control', 'no-store')
   if (serveOnly) res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; object-src 'none'")
   if (url.pathname === '/app.js') { res.writeHead(200, { 'Content-Type': 'application/javascript' }); res.end(javascript); return }
@@ -184,6 +192,18 @@ if (serveOnly) {
 
   const project = JSON.parse(await downloadText(page, 'export-cinema-json-btn', 'sutra-cinema.project.json'))
   const script = await downloadText(page, 'export-blender-btn', 'sutra-cinema.blender.py')
+  const otio = JSON.parse(await downloadText(page, 'export-otio-btn', 'sutra-storyboard.otio'))
+  assert.equal(otio.OTIO_SCHEMA, 'Timeline.1')
+  assert.deepEqual(otio.tracks.children[0].children.map(clip => clip.source_range.duration.value),
+    project.scenes.map(scene => scene.timeline.durationFrames))
+  const remotion = await downloadText(page, 'export-remotion-btn', 'sutra.remotion.jsx')
+  const drawing = await readFile(resolve(root, 'public/motion/storyboard-frame.mjs'), 'utf8')
+  assert.ok(remotion.includes(drawing), 'Remotion carries the same drawing as the in-app MP4')
+  const remotionLiteral = remotion.match(/^const project = ([\s\S]*?^});$/m)
+  assert.ok(remotionLiteral)
+  const motionData = JSON.parse(remotionLiteral[1])
+  assert.deepEqual(motionData.scenes.map(scene => scene.frames), project.scenes.map(scene => scene.timeline.durationFrames))
+  assert.deepEqual(motionData.scenes.map(scene => scene.text), project.scenes.map(scene => scene.description))
   const literal = script.match(/^PROJECT_JSON\s*=\s*(".*")\s*$/m)
   assert.ok(literal, 'Downloaded Python must carry its readable, quoted project manifest')
   assert.match(script, /import bpy/)
@@ -207,12 +227,12 @@ if (serveOnly) {
     { startFrame: 168, durationFrames: 264, endFrameExclusive: 432 },
   ])
   assert.equal(project.timeline.totalFrames, 432)
-  await expect.poll(() => page.evaluate(() => window.__blobUrls.revoked.length)).toBe(2)
+  await expect.poll(() => page.evaluate(() => window.__blobUrls.revoked.length === window.__blobUrls.created.length)).toBe(true)
   const urls = await page.evaluate(() => window.__blobUrls)
   assert.deepEqual(urls.revoked.sort(), urls.created.sort())
   assert.equal(previewRequests.length, 0)
   assert.equal(apiRequests.length, 0)
-  checks.push('Téléchargements réels .py/.json cohérents : Unicode, IDs, ordre, format, durées, transitions, images temporelles et libération des Blob URLs')
+  checks.push('Téléchargements réels Blender, JSON, OpenTimelineIO et Remotion avec vérification de leur minutage et de la libération des URL temporaires')
 
   await page.getByRole('button', { name: 'Générer un aperçu du plan 1', exact: true }).click()
   await expect.poll(() => previewRequests.length).toBe(1)
@@ -256,9 +276,38 @@ if (serveOnly) {
   page.off('download', onDownload)
   checks.push('Composant réel : durée invalide refusée avec alerte accessible, aucun fichier créé ; correction puis export réussi')
 
+  await page.goto(`${origin}/storyboard`)
+  await page.getByText('Travailler avec ChatGPT, Codex ou MotionLab', { exact: true }).click()
+  await page.getByLabel('Idee de video').fill('Démonstration SUTRA')
+  await page.getByRole('button', { name: /^9:16/ }).click()
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin })
+  await page.getByRole('button', { name: 'Copier le brief ChatGPT' }).click()
+  await expect(page.getByRole('status').filter({ hasText: 'Brief copié' })).toBeVisible()
+  assert.match(await page.evaluate(() => navigator.clipboard.readText()), /Démonstration SUTRA/)
+  const response = page.getByLabel('Plans reçus de ChatGPT ou Codex (JSON)', { exact: true })
+  const imported = { description: 'Notre première scène', visual_prompt: 'Sunlit desk', duration_seconds: 3, transition: 'fade' }
+  const importButton = page.getByRole('button', { name: 'Importer les plans' })
+  await response.fill(JSON.stringify({ scenes: [imported] }))
+  await importButton.click()
+  const description = page.getByLabel('Description du plan 1', { exact: true })
+  await expect(description).toHaveValue(imported.description)
+  await response.fill('JSON incomplet')
+  await expect(importButton).toBeDisabled()
+  await page.getByRole('checkbox', { name: 'Remplacer les plans affichés par les plans importés' }).check()
+  await importButton.click()
+  await expect(page.getByRole('alert')).toContainText('JSON')
+  await expect(description).toHaveValue(imported.description)
+  const brief = await downloadText(page, 'export-motionlab-brief', 'sutra-brief-motionlab.txt')
+  assert.match(brief, /^\/full-visual /)
+  assert.deepEqual(JSON.parse(brief.split('\n\n').at(-1)).plans, [imported])
+  const launcher = await downloadText(page, 'download-motionlab-launcher', 'lancer-motionlab.mjs')
+  assert.equal(launcher, await readFile(resolve(root, 'public/motion/lancer-motionlab.mjs'), 'utf8'))
+  checks.push('Échange sur la page réelle : brief ChatGPT dans le presse-papiers, import des plans, protection du montage présent et brief MotionLab téléchargeable')
+
   assert.deepEqual(apiRequests, [])
   assert.deepEqual(unexpectedRequests, [])
   assert.deepEqual(browserErrors, [])
+  checks.push(await verifyStoryboardMp4(context, origin))
   console.log(JSON.stringify({ status: 'PASS', scope: 'isolated React page and components; backend and Blender execution excluded',
     browserVersion: browser.version(), durationMs: Math.round(performance.now() - startedAt), checks,
     providerRequestsSent: 0, simulatedPreviewRequests: previewRequests.length, apiRequests: apiRequests.length }, null, 2))

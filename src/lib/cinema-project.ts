@@ -58,6 +58,8 @@ const sceneSchema = z.object({
   duration_seconds: z.number().finite().positive().max(120),
   transition: z.enum(['fade', 'cut', 'slide', 'zoom']),
 }).strict()
+export const storyboardSceneContentSchema = sceneSchema.omit({ id: true })
+  .refine(scene => Boolean(scene.description.trim()), { message: 'Description du plan requise.' })
 const inputSchema = z.object({
   title: z.string().min(1).max(500).refine(value => /\S/.test(value)),
   format: z.enum(['16:9', '9:16', '1:1']),

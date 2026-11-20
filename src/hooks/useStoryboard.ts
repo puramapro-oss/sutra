@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import type { Scene, VideoFormat, DurationTarget } from '@/lib/storyboard'
 import { makeId } from '@/lib/storyboard'
 
@@ -7,13 +7,20 @@ export function useStoryboard() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [dragIndex, setDragIndex] = useState<number | null>(null)
+  const generating = useRef(false)
+
+  const replaceScenes = useCallback((next: Scene[]) => {
+    setScenes(next)
+    setDragIndex(null)
+    setError(null)
+  }, [])
 
   const handleGenerate = useCallback(
     async (idea: string, format: VideoFormat, durationTarget: DurationTarget) => {
-      if (!idea.trim() || isGenerating) return
+      if (!idea.trim() || generating.current) return
+      generating.current = true
       setIsGenerating(true)
       setError(null)
-      setScenes([])
 
       try {
         const res = await fetch('/api/storyboard', {
@@ -32,14 +39,16 @@ export function useStoryboard() {
           ...s,
           id: makeId(),
         }))
-        setScenes(mapped)
+        if (mapped.length === 0) throw new Error('Aucun plan reçu. Réessaie la génération.')
+        replaceScenes(mapped)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erreur inconnue')
       } finally {
+        generating.current = false
         setIsGenerating(false)
       }
     },
-    [isGenerating]
+    [replaceScenes]
   )
 
   const updateScene = useCallback((id: string, patch: Partial<Scene>) => {
@@ -97,6 +106,7 @@ export function useStoryboard() {
     dragIndex,
     totalDuration,
     handleGenerate,
+    replaceScenes,
     updateScene,
     deleteScene,
     addScene,

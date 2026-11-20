@@ -7,8 +7,16 @@ on:
       - "mobile/**"
 
 jobs:
+  project:
+    name: Verify the SUTRA project
+    environment: production
+    steps:
+      - uses: eas/checkout
+      - run: node scripts/check-eas-project.cjs
+
   build-ios:
     name: Build iOS
+    needs: [project]
     type: build
     params:
       platform: ios
@@ -16,6 +24,7 @@ jobs:
 
   build-android:
     name: Build Android
+    needs: [project]
     type: build
     params:
       platform: android
