@@ -1,0 +1,35 @@
+{
+  "checked_at_utc": "2026-11-11T22:50:18.344977+00:00",
+  "cwd": "/workspace/scratch/105cd9664a5e/sutra",
+  "branch": "codex/sutra-srt-import-lines-20261111",
+  "base_commit": "68a0e28f010d77d721b3cf41f69d2c47362535c3",
+  "base_tree": "59d262d2f4b4a0139c8c228afc061bfbb14f337f",
+  "modified_files": {
+    "src/lib/subtitles.ts": {
+      "before": "3c0daa9ffa3c1165722c4b7a05be8735a1dd6595",
+      "after": "a3816ea6f63da0f112c1b29f90207d14d52d3a19"
+    },
+    "scripts/test-subtitles-route.mts": {
+      "before": "7355c851bbab585b125c1d114e721e86d2ef9a56",
+      "after": "d69ff72131e36ee790f1bf4e10e14a1f023bc37e"
+    }
+  },
+  "acceptance": {
+    "exact_upstream_snapshot": "PASS",
+    "existing_subtitle_cases": "PASS 49/49 before new tests",
+    "red_regressions": "PASS demonstrated 7 failures / 59 cases on original production blob",
+    "fixed_subtitle_cases": "PASS 59/59, no skipped tests",
+    "targeted_eslint": "PASS",
+    "diff_check": "PASS",
+    "old_worktree_target_blobs_unchanged": "PASS",
+    "production_deployment": "NON TESTÉ",
+    "full_application_build": "NON TESTÉ",
+    "physical_devices_and_assistive_technology": "NON TESTÉ"
+  },
+  "scope": "Only SRT import line framing. Minimal styles, SRT time serializer and route behavior preserved. Existing mocks isolate authentication and external translation. Network calls are blocked by the suite.",
+  "upstream_base_review": "c6a62c3 to 51196fe2 changes 13 files; neither owned file is changed. No rebase or combined application build performed.",
+  "impact_note": "parseSRT is exported; direct references found only in the existing test script. No new user-facing import route was added or exercised.",
+  "publication": "Before publication: the local verification run performed no remote mutation, PR creation, push or production deployment. This historical statement does not describe the current state of PR 18 or its deployment.",
+  "record_phase": "local_verification_before_publication",
+  "source_receipt_sha256": "ace8c3d981a593811b623984cc3ca3ee771c72dfe32cb1f5062333796bd91288"
+}

@@ -1,5 +1,5 @@
 // Persistence-port fixture only. This is NOT a PostgreSQL/RLS/transaction proof.
-// Reuses T06's table/CAS fixture; queue RPC receipts are the only added boundary.
+// Reuses T06's table/CAS fixture; generation and publication RPCs are persistence ports.
 import assert from 'node:assert/strict'
 import { randomUUID } from 'node:crypto'
 import { socialDatabase, type Row } from '../../scripts/helpers/social-database.mts'
@@ -32,10 +32,43 @@ export function journeyDatabase() {
   let reservations = 0, settlements = 0
   const failure = (message: string) => ({ data: null, error: { message } })
   const ok = (data: unknown) => ({ data: structuredClone(data), error: null })
+  const socialRpc = (name: string, args: Row) => {
+    const journals = tables.social_publication_journals
+    const now = Date.now()
+    const leased = (row: Row) => typeof row.lease_token === 'string' && Date.parse(String(row.lease_until)) > now
+    if (name === 'claim_social_publication_journals') {
+      const due = journals.filter(row => row.kind === 'video' && row.dispatch_enabled === true
+        && row.next_run_at && Date.parse(String(row.next_run_at)) <= now && !leased(row))
+        .slice(0, Number(args.p_limit))
+      for (const row of due) Object.assign(row, { lease_token: args.p_lease_token,
+        lease_until: new Date(now + Number(args.p_lease_seconds) * 1000).toISOString(),
+        revision: Number(row.revision) + 1, dispatch_attempts: Number(row.dispatch_attempts ?? 0) + 1 })
+      return ok(due)
+    }
+    const row = journals.find(candidate => candidate.kind === args.p_kind
+      && candidate.production_id === args.p_production_id && candidate.user_id === args.p_user_id)
+    if (name === 'save_social_publication_journal') {
+      const validLease = args.p_lease_token ? row?.lease_token === args.p_lease_token && row && leased(row)
+        : row && !leased(row)
+      if (!row || row.revision !== args.p_revision || !validLease) return ok(null)
+      assert.ok(Array.isArray(args.p_operations), 'the real sender must persist complete operations')
+      Object.assign(row, { operations: structuredClone(args.p_operations), revision: Number(row.revision) + 1,
+        dispatch_enabled: true, next_run_at: args.p_next_run_at, updated_at: new Date(now).toISOString() })
+      return ok(row.revision)
+    }
+    if (name === 'release_social_publication_journal') {
+      if (!row || row.lease_token !== args.p_lease_token || !leased(row)) return ok(false)
+      Object.assign(row, { lease_token: null, lease_until: null, revision: Number(row.revision) + 1,
+        next_run_at: args.p_next_run_at, last_dispatch_error: args.p_error_code })
+      return ok(true)
+    }
+    throw new Error(`T08_UNEXPECTED_SOCIAL_RPC:${name}`)
+  }
   const rpc = async (name: string, args: Row) => {
     // Supabase transports JSON: callbacks/undefined never reach PostgreSQL.
     args = JSON.parse(JSON.stringify(args)) as Row
     calls.push({ name, args: structuredClone(args) })
+    if (name.includes('social_publication_journal')) return socialRpc(name, args)
     if (name === 'submit_video_job') {
       if (faults.submit) return failure('fixture database unavailable')
       const existing = jobs.find(j => j.idempotency_key === args.p_key)

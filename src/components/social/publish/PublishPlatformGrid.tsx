@@ -1,67 +1,46 @@
-import { Loader2, AlertCircle, Check } from 'lucide-react'
+import { Loader2, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
-import { cn } from '@/lib/utils'
-import { type SocialPlatform, PLATFORM_INFO } from '@/lib/zernio'
-
-const ALL_PLATFORMS: SocialPlatform[] = [
-  'tiktok',
-  'youtube',
-  'instagram',
-  'facebook',
-  'x',
-  'linkedin',
-  'pinterest',
-  'reddit',
-  'threads',
-  'snapchat',
-  'tumblr',
-  'mastodon',
-  'bluesky',
-  'vimeo',
-]
-
-interface SocialAccount {
-  id: string
-  platform: SocialPlatform
-  username: string
-}
+import { AccountSelection } from '@/components/settings/social/AccountSelection'
+import { MAX_SELECTED_ACCOUNTS, type SocialAccount } from '@/components/settings/social/accounts'
 
 export interface PublishPlatformGridProps {
   accounts: SocialAccount[]
-  selectedPlatforms: Set<SocialPlatform>
-  onTogglePlatform: (platform: SocialPlatform) => void
+  selectedAccountIds: Set<string>
+  onToggleAccount: (accountId: string) => void
   onSelectAll: () => void
   onDeselectAll: () => void
   accountsLoading: boolean
   accountsError: string | null
+  selectionLocked?: boolean
   onRetryFetch: () => void
 }
 
 export function PublishPlatformGrid({
   accounts,
-  selectedPlatforms,
-  onTogglePlatform,
+  selectedAccountIds,
+  onToggleAccount,
   onSelectAll,
   onDeselectAll,
   accountsLoading,
   accountsError,
+  selectionLocked = false,
   onRetryFetch,
 }: PublishPlatformGridProps) {
-  const connectedPlatforms = new Set(accounts.map((a) => a.platform))
-  const allSelected = selectedPlatforms.size > 0 && selectedPlatforms.size === connectedPlatforms.size
+  const allSelected = selectedAccountIds.size > 0 && selectedAccountIds.size === accounts.length
+  const clearSelection = allSelected || (accounts.length > MAX_SELECTED_ACCOUNTS && selectedAccountIds.size > 0)
 
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-white/90">Plateformes</h3>
+        <h3 className="text-sm font-semibold text-white/90">Comptes de destination</h3>
         <button
           type="button"
           data-testid="publish-toggle-all"
-          disabled={accountsLoading || !!accountsError || connectedPlatforms.size === 0}
-          onClick={allSelected ? onDeselectAll : onSelectAll}
-          className="text-xs text-violet-400 hover:text-violet-300 transition-colors"
+          disabled={selectionLocked || accountsLoading || !!accountsError || accounts.length === 0 || (!clearSelection && accounts.length > MAX_SELECTED_ACCOUNTS)}
+          onClick={clearSelection ? onDeselectAll : onSelectAll}
+          className="text-xs text-violet-400 hover:text-violet-300 transition-colors disabled:opacity-50"
         >
-          {allSelected ? 'Tout désélectionner' : 'Tout sélectionner'}
+          {clearSelection ? 'Tout désélectionner' : 'Tout sélectionner'}
         </button>
       </div>
 
@@ -85,51 +64,10 @@ export function PublishPlatformGrid({
       )}
 
       <Link href="/settings/social" className="inline-block text-xs text-violet-300 underline">Connecter ou vérifier mes comptes</Link>
-      {!accountsLoading && !accountsError && connectedPlatforms.size === 0 && <p role="status" className="text-sm text-white/70">Aucun compte connecté et disponible. Vérifie les connexions et les autorisations dans les paramètres sociaux.</p>}
+      {accounts.length > MAX_SELECTED_ACCOUNTS && <p className="text-xs text-white/70">Choisis jusqu’à {MAX_SELECTED_ACCOUNTS} comptes pour cet envoi.</p>}
       {!accountsLoading && !accountsError && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          {ALL_PLATFORMS.map((platform) => {
-            const info = PLATFORM_INFO[platform]
-            const account = accounts.find((a) => a.platform === platform)
-            const connected = !!account
-            const selected = selectedPlatforms.has(platform)
-            return (
-              <button
-                key={platform}
-                type="button"
-                data-testid={`publish-platform-${platform}`}
-                aria-pressed={selected}
-                onClick={() => onTogglePlatform(platform)}
-                disabled={!connected}
-                className={cn(
-                  'relative flex flex-col items-start gap-1 p-3 rounded-xl border transition-all duration-200 text-left',
-                  connected
-                    ? selected
-                      ? 'bg-violet-500/15 border-violet-500/50 shadow-lg shadow-violet-500/10'
-                      : 'bg-white/[0.02] border-white/[0.06] hover:bg-white/[0.04] hover:border-white/[0.12]'
-                    : 'bg-white/[0.01] border-white/[0.04] opacity-40 cursor-not-allowed'
-                )}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-lg leading-none">{info.icon}</span>
-                  {connected && selected && (
-                    <div className="h-4 w-4 rounded-full bg-violet-500 flex items-center justify-center">
-                      <Check className="h-2.5 w-2.5 text-white" strokeWidth={3} />
-                    </div>
-                  )}
-                </div>
-                <div className="w-full min-w-0">
-                  <p className="text-xs font-medium text-white/90 truncate">{info.label}</p>
-                  {connected ? (
-                    <p className="text-[10px] text-white/70 truncate">@{account?.username}</p>
-                  ) : (
-                    <p className="text-[10px] text-white/70">Non disponible</p>
-                  )}
-                </div>
-              </button>
-            )
-          })}
-        </div>
+        <AccountSelection accounts={accounts} selectedAccountIds={[...selectedAccountIds]}
+          onToggle={onToggleAccount} disabled={selectionLocked} testIdPrefix="publish-account" />
       )}
     </div>
   )

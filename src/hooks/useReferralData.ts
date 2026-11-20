@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { copyToClipboard } from '@/lib/utils'
@@ -36,28 +36,34 @@ export function useReferralData(userId: string | undefined, referralCode: string
   const [withdrawPaypal, setWithdrawPaypal] = useState('')
   const [withdrawing, setWithdrawing] = useState(false)
 
-  const fetchData = useCallback(async () => {
+  const pending = useRef<AbortController | null>(null)
+  const [loadedUser, setLoadedUser] = useState<string | undefined>()
+
+  const loadData = useCallback(() => {
     if (!userId) return
-    setLoading(true)
-    try {
-      const [filleulsRes, commissionsRes, walletRes] = await Promise.all([
+    pending.current?.abort()
+    const controller = new AbortController()
+    pending.current = controller
+    const current = () => pending.current === controller && !controller.signal.aborted
+    return Promise.all([
         supabase
           .from('referrals')
           .select('referred_id, status, created_at, profiles!referrals_referred_id_fkey(id, email, name)')
           .eq('referrer_id', userId)
-          .order('created_at', { ascending: false }),
+          .order('created_at', { ascending: false }).abortSignal(controller.signal),
         supabase
           .from('referral_commissions')
           .select('*')
           .eq('beneficiary_id', userId)
           .order('created_at', { ascending: false })
-          .limit(50),
+          .limit(50).abortSignal(controller.signal),
         supabase
           .from('wallets')
           .select('balance, pending_balance, total_earned')
           .eq('user_id', userId)
-          .single(),
-      ])
+          .abortSignal(controller.signal).single(),
+      ]).then(([filleulsRes, commissionsRes, walletRes]) => {
+      if (!current()) return
 
       if (filleulsRes.data) {
         const mapped = filleulsRes.data.map((r: Record<string, unknown>) => {
@@ -76,17 +82,28 @@ export function useReferralData(userId: string | undefined, referralCode: string
       if (commissionsRes.data) setCommissions(commissionsRes.data as ReferralCommission[])
       if (walletRes.data) setWallet(walletRes.data as WalletData)
 
-    } catch {
+    }).catch(() => {
+      if (!current()) return
       // Keep defaults on error
-    } finally {
+    }).finally(() => {
+      if (!current()) return
+      setLoadedUser(userId)
       setLoading(false)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      pending.current = null
+    })
   }, [userId])
 
+
+  const fetchData = useCallback(() => {
+    if (!userId) return
+    setLoading(true)
+    return loadData()
+  }, [userId, loadData])
+
   useEffect(() => {
-    if (userId) fetchData()
-  }, [userId, fetchData])
+    void loadData()
+    return () => { pending.current?.abort(); pending.current = null }
+  }, [loadData])
 
   const handleCopyCode = useCallback(async () => {
     const ok = await copyToClipboard(referralCode)
@@ -161,7 +178,7 @@ export function useReferralData(userId: string | undefined, referralCode: string
   }, [withdrawAmount, withdrawMethod, withdrawIban, withdrawBic, withdrawPaypal, wallet.balance])
 
   return {
-    loading,
+    loading: !!userId && (loading || loadedUser !== userId),
     copied,
     copiedLink,
     filleuls,

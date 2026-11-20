@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Medal, Lock, CheckCircle, Coins, Zap, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -34,32 +34,50 @@ const categoryLabels: Record<string, string> = {
 }
 
 export default function AchievementsPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <AchievementsPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function AchievementsPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const [achievements, setAchievements] = useState<Achievement[]>([])
   const [loading, setLoading] = useState(true)
   const [checking, setChecking] = useState(false)
   const [totalXP, setTotalXP] = useState(0)
   const [totalPoints, setTotalPoints] = useState(0)
 
-  const fetchData = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await fetch('/api/achievements')
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchData = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/achievements', { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (!res.ok) throw new Error()
       const data = await res.json()
-      setAchievements(data.achievements || [])
-      setTotalXP(data.totalXP || 0)
-      setTotalPoints(data.totalPoints || 0)
-    } catch {
-      // defaults
-    } finally {
-      setLoading(false)
-    }
+      commit(() => setAchievements(data.achievements || []))
+      commit(() => setTotalXP(data.totalXP || 0))
+      commit(() => setTotalPoints(data.totalPoints || 0))
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
+  const fetchData = useCallback(() => {
+    setLoading(true)
+    return loadFetchData()
+  }, [loadFetchData])
+
   useEffect(() => {
-    if (!authLoading && profile?.id) fetchData()
-  }, [authLoading, profile?.id, fetchData])
+    if (!authLoading && profile?.id) loadFetchData()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [authLoading, profile?.id, loadFetchData])
 
   const handleCheck = async () => {
     setChecking(true)

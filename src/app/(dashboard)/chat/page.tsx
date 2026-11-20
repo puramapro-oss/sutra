@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { MessageSquare, Plus, Trash2, Loader2 } from 'lucide-react'
 import Link from 'next/link'
@@ -23,31 +23,47 @@ interface Conversation {
 }
 
 export default function ChatListPage() {
-  const { user } = useAuth()
+  const auth = useAuth()
+  return <ChatListPageContent key={auth.user?.id ?? 'signed-out'} auth={auth} />
+}
+
+function ChatListPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { user } = auth
   const router = useRouter()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
 
-  const fetchConversations = useCallback(async () => {
-    if (!user) return
-    try {
-      const { data } = await supabase
+  const dataRequest = useRef<AbortController | null>(null)
+  const userId = user?.id
+  const fetchConversations = useCallback(() => {
+    if (!userId) return
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return Promise.resolve(supabase
         .from('conversations')
         .select('id, title, last_message, message_count, created_at, updated_at')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .order('updated_at', { ascending: false })
-        .limit(50)
-      setConversations((data as Conversation[]) ?? [])
-    } catch {
-      // silently fail
-    } finally {
-      setLoading(false)
-    }
-  }, [user])
+        .limit(50).abortSignal(controller.signal)).then(async ({ data }) => {
+      if (!active()) return
+      commit(() => setConversations((data as Conversation[]) ?? []))
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
+  }, [userId])
 
   useEffect(() => {
     fetchConversations()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
   }, [fetchConversations])
 
   const createConversation = useCallback(async () => {

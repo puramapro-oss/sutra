@@ -1,0 +1,61 @@
+(node:11) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ authentication precedes JSON parsing: missing user (6.345706ms)
+✔ authentication precedes JSON parsing: authentication error (0.676867ms)
+✔ an authentication service failure remains a server error (0.74021ms)
+✔ malformed JSON is a client error: empty (1.558695ms)
+✔ malformed JSON is a client error: truncated (0.748192ms)
+✔ malformed JSON is a client error: trailing comma (0.671869ms)
+✔ a JSON object is required: null (0.477063ms)
+✔ a JSON object is required: [] (0.402203ms)
+✔ a JSON object is required: "Bonjour." (0.43468ms)
+✔ a JSON object is required: true (0.546735ms)
+✔ a JSON object is required: 42 (0.34597ms)
+✔ invalid narration is rejected before translation: undefined (0.364087ms)
+✔ invalid narration is rejected before translation: "" (0.226083ms)
+✔ invalid narration is rejected before translation: "  \n\t " (0.253453ms)
+✔ invalid narration is rejected before translation: null (0.33272ms)
+✔ invalid narration is rejected before translation: 42 (0.25124ms)
+✔ invalid duration is rejected before translation: missing (0.370015ms)
+✔ invalid duration is rejected before translation: null (0.222518ms)
+✔ invalid duration is rejected before translation: zero (0.188338ms)
+✔ invalid duration is rejected before translation: negative (0.277899ms)
+✔ invalid duration is rejected before translation: numeric string (0.23084ms)
+✔ invalid duration is rejected before translation: boolean (0.270319ms)
+✔ invalid duration is rejected before translation: finite seconds overflowing milliseconds (0.205112ms)
+✔ invalid duration is rejected before translation: milliseconds beyond exact integer precision (0.263838ms)
+✔ a JSON exponent overflowing to Infinity is rejected before translation (0.266753ms)
+✔ valid classic subtitles and SRT follow their style contract (1.455543ms)
+✔ valid tiktok subtitles and SRT follow their style contract (0.539915ms)
+✔ valid karaoke subtitles and SRT follow their style contract (0.416103ms)
+✔ valid minimal subtitles and SRT follow their style contract (0.419968ms)
+✔ omitting the style preserves the classic default (0.442301ms)
+✔ positive fractional durations remain accepted with millisecond rounding (0.594546ms)
+✔ representable long durations are accepted without a business duration ceiling (2.699836ms)
+✔ valid translation still uses the real subtitle pipeline once (0.567446ms)
+✔ minimal retains the end of a long sentence instead of discarding its words (0.504793ms)
+✔ minimal preserves punctuation and all words: Un deux trois quatre cinq six. (0.777795ms)
+✔ minimal preserves punctuation and all words: Un deux trois quatre cinq six sept ! (0.492866ms)
+✔ minimal preserves punctuation and all words: Je	ne veux pas perdre ces mots.
+Ni les suivants… « Merci ! » (0.522519ms)
+✔ minimal preserves punctuation and all words: Écrire, lire et comprendre : chaque mot compte, y compris « non », 42 et l’apostrophe. (0.363726ms)
+✔ minimal keeps the existing positive-duration contract: 5e-324 (0.337697ms)
+✔ minimal keeps the existing positive-duration contract: 0.0001 (0.355754ms)
+✔ minimal keeps the existing positive-duration contract: 0.001 (0.316436ms)
+✔ minimal keeps the existing positive-duration contract: 0.3333333333333333 (0.329695ms)
+✔ minimal keeps the existing positive-duration contract: 6 (0.402302ms)
+✔ minimal keeps the existing positive-duration contract: 3599.9996 (0.243499ms)
+✔ minimal keeps the existing positive-duration contract: 9007199254740.99 (0.228286ms)
+✔ minimal generation and the existing export endpoint keep the complete text (1.084347ms)
+✔ minimal SRT rounding carries milliseconds correctly at 0.9996s (0.304558ms)
+✔ minimal SRT rounding carries milliseconds correctly at 59.9996s (0.218371ms)
+✔ minimal SRT rounding carries milliseconds correctly at 3599.9996s (0.205442ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 49
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 595.70921

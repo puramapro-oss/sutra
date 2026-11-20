@@ -16,7 +16,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
     }
 
-    const body = await req.json()
+    let body: unknown
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json({ error: 'Corps JSON invalide' }, { status: 400 })
+    }
+
+    if (body === null || typeof body !== 'object' || Array.isArray(body)) {
+      return NextResponse.json({ error: 'Corps JSON invalide' }, { status: 400 })
+    }
+
     const { narration, duration, style, targetLang } = body as {
       narration?: string
       duration?: number
@@ -28,7 +38,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Narration requise' }, { status: 400 })
     }
 
-    if (!duration || typeof duration !== 'number' || duration <= 0) {
+    // Les générateurs arrondissent les temps en millisecondes entières.
+    if (typeof duration !== 'number' || duration <= 0 || !Number.isSafeInteger(Math.round(duration * 1000))) {
       return NextResponse.json({ error: 'Duree invalide' }, { status: 400 })
     }
 

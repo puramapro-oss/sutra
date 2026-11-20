@@ -27,8 +27,13 @@ import type { PresetTemplate } from '@/data/template-data'
 const supabase = createClient()
 
 export default function TemplatesPage() {
+  const auth = useAuth()
+  return <TemplatesPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function TemplatesPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
   const router = useRouter()
-  const { profile, loading: authLoading } = useAuth()
+  const { profile, loading: authLoading } = auth
 
   const {
     userTemplates,

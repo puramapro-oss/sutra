@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { Plus, Trash2, Brain } from 'lucide-react'
 import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -36,21 +36,36 @@ export default function MemoryPage() {
   const [type, setType] = useState<Memory['memory_type']>('preference')
   const [adding, setAdding] = useState(false)
 
-  const fetchMemories = useCallback(async () => {
-    setLoading(true)
-    try {
-      const url = filter === 'all' ? '/api/auto/memory' : `/api/auto/memory?type=${filter}`
-      const res = await fetch(url)
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchMemories = useCallback(() => {
+    const url = filter === 'all' ? '/api/auto/memory' : `/api/auto/memory?type=${filter}`
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch(url, { signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       const json = await res.json()
-      setMemories(json.memories ?? [])
-    } catch {
+      commit(() => setMemories(json.memories ?? []))
+    }).catch(() => {
+      if (!active()) return
+      commit(() => setMemories([]))
       toast.error('Erreur de chargement')
-    } finally {
-      setLoading(false)
-    }
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [filter])
 
-  useEffect(() => { fetchMemories() }, [fetchMemories])
+  const fetchMemories = useCallback(() => {
+    setLoading(true)
+    return loadFetchMemories()
+  }, [loadFetchMemories])
+
+  useEffect(() => { loadFetchMemories()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [loadFetchMemories])
 
   const handleAdd = useCallback(async () => {
     if (!content.trim()) return
@@ -121,7 +136,11 @@ export default function MemoryPage() {
         {(['all', 'preference', 'performance', 'feedback', 'trend', 'learning'] as const).map((f) => (
           <button
             key={f}
-            onClick={() => setFilter(f as typeof filter)}
+            onClick={() => {
+              if (f === filter) return
+              setLoading(true)
+              setFilter(f as typeof filter)
+            }}
             data-testid={`memory-filter-${f}`}
             className={cn(
               'px-3 py-1.5 rounded-lg text-xs font-medium border transition-all',

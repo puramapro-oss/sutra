@@ -37,7 +37,7 @@ const env = { ...(tls ? { NODE_EXTRA_CA_CERTS: tls.cert } : {}), PATH: process.e
   STRIPE_SECRET_KEY: 'sk_test_fixture', RESEND_API_KEY: 're_fixture', NEXT_PUBLIC_APP_URL: base }
 const checks = [], blocked = [], writes = [], snapshots = [], axes = [], observations = [], engineResults = []
 let child, proxy, browser, engineControl, capability = capabilitiesCases.find(([name]) => name === 'client'), connectMode = 'error', createMode = 'refused', accountMode = 'empty', connectRelease
-const config = { enabled: false, default_platforms: [], auto_caption: true, auto_hashtags: true, caption_style: 'engaging', max_hashtags: 10, include_cta: true }
+const config = { enabled: false, default_platforms: [], publish_account_ids: [], auto_caption: true, auto_hashtags: true, caption_style: 'engaging', max_hashtags: 10, include_cta: true }
 const account = { id: '11111111-1111-4111-8111-111111111111', platform: 'youtube', username: 'chaine-test', display_name: 'Chaîne test', status: 'revoked', connected_at: '2026-01-01T00:00:00Z', avatar_url: null }
 async function check(name, fn) { try { await fn(); checks.push({ name, status: 'PASS' }) } catch(e) { checks.push({ name, status:'FAIL', error: String(e.message).slice(0,2500) }) } process.stdout.write(`${checks.at(-1).status} ${name}\n`) }
 try {
@@ -148,13 +148,14 @@ try {
       assert.equal(new URL(page.url()).search, '')
     })
     await page.close(); accountMode = 'revoked'; page = await newPage('/settings/social')
-    await expect(page.getByTestId('connect-youtube')).toHaveText('Se reconnecter')
+    await expect(page.getByTestId(`reconnect-${account.id}`)).toHaveText('Reconnecter ce compte')
     await check('reconnection opens only simulated consent once, with no automatic acceptance', async () => {
       connectMode = 'success'; const before = writes.length
-      await page.getByTestId('connect-youtube').evaluate(b => { b.click(); b.click() })
+      await page.getByTestId(`reconnect-${account.id}`).evaluate(b => { b.click(); b.click() })
       await expect(page.getByRole('heading', { name: 'Consentement personnel requis' })).toBeVisible()
       await expect(page.getByRole('button', { name: 'Accepter personnellement' })).toBeVisible()
       assert.equal(writes.length, before + 1)
+      assert.deepEqual(writes.at(-1).body, { platform: 'youtube', accountId: account.id })
       assert.equal(new URL(page.url()).pathname, '/mock-consent')
     })
     await page.close()
@@ -187,9 +188,14 @@ try {
   })
   await page.close(); accountMode='revoked'; page=await newPage('/settings/social')
   await check('revoked account offers reconnection with personal consent, no connected badge', async () => {
-    await expect(page.getByTestId('connect-youtube')).toHaveText('Se reconnecter')
-    await expect(page.getByTestId('platform-card-youtube')).toContainText('Connexion à renouveler')
-    await expect(page.getByTestId('disconnect-youtube')).toHaveCount(0)
+    const row = page.getByTestId(`social-account-${account.id}`)
+    await expect(row).toContainText('Chaîne test · @chaine-test')
+    await expect(row.getByTestId(`reconnect-${account.id}`)).toHaveText('Reconnecter ce compte')
+    await expect(row.getByTestId(`reconnect-${account.id}`)).toBeEnabled()
+    await expect(row.getByText('Déconnecté', { exact: true })).toBeVisible()
+    await expect(row.getByText('Connecté', { exact: true })).toHaveCount(0)
+    await expect(page.getByTestId('platform-card-youtube').getByText('1 connecté', { exact: true })).toHaveCount(0)
+    await expect(row.getByTestId(`disconnect-${account.id}`)).toHaveCount(0)
   })
   for (const width of [375,1440]) {
     await page.setViewportSize({width,height:900})

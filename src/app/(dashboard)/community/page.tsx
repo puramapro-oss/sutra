@@ -12,11 +12,18 @@ import { CommunityBuddyTab } from '@/components/community/CommunityBuddyTab'
 import { CommunityMissionsTab } from '@/components/community/CommunityMissionsTab'
 
 export default function CommunityPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <CommunityPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function CommunityPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const [tab, setTab] = useState<CommunityTab>('wall')
 
   const {
     loading,
+    error,
+    refresh,
     posts,
     circles,
     buddy,
@@ -42,6 +49,16 @@ export default function CommunityPage() {
       </div>
     )
   }
+
+  if (error) return (
+    <div role="alert" className="p-6 space-y-4" data-testid="community-load-error">
+      <h1 className="text-xl font-semibold text-white">Communauté indisponible</h1>
+      <p className="text-white/70">{error}</p>
+      <button type="button" onClick={() => void refresh()} className="rounded-xl bg-violet-600 px-4 py-2 text-white">
+        Réessayer
+      </button>
+    </div>
+  )
 
   return (
     <div className="p-6 space-y-6 max-w-4xl mx-auto">

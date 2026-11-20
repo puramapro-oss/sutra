@@ -1,0 +1,89 @@
+{
+  "reviewed_at_utc": "2026-11-11T23:27:59Z",
+  "reviewer": "/root/infra_state",
+  "status": "PASS_STATIC_REVIEW_FOR_CI_PUBLICATION",
+  "scope": "SUTRA T08 readiness harness and PR18 deployment guard; no product edits or browser rerun by reviewer",
+  "source_head": "ece8f760fa05feb4addb1359aa9f6d5e12a49ded",
+  "composition_merge_head": "51196fe2c04ea7fd5897744d36cc698e9d0855c7",
+  "files_sha256": {
+    ".github/workflows/web-ci.yml": "6b5b6f5be8582e718cc0d744621afc885cfe838f30ec289729c0c4df65941bf1",
+    "qa/t08/integrated/browser-extension.mjs": "4670d33fb7a9f6c43e59939497ae78430696997c2ff499abb693b90950ac5ce5",
+    "qa/t08/integrated/stored-markup-readiness.mjs": "62ff61f7f0b44e3c0aa42b76f18153214e9f2f07e07331bc54bc0bfdeec68fe5",
+    "qa/t08/integrated/stored-markup-readiness.test.mjs": "5257c2213721b098b3603b1e2af06c3b933ef8daff90b8c49b380482ce8b0295",
+    "vercel.json": "fb492978ce88dc2dfb91d1adc4b186a41ae1b32fdbae3762980e783dfe6be3f4",
+    "qa/browser-readiness-20261111/README.md": "ae5b7687fbd652b6fc9027c4e521ecab4e9345cd779e91f72adaec37525ed3e3",
+    "qa/browser-readiness-20261111/failed-ci-browser-extra.json": "ee0ead5479f884e088eaa565c6b5aa27bba8c245b9f84551a0c98a391e562403",
+    "qa/browser-readiness-20261111/failed-ci-result.json": "e6940a91a21951a0592cdab847cd4276df1ad9abb79354e1bebc013fcb3ae0cd",
+    "qa/browser-readiness-20261111/local-browser-unavailable.txt": "d779d5783223d535bba2c9362238e6200058636e9e6736bbc096e03ffed4b17f",
+    "qa/browser-readiness-20261111/verification.json": "487cc8ebce4566c5cc9e5ab550df7a876d1d416f00338e46952701ac08cb54f8"
+  },
+  "vercel_checks": {
+    "all_existing_guards_preserved": true,
+    "pr18_guard_false": true,
+    "cinema_guard_false": true,
+    "manual_guard_false": true,
+    "non_git_settings_unchanged": true,
+    "added_guard_entries": {
+      "codex/sutra-accessible-minimal-subtitles-20261111": false,
+      "audit/sutra-manual-mode-20261111": false
+    },
+    "expected_pr18_only_vercel_blob": "3b601e862da2a492c2ac69edf997be0f9ad5980b",
+    "expected_pr18_only_vercel_sha256": "0bdd4af014be8c6c2464e3294e414881f562b5d865c077ce08145b39a49ea3fe"
+  },
+  "reviewed_invariants": [
+    "All prior stored-markup inertness assertions moved intact into helper; visible card, successful HTTP, exact editor URL and enabled export are additional readiness checks.",
+    "All four export assertion blocks remain intact. No assertion threshold is relaxed.",
+    "Five dependent checks become BLOCKED with process.exitCode1 when stored-markup setup fails; full run cannot be marked successful.",
+    "Late editor accessibility audit now validates editor URL/title/export before screenshot, preventing previous false page attribution.",
+    "Navigation waits for DOMContentLoaded plus product-specific readiness, not completion of unrelated network activity. Existing browser/expect deadlines are retained.",
+    "Settings return requires HTTP200 and actual existing Profil tab, matching canonical T07 readiness.",
+    "Seven native Chromium child cases: old networkidle failure witness, valid busy-network path and five negative controls for library content, editor content, executed markup, disabled export and HTTP503.",
+    "CI registers this native test alongside existing guard tests before the integrated T08 run; existing browser runtime and assertions retained.",
+    "PR18 auto-deployment disabled, all inherited branch guards and composed manual guard preserved."
+  ],
+  "findings_blocking_in_diff": [],
+  "diff_check_exit": 0,
+  "runtime_status": "NON_TESTÉ_BY_REVIEWER; author local browser attempt blocked by EPERM before assertions; no new browser PASS claimed",
+  "author_reported_static_checks": "Syntax of three JS files, targeted ESLint and diff-check passed",
+  "required_followup": "Publish to existing guarded PR18 branch and inspect hosted native test plus full composed browser quality CI before merging; do not classify root readiness failure as an export/XSS product failure.",
+  "source_changes_by_reviewer": 0,
+  "ci_reruns_by_reviewer": 0,
+  "prior_failure_evidence": "/workspace/scratch/f47c1fc0a918/infra-state/sutra-quality-failure-review.json",
+  "source_publication_index_review": {
+    "index_path": "/workspace/scratch/f47c1fc0a918/repos-backlog/evidence/sutra-source-publication.index",
+    "changed_paths": [
+      ".github/workflows/web-ci.yml",
+      "qa/browser-readiness-20261111/README.md",
+      "qa/browser-readiness-20261111/failed-ci-browser-extra.json",
+      "qa/browser-readiness-20261111/failed-ci-result.json",
+      "qa/browser-readiness-20261111/local-browser-unavailable.txt",
+      "qa/browser-readiness-20261111/verification.json",
+      "qa/t08/integrated/browser-extension.mjs",
+      "qa/t08/integrated/stored-markup-readiness.mjs",
+      "qa/t08/integrated/stored-markup-readiness.test.mjs",
+      "vercel.json"
+    ],
+    "product_paths_changed": [],
+    "vercel_blob": "3b601e862da2a492c2ac69edf997be0f9ad5980b",
+    "vercel_equals_expected": true,
+    "core_sources_match_reviewed_bytes": {
+      ".github/workflows/web-ci.yml": true,
+      "qa/t08/integrated/browser-extension.mjs": true,
+      "qa/t08/integrated/stored-markup-readiness.mjs": true,
+      "qa/t08/integrated/stored-markup-readiness.test.mjs": true
+    },
+    "diff_check": 0,
+    "diff_check_output": ""
+  },
+  "documentary_cleanup": {
+    "path": "qa/browser-readiness-20261111/local-browser-unavailable.txt",
+    "previous_sha256": "c0c15dd53b69b7dd6a7a15b7d32ec5e2a70fad97b6061dd46e00b6064d338029",
+    "final_sha256": "d779d5783223d535bba2c9362238e6200058636e9e6736bbc096e03ffed4b17f",
+    "raw_evidence_path": "/workspace/scratch/f47c1fc0a918/repos-backlog/evidence/sutra-readiness-before.tap",
+    "raw_sha256": "c0c15dd53b69b7dd6a7a15b7d32ec5e2a70fad97b6061dd46e00b6064d338029",
+    "normalized_raw_equals_document": true,
+    "all_other_reviewed_files_unchanged": true,
+    "reason": "Two whitespace-only lines flagged by indexed diff-check; raw evidence retained."
+  },
+  "final_checked_at_utc": "2026-11-11T23:29:11Z"
+}

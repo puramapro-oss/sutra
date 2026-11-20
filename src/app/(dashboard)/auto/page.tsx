@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Sparkles, Film, Eye, Heart, TrendingUp, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -48,21 +48,35 @@ export default function AutoPage() {
   const [generating, setGenerating] = useState(false)
   const [videoError, setVideoError] = useState(false)
 
-  const fetchAll = useCallback(async () => {
-    setLoading(true)
-    try {
-      const result = await requestClientJson('/api/auto/videos?limit=20')
+  const dataRequest = useRef<AbortController | null>(null)
+  const loadFetchAll = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return requestClientJson('/api/auto/videos?limit=20', { signal: controller.signal }).then(async (result) => {
+      if (!active()) return
       if (!result.ok || !Array.isArray(result.body.videos)) throw new Error('Vidéos indisponibles')
-      setVideos(result.body.videos as AutoVideo[])
-      setVideoError(false)
-    } catch {
-      setVideoError(true)
-    } finally {
-      setLoading(false)
-    }
+      commit(() => setVideos(result.body.videos as AutoVideo[]))
+      commit(() => setVideoError(false))
+    }).catch(() => {
+      if (!active()) return
+      commit(() => setVideoError(true))
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { fetchAll() }, [fetchAll])
+  const fetchAll = useCallback(() => {
+    setLoading(true)
+    return loadFetchAll()
+  }, [loadFetchAll])
+
+  useEffect(() => { loadFetchAll()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [loadFetchAll])
 
   const generateNow = useCallback(async () => {
     setGenerating(true)

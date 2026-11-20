@@ -51,6 +51,7 @@ export async function GET(request: Request) {
     .eq('is_active', true)
 
   let total_trends = 0
+  let failed_trends = 0
 
   for (const c of configs ?? []) {
     const { data: themes } = await supabase
@@ -66,17 +67,23 @@ export async function GET(request: Request) {
     for (const niche of niches.slice(0, 3)) {
       const trends = await searchTrends(niche)
       for (const trend of trends.slice(0, 3)) {
-        await recordMemory({
-          userId: c.user_id,
-          type: 'trend',
-          content: `[${niche}] ${trend}`,
-          importance: 0.7,
-          expiresInDays: 7,
-        })
-        total_trends++
+        try {
+          const saved = await recordMemory({
+            userId: c.user_id,
+            type: 'trend',
+            content: `[${niche}] ${trend}`,
+            importance: 0.7,
+            expiresInDays: 7,
+          })
+          if (saved) total_trends++
+          else failed_trends++
+        } catch {
+          // One unavailable write does not erase later confirmed observations.
+          failed_trends++
+        }
       }
     }
   }
 
-  return NextResponse.json({ status: 'ok', total_trends })
+  return NextResponse.json({ status: failed_trends > 0 ? 'partial' : 'ok', total_trends, failed_trends })
 }

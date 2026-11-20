@@ -17,39 +17,32 @@ export function useLibraryVideos(userId: string | undefined, filter: FilterId, s
   // Favorites are filtered locally, like folders. Switching all/favorites must
   // preserve the loaded pages and an in-flight request for the same query.
   const statusFilter = filter === 'favorites' ? 'all' : filter
+  const queryKey = JSON.stringify([userId, statusFilter, search, sort])
+  const [loadedQuery, setLoadedQuery] = useState<string | null>(null)
 
-  const fetchVideos = useCallback(async (offset: number, append: boolean) => {
+  const loadVideos = useCallback((offset: number, append: boolean) => {
     // State updates are asynchronous: the ref also blocks two clicks in the same frame.
     if (append && pending.current) return
     pending.current?.abort()
-    if (!userId) {
-      pending.current = null
-      setVideos([])
-      setTotalCount(0)
-      setHasMore(false)
-      setLoading(false)
-      setLoadingMore(false)
-      setError(null)
-      return
-    }
+    if (!userId) return
     const controller = new AbortController()
     pending.current = controller
-    setError(null)
-    setLoading(!append)
-    setLoadingMore(append)
-    try {
+    const read = async () => {
       let query = supabase.from('videos').select('*', { count: 'exact' }).eq('user_id', userId)
       if (statusFilter !== 'all') query = query.eq('status', statusFilter)
       if (search.trim()) query = query.ilike('title', `%${search.trim()}%`)
       query = query.order(sort === 'title' ? 'title' : 'created_at', { ascending: sort === 'oldest' || sort === 'title' })
-      const { data, count, error: queryError } = await query.range(offset, offset + PAGE_SIZE - 1).abortSignal(controller.signal)
+      return await query.range(offset, offset + PAGE_SIZE - 1).abortSignal(controller.signal)
+    }
+    return read().then(({ data, count, error: queryError }) => {
       if (controller.signal.aborted || pending.current !== controller) return
       if (queryError) throw queryError
       const fetched = (data as Video[]) ?? []
       setTotalCount(count ?? 0)
       setHasMore((count ?? 0) > offset + fetched.length)
       setVideos(prev => append ? [...prev, ...fetched] : fetched)
-    } catch {
+      setError(null)
+    }).catch(() => {
       if (!controller.signal.aborted && pending.current === controller) {
         setError(append ? 'Impossible de charger la suite des vidéos. Réessaie.' : 'Impossible de charger la bibliothèque. Réessaie.')
         if (!append) {
@@ -58,19 +51,28 @@ export function useLibraryVideos(userId: string | undefined, filter: FilterId, s
           setHasMore(false)
         }
       }
-    } finally {
-      if (pending.current === controller) {
+    }).finally(() => {
+      if (pending.current === controller && !controller.signal.aborted) {
         pending.current = null
+        setLoadedQuery(queryKey)
         setLoading(false)
         setLoadingMore(false)
       }
-    }
-  }, [userId, statusFilter, search, sort])
+    })
+  }, [userId, statusFilter, search, sort, queryKey])
+
+  const fetchVideos = useCallback((offset: number, append: boolean) => {
+    if (!userId || (append && pending.current)) return
+    setError(null)
+    setLoading(!append)
+    setLoadingMore(append)
+    return loadVideos(offset, append)
+  }, [userId, loadVideos])
 
   useEffect(() => {
-    void fetchVideos(0, false)
+    void loadVideos(0, false)
     return () => { pending.current?.abort(); pending.current = null }
-  }, [fetchVideos])
+  }, [loadVideos])
 
   const loadMore = useCallback(() => {
     if (hasMore) void fetchVideos(videos.length, true)
@@ -91,5 +93,11 @@ export function useLibraryVideos(userId: string | undefined, filter: FilterId, s
   }, [])
 
   const refetch = useCallback(() => { void fetchVideos(0, false) }, [fetchVideos])
-  return { videos, loading, loadingMore, hasMore, totalCount, error, loadMore, handleDelete, refetch }
+  const visible = !!userId && loadedQuery === queryKey
+  return {
+    videos: visible ? videos : [], loading: !!userId && (loading || !visible),
+    loadingMore: visible && loadingMore, hasMore: visible && hasMore,
+    totalCount: visible ? totalCount : 0, error: visible ? error : null,
+    loadMore, handleDelete, refetch,
+  }
 }
