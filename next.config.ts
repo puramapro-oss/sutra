@@ -4,9 +4,13 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  // Keep page generation within the memory budget of shared CI and small hosts.
-  // The audit build was killed during page generation with eight workers.
-  experimental: { cpus: 2 },
+  // Bound page-generation concurrency and release Webpack memory before typecheck.
+  // next-intl adds a custom Webpack config, which disables Next's worker default.
+  experimental: {
+    cpus: 2,
+    webpackBuildWorker: true,
+    webpackMemoryOptimizations: true,
+  },
   transpilePackages: ["@purama/smarana"],
   async redirects() {
     return [

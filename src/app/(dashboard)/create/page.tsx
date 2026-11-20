@@ -1,53 +1,43 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Sparkles,
   AlertTriangle,
-  ChevronRight,
-  ChevronLeft,
-  Mic,
-  Music,
-  FileVideo,
   ArrowRight,
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useVideoGeneration } from '@/hooks/useVideoGeneration'
-import { PLAN_LIMITS, NICHES, VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constants'
-import { MANUAL_STEPS } from '@/lib/create-utils'
-import { cn } from '@/lib/utils'
+import { PLAN_LIMITS, VOICE_STYLES } from '@/lib/constants'
 import { ModeToggle } from '@/components/create/ModeToggle'
 import { ExecutionModeNotice, GenerationErrorNotice } from '@/components/create/ExecutionModeNotice'
 import ProductionRequestStatus from '@/components/production/ProductionRequestStatus'
 import { PipelineProgress } from '@/components/create/PipelineProgress'
-import { MediaModeCards, type MediaMode } from '@/components/create/MediaModeCards'
-import { SceneStockPicker, type StockResult } from '@/components/create/StockPicker'
-import AutoForm, { type AutoFormProps } from '@/components/create/AutoForm'
-import ManualForm, { type ManualFormProps } from '@/components/create/ManualForm'
-import {
-  OptionSection,
-  OptionCard,
-  UploadZone,
-  SummaryRow,
-  CreateSkeleton,
-} from '@/components/create/CreateHelpers'
+import type { MediaMode } from '@/components/create/MediaModeCards'
+import AutoForm from '@/components/create/AutoForm'
+import ManualForm from '@/components/create/ManualForm'
+import { CreateSkeleton } from '@/components/create/CreateHelpers'
 import { Button } from '@/components/ui/Button'
 import { PublishEverywhereButton } from '@/components/social/PublishEverywhereButton'
-import type { Plan, PipelineStep, VideoFormat, VideoQuality } from '@/types'
+import StoryboardDraftImport from '@/components/storyboard/StoryboardDraftImport'
+import type { Plan, VideoFormat, VideoQuality } from '@/types'
 import type { VideoEngine } from '@/lib/ltx'
 
-interface SceneStockState {
-  selected: StockResult | null
-  fallbackToAI: boolean
+export default function CreatePage() {
+  const { profile, loading } = useAuth()
+  if (loading) return <CreateSkeleton />
+  return <CreateWorkspace key={profile?.id ?? 'anonymous'} profile={profile} />
 }
 
-export default function CreatePage() {
+function CreateWorkspace({ profile }: { profile: ReturnType<typeof useAuth>['profile'] }) {
   const t = useTranslations('create')
   const router = useRouter()
-  const { profile, loading: authLoading } = useAuth()
+  const plan = (profile?.plan ?? 'free') as Plan
+  const planRank: Record<Plan, number> = { free: 0, starter: 1, creator: 2, empire: 3, enterprise: 3, admin: 4 }
+  const currentPlanRank = planRank[plan] ?? 0
+  const defaultEngine = plan === 'admin' ? 'ltx-pro' : currentPlanRank >= 1 ? 'ltx-fast' : 'wan-classic'
 
   const [mode, setMode] = useState<'auto' | 'manual'>('auto')
   const [topic, setTopic] = useState('')
@@ -56,7 +46,7 @@ export default function CreatePage() {
   const [niche, setNiche] = useState('')
   const [style, setStyle] = useState('')
   const [voice, setVoice] = useState<string>(VOICE_STYLES[0].id)
-  const [engine, setEngine] = useState<VideoEngine>('wan-classic')
+  const [engine, setEngine] = useState<VideoEngine>(defaultEngine)
 
   // Manual mode
   const [manualStep, setManualStep] = useState(0)
@@ -66,7 +56,6 @@ export default function CreatePage() {
   const [mediaMode, setMediaMode] = useState<MediaMode>('ai')
 
   // Plan limits — MUST be defined BEFORE hook call
-  const plan = (profile?.plan ?? 'free') as Plan
   const planLimits = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
   const videosUsed = profile?.monthly_video_count ?? 0
   const isOverLimit = plan !== 'admin' && videosUsed >= planLimits.videos
@@ -101,8 +90,6 @@ export default function CreatePage() {
   })
 
   // Check which quality options are available
-  const planRank: Record<Plan, number> = { free: 0, starter: 1, creator: 2, empire: 3, enterprise: 3, admin: 4 }
-  const currentPlanRank = planRank[plan] ?? 0
 
   const isQualityAvailable = (minPlan: Plan): boolean => {
     return currentPlanRank >= (planRank[minPlan] ?? 0)
@@ -119,12 +106,11 @@ export default function CreatePage() {
   const [lastPlan, setLastPlan] = useState(plan)
   if (plan !== lastPlan) {
     setLastPlan(plan)
-    setEngine(plan === 'admin' ? 'ltx-pro' : currentPlanRank >= 1 ? 'ltx-fast' : 'wan-classic')
+    setEngine(defaultEngine)
   }
 
-  if (authLoading) {
-    return <CreateSkeleton />
-  }
+  const hasDraft = Boolean(topic || script || niche || style) || mode !== 'auto' || format !== '9:16' ||
+    quality !== '720p' || mediaMode !== 'ai' || voice !== VOICE_STYLES[0].id || engine !== defaultEngine
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -144,6 +130,12 @@ export default function CreatePage() {
 
       <ExecutionModeNotice isGenerating={isGenerating} />
       {error && <GenerationErrorNotice error={error} />}
+
+      <StoryboardDraftImport userId={profile?.id} requestLocked={request.requestLocked} hasDraft={hasDraft}
+        onImport={draft => {
+          resetGeneration()
+          setMode('manual'); setTopic(draft.topic); setFormat(draft.format); setScript(draft.script); setManualStep(0)
+        }} />
 
       {(request.intent || request.message) && <ProductionRequestStatus
         intent={request.intent} busy={request.busy} cancelling={request.cancelling}

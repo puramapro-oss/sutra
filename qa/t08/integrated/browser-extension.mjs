@@ -4,17 +4,24 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { expect } from '@playwright/test'
 import { runT07Flows } from '../../../scripts/ui-isolated/t07-flows.mjs'
+import { assertStoredMarkupInert } from './stored-markup-readiness.mjs'
 
 // Reuse the canonical local auth/DB/browser harness. Only its test flow export
 // is wrapped; no product module is substituted or edited by this extension.
 const results = [], output = resolve('test-results/t08/browser-extra.json')
 mkdirSync(resolve('test-results/t08'), { recursive: true })
-async function check(name, run) {
+async function check(name, run, prerequisiteReady = true) {
   const start = Date.now()
-  try { await run(); results.push({ name, status: 'PASS', durationMs: Date.now() - start }) }
-  catch (error) { results.push({ name, status: 'FAIL', error: String(error), durationMs: Date.now() - start }); process.exitCode = 1 }
+  if (!prerequisiteReady) {
+    results.push({ name, status: 'BLOCKED', reason: 'Stored-markup fixture preparation failed', durationMs: 0 })
+    process.exitCode = 1
+  } else {
+    try { await run(); results.push({ name, status: 'PASS', durationMs: Date.now() - start }) }
+    catch (error) { results.push({ name, status: 'FAIL', error: String(error), durationMs: Date.now() - start }); process.exitCode = 1 }
+  }
   writeFileSync(output, JSON.stringify(results, null, 2) + '\n')
   process.stdout.write(`${results.at(-1).status} ${name}\n`)
+  return results.at(-1).status === 'PASS'
 }
 mock.module(new URL('../../../scripts/ui-isolated/t07-flows.mjs', import.meta.url).href, { namedExports: {
   runT07Flows: async ctx => {
@@ -27,14 +34,8 @@ mock.module(new URL('../../../scripts/ui-isolated/t07-flows.mjs', import.meta.ur
       script_data: { narration: payload, scenes: [{ visual_prompt: payload, duration_seconds: 5, use_stock: false }] },
       shotstack_json: { sutraEditorClips: [{ url: 'https://media.invalid/t08.mp4', type: 'ia', kind: 'video', duration: 5 }] } }]
     await page.setViewportSize({ width: 1280, height: 900 })
-    await check('T08 browser: stored markup remains inert in library and editor', async () => {
-      await page.goto(base + '/library', { waitUntil: 'networkidle' })
-      await expect(page.getByTestId(`video-card-${id}`)).toContainText(payload)
-      assert.equal(await page.evaluate(() => window.__t08Xss), 0)
-      await page.goto(base + '/editor/' + id, { waitUntil: 'networkidle' })
-      await expect(page.getByTestId('editor-title')).toHaveText(payload)
-      await expect(page.locator('main img[onerror]')).toHaveCount(0)
-      assert.equal(await page.evaluate(() => window.__t08Xss), 0)
+    const editorReady = await check('T08 browser: stored markup remains inert in library and editor', async () => {
+      await assertStoredMarkupInert({ page, base, id, payload })
       await screenshot(page, 't08-xss-inert')
     })
     let calls = [], mode = 'failure'
@@ -49,32 +50,35 @@ mock.module(new URL('../../../scripts/ui-isolated/t07-flows.mjs', import.meta.ur
       await expect(page.getByText(`T08 export indisponible ${payload}`, { exact: true })).toBeVisible()
       await expect(page.getByTestId('editor-export')).toBeEnabled()
       assert.equal(calls.length, 1); assert.equal(await page.evaluate(() => window.__t08Xss), 0)
-    })
+    }, editorReady)
     await check('T08 browser: export retry preserves source clips and marks accepted work pending', async () => {
       mode = 'success'; await page.getByTestId('editor-export').click()
       await expect(page.getByText('Export en cours.', { exact: false })).toBeVisible()
       await expect(page.getByTestId('editor-export')).toBeEnabled()
       assert.equal(calls.length, 2); assert.deepEqual(calls[1], calls[0])
       assert.equal(calls[1].scenes[0].url, 'https://media.invalid/t08.mp4')
-    })
+    }, editorReady)
     await check('T08 browser: transport timeout restores export controls', async () => {
       mode = 'abort'; const before = calls.length
       await page.getByTestId('editor-export').click()
       await expect.poll(() => calls.length).toBe(before + 1)
       await expect(page.getByTestId('editor-export')).toBeEnabled()
-    })
+    }, editorReady)
     await check('T08 browser: same-frame duplicate export dispatches one request', async () => {
       mode = 'success'; const before = calls.length
       await page.getByTestId('editor-export').evaluate(button => { button.click(); button.click() })
       await expect.poll(() => calls.length).toBeGreaterThan(before)
       await expect(page.getByTestId('editor-export')).toBeEnabled()
       assert.equal(calls.length - before, 1, 'duplicate export submissions')
-    })
+    }, editorReady)
     await check('T08 browser: editor error/retry state remains accessible at 320px', async () => {
+      await expect(page).toHaveURL(base + '/editor/' + id)
+      await expect(page.getByTestId('editor-title')).toHaveText(payload)
+      await expect(page.getByTestId('editor-export')).toBeEnabled()
       await page.setViewportSize({ width: 320, height: 900 })
       await auditAccessibility(page, 't08-editor-retry-320')
       await screenshot(page, 't08-editor-retry-320')
-    })
+    }, editorReady)
     await check('T01 browser: breathing completion never claims or submits suspended rewards', async () => {
       // Clock emulation also replaces Performance APIs: isolate it from the
       // canonical runtime measurements that continue after this extension.
@@ -103,6 +107,7 @@ mock.module(new URL('../../../scripts/ui-isolated/t07-flows.mjs', import.meta.ur
       assert.ok(await page.evaluate(() => performance.getEntriesByType('navigation').length > 0), 'canonical performance clock remains native')
     })
     await page.unroute('**/api/video/export'); fixture.videos = []
-    await page.goto(base + '/settings', { waitUntil: 'networkidle' })
+    assert.equal((await page.goto(base + '/settings', { waitUntil: 'domcontentloaded' }))?.status(), 200)
+    await expect(page.getByRole('tab', { name: 'Profil', exact: true })).toBeEnabled()
   },
 } })

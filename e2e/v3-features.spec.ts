@@ -5,7 +5,7 @@ test.describe("V3 Features — /financer", () => {
     await page.goto("/financer");
     await expect(page).toHaveTitle(/Financer|SUTRA/i);
     // Step 1 visible
-    await expect(page.locator("text=Ton profil")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 2, name: "Ton profil", exact: true })).toBeVisible();
     // Profile buttons visible
     await expect(page.locator("text=Particulier")).toBeVisible();
     await expect(page.locator("text=Entreprise")).toBeVisible();

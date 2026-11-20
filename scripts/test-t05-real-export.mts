@@ -1,8 +1,11 @@
 import test, { before, after, beforeEach, afterEach, mock } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFile, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { createHash } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
+import { tmpdir } from 'node:os'
+import childProcess from 'node:child_process'
+import { syncBuiltinESMExports } from 'node:module'
 import { closeNetwork } from '../qa/t05-salad-media-20261014/fixtures.mts'
 import { directory, exportsDir, fixturesDir, root, keys, bytes, ffmpeg, makeFixtures, transport, job,
   measureAudio, measurePixels, type Feature } from '../qa/t05-real-export-20261014/helpers.mts'
@@ -17,14 +20,14 @@ closeNetwork()
 const { composeVideoWithFallback } = await import('../src/lib/video-compositor.ts')
 const { compositionPlan } = await import('../src/lib/composition-contract.ts')
 const { probeMedia } = await import('../src/lib/media-inspection.ts')
-const { assertFinalMedia, mediaValidation } = await import('../src/lib/media-validation.ts')
+const { assertFinalMedia, compositionHash, mediaValidation } = await import('../src/lib/media-validation.ts')
 const evidence: { base: string; environment?: unknown; exports: unknown[]; rejections: unknown[] } = {
   base: 'e09fdaeafbf1ec8554a7b689fe3c44dd696d0140', exports: [], rejections: [],
 }
 const proofs = new Map<string, { validation: MediaValidation; job: VideoCompositionJob; path: string }>()
 before(async () => { evidence.environment = await makeFixtures() })
 beforeEach(() => { transport() })
-afterEach(() => mock.restoreAll())
+afterEach(() => { mock.restoreAll(); syncBuiltinESMExports() })
 after(async () => { await writeFile(process.env.T05_REAL_EXPORT_EVIDENCE ?? join(directory, 'measurements.json'), JSON.stringify(evidence, null, 2) + '\n') })
 
 const modes: Array<[string, readonly Feature[], boolean?]> = [
@@ -98,6 +101,60 @@ test('retained synthetic native 4K control: dimensions alone never attest genera
   const unknown = mediaValidation(contract, exported.validation.final, exported.validation.sources.map(s => ({ ...s, generation: null })))
   assert.equal(unknown.resolutionOrigin, '4k-origin-unknown')
   evidence.exports.push({ status: 'PASS', ...exported, provenance: 'native synthetic lavfi fixture only; not AI generation proof', withoutAttestation: unknown.resolutionOrigin })
+})
+
+for (const [name, durations, frames] of [
+  ['37-over-30', [37 / 30], 37],
+  ['38-over-30', [38 / 30], 38],
+  ['two-short-segments', [0.049, 0.049], 2],
+  ['two-rounded-segments', [0.051, 0.051], 4],
+] as const) test('retained fractional timeline ' + name + ' preserves every planned frame', async () => {
+  const contract = job('16:9')
+  contract.clips = durations.map(durationSeconds => ({ ...contract.clips[0], durationSeconds }))
+  const exported = await exportFile('fractional-' + name, contract)
+  assert.equal(exported.validation.final.video?.frames, frames)
+  evidence.exports.push({ status: 'PASS', ...exported, durations, frames })
+})
+
+test('legacy completed mux with a missing B frame is rebuilt without repeating valid passes', async () => {
+  const contract = { ...job('16:9', ['logo']), jobId: 'legacy-mux-' + randomUUID() }
+  const dir = join(tmpdir(), 'sutra-compose-' + contract.jobId + '-' + compositionHash(contract).slice(0, 16))
+  const stages = ['src-clip-0.mp4', 'watermark.png', 'norm-0.mp4', 'concat-video.mp4', 'visual.mp4', 'audio.m4a']
+  await mkdir(dir, { recursive: true })
+  try {
+    await copyFile(join(fixturesDir, 'source.mp4'), join(dir, 'src-clip-0.mp4'))
+    await copyFile(join(fixturesDir, 'logo.png'), join(dir, 'watermark.png'))
+    await ffmpeg(['-i', proofs.get('16-9-video-only')!.path, '-map', '0:v:0', '-c:v', 'copy', '-an', join(dir, 'norm-0.mp4')])
+    await copyFile(join(dir, 'norm-0.mp4'), join(dir, 'concat-video.mp4'))
+    await ffmpeg(['-i', proofs.get('16-9-logo')!.path, '-map', '0:v:0', '-c:v', 'copy', '-an', join(dir, 'visual.mp4')])
+    await ffmpeg(['-i', proofs.get('16-9-logo')!.path, '-map', '0:a:0', '-c:a', 'copy', '-vn', join(dir, 'audio.m4a')])
+    await ffmpeg(['-i', join(dir, 'visual.mp4'), '-i', join(dir, 'audio.m4a'), '-map', '0:v:0', '-map', '1:a:0',
+      '-c', 'copy', '-frames:v', '35', join(dir, 'final.mp4')])
+    assert.equal((await probeMedia(join(dir, 'visual.mp4'))).video?.frames, 36)
+    assert.equal((await probeMedia(join(dir, 'final.mp4'))).video?.frames, 35)
+    for (const name of [...stages, 'final.mp4']) await writeFile(join(dir, name + '.complete'), 'complete')
+
+    const commands: string[][] = []
+    const spawn = childProcess.spawn
+    const observer = mock.method(childProcess, 'spawn', (...args: Parameters<typeof childProcess.spawn>) => {
+      if (args[0] === 'ffmpeg' && Array.isArray(args[1])) commands.push([...args[1]])
+      return spawn(...args)
+    })
+    syncBuiltinESMExports()
+    try {
+      const exported = await exportFile('legacy-mux-resumed', contract)
+      assert.equal(exported.validation.final.video?.frames, 36)
+      const rendered = commands.map(args => args.at(-1)!).filter(output => output.startsWith(dir + '/'))
+      assert.equal(rendered.length, 1, 'only the final mux may be rebuilt')
+      for (const name of stages) assert.ok(!rendered.includes(join(dir, name)), 'completed stage was reused: ' + name)
+      evidence.exports.push({ status: 'PASS', ...exported, legacyFrames: 35, recoveredFrames: 36, rebuiltPasses: 1 })
+    } finally {
+      observer.mock.restore()
+      syncBuiltinESMExports()
+    }
+  } finally {
+    await rm(dir, { recursive: true, force: true })
+  }
 })
 
 async function mustReject(name: string, contract: VideoCompositionJob, deps: VideoCompositionDeps = {}, expectedFallback?: number) {

@@ -10,6 +10,7 @@ export interface PublishModalFooterProps {
   selectedCount: number
   schedule: 'now' | 'later'
   retry?: boolean
+  canCloseWhileVerifying?: boolean
 }
 
 export function PublishModalFooter({
@@ -22,6 +23,7 @@ export function PublishModalFooter({
   selectedCount,
   schedule,
   retry = false,
+  canCloseWhileVerifying = false,
 }: PublishModalFooterProps) {
   return (
     <div className="flex flex-wrap items-center justify-end gap-2 py-4 border-t border-white/[0.06] bg-[#0c0b14]/95">
@@ -30,7 +32,7 @@ export function PublishModalFooter({
         size="md"
         data-testid="publish-cancel"
         onClick={onCancel}
-        disabled={publishing || verifying}
+        disabled={publishing || (verifying && !canCloseWhileVerifying)}
       >
         {retry ? 'Fermer' : 'Annuler'}
       </Button>
