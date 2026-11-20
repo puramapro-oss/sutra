@@ -33,6 +33,7 @@ jobs:
           cache: npm
           cache-dependency-path: mobile/package-lock.json
       - run: npm ci --no-audit --no-fund
+      - run: node --test scripts/eas-project.test.cjs
       - run: npm exec -- tsc --noEmit
       - run: npm exec -- expo install --check
       - name: Export and check the native route registry
@@ -42,11 +43,14 @@ jobs:
             npm exec -- expo export --platform "$platform" --max-workers 1 --output-dir "$destination"
             node scripts/check-native-export.mjs "$destination" "$platform"
           done
-      - name: Check the configured appearance in generated native projects
+      - name: Check native appearance and update configuration
         run: |
+          EAS_PROJECT_ID="$(node -p "require('./app.json').expo.extra?.eas?.projectId || '00000000-0000-4000-8000-000000000001'")"
+          export EAS_PROJECT_ID
           npm exec -- expo prebuild --no-install --template ./node_modules/expo/template.tgz
           python3 - <<'PY'
           import json
+          import os
           import plistlib
           import xml.etree.ElementTree as ET
           from pathlib import Path
@@ -58,4 +62,12 @@ jobs:
           plist = plistlib.loads(Path('ios/SUTRA/Info.plist').read_bytes())
           ios_style = config['ios'].get('userInterfaceStyle', config['userInterfaceStyle'])
           assert plist['UIUserInterfaceStyle'].lower() == ios_style, plist['UIUserInterfaceStyle']
+          update_url = 'https://u.expo.dev/' + os.environ['EAS_PROJECT_ID']
+          ios_updates = plistlib.loads(Path('ios/SUTRA/Supporting/Expo.plist').read_bytes())
+          assert ios_updates['EXUpdatesEnabled'] and ios_updates['EXUpdatesURL'] == update_url
+          manifest = ET.parse('android/app/src/main/AndroidManifest.xml')
+          ns = '{http://schemas.android.com/apk/res/android}'
+          metadata = {entry.get(ns + 'name'): entry.get(ns + 'value') for entry in manifest.findall('application/meta-data')}
+          assert metadata['expo.modules.updates.ENABLED'] == 'true'
+          assert metadata['expo.modules.updates.EXPO_UPDATE_URL'] == update_url
           PY
