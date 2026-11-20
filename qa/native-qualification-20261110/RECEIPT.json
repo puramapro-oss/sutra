@@ -1,0 +1,752 @@
+{
+  "schema_version": 1,
+  "status": "PARTIEL_GLOBAL__PASS_NATIVE_AND_TARGETED_BROWSER",
+  "utc": "2026-11-10T15:04:09.252596+00:00",
+  "repository": "puramapro-oss/sutra",
+  "pr": 9,
+  "expected_parent": "846bf6ef7d65be9b9b179739b229ced6339deb8f",
+  "remote_mutations": false,
+  "engines": {
+    "node": "24.22.1",
+    "native_postgres": "16.15 (same major as workflow service postgres:16)",
+    "postgres_18_6": "additional earlier qualification, not additive counts",
+    "final_dump_restore_client": "16.15",
+    "playwright": "1.58.2",
+    "chromium": "145.0.7632.6 official Chrome for Testing headless shell"
+  },
+  "native_final_commands": [
+    {
+      "label": "social-migration",
+      "argv": [
+        "node",
+        "scripts/test-social-multi-account-migration.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:07.510458+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section social-migration",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-social-migration.log"
+    },
+    {
+      "label": "durable-migration",
+      "argv": [
+        "npm",
+        "run",
+        "test:migration-local"
+      ],
+      "utc_start": "2026-11-10T14:52:07.925732+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section durable-migration",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-durable-migration.log"
+    },
+    {
+      "label": "pipeline",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-pipeline-postgres.mts"
+      ],
+      "utc_start": "2026-11-10T14:52:08.293561+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section pipeline",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-pipeline.log"
+    },
+    {
+      "label": "rls",
+      "argv": [
+        "node",
+        "scripts/test-security-rls.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:09.666498+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section rls",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-rls.log"
+    },
+    {
+      "label": "permissions",
+      "argv": [
+        "node",
+        "scripts/test-final-write-permissions.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:12.792171+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section permissions",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-permissions.log"
+    },
+    {
+      "label": "history",
+      "argv": [
+        "node",
+        "scripts/test-final-social-history.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:13.813964+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section history",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-history.log"
+    },
+    {
+      "label": "history-routes",
+      "argv": [
+        "node",
+        "qa/t06-integrated-retest-20261015/run-postgres.mjs",
+        "history"
+      ],
+      "utc_start": "2026-11-10T14:52:15.985719+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section history-routes",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-history-routes.log"
+    },
+    {
+      "label": "schedule",
+      "argv": [
+        "node",
+        "qa/t01-closure-20261015/schedule-postgres-run.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:17.254049+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section schedule",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-schedule.log"
+    },
+    {
+      "label": "partner",
+      "argv": [
+        "node",
+        "qa/t01-certification-20261019/partner-pg-run.mjs",
+        "partner-pg-ci"
+      ],
+      "exit_code": 0,
+      "log": "NATIVE.log section partner",
+      "engine": "PostgreSQL16.15 native, client16.15",
+      "raw_log": "sutra16-partner-matched-client.log"
+    },
+    {
+      "label": "recovery",
+      "argv": [
+        "node",
+        "qa/t03-closure-20261020/run.mjs",
+        "ci-r107",
+        "security"
+      ],
+      "exit_code": 0,
+      "log": "NATIVE.log section recovery",
+      "engine": "PostgreSQL16.15 native, client16.15",
+      "raw_log": "sutra16-recovery-matched-client.log"
+    },
+    {
+      "label": "recovery-catalogue",
+      "argv": [
+        "python3",
+        "qa/t01-closure-20261020/verify_catalogue.py",
+        "qa/t03-closure-20261020/ci-r107/receipt.json"
+      ],
+      "exit_code": 0,
+      "log": "NATIVE.log section recovery-catalogue",
+      "engine": "PostgreSQL16.15 native, client16.15",
+      "raw_log": "sutra16-recovery-catalogue-matched-client.log"
+    },
+    {
+      "label": "autonomy",
+      "argv": [
+        "node",
+        "qa/t07-autonomy-integrated-20261020/run.mjs",
+        "ci-countertest",
+        "846bf6ef7d65be9b9b179739b229ced6339deb8f"
+      ],
+      "utc_start": "2026-11-10T14:52:22.141828+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section autonomy",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-autonomy.log"
+    },
+    {
+      "label": "api",
+      "argv": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "qa/t03-final-candidate-20261015/api-postgres.test.mts"
+      ],
+      "utc_start": "2026-11-10T14:52:25.227258+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section api",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-api.log"
+    },
+    {
+      "label": "salad",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-salad-persistence.mts"
+      ],
+      "utc_start": "2026-11-10T14:52:26.347583+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section salad",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-salad.log"
+    },
+    {
+      "label": "durable",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts",
+        "qa/t03-durable-reliability-20261014/postgres.test.mts",
+        "qa/t06-social-recovery-20261014/test-postgres.mts",
+        "qa/t01-final-20261015/durable-postgres.test.mts"
+      ],
+      "utc_start": "2026-11-10T14:52:27.018022+00:00",
+      "exit_code": 0,
+      "log": "NATIVE.log section durable",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true,
+      "raw_log": "sutra16-durable.log"
+    }
+  ],
+  "native_attempt_note": "First PG16 pass used PG18 clients: two restore checks failed on transaction_timeout; matched native clients16.15 fixed the local fixture toolchain and the three affected commands were rerun. Every attempt is retained, not reported as one uninterrupted first pass.",
+  "coverage": {
+    "social_migration_groups": 9,
+    "durable_migration_assertion_groups": 13,
+    "pipeline_tests": 16,
+    "rls_assertions": 261,
+    "write_permissions_checks": 30,
+    "social_history_groups": 27,
+    "oauth_route_tests": 10,
+    "schedule_route_tests": 3,
+    "partner_tests": 10,
+    "recovery_tests": 19,
+    "scheduler_isolation_tests": 7,
+    "autonomy_scenarios": 13,
+    "pool_drain_tests": 4,
+    "future_port_tests": 2,
+    "api_tests": 13,
+    "salad_native_tests": 7,
+    "durable_native_tests": 51,
+    "promotion_catalogue": {
+      "functions": 3,
+      "tables": 3
+    },
+    "all_native_skips": 0
+  },
+  "browser": {
+    "social_groups": 21,
+    "recovery_tests": 12,
+    "fail": 0,
+    "skip": 0,
+    "scope": "real isolated product components and browser; local fixtures replace auth/backend/provider transport; no actual social connection or publication"
+  },
+  "global_quality": {
+    "lint": "PASS",
+    "typecheck": "BLOQUE: process SIGKILL without TypeScript diagnostics in this run",
+    "build": "BLOQUE: process SIGKILL during webpack in this run",
+    "heap_mb": 1024,
+    "cannot_infer_product_code_failure": true
+  },
+  "changes": "test harnesses and verification only; no source product/SQL migration/dependency changes",
+  "source_sha256": {
+    "tooling/private-postgres-endpoint.mjs": "f00a1e1f144764d079dec123915281d121d6d5ab6074a046bae1c63cfcc6da34",
+    "scripts/test-security-rls.mjs": "9d1e06c830e4c437a1293811e698a1858eaf049b7a63aca8fa81df890dcb0bef",
+    "scripts/test-final-write-permissions.mjs": "f68d89458a9832292653bff982e1f4ad701bb58bb277a78d72e3495281bd49a9",
+    "scripts/test-final-social-history.mjs": "a9adb99cdf03221999fd5d1c20352ea7764081489d01a2a9f1433f89b55aecac",
+    "qa/t06-integrated-retest-20261015/run-postgres.mjs": "1880e4b3973cddd7c03dfa012e776fcf18f300a924025e8e1373152b465cebf8",
+    "qa/t06-integrated-retest-20261015/history-routes.test.mts": "bd559ecfd935a494659d6afd7056278ad8cf17e82783cda06afed4e3db87e59b",
+    "qa/t01-closure-20261015/schedule-postgres-run.mjs": "527e4192afbc1c99495194c760174f542e3231bc11724cf458247148325fe5cb",
+    "qa/t01-certification-20261019/partner-pg-run.mjs": "a76d1f01ccc1da2dfbea3ef88b1e6c955e81a57c82967d4290a245db45d2dc4d",
+    "qa/t03-closure-20261020/run.mjs": "50a8abd0fe3ae2849453fc00d5d256c77f72d2fbf46047689fcd9955d62b5202",
+    "qa/t01-closure-20261020/verify_catalogue.py": "4bdb6518c6e1de5f77de2eaa718db2ffad042417b04858d1a2e39118e496d850",
+    "qa/t07-autonomy-integrated-20261020/run.mjs": "7a2eb7e6a4031a473efa18bdba6e979a9fb8fdb99332a9270d3d3369166cbf78",
+    "qa/t07-autonomy-integrated-20261020/countertest.mjs": "4596de66af44eaa6530f223e7414f0861b626efc403576d4b29e4d11971e0bfc",
+    "qa/t07-autonomy-integrated-20261020/wire.mjs": "80d67df141e890e615ecbd35db629fc6a8feb7d62cbc71b9321f29e1249bd7a4"
+  },
+  "log_normalization": "ANSI escapes and trailing whitespace removed in committed text logs only; raw SHA and raw workspace logs retained",
+  "limits": [
+    "Standard npm ci failed at private SMARANA git transport; qualification installation restored the exact authorized commit with same lockfile registry versions, not a standard CI install PASS",
+    "Real Supabase/PostgREST/OAuth provider/production not tested or modified",
+    "Full Next production browser journeys not rerun because the current build was killed",
+    "WebKit archive installed but host libraries missing; not qualified",
+    "No performance/load or multi-day production qualification",
+    "Remote CI not rerun; no deployment"
+  ],
+  "raw_evidence": [
+    {
+      "path": "sutra16-api.log",
+      "origin": "native-evidence/sutra16-api.log",
+      "sha256": "450bb8a0a047612d569945006420e48b08674b71df6eb4cb7212fc06776be79a",
+      "raw_sha256": "450bb8a0a047612d569945006420e48b08674b71df6eb4cb7212fc06776be79a"
+    },
+    {
+      "path": "sutra16-autonomy.log",
+      "origin": "native-evidence/sutra16-autonomy.log",
+      "sha256": "d084b56f8729858f3da57957ef74c1538cbc895fd869a68f90d57aa779c93f69",
+      "raw_sha256": "d084b56f8729858f3da57957ef74c1538cbc895fd869a68f90d57aa779c93f69"
+    },
+    {
+      "path": "sutra16-bootstrap.log",
+      "origin": "native-evidence/sutra16-bootstrap.log",
+      "sha256": "fdbaa69115283b3e7852968748480a8408d56b30567dd8ecc33a2ae0f55a7381",
+      "raw_sha256": "fdbaa69115283b3e7852968748480a8408d56b30567dd8ecc33a2ae0f55a7381"
+    },
+    {
+      "path": "sutra16-durable-migration.log",
+      "origin": "native-evidence/sutra16-durable-migration.log",
+      "sha256": "27059903d05935de0d62b93ccb91635c3e6e1c4597e9b169a4175e769e614a47",
+      "raw_sha256": "27059903d05935de0d62b93ccb91635c3e6e1c4597e9b169a4175e769e614a47"
+    },
+    {
+      "path": "sutra16-durable.log",
+      "origin": "native-evidence/sutra16-durable.log",
+      "sha256": "0a32475eaf56a43445db038c5254354d930096f4d948e8cb53bc04f167277c26",
+      "raw_sha256": "0a32475eaf56a43445db038c5254354d930096f4d948e8cb53bc04f167277c26"
+    },
+    {
+      "path": "sutra16-history-routes.log",
+      "origin": "native-evidence/sutra16-history-routes.log",
+      "sha256": "a6396fe88c2098aa82b635a41ffd3559145d3d2a60715744e7ddf91e98e5308f",
+      "raw_sha256": "a6396fe88c2098aa82b635a41ffd3559145d3d2a60715744e7ddf91e98e5308f"
+    },
+    {
+      "path": "sutra16-history.log",
+      "origin": "native-evidence/sutra16-history.log",
+      "sha256": "5fb800e2a85a8235af6c6291e5a94854969892b34dce9d7fa31618e4ebcbf726",
+      "raw_sha256": "5fb800e2a85a8235af6c6291e5a94854969892b34dce9d7fa31618e4ebcbf726"
+    },
+    {
+      "path": "sutra16-partner-matched-client.log",
+      "origin": "native-evidence/sutra16-partner-matched-client.log",
+      "sha256": "ec0d45a9d741942c7e71c0417215f3bdddf012f9c87871dcf4825ff7ec6bc8cc",
+      "raw_sha256": "ec0d45a9d741942c7e71c0417215f3bdddf012f9c87871dcf4825ff7ec6bc8cc"
+    },
+    {
+      "path": "sutra16-partner.log",
+      "origin": "native-evidence/sutra16-partner.log",
+      "sha256": "137d316de4789ee893742eb0b8c9e635cab28b8ca140b1e1c8eb586acdd65fab",
+      "raw_sha256": "137d316de4789ee893742eb0b8c9e635cab28b8ca140b1e1c8eb586acdd65fab"
+    },
+    {
+      "path": "sutra16-permissions.log",
+      "origin": "native-evidence/sutra16-permissions.log",
+      "sha256": "921cab3697e831fd56a7c3acc458aca8bd170c4d79d9504e727ac9e2048b7008",
+      "raw_sha256": "921cab3697e831fd56a7c3acc458aca8bd170c4d79d9504e727ac9e2048b7008"
+    },
+    {
+      "path": "sutra16-pipeline.log",
+      "origin": "native-evidence/sutra16-pipeline.log",
+      "sha256": "0d4590c004850f0fab0971e9c1767543d9724100aad46bc5e85b5ff5288397ef",
+      "raw_sha256": "0d4590c004850f0fab0971e9c1767543d9724100aad46bc5e85b5ff5288397ef"
+    },
+    {
+      "path": "sutra16-recovery-catalogue-matched-client.log",
+      "origin": "native-evidence/sutra16-recovery-catalogue-matched-client.log",
+      "sha256": "b35b38232975a1864365c896ecf007b29eafbb9dfd88651f68edad36179b6ec5",
+      "raw_sha256": "b35b38232975a1864365c896ecf007b29eafbb9dfd88651f68edad36179b6ec5"
+    },
+    {
+      "path": "sutra16-recovery-catalogue.log",
+      "origin": "native-evidence/sutra16-recovery-catalogue.log",
+      "sha256": "60d3564bdc56acecaa154c0da60e8a55c08193dd6ddbf73fcaa16389cb13a0b6",
+      "raw_sha256": "60d3564bdc56acecaa154c0da60e8a55c08193dd6ddbf73fcaa16389cb13a0b6"
+    },
+    {
+      "path": "sutra16-recovery-matched-client.log",
+      "origin": "native-evidence/sutra16-recovery-matched-client.log",
+      "sha256": "b07172ba8379be4ca3700e9dfe61b88378053fddc44d4b3a58e5adcdb6a1cbf9",
+      "raw_sha256": "b07172ba8379be4ca3700e9dfe61b88378053fddc44d4b3a58e5adcdb6a1cbf9"
+    },
+    {
+      "path": "sutra16-recovery.log",
+      "origin": "native-evidence/sutra16-recovery.log",
+      "sha256": "b07172ba8379be4ca3700e9dfe61b88378053fddc44d4b3a58e5adcdb6a1cbf9",
+      "raw_sha256": "b07172ba8379be4ca3700e9dfe61b88378053fddc44d4b3a58e5adcdb6a1cbf9"
+    },
+    {
+      "path": "sutra16-rls.log",
+      "origin": "native-evidence/sutra16-rls.log",
+      "sha256": "0a4437f537fe25c2d0723ab302710cae799e70a0a4078dd8b816799e1b709bc5",
+      "raw_sha256": "0a4437f537fe25c2d0723ab302710cae799e70a0a4078dd8b816799e1b709bc5"
+    },
+    {
+      "path": "sutra16-salad.log",
+      "origin": "native-evidence/sutra16-salad.log",
+      "sha256": "066597c97b98a75df6394fc58a80930ece259fb50242c774451ca21921a73836",
+      "raw_sha256": "066597c97b98a75df6394fc58a80930ece259fb50242c774451ca21921a73836"
+    },
+    {
+      "path": "sutra16-schedule.log",
+      "origin": "native-evidence/sutra16-schedule.log",
+      "sha256": "a59752c3693f2c70d1998852d66ef0c50d0fd3fd668ee5a97ade04d2d55693d7",
+      "raw_sha256": "a59752c3693f2c70d1998852d66ef0c50d0fd3fd668ee5a97ade04d2d55693d7"
+    },
+    {
+      "path": "sutra16-social-migration.log",
+      "origin": "native-evidence/sutra16-social-migration.log",
+      "sha256": "e424cbc6c56965ed1857f600872f432a3d8a0ecfc3183f6aad90c4dba12bb9a1",
+      "raw_sha256": "e424cbc6c56965ed1857f600872f432a3d8a0ecfc3183f6aad90c4dba12bb9a1"
+    },
+    {
+      "path": "sutra16-workflow-receipt.json",
+      "origin": "native-evidence/sutra16-workflow-receipt.json",
+      "sha256": "0a6162e3ddecc2a598b6553e3448f43393976f454e07679e16144a70d286f325",
+      "raw_sha256": "0a6162e3ddecc2a598b6553e3448f43393976f454e07679e16144a70d286f325"
+    },
+    {
+      "path": "sutra16-matched-client-receipt.json",
+      "origin": "native-evidence/sutra16-matched-client-receipt.json",
+      "sha256": "c4ecde0578847118455b0a0ec11725cae90902d578fb5a8a9bf46f5f9eb68772",
+      "raw_sha256": "c4ecde0578847118455b0a0ec11725cae90902d578fb5a8a9bf46f5f9eb68772"
+    },
+    {
+      "path": "sutra-install-provenance.json",
+      "origin": "native-evidence/sutra-install-provenance.json",
+      "sha256": "04a1199028bf19836e5abd5ac92c86e7eda1fc4df76567192736ae609098ab91",
+      "raw_sha256": "04a1199028bf19836e5abd5ac92c86e7eda1fc4df76567192736ae609098ab91"
+    },
+    {
+      "path": "sutra-installed-package-versions.json",
+      "origin": "native-evidence/sutra-installed-package-versions.json",
+      "sha256": "9c1e9db23966bbd7da36c1493b81cabcf62a8367c700b4615e5b914fad431f3d",
+      "raw_sha256": "9c1e9db23966bbd7da36c1493b81cabcf62a8367c700b4615e5b914fad431f3d"
+    },
+    {
+      "path": "smarana-private-package-provenance.json",
+      "origin": "native-evidence/smarana-private-package-provenance.json",
+      "sha256": "3ff34d367865217add29e8de99048e7ea9b37be2db9fef5022ac54965cc5d7b2",
+      "raw_sha256": "3ff34d367865217add29e8de99048e7ea9b37be2db9fef5022ac54965cc5d7b2"
+    },
+    {
+      "path": "sutra-install-standard.log",
+      "origin": "native-evidence/sutra-install-standard.log",
+      "sha256": "aa922e821186e639a04f420092b134ca4a075ebc28900b4d59aaaa9ae7c20ae7",
+      "raw_sha256": "aa922e821186e639a04f420092b134ca4a075ebc28900b4d59aaaa9ae7c20ae7"
+    },
+    {
+      "path": "sutra-install-qualified.log",
+      "origin": "native-evidence/sutra-install-qualified.log",
+      "sha256": "967529bf9d0297c65bf30b7b09e64c6c214b64aef174e32e526565961874b556",
+      "raw_sha256": "967529bf9d0297c65bf30b7b09e64c6c214b64aef174e32e526565961874b556"
+    },
+    {
+      "path": "sutra-rebuild.log",
+      "origin": "native-evidence/sutra-rebuild.log",
+      "sha256": "a635517693629f5613ce873ea1ed8f4c8f076c1e43b2f120261948e8d863dffa",
+      "raw_sha256": "a635517693629f5613ce873ea1ed8f4c8f076c1e43b2f120261948e8d863dffa"
+    },
+    {
+      "path": "sutra-rls-before.log",
+      "origin": "native-evidence/sutra-rls-before.log",
+      "sha256": "660d9c63b45596ccb6714224cd8c9efae8f35ebd46d9cfca7e41adc84c7c4685",
+      "raw_sha256": "660d9c63b45596ccb6714224cd8c9efae8f35ebd46d9cfca7e41adc84c7c4685"
+    },
+    {
+      "path": "sutra-native-private-receipt.json",
+      "origin": "native-evidence/sutra-native-private-receipt.json",
+      "sha256": "ea23af2e5793601dcd8405c40f6f7a5b2ef0096c511099052f077ca87f658a2a",
+      "raw_sha256": "ea23af2e5793601dcd8405c40f6f7a5b2ef0096c511099052f077ca87f658a2a"
+    },
+    {
+      "path": "sutra-final-targeted-eslint.log",
+      "origin": "native-evidence/sutra-final-targeted-eslint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "chrome-headless-shell-download.json",
+      "origin": "native-evidence/chrome-headless-shell-download.json",
+      "sha256": "ab76d35c0318b3bdbc0962de6165ef7a77ab7cb4ff665b5ef556a11df19878d9",
+      "raw_sha256": "ab76d35c0318b3bdbc0962de6165ef7a77ab7cb4ff665b5ef556a11df19878d9"
+    },
+    {
+      "path": "postgres16-client-download.json",
+      "origin": "native-evidence/postgres16-client-download.json",
+      "sha256": "b5515fdc9ab87b2157207514aed268c9d3d5bc849626d25a2644728445186a1a",
+      "raw_sha256": "b5515fdc9ab87b2157207514aed268c9d3d5bc849626d25a2644728445186a1a"
+    },
+    {
+      "path": "partner/backup.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/backup.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "partner/create-restore.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/create-restore.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "partner/create.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/create.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "partner/init.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/init.log",
+      "sha256": "59e4b212740950fbbdbef855a649f1cfc4c684b6827224184d7f9a551b14ba0a",
+      "raw_sha256": "59e4b212740950fbbdbef855a649f1cfc4c684b6827224184d7f9a551b14ba0a"
+    },
+    {
+      "path": "partner/receipt.json",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/receipt.json",
+      "sha256": "ebd01fbb4389488b8fa79515c68ffac61b551044ca78e26ab87e855d213fe065",
+      "raw_sha256": "ebd01fbb4389488b8fa79515c68ffac61b551044ca78e26ab87e855d213fe065"
+    },
+    {
+      "path": "partner/restore.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/restore.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "partner/rows-before.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/rows-before.log",
+      "sha256": "1c5cc618c2458356b34a0438f72baadd6d2437955bcd9dd93b44d50e6d107563",
+      "raw_sha256": "1c5cc618c2458356b34a0438f72baadd6d2437955bcd9dd93b44d50e6d107563"
+    },
+    {
+      "path": "partner/rows-restored.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/rows-restored.log",
+      "sha256": "1c5cc618c2458356b34a0438f72baadd6d2437955bcd9dd93b44d50e6d107563",
+      "raw_sha256": "1c5cc618c2458356b34a0438f72baadd6d2437955bcd9dd93b44d50e6d107563"
+    },
+    {
+      "path": "partner/start.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/start.log",
+      "sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad",
+      "raw_sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad"
+    },
+    {
+      "path": "partner/stop.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/stop.log",
+      "sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+      "raw_sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d"
+    },
+    {
+      "path": "partner/tests.log",
+      "origin": "sutra/qa/t01-certification-20261019/partner-pg-ci/tests.log",
+      "sha256": "f75dca5c457afbf4762c8092d03b56d9373824e5a251c3488a20c043d7bf37d4",
+      "raw_sha256": "f75dca5c457afbf4762c8092d03b56d9373824e5a251c3488a20c043d7bf37d4"
+    },
+    {
+      "path": "recovery/pg-init.log",
+      "origin": "sutra/qa/t03-closure-20261020/ci-r107/pg-init.log",
+      "sha256": "d6f21734dfe31fee7d89bf404606a60f49690d71311f70cd338703912fd0f941",
+      "raw_sha256": "d6f21734dfe31fee7d89bf404606a60f49690d71311f70cd338703912fd0f941"
+    },
+    {
+      "path": "recovery/pg-start.log",
+      "origin": "sutra/qa/t03-closure-20261020/ci-r107/pg-start.log",
+      "sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad",
+      "raw_sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad"
+    },
+    {
+      "path": "recovery/pg-stop.log",
+      "origin": "sutra/qa/t03-closure-20261020/ci-r107/pg-stop.log",
+      "sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+      "raw_sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d"
+    },
+    {
+      "path": "recovery/promotion-catalogue.json",
+      "origin": "sutra/qa/t03-closure-20261020/ci-r107/promotion-catalogue.json",
+      "sha256": "e541fd1175ff92eec788e0570e58bb2fd1f01dc0fab0b8afbb40b29d347f756d",
+      "raw_sha256": "e541fd1175ff92eec788e0570e58bb2fd1f01dc0fab0b8afbb40b29d347f756d"
+    },
+    {
+      "path": "recovery/receipt.json",
+      "origin": "sutra/qa/t03-closure-20261020/ci-r107/receipt.json",
+      "sha256": "ba9e603b8baabdd2230d2c388200106c69c238f886a5c3364fa325deb9d5dfd1",
+      "raw_sha256": "ba9e603b8baabdd2230d2c388200106c69c238f886a5c3364fa325deb9d5dfd1"
+    },
+    {
+      "path": "recovery/recovery-settlement.json",
+      "origin": "sutra/qa/t03-closure-20261020/ci-r107/recovery-settlement.json",
+      "sha256": "2e88b008efb111162d78863f20f3f2bd6b769fe47f920bea72d869aaa3fa488d",
+      "raw_sha256": "2e88b008efb111162d78863f20f3f2bd6b769fe47f920bea72d869aaa3fa488d"
+    },
+    {
+      "path": "recovery/recovery.log",
+      "origin": "sutra/qa/t03-closure-20261020/ci-r107/recovery.log",
+      "sha256": "daa9e35eae05a81aaac455d0bce7f228bb450f8e18f7f3cfdc06beeeac3e5e59",
+      "raw_sha256": "daa9e35eae05a81aaac455d0bce7f228bb450f8e18f7f3cfdc06beeeac3e5e59"
+    },
+    {
+      "path": "recovery/scheduler-isolation.log",
+      "origin": "sutra/qa/t03-closure-20261020/ci-r107/scheduler-isolation.log",
+      "sha256": "81f6655bb905c1b863ccc33042b31173374ce21ef73bc8060e846ba1086f71f0",
+      "raw_sha256": "81f6655bb905c1b863ccc33042b31173374ce21ef73bc8060e846ba1086f71f0"
+    },
+    {
+      "path": "autonomy/countertest.log",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/countertest.log",
+      "sha256": "e0364101751915f6356a848ec30cb31b06e42d313092004412ec64db0d2702d7",
+      "raw_sha256": "e0364101751915f6356a848ec30cb31b06e42d313092004412ec64db0d2702d7"
+    },
+    {
+      "path": "autonomy/database.json",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/database.json",
+      "sha256": "ce89539b9cb406f7be4db93ff5771f36074783d563f30035ebff96a0de8345b9",
+      "raw_sha256": "ce89539b9cb406f7be4db93ff5771f36074783d563f30035ebff96a0de8345b9"
+    },
+    {
+      "path": "autonomy/future-port.log",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/future-port.log",
+      "sha256": "4b9f064ccc514641916f7e20c2ec5ead928347a5c1e05e4c2d7287d1f38abe50",
+      "raw_sha256": "4b9f064ccc514641916f7e20c2ec5ead928347a5c1e05e4c2d7287d1f38abe50"
+    },
+    {
+      "path": "autonomy/pg-init.log",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/pg-init.log",
+      "sha256": "4e0b7cc6c7a4c7a43d3d84306c5d33731e7fbfef2e69a27b65d63bf6d3ae99fa",
+      "raw_sha256": "4e0b7cc6c7a4c7a43d3d84306c5d33731e7fbfef2e69a27b65d63bf6d3ae99fa"
+    },
+    {
+      "path": "autonomy/pg-start.log",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/pg-start.log",
+      "sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad",
+      "raw_sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad"
+    },
+    {
+      "path": "autonomy/pg-stop.log",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/pg-stop.log",
+      "sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d",
+      "raw_sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d"
+    },
+    {
+      "path": "autonomy/pool-drain.log",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/pool-drain.log",
+      "sha256": "3d29fe71ec40424f5db6f8cfc86a5bbb7bce6fa54871656d3d216fd825bbd1f8",
+      "raw_sha256": "3d29fe71ec40424f5db6f8cfc86a5bbb7bce6fa54871656d3d216fd825bbd1f8"
+    },
+    {
+      "path": "autonomy/receipt.json",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/receipt.json",
+      "sha256": "4c40c7819ad1806782d75b747c5945dfec03c6214bc1cf4df4f503d5b6d7ef6b",
+      "raw_sha256": "4c40c7819ad1806782d75b747c5945dfec03c6214bc1cf4df4f503d5b6d7ef6b"
+    },
+    {
+      "path": "autonomy/results.json",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/results.json",
+      "sha256": "5253a047e738fd261a6b39862685ea37d603a93638064df42ee4b371ddbed98b",
+      "raw_sha256": "5253a047e738fd261a6b39862685ea37d603a93638064df42ee4b371ddbed98b"
+    },
+    {
+      "path": "autonomy/settlement.log",
+      "origin": "sutra/qa/t07-autonomy-integrated-20261020/ci-countertest/settlement.log",
+      "sha256": "71dfd5ee99908c11b4bbd9f49e93a131b3a75a24d60a9615573d2ef1c80b3266",
+      "raw_sha256": "71dfd5ee99908c11b4bbd9f49e93a131b3a75a24d60a9615573d2ef1c80b3266"
+    },
+    {
+      "path": "browser-social/browser-social.log",
+      "origin": "sutra/test-results/ci/browser-social/browser-social.log",
+      "sha256": "ed164276717d49c89997d4257c6513fa5294ed557b84e35c2341563954817cec",
+      "raw_sha256": "ed164276717d49c89997d4257c6513fa5294ed557b84e35c2341563954817cec"
+    },
+    {
+      "path": "browser-social/results.json",
+      "origin": "sutra/test-results/ci/browser-social/results.json",
+      "sha256": "1c72e932e03656bbdb6747ce50fcedb66b646b25fff7e8d02810bf8443839725",
+      "raw_sha256": "1c72e932e03656bbdb6747ce50fcedb66b646b25fff7e8d02810bf8443839725"
+    },
+    {
+      "path": "browser-recovery/browser-recovery.log",
+      "origin": "sutra/test-results/ci/browser-recovery/browser-recovery.log",
+      "sha256": "3e1bbf8b5fe65d51e0d1d170ee56b0b38074839b8191532449145aaea7da3eb7",
+      "raw_sha256": "3e1bbf8b5fe65d51e0d1d170ee56b0b38074839b8191532449145aaea7da3eb7"
+    },
+    {
+      "path": "browser-recovery/results.json",
+      "origin": "sutra/test-results/ci/browser-recovery/results.json",
+      "sha256": "ff5f7f0c0bc4e1a0af417d6a4bc0ca2b9815d49133f677f9c490e8fb16385182",
+      "raw_sha256": "ff5f7f0c0bc4e1a0af417d6a4bc0ca2b9815d49133f677f9c490e8fb16385182"
+    },
+    {
+      "path": "quality/build.log",
+      "origin": "sutra/test-results/ci/quality/build.log",
+      "sha256": "9355b1d37c04dfda6d250159aabb05317a62c80df615379ef1b86444ed2eb9d2",
+      "raw_sha256": "9355b1d37c04dfda6d250159aabb05317a62c80df615379ef1b86444ed2eb9d2"
+    },
+    {
+      "path": "quality/lint.log",
+      "origin": "sutra/test-results/ci/quality/lint.log",
+      "sha256": "4168eb3e0be3fb15995157d7f9797d8d827029e1130a1963faee98c13a537277",
+      "raw_sha256": "4168eb3e0be3fb15995157d7f9797d8d827029e1130a1963faee98c13a537277"
+    },
+    {
+      "path": "quality/results.json",
+      "origin": "sutra/test-results/ci/quality/results.json",
+      "sha256": "a5a80a9a48a205cf5b829f7f65b4497180584efecd2088a0ae578de5b777f101",
+      "raw_sha256": "a5a80a9a48a205cf5b829f7f65b4497180584efecd2088a0ae578de5b777f101"
+    },
+    {
+      "path": "quality/typecheck.log",
+      "origin": "sutra/test-results/ci/quality/typecheck.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-details/schedule-api-postgres.log",
+      "origin": "sutra/qa/t01-closure-20261015/schedule-api-postgres.log",
+      "sha256": "6f4558e45d07ab379cf11a8d0c446be2b67a5102a56c4ee42411c1147965bd23",
+      "raw_sha256": "6f4558e45d07ab379cf11a8d0c446be2b67a5102a56c4ee42411c1147965bd23"
+    },
+    {
+      "path": "native-details/schedule-api-postgres.json",
+      "origin": "sutra/qa/t01-closure-20261015/schedule-api-postgres.json",
+      "sha256": "a664ef394a24954814ab2c85fe5f66908bc10ba9f10264b1a9be792ae9c9c600",
+      "raw_sha256": "a664ef394a24954814ab2c85fe5f66908bc10ba9f10264b1a9be792ae9c9c600"
+    },
+    {
+      "path": "native-details/postgres.log",
+      "origin": "sutra/qa/t06-integrated-retest-20261015/postgres.log",
+      "sha256": "cfbb9fe2964d6cafc81362e1d187d3a8c2a6a70af0f2cb6bceb3733f4ff0d998",
+      "raw_sha256": "cfbb9fe2964d6cafc81362e1d187d3a8c2a6a70af0f2cb6bceb3733f4ff0d998"
+    },
+    {
+      "path": "native-details/postgres-result.json",
+      "origin": "sutra/qa/t06-integrated-retest-20261015/postgres-result.json",
+      "sha256": "f007ebc2d3baaa042416cc34e85575d7b349a9ef855302cce34164ed0be33992",
+      "raw_sha256": "f007ebc2d3baaa042416cc34e85575d7b349a9ef855302cce34164ed0be33992"
+    },
+    {
+      "path": "native-details/social-history-result.json",
+      "origin": "sutra/qa/t01-final-20261015/social-history-result.json",
+      "sha256": "81e827b0899a849f6bc3e8eefdec49edadc59f9a3e88cb25e33c149df4b98770",
+      "raw_sha256": "81e827b0899a849f6bc3e8eefdec49edadc59f9a3e88cb25e33c149df4b98770"
+    }
+  ],
+  "raw_evidence_directory": "continuation/native-evidence/sutra-complete-proof (local retained originals and complete receipts)",
+  "evidence_sha256": {
+    "BEFORE.log": "8ec19eb7b2cbd5a014fa6963e00062562dfd4063a309769d77e5b3b9b6cf36f8",
+    "BROWSER.log": "ae4025ad1089c4428a5b56b153098fcda69e9c30bac5e277ffdaf818b9b2fab9",
+    "DEPENDENCIES.json": "c5956d3c68f13ef1a989d39a833f803b876535da22a7b79b742c779c376e523d",
+    "NATIVE.log": "f680051c2d80d01338d95c7ad76da96992473cd2df74619a6c9f21c53e60f9fb",
+    "QUALITY.log": "d7a87c5f92f7e3f4302e513065bdf12330aa2f8618b327103c723c557cd6143e"
+  }
+}

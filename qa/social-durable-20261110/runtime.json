@@ -1,0 +1,108 @@
+{
+  "status": "PARTIEL_INSTALLATION_STANDARD__PASS_QUALIFIED_RUNTIME",
+  "utc": "2026-11-10T21:38:38.239655+00:00",
+  "scope": "Environment setup only; no application source, workflow, manifest or lockfile edits; no app tests or build",
+  "repo": "/workspace/scratch/682d6789af78/sutra-durable-20261110",
+  "node": "24.22.1",
+  "npm": "11.9.0",
+  "standard_npm_ci": {
+    "exit_code": -9,
+    "timed_out": false,
+    "argv": [
+      "npm",
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--fetch-timeout=45000",
+      "--fetch-retries=1"
+    ],
+    "seconds": 20.82,
+    "lock_sha256": "4b15a26a331493c3c1d74f2611e34ba201cb5ab505613879eeee39abd7574195",
+    "log": "/workspace/scratch/682d6789af78/sutra-runtime-20261110/npm-ci-standard.log"
+  },
+  "bounded_npm_ci": {
+    "exit_code": -9,
+    "timed_out": false,
+    "argv": [
+      "npm",
+      "ci",
+      "--ignore-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--maxsockets=1",
+      "--fetch-timeout=30000",
+      "--fetch-retries=0"
+    ],
+    "node_options": "--max-old-space-size=512",
+    "seconds": 4.66,
+    "lock_sha256": "4b15a26a331493c3c1d74f2611e34ba201cb5ab505613879eeee39abd7574195",
+    "log": "/workspace/scratch/682d6789af78/sutra-runtime-20261110/npm-ci-bounded.log"
+  },
+  "restoration": {
+    "method": "Sequential unpack of exact lockfile registry artifacts with integrity verification; exact authorized Git dependency source",
+    "packages": 1093,
+    "registry_integrity_verified": 1092,
+    "platform_skips": 164,
+    "local_links": 1,
+    "version_errors": [],
+    "smarana_commit": "bc3469eb595485714b2044790105acfc5e3b0f31",
+    "smarana_git_blobs_verified": 21,
+    "smarana_tarball_integrity": "sha512-dau8w4QHfgQTgZGxH16FH4uOTe7x55PXXeYhZIMAL1ANrptsliCKbIbT5LdGJRC2K1CCpSZ8ytO5U45oJss5og=="
+  },
+  "rebuild": {
+    "exit_code": 0,
+    "timed_out": false,
+    "argv": [
+      "npm",
+      "rebuild",
+      "--foreground-scripts",
+      "--no-audit",
+      "--no-fund",
+      "--logs-dir=/workspace/scratch/682d6789af78/sutra-runtime-20261110/npm-logs"
+    ],
+    "seconds": 87.65,
+    "lock_sha256": "4b15a26a331493c3c1d74f2611e34ba201cb5ab505613879eeee39abd7574195",
+    "log": "/workspace/scratch/682d6789af78/sutra-runtime-20261110/npm-rebuild.log"
+  },
+  "dependency_smoke": {
+    "status": "PASS",
+    "node": "v24.22.1",
+    "next": "16.4.5",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3",
+    "esbuild": "0.28.2",
+    "sharp": "0.35.5",
+    "sharp_png_bytes": 95,
+    "pg": "8.20.0",
+    "smarana_import": "PASS",
+    "external_api_calls": 0,
+    "scope": "Dependency runtime smoke only; no application suite or build",
+    "attempt_note": "First smoke assertions passed; reporting failed because sharp does not export package.json; corrected reporter reads local manifest."
+  },
+  "postgres": {
+    "status": "PASS",
+    "version": "16.15 (Debian 16.15-1.pgdg13+2)",
+    "bin": "/workspace/scratch/682d6789af78/sutra-runtime-20261110/postgres16/usr/lib/postgresql/16/bin",
+    "official_key_fingerprint": "B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8",
+    "signed_repository_manifest_verified": true,
+    "package_sha256_verified": true,
+    "running": false
+  },
+  "source_hashes": {
+    "package.json": "f888a7a3daecc7f7025e85cc1799fda791da3b77ce14f16a4556045f58b567a9",
+    "package-lock.json": "4b15a26a331493c3c1d74f2611e34ba201cb5ab505613879eeee39abd7574195"
+  },
+  "evidence_sha256": {
+    "npm-ci-standard.json": "0ec84ab7007b44de16546cc6e4c18e324e22b64df92be77e097362b3a05deba9",
+    "npm-ci-bounded.json": "6e6c73c0b208b954743d675f91d6a9d32f36795e83e13cc0fe13f0ed88e88bb2",
+    "locked-restoration.json": "2e0334eaecc0361373e29bf89caa6c059fa6016173b83a4a2a9ab4a3a08ee12c",
+    "dependency-version-check.json": "136e6bbc8275f824c213b3e09602df1e5383a9ab016aeeb9bdd3962cf7c35efe",
+    "smarana-provenance.json": "5427642b3a07731b807b67761f9284323485530936ff651ca1c798f974a3b7e2",
+    "npm-rebuild.json": "281115516b85add1fc423db83e422e792a90916d48f913ce94130cbbbc57d4b9",
+    "dependency-smoke.json": "a2f3d9c93b0ad5a49d98e4f73dd46228c1613f27c79a4b2b1e0287fa84b3aeb4",
+    "postgres-smoke/receipt.json": "48ccc861507e013c46e8ca4661d73531efb35eb2ff2108745b52ff1612ea539d",
+    "apt-metadata/InRelease": "ac533f523687800ace432f7c778113abc87f92f3a7655170da834ed98a81149e",
+    "apt-metadata/selected-packages.json": "94376c235c4d82ab37931269ba076e79d25f517c2780ba7585adf38d12658188"
+  }
+}

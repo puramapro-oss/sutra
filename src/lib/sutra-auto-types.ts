@@ -17,6 +17,7 @@ export interface AutoConfig {
   default_voice_id: string | null
   default_language: string
   publish_platforms: string[]
+  publish_account_ids?: string[]
   auto_publish: boolean
   require_approval_before_publish: boolean
   zernio_connected_platforms: Array<{ platform: SocialPlatform; account_id: string; username: string }>

@@ -9,4 +9,4 @@ export const generationErrorCases = {
 export const socialAccounts = [
   ['youtube', 'connected'], ['instagram', 'revoked'], ['facebook', 'expired'],
   ['x', 'error'], ['tiktok', 'disconnected'], ['linkedin', 'unknown'],
-].map(([platform, status], i) => ({ id: `fixture-account-${i}`, platform, status, username: `historique_${platform}`, display_name: 'Compte fixture', avatar_url: null, connected_at: '2026-10-01T00:00:00Z' }))
+].map(([platform, status], i) => ({ id: `33333333-3333-4333-8333-${String(i + 1).padStart(12, '0')}`, platform, status, username: `historique_${platform}`, display_name: 'Compte fixture', avatar_url: null, connected_at: '2026-10-01T00:00:00Z' }))

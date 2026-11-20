@@ -165,8 +165,10 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
   const [width, height] = resolution.split('x').map(Number)
   const ffmpegBin = resolveFfmpegBinary()
   const encoder = await detectVideoEncoder(ffmpegBin, signal)
-
-
+  // UHD software workers buffer full-size frames in the decoder, filters and encoder.
+  const boundCpuWorkers = quality === '4k' && encoder.codec === 'libx264'
+  const codecThreads = boundCpuWorkers ? ['-threads', '2'] : []
+  const filterThreads = boundCpuWorkers ? ['-filter_threads', '2', '-filter_complex_threads', '2'] : []
 
   // `release` est acquis AVANT le premier `try` : si mkdtemp() echoue (disque
   // plein, permissions) entre l'acquisition du slot et l'entree du bloc
@@ -266,8 +268,9 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
         await ensure(normPath, `normalize-${i}`, () => {
           const filter = buildNormalizeFilter(width, height, seg.durationSeconds, transitions)
           return runFfmpeg(
-            ['-stream_loop', '-1', '-i', seg.path, '-t', String(seg.durationSeconds), '-vf', filter, '-an',
-              ...encoder.args(quality), '-pix_fmt', 'yuv420p', normPath],
+            [...filterThreads, ...codecThreads, '-stream_loop', '-1', '-i', seg.path,
+              '-t', String(seg.durationSeconds), '-vf', filter, '-an',
+              ...encoder.args(quality), ...codecThreads, '-pix_fmt', 'yuv420p', normPath],
             remainingMs(),
             `normalize-${i}`,
             signal
@@ -298,7 +301,7 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
       if (hasSubtitles || hasWatermarkImage || hasWatermarkText) {
         visualPath = join(tmpDir, 'visual.mp4')
         await ensure(visualPath, 'overlay', async () => {
-          const args: string[] = ['-i', concatVideoPath]
+          const args: string[] = [...filterThreads, ...codecThreads, '-i', concatVideoPath]
           if (hasWatermarkImage) args.push('-i', watermarkPath as string)
 
           const overlayChain: string[] = []
@@ -322,7 +325,7 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
           }
 
           args.push('-filter_complex', overlayChain.join(';'), '-map', currentLabel)
-          args.push(...encoder.args(quality), '-pix_fmt', 'yuv420p', visualPath)
+          args.push(...encoder.args(quality), ...codecThreads, '-pix_fmt', 'yuv420p', visualPath)
           await runFfmpeg(args, remainingMs(), 'overlay', signal)
         })
       }
@@ -335,12 +338,14 @@ export async function composeVideo(params: ComposeVideoParams): Promise<ComposeV
         return runFfmpeg(audioArgs, remainingMs(), 'audio', signal)
       })
 
-      // Pass 5 — mux final (stream copy)
-      const finalPath = join(tmpDir, 'final.mp4')
+      // Both inputs are already bounded by the composition timeline. -shortest
+      // can discard a delayed B-frame when AAC reaches EOF during stream copy.
+      // Version only this artifact so a completed legacy mux is rebuilt on resume.
+      const finalPath = join(tmpDir, 'final-mux-v2.mp4')
       await ensure(finalPath, 'mux', () =>
         runFfmpeg(
           ['-i', visualPath, '-i', audioPath, '-map', '0:v:0', '-map', '1:a:0',
-            '-c:v', 'copy', '-c:a', 'copy', '-shortest', '-movflags', '+faststart', finalPath],
+            '-c:v', 'copy', '-c:a', 'copy', '-movflags', '+faststart', finalPath],
           remainingMs(),
           'mux',
           signal

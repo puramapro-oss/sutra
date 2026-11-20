@@ -18,6 +18,11 @@ export async function socialChecks({ page, context, base, fixture, output, check
   await expect(accept).toHaveCount(0)
   let mode = 'failure', calls = 0, deletes = 0
   const account = { id: '33333333-3333-4333-8333-333333333333', platform: 'youtube', username: 'test-social', display_name: 'Test social', avatar_url: null, status: 'connected', connected_at: '2026-10-15T00:00:00Z' }
+  const secondAccount = { ...account, id: '44444444-4444-4444-8444-444444444444', username: 'autre-chaine', display_name: 'Autre chaîne' }
+  const expectEmptyConnections = async () => {
+    await expect(page.getByTestId('connected-count')).toHaveText('0 compte connecté')
+    await expect(page.getByText('Sur 0 / 14 réseaux', { exact: true })).toBeVisible()
+  }
   await context.route('**/api/social/accounts', async route => {
     if (route.request().method() === 'DELETE') {
       deletes++
@@ -29,7 +34,7 @@ export async function socialChecks({ page, context, base, fixture, output, check
     if (mode === 'failure') return route.fulfill({ status: 503, json: { error: 'fixture_social_unavailable' } })
     if (mode === 'interrupt') return route.abort('connectionreset')
     if (mode === 'invalid') return route.fulfill({ json: { error: 'unexpected_shape' } })
-    if (mode === 'connected') return route.fulfill({ json: { accounts: [account], autopilot: null } })
+    if (mode === 'connected') return route.fulfill({ json: { accounts: [account, secondAccount], autopilot: null } })
     return route.fulfill({ json: { accounts: [], autopilot: null } }).catch(() => {})
   })
   for (const width of process.argv.includes('--dialog-only') ? [] : [375, 1440]) {
@@ -40,7 +45,8 @@ export async function socialChecks({ page, context, base, fixture, output, check
       const alert = page.getByTestId('social-load-error')
       await expect(alert).toBeVisible()
       await expect(page.getByTestId('connected-count')).toHaveCount(0)
-      await expect(page.getByRole('button', { name: 'Se connecter', exact: true })).toHaveCount(0)
+      await expect(page.getByRole('button', { name: 'Connecter un compte', exact: true })).toHaveCount(0)
+      await expect(page.getByTestId('platform-card-youtube')).toHaveCount(0)
       await expect(alert.getByRole('button', { name: 'Réessayer', exact: true })).toBeEnabled()
     })
     await page.screenshot({ path: resolve(output, `social-unavailable-${width}.png`), fullPage: true })
@@ -48,7 +54,7 @@ export async function socialChecks({ page, context, base, fixture, output, check
       mode = 'normal'
       const before = calls
       await page.getByTestId('social-load-error').getByRole('button', { name: 'Réessayer', exact: true }).evaluate(b => { b.click(); b.click() })
-      await expect(page.getByTestId('connected-count')).toContainText('0 / 14')
+      await expectEmptyConnections()
       assert.equal(calls - before, 1)
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true)
     })
@@ -56,12 +62,18 @@ export async function socialChecks({ page, context, base, fixture, output, check
   mode = 'connected'
   await page.goto(base + '/settings/social')
   await check('disconnect dialog is named', async () => {
-    await page.getByTestId('disconnect-youtube').click()
-    try { await expect(page.getByRole('dialog')).toHaveAccessibleName('Deconnecter YouTube ?') }
+    await expect(page.getByTestId('connected-count')).toHaveText('2 comptes connectés')
+    await expect(page.getByTestId(`social-account-${secondAccount.id}`)).toContainText('autre-chaine')
+    await page.getByTestId(`disconnect-${account.id}`).click()
+    try {
+      await expect(page.getByRole('dialog')).toHaveAccessibleName('Déconnecter ce compte YouTube ?')
+      await expect(page.getByRole('dialog')).toContainText('test-social')
+      await expect(page.getByRole('dialog')).not.toContainText('autre-chaine')
+    }
     finally { await page.getByTestId('cancel-disconnect').click() }
   })
   await check('disconnect dialog traps focus, Escape restores trigger', async () => {
-    const trigger = page.getByTestId('disconnect-youtube')
+    const trigger = page.getByTestId(`disconnect-${account.id}`)
     await trigger.focus()
     await page.keyboard.press('Enter')
     const dialog = page.getByRole('dialog')
@@ -80,7 +92,7 @@ export async function socialChecks({ page, context, base, fixture, output, check
   })
   if (process.argv.includes('--dialog-only')) return
   await check('unconfirmed revocation survives failed account refresh without false empty state', async () => {
-    await page.getByTestId('disconnect-youtube').click()
+    await page.getByTestId(`disconnect-${account.id}`).click()
     await page.getByTestId('confirm-disconnect').click()
     await expect(page.getByText('Révocation distante non confirmée.', { exact: false })).toBeVisible()
     await expect(page.getByTestId('social-load-error')).toBeVisible()
@@ -88,7 +100,7 @@ export async function socialChecks({ page, context, base, fixture, output, check
     assert.equal(deletes, 1)
     mode = 'normal'
     await page.getByTestId('social-load-error').getByRole('button', { name: 'Réessayer', exact: true }).click()
-    await expect(page.getByTestId('connected-count')).toContainText('0 / 14')
+    await expectEmptyConnections()
     await expect(page.getByText('Révocation distante non confirmée.', { exact: false })).toBeVisible()
     assert.equal(deletes, 1)
   })
@@ -110,7 +122,7 @@ export async function socialChecks({ page, context, base, fixture, output, check
     await expect(page.getByTestId('social-load-error')).toBeVisible()
     mode = 'normal'
     await page.getByTestId('social-load-error').getByRole('button', { name: 'Réessayer', exact: true }).click()
-    await expect(page.getByTestId('connected-count')).toContainText('0 / 14')
+    await expectEmptyConnections()
     await page.waitForTimeout(6500)
     await expect(page.getByTestId('social-load-error')).toHaveCount(0)
   })

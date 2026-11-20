@@ -1,0 +1,23 @@
+{
+  "finding": "P1 retry-claim crash loses future observation",
+  "scenario": "Persisted retry claim, cleared retryRequested, prior failed result, due nextAttemptAt and expired worker lease; provider response not yet committed",
+  "eligible": false,
+  "nextRunAt": null,
+  "outcome": {
+    "success": false,
+    "status": "failed",
+    "hasPending": false,
+    "results": [
+      {
+        "platform": "youtube",
+        "accountId": "fixture-account",
+        "postId": "fixture-post",
+        "status": "failed",
+        "success": false,
+        "localAccountId": "41000000-0000-4000-8000-000000000003"
+      }
+    ]
+  },
+  "source_sha256": "49d8e6e9512539aace3984008ef767e7e480ae148c23fcd0acc8151a16387b62",
+  "external_calls": 0
+}
