@@ -12,6 +12,12 @@ export interface PublicationIntent {
 }
 
 export interface PublicationSnapshot {
-  payload: PublicationIntent
+  videoId: string
+  destinations: PublicationIntent['destinations']
   accounts: SocialAccount[]
+  /** Only a current-session legacy confirmation retains an intent for retry. */
+  payload?: PublicationIntent
+  /** Undefined means the admission response was lost, not a legacy confirmation. */
+  durable?: boolean
+  hasPending?: boolean
 }

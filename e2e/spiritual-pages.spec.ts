@@ -1,4 +1,13 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
+
+async function openHelp(page: Page) {
+  await page.goto("/aide");
+  await page.getByTestId("cookie-refuse").click();
+  await expect(page.getByTestId("cookie-banner")).toHaveCount(0);
+  return page.locator("section").filter({
+    has: page.getByRole("heading", { name: "Contact humain", exact: true }),
+  });
+}
 
 // ============================================
 // /breathe — Respiration 4-7-8
@@ -50,13 +59,10 @@ test.describe("/aide — Help center", () => {
     await expect(page.getByPlaceholder("Pose ta question...")).toBeVisible();
   });
 
-  // Section « escalade humaine » (Contacter un humain / Ecrire au support) :
-  // non implémentée sur la /aide actuelle (FAQ + chatbot uniquement).
-  // Dette produit suivie hors E2E — réactiver quand la section existera.
-  test.skip("aide page has escalade section", async ({ page }) => {
-    await page.goto("/aide");
-    await expect(page.getByText("Contacter un humain")).toBeVisible();
-    await expect(page.getByText("Ecrire au support")).toBeVisible();
+  test("aide page has escalade section", async ({ page }) => {
+    const contact = await openHelp(page);
+    await expect(contact.getByRole("heading", { name: "Contact humain", exact: true })).toBeVisible();
+    await expect(contact.getByRole("button", { name: "Ecrire au support", exact: true })).toBeVisible();
   });
 
   test("aide FAQ accordion opens", async ({ page }) => {
@@ -67,14 +73,27 @@ test.describe("/aide — Help center", () => {
     await expect(page.getByText("Clique sur")).toBeVisible();
   });
 
-  // Formulaire d'escalade : bouton support + champs prenom/email non
-  // implémentés sur la /aide actuelle (voir skip ci-dessus).
-  test.skip("aide escalade form reveals on click", async ({ page }, testInfo) => {
-    test.skip(testInfo.project.name.includes("Mobile") || testInfo.project.name.includes("375"), "Desktop only — button layout differs on mobile");
-    await page.goto("/aide");
-    await page.getByRole("button", { name: /support/i }).click();
-    await expect(page.getByPlaceholder("Ton prenom")).toBeVisible();
-    await expect(page.getByPlaceholder("ton@email.com")).toBeVisible();
+  test("aide escalade form reveals on click", async ({ page }) => {
+    const submissions: unknown[] = [];
+    await page.route("**/api/email/escalade", async route => {
+      expect(route.request().method()).toBe("POST");
+      submissions.push(route.request().postDataJSON());
+      await route.fulfill({ status: 200, json: { success: true } });
+    });
+    const contact = await openHelp(page);
+    await contact.getByRole("button", { name: "Ecrire au support", exact: true }).click();
+    await expect(contact.getByPlaceholder("Ton prenom")).toBeVisible();
+    await expect(contact.getByPlaceholder("ton@email.com")).toBeVisible();
+    await contact.getByPlaceholder("Ton prenom").fill("Test local");
+    await contact.getByPlaceholder("ton@email.com").fill("support-test@example.invalid");
+    await contact.getByPlaceholder("Decris ton probleme en detail...").fill("Message fictif du banc local.");
+    await contact.getByRole("button", { name: "Envoyer", exact: true }).click();
+    await expect(contact.getByRole("heading", { name: "Message envoye", exact: true })).toBeVisible();
+    expect(submissions).toEqual([{
+      name: "Test local",
+      email: "support-test@example.invalid",
+      message: "Message fictif du banc local.",
+    }]);
   });
 
   test("aide is accessible on mobile", async ({ page }, testInfo) => {

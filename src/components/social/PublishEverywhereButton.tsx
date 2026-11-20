@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Modal } from '@/components/ui/Modal'
 import { toast } from 'sonner'
 import { type SocialPlatform } from '@/lib/zernio'
-import { isAccountAvailable, MAX_SELECTED_ACCOUNTS, readSocialAccounts, type SocialAccount } from '@/components/settings/social/accounts'
+import { accountLabel, isAccountAvailable, MAX_SELECTED_ACCOUNTS, readSocialAccounts, type SocialAccount } from '@/components/settings/social/accounts'
 import { PublishTriggerButton } from './publish/PublishTriggerButton'
 import { PublishVideoPreview } from './publish/PublishVideoPreview'
 import { PublishPlatformGrid } from './publish/PublishPlatformGrid'
@@ -13,7 +13,7 @@ import { PublishCaptionSection } from './publish/PublishCaptionSection'
 import { PublishScheduleSection, localDateTime } from './publish/PublishScheduleSection'
 import { PublishResultsSection, type PublishResultUI } from './publish/PublishResultsSection'
 import { PublishModalFooter } from './publish/PublishModalFooter'
-import { mergePublicationResults, normalizePublicationResults, unknownPublicationResults } from './publish/publication-results'
+import { mergePublicationResults, normalizePublicationResults, readDurablePublicationReceipt, unknownPublicationResults } from './publish/publication-results'
 import { usePublicationReconciliation } from './publish/usePublicationReconciliation'
 import type { PublicationIntent, PublicationSnapshot } from './publish/publication-intent'
 
@@ -44,6 +44,7 @@ function PublishEverywhereButtonContent({
 }: PublishEverywhereButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [accounts, setAccounts] = useState<SocialAccount[]>([])
+  const [ownedAccounts, setOwnedAccounts] = useState<SocialAccount[]>([])
   const [accountsLoading, setAccountsLoading] = useState(false)
   const [accountsError, setAccountsError] = useState<string | null>(null)
   const [selectedAccountIds, setSelectedAccountIds] = useState<Set<string>>(new Set())
@@ -62,14 +63,17 @@ function PublishEverywhereButtonContent({
   const publicationRequest = useRef<AbortController | null>(null)
   const publicationVersion = useRef(0)
   const submitting = useRef(false)
-  const submitted = useRef<PublicationSnapshot | null>(null)
+  const submitted = useRef<{ payload: PublicationIntent; accounts: SocialAccount[] } | null>(null)
   const [submittedSnapshot, setSubmittedSnapshot] = useState<PublicationSnapshot | null>(null)
-  const { canVerify, verifying, verificationError, verify } = usePublicationReconciliation({
+  const { canVerify, verifying, readingJournal, verificationError, verify, cancelJournalRead, canPrepare, pollingPaused, resetPolling } = usePublicationReconciliation({
+    videoId, isOpen, accounts: ownedAccounts, setSnapshot: setSubmittedSnapshot,
     snapshot: submittedSnapshot, results, setResults, submittingRef: submitting, requestRef: publicationRequest, versionRef: publicationVersion,
   })
   // A sibling account's success or uncertainty must not affect a confirmed failure.
   // Reconnection to a different external identity is never a retry destination.
-  const retryAccountIds = new Set((results ?? []).filter(result => result.status === 'failed' && result.retryEligible === true && result.localAccountId
+  const retryAccountIds = new Set((results ?? []).filter(result => (submittedSnapshot?.durable === true
+    ? result.canRequestRetry === true && (result.status === 'failed' || (result.status === 'unknown' && result.deliveryState === 'blocked'))
+    : result.status === 'failed' && result.retryEligible === true) && result.localAccountId
     && submittedSnapshot?.accounts.some(original => original.id === result.localAccountId
       && original.platform === result.platform
       && accounts.some(current => current.id === original.id && current.platform === original.platform
@@ -85,9 +89,11 @@ function PublishEverywhereButtonContent({
     return fetch('/api/social/accounts', { credentials: 'include', cache: 'no-store', signal: controller.signal }).then(async res => {
       if (!res.ok) throw new Error('accounts_unavailable')
       const data = await res.json()
-      const list = readSocialAccounts(data.accounts).filter(account => isAccountAvailable(account))
+      const owned = readSocialAccounts(data.accounts)
+      const list = owned.filter(account => isAccountAvailable(account))
       if (accountRequest.current !== controller) return
       controller.signal.throwIfAborted()
+      setOwnedAccounts(owned)
       setAccounts(list)
       if (!defaultsApplied.current) {
         defaultsApplied.current = true
@@ -123,6 +129,7 @@ function PublishEverywhereButtonContent({
   }, [loadAccounts])
 
   const open = () => {
+    resetPolling()
     setAccountsLoading(true)
     setAccountsError(null)
     setAccounts([])
@@ -154,7 +161,7 @@ function PublishEverywhereButtonContent({
   }, [results])
 
   const handlePublish = async () => {
-    if (submitting.current || accountsLoading || accountsError || !targets.size) return
+    if (submitting.current || !canPrepare || accountsLoading || accountsError || !targets.size) return
     if (results && !retryAccountIds.size) return
     const selectedAccounts = accounts.filter(account => targets.has(account.id) && isAccountAvailable(account))
     if (selectedAccounts.length !== targets.size) {
@@ -166,24 +173,28 @@ function PublishEverywhereButtonContent({
     const destinations = selectedAccounts.map(account => ({ platform: account.platform, accountId: account.id }))
     setSubmissionError(null)
     let instant: Date | undefined
-    if (!submitted.current && schedule === 'later') {
+    if (!submitted.current && !submittedSnapshot?.durable && schedule === 'later') {
       instant = new Date(scheduledAt)
       if (!Number.isFinite(instant.getTime()) || localDateTime(instant) !== scheduledAt || instant.getTime() <= Date.now()) {
         setSubmissionError('Choisis une date et une heure futures valides dans le fuseau indiqué. Une heure supprimée par le changement d’heure est refusée.')
         return
       }
     }
-    if (!submitted.current && captionMode === 'custom' && !customCaption.trim()) {
+    if (!submitted.current && !submittedSnapshot?.durable && captionMode === 'custom' && !customCaption.trim()) {
       setSubmissionError('Ajoute une légende avant de confirmer la publication.')
       return
     }
-    const payload: PublicationIntent = submitted.current
+    const payload: PublicationIntent = submittedSnapshot?.durable === true
+      ? { videoId, platforms, destinations, autoCaption: false }
+      : submitted.current
       ? { ...submitted.current.payload, platforms, destinations }
       : { videoId, platforms, destinations,
         autoCaption: captionMode === 'auto', ...(captionMode === 'custom' ? { caption: customCaption.trim() } : {}),
         ...(!autoHashtags ? { hashtags: [] } : {}), ...(instant ? { scheduledAt: instant.toISOString() } : {}) }
     submitted.current ??= { payload, accounts: selectedAccounts.map(account => ({ ...account })) }
-    setSubmittedSnapshot(submitted.current)
+    const intentSnapshot: PublicationSnapshot = submittedSnapshot?.durable === true ? submittedSnapshot
+      : { ...submitted.current, videoId, destinations: submitted.current.payload.destinations }
+    setSubmittedSnapshot(intentSnapshot)
     submitting.current = true
     const controller = new AbortController()
     const version = ++publicationVersion.current
@@ -202,7 +213,16 @@ function PublishEverywhereButtonContent({
       if (!current()) return
       controller.signal.throwIfAborted()
       if (!Array.isArray(data.results) || !data.results.length) throw new Error('publication_unconfirmed')
-      const list = normalizePublicationResults(data.results, selectedAccounts).map(result => ({ ...result, retryEligible: result.status === 'failed' }))
+      let list: PublishResultUI[]
+      if (data.durable === true) {
+        const receipt = readDurablePublicationReceipt({ ...data, destinations: data.destinations ?? payload.destinations },
+          videoId, ownedAccounts, intentSnapshot)
+        list = receipt.results
+        setSubmittedSnapshot(receipt.snapshot)
+      } else {
+        list = normalizePublicationResults(data.results, selectedAccounts).map(result => ({ ...result, retryEligible: result.status === 'failed' }))
+        setSubmittedSnapshot({ ...intentSnapshot, durable: false })
+      }
       receivedResults = list
       setResults(previous => mergePublicationResults(previous, list))
       if (list.every(r => r.status === 'published')) toast.success('Publication confirmée sur les destinations sélectionnées.')
@@ -226,7 +246,15 @@ function PublishEverywhereButtonContent({
     }
   }
 
-  const close = () => { if (!submitting.current) setIsOpen(false) }
+  const close = () => {
+    if (submitting.current && !cancelJournalRead()) return
+    setIsOpen(false)
+  }
+  const labeledResults = results?.map(result => {
+    const account = ownedAccounts.find(item => item.id === result.localAccountId && item.platform === result.platform
+      && item.external_id === result.accountId)
+    return account ? { ...result, accountLabel: accountLabel(account) } : result
+  }) ?? null
   return (
     <>
       <PublishTriggerButton videoId={videoId} variant={variant} onClick={open} />
@@ -246,12 +274,14 @@ function PublishEverywhereButtonContent({
           </fieldset>
           {submissionError && <p role="alert" className="text-sm text-red-300">{submissionError}</p>}
           {verificationError && <p role="alert" className="text-sm text-amber-200">{verificationError}</p>}
-          <PublishResultsSection results={results} />
+          {pollingPaused && <p className="text-sm text-white/70">L’actualisation automatique est en pause. Le traitement continue en arrière-plan ; utilise « Vérifier l’état » pour actualiser le suivi.</p>}
+          <PublishResultsSection results={labeledResults} />
           {results ? <Link href="/publish" className="inline-block text-sm text-violet-300 underline">Consulter le suivi des publications</Link>
             : <p className="text-sm text-white/70">Vérifie la vidéo, les comptes et la date. Le bouton ci-dessous confirme ton envoi vers les destinations sélectionnées.</p>}
           <PublishModalFooter onCancel={close} onPublish={handlePublish} publishing={publishing} verifying={verifying} canVerify={canVerify}
-            onVerify={results ? () => { setSubmissionError(null); void verify() } : undefined}
-            selectedCount={accountsLoading || accountsError ? 0 : targets.size} schedule={schedule} retry={results !== null} />
+            canCloseWhileVerifying={readingJournal}
+            onVerify={results || verificationError ? () => { setSubmissionError(null); void verify() } : undefined}
+            selectedCount={!canPrepare || accountsLoading || accountsError ? 0 : targets.size} schedule={schedule} retry={results !== null} />
         </div>
       </Modal>
     </>

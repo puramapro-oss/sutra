@@ -192,15 +192,36 @@ export async function getPublicationResults(postId: string, req: PublishRequest)
   return parsePublicationResults(data, req)
 }
 
-export async function getAccountAnalytics(platform: SocialPlatform, accountId: string, postId: string): Promise<AnalyticsData> {
-  const empty: AnalyticsData = { views: 0, likes: 0, shares: 0, comments: 0 }
+export async function getAccountAnalytics(platform: SocialPlatform, accountId: string, postId: string, userId: string): Promise<AnalyticsData> {
   try {
-    const qs = new URLSearchParams({ platform, account_id: accountId, post_id: postId })
-    const res = await fetchWithRetry(`${ZERNIO_BASE}/analytics?${qs.toString()}`, { method: 'GET', headers: headers() }, 2)
-    if (!res.ok) { logError('getAccountAnalytics', `HTTP ${res.status}`); return empty }
-    const data = await res.json()
-    return { views: Number(data.views ?? 0), likes: Number(data.likes ?? 0), shares: Number(data.shares ?? 0), comments: Number(data.comments ?? 0), engagementRate: data.engagement_rate !== undefined ? Number(data.engagement_rate) : data.engagementRate !== undefined ? Number(data.engagementRate) : undefined }
-  } catch (err) { logError('getAccountAnalytics', err); return empty }
+    if (!Object.hasOwn(PLATFORM_INFO, platform) || !providerId(accountId) || !providerId(postId)) throw new Error()
+    const profileId = getAuthorizedProfileId(userId)
+    // The single-post contract uses camelCase filters and account-scoped metrics.
+    // A 202 response means sync pending; even HTTP success is not a measurement.
+    const qs = new URLSearchParams({ platform: providerPlatform(platform), accountId, postId, profileId })
+    const res = await fetchWithRetry(`${ZERNIO_BASE}/analytics?${qs}`, {
+      method: 'GET', headers: headers(), redirect: 'error', timeoutMs: 20_000,
+    }, 1)
+    if (res.status !== 200) throw new Error()
+    const data = await boundedProviderJson(res)
+    if (getAuthorizedProfileId(userId) !== profileId) throw new Error()
+    if ((data.postId !== postId && data.latePostId !== postId) || !Array.isArray(data.platformAnalytics)) throw new Error()
+    const targets = data.platformAnalytics.filter((value): value is Record<string, unknown> =>
+      Boolean(value && typeof value === 'object' && value.platform === providerPlatform(platform) && value.accountId === accountId))
+    const target = targets.length === 1 ? targets[0] : undefined
+    if (!target || target.status !== 'published' || target.syncStatus !== 'synced'
+      || !target.analytics || typeof target.analytics !== 'object' || Array.isArray(target.analytics)) throw new Error()
+    const metrics = target.analytics as Record<string, unknown>
+    if (['views', 'likes', 'comments', 'shares'].some(key => typeof metrics[key] !== 'number'
+      || !Number.isSafeInteger(metrics[key]) || (metrics[key] as number) < 0)) throw new Error()
+    const engagementRate = metrics.engagementRate
+    if (engagementRate != null && (typeof engagementRate !== 'number' || !Number.isFinite(engagementRate) || engagementRate < 0)) throw new Error()
+    return { views: metrics.views as number, likes: metrics.likes as number, comments: metrics.comments as number,
+      shares: metrics.shares as number, ...(typeof engagementRate === 'number' ? { engagementRate } : {}) }
+  } catch (err) {
+    logError('getAccountAnalytics', err)
+    throw new Error('SUTRA_ZERNIO_ANALYTICS_UNAVAILABLE')
+  }
 }
 
 export async function deletePost(platform: SocialPlatform, accountId: string, postId: string): Promise<boolean> {
