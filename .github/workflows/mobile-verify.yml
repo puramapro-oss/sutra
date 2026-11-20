@@ -42,3 +42,20 @@ jobs:
             npm exec -- expo export --platform "$platform" --max-workers 1 --output-dir "$destination"
             node scripts/check-native-export.mjs "$destination" "$platform"
           done
+      - name: Check the configured appearance in generated native projects
+        run: |
+          npm exec -- expo prebuild --no-install --template ./node_modules/expo/template.tgz
+          python3 - <<'PY'
+          import json
+          import plistlib
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          config = json.loads(Path('app.json').read_text())['expo']
+          resources = ET.parse('android/app/src/main/res/values/strings.xml')
+          android_style = resources.findtext("string[@name='expo_system_ui_user_interface_style']")
+          assert android_style == config['android'].get('userInterfaceStyle', config['userInterfaceStyle']), android_style
+          plist = plistlib.loads(Path('ios/SUTRA/Info.plist').read_bytes())
+          ios_style = config['ios'].get('userInterfaceStyle', config['userInterfaceStyle'])
+          assert plist['UIUserInterfaceStyle'].lower() == ios_style, plist['UIUserInterfaceStyle']
+          PY
