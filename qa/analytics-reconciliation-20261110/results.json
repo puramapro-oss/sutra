@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "at": "2026-11-10T15:37:06.340683+00:00",
+  "status": "PASS_LOCAL_SCOPED_CORRECTION",
+  "commercial_readiness": "BLOQUE",
+  "repository": "puramapro-oss/sutra",
+  "parent": "3e15b4dd407b9cad3f1899cb33bdac1ec8568ba1",
+  "donor_analytics": "265103459e5bd13d0754959ada1e8162dfc57279",
+  "branch": "audit/sutra-analytics-reconciled-20261110",
+  "runtime": {
+    "node": "v24.22.1",
+    "next": "16.4.5",
+    "typescript": "5.9.3",
+    "postgres": "18.6",
+    "ci_heap_mib": 1280
+  },
+  "regressions": {
+    "analytics_before": {
+      "pass": 3,
+      "fail": 46
+    },
+    "analytics_after": {
+      "pass": 49,
+      "fail": 0
+    },
+    "trends_before": {
+      "pass": 2,
+      "fail": 3
+    },
+    "trends_after": {
+      "pass": 5,
+      "fail": 0
+    }
+  },
+  "final_gates": {
+    "contracts": {
+      "pass": 1531,
+      "fail": 0,
+      "skip": 7,
+      "includes_targeted_54": true
+    },
+    "durable_submission_pass": 18,
+    "promotion_pass": 162,
+    "schedule": "PASS",
+    "composition": "PASS",
+    "publication": "PASS",
+    "quality": [
+      {
+        "name": "typecheck",
+        "command": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "--noEmit",
+          "--incremental",
+          "false"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 19590
+      },
+      {
+        "name": "lint",
+        "command": [
+          "node",
+          "node_modules/eslint/bin/eslint.js",
+          "."
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 24878
+      },
+      {
+        "name": "build",
+        "command": [
+          "node",
+          "node_modules/next/dist/bin/next",
+          "build",
+          "--webpack"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 39744
+      }
+    ],
+    "eslint": {
+      "errors": 0,
+      "warnings": 96,
+      "output_identical_before_after_upstream": true
+    },
+    "native": {
+      "social_groups_pass": 9,
+      "quota_checks_pass": 13,
+      "pipeline_pass": 16,
+      "production_access": false,
+      "cluster_stopped": true,
+      "test_databases_dropped": true,
+      "ephemeral_password_removed": true
+    }
+  },
+  "parent_continuation": {
+    "old_parent": "846bf6ef7d65be9b9b179739b229ced6339deb8f",
+    "upstream_files_preserved": 20,
+    "own_files_preserved": 11,
+    "product_or_migration_overlap": false,
+    "contracts_replayed": "PASS",
+    "global_typecheck_replayed": "PASS",
+    "global_lint_replayed": "PASS",
+    "build_product_files_unchanged": true
+  },
+  "source_sha256": {
+    "next.config.ts": "719d4f39ffde689fdc198dc81b1360fab64ea2324aa7e63471b3155cb8dbdc90",
+    "scripts/run-ci.mjs": "b1e880d705ca2c9f820474f6fbd17914801d9abcfaa999bc8684e26ce1d6d1b9",
+    "src/app/api/cron/auto-learn/route.ts": "c16693d6879095d753245ecd032cf842761ec86fe6f8833d913619ada7162106",
+    "src/app/api/cron/auto-trends/route.ts": "8da8b9428652a20ffdc90fbdab3f12cb6eda4e9f7c24d37fff3d7e14bc7a0404",
+    "src/lib/sutra-auto-helpers.ts": "4c60cd49cad604e557e7b26719954cd676358b766688d98d343b8270fb5e6e3a",
+    "src/lib/zernio.ts": "c39b455af9b9e7ebaca6a46b46e419d0547b5a59545c0f22b6081eb7f50b3f12",
+    "vercel.json": "273ad9f15de45aca5f5f793ada0607bd98b5f23b8e4e5e944a3d877e4b2326fe",
+    "scripts/test-auto-learn-analytics.mts": "f46675bf40a4378b20560d6f2042e68c32f1e5675ddf55900f9fc05f58b65d93",
+    "scripts/test-auto-learn-memory.mts": "b88435ae47e6a16d548f983c0d6b85b7b4eca0a4843a8f759831b970ead5b72c",
+    "scripts/test-auto-learn-route.mts": "56762f7dad7e24b2069483351529814eea9584694ead00cf74c812920cd569a4",
+    "scripts/test-auto-trends-memory.mts": "1bff0cf5ebd222573411c7240b36213371df5129fe8892ab03a461290729edda"
+  },
+  "evidence_sha256": {
+    "analytics-trends-after.log": "859bade6fa8ddd83e091426f8d73b8efad89cbb6aff6e57ec4cac47f9d545cda",
+    "quality-final/results.json": "4c3a4370bb8c269535f5534b3d0e736c377b82c9ca12f1c1e67c6995d0ef5fe7",
+    "quality-final/build.log": "a60d2a4df17d649c6349c934be8e53ea1ad842132d2c3904b96f64ac08c867fb",
+    "contracts-after-upstream/results.json": "c66ebccc26b9098efe993ec5bffbc9a7d3391c36f44be7985695369e9713ba6e",
+    "contracts-after-upstream/contracts.log": "e1996e2eadaf2cd9b3468cb6b4d18826036b41c13e34f2e891dcbc3d3622da51",
+    "contracts-after-upstream/durable-submission.log": "ee437bbbc837d6233c9fdac610f207bfa1cdcca588a0aee8310e6e2ba89e6b29",
+    "contracts-after-upstream/promotion.log": "791f5f3fda19094afe7c5418361977b129b1dd466dd6b8ead098729e7db34f32",
+    "native-sutra-execution.json": "6b2902867cdee05aa8c146c9dc8ecee3cae676d73081fc7753dcfd1408825686",
+    "native-social-multi-account.log": "183c4cd89002932de9d1c914507d7870b18624659a6c9af0b5125e2cd6a0dea4",
+    "native-quota-v10.log": "f5c7c4cd9bb06d635ddf560bc66102c985d8ea8bba9834bb63a8a265abab1794",
+    "native-pipeline.log": "17b0607d980a41eecf08afd38e0fae9aca24d411da0e031d098cdeeeb9556ce6",
+    "upstream-continuation-preserved.json": "9f72f05f8f2193581a282d7cff71e9969918946d05ddfeb92d0ebd9138369709",
+    "build-768.json": "1df1aa99cfb3deb56a6387624bfda21ced662208e7f14aa208aac2ca1760dce5",
+    "build-1280.json": "87eb942f6ad82dea7e7f44c907afb348db7217f098bf97dfc6e6fb5703ef6056",
+    "build-worker-1280.json": "2f92656aedaca14e87567eaeaf2a8f0d0d3a9746156ea31904b00ccdbe3f3d20",
+    "typecheck-after-upstream.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lint-after-upstream.log": "7401c60c72fb52378cb5df2747175ef57847f57ee267e500e4c233ae314e656f"
+  },
+  "limits": [
+    "Dependency runtime restored at exact locks and private commit; standard npm ci remains not passed.",
+    "Seven connected-provider tests skipped, not counted as PASS.",
+    "No new complete browser pass in this UI-unchanged scope.",
+    "No remote provider, payment, live load, deployment, merge or production migration.",
+    "Build workers use documented experimental Next flags; deprecated middleware/Edge warnings remain.",
+    "Inherited parent QA qualification is preserved, not counted as freshly executed."
+  ]
+}

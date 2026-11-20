@@ -11,9 +11,27 @@ export interface SocialOAuthAccount {
 
 export const SOCIAL_OAUTH_ACCOUNT_COLUMNS = 'id,external_id,status,updated_at,metadata'
 
-export async function readSocialOAuthAccount(userId: string, platform: string, service = createServiceClient()): Promise<SocialOAuthAccount | null> {
+export function isSocialAccountId(value: unknown): value is string {
+  return typeof value === 'string' && /^[a-f\d]{8}-[a-f\d]{4}-[1-8][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(value)
+}
+
+/** A missing selection means a NEW connection, never the first account of a network. */
+export async function readSocialOAuthAccount(userId: string, platform: string, service = createServiceClient(),
+  accountId?: string): Promise<SocialOAuthAccount | null> {
+  if (accountId === undefined) return null
+  if (!isSocialAccountId(accountId)) throw new Error('SUTRA_SOCIAL_ACCOUNT_SELECTION_INVALID')
   const { data, error } = await service.schema('public').from('social_accounts')
-    .select(SOCIAL_OAUTH_ACCOUNT_COLUMNS).eq('user_id', userId).eq('platform', platform).maybeSingle()
+    .select(SOCIAL_OAUTH_ACCOUNT_COLUMNS).eq('user_id', userId).eq('platform', platform).eq('id', accountId).maybeSingle()
+  if (error) throw new Error('SUTRA_SOCIAL_ACCOUNTS_READ_FAILED')
+  return data as SocialOAuthAccount | null
+}
+
+/** Only a provider-verified external identity may be checked for an existing connection. */
+export async function readSocialOAuthExternalAccount(userId: string, platform: string, externalId: string,
+  service = createServiceClient()): Promise<SocialOAuthAccount | null> {
+  if (!/^[a-f\d]{24}$/i.test(externalId)) throw new Error('SUTRA_SOCIAL_ACCOUNT_IDENTITY_REQUIRED')
+  const { data, error } = await service.schema('public').from('social_accounts')
+    .select(SOCIAL_OAUTH_ACCOUNT_COLUMNS).eq('user_id', userId).eq('platform', platform).eq('external_id', externalId).maybeSingle()
   if (error) throw new Error('SUTRA_SOCIAL_ACCOUNTS_READ_FAILED')
   return data as SocialOAuthAccount | null
 }

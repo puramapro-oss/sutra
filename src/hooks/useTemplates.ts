@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { createClient } from '@/lib/supabase'
 import { PRESET_TEMPLATES, type PresetTemplate } from '@/data/template-data'
 import type { UserTemplate } from '@/types'
@@ -11,39 +11,57 @@ export function useTemplates(profileId?: string) {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState('all')
+  const [loadedProfile, setLoadedProfile] = useState<string | undefined>()
+  const pending = useRef<AbortController | null>(null)
 
-  const fetchTemplates = useCallback(async () => {
+  const loadTemplates = useCallback(() => {
     if (!profileId) return
-    setLoading(true)
-    try {
-      const [userRes, communityRes] = await Promise.all([
+    pending.current?.abort()
+    const controller = new AbortController()
+    pending.current = controller
+    const current = () => pending.current === controller && !controller.signal.aborted
+    return Promise.all([
         supabase
           .from('user_templates')
           .select('*')
           .eq('user_id', profileId)
-          .order('created_at', { ascending: false }),
+          .order('created_at', { ascending: false })
+          .abortSignal(controller.signal),
         supabase
           .from('user_templates')
           .select('*')
           .eq('is_public', true)
           .neq('user_id', profileId)
           .order('created_at', { ascending: false })
-          .limit(20),
-      ])
-
+          .limit(20)
+          .abortSignal(controller.signal),
+      ]).then(([userRes, communityRes]) => {
+      if (!current()) return
+      if (userRes.error || communityRes.error) throw new Error('Templates unavailable')
       if (userRes.data) setUserTemplates(userRes.data as UserTemplate[])
       if (communityRes.data) setCommunityTemplates(communityRes.data as UserTemplate[])
-    } catch {
+    }).catch(() => {
+      if (!current()) return
       setUserTemplates([])
       setCommunityTemplates([])
-    } finally {
+    }).finally(() => {
+      if (!current()) return
+      setLoadedProfile(profileId)
       setLoading(false)
-    }
+      pending.current = null
+    })
   }, [profileId])
 
+  const fetchTemplates = useCallback(() => {
+    if (!profileId) return
+    setLoading(true)
+    return loadTemplates()
+  }, [profileId, loadTemplates])
+
   useEffect(() => {
-    if (profileId) fetchTemplates()
-  }, [profileId, fetchTemplates])
+    void loadTemplates()
+    return () => { pending.current?.abort(); pending.current = null }
+  }, [loadTemplates])
 
   const filteredPresets = useMemo(() => {
     const q = searchQuery.toLowerCase()
@@ -67,10 +85,10 @@ export function useTemplates(profileId?: string) {
   }, [])
 
   return {
-    userTemplates,
+    userTemplates: loadedProfile === profileId ? userTemplates : [],
     setUserTemplates,
-    communityTemplates,
-    loading,
+    communityTemplates: loadedProfile === profileId ? communityTemplates : [],
+    loading: !!profileId && (loading || loadedProfile !== profileId),
     searchQuery,
     setSearchQuery,
     activeCategory,

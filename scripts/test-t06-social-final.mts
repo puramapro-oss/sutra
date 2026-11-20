@@ -1,6 +1,7 @@
 import test, { afterEach, beforeEach, mock } from 'node:test'
 import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
+import { randomUUID } from 'node:crypto'
 import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { socialDatabase, accountId, secondAccount, postId, type Row } from './helpers/social-database.mts'
@@ -29,7 +30,7 @@ let lastPost: Record<string, unknown> | undefined
 let wireViolations: string[] = []
 
 // Reuse the canonical publication fixture; bridge only OAuth's atomic state table
-// and public.social_accounts' real (user_id, platform) unique insert contract.
+// and public.social_accounts' real (user_id, platform, external_id) identity.
 const database = {
   schema: () => database,
   from(table: string): object {
@@ -41,9 +42,9 @@ const database = {
         if (key !== 'insert') return Reflect.get(target, key)
         return (row: Row) => {
           const query = { select: () => query, maybeSingle: async () => {
-            const old = db.accounts.find(a => a.user_id === row.user_id && a.platform === row.platform)
+            const old = db.accounts.find(a => a.user_id === row.user_id && a.platform === row.platform && a.external_id === row.external_id)
             if (old) return { data: null, error: { code: '23505' } }
-            const created = { ...row, id: db.accounts.length ? '44444444-4444-4444-8444-444444444444' : localId }
+            const created = { ...row, id: db.accounts.length ? randomUUID() : localId }
             db.accounts.push(created as typeof db.accounts[number])
             return { data: { id: created.id }, error: null }
           } }
@@ -109,6 +110,8 @@ beforeEach(() => {
       assert.ok(states.length >= 1, 'Persist local state before provider URL acquisition')
       assert.equal(url.searchParams.get('profileId'), profile)
       assert.equal(url.searchParams.get('scopes'), 'posting')
+      const selectedId = new URL(url.searchParams.get('redirect_url')!).searchParams.get('sutraAccountId')
+      assert.equal(url.searchParams.get('reconnectAccountId'), selectedId ? db.accounts.find(account => account.id === selectedId)?.external_id : null)
       assert.equal(init?.redirect, 'error'); assert.ok(init?.signal)
       return Response.json({ authUrl: 'https://consent.invalid/hosted', state: 'provider-state-must-not-replace-local-state' })
     }
@@ -169,8 +172,8 @@ async function begin(platform: SocialPlatform = 'youtube', extra = {}) {
   callbackUrl.searchParams.set('profileId', profile); callbackUrl.searchParams.set('accountId', accountId)
   return { response, callbackUrl, state: body.state }
 }
-async function consent(platform: SocialPlatform = 'youtube', externalId = accountId) {
-  const started = await begin(platform); assert.equal(started.response.status, 200)
+async function consent(platform: SocialPlatform = 'youtube', externalId = accountId, reconnectAccountId?: string) {
+  const started = await begin(platform, reconnectAccountId ? { accountId: reconnectAccountId } : {}); assert.equal(started.response.status, 200)
   remoteAccounts = [{ _id: externalId, platform: platform === 'x' ? 'twitter' : platform,
     profileId: { _id: profile }, isActive: true, username: 'synthetic-account', accessToken: 'must-not-store', refreshToken: 'must-not-store' }]
   started.callbackUrl.searchParams.set('accountId', externalId)
@@ -178,7 +181,7 @@ async function consent(platform: SocialPlatform = 'youtube', externalId = accoun
   assert.equal(response.headers.get('location'), `https://sutra-test.invalid/settings/social?connected=${platform}`)
   return response
 }
-const publish = (extra = {}) => publishVideoRecord(alice, { videoId: 'v', platforms: ['youtube'], autoCaption: false, ...extra }, db.client, undefined, undefined, { now: () => now })
+const publish = (extra = {}) => publishVideoRecord(alice, { videoId: 'v', platforms: ['youtube'], accountIds: { youtube: localId }, autoCaption: false, ...extra }, db.client, undefined, undefined, { now: () => now })
 const revokeRequest = () => new Request('https://sutra-test.invalid/api/social/accounts', { method: 'DELETE', body: JSON.stringify({ accountId: localId }) })
 
 for (const platform of OAUTH_PLATFORMS) test(`T06-FINAL OAuth route + adapter + atomic state: ${platform}`, async () => {
@@ -246,19 +249,23 @@ test('T06-FINAL missing account preserves partial outcome; next consent sends on
   await consent()
   assert.equal((await publish({ platforms: ['youtube', 'instagram'] })).status, 'partially_published')
   await consent('instagram', secondAccount)
-  assert.equal((await publish({ platforms: ['youtube', 'instagram'] })).status, 'published')
+  const instagramId = db.accounts.find(account => account.platform === 'instagram')!.id
+  assert.equal((await publish({ platforms: ['youtube', 'instagram'], accountIds: { youtube: localId, instagram: instagramId } })).status, 'published')
   assert.deepEqual(posts.map(p => JSON.parse(p.body!).platforms), [
     [{ platform: 'youtube', accountId }], [{ platform: 'instagram', accountId: secondAccount }],
   ])
   assert.equal(db.tables.social_posts.length, 2)
 })
-test('T06-FINAL reconnect replaces local identity but requires explicit new account selection', async () => {
+test('T06-FINAL adding a second identity preserves the original and requires explicit new account selection', async () => {
   await consent(); await publish(); await consent('youtube', secondAccount)
+  assert.equal(db.accounts.length, 2)
   assert.equal(db.accounts[0].id, localId)
-  const ambiguous = await publish()
-  assert.equal(ambiguous.success, false); assert.match(JSON.stringify(ambiguous), /ACCOUNT_CHANGED_SELECTION_REQUIRED/)
+  assert.equal(db.accounts[0].external_id, accountId)
+  const secondLocalId = db.accounts.find(account => account.external_id === secondAccount)!.id
+  assert.notEqual(secondLocalId, localId)
+  assert.equal((await publish()).status, 'published')
   assert.equal(posts.length, 1)
-  await publish({ accountIds: { youtube: localId } }); await publish({ accountIds: { youtube: localId } })
+  await publish({ accountIds: { youtube: secondLocalId } }); await publish({ accountIds: { youtube: secondLocalId } })
   assert.equal(posts.length, 2)
   assert.notEqual(posts[0].headers.get('Idempotency-Key'), posts[1].headers.get('Idempotency-Key'))
   assert.deepEqual(db.tables.social_posts.map(r => (r.metadata as Row).account_id), [accountId, secondAccount])
@@ -289,7 +296,7 @@ test('T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain PO
   now += 120001; await publish(); assert.equal(posts.length, 1)
 })
 test('T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled', async () => {
-  await consent(); db.config.publish_platforms = ['youtube']; publicationStatus = 'publishing'
+  await consent(); db.config.publish_platforms = ['youtube']; db.config.publish_account_ids = [localId]; publicationStatus = 'publishing'
   await publishAutoVideoRecord(alice, 'v', false, db.client)
   assert.equal((await revoke(revokeRequest())).status, 200); db.config.is_active = false
   publicationStatus = 'published'
@@ -319,7 +326,7 @@ test('T06-FINAL unverified media and missing approval never reach real POST adap
   assert.equal(posts.length, 0)
 })
 
-test('T06-FINAL UI regression: a revoked account must expose Se connecter again', async () => {
+test('T06-FINAL UI regression: a revoked identity exposes explicit reconnect and add-account actions', async () => {
   await consent(); await revoke(revokeRequest())
   const response = await listAccounts()
   const { accounts } = await response.json() as { accounts: Array<{
@@ -331,7 +338,8 @@ test('T06-FINAL UI regression: a revoked account must expose Se connecter again'
     loading: false, accountsByPlatform: { youtube: accounts[0] }, connecting: null,
     disconnectingId: null, onConnect: () => {}, onDisconnectClick: () => {},
   }))
-  assert.ok(html.includes('data-testid="connect-youtube"'), 'Revoked row retained for history hides Se connecter; PlatformGrid incorrectly treats row existence as connected')
+  assert.ok(html.includes(`data-testid="reconnect-${localId}"`), 'The retained revoked identity must have its own reconnect action')
+  assert.ok(html.includes('data-testid="connect-youtube"'), 'Adding another identity remains available independently')
 })
 
 
@@ -361,7 +369,7 @@ test('T06-DELTA a forged denial cannot consume another session state', async () 
 
 test('T06-DELTA consent issued before revocation must not reconnect the revoked account', async () => {
   await consent()
-  const pending = await begin()
+  const pending = await begin('youtube', { accountId: localId })
   assert.equal((await revoke(revokeRequest())).status, 200)
   assert.equal(db.accounts[0].status, 'revoked')
   const response = await callback(new Request(pending.callbackUrl))
@@ -371,7 +379,7 @@ test('T06-DELTA consent issued before revocation must not reconnect the revoked 
 
 test('T06-DELTA revocation while identity lookup is in flight must win over callback', async () => {
   await consent()
-  const pending = await begin()
+  const pending = await begin('youtube', { accountId: localId })
   const transport = globalThis.fetch
   let release!: () => void
   let reached!: () => void
@@ -414,17 +422,19 @@ test('T06-DELTA unknown provider error remains generic and still consumes state'
 
 test('T06-DELTA fresh consent after completed revoke can reconnect without reviving old state', async () => {
   await consent()
-  const old = await begin()
+  const old = await begin('youtube', { accountId: localId })
   await revoke(revokeRequest())
-  await consent('youtube', secondAccount)
-  assert.equal(db.accounts[0].external_id, secondAccount)
+  await consent('youtube', accountId, localId)
+  assert.equal(db.accounts.length, 1)
+  assert.equal(db.accounts[0].id, localId)
+  assert.equal(db.accounts[0].external_id, accountId)
   assert.equal(db.accounts[0].status, 'connected')
   const response = await callback(new Request(old.callbackUrl))
   assert.match(response.headers.get('location')!, /invalid_or_expired_state$/)
-  assert.equal(db.accounts[0].external_id, secondAccount)
+  assert.equal(db.accounts[0].external_id, accountId)
 })
 
-test('T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion', async () => {
+test('T06-DELTA concurrent revoke sends one DELETE and blocks selected identity reconnect until completion', async () => {
   await consent()
   const transport = globalThis.fetch
   let release!: () => void
@@ -442,35 +452,39 @@ test('T06-DELTA concurrent revoke sends one DELETE and blocks new consent until 
     const second = await revoke(revokeRequest())
     assert.equal(second.status, 202)
     assert.equal(calls.filter(c => c.method === 'DELETE').length, 1)
-    const blocked = await begin()
+    const blocked = await begin('youtube', { accountId: localId })
     assert.equal(blocked.response.status, 409)
     assert.match((await blocked.response.json() as { error: string }).error, /[Dd]éconnexion/)
     assert.equal(states.length, 0)
     assert.equal(calls.filter(c => c.url.pathname.startsWith('/api/v1/connect')).length, 1)
   } finally { release(); await first }
   assert.equal((db.accounts[0] as unknown as Row).metadata && ((db.accounts[0] as unknown as Row).metadata as Row).sutra_revocation_pending, false)
-  await consent()
+  await consent('youtube', accountId, localId)
 })
 
-test('T06-DELTA two initial consent callbacks cannot overwrite the winning account', async () => {
+test('T06-DELTA two initial consent callbacks retain both distinct identities without overwriting either', async () => {
   const a = await begin(), b = await begin()
   b.callbackUrl.searchParams.set('accountId', secondAccount)
   remoteAccounts = [accountId, secondAccount].map(_id => ({ _id, platform: 'youtube', profileId: profile, isActive: true, username: 'synthetic' }))
   const responses = await Promise.all([callback(new Request(a.callbackUrl)), callback(new Request(b.callbackUrl))])
-  assert.equal(responses.filter(r => r.headers.get('location')?.includes('connected=youtube')).length, 1)
-  assert.equal(db.accounts.length, 1)
-  const winner = db.accounts[0].external_id
+  assert.equal(responses.filter(r => r.headers.get('location')?.includes('connected=youtube')).length, 2)
+  assert.equal(db.accounts.length, 2)
+  assert.deepEqual(new Set(db.accounts.map(account => account.external_id)), new Set([accountId, secondAccount]))
+  assert.equal(new Set(db.accounts.map(account => account.id)).size, 2)
+  const before = structuredClone(db.accounts)
   await callback(new Request(a.callbackUrl)); await callback(new Request(b.callbackUrl))
-  assert.equal(db.accounts[0].external_id, winner)
+  assert.deepEqual(db.accounts, before)
 })
 
 test('T06-DELTA account snapshot read error fails closed before state consumption or provider GET', async () => {
-  const started = await begin()
+  await consent()
+  const started = await begin('youtube', { accountId: localId })
+  const before = calls.length
   db.settings.failRead = true
   const response = await callback(new Request(started.callbackUrl))
   assert.match(response.headers.get('location')!, /oauth_failed$/)
-  assert.equal(states.length, 1); assert.equal(db.accounts.length, 0)
-  assert.equal(calls.length, 1)
+  assert.equal(states.length, 1); assert.equal(db.accounts.length, 1)
+  assert.equal(calls.length, before)
 })
 
 test('T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish', async () => {
@@ -478,7 +492,7 @@ test('T06-DELTA interrupted revoke retains a fence and cannot silently reconnect
   const account = db.accounts[0] as unknown as Row
   account.status = 'revoked'
   account.metadata = { ...(account.metadata as Row), sutra_revocation_pending: true }
-  assert.equal((await begin()).response.status, 409)
+  assert.equal((await begin('youtube', { accountId: localId })).response.status, 409)
   assert.equal((await revoke(revokeRequest())).status, 202)
   assert.equal((await publish()).success, false)
   assert.equal(calls.filter(c => c.method === 'DELETE' || c.method === 'POST').length, 0)
@@ -503,12 +517,12 @@ for (const failure of ['timeout', '503'] as const) test(`T06-DELTA unconfirmed D
   assert.equal((await revoke(revokeRequest())).status, 202)
   assert.equal(remotelyRevoked, false)
   const before = calls.length
-  assert.equal((await begin()).response.status, 409, 'Unknown DELETE outcome cannot authorize a replacement consent')
+  assert.equal((await begin('youtube', { accountId: localId })).response.status, 409, 'Unknown DELETE outcome cannot authorize a replacement consent')
   assert.equal((await revoke(revokeRequest())).status, 202)
   assert.equal(calls.length, before, 'No new connect or blind DELETE while remote result is unknown')
   assert.equal(((db.accounts[0] as unknown as Row).metadata as Row).sutra_revocation_pending, true)
   lateRemoteRevoke()
-  assert.equal((await begin()).response.status, 409, 'A local guess about a late completion cannot release the durable fence')
+  assert.equal((await begin('youtube', { accountId: localId })).response.status, 409, 'A local guess about a late completion cannot release the durable fence')
   assert.equal((await publish()).success, false)
   assert.equal(posts.length, 0)
 })

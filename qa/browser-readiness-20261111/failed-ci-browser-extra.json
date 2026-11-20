@@ -1,0 +1,42 @@
+[
+  {
+    "name": "T08 browser: stored markup remains inert in library and editor",
+    "status": "FAIL",
+    "error": "TimeoutError: page.goto: Timeout 15000ms exceeded.\nCall log:\n  - navigating to \"http://127.0.0.1:33303/library\", waiting until \"networkidle\"\n",
+    "durationMs": 15001
+  },
+  {
+    "name": "T08 browser: failed export announces inert error and restores retry",
+    "status": "FAIL",
+    "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByTestId('editor-export')\n",
+    "durationMs": 14999
+  },
+  {
+    "name": "T08 browser: export retry preserves source clips and marks accepted work pending",
+    "status": "FAIL",
+    "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByTestId('editor-export')\n",
+    "durationMs": 15000
+  },
+  {
+    "name": "T08 browser: transport timeout restores export controls",
+    "status": "FAIL",
+    "error": "TimeoutError: locator.click: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByTestId('editor-export')\n",
+    "durationMs": 15000
+  },
+  {
+    "name": "T08 browser: same-frame duplicate export dispatches one request",
+    "status": "FAIL",
+    "error": "TimeoutError: locator.evaluate: Timeout 15000ms exceeded.\nCall log:\n  - waiting for getByTestId('editor-export')\n",
+    "durationMs": 15000
+  },
+  {
+    "name": "T08 browser: editor error/retry state remains accessible at 320px",
+    "status": "PASS",
+    "durationMs": 937
+  },
+  {
+    "name": "T01 browser: breathing completion never claims or submits suspended rewards",
+    "status": "PASS",
+    "durationMs": 89470
+  }
+]

@@ -1,17 +1,19 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Trophy, Crown, Medal, Award, Star, Clock, Send, Film } from 'lucide-react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
-import { cn, formatPrice, formatDate } from '@/lib/utils'
+import { useCountdown } from '@/hooks/useCountdown'
+import { cn, formatPrice } from '@/lib/utils'
 import { Card, CardContent } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { EmptyState } from '@/components/ui/EmptyState'
-import { AnimatedCounter } from '@/components/ui/AnimatedCounter'
+import { DataUnavailable } from '@/components/ui/DataUnavailable'
 import Button from '@/components/ui/Button'
 import type { Video } from '@/types'
 
@@ -39,29 +41,16 @@ interface ContestData {
   rankings: { user_id: string; name: string; score: number; prize: number; rank: number }[] | null
 }
 
-function useCountdown(target: string) {
-  const [t, setT] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-  useEffect(() => {
-    const end = new Date(target).getTime()
-    const tick = () => {
-      const diff = Math.max(0, end - Date.now())
-      setT({
-        days: Math.floor(diff / 86400000),
-        hours: Math.floor((diff % 86400000) / 3600000),
-        minutes: Math.floor((diff % 3600000) / 60000),
-        seconds: Math.floor((diff % 60000) / 1000),
-      })
-    }
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
-  }, [target])
-  return t
+export default function ClassementPage() {
+  const auth = useAuth()
+  return <ClassementPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
 }
 
-export default function ClassementPage() {
-  const { profile, loading: authLoading } = useAuth()
+function ClassementPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const router = useRouter()
+  const { profile, loading: authLoading } = auth
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [activeContest, setActiveContest] = useState<ContestData | null>(null)
   const [pastContests, setPastContests] = useState<ContestData[]>([])
   const [videos, setVideos] = useState<Video[]>([])
@@ -71,30 +60,46 @@ export default function ClassementPage() {
 
   const countdown = useCountdown(activeContest?.period_end ?? new Date().toISOString())
 
-  const fetchData = useCallback(async () => {
-    if (!profile?.id) return
-    setLoading(true)
-    try {
-      const [activeRes, pastRes, videosRes, subRes] = await Promise.all([
-        supabase.from('contests').select('*').eq('type', 'monthly').eq('status', 'open').order('period_end', { ascending: true }).limit(1).single(),
-        supabase.from('contests').select('*').eq('type', 'monthly').eq('status', 'completed').order('period_end', { ascending: false }).limit(5),
-        supabase.from('videos').select('*').eq('user_id', profile.id).in('status', ['ready', 'published']).order('created_at', { ascending: false }),
-        supabase.from('contest_submissions').select('id').eq('user_id', profile.id).limit(1),
-      ])
-
-      if (activeRes.data) setActiveContest(activeRes.data as ContestData)
-      if (pastRes.data) setPastContests(pastRes.data as ContestData[])
-      if (videosRes.data) setVideos(videosRes.data as Video[])
-      if (subRes.data && subRes.data.length > 0) setHasSubmitted(true)
-    } catch {
-      // defaults
-    } finally {
-      setLoading(false)
-    }
-  }, [profile?.id])
+  const dataRequest = useRef<AbortController | null>(null)
+  const userId = profile?.id
+  const fetchData = useCallback(() => {
+    if (!userId) return
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return Promise.all([
+        supabase.from('contests').select('*').eq('type', 'monthly').eq('status', 'open').order('period_end', { ascending: true }).limit(1).abortSignal(controller.signal).maybeSingle(),
+        supabase.from('contests').select('*').eq('type', 'monthly').eq('status', 'completed').order('period_end', { ascending: false }).limit(5).abortSignal(controller.signal),
+        supabase.from('videos').select('*').eq('user_id', userId).in('status', ['ready', 'published']).order('created_at', { ascending: false }).abortSignal(controller.signal),
+        supabase.from('contest_submissions').select('id').eq('user_id', userId).limit(1).abortSignal(controller.signal),
+      ]).then(async ([activeRes, pastRes, videosRes, subRes]) => {
+      if (!active()) return
+      for (const result of [activeRes, pastRes, videosRes, subRes]) {
+        if (result.error) throw result.error
+      }
+      commit(() => {
+        setLoadError(null)
+        setActiveContest(activeRes.data as ContestData | null)
+        setPastContests((pastRes.data ?? []) as ContestData[])
+        setVideos((videosRes.data ?? []) as Video[])
+        setHasSubmitted(Boolean(subRes.data?.length))
+      })
+    }).catch(() => {
+      if (!active()) return
+      setActiveContest(null)
+      setLoadError('Le classement est indisponible. Les résultats et les participations ne peuvent pas être confirmés.')
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
+  }, [userId])
 
   useEffect(() => {
     if (!authLoading && profile?.id) fetchData()
+
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
   }, [authLoading, profile?.id, fetchData])
 
   const handleSubmit = async () => {
@@ -128,6 +133,8 @@ export default function ClassementPage() {
       </div>
     )
   }
+
+  if (loadError) return <DataUnavailable title="Classement Purama Impact" message={loadError} onRetry={fetchData} />
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto space-y-8">
@@ -226,7 +233,7 @@ export default function ClassementPage() {
                 icon={Film}
                 title="Aucune video prete"
                 description="Cree une video pour pouvoir participer au classement."
-                action={{ label: 'Creer une video', onClick: () => window.location.assign('/create') }}
+                action={{ label: 'Creer une video', onClick: () => router.push('/create') }}
               />
             ) : (
               <div className="space-y-4">

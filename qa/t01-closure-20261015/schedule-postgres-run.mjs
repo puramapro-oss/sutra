@@ -4,16 +4,14 @@ import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { createServer } from 'node:net'
+import { allocatePrivatePostgresEndpoint } from '../../tooling/private-postgres-endpoint.mjs'
 const here = import.meta.dirname, root = resolve(here, '../..')
 const pattern = '', prefix = 'schedule-'
 const bin = process.env.SUTRA_TEST_PG_BIN || '/opt/homebrew/opt/postgresql@18/bin'
 const directory = mkdtempSync(join(tmpdir(), 'sutra-t01-schedule-pg-')), data = join(directory, 'data')
-const server = createServer()
-await new Promise(resolve => server.listen(0, '127.0.0.1', resolve))
-const port = server.address().port
-await new Promise(resolve => server.close(resolve))
+const { port, postgresOptions } = await allocatePrivatePostgresEndpoint()
 const fixture = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: tmpdir(), LC_ALL: 'C',
+  LD_LIBRARY_PATH: process.env.LD_LIBRARY_PATH,
   SUTRA_DISPOSABLE_DB: '1', PGHOST: '127.0.0.1', PGPORT: String(port), PGUSER: 'fixture',
   NEXT_PUBLIC_SUPABASE_URL: 'https://db.fixture.invalid', NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fixture-anon',
   SUPABASE_SERVICE_ROLE_KEY: 'fixture-service', NODE_OPTIONS: `--require=${join(root, 'qa/t08/offline.cjs')}` }
@@ -27,7 +25,7 @@ let started = false
 try {
   requireSuccess(run(join(bin, 'initdb'), ['-D', data, '--auth=trust', '--username=fixture', '--no-locale', '--encoding=UTF8',
     '-c', 'shared_memory_type=mmap', '-c', 'dynamic_shared_memory_type=posix', '-c', 'max_connections=20', '-c', 'shared_buffers=16MB'], 'pg-init'), 'INIT')
-  requireSuccess(run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', `-h 127.0.0.1 -k ${directory} -p ${port}`, '-w', 'start'], 'pg-start'), 'START')
+  requireSuccess(run(join(bin, 'pg_ctl'), ['-D', data, '-l', join(directory, 'server.log'), '-o', postgresOptions, '-w', 'start'], 'pg-start'), 'START')
   started = true
   const tests = ['qa/t01-closure-20261015/schedule-postgres.test.mts']
   const args = ['--experimental-test-module-mocks', '--import', 'tsx', '--test', '--test-timeout=15000', '--test-concurrency=1', ...(pattern ? [`--test-name-pattern=${pattern}`] : []), ...tests]

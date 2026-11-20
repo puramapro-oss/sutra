@@ -34,8 +34,8 @@ function harness() {
 
 test('T06: une production peut cibler deux comptes distincts sans reposter au premier', async () => {
   const h = harness(); await h.invoke()
-  // The canonical public schema has one row per user/platform. Reconnection
-  // changes its external identity, which requires a new explicit selection.
+  // Historical rows may have changed external identity before multi-account
+  // storage; selecting that destination explicitly must preserve both histories.
   h.db.accounts[0].external_id = secondAccount
   await h.invoke({ accountIds: { youtube: 'local-y' } })
   h.db.accounts[0].external_id = accountId
@@ -77,6 +77,7 @@ test('T06: revocation locale precedente a la panne distante; historique conserve
 })
 test('T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST', async () => {
   const h = harness(); h.db.config.publish_platforms = ['youtube']
+  h.db.config.publish_account_ids = ['local-y']
   h.gateway.publish = async request => results(request, 'publishing')
   await publishAutoVideoRecord(user, 'v', false, h.db.client, undefined, h.gateway)
   h.db.config.is_active = false; h.db.accounts[0].status = 'revoked'
@@ -100,16 +101,20 @@ test('T06: horaire depasse apres reponse perdue ne devient jamais une publicatio
 })
 for (const change of ['revoked', 'external-id', 'media-hash']) test(`T06: replay refuse si ${change} a change`, async () => {
   const h = harness(); h.gateway.publish = async () => { throw new Error('lost') }
-  await h.invoke(); h.advance(120001)
+  // Revocation is checked even when that exact row is explicitly selected.
+  // External identity changes deliberately keep the implicit legacy selection:
+  // they must never be interpreted as permission for a new external account.
+  const selection = change === 'revoked' ? { accountIds: { youtube: 'local-y' } } : {}
+  await h.invoke(selection); h.advance(120001)
   if (change === 'revoked') h.db.accounts[0].status = 'revoked'
   if (change === 'external-id') h.db.accounts[0].external_id = secondAccount
   if (change === 'media-hash') h.db.video.shotstack_json!.sutraVerification.sha256 = 'b'.repeat(64)
   if (change === 'media-hash') {
-    await assert.rejects(() => h.invoke(), /MEDIA_CHANGED/)
+    await assert.rejects(() => h.invoke(selection), /MEDIA_CHANGED/)
     assert.equal(h.counts().replays, 0)
     return
   }
-  const result = await h.invoke()
+  const result = await h.invoke(selection)
   assert.equal(h.counts().replays, 0)
   assert.equal(h.db.tables.social_publication_journals[0].operations.length, 1)
   assert.match(result.results[0].error!, /REVOKED|MEDIA_CHANGED/)
@@ -190,6 +195,7 @@ test('T06: approbation explicite autorise le media verifie meme avec mode automa
 })
 test('T06: autorisation retiree entre reservation et envoi ferme toute destination', async () => {
   const h = harness(); h.db.config.publish_platforms = ['youtube']
+  h.db.config.publish_account_ids = ['local-y']
   h.db.settings.hook = (table, mutation) => { if (table === 'social_publication_journals' && mutation?.operations?.length) h.db.config.is_active = false }
   const outcome = await publishAutoVideoRecord(user, 'v', false, h.db.client, undefined, h.gateway)
   assert.equal(outcome.success, false); assert.equal(h.counts().posts, 0)
@@ -238,6 +244,7 @@ for (const path of ['replay', 'retry'] as const) {
   }
   test(`T06: autonomie ${path} refuse une approbation retiree apres claim`, async () => {
     const h = harness(); h.db.config.publish_platforms = ['youtube']
+    h.db.config.publish_account_ids = ['local-y']
     h.gateway.publish = path === 'replay' ? async () => { throw new Error('lost') } : async request => results(request, 'failed')
     h.gateway.reconcile = async (_id, request) => results(request, 'failed')
     const invoke = () => publishAutoVideoRecord(user, 'v', path === 'retry', h.db.client, undefined, h.gateway)

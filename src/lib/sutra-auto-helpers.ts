@@ -13,9 +13,11 @@ export async function analyzePerformance(params: {
   if (!params.recentVideos.length) return []
 
   const stats = params.recentVideos
-    .map((v: AutoVideoRecord & { views?: number; likes?: number; engagement_rate?: number }) =>
-      `- "${v.title}": views=${v.views ?? 0}, likes=${v.likes ?? 0}, engagement=${v.engagement_rate ?? 0}%`
-    )
+    .map((v: AutoVideoRecord & { views?: number | null; likes?: number | null; engagement_rate?: number | null }) => {
+      const measured = (value: unknown, suffix = '') => typeof value === 'number' && Number.isFinite(value) && value >= 0
+        ? `${value}${suffix}` : 'indisponible'
+      return `- "${v.title}": views=${measured(v.views)}, likes=${measured(v.likes)}, engagement=${measured(v.engagement_rate, '%')}`
+    })
     .join('\n')
 
   const result = await smarana.ask({
@@ -90,13 +92,13 @@ export async function recordMemory(params: {
   expiresInDays?: number
   related_video_id?: string
   related_theme?: string
-}): Promise<void> {
+}): Promise<boolean> {
   const supabase = createServiceClient()
   const expires_at = params.expiresInDays
     ? new Date(Date.now() + params.expiresInDays * 86400000).toISOString()
     : null
 
-  await supabase.from('sutra_auto_memory').insert({
+  const { data, error } = await supabase.from('sutra_auto_memory').insert({
     user_id: params.userId,
     memory_type: params.type,
     content: params.content,
@@ -104,5 +106,6 @@ export async function recordMemory(params: {
     expires_at,
     related_video_id: params.related_video_id ?? null,
     related_theme: params.related_theme ?? null,
-  })
+  }).select('id').maybeSingle()
+  return !error && typeof data?.id === 'string' && data.id.length > 0
 }

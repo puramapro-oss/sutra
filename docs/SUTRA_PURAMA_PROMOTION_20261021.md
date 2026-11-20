@@ -153,3 +153,32 @@ campagne payante, ni intégration UI, ni test de charge 24/7 n'ont été exécut
 
 Ces sources n'accordent aucune permission à SUTRA ; l'éligibilité de chaque application,
 compte, produit, pays et format doit être vérifiée lors du raccordement puis à l'activation.
+
+## Studio vidéo publicitaire · 18 novembre 2026
+
+La demande du 2 novembre a retenu ChatGPT pour l’angle et le scénario, Codex pour les animations et Remotion pour le MP4. Le studio s’ouvre dans **Storyboard**. Le même parcours accepte une publicité, une démo produit ou un tutoriel.
+
+1. Saisir le sujet, le format et la durée. Dans **Travailler avec ChatGPT, Codex ou MotionLab**, copier le brief. ChatGPT ou Codex peut renvoyer les plans en JSON.
+2. Coller la réponse et choisir **Importer les plans**. Chaque plan devient éditable. Si des plans sont déjà affichés, le studio demande de confirmer leur remplacement.
+3. Pour le kit local **MotionLab**, télécharger le brief. Le lanceur proposé par SUTRA l’ouvre dans une session Codex depuis le dossier de l’exemplaire du créateur. Depuis le dossier de téléchargements, exécuter `node lancer-motionlab.mjs "/chemin/vers/MotionLab" sutra-brief-motionlab.txt`. L’option `--check` vérifie le dossier, le brief et le CLI local avant toute session. Le brief contient les textes, plans, durées, indications visuelles et format. [Présentation de MotionLab](https://motionlab.life/)
+4. Dans **Projet cinéma**, le rendu sur l’appareil anime les textes en MP4 jusqu’à deux minutes si le navigateur sait encoder en H.264. Pour continuer dans **Remotion**, exporter la composition éditable. Le fichier contient les commandes de rendu local et accepte les images, clips et voix off du créateur. La licence dépend de l’usage et de l’organisation. [Documentation Remotion](https://www.remotion.dev/docs/license/pricing)
+5. Dans **Relire le rendu MP4**, ouvrir le fichier livré par MotionLab, Remotion ou un autre éditeur. La lecture reste sur l’appareil. Le studio affiche les dimensions et la durée lues dans le fichier, et permet de rejoindre un plan du storyboard.
+
+### Inventaire des outils pour ce parcours
+
+| Besoin | Intégration ou format | État dans le périmètre examiné |
+| --- | --- | --- |
+| Scénario et direction visuelle | ChatGPT ou Codex, ou API OpenAI Responses via SMARANA | Échange manuel depuis le storyboard. Le serveur peut aussi appeler OpenAI pour générer les plans dans SUTRA. |
+| Animation des textes et du produit | MotionLab et Remotion | Lanceur local Codex pour le kit du créateur et échange par brief ou MP4. Composition Remotion éditable en 9:16, 1:1 ou 16:9. |
+| Images et séquences | Pexels, Pixabay, Unsplash, Coverr, LTX, WAN/RunPod | Adaptateurs présents dans `src/lib/stock.ts`, `ltx.ts` et `wan.ts`. Les droits, clés et capacités dépendent du fournisseur choisi. |
+| Voix, musique et sous-titres | ElevenLabs, Suno, sous-titres SUTRA | Modules existants. Les appels facturés et la qualification des voix relèvent du compte utilisé. |
+| Montage et 3D | FFmpeg, Shotstack, export Blender, Higgsfield | Le storyboard exporte déjà le projet Blender. L’adaptateur Higgsfield prépare ses requêtes, son routage de production reste désactivé sur cette base. |
+| Finition dans un logiciel de montage | OpenTimelineIO pour DaVinci Resolve et les éditeurs compatibles | L’export fournit une piste vidéo avec la cadence du projet, la durée de chaque plan et des emplacements où relier les rushes. [Format OpenTimelineIO](https://github.com/AcademySoftwareFoundation/OpenTimelineIO/blob/main/docs/tutorials/architecture.md) |
+| Outils personnels | WanGP et OpenMontage | Le candidat personnel du 28 octobre documente un MP4 OpenMontage de deux secondes rendu sur CPU. WanGP y reste désactivé et son exécution GPU reste à qualifier. |
+| Diffusion | Circuit existant des comptes et de publication | Une exportation vidéo est indépendante d’une publication ou de l’achat d’une campagne. |
+
+Le site de MotionLab documente un dossier local pour agents. Une API publique du kit et une licence permettant de redistribuer son contenu dans SUTRA restent à établir. L’échange du brief et du MP4 permet d’utiliser un exemplaire détenu par le créateur. Les fichiers commerciaux du kit restent dans son espace de travail. [Présentation de MotionLab](https://motionlab.life/)
+
+### Générer les plans avec l’API OpenAI
+
+Le bouton **Générer le storyboard** utilise le fournisseur choisi par le serveur. Pour activer OpenAI, renseigner les cinq paramètres de la section Storyboard dans `.env.example` côté serveur, notamment la clé de projet, le modèle Responses, ses tarifs et le plafond quotidien de tentatives. SMARANA réserve une tentative dans son journal de consommation PostgreSQL avant l’envoi et enregistre les jetons de la réponse. Les requêtes de ce parcours transmettent le brief avec `store: false`. Le mode par défaut conserve le moteur SMARANA déjà configuré. [Référence de l’API Responses](https://developers.openai.com/api/reference/resources/responses/methods/create)

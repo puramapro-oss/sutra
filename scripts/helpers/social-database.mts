@@ -10,7 +10,7 @@ export function socialDatabase(userId = 'u') {
     shotstack_json: { sutraVerification: { url, sha256: 'a'.repeat(64) } } as null | { sutraVerification: { url: string; sha256: string } } }
   const auto = { id: 'v', user_id: userId, status: 'ready', video_final_url: url, title: 'Title', description: 'Description', hashtags: [],
     scheduled_for: '2026-01-01T00:00:00Z' as string | null, published_platforms: [] as PublishResult[] }
-  const config = { user_id: userId, is_active: true, auto_publish: true, require_approval_before_publish: false, publish_platforms: ['youtube', 'instagram'], schedules: [] }
+  const config = { user_id: userId, is_active: true, auto_publish: true, require_approval_before_publish: false, publish_platforms: ['youtube', 'instagram'], publish_account_ids: ['local-y', 'local-i'], schedules: [] }
   const accounts: Array<{ id: string; user_id: string; platform: string; external_id: string; status: string; token_expires_at?: string; metadata?: Record<string, unknown> | null }> = [{ id: 'local-y', user_id: userId, platform: 'youtube', external_id: accountId, status: 'connected', metadata: { zernio_profile_id: 'a'.repeat(24), credential_owner: 'zernio' } },
     { id: 'local-i', user_id: userId, platform: 'instagram', external_id: secondAccount, status: 'connected', metadata: { zernio_profile_id: 'a'.repeat(24), credential_owner: 'zernio' } }]
   const profile = { id: userId, subscription_status: 'active', access_revoked_at: null as string | null }
