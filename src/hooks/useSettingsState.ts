@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
-import type { VideoQuality, EmailPreferences } from '@/types'
+import type { VideoQuality } from '@/types'
+import { useEmailPreferences } from '@/hooks/useEmailPreferences'
 import type { Profile } from '@/types'
 import { validateProfileImage } from '@/lib/profile-image'
 
@@ -10,6 +11,7 @@ const supabase = createClient()
 
 export function useSettingsState() {
   const { user, profile, refetch } = useAuth()
+  const notifications = useEmailPreferences(profile, user?.id, refetch)
   const avatarInputRef = useRef<HTMLInputElement>(null)
   const logoInputRef = useRef<HTMLInputElement>(null)
 
@@ -24,16 +26,6 @@ export function useSettingsState() {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-
-  // Notifications
-  const [emailPrefs, setEmailPrefs] = useState<EmailPreferences>({
-    welcome: true,
-    digest: true,
-    inactivity: true,
-    tips: true,
-    contest: true,
-    referral: true,
-  })
 
   // Brand Kit
   const [brandLogo, setBrandLogo] = useState('')
@@ -75,9 +67,6 @@ export function useSettingsState() {
     setPreferredNiche(profile.preferred_niche ?? '')
     setPreferredQuality(profile.preferred_quality ?? '1080p')
     setPreferredVoice(profile.preferred_voice_style ?? '')
-    setEmailPrefs(profile.email_preferences ?? {
-      welcome: true, digest: true, inactivity: true, tips: true, contest: true, referral: true,
-    })
     setBrandLogoFile(null)
     setBrandLogo(profile.brand_kit?.logo_url ?? '')
     setBrandPrimary(profile.brand_kit?.colors?.primary ?? '#8b5cf6')
@@ -164,25 +153,6 @@ export function useSettingsState() {
     }
   }, [newPassword, confirmPassword, currentPassword, user])
 
-  // Save notifications
-  const saveNotifications = useCallback(async () => {
-    if (!profile) return
-    setSaving(true)
-    try {
-      const { error} = await supabase
-        .from('profiles')
-        .update({ email_preferences: emailPrefs })
-        .eq('id', profile.id)
-
-      if (error) throw error
-      toast.success('Preferences de notifications sauvegardees !')
-    } catch {
-      toast.error('Erreur lors de la sauvegarde')
-    } finally {
-      setSaving(false)
-    }
-  }, [profile, emailPrefs])
-
   // Save brand kit
   const saveBrandKit = useCallback(async () => {
     if (!profile) return
@@ -242,9 +212,7 @@ export function useSettingsState() {
     setConfirmPassword,
     handlePasswordChange,
     // Notifications
-    emailPrefs,
-    setEmailPrefs,
-    saveNotifications,
+    ...notifications,
     // Brand Kit
     brandLogo,
     setBrandLogo,

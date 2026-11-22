@@ -9,15 +9,17 @@ interface NotificationsTabProps {
   toggleEmailPref: (key: keyof EmailPreferences) => void
   saveNotifications: () => void
   saving: boolean
+  disabled?: boolean
+  notice?: { text: string; error: boolean } | null
 }
 
 const EMAIL_PREFS = [
-  { key: 'welcome' as const, label: 'Emails de bienvenue', desc: 'Recois un email a l\'inscription' },
-  { key: 'digest' as const, label: 'Resume hebdomadaire', desc: 'Recapitulatif chaque lundi' },
-  { key: 'inactivity' as const, label: 'Rappels d\'inactivite', desc: 'Notification apres 7 jours sans activite' },
-  { key: 'tips' as const, label: 'Conseils et astuces', desc: 'Tips pour ameliorer tes videos' },
-  { key: 'contest' as const, label: 'Concours et tirages', desc: 'Notifications des concours et resultats' },
-  { key: 'referral' as const, label: 'Parrainage', desc: 'Alertes commissions et filleuls' },
+  { key: 'welcome' as const, label: 'Emails de bienvenue', desc: 'Messages pour tes premiers pas' },
+  { key: 'digest' as const, label: 'Résumé hebdomadaire', desc: 'Récapitulatifs de ton activité' },
+  { key: 'inactivity' as const, label: 'Rappels de reprise', desc: 'Invitations à reprendre tes créations' },
+  { key: 'tips' as const, label: 'Conseils et astuces', desc: 'Conseils pour améliorer tes vidéos' },
+  { key: 'contest' as const, label: 'Concours et tirages', desc: 'Actualités des concours et résultats' },
+  { key: 'referral' as const, label: 'Parrainage', desc: 'Actualités de ton parrainage' },
 ]
 
 export default function NotificationsTab({
@@ -25,6 +27,8 @@ export default function NotificationsTab({
   toggleEmailPref,
   saveNotifications,
   saving,
+  disabled = false,
+  notice,
 }: NotificationsTabProps) {
   return (
     <Card data-testid="settings-notifications">
@@ -40,13 +44,15 @@ export default function NotificationsTab({
               <p className="text-xs text-white/65">{pref.desc}</p>
             </div>
             <button
+              type="button"
+              disabled={disabled || saving}
               onClick={() => toggleEmailPref(pref.key)}
               data-testid={`toggle-notif-${pref.key}`}
               role="switch"
               aria-label={pref.label}
               aria-checked={emailPrefs[pref.key]}
               className={cn(
-                'relative shrink-0 w-11 h-6 rounded-full transition-colors',
+                'relative shrink-0 w-11 h-6 rounded-full transition-colors disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-300',
                 emailPrefs[pref.key] ? 'bg-violet-500' : 'bg-white/10'
               )}
             >
@@ -60,12 +66,14 @@ export default function NotificationsTab({
         ))}
         <Button
           onClick={saveNotifications}
+          disabled={disabled || saving}
           loading={saving}
           variant="secondary"
           data-testid="settings-save-notifications"
         >
           Sauvegarder les notifications
         </Button>
+        {notice && <p role={notice.error ? 'alert' : 'status'} className="text-sm text-white/80">{notice.text}</p>}
       </CardContent>
     </Card>
   )

@@ -75,7 +75,9 @@ test.describe("/aide — Help center", () => {
 
   test("aide escalade form reveals on click", async ({ page }) => {
     const submissions: unknown[] = [];
-    await page.route("**/api/email/escalade", async route => {
+    // This page-level test observes presentation only. The real handler and
+    // provider-receipt contract are exercised in test-email-contact-ui.mjs.
+    await page.route("**/api/contact", async route => {
       expect(route.request().method()).toBe("POST");
       submissions.push(route.request().postDataJSON());
       await route.fulfill({ status: 200, json: { success: true } });
@@ -88,11 +90,11 @@ test.describe("/aide — Help center", () => {
     await contact.getByPlaceholder("ton@email.com").fill("support-test@example.invalid");
     await contact.getByPlaceholder("Decris ton probleme en detail...").fill("Message fictif du banc local.");
     await contact.getByRole("button", { name: "Envoyer", exact: true }).click();
-    await expect(contact.getByRole("heading", { name: "Message envoye", exact: true })).toBeVisible();
+    await expect(contact.getByRole("heading", { name: "Message transmis", exact: true })).toBeVisible();
     expect(submissions).toEqual([{
-      name: "Test local",
       email: "support-test@example.invalid",
-      message: "Message fictif du banc local.",
+      subject: "Demande d’aide SUTRA",
+      message: "Prénom : Test local\n\nMessage fictif du banc local.",
     }]);
   });
 

@@ -1,0 +1,312 @@
+[sutra:cron] refused: invalid authorization
+(node:13) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ unauthenticated cron cannot inspect recipients or send (5.590435ms)
+✖ a disabled preference is respected before any provider call (21.776576ms)
+✖ unknown preferences do not authorize a sequence (9.217539ms)
+✖ provider error never becomes a confirmed email or a retryable fresh intent (6.9797ms)
+✖ provider missing never becomes a confirmed email or a retryable fresh intent (17.519913ms)
+✖ provider throw never becomes a confirmed email or a retryable fresh intent (12.570305ms)
+✖ missing transport configuration is reported without consuming the reservation (11.73458ms)
+✖ concurrent cron invocations submit one provider request per unique sequence (18.282651ms)
+✖ the preference is refreshed after candidate selection (6.524346ms)
+✖ revocation while reserving stops transport and conserves the unresolved reservation (4.486533ms)
+✔ an existing historical receipt is conserved without resending (0.797118ms)
+✖ an unresolved reservation remains visible and cannot expire into a duplicate send (1.030153ms)
+✖ profiles:select failure is explicit and cannot manufacture a receipt (0.849155ms)
+✖ email_sequences:select:one failure is explicit and cannot manufacture a receipt (10.346127ms)
+✖ email_sequences:insert:one failure is explicit and cannot manufacture a receipt (4.584628ms)
+✖ email_sequences:update:one failure is explicit and cannot manufacture a receipt (4.943419ms)
+✖ banned and revoked accounts cannot enter a sequence (4.7346ms)
+✖ a displayed name is escaped and successful receipt is written only after provider acceptance (4.948346ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 2
+ℹ fail 16
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 883.020741
+
+✖ failing tests:
+
+test at scripts/test-email-sequences.mts:1:4244
+✖ a disabled preference is respected before any provider call (21.776576ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:96:46)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:4499
+✖ unknown preferences do not authorize a sequence (9.217539ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:101:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:4699
+✖ provider error never becomes a confirmed email or a retryable fresh intent (6.9797ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:108:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:4699
+✖ provider missing never becomes a confirmed email or a retryable fresh intent (17.519913ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:108:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:4699
+✖ provider throw never becomes a confirmed email or a retryable fresh intent (12.570305ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 503
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:108:46)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:5189
+✖ missing transport configuration is reported without consuming the reservation (11.73458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 503
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:117:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:5428
+✖ concurrent cron invocations submit one provider request per unique sequence (18.282651ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  3 !== 1
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:122:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:5783
+✖ the preference is refreshed after candidate selection (6.524346ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:129:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:5950
+✖ revocation while reserving stops transport and conserves the unresolved reservation (4.486533ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:134:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:6537
+✖ an unresolved reservation remains visible and cannot expire into a duplicate send (1.030153ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 503
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:147:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:7019
+✖ profiles:select failure is explicit and cannot manufacture a receipt (0.849155ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 503
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:154:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:7019
+✖ email_sequences:select:one failure is explicit and cannot manufacture a receipt (10.346127ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 503
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:154:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:7019
+✖ email_sequences:insert:one failure is explicit and cannot manufacture a receipt (4.584628ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 503
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:154:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:7019
+✖ email_sequences:update:one failure is explicit and cannot manufacture a receipt (4.943419ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 503
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:154:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 503,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:7404
+✖ banned and revoked accounts cannot enter a sequence (4.7346ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:161:76)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-email-sequences.mts:1:7712
+✖ a displayed name is escaped and successful receipt is written only after provider acceptance (4.948346ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /&lt;img/. Input:
+
+  '\n' +
+    '      <div style="font-family:system-ui;max-width:600px;margin:0 auto;background:#0A0A0F;color:white;padding:40px;border-radius:16px">\n' +
+    '        <h1 style="color:#8B5CF6">Bienvenue <img src=x onerror=alert(1)> & "friend" !</h1>\n' +
+    "        <p>Tu fais maintenant partie de la communaute SUTRA — des createurs video propulses par l'IA.</p>\n" +
+    "        <p>Cree ta premiere video en 30 secondes : choisis un theme, l'IA fait le reste.</p>\n" +
+    '        <a href="https://sutra.purama.dev/create" style="display:inline-block;background:linear-gradient(to right,#7C3AED,#8B5CF6);color:white;padding:12px 24px;border-radius:12px;text-decoration:none;margin-top:16px">Creer ma premiere video</a>\n' +
+    '        <p style="color:#999;margin-top:24px;font-size:12px">+100 points offerts pour ton inscription !</p>\n' +
+    '      </div>\n' +
+    '    '
+
+      at TestContext.<anonymous> (/workspace/scratch/dcfb234e0a8f/sutra-work/scripts/test-email-sequences.mts:170:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `\n      <div style="font-family:system-ui;max-width:600px;margin:0 auto;background:#0A0A0F;color:white;padding:40px;border-radius:16px">\n        <h1 style="color:#8B5CF6">Bienvenue <img src=x onerror=alert(1)> & "friend" !</h1>\n        <p>Tu fais maintenant partie de la communaute SUTRA — des createurs video propulses par l'IA.</p>\n        <p>Cree ta premiere video en 30 secondes : choisis un theme, l'IA fait le reste.</p>\n        <a href="https://sutra.purama.dev/create" style="display:inline-block;background:linear-gradient(to right,#7C3AED,#8B5CF6);color:white;padding:12px 24px;border-radius:12px;text-decoration:none;margin-top:16px">Creer ma premiere video</a>\n        <p style="color:#999;margin-top:24px;font-size:12px">+100 points offerts pour ton inscription !</p>\n      </div>\n    `,
+    expected: /&lt;img/,
+    operator: 'match',
+    diff: 'simple'
+  }

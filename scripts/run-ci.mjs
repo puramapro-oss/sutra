@@ -9,6 +9,8 @@ const root = resolve(import.meta.dirname, '..')
 const profile = process.argv[2]
 const heapOptions = ciHeapOptions(process.env.SUTRA_CI_HEAP_MB)
 const nodeTests = [
+  'scripts/test-email-sequences.mts',
+  'scripts/test-email-preferences.mts',
   'scripts/test-subtitles-route.mts',
   'scripts/test-cinema-project.mts', 'scripts/test-higgsfield-contracts.mts',
   'scripts/test-create-manual-mode.mts',
@@ -112,7 +114,7 @@ const profiles = {
   ],
   browser: [['browser', ['scripts/test-ui-isolated.mjs']]],
   'browser-recovery': [['browser-recovery', ['--import', 'tsx', '--test', '--test-concurrency=1',
-    'scripts/test-durable-hook-recovery.mjs', 'scripts/test-admin-users-recovery.mjs']]],
+    'scripts/test-durable-hook-recovery.mjs', 'scripts/test-admin-users-recovery.mjs', 'scripts/test-email-preferences-ui.mjs']]],
   'browser-social': [
     ['browser-social', ['scripts/test-social-multi-account-ui.mjs']],
     ['browser-social-durable', ['scripts/test-social-durable-ui.mjs']],

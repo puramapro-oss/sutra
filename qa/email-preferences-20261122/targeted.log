@@ -1,0 +1,50 @@
+✔ preferences recognize explicit booleans only and never invent an opt-in (2.246383ms)
+✔ save verifies the current identity and returned preferences for the exact owner (0.893041ms)
+✔ missing row cannot become a successful preferences save (0.809117ms)
+✔ different owner cannot become a successful preferences save (0.21618ms)
+✔ missing preferences cannot become a successful preferences save (0.211353ms)
+✔ missing preference key cannot become a successful preferences save (0.204172ms)
+✔ different preferences cannot become a successful preferences save (0.285853ms)
+✔ database errors stay failures even if a stale row accompanies them (0.244862ms)
+✔ identity absent cannot write another account (0.403436ms)
+✔ identity other cannot write another account (0.535121ms)
+✔ a response from the former account is not accepted after a switch (0.293965ms)
+✔ a failed identity recheck after writing is an explicit unconfirmed save (0.400172ms)
+✔ aborting before or during identity verification prevents all writes (0.62828ms)
+[sutra:cron] refused: invalid authorization
+(node:13) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ unauthenticated cron cannot inspect recipients or send (4.905056ms)
+✔ a disabled preference is respected before any provider call (17.080907ms)
+✔ unknown preferences do not authorize a sequence (7.912064ms)
+✔ provider error never becomes a confirmed email or a retryable fresh intent (19.474058ms)
+✔ provider missing never becomes a confirmed email or a retryable fresh intent (14.651603ms)
+✔ provider throw never becomes a confirmed email or a retryable fresh intent (10.009477ms)
+✔ missing transport configuration is reported without consuming the reservation (0.529653ms)
+✔ concurrent cron invocations submit one provider request per unique sequence (17.216217ms)
+✔ the preference is refreshed after candidate selection (8.11514ms)
+✔ revocation while reserving stops transport and conserves the unresolved reservation (4.753867ms)
+✔ an existing historical receipt is conserved without resending (3.654626ms)
+✔ an unresolved reservation remains visible and cannot expire into a duplicate send (3.939838ms)
+✔ rpc:email_sequence_candidates failure is explicit and cannot manufacture a receipt (4.565463ms)
+✔ email_sequences:select:count failure is explicit and cannot manufacture a receipt (4.968219ms)
+✔ profiles:select:one failure is explicit and cannot manufacture a receipt (7.840799ms)
+✔ email_sequences:select:one failure is explicit and cannot manufacture a receipt (5.029035ms)
+✔ email_sequences:insert:one failure is explicit and cannot manufacture a receipt (5.950306ms)
+✔ email_sequences:update:one failure is explicit and cannot manufacture a receipt (4.591341ms)
+✔ banned and revoked accounts cannot enter a sequence (7.46299ms)
+✔ a displayed name is escaped and successful receipt is written only after provider acceptance (4.507338ms)
+✔ interrupted provider observation settles and a late response never releases the uncertain intent (26.542744ms)
+✔ a historical prefix cannot consume every retry before fresh recipients are reached (67.077345ms)
+✔ keyset pagination covers more than one full candidate page without repeating admissions (52.549485ms)
+✔ pending intents remain counted outside the current campaign window and after opt-out (6.343284ms)
+✔ an untrusted duplicate candidate page is rejected before admitting any recipient (3.989302ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 571.155187
