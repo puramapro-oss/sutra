@@ -277,4 +277,122 @@ test('the actual SMARANA dependency preserves SUTRA admission, cancellation and 
     assert.equal(calls.anthropic, 0)
     assert.equal(calls.sql.length, 0)
   })
+
+  // The route keeps its real validation and context selection and calls the actual SDK above.
+  let chatOptions: Parameters<typeof ask>[0] | undefined
+  Object.assign(fixture, {
+    chatSmarana: { ask(options: Parameters<typeof ask>[0]) { chatOptions = options; return ask(options) } },
+    supabase: {
+      auth: { async getUser() { return { data: { user: { id: fakeUser } }, error: null } } },
+      from(table: string) {
+        return { select() { return { eq() {
+          return table === 'profiles'
+            ? { async single() { return { data: { plan: 'free', full_name: 'Fixture', streak: 0 } } } }
+            : { order() { return { async limit() { return { data: [] } } } } }
+        } } } }
+      },
+    },
+  })
+  const chatBuild = await build({
+    entryPoints: ['src/app/api/ai/chat/route.ts'], bundle: true, platform: 'node', format: 'cjs',
+    write: false, packages: 'external', plugins: [{
+      name: 'chat-authentication-and-real-sdk', setup(b) {
+        b.onResolve({ filter: /^(@purama\/smarana|@\/lib\/supabase)$/ },
+          args => ({ path: args.path, namespace: 'chat-fixture' }))
+        b.onLoad({ filter: /.*/, namespace: 'chat-fixture' }, args => ({ contents: args.path === '@purama/smarana'
+          ? `export const smarana = globalThis.${marker}.chatSmarana`
+          : `export const createServiceClient = () => globalThis.${marker}.supabase` }))
+      },
+    }],
+  })
+  const chatBundle = { exports: {} as { POST: (request: Request) => Promise<Response> } }
+  new Function('require', 'module', 'exports', chatBuild.outputFiles[0].text)(require, chatBundle, chatBundle.exports)
+  const postChat = (body: unknown, requestSignal = signal, raw = false) => chatBundle.exports.POST(new Request('http://localhost/api/ai/chat', {
+    method: 'POST', signal: requestSignal, headers: { authorization: 'Bearer fixture', 'content-type': 'application/json' },
+    body: raw ? String(body) : JSON.stringify(body),
+  }))
+
+  await t.test('real chat accepts 1, 33 or 41 messages, bounds only context and never duplicates the current message', async () => {
+    for (const size of [1, 33, 41]) {
+      reset()
+      const messages = Array.from({ length: size }, (_, index) => ({
+        role: index % 2 ? 'assistant' : 'user', content: `Fixture message ${index}`,
+      }))
+      const original = JSON.stringify(messages)
+      let sent: Array<{ role: string; content: string }> = []
+      anthropic = async body => { sent = (body as { messages: typeof sent }).messages; return success }
+      const response = await postChat({ messages })
+      assert.equal(response.status, 200)
+      assert.equal((await response.json()).message, JSON.stringify({ scenes: [scene] }))
+      assert.deepEqual(chatOptions?.recentMessages ?? [], messages.slice(-33, -1))
+      assert.equal(chatOptions?.message, messages[size - 1].content)
+      // The actual SDK then applies its existing four-message provider window.
+      assert.deepEqual(sent.map(message => message.content), messages.slice(-5).map(message => message.content))
+      assert.equal(sent.filter(message => message.content === messages[size - 1].content).length, 1)
+      assert.equal(JSON.stringify(messages), original)
+      assert.equal(calls.anthropic, 1)
+      assert.equal(calls.openai, 0)
+    }
+  })
+  await t.test('real chat rejects malformed messages and custom systems before the SDK reaches storage or a provider', async () => {
+    const validMessage = { role: 'user', content: 'Fixture request' }
+    const invalid = [null, [], {}, { messages: [] }, { messages: [null] },
+      { messages: [{ ...validMessage, role: 'system' }] }, { messages: [{ ...validMessage, content: 7 }] },
+      { messages: [{ ...validMessage, role: 'assistant' }] }, { messages: [{ ...validMessage, content: '' }] },
+      { messages: [validMessage, { role: 'assistant', content: 'An answer is not a new request' }] },
+      { messages: [{ ...validMessage, content: '  ' }] }, { messages: [{ ...validMessage, content: 'x'.repeat(65_537) }] },
+      ...[false, {}, '  ', 'x'.repeat(65_537)].map(system => ({ messages: [validMessage], system })),
+      { messages: [null, ...Array(40).fill(validMessage)] }]
+    for (const body of invalid) {
+      reset()
+      assert.equal((await postChat(body)).status, 400)
+      assert.deepEqual(calls, { sql: [], ledger: [], connect: 0, release: 0, anthropic: 0, openai: 0 })
+    }
+    assert.equal((await postChat('{', signal, true)).status, 400)
+  })
+  await t.test('real chat preserves empty historical assistant content and the current user text', async () => {
+    reset()
+    const messages = [{ role: 'user', content: 'Earlier request' }, { role: 'assistant', content: '' },
+      { role: 'user', content: '  Current request  ' }]
+    let sent: Array<{ role: string; content: string }> = []
+    anthropic = async body => { sent = (body as { messages: typeof sent }).messages; return success }
+    assert.equal((await postChat({ messages })).status, 200)
+    assert.deepEqual(chatOptions?.recentMessages, messages.slice(0, -1))
+    assert.equal(chatOptions?.message, messages[2].content)
+    assert.deepEqual(sent, messages)
+    assert.equal(calls.anthropic, 1)
+    assert.equal(calls.openai, 0)
+  })
+  await t.test('an already cancelled chat request cannot begin an SDK database or provider operation', async () => {
+    reset()
+    const response = await postChat({ messages: [{ role: 'user', content: 'Fixture request' }] }, AbortSignal.abort())
+    assert.equal(response.status, 500)
+    assert.match((await response.json()).error, /abort/i)
+    assert.deepEqual(calls, { sql: [], ledger: [], connect: 0, release: 0, anthropic: 0, openai: 0 })
+  })
+  await t.test('a cancelled in-flight chat reaches its provider without a fallback', async () => {
+    reset()
+    const cancel = new AbortController()
+    const entered = Promise.withResolvers<void>()
+    const response = Promise.withResolvers<unknown>()
+    anthropic = async (_body, request) => {
+      entered.resolve()
+      request?.signal?.addEventListener('abort', () => response.reject(request.signal!.reason), { once: true })
+      return response.promise
+    }
+    let observed: Response | undefined
+    const pending = postChat({ messages: [{ role: 'user', content: 'Fixture request' }] }, cancel.signal)
+      .then(result => { observed = result })
+    try {
+      await entered.promise
+      cancel.abort()
+      await new Promise(resolve => setImmediate(resolve))
+      assert.equal(observed?.status, 500)
+    } finally {
+      response.reject(cancel.signal.reason)
+      await pending
+    }
+    assert.equal(calls.anthropic, 1)
+    assert.equal(calls.openai, 0)
+  })
 })

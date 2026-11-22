@@ -214,7 +214,17 @@ try {
     await page.setViewportSize({ width, height: 812 })
     for (const path of ['/dashboard', '/create', '/production', '/library', '/settings']) {
       await check(`${width}px authenticated fixture ${path}`, async () => {
-        await page.goto(base + path, { waitUntil: 'networkidle', timeout: 60_000 }); await expect(page.getByTestId('header')).toBeVisible(); await noOverflow(page)
+        // Dashboard link prefetches can remain pending after its data is ready.
+        const response = await page.goto(base + path, { waitUntil: path === '/dashboard' ? 'domcontentloaded' : 'networkidle', timeout: 60_000 })
+        assert.equal(response.status(), 200)
+        await expect(page.getByTestId('header')).toBeVisible()
+        if (path === '/dashboard') {
+          await expect(page.getByTestId('dashboard-greeting')).toContainText('Studio')
+          await expect(page.getByTestId('empty-videos')).toBeVisible()
+          await expect(page.getByTestId('quick-action-create')).toBeEnabled()
+          await expect(page.getByTestId('loading-timeout')).toHaveCount(0)
+        }
+        await noOverflow(page)
       })
       await auditAccessibility(page, `${path.slice(1)}-${width}`)
       if (path === '/production') await check(`${width}px production navigation`, async () => {

@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { smarana, type SmaranaMessage } from '@purama/smarana'
 import { buildMuseSystem } from '@/lib/nama-muse'
+import { z } from 'zod'
+
+const chatText = z.string().max(65_536).refine(value => value.trim().length > 0)
+const chatRequest = z.object({
+  messages: z.array(z.object({ role: z.enum(['user', 'assistant']), content: z.string().max(65_536) })).min(1)
+    .refine(messages => {
+      const current = messages.at(-1)
+      return current?.role === 'user' && current.content.trim().length > 0
+    }),
+  system: chatText.nullable().optional(),
+})
 
 const PLAN_LIMITS: Record<string, { maxTokens: number; model: string }> = {
   free: { maxTokens: 2048, model: process.env.ANTHROPIC_MODEL_FAST ?? 'claude-haiku-4-5-20251001' },
@@ -34,12 +45,9 @@ export async function POST(request: NextRequest) {
     const plan = profile?.plan ?? 'free'
     const limits = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
 
-    const body = await request.json()
-    const { messages, system } = body
-
-    if (!messages || !Array.isArray(messages)) {
-      return NextResponse.json({ error: 'Messages requis' }, { status: 400 })
-    }
+    const parsed = chatRequest.safeParse(await request.json().catch(() => null))
+    if (!parsed.success) return NextResponse.json({ error: 'Messages ou consigne invalides.' }, { status: 400 })
+    const { messages, system } = parsed.data
 
     // Récupère les 3 derniers projets/conversations de l'utilisateur pour mémoire NAMA-Muse
     const { data: recentConvs } = await supabase
@@ -61,10 +69,10 @@ export async function POST(request: NextRequest) {
       streak: typeof profile?.streak === 'number' ? profile.streak : undefined,
     })
 
-    // Extraire le dernier message utilisateur et les messages précédents
+    // Borner seulement le contexte du fournisseur ; aucun historique stocké n'est modifié.
     const lastMessage = messages[messages.length - 1]
-    const recentMessages: SmaranaMessage[] = messages.slice(0, -1).map((m: { role: string; content: string }) => ({
-      role: m.role as 'user' | 'assistant',
+    const recentMessages: SmaranaMessage[] = messages.slice(-33, -1).map(m => ({
+      role: m.role,
       content: m.content,
     }))
 
@@ -76,6 +84,7 @@ export async function POST(request: NextRequest) {
       message: lastMessage.content,
       tier: plan === 'free' ? 'fast' : 'main',
       maxTokens: limits.maxTokens,
+      signal: request.signal,
     })
 
     return NextResponse.json({
