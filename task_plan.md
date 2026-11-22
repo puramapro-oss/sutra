@@ -660,3 +660,11 @@ Base 0f32bf0b84b51ad82e9ae5bf47d93f3e63442506 ; livraison validée365f437b2dfcce
 
 ## T01 — réparation CI PostgreSQL QA — 2026-10-20T14:00:30.381077+00:00
 Base7a23ab17 ; CI39433814419 arrêt57P01 au contre-test11. Course pg-pool.end/fermeture effective reproduite ; helper QA attend tous les end avant redémarrage synchrone.4testsPASS/0FAIL/0SKIP,lintcibléPASS,diff-checkPASS. Aucun produit,SQL,dépendance modifié. NouveauSHA/CI requis, preuve qa/t01-pg-drain-20261020/. Les ACK précédents restent bornés, aucun PASS/deploy/production/T09 anticipé. R121 intégré/retest T01PASS ; verdict T08 différentiel attendu,R113environnement non qualifié,R92HTTP404. Worktrees tiers préservés.
+# Reprise autorisée — 22 novembre 2026 : préférences et reçus email
+
+- Responsable : session de reprise PURAMA, lot SUTRA isolé.
+- Base vérifiée : PR3, `11d4ea707f1a13f4c9e88fc453c21d85f0786b2c`.
+- Validation : conception collective du 21 novembre et demande actuelle de terminer le code.
+- Périmètre : réglages email existants, route des séquences, journal `email_sequences`, tests associés. Aucun envoi réel ni nouveau déclencheur.
+- Critères : préférences relues avant départ ; une réservation persistée avant transport ; absence de doublon concurrent ; résultat incertain conservé sans nouvel envoi aveugle ; reçu fournisseur et écriture confirmés ; erreurs visibles ; sauvegarde des réglages confirmée pour le compte courant.
+- État initial : le cron ignore les préférences et les erreurs SDK ; l'insertion après transport permet deux envois concurrents. La sauvegarde des réglages annonce un succès sans reçu de ligne.

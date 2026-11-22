@@ -145,7 +145,9 @@ export default function SettingsPage() {
                 emailPrefs={settingsState.emailPrefs}
                 toggleEmailPref={toggleEmailPref}
                 saveNotifications={settingsState.saveNotifications}
-                saving={settingsState.saving}
+                saving={settingsState.savingNotifications}
+                disabled={!settingsState.notificationsAvailable}
+                notice={settingsState.notificationNotice}
               />
             )}
 

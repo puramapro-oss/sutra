@@ -213,6 +213,12 @@ jobs:
           SUTRA_DISPOSABLE_DB: '1'
           DATABASE_URL_LOCAL: postgres://fixture:fixture@127.0.0.1:5432/sutra_ci_actions
           NODE_OPTIONS: --require=./qa/t08/offline.cjs
+      - name: Email reservations, receipts and concurrent admission on disposable PostgreSQL
+        run: node scripts/test-email-sequences-postgres.mjs
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          DATABASE_URL_LOCAL: postgres://fixture:fixture@127.0.0.1:5432/sutra_ci_actions
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
       - run: npm run test:migration-local
         env:
           SUTRA_DISPOSABLE_DB: '1'

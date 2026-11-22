@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false
+  },
+  "include": [
+    "../../src/lib/email-sequence-templates.ts",
+    "../../src/lib/email-sequence-runner.ts",
+    "../../src/lib/email-preferences.ts",
+    "../../src/hooks/useEmailPreferences.ts",
+    "../../src/hooks/useSettingsState.ts",
+    "../../src/components/settings/NotificationsTab.tsx",
+    "../../src/app/(dashboard)/settings/notifications/page.tsx",
+    "../../src/app/(dashboard)/settings/page.tsx",
+    "../../src/app/api/cron/email-sequences/route.ts",
+    "../../scripts/test-email-sequences.mts",
+    "../../scripts/test-email-preferences.mts"
+  ],
+  "exclude": [
+    "../../node_modules"
+  ]
+}
