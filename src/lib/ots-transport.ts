@@ -1,9 +1,10 @@
-// OTS 0.4.9 has no injectable transport. Replace only its network adapters once;
+// OTS 0.4.9 has no injectable transport. Replace its network adapters once;
 // serialization, Merkle operations and Bitcoin attestation verification stay upstream.
 // Never patch global HTTP/request or temporarily restore unsafe methods across awaits.
 import dns from 'node:dns/promises'
 import https from 'node:https'
 import type { LookupFunction } from 'node:net'
+import OpenTimestamps, { type DetachedTimestampFile } from 'javascript-opentimestamps'
 // @ts-expect-error upstream ships no declarations for this internal adapter
 import Calendar from 'javascript-opentimestamps/src/calendar.js'
 // @ts-expect-error upstream ships no declarations for this internal adapter
@@ -77,9 +78,62 @@ async function requestBytes(url: URL, body?: Buffer, maxBytes = 10_000): Promise
   } finally { clearTimeout(timer) }
 }
 
+type TimestampNode = { msg: ArrayLike<number>; ops: Map<unknown, TimestampNode>; attestations: unknown[] }
+
+function assertBoundedTimestamp(root: unknown) {
+  const pending = [{ node: root as TimestampNode, depth: 0 }]
+  const seen = new Set<TimestampNode>()
+  let attestations = 0
+  while (pending.length) {
+    const { node, depth } = pending.pop()!
+    if (seen.has(node)) continue
+    seen.add(node); attestations += node.attestations.length
+    if (seen.size > 256 || depth > 64 || attestations > 64 || node.msg.length > 4096) {
+      throw new Error('SUTRA_OTS_PROOF_TOO_COMPLEX')
+    }
+    for (const child of node.ops.values()) pending.push({ node: child, depth: depth + 1 })
+  }
+}
+
+function assertCanonicalBytes(bytes: Uint8Array, canonical: ArrayLike<number>) {
+  if (canonical.length !== bytes.length || bytes.some((byte, index) => byte !== canonical[index])) {
+    throw new Error('SUTRA_OTS_INVALID_ENCODING')
+  }
+}
+
+/** Enforce the same resource limits before persisting a newly merged receipt. */
+export function serializeOtsProof(proof: DetachedTimestampFile) {
+  try {
+    assertBoundedTimestamp(proof.timestamp)
+    const bytes = proof.serializeToBytes()
+    if (!bytes.length || bytes.length > 64_000) throw new Error('SUTRA_OTS_INVALID_SIZE')
+    return bytes
+  } catch { throw new Error('SUTRA_OTS_INVALID_PROOF') }
+}
+
+/** Strict admission for stored proofs before upgrade or Bitcoin verification. */
+export function parseOtsProof(bytes: Buffer | Uint8Array) {
+  try {
+    if (!bytes.length || bytes.length > 64_000) throw new Error('SUTRA_OTS_INVALID_SIZE')
+    const proof = OpenTimestamps.DetachedTimestampFile.deserialize(bytes)
+    assertCanonicalBytes(bytes, serializeOtsProof(proof))
+    return proof
+  } catch { throw new Error('SUTRA_OTS_INVALID_PROOF') }
+}
+
 function parseTimestamp(bytes: Buffer, digest: Uint8Array) {
-  try { return Timestamp.deserialize(new Context.StreamDeserialization(bytes), Array.from(digest)) }
-  catch { throw new Error('SUTRA_OTS_INVALID_RESPONSE') }
+  try {
+    if (!bytes.length || bytes.length > 10_000) throw new Error('SUTRA_OTS_INVALID_SIZE')
+    const context = new Context.StreamDeserialization(bytes)
+    const timestamp = Timestamp.deserialize(context, Array.from(digest))
+    context.assertEof()
+    assertBoundedTimestamp(timestamp)
+    // EOF alone misses overruns and ignored bytes inside nested attestations.
+    const serialized = new Context.StreamSerialization()
+    timestamp.serialize(serialized)
+    assertCanonicalBytes(bytes, serialized.getOutput())
+    return timestamp
+  } catch { throw new Error('SUTRA_OTS_INVALID_RESPONSE') }
 }
 
 Calendar.RemoteCalendar.prototype.submit = async function (this: { url: string }, digest: Uint8Array) {
