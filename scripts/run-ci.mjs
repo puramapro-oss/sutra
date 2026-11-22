@@ -70,6 +70,7 @@ const nodeTests = [
   'qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts',
   'qa/t03-salad-recovery-20261014/adapter-recovery.test.mts',
   'scripts/test-t06-social-final.mts', 'scripts/test-t08-final-modes.mts',
+  'scripts/test-export-audio-receipt.mts',
   'scripts/test-insee.mjs', 'scripts/test-editor-export.mts', 'scripts/test-export-integration.mts', 'scripts/test-integration.mts', 'scripts/test-ltx-tiers.mjs', 'scripts/test-karma-split.mjs',
   'scripts/test-api-contracts.mts', 'scripts/test-env-contracts.mts', 'scripts/test-suno-contract.mts',
   'qa/t03-provider-complement-20261013/music-recovery.test.mts',

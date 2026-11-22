@@ -39,7 +39,7 @@ export interface VideoJob {
 /** A terminal receipt must agree with its durable stage outputs, including on replay. */
 export function hasCompletedJobResult(job: Pick<VideoJob, 'kind' | 'payload' | 'progress'>): boolean {
   const result = job.progress.result
-  const input = job.payload.input as { step?: unknown; musicStyle?: unknown; requiredTracks?: { voice?: boolean; music?: boolean }; config?: { default_voice_enabled?: boolean; default_music_genre?: string } } | undefined
+  const input = job.payload.input as { step?: unknown; musicStyle?: unknown; voiceVolume?: number; musicVolume?: number; requiredTracks?: { voice?: boolean; music?: boolean }; config?: { default_voice_enabled?: boolean; default_music_genre?: string } } | undefined
   const steps = job.progress.steps as Record<string, { status?: unknown; value?: unknown }> | undefined
   const music = steps?.['stage:music']
   if (result === null) return job.kind === 'production' && input?.step === 'music' && input.musicStyle === 'none'
@@ -81,7 +81,12 @@ export function hasCompletedJobResult(job: Pick<VideoJob, 'kind' | 'payload' | '
     || (musicRequired && (music?.status !== 'complete' || !url(music.value)))) return false
   const media = steps['stage:export'].value
   if (!record(media)) return false
-  try { assertFinalMedia(media as unknown as AssembleResult, raw, url(voice.value) || url(music?.value)) }
+  // Optional export tracks can remain checkpointed even when the editor mutes
+  // them. Only an explicit zero relaxes audio proof; required and legacy tracks
+  // still fail closed, as do all other pipeline kinds.
+  const requireAudio = (url(voice.value) && (job.kind !== 'export' || voiceRequired || input?.voiceVolume !== 0))
+    || (url(music?.value) && (job.kind !== 'export' || musicRequired || input?.musicVolume !== 0))
+  try { assertFinalMedia(media as unknown as AssembleResult, raw, requireAudio) }
   catch { return false }
   const output = job.kind === 'create' ? result.videoUrl : job.kind === 'auto' ? result.videoFinalUrl
     : job.kind === 'production' && input?.step === 'all' ? (record(result.assembly) ? result.assembly.url : undefined) : result.url
