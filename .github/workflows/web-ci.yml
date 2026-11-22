@@ -30,6 +30,10 @@ jobs:
       - name: Prepare pinned FFmpeg and Blender without APT
         run: python3 scripts/ci/prepare-contract-tools.py
       - run: npm run test:contracts
+      - name: Closed email relay and verified contact receipts (provider simulated)
+        run: node --experimental-vm-modules --test scripts/test-email-contact.mjs
+        env:
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
       - name: Offline account onboarding planner (no remote actions)
         run: node qa/account-onboarding/run.mjs
       - run: npm run test:media
@@ -134,6 +138,10 @@ jobs:
           NODE
       - name: Durable request and admin recovery in isolated browser fixtures
         run: node scripts/run-ci.mjs browser-recovery
+      - name: Help form to actual contact handler in Chromium and WebKit (provider simulated)
+        run: node --experimental-vm-modules --test scripts/test-email-contact-ui.mjs
+        env:
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
       - name: Explicit social accounts, truthful outcomes and accessible controls
         run: node scripts/run-ci.mjs browser-social
       - name: Cinema storyboard exports and explicit preview consent
