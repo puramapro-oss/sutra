@@ -8,7 +8,10 @@ mock.module('resend', { namedExports: { Resend: class {
   emails = { send: async (payload: Record<string, string>) => {
     messages.push(payload)
     if (providerThrows) throw new Error('SYNTHETIC_PRIVATE_MAIL_DIAGNOSTIC')
-    return { error: providerRefuses ? { message: 'SYNTHETIC_PRIVATE_MAIL_DIAGNOSTIC' } : null }
+    return {
+      data: providerRefuses ? null : { id: 'fixture-provider-receipt' },
+      error: providerRefuses ? { message: 'SYNTHETIC_PRIVATE_MAIL_DIAGNOSTIC' } : null,
+    }
   } }
 } } })
 const { POST } = await import('../../src/app/api/contact/route.ts')
