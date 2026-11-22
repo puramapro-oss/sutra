@@ -110,3 +110,171 @@ test('actual POST authenticates, bounds the body, gates OpenAI, sanitises errors
   assert.equal(failed.status, 500)
   assert.doesNotMatch(await failed.text(), /private|credentials|prompt/)
 })
+
+test('the actual SMARANA dependency preserves SUTRA admission, cancellation and accounting', async t => {
+  const { build } = await import('esbuild')
+  const { createRequire } = await import('node:module')
+  const { dirname } = await import('node:path')
+  const require = createRequire(import.meta.url)
+  const entry = require.resolve('@purama/smarana')
+  const success = { content: [{ type: 'text', text: JSON.stringify({ scenes: [scene] }) }],
+    stop_reason: 'end_turn', usage: { input_tokens: 10, output_tokens: 2 } }
+  const calls = { sql: [] as string[], ledger: [] as string[], connect: 0, release: 0, anthropic: 0, openai: 0 }
+  const ledger = {
+    async query(sql: string) {
+      calls.ledger.push(sql)
+      return { rows: sql.trimStart().startsWith('INSERT') ? [{ id: 'fixture-reservation' }] : [] }
+    },
+    release() { calls.release++ },
+  }
+  let connect = async () => ledger
+  let anthropic = async (_body: unknown, _request?: { signal?: AbortSignal }): Promise<unknown> => success
+  let upstreamStatus = 200
+  const fixture = {
+    pool: {
+      async query(sql: string) { calls.sql.push(sql); return { rows: [], rowCount: 1 } },
+      async connect() { calls.connect++; return connect() },
+    },
+    anthropic(body: unknown, request?: { signal?: AbortSignal }) {
+      calls.anthropic++
+      return anthropic(body, request)
+    },
+  }
+  const marker = '__sutraActualSmaranaTest'
+  Reflect.set(globalThis, marker, fixture)
+  const originalFetch = globalThis.fetch
+  const env = {
+    SMARANA_BENCH_PROVIDER: 'anthropic', OPENAI_API_KEY: 'fixture-only',
+    SUTRA_STORYBOARD_PROVIDER: 'openai', SUTRA_STORYBOARD_OPENAI_MODEL: 'gpt-test',
+    SUTRA_STORYBOARD_OPENAI_DAILY_LIMIT: '3',
+    SUTRA_STORYBOARD_OPENAI_RATES: JSON.stringify({ model: 'gpt-test', input: 2, cached: 0.2, write: 3, output: 5 }),
+  }
+  const previous = Object.fromEntries(Object.keys(env).map(key => [key, process.env[key]]))
+  Object.assign(process.env, env)
+  globalThis.fetch = async (input, init) => {
+    assert.equal(String(input), 'https://api.openai.com/v1/responses')
+    calls.openai++
+    assert.equal(init?.signal?.aborted, false)
+    return upstreamStatus !== 200 ? new Response('fixture upstream error', { status: upstreamStatus })
+      : Response.json({ model: 'gpt-test', status: 'completed', usage: { input_tokens: 10, output_tokens: 2 },
+        output: [{ type: 'message', role: 'assistant', status: 'completed',
+          content: [{ type: 'output_text', text: JSON.stringify({ scenes: [scene] }) }] }] })
+  }
+  t.after(() => {
+    globalThis.fetch = originalFetch
+    Reflect.deleteProperty(globalThis, marker)
+    for (const [key, value] of Object.entries(previous)) {
+      if (value === undefined) delete process.env[key]
+      else process.env[key] = value
+    }
+  })
+  const { outputFiles } = await build({
+    entryPoints: [entry], bundle: true, platform: 'node', format: 'cjs', write: false,
+    packages: 'external', plugins: [{
+      name: 'smarana-storage-and-provider-fixtures', setup(b) {
+        b.onResolve({ filter: /^\.\/db\.ts$/ }, args => args.resolveDir === dirname(entry)
+          ? { path: 'db', namespace: 'smarana-fixture' } : undefined)
+        b.onResolve({ filter: /^@anthropic-ai\/sdk$/ }, () => ({ path: 'anthropic', namespace: 'smarana-fixture' }))
+        b.onLoad({ filter: /.*/, namespace: 'smarana-fixture' }, args => ({ contents: args.path === 'db'
+          ? `export const getPool = () => globalThis.${marker}.pool`
+          : `export default class Anthropic { messages = { create: (...args) => globalThis.${marker}.anthropic(...args) } }` }))
+      },
+    }],
+  })
+  const bundle = { exports: {} as { smarana: { ask: Parameters<typeof generateStoryboard>[4] } } }
+  new Function('require', 'module', 'exports', outputFiles[0].text)(require, bundle, bundle.exports)
+  const ask = bundle.exports.smarana.ask
+  function reset() {
+    calls.sql.length = 0; calls.ledger.length = 0
+    calls.connect = 0; calls.release = 0; calls.anthropic = 0; calls.openai = 0
+    connect = async () => ledger
+    anthropic = async () => success
+    upstreamStatus = 200
+  }
+
+  await t.test('an already cancelled default request reaches neither storage nor a provider', async () => {
+    reset()
+    await assert.rejects(generateStoryboard(valid, fakeUser, 'smarana', AbortSignal.abort(), ask), { name: 'AbortError' })
+    assert.deepEqual(calls, { sql: [], ledger: [], connect: 0, release: 0, anthropic: 0, openai: 0 })
+  })
+  await t.test('an active default request still produces one valid storyboard and records its usage', async () => {
+    reset()
+    assert.deepEqual(await generateStoryboard(valid, fakeUser, 'smarana', signal, ask), { scenes: [scene] })
+    assert.equal(calls.anthropic, 1)
+    assert.equal(calls.openai, 0)
+    assert.equal(calls.sql.filter(sql => sql.includes('INSERT INTO smarana.usage')).length, 1)
+  })
+  await t.test('cancelling an in-flight default request reaches its provider without a retry', async () => {
+    reset()
+    const cancel = new AbortController()
+    const entered = Promise.withResolvers<void>()
+    const response = Promise.withResolvers<unknown>()
+    anthropic = async (_body, request) => {
+      entered.resolve()
+      request?.signal?.addEventListener('abort', () => response.reject(request.signal!.reason), { once: true })
+      return response.promise
+    }
+    let observed: unknown
+    const pending = generateStoryboard(valid, fakeUser, 'smarana', cancel.signal, ask)
+      .then(value => { observed = value }, error => { observed = error })
+    try {
+      await entered.promise
+      cancel.abort()
+      await new Promise(resolve => setImmediate(resolve))
+      assert.ok(observed instanceof Error)
+      assert.equal(observed.name, 'AbortError')
+    } finally {
+      response.reject(cancel.signal.reason)
+      await pending
+    }
+    assert.equal(calls.anthropic, 1)
+    assert.equal(calls.openai, 0)
+  })
+  await t.test('an active OpenAI request passes the real adapter and settles once', async () => {
+    reset()
+    assert.deepEqual(await generateStoryboard(valid, fakeUser, 'openai', signal, ask), { scenes: [scene] })
+    assert.equal(calls.connect, 1)
+    assert.equal(calls.ledger.filter(sql => sql === 'COMMIT').length, 1)
+    assert.equal(calls.sql.length, 1)
+    assert.equal(calls.openai, 1)
+    assert.equal(calls.anthropic, 0)
+  })
+  await t.test('an already cancelled OpenAI request has no reservation or provider call', async () => {
+    reset()
+    await assert.rejects(generateStoryboard(valid, fakeUser, 'openai', AbortSignal.abort(), ask), { code: 'TIMEOUT' })
+    assert.deepEqual(calls, { sql: [], ledger: [], connect: 0, release: 0, anthropic: 0, openai: 0 })
+  })
+  await t.test('OpenAI cancellation returns while a stalled reservation completes once', async () => {
+    reset()
+    const cancel = new AbortController()
+    const entered = Promise.withResolvers<void>()
+    const reserved = Promise.withResolvers<typeof ledger>()
+    connect = async () => { entered.resolve(); return reserved.promise }
+    let observed: unknown
+    const pending = generateStoryboard(valid, fakeUser, 'openai', cancel.signal, ask)
+      .then(value => { observed = value }, error => { observed = error })
+    try {
+      await entered.promise
+      cancel.abort()
+      await new Promise(resolve => setImmediate(resolve))
+      assert.equal((observed as { code?: string })?.code, 'TIMEOUT')
+    } finally {
+      reserved.resolve(ledger)
+      await pending
+      await new Promise(resolve => setImmediate(resolve))
+    }
+    assert.equal(calls.ledger.filter(sql => sql === 'COMMIT').length, 1)
+    assert.equal(calls.release, 1)
+    assert.equal(calls.openai, 0)
+    assert.equal(calls.anthropic, 0)
+  })
+  await t.test('an OpenAI upstream failure never falls back to the default provider', async () => {
+    reset()
+    upstreamStatus = 429
+    await assert.rejects(generateStoryboard(valid, fakeUser, 'openai', signal, ask), { code: 'UPSTREAM' })
+    assert.equal(calls.connect, 1)
+    assert.equal(calls.openai, 1)
+    assert.equal(calls.anthropic, 0)
+    assert.equal(calls.sql.length, 0)
+  })
+})

@@ -41,7 +41,7 @@ Pour une publicité, utilise les caractéristiques fournies et termine par un ap
 Réponds uniquement par un objet JSON de la forme
 {"scenes":[{"visual_prompt":"...","description":"...","duration_seconds":5,"transition":"cut"}]}.`
   const options: AskOptions = { appSlug: 'sutra', userId, tier: 'main', maxTokens: 2048,
-    system, message: `Prépare le storyboard de cette idée : ${data.idea}` }
+    system, message: `Prépare le storyboard de cette idée : ${data.idea}`, signal }
   if (provider === 'openai') {
     options.openAIStoryboard = { signal }
     options.maxTokens = 4096
