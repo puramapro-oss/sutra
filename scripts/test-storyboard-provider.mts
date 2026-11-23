@@ -120,12 +120,20 @@ test('the actual SMARANA dependency preserves SUTRA admission, cancellation and 
   const success = { content: [{ type: 'text', text: JSON.stringify({ scenes: [scene] }) }],
     stop_reason: 'end_turn', usage: { input_tokens: 10, output_tokens: 2 } }
   const calls = { sql: [] as string[], ledger: [] as string[], connect: 0, release: 0, anthropic: 0, openai: 0 }
+  const releasedWith: boolean[] = []
+  let reservationFault: 'none' | 'begin' | 'commit' | 'rollback' | 'quota' = 'none'
   const ledger = {
     async query(sql: string) {
       calls.ledger.push(sql)
-      return { rows: sql.trimStart().startsWith('INSERT') ? [{ id: 'fixture-reservation' }] : [] }
+      if ((sql.startsWith('BEGIN') && reservationFault === 'begin')
+        || (sql === 'COMMIT' && reservationFault === 'commit')
+        || (sql.startsWith('SELECT pg_advisory') && reservationFault === 'rollback')
+        || (sql === 'ROLLBACK' && ['rollback', 'quota'].includes(reservationFault))) {
+        throw new Error('fixture reservation boundary failure')
+      }
+      return { rows: sql.trimStart().startsWith('INSERT') && reservationFault !== 'quota' ? [{ id: 'fixture-reservation' }] : [] }
     },
-    release() { calls.release++ },
+    release(destroy?: boolean) { calls.release++; releasedWith.push(destroy === true) },
   }
   let connect = async () => ledger
   let anthropic = async (_body: unknown, _request?: { signal?: AbortSignal }): Promise<unknown> => success
@@ -186,6 +194,7 @@ test('the actual SMARANA dependency preserves SUTRA admission, cancellation and 
   const ask = bundle.exports.smarana.ask
   function reset() {
     calls.sql.length = 0; calls.ledger.length = 0
+    releasedWith.length = 0; reservationFault = 'none'
     calls.connect = 0; calls.release = 0; calls.anthropic = 0; calls.openai = 0
     connect = async () => ledger
     anthropic = async () => success
@@ -238,7 +247,25 @@ test('the actual SMARANA dependency preserves SUTRA admission, cancellation and 
     assert.equal(calls.sql.length, 1)
     assert.equal(calls.openai, 1)
     assert.equal(calls.anthropic, 0)
+    assert.deepEqual(releasedWith, [false])
   })
+  for (const [fault, expectedCode] of [
+    ['begin', 'METER'], ['commit', 'METER'], ['rollback', 'METER'], ['quota', 'LIMIT'],
+  ] as const) {
+    await t.test(`the installed SMARANA discards an uncertain ${fault} connection before any provider call`, async () => {
+      reset()
+      reservationFault = fault
+      await assert.rejects(generateStoryboard(valid, fakeUser, 'openai', signal, ask), { code: expectedCode })
+      assert.deepEqual(releasedWith, [true])
+      assert.equal(calls.connect, 1)
+      assert.equal(calls.release, 1)
+      assert.equal(calls.ledger.filter(sql => sql === 'COMMIT').length, fault === 'commit' ? 1 : 0)
+      assert.equal(calls.ledger.filter(sql => sql === 'ROLLBACK').length, 1)
+      assert.equal(calls.openai, 0)
+      assert.equal(calls.anthropic, 0)
+      assert.equal(calls.sql.length, 0)
+    })
+  }
   await t.test('an already cancelled OpenAI request has no reservation or provider call', async () => {
     reset()
     await assert.rejects(generateStoryboard(valid, fakeUser, 'openai', AbortSignal.abort(), ask), { code: 'TIMEOUT' })

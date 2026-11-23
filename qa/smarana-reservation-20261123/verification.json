@@ -1,0 +1,168 @@
+{
+  "base_commit": "3a7d538deb529d14dc30815ede85b45aa525b91b",
+  "smarana_pin": "7a6b5b8583ec9f0a5b1c1da5bf59f8486d545e47",
+  "other_lock_entries_unchanged": true,
+  "installed_source_files": {
+    "cache.ts": {
+      "sha256": "770aa9396060779c8ceb5b0f1e71aca00148a0d9838f649d38b85c111de81960",
+      "git_blob": "967ad27c01fb8912861b1e88a4ed16688ccd34b7"
+    },
+    "client.ts": {
+      "sha256": "f1511828aa25626e0cb7ba3fa73c248d2574485b4d4054fa420b4c0971ad0933",
+      "git_blob": "eae50e5756e7bd734a3376955970f4bdebe77380"
+    },
+    "db.ts": {
+      "sha256": "f067242a1ebb99d5e71449b7794d65812b3464395265531ac51e7b56799184f2",
+      "git_blob": "d167edc01d753c2bb07253b61c25b1fe71b78bbc"
+    },
+    "gateway.ts": {
+      "sha256": "d1d4d1d8f301e897d5c33774f147945d9ba112788f920a7067efc94926834ea5",
+      "git_blob": "a06d17497084f3f5a73efb8c11f086aba55c3f11"
+    },
+    "glm-bench-adapter.ts": {
+      "sha256": "5931233063404130bb0337c3ce8d31bd6c222d7e85aad5e7bb5570648d78d8e7",
+      "git_blob": "9758aac5cb14380033717ab2bdc65712b24094f1"
+    },
+    "index.ts": {
+      "sha256": "d235878778ce93e2b0d56d3d977969612a4583eb3290203535ca4ef355a20301",
+      "git_blob": "8a7d36ced4a79405154fd4ae63ca8f3ceae73a88"
+    },
+    "memory.ts": {
+      "sha256": "b5587e269a806ff96f6f0f767c9fcf9b57cff1953593c0e4ced158a17cbd32f6",
+      "git_blob": "85f177331e4f6c5a88541c4a9215259641cd18b9"
+    },
+    "models.ts": {
+      "sha256": "afe713f32c06e3ba5b145f8f52997a748bf7f4b75272d4c1b7b14ba7b73767cd",
+      "git_blob": "8300aa1a3f03373121ca30a4fc0201d2e59283e9"
+    },
+    "openai-storyboard.ts": {
+      "sha256": "d0d3755252941452b62a7d5a99546f60a6566e94567f4615645aaebef935ce49",
+      "git_blob": "7d3234ddd887d46eb3c6cf897ca1435c69f828a1"
+    },
+    "response.ts": {
+      "sha256": "76ab6f0e0a6e9b5829d32348edefef2adec2537f907ac911ace068f809eced53",
+      "git_blob": "a6d2d2bfd568245326db60f340714794377c73d0"
+    },
+    "router.ts": {
+      "sha256": "b2c807a606e395cd5e1fa5f6fdd30d440150b8d215a1ea73de60ac51365af43c",
+      "git_blob": "adb52801da67d87b1e687110e414840174c1d85c"
+    },
+    "types.ts": {
+      "sha256": "5cc1057ed808dfd8e17d018944e9b96376fae52ad665ff495b5905bee4c8b7d6",
+      "git_blob": "b04fd40301e685dffedbc86ead44c866b2202b02"
+    },
+    "usage.ts": {
+      "sha256": "0b57147038dffc80f5bf2f0121050dd1e5fe962369e8d3e2c2317682e551d80e",
+      "git_blob": "6a507331a10588654548ebe34b23bb7e93dd0b95"
+    },
+    "validation.ts": {
+      "sha256": "da13f1a570420c9f6d6c119da7e325df2e9f9bd2350169625dd1420b85ac8a9d",
+      "git_blob": "6d8eb449af84b43980022a31a800c2907b8419bb"
+    }
+  },
+  "consumer_tests": {
+    "command": "node --experimental-test-module-mocks --import tsx --test scripts/test-storyboard-provider.mts",
+    "cwd": "/workspace/scratch/e741fbb58d85/sutra",
+    "exit_code": 0,
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0
+  },
+  "reproduction": {
+    "old_source_git_blob": "cf1fc31d58d14b1359ff32bbe4aff5606a50fb6e",
+    "current_source_sha256": "d0d3755252941452b62a7d5a99546f60a6566e94567f4615645aaebef935ce49",
+    "command": [
+      "node",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "scripts/test-storyboard-provider.mts"
+    ],
+    "before_exit_code": 1,
+    "restoration_verified": true
+  },
+  "quality": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 23444
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "."
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 32387
+    },
+    {
+      "name": "build",
+      "command": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build",
+        "--webpack"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 98911
+    }
+  ],
+  "lint": {
+    "errors": 0,
+    "warnings": 74
+  },
+  "logs": {
+    "build.log.gz": {
+      "sha256": "271f643f0d8ad27874720f2f7b52516dd60877b24ef804cdf3754a6f2ac6cbf6",
+      "uncompressed_sha256": "9d006b8f99a1d6e3df5243cc345c7e6bc03d2177c175539d23cd4b6998d940b4"
+    },
+    "consumer-before.log.gz": {
+      "sha256": "6b7f90064d91a6dcd986cd4c3302c661239eca8d603e8cd9dbbf7c9ce0802b16",
+      "uncompressed_sha256": "c0d2444add5fb449d2f61c2981cab8a7b18230c5e6c1521bafa13a1b1b2f70c7"
+    },
+    "consumer-test.log.gz": {
+      "sha256": "9785407b69d63091c41a187fb91a626a09f532c549dbb8c5bd20d29317bee194",
+      "uncompressed_sha256": "b83ce2be2dcb6c61102d1eccbfcdb52f354545f0a44d998baf6c173aca8ee7e7"
+    },
+    "install.log.gz": {
+      "sha256": "83deb0ee0a699319496c21445d87a62a409282829e63d3c32242c64652bad668",
+      "uncompressed_sha256": "e0faec0bcc15e1d211930665e2e5da211abe8f7ed4a48d16b22f74f01506536f"
+    },
+    "lint.log.gz": {
+      "sha256": "2e2143861f4ef8caf0eb00a50b2f734e4f7443dd46f08cec97c3d7c74cb2d01f",
+      "uncompressed_sha256": "b24ba0cf71fc2908294b1b3ce9861fb68de2e2c508e97961ce33691671ceb980"
+    },
+    "quality-driver.log.gz": {
+      "sha256": "a02c3d909154d094406a17e7547b9a6b7440a12b4058889bf9b661617ea9beaf",
+      "uncompressed_sha256": "9d45cf09a34ed7cb2551c05f55c12d2c0c4b6c29f12f0a4733fd032357174324"
+    },
+    "rebuild.log.gz": {
+      "sha256": "27f619dafa8aae387a31ee540ee366858150af83256d5e88d9547f49366a7612",
+      "uncompressed_sha256": "8899a0881013f1c6f62f807021bd5f22344bede1168dc515ef2ed62102d51a4f"
+    },
+    "typecheck.log.gz": {
+      "sha256": "f61f27bd17de546264aa58f40f3aafaac7021e0ef69c17f6b1b4cd7664a037ec",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "remote_ci": "not received for this revision",
+  "provider_requests": "simulated",
+  "deployment": false,
+  "production_migrations": false
+}
