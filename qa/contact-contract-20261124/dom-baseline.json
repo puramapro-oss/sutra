@@ -1,0 +1,266 @@
+{
+  "runtime": "v24.22.3",
+  "kind": "React/JSDOM actual components and actual handler; not browser",
+  "cwd": "/workspace/scratch/7e7749c0a6b0/contact-ui-baseline",
+  "sourceHashes": {
+    "src/app/contact/page.tsx": "60bf5bcbe284574044036b385d1efff72e95b73b33a17ae033b3e68b2b7f1cea",
+    "src/components/help/ContactForm.tsx": "bea38ec703ca1c0e5ed1a56792aaa486884aa150e405bea31978112ea72282d6",
+    "src/app/api/contact/route.ts": "0e383eb1a3415b1eb7c2c88a4617849bfd9d20296100ef4022fc6c3dfbf08088",
+    "src/lib/validators.ts": "0f6a83d8791995ba9d87b05a3b9f0870c3dd11e7feec706757f3fb315585fdc5"
+  },
+  "pass": 1,
+  "fail": 35,
+  "results": [
+    {
+      "type": "page",
+      "name": "labels and field constraints",
+      "status": "FAIL",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(input.labels?.length>0)\n",
+      "duration_ms": 343
+    },
+    {
+      "type": "page",
+      "name": "trimmed payload and preserved sender name",
+      "status": "FAIL",
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      email: 'person@example.invalid',\n+     message: '  Impossible de retrouver ma vidéo.  ',\n+     name: '  Camille  ',\n+     subject: '  Retrouver ma vidéo  '\n-     message: 'Impossible de retrouver ma vidéo.',\n-     name: 'Camille',\n-     subject: 'Retrouver ma vidéo'\n    }\n  ]\n",
+      "duration_ms": 167
+    },
+    {
+      "type": "page",
+      "name": "minimum lengths",
+      "status": "FAIL",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(f.d.querySelector('[role=status]'))\n",
+      "duration_ms": 180
+    },
+    {
+      "type": "page",
+      "name": "maximum lengths",
+      "status": "FAIL",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(f.d.querySelector('[role=status]'))\n",
+      "duration_ms": 150
+    },
+    {
+      "type": "page",
+      "name": "refuses HTTP200 missing-success",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'value')",
+      "duration_ms": 156
+    },
+    {
+      "type": "page",
+      "name": "refuses HTTP200 false-success",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'value')",
+      "duration_ms": 135
+    },
+    {
+      "type": "page",
+      "name": "refuses HTTP200 non-json",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'value')",
+      "duration_ms": 141
+    },
+    {
+      "type": "page",
+      "name": "validation name length5",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 141
+    },
+    {
+      "type": "page",
+      "name": "validation subject length5",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'value')",
+      "duration_ms": 165
+    },
+    {
+      "type": "page",
+      "name": "validation message length10",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 154
+    },
+    {
+      "type": "page",
+      "name": "validation email length7",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 147
+    },
+    {
+      "type": "page",
+      "name": "validation name length101",
+      "status": "FAIL",
+      "error": "Cannot read properties of undefined (reading 'value')",
+      "duration_ms": 124
+    },
+    {
+      "type": "page",
+      "name": "validation subject length201",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 163
+    },
+    {
+      "type": "page",
+      "name": "validation message length2001",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 139
+    },
+    {
+      "type": "page",
+      "name": "provider error retains draft and explicit retry",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 127
+    },
+    {
+      "type": "page",
+      "name": "same-tick single POST and frozen inputs",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n",
+      "duration_ms": 115
+    },
+    {
+      "type": "page",
+      "name": "confirmation terminal",
+      "status": "FAIL",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(f.d.querySelector('[role=status]'))\n",
+      "duration_ms": 121
+    },
+    {
+      "type": "page",
+      "name": "unmount ignores late confirmation",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n1 !== 0\n",
+      "duration_ms": 140
+    },
+    {
+      "type": "help",
+      "name": "labels and field constraints",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n50 !== 100\n",
+      "duration_ms": 76
+    },
+    {
+      "type": "help",
+      "name": "trimmed payload and preserved sender name",
+      "status": "FAIL",
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      email: 'person@example.invalid',\n+     message: '  Impossible de retrouver ma vidéo.  ',\n+     name: '  Camille  ',\n+     subject: '  Retrouver ma vidéo  '\n-     message: 'Impossible de retrouver ma vidéo.',\n-     name: 'Camille',\n-     subject: 'Retrouver ma vidéo'\n    }\n  ]\n",
+      "duration_ms": 113
+    },
+    {
+      "type": "help",
+      "name": "minimum lengths",
+      "status": "FAIL",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(f.d.querySelector('[role=status]'))\n",
+      "duration_ms": 132
+    },
+    {
+      "type": "help",
+      "name": "maximum lengths",
+      "status": "FAIL",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(f.d.querySelector('[role=status]'))\n",
+      "duration_ms": 110
+    },
+    {
+      "type": "help",
+      "name": "refuses HTTP200 missing-success",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n'' !== 'Camille'\n",
+      "duration_ms": 109
+    },
+    {
+      "type": "help",
+      "name": "refuses HTTP200 false-success",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n'' !== 'Camille'\n",
+      "duration_ms": 103
+    },
+    {
+      "type": "help",
+      "name": "refuses HTTP200 non-json",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n'' !== 'Camille'\n",
+      "duration_ms": 105
+    },
+    {
+      "type": "help",
+      "name": "validation name length5",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n'' !== '     '\n",
+      "duration_ms": 105
+    },
+    {
+      "type": "help",
+      "name": "validation subject length5",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n'' !== 'Camille'\n",
+      "duration_ms": 106
+    },
+    {
+      "type": "help",
+      "name": "validation message length10",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n'' !== 'Camille'\n",
+      "duration_ms": 107
+    },
+    {
+      "type": "help",
+      "name": "validation email length7",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 103
+    },
+    {
+      "type": "help",
+      "name": "validation name length101",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN'\n",
+      "duration_ms": 120
+    },
+    {
+      "type": "help",
+      "name": "validation subject length201",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 108
+    },
+    {
+      "type": "help",
+      "name": "validation message length2001",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 114
+    },
+    {
+      "type": "help",
+      "name": "provider error retains draft and explicit retry",
+      "status": "FAIL",
+      "error": "Visible alert required",
+      "duration_ms": 109
+    },
+    {
+      "type": "help",
+      "name": "same-tick single POST and frozen inputs",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n",
+      "duration_ms": 106
+    },
+    {
+      "type": "help",
+      "name": "confirmation terminal",
+      "status": "FAIL",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(f.d.querySelector('[role=status]'))\n",
+      "duration_ms": 118
+    },
+    {
+      "type": "help",
+      "name": "unmount ignores late confirmation",
+      "status": "PASS",
+      "duration_ms": 122
+    }
+  ]
+}

@@ -1,3 +1,11 @@
+# SUTRA — formulaires de contact, reprise du 24 novembre 2026
+
+Périmètre existant `PRET_A_CODER` : correction et qualification des formulaires `/contact` et `/help`, autorisées par la demande de reprise du code du 24 novembre. Source : PR3, `9b6d96a127c84adc388496faefe95e53600a83d1`, arbre `38337fae0780eef66d424c2480fcde69498ec3c0`, identique à la base locale `6e72e57`. Branche isolée : `fix/sutra-contact-contract-20261124`. Les copies du Mac et le travail IAO/ONE en cours sont conservés.
+
+Responsabilités : `/root/etat_local` route, schéma et contrats serveur ; `/root` deux formulaires, composition et CI ; `/root/etat_github` tests des composants et des deux moteurs navigateur ; `/root/etat_mac` revue indépendante en lecture seule. Critères : mêmes contraintes client/serveur, nom conservé, aucune confirmation sans reçu `success: true`, une requête pour deux soumissions simultanées, brouillon conservé sur refus, absence de notification tardive après démontage, destinataire fixe et limiteur inchangés. Pas de nouveau registre de contact ni de garantie d'idempotence distribuée.
+
+Réception détaillée et limites : `qa/contact-contract-20261124/README.md`. La CI exacte du nouveau commit et l'intégration de la branche de revue doivent être reçues séparément. Les états anciens ci-dessous sont conservés comme historique ; aucun déploiement de production n'est inclus dans ce correctif.
+
 # SUTRA T01 — correctif CI légal, candidat successeur de f953
 
 Séquençage du harnais légal WebKit corrigé après CI39323751415 :46tests de barrière et15contrôles par moteur PASS, build production etlint ciblé PASS. Aucun changement produit supplémentaire. Source/manifeste et preuve rouge conservés dans qa/t01-certification-20261019/ci-legal-read-sequencing/. Prochaine vérification : CI puis ACK personnels T02–T08 sur le nouveau SHA exact consigné dans le registre partagé. R107 réservé T03 ; OVH/DB arrêtés, aucun redéploiement sans validation explicite. Les états suivants restent historiques.

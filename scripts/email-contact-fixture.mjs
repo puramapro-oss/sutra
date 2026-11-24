@@ -1,15 +1,29 @@
 import { build } from 'esbuild'
 import { resolve } from 'node:path'
 
-export async function compileContactFixture() {
+export async function compileContactFixture(type = 'escalade') {
+  const components = {
+    escalade: "import { EscaladeForm as ContactFixture } from './src/app/aide/EscaladeForm.tsx';",
+    page: "import ContactFixture from './src/app/contact/page.tsx';",
+    help: "import ContactFixture from './src/components/help/ContactForm.tsx';",
+  }
+  if (!Object.hasOwn(components, type)) throw new Error(`Unknown contact fixture: ${type}`)
   const result = await build({
     stdin: { resolveDir: process.cwd(), loader: 'js', contents: `
       import { createElement, StrictMode } from 'react';
       import { createRoot } from 'react-dom/client';
-      import { EscaladeForm } from './src/app/aide/EscaladeForm.tsx';
-      window.contactFixture = { toasts: [] };
-      createRoot(document.getElementById('root')).render(
-        createElement(StrictMode, null, createElement(EscaladeForm)));
+      ${components[type]}
+      let root;
+      function mount() {
+        if (root) throw new Error('Contact fixture is already mounted');
+        root = createRoot(document.getElementById('root'));
+        root.render(createElement(StrictMode, null, createElement(ContactFixture)));
+      }
+      window.contactFixture = {
+        toasts: [], mount,
+        unmount() { root?.unmount(); root = undefined; }
+      };
+      mount();
     ` },
     plugins: [{ name: 'contact-toast-observer', setup(builder) {
       builder.onResolve({ filter: /^sonner$/ }, args => ({ path: args.path, namespace: 'contact-fixture' }))

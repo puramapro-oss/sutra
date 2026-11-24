@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const { subject, message, email } = parsed.data
+    const { name, subject, message, email } = parsed.data
 
     // Keep imports/builds independent of provider configuration. Construct the
     // client only after this fixed-recipient request passed validation.
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       to: 'matiss.frasne@gmail.com',
       replyTo: email,
       subject: `[SUTRA Contact] ${subject}`,
-      text: `Nouveau message de contact SUTRA\nDe : ${email}\nSujet : ${subject}\n\n${message}`,
+      text: `Nouveau message de contact SUTRA\n${name ? `Nom : ${name}\n` : ''}De : ${email}\nSujet : ${subject}\n\n${message}`,
     })
     if (error || typeof data?.id !== 'string' || !data.id.trim()) {
       return NextResponse.json({ error: 'Erreur envoi message' }, { status: 502 })
