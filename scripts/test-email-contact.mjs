@@ -131,6 +131,75 @@ test('contact accepts the help payload only for the fixed support recipient and 
   assert.equal('html' in sent, false)
 })
 
+test('contact preserves the submitted name and trims visible fields before provider admission', async () => {
+  const f = await emailHarness()
+  const { POST } = await f.module('src/app/api/contact/route.ts')
+  const response = await POST(jsonRequest('/api/contact', {
+    name: '  Camille  ', email: '  person@example.invalid  ',
+    subject: '  Demande d’aide SUTRA  ', message: '  Impossible de retrouver ma vidéo.  ',
+  }))
+  assert.equal(response.status, 200)
+  assert.deepEqual(await response.json(), { success: true })
+  assert.equal(f.state.sends.length, 1)
+  assert.deepEqual(f.state.sends[0], {
+    from: 'SUTRA Contact <noreply@purama.dev>', to: 'matiss.frasne@gmail.com',
+    replyTo: 'person@example.invalid', subject: '[SUTRA Contact] Demande d’aide SUTRA',
+    text: 'Nouveau message de contact SUTRA\nNom : Camille\nDe : person@example.invalid\nSujet : Demande d’aide SUTRA\n\nImpossible de retrouver ma vidéo.',
+  })
+})
+
+test('the existing escalation payload keeps its embedded name without a second name field', async () => {
+  const f = await emailHarness()
+  const { POST } = await f.module('src/app/api/contact/route.ts')
+  const response = await POST(jsonRequest('/api/contact', contactBody))
+  assert.equal(response.status, 200)
+  assert.equal(f.state.sends.length, 1)
+  assert.equal(f.state.sends[0].text,
+    `Nouveau message de contact SUTRA\nDe : ${contactBody.email}\nSujet : ${contactBody.subject}\n\n${contactBody.message}`)
+})
+
+for (const name of [null, 42, {}, '', '   ', 'n'.repeat(101)]) {
+  test(`invalid supplied contact name is rejected before any provider call: ${JSON.stringify(name)}`, async () => {
+    const f = await emailHarness()
+    const { POST } = await f.module('src/app/api/contact/route.ts')
+    const response = await POST(jsonRequest('/api/contact', { ...contactBody, name }))
+    assert.equal(response.status, 400)
+    assert.equal(f.state.constructors, 0)
+    assert.equal(f.state.sends.length, 0)
+  })
+}
+
+for (const [field, value] of [
+  ['subject', '    x    '], ['subject', 's'.repeat(201)],
+  ['message', '             '], ['message', 'm'.repeat(2001)],
+]) {
+  test(`contact ${field} bounds apply to meaningful trimmed content: ${value.length} characters`, async () => {
+    const f = await emailHarness()
+    const { POST } = await f.module('src/app/api/contact/route.ts')
+    const response = await POST(jsonRequest('/api/contact', { ...contactBody, [field]: value }))
+    assert.equal(response.status, 400)
+    assert.equal(f.state.constructors, 0)
+    assert.equal(f.state.sends.length, 0)
+  })
+}
+
+test('contact accepts the exact normalized field limits without truncating user content', async () => {
+  const f = await emailHarness()
+  const { POST } = await f.module('src/app/api/contact/route.ts')
+  const name = 'N'.repeat(100)
+  const subject = 'S'.repeat(200)
+  const message = 'M'.repeat(2000)
+  const response = await POST(jsonRequest('/api/contact', {
+    name: ` ${name} `, subject: ` ${subject} `, message: ` ${message} `,
+    email: contactBody.email,
+  }))
+  assert.equal(response.status, 200)
+  assert.equal(f.state.sends.length, 1)
+  assert.equal(f.state.sends[0].subject, `[SUTRA Contact] ${subject}`)
+  assert.ok(f.state.sends[0].text.includes(`\nNom : ${name}\n`))
+  assert.ok(f.state.sends[0].text.endsWith(`\n\n${message}`))
+})
+
 test('contact still validates its existing contract and limits provider admission across forged identities', async () => {
   const invalid = await emailHarness()
   const invalidRoute = await invalid.module('src/app/api/contact/route.ts')

@@ -139,7 +139,7 @@ jobs:
       - name: Durable request and admin recovery in isolated browser fixtures
         run: node scripts/run-ci.mjs browser-recovery
       - name: Help form to actual contact handler in Chromium and WebKit (provider simulated)
-        run: node --experimental-vm-modules --test scripts/test-email-contact-ui.mjs
+        run: node --experimental-vm-modules --test --test-concurrency=1 scripts/test-email-contact-ui.mjs scripts/test-contact-forms-ui.mjs
         env:
           NODE_OPTIONS: --require=./qa/t08/offline.cjs
       - name: Explicit social accounts, truthful outcomes and accessible controls
