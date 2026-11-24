@@ -27,8 +27,13 @@ import type { PresetTemplate } from '@/data/template-data'
 const supabase = createClient()
 
 export default function TemplatesPage() {
+  const auth = useAuth()
+  return <TemplatesPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function TemplatesPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
   const router = useRouter()
-  const { profile, loading: authLoading } = useAuth()
+  const { profile, loading: authLoading } = auth
 
   const {
     userTemplates,
@@ -109,7 +114,7 @@ export default function TemplatesPage() {
             <h1 className="text-2xl sm:text-3xl font-bold text-white" data-testid="templates-title">
               Bibliotheque de templates
             </h1>
-            <p className="text-sm text-white/40 mt-1">
+            <p className="text-sm text-white/60 mt-1">
               {PRESET_TEMPLATES.length} modeles dans {CATEGORIES.length - 1} categories pour creer tes
               videos en un clic
             </p>

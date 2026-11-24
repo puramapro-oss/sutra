@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { createServerClient } from '@/lib/supabase-server'
 import { generateVoice } from '@/lib/elevenlabs'
 import { uploadToStorage } from '@/lib/storage'
+import { withMediaOwner } from '@/lib/private-media'
 import { logApiCall } from '@/lib/logger'
 import { enforceRateLimit } from '@/lib/rate-limit'
 
@@ -41,7 +42,7 @@ export async function POST(req: Request) {
     await logApiCall(user.id, 'elevenlabs', 'generateVoice', 'success', Date.now() - start)
 
     const path = `voices/${user.id}/${Date.now()}.mp3`
-    const url = await uploadToStorage(path, audioBuffer, 'audio/mpeg')
+    const url = await withMediaOwner(user.id, () => uploadToStorage(path, audioBuffer, 'audio/mpeg'))
 
     return NextResponse.json({ url })
   } catch (err) {

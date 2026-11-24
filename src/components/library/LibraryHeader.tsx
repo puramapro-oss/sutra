@@ -18,7 +18,7 @@ export default function LibraryHeader({ totalCount, onNewFolder, onNewVideo }: L
           {totalCount} video{totalCount !== 1 ? 's' : ''} au total
         </p>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Button
           data-testid="library-new-folder-btn"
           variant="secondary"

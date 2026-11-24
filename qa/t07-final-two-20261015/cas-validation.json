@@ -1,0 +1,24 @@
+{
+  "before": {
+    "PASS": 1,
+    "FAIL": 10
+  },
+  "after": {
+    "PASS": 11,
+    "FAIL": 0
+  },
+  "regressions": {
+    "PASS": 17,
+    "FAIL": 0
+  },
+  "typecheck": {
+    "command": "node_modules/.bin/tsc --noEmit --incremental false",
+    "exitCode": 0
+  },
+  "lint": {
+    "command": "node_modules/.bin/eslint 'src/app/(dashboard)/auto/schedules/page.tsx' 'src/app/(dashboard)/auto/settings/page.tsx' qa/t07-final-two-20261015/cas-checks.mjs qa/t07-final-two-20261015/run.mjs --max-warnings 0",
+    "exitCode": 0
+  },
+  "backendRuntime": "NON TEST\u00c9; fixtures implement published T01 CAS contract",
+  "globalBuild": "centralized T01; not repeated"
+}

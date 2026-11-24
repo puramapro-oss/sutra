@@ -1,0 +1,397 @@
+{
+  "baseCommit": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: edit IANA/frequency/time preserves identity and theme associations",
+      "status": "PASS"
+    },
+    {
+      "name": "375: pause error is visible and retry changes only intended schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "375: resume lost acknowledgement reconciles once, reload preserves state",
+      "status": "PASS"
+    },
+    {
+      "name": "375: keyboard, labels, overflow and relevant axe rules",
+      "status": "PASS"
+    },
+    {
+      "name": "375: invalid zone and missing days block requests with readable error",
+      "status": "PASS"
+    },
+    {
+      "name": "375: monthly edit retains explicit cadence and deletion lost ACK survives reload",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: edit IANA/frequency/time preserves identity and theme associations",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: pause error is visible and retry changes only intended schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: resume lost acknowledgement reconciles once, reload preserves state",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: keyboard, labels, overflow and relevant axe rules",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: invalid zone and missing days block requests with readable error",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: monthly edit retains explicit cadence and deletion lost ACK survives reload",
+      "status": "PASS"
+    },
+    {
+      "name": "concurrent modification to same schedule refuses overwrite",
+      "status": "PASS"
+    },
+    {
+      "name": "successful HTTP with wrong configuration never reports save success",
+      "status": "PASS"
+    },
+    {
+      "name": "failed or malformed initial load cannot expose destructive controls",
+      "status": "PASS"
+    },
+    {
+      "name": "slow GET has bounded loader and safe explicit recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "edit-375",
+      "interactionMs": 369.6309999999994,
+      "writes": 1,
+      "fixtureDelayMs": 120
+    },
+    {
+      "name": "axe-375",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-memoire\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/memory\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-memoire\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-memoire\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/memory\">",
+              "target": [
+                "a[data-testid=\"auto-tab-memoire\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-videos\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/videos\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-videos\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-videos\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/videos\">",
+              "target": [
+                "a[data-testid=\"auto-tab-videos\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscured",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<a data-testid=\"auto-tab-reglages\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/settings\">",
+                      "target": [
+                        "a[data-testid=\"auto-tab-reglages\"]"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"relative flex min-h-dvh bg-[#06050e]\">",
+                      "target": [
+                        "body > .min-h-dvh.bg-\\[\\#06050e\\]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it's partially obscured by another element"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a data-testid=\"auto-tab-reglages\" class=\"flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border transition-all whitespace-nowrap bg-white/[0.02] border-white/[0.06] text-white/50 hover:text-white/80\" href=\"/auto/settings\">",
+              "target": [
+                "a[data-testid=\"auto-tab-reglages\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it's partially obscured by another element"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"relative inline-flex...\" data-testid=\"schedule-add\" tabindex=\"0\" style=\"transform: none;\">",
+                      "target": [
+                        "button[data-testid=\"schedule-add\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"inline-flex items-center justify-center gap-[inherit]\">",
+              "target": [
+                "button[data-testid=\"schedule-add\"] > .gap-\\[inherit\\].inline-flex.justify-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"relative inline-flex...\" data-testid=\"schedule-save\" tabindex=\"0\">",
+                      "target": [
+                        "button[data-testid=\"schedule-save\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"inline-flex items-center justify-center gap-[inherit]\">Creer le planning</span>",
+              "target": [
+                "button[data-testid=\"schedule-save\"] > .gap-\\[inherit\\].inline-flex.justify-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "edit-1440",
+      "interactionMs": 366.0734580000026,
+      "writes": 1,
+      "fixtureDelayMs": 120
+    },
+    {
+      "name": "axe-1440",
+      "violations": [],
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "tags": [
+            "cat.color",
+            "wcag2aa",
+            "wcag143",
+            "TTv5",
+            "TT13.c",
+            "EN-301-549",
+            "EN-9.1.4.3",
+            "ACT",
+            "RGAAv4",
+            "RGAA-3.2.1"
+          ],
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI",
+          "nodes": [
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"relative inline-flex...\" data-testid=\"schedule-add\" tabindex=\"0\" style=\"transform: none;\">",
+                      "target": [
+                        "button[data-testid=\"schedule-add\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"inline-flex items-center justify-center gap-[inherit]\">",
+              "target": [
+                "button[data-testid=\"schedule-add\"] > .gap-\\[inherit\\].inline-flex.justify-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<button type=\"button\" class=\"relative inline-flex...\" data-testid=\"schedule-save\" tabindex=\"0\">",
+                      "target": [
+                        "button[data-testid=\"schedule-save\"]"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"inline-flex items-center justify-center gap-[inherit]\">Creer le planning</span>",
+              "target": [
+                "button[data-testid=\"schedule-save\"] > .gap-\\[inherit\\].inline-flex.justify-center"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "load-timeout",
+      "ms": 11533.299167000001
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

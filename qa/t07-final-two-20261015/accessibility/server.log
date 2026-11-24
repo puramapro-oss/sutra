@@ -1,0 +1,29 @@
+⚠ Self-signed certificates are currently an experimental feature, use with caution.
+▲ Next.js 16.3.8 (webpack)
+- Local:         https://127.0.0.1:49448
+- Network:       https://127.0.0.1:49448
+✓ Ready in 300ms
+✓ Running next.config.ts took 25ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+(node:87984) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ GET /login 200 in 2.3s (next.js: 1708ms, proxy.ts: 91ms, application-code: 489ms)
+ GET /login?next=/library 200 in 32ms (next.js: 1.9ms, proxy.ts: 7ms, application-code: 23ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 907ms (next.js: 825ms, proxy.ts: 24ms, application-code: 58ms)
+ GET /library 200 in 32ms (next.js: 1.4ms, proxy.ts: 6ms, application-code: 25ms)
+ POST /api/legal/accept 200 in 603ms (next.js: 273ms, proxy.ts: 3ms, application-code: 328ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.7ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 261ms (next.js: 1.0ms, proxy.ts: 2ms, application-code: 257ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 1.0ms, proxy.ts: 2ms, application-code: 257ms)
+ GET /auto/schedules 200 in 681ms (next.js: 379ms, proxy.ts: 4ms, application-code: 298ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /auto/schedules 200 in 239ms (next.js: 4ms, proxy.ts: 9ms, application-code: 226ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[?25h

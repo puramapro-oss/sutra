@@ -1,0 +1,478 @@
+TAP version 13
+# Subtest: many consumers share one session read, subscription and profile request
+ok 1 - many consumers share one session read, subscription and profile request
+  ---
+  duration_ms: 10.011375
+  type: 'test'
+  ...
+# Subtest: token refresh updates the token without reloading a loaded profile
+ok 2 - token refresh updates the token without reloading a loaded profile
+  ---
+  duration_ms: 16.643834
+  type: 'test'
+  ...
+# Subtest: a newer sign-in wins over an older getSession result
+ok 3 - a newer sign-in wins over an older getSession result
+  ---
+  duration_ms: 5.04825
+  type: 'test'
+  ...
+# Subtest: switching accounts clears the old profile and ignores its late response
+ok 4 - switching accounts clears the old profile and ignores its late response
+  ---
+  duration_ms: 16.414791
+  type: 'test'
+  ...
+# Subtest: sign-out cancels the in-flight profile and leaves no former user data
+ok 5 - sign-out cancels the in-flight profile and leaves no former user data
+  ---
+  duration_ms: 11.512417
+  type: 'test'
+  ...
+# Subtest: strict-mode cleanup and remount install a fresh working subscription
+ok 6 - strict-mode cleanup and remount install a fresh working subscription
+  ---
+  duration_ms: 4.944208
+  type: 'test'
+  ...
+# Subtest: wrong-owner profile is rejected and a refetch can recover
+ok 7 - wrong-owner profile is rejected and a refetch can recover
+  ---
+  duration_ms: 10.676709
+  type: 'test'
+  ...
+# Subtest: simultaneous manual refreshes are deduplicated
+ok 8 - simultaneous manual refreshes are deduplicated
+  ---
+  duration_ms: 6.008792
+  type: 'test'
+  ...
+# Subtest: the server snapshot never contains a client session
+ok 9 - the server snapshot never contains a client session
+  ---
+  duration_ms: 4.778042
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path null
+ok 10 - reject unsafe or looping return path null
+  ---
+  duration_ms: 0.1595
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path ""
+ok 11 - reject unsafe or looping return path ""
+  ---
+  duration_ms: 0.029709
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "https://evil.invalid"
+ok 12 - reject unsafe or looping return path "https://evil.invalid"
+  ---
+  duration_ms: 0.032792
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "//evil.invalid"
+ok 13 - reject unsafe or looping return path "//evil.invalid"
+  ---
+  duration_ms: 0.020208
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "/\\\\evil.invalid"
+ok 14 - reject unsafe or looping return path "/\\\\evil.invalid"
+  ---
+  duration_ms: 0.03525
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "/%2f%2fevil.invalid"
+ok 15 - reject unsafe or looping return path "/%2f%2fevil.invalid"
+  ---
+  duration_ms: 0.05175
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "/%5cevil.invalid"
+ok 16 - reject unsafe or looping return path "/%5cevil.invalid"
+  ---
+  duration_ms: 0.028709
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "/login"
+ok 17 - reject unsafe or looping return path "/login"
+  ---
+  duration_ms: 0.053
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "/api/delete"
+ok 18 - reject unsafe or looping return path "/api/delete"
+  ---
+  duration_ms: 0.050667
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "/auth/callback"
+ok 19 - reject unsafe or looping return path "/auth/callback"
+  ---
+  duration_ms: 0.018625
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "/broken%zz"
+ok 20 - reject unsafe or looping return path "/broken%zz"
+  ---
+  duration_ms: 0.024959
+  type: 'test'
+  ...
+# Subtest: reject unsafe or looping return path "/\\n/evil.invalid"
+ok 21 - reject unsafe or looping return path "/\\n/evil.invalid"
+  ---
+  duration_ms: 0.014834
+  type: 'test'
+  ...
+# Subtest: preserve return path /create?mode=manual&format=9%3A16
+ok 22 - preserve return path /create?mode=manual&format=9%3A16
+  ---
+  duration_ms: 0.032375
+  type: 'test'
+  ...
+# Subtest: preserve return path /settings?tab=apparence\#logo
+ok 23 - preserve return path /settings?tab=apparence\#logo
+  ---
+  duration_ms: 0.023417
+  type: 'test'
+  ...
+# Subtest: preserve return path /reset-password
+ok 24 - preserve return path /reset-password
+  ---
+  duration_ms: 0.021625
+  type: 'test'
+  ...
+# Subtest: session-only choice removes expiry on every refresh without changing cookie safety flags
+ok 25 - session-only choice removes expiry on every refresh without changing cookie safety flags
+  ---
+  duration_ms: 0.057209
+  type: 'test'
+  ...
+# Subtest: remember-me uses thirty days
+ok 26 - remember-me uses thirty days
+  ---
+  duration_ms: 0.023042
+  type: 'test'
+  ...
+# Subtest: cookie deletion remains deletion
+ok 27 - cookie deletion remains deletion
+  ---
+  duration_ms: 0.018416
+  type: 'test'
+  ...
+# Subtest: existing sessions without a new choice keep their prior cookie options
+ok 28 - existing sessions without a new choice keep their prior cookie options
+  ---
+  duration_ms: 0.017708
+  type: 'test'
+  ...
+# Subtest: raster image signatures determine storage type
+ok 29 - raster image signatures determine storage type
+  ---
+  duration_ms: 0.56275
+  type: 'test'
+  ...
+# Subtest: image uploads reject SVG, MIME mismatch, empty and oversized files
+ok 30 - image uploads reject SVG, MIME mismatch, empty and oversized files
+  ---
+  duration_ms: 0.973875
+  type: 'test'
+  ...
+# Subtest: literal internal navigation points to an existing page or declared redirect
+ok 31 - literal internal navigation points to an existing page or declared redirect
+  ---
+  duration_ms: 85.850042
+  type: 'test'
+  ...
+# (node:31371) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:31371) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: private reference stays constant while authorized signatures renew
+ok 32 - private reference stays constant while authorized signatures renew
+  ---
+  duration_ms: 0.602458
+  type: 'test'
+  ...
+# Subtest: missing owner and cross-user access are refused before signing
+ok 33 - missing owner and cross-user access are refused before signing
+  ---
+  duration_ms: 0.26375
+  type: 'test'
+  ...
+# Subtest: worker authorities are isolated under concurrency
+ok 34 - worker authorities are isolated under concurrency
+  ---
+  duration_ms: 2.316417
+  type: 'test'
+  ...
+# Subtest: legacy ownership fails closed for ambiguous or missing inventory
+ok 35 - legacy ownership fails closed for ambiguous or missing inventory
+  ---
+  duration_ms: 0.170292
+  type: 'test'
+  ...
+# Subtest: route authenticates the owner and never caches redirects or failures
+ok 36 - route authenticates the owner and never caches redirects or failures
+  ---
+  duration_ms: 11.22375
+  type: 'test'
+  ...
+# Subtest: publication capability requires exact durable journal, owner and live profile
+ok 37 - publication capability requires exact durable journal, owner and live profile
+  ---
+  duration_ms: 1.516958
+  type: 'test'
+  ...
+# Subtest: malformed references cannot escape their owner prefix
+ok 38 - malformed references cannot escape their owner prefix
+  ---
+  duration_ms: 0.109583
+  type: 'test'
+  ...
+# (node:31375) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:31375) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: verified active, free and paused users keep their Supabase identity
+ok 39 - verified active, free and paused users keep their Supabase identity
+  ---
+  duration_ms: 31.54475
+  type: 'test'
+  ...
+# Subtest: same valid session loses access on ban and recovers only after unban
+ok 40 - same valid session loses access on ban and recovers only after unban
+  ---
+  duration_ms: 0.271375
+  type: 'test'
+  ...
+# Subtest: missing and wrong-owner profiles cannot authorize a service-role handler
+ok 41 - missing and wrong-owner profiles cannot authorize a service-role handler
+  ---
+  duration_ms: 0.095458
+  type: 'test'
+  ...
+# Subtest: billing status changes cannot undo an administrative revocation
+ok 42 - billing status changes cannot undo an administrative revocation
+  ---
+  duration_ms: 0.087333
+  type: 'test'
+  ...
+# Subtest: database errors and exceptions fail closed without leaking their message
+ok 43 - database errors and exceptions fail closed without leaking their message
+  ---
+  duration_ms: 0.193417
+  type: 'test'
+  ...
+# Subtest: anonymous requests cannot read profiles
+ok 44 - anonymous requests cannot read profiles
+  ---
+  duration_ms: 0.105917
+  type: 'test'
+  ...
+# Subtest: client cannot mutate points or credit wallet: {"action":"earn","amount":1000000,"source":"forged"}
+ok 45 - client cannot mutate points or credit wallet: {"action":"earn","amount":1000000,"source":"forged"}
+  ---
+  duration_ms: 1.910875
+  type: 'test'
+  ...
+# Subtest: client cannot mutate points or credit wallet: {"action":"earn","amount":50,"source":"breathe_session"}
+ok 46 - client cannot mutate points or credit wallet: {"action":"earn","amount":50,"source":"breathe_session"}
+  ---
+  duration_ms: 0.215792
+  type: 'test'
+  ...
+# Subtest: client cannot mutate points or credit wallet: {"action":"earn","amount":25000,"source":"daily_gift","user_id":"bob","role":"service_role"}
+ok 47 - client cannot mutate points or credit wallet: {"action":"earn","amount":25000,"source":"daily_gift","user_id":"bob","role":"service_role"}
+  ---
+  duration_ms: 0.245292
+  type: 'test'
+  ...
+# Subtest: client cannot mutate points or credit wallet: {"action":"spend","amount":1,"source":"forged"}
+ok 48 - client cannot mutate points or credit wallet: {"action":"spend","amount":1,"source":"forged"}
+  ---
+  duration_ms: 0.264
+  type: 'test'
+  ...
+# Subtest: malformed/replayed client requests cannot authorize point mutations
+ok 49 - malformed/replayed client requests cannot authorize point mutations
+  ---
+  duration_ms: 0.476375
+  type: 'test'
+  ...
+# Subtest: anonymous session cannot read or mutate points
+ok 50 - anonymous session cannot read or mutate points
+  ---
+  duration_ms: 0.22675
+  type: 'test'
+  ...
+# Subtest: banned session cannot read or mutate points
+ok 51 - banned session cannot read or mutate points
+  ---
+  duration_ms: 0.214875
+  type: 'test'
+  ...
+# Subtest: revoked session cannot read or mutate points
+ok 52 - revoked session cannot read or mutate points
+  ---
+  duration_ms: 0.354959
+  type: 'test'
+  ...
+# Subtest: authentication failure is closed without leaking diagnostics or creating a service client
+ok 53 - authentication failure is closed without leaking diagnostics or creating a service client
+  ---
+  duration_ms: 0.405542
+  type: 'test'
+  ...
+# Subtest: active user can still read only their own points and history
+ok 54 - active user can still read only their own points and history
+  ---
+  duration_ms: 0.291417
+  type: 'test'
+  ...
+# (node:31378) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:31378) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: storage result: failed upload/delete/list never report success or expose provider details
+ok 55 - storage result: failed upload/delete/list never report success or expose provider details
+  ---
+  duration_ms: 0.740292
+  type: 'test'
+  ...
+# Subtest: storage exception: failed upload/delete/list never report success or expose provider details
+ok 56 - storage exception: failed upload/delete/list never report success or expose provider details
+  ---
+  duration_ms: 0.123709
+  type: 'test'
+  ...
+# Subtest: uploads return stable owner references, never a public or expiring URL
+ok 57 - uploads return stable owner references, never a public or expiring URL
+  ---
+  duration_ms: 0.431875
+  type: 'test'
+  ...
+# (node:31379) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:31379) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: two users and two provider tenants: each exact capability authorizes only its own object
+ok 58 - two users and two provider tenants: each exact capability authorizes only its own object
+  ---
+  duration_ms: 9.355416
+  type: 'test'
+  ...
+# Subtest: signed capability cannot move to the other user object
+ok 59 - signed capability cannot move to the other user object
+  ---
+  duration_ms: 0.389708
+  type: 'test'
+  ...
+# Subtest: journal ownership cannot be replaced by another user
+ok 60 - journal ownership cannot be replaced by another user
+  ---
+  duration_ms: 0.268542
+  type: 'test'
+  ...
+# Subtest: project ownership cannot be replaced by another user
+ok 61 - project ownership cannot be replaced by another user
+  ---
+  duration_ms: 0.224417
+  type: 'test'
+  ...
+# Subtest: social account ownership cannot be replaced by another user
+ok 62 - social account ownership cannot be replaced by another user
+  ---
+  duration_ms: 0.291625
+  type: 'test'
+  ...
+# Subtest: pending revoke closes an already emitted capability before remote revocation finishes
+ok 63 - pending revoke closes an already emitted capability before remote revocation finishes
+  ---
+  duration_ms: 0.289042
+  type: 'test'
+  ...
+# Subtest: changing the live provider tenant invalidates the old capability
+ok 64 - changing the live provider tenant invalidates the old capability
+  ---
+  duration_ms: 0.184125
+  type: 'test'
+  ...
+# Subtest: capability refuses foreign-profile account provenance
+ok 65 - capability refuses foreign-profile account provenance
+  ---
+  duration_ms: 0.211417
+  type: 'test'
+  ...
+# Subtest: capability refuses missing-profile account provenance
+ok 66 - capability refuses missing-profile account provenance
+  ---
+  duration_ms: 0.168708
+  type: 'test'
+  ...
+# Subtest: capability refuses foreign-credential-owner account provenance
+ok 67 - capability refuses foreign-credential-owner account provenance
+  ---
+  duration_ms: 0.159041
+  type: 'test'
+  ...
+# Subtest: capability refuses missing-metadata account provenance
+ok 68 - capability refuses missing-metadata account provenance
+  ---
+  duration_ms: 0.134291
+  type: 'test'
+  ...
+# Subtest: capability fails closed when tenant bindings are absent
+ok 69 - capability fails closed when tenant bindings are absent
+  ---
+  duration_ms: 0.140916
+  type: 'test'
+  ...
+# Subtest: capability fails closed when tenant bindings are invalid
+ok 70 - capability fails closed when tenant bindings are invalid
+  ---
+  duration_ms: 0.277542
+  type: 'test'
+  ...
+# Subtest: capability fails closed when tenant bindings are duplicate
+ok 71 - capability fails closed when tenant bindings are duplicate
+  ---
+  duration_ms: 0.545708
+  type: 'test'
+  ...
+# Subtest: expired grant refuses before storage signing
+ok 72 - expired grant refuses before storage signing
+  ---
+  duration_ms: 0.153542
+  type: 'test'
+  ...
+# Subtest: missing signing secret fails closed
+ok 73 - missing signing secret fails closed
+  ---
+  duration_ms: 0.1015
+  type: 'test'
+  ...
+# Subtest: social account DB diagnostic is not exposed by media route
+ok 74 - social account DB diagnostic is not exposed by media route
+  ---
+  duration_ms: 0.128833
+  type: 'test'
+  ...
+# Subtest: no capability and no authenticated session cannot sign
+ok 75 - no capability and no authenticated session cannot sign
+  ---
+  duration_ms: 0.096
+  type: 'test'
+  ...
+# Subtest: another authenticated user cannot sign the owner reference
+ok 76 - another authenticated user cannot sign the owner reference
+  ---
+  duration_ms: 0.079542
+  type: 'test'
+  ...
+1..76
+# tests 76
+# suites 0
+# pass 76
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 457.500375

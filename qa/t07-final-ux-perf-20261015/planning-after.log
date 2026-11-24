@@ -1,0 +1,121 @@
+FAIL 375: schedule labels, state and contrast: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.mt-1'
++       ],
++       [
++         'a[data-testid="auto-tab-vue"]'
++       ],
++       [
++         'a[data-testid="auto-tab-themes"]'
++       ],
++       [
++         '.flex-wrap > p'
++       ],
++       [
++         '.-top-2\\.5'
++       ],
++       [
++         'div:nth-child(2) > .mb-2.block'
++       ],
++       [
++         'div:nth-child(3) > .mb-2.block'
++       ],
++       [
++         'label[for="schedule-time"]'
++       ]
++     ]
++   }
++ ]
+- []
+
+PASS 375: failed schedule save preserves draft and rejects duplicate submissions
+FAIL 1440: schedule labels, state and contrast: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     targets: [
++       [
++         '.mt-1'
++       ],
++       [
++         'a[data-testid="auto-tab-vue"]'
++       ],
++       [
++         'a[data-testid="auto-tab-themes"]'
++       ],
++       [
++         'a[data-testid="auto-tab-memoire"]'
++       ],
++       [
++         'a[data-testid="auto-tab-videos"]'
++       ],
++       [
++         'a[data-testid="auto-tab-reglages"]'
++       ],
++       [
++         '.flex-wrap > p'
++       ],
++       [
++         '.-top-2\\.5'
++       ],
++       [
++         'div:nth-child(2) > .mb-2.block'
++       ],
++       [
++         'button[data-testid="schedule-freq-daily"]'
++       ],
++       [
++         'button[data-testid="schedule-freq-weekly"]'
++       ],
++       [
++         'button[data-testid="schedule-freq-biweekly"]'
++       ],
++       [
++         'button[data-testid="schedule-freq-monthly"]'
++       ],
++       [
++         'div:nth-child(3) > .mb-2.block'
++       ],
++       [
++         '.grid-cols-7 > .bg-violet-500\\/20.border-violet-500\\/40.text-violet-300'
++       ],
++       [
++         '.px-2.text-white\\/70.rounded-lg:nth-child(2)'
++       ],
++       [
++         '.px-2.text-white\\/70.rounded-lg:nth-child(3)'
++       ],
++       [
++         '.px-2.text-white\\/70.rounded-lg:nth-child(4)'
++       ],
++       [
++         '.px-2.text-white\\/70.rounded-lg:nth-child(5)'
++       ],
++       [
++         '.px-2.text-white\\/70.rounded-lg:nth-child(6)'
++       ],
++       [
++         '.px-2.text-white\\/70.rounded-lg:nth-child(7)'
++       ],
++       [
++         'label[for="schedule-time"]'
++       ],
++       [
++         '.text-center'
++       ]
++     ]
++   }
++ ]
+- []
+
+PASS 1440: failed schedule save preserves draft and rejects duplicate submissions
+PASS schedule load failure cannot become empty or allow overwriting existing schedules
+PASS no unexpected mutation, uncaught error or hydration mismatch

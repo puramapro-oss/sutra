@@ -1,0 +1,44 @@
+{
+  "observed_at": "2026-10-13T20:47:48.195343+00:00",
+  "repository": "/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013",
+  "index_alias": "sutra-t04-provider-audit-20261013",
+  "index_command": [
+    "node",
+    "/Users/matissdornier/purama/.gitnexus/run.cjs",
+    "analyze",
+    ".",
+    "--index-only",
+    "--workers",
+    "2",
+    "--name",
+    "sutra-t04-provider-audit-20261013"
+  ],
+  "storage": "test-results/gitnexus",
+  "network_embeddings": false,
+  "index_status": "TRUNCATED",
+  "stats": {
+    "nodes": 13711,
+    "edges": 26458,
+    "flows": 365,
+    "entry_candidates_dropped": 956,
+    "callees_dropped": 527,
+    "walks_cut": 4
+  },
+  "detect_all": {
+    "exit_code": 0,
+    "files": 9,
+    "symbols": 13,
+    "processes": 6,
+    "risk": "HIGH"
+  },
+  "review": "Expected source changes limited to Suno submission/polling and Shotstack configuration diagnostics; OAuth and render provider owner files unchanged. Six music generation flows may be affected. Contract and quality tests bound the local evidence, not live provider behavior. Initial no-index failure preserved.",
+  "detect_staged": {
+    "exit_code": 0,
+    "files": 45,
+    "symbols": 44,
+    "processes": 6,
+    "risk": "HIGH",
+    "display_limit": "CLI prints first 15 symbols even with limit 300; direct diff inventory also reviewed",
+    "scope": "includes audit-only helper and documentation; subsequent added receipts are non-executable evidence"
+  }
+}

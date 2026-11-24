@@ -83,7 +83,7 @@ export default function StoryboardInput({
               >
                 <Icon className="h-5 w-5" />
                 <span className="text-sm font-medium">{opt.label}</span>
-                <span className="text-xs text-white/40">{opt.desc}</span>
+                <span className="text-xs text-white/60">{opt.desc}</span>
               </button>
             )
           })}
@@ -107,7 +107,7 @@ export default function StoryboardInput({
               )}
             >
               <span className="text-sm font-medium">{opt.label}</span>
-              <span className="text-xs text-white/40">{opt.desc}</span>
+              <span className="text-xs text-white/60">{opt.desc}</span>
             </button>
           ))}
         </div>

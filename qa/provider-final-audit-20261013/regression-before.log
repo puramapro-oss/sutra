@@ -1,0 +1,55 @@
+✖ env: Shotstack diagnostic selects the configured environment without substituting credentials (1.914333ms)
+(node:76352) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:76352) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ Suno ambiguous submission never reflects provider payload or resubmits (3.345791ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 497.443292
+
+✖ failing tests:
+
+test at scripts/test-env-contracts.mts:1:6614
+✖ env: Shotstack diagnostic selects the configured environment without substituting credentials (1.914333ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  false !== true
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013/scripts/test-env-contracts.mts:187:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-provider-safety.mts:1:2585
+✖ Suno ambiguous submission never reflects provider payload or resubmits (3.345791ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /T04_SYNTHETIC_PRIVATE_PROVIDER_BODY/. Input:
+
+  'Suno: T04_SYNTHETIC_PRIVATE_PROVIDER_BODY'
+
+      at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013/scripts/test-provider-safety.mts:52:16)
+      at expectedException (node:assert:578:17)
+      at expectsError (node:assert:703:21)
+      at strict.rejects (node:assert:769:3)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-audit-20261013/scripts/test-provider-safety.mts:50:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Suno: T04_SYNTHETIC_PRIVATE_PROVIDER_BODY',
+    expected: /T04_SYNTHETIC_PRIVATE_PROVIDER_BODY/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

@@ -1,0 +1,69 @@
+{
+  "createdAt": "2026-10-15T01:16:16.083461+00:00",
+  "base_sha": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "branch": "codex/sutra-t02-final-security-20261015",
+  "defect": "T02-CAP-01",
+  "status": "LOCAL_DELTA_PASS_INTEGRATION_PENDING",
+  "checks": {
+    "negative_before": {
+      "pass": 10,
+      "fail": 9
+    },
+    "targeted_after": {
+      "pass": 19,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "green.json"
+    },
+    "regression": {
+      "pass": 22,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "regression.json"
+    },
+    "scoped_typescript_eslint": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "evidence": "quality.json"
+    },
+    "gitnexus": {
+      "staged_risk": "MEDIUM",
+      "staged_flows": 3,
+      "compare_main_risk": "CRITICAL",
+      "compare_main_files": 2692,
+      "coverage": "TRUNCATED",
+      "exhaustive": false
+    },
+    "gitleaks": {
+      "exit_code": 0,
+      "findings": 0,
+      "evidence": "secret-scan-meta.json"
+    }
+  },
+  "product_and_test_sha256": {
+    "src/lib/private-media.ts": "9f1fc78a443a7269c4111396db89e0b95106189bd776b8af0c7951afcfab33b3",
+    "scripts/test-private-media.mts": "799a7e990b4bc31942d407597c3e5c101fb3a5cf5d30539ef78466f9b527e930",
+    "scripts/test-t02-final-security-grants.mts": "45657d07e90cf650c460f747a9ce850cacfa67c51b5b5ebb6d1eb2cacedae7e6"
+  },
+  "remaining": [
+    "T01 integrate/register targeted test then T08 validate exact combined candidate",
+    "T01 confirmed three unauthorized client writes on private restored copy; correction reserved and in progress; see rls-t01-owner-followup.json",
+    "Application organization model absent; two Zernio profiles are not two app organizations",
+    "Existing signed Storage URL remains valid at most configured 300 second TTL",
+    "Live providers, bucket configuration and proxy headers not tested by T02"
+  ],
+  "no_remote_change": true,
+  "no_provider_call": true,
+  "no_secret_read": true,
+  "log_formatting": {
+    "trailing_whitespace_normalized": [
+      "index.txt",
+      "red-0.txt",
+      "regression-legacy-fixture-0.txt"
+    ],
+    "semantic_content_changed": false,
+    "initial_diff_check_exit_code": 2
+  }
+}

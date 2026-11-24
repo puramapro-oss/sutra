@@ -1,0 +1,15 @@
+# T03 → T01 — orchestration et persistance
+
+Branche : `codex/sutra-t03-durable-reliability-20261014`. Base intégrée confirmée : `e09fdaeafbf1ec8554a7b689fe3c44dd696d0140`. SHA de livraison : commit portant ce fichier, reporté après commit dans `.coord/handoffs/SUTRA-20261012/T03-DURABLE-RELIABILITY-20261014.md` du dépôt coordinateur.
+
+**PASS local** : 73 tests / 0 FAIL / 0 SKIP, TypeScript, lint ciblés. Défauts reproduits avant correction et preuves : [dossier QA](qa/t03-durable-reliability-20261014/README.md), commandes/empreintes dans les JSON. Aucun ancien audit réutilisé comme preuve actuelle ; corrections T03 fe99ebe et port T04 0e20845 déjà intégrés vérifiés avant travail.
+
+Produit modifié uniquement : `src/lib/video-worker.ts`, `src/lib/video-queue.ts`, `src/lib/pipeline-submit.ts`. Résultat final null/skip contradictoire refusé en reprise et après ACK perdu ; erreur SQL/transport publique expurgée, statuts métier et idempotence conservés (T02-FINAL-01 attribué par T01). Tests nouveaux `scripts/test-t03-durable-reliability.mts`, dossier QA, append BATON/task_plan/ERRORS, présent handoff. Aucun adaptateur, montage, publication, route ou migration produit modifié.
+
+**FAIL sur SQL canonique / PASS sur proposition locale** : fin sans résultat valide, checkpoint acquis écrasable, claim ciblé épuisé hors quarantaine. Correctif proposé dans `qa/t03-durable-reliability-20261014/proposal-durable-recovery.sql`, testé sur PostgreSQL privé puis arrêté. Réservation incertaine conservée, sortie acquise immutable, une seule libération à l'annulation, séparation des neuf stages, concurrence et crash/reprise de processus prouvés avec fournisseurs simulés. Aucune migration distante appliquée.
+
+**Action T01** : importer ce commit gelé ; reprendre la proposition dans sa migration réservée `20261014_durable_checkpoint_integrity.sql`, comparer ACL/définitions déployées et adapter `scripts/test-pipeline-postgres.mts` à des jobs indépendants pour ses cas de corruption volontaire. Conserver les assertions média. La proposition finale protège aussi les résultats intermédiaires payés et identités de reprise, pas seulement les stages complets ; les journaux LTX/Salad et mediaValidation restent mutables. Voir README avant intégration.
+
+**BLOQUÉ pour clôture intégrée** : adoption SQL et recette du candidat unique par T01. **NON TESTÉ** : base distante, fournisseurs/GPU/génération facturée, publication et production. Aucun push/fusion/déploiement/secret ni calcul IA local. Les 4 tests auteur T02 copiés à l'identique ne doivent pas être comptés comme couverture indépendante dans les totaux consolidés.
+
+GitNexus : impacts CRITICAL communiqués, index local et analyse des changements effectués ; SQL non indexé et flux finaux tronqués/mal associés, exhaustivité UNKNOWN. Revue du diff exact et tests ciblés n'étendent pas cette preuve à tout le système. Limites externes antérieures (qualification Salad, worker autonome, consentements) restent à T01/owners, sans réaudit ni activation T03.

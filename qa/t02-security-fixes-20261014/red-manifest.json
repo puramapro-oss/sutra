@@ -1,0 +1,51 @@
+{
+  "utc": "2026-10-14T02:24:57.231578+00:00",
+  "phase": "red",
+  "base": "b7cf848d07fca2734db36a2e30d045ca312a3162",
+  "inheritedSecrets": false,
+  "providerCalls": 0,
+  "commands": [
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--experimental-test-module-mocks",
+        "--experimental-vm-modules",
+        "--require",
+        "./qa/t08/offline.cjs",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t02-security-fixes-storage.mts",
+        "scripts/test-t02-security-fixes-proof.mts"
+      ],
+      "exitCode": 1,
+      "log": "reproduction.log"
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "scripts/test-t02-security-fixes-storage.mts",
+      "sha256": "fa4694c6c7fa64bf699515e8838d7bbbd52bfb70ae190fe3966ec28fd2125fc1"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-proof.mts",
+      "sha256": "ecc85aef721ded4bfe4b1b44df66798c872cccb454fc016eb68f607f6ffbad97"
+    },
+    {
+      "path": "src/lib/storage.ts",
+      "sha256": "c75659797a4536814a2ef971c1affa562d06e9e6fcc41fa8a393e8684cc9fa38"
+    },
+    {
+      "path": "src/lib/private-media.ts",
+      "sha256": "188b0dd45cb819a7513b8667480248fda6136178410345e6b4074b30101f979c"
+    },
+    {
+      "path": "src/app/api/verify/[videoId]/route.ts",
+      "sha256": "f8c915239c17e6d0abc21cdfd18c4201d8570bea01acf7be0b43866399d309fd"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+    }
+  ]
+}

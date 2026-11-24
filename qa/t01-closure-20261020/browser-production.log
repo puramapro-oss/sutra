@@ -1,0 +1,59 @@
+PASS social empty: nine consent buttons, five unavailable platforms, no automatic writes
+PASS connect refuses safely, actionable administrator message, no raw provider body
+PASS connect rapid double activation creates only one OAuth state request
+PASS connect pending request expires and offers manual recovery within 11 seconds
+PASS callback error never reflects untrusted diagnostics and removes the query parameter
+PASS revoked account offers reconnection with personal consent, no connected badge
+PASS social 375px: no overflow and axe WCAG AA
+PASS social 1440px: no overflow and axe WCAG AA
+PASS create client: explicit costs and remote capability, no personal WanGP control
+PASS create unavailable: explicit costs and remote capability, no personal WanGP control
+PASS create ready: explicit costs and remote capability, no personal WanGP control
+PASS create form: empty blocked, named topic, submission refused without raw diagnostics
+PASS lost create response preserves intent; resume GET and cancel DELETE use same request, no new generation
+PASS English locale: translated creation heading
+PASS runtime: zero unexpected hydration/client errors; no external or real publication
+/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/playwright/lib/matchers/expect.js:213
+        return matcher.call(target, ...args);
+                       ^
+
+A [Error]: expect(locator).toBeVisible() failed
+
+Locator: getByRole('button', { name: 'J\'ai lu, je continue' })
+Expected: visible
+Timeout: 60000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 60000ms
+  - waiting for getByRole('button', { name: 'J\'ai lu, je continue' })
+
+    at Proxy.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/node_modules/playwright/lib/matchers/expect.js:213:24)
+    at enterTestSession (file:///Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t07-final-ux-perf-20261015/session.mjs:10:24)
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at process.processImmediate (node:internal/timers:541:9)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-certification-integration-20261019/qa/t06-closure-79cd95b-20261020/journeys.mjs:98:3 {
+  matcherResult: {
+    message: 'expect(locator).toBeVisible() failed\n' +
+      '\n' +
+      "Locator: getByRole('button', { name: 'J\\'ai lu, je continue' })\n" +
+      'Expected: visible\n' +
+      'Timeout: 60000ms\n' +
+      'Error: element(s) not found\n' +
+      '\n' +
+      'Call log:\n' +
+      '  - Expect "to.be.visible" with timeout 60000ms\n' +
+      "  - waiting for getByRole('button', { name: 'J\\'ai lu, je continue' })\n",
+    pass: false,
+    actual: undefined,
+    name: 'toBeVisible',
+    expected: 'visible',
+    log: [
+      '  - Expect "to.be.visible" with timeout 60000ms',
+      "  - waiting for getByRole('button', { name: 'J\\'ai lu, je continue' })"
+    ],
+    timeout: 60000
+  }
+}
+
+Node.js v24.22.0

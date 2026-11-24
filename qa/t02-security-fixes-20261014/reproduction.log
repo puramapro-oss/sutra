@@ -1,0 +1,260 @@
+(node:55880) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55880) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ public proof: service-exception never exposes internal details (2.508292ms)
+✖ public proof: db-error never exposes internal details (0.350291ms)
+✖ public proof: verify-exception never exposes internal details (0.237125ms)
+✖ public proof: parse-error never exposes internal details (0.209958ms)
+✖ public proof: mismatch never exposes internal details (0.237041ms)
+✔ public proof: pending and verified responses keep the public proof contract (1.151292ms)
+✔ public proof: malformed IDs fail before querying, missing rows remain 404 (0.294334ms)
+(node:55881) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55881) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ delete: missing owner must fail before service-role access (1.180208ms)
+✖ delete: another user's object or folder is denied (0.1645ms)
+✖ delete: traversal and malformed paths cannot reach storage (0.12875ms)
+✖ list: missing owner must fail before service-role access (0.118458ms)
+✖ list: another user's object or folder is denied (0.114959ms)
+✖ list: traversal and malformed paths cannot reach storage (0.107542ms)
+✔ delete: owner can remove an exact owned key (0.324625ms)
+✖ list: owner can list their root and a folder, never a sibling prefix (0.165541ms)
+✖ delete: legacy objects require the existing exact ownership inventory (0.123833ms)
+✖ delete: unavailable legacy inventory fails closed without exposing errors (0.112ms)
+✖ list: legacy inventory cannot authorize a shared prefix (0.076375ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 3
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 132.488125
+
+✖ failing tests:
+
+test at scripts/test-t02-security-fixes-proof.mts:1:1976
+✖ public proof: service-exception never exposes internal details (2.508292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-proof.mts:37:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-proof.mts:1:1976
+✖ public proof: db-error never exposes internal details (0.350291ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-proof.mts:37:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-proof.mts:1:1976
+✖ public proof: verify-exception never exposes internal details (0.237125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-proof.mts:37:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-proof.mts:1:1976
+✖ public proof: parse-error never exposes internal details (0.209958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-proof.mts:37:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-proof.mts:1:1976
+✖ public proof: mismatch never exposes internal details (0.237041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-proof.mts:37:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:1747
+✖ delete: missing owner must fail before service-role access (1.180208ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:36:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { message: 'SUTRA_STORAGE_DELETE_FAILED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:1960
+✖ delete: another user's object or folder is denied (0.1645ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:41:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { message: 'SUTRA_STORAGE_DELETE_FAILED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:2161
+✖ delete: traversal and malformed paths cannot reach storage (0.12875ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:46:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { message: 'SUTRA_STORAGE_DELETE_FAILED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:1747
+✖ list: missing owner must fail before service-role access (0.118458ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:36:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { message: 'SUTRA_STORAGE_LIST_FAILED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:1960
+✖ list: another user's object or folder is denied (0.114959ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:41:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { message: 'SUTRA_STORAGE_LIST_FAILED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:2161
+✖ list: traversal and malformed paths cannot reach storage (0.107542ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:46:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { message: 'SUTRA_STORAGE_LIST_FAILED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:2746
+✖ list: owner can list their root and a folder, never a sibling prefix (0.165541ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:59:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:56:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_STORAGE_LIST_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:3349
+✖ delete: legacy objects require the existing exact ownership inventory (0.123833ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:69:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_STORAGE_DELETE_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:3782
+✖ delete: unavailable legacy inventory fails closed without exposing errors (0.112ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:75:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: { message: 'SUTRA_STORAGE_DELETE_FAILED' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-security-fixes-storage.mts:1:4070
+✖ list: legacy inventory cannot authorize a shared prefix (0.076375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/scripts/test-t02-security-fixes-storage.mts:80:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_STORAGE_LIST_FAILED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

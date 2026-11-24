@@ -1,0 +1,16 @@
+{
+  "worktree": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013",
+  "target": "SpiritualLayer",
+  "file": "src/components/shared/SpiritualLayer.tsx",
+  "risk": "CRITICAL",
+  "direct": 64,
+  "total": 96,
+  "processes": 24,
+  "modules": 18,
+  "indexBehind": 3,
+  "coverage": "UNKNOWN_SQL_NOT_GRAPH_CERTIFIED",
+  "productComponentChanged": false,
+  "scope": "One missing SQL SELECT privilege; policies/rows/writes/anonymous grants unchanged",
+  "proof": "affirmations-database.json",
+  "operatorFixtureCorrection": "Restored table owner supabase_admin; postgres lacks GRANT OPTION. Explicit postcondition fails closed instead of accepting a PostgreSQL warning."
+}

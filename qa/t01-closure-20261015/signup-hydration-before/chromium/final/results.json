@@ -1,0 +1,186 @@
+{
+  "baseline": false,
+  "productionSuite": true,
+  "finalIntegrated": true,
+  "results": [
+    {
+      "name": "signup: inputs cannot lose text before client hydration",
+      "status": "FAIL",
+      "message": "expect(locator).toBeDisabled() failed\n\nLocator:  getByTestId('name-input')\nExpected: disabled\nReceived: enabled\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.disabled\" with timeout 5000ms\n  - waiting for getByTestId('name-input')\n    9 × locator resolved to <input value=\"\" type=\"text\" id=\"_R_66hbsnpfbb_\" data-testid=\"name-input\" autocomplete=\"given-name\" class=\"w-full py-3 rounded-xl text-sm text-white/90 placeholder-white/30 pl-11 pr-4 bg-white/[0.03] backdrop-blur-xl border transition-all duration-200 outline-none border-white/[0.06] hover:border-white/[0.12] focus-visible:ring-0\"/>\n      - unexpected value \"enabled\"\n"
+    },
+    {
+      "name": "signup 375: password visibility reachable by keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 375: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: password visibility reachable by keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "signup 1440: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: password visibility reachable by keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "login 375: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: password visibility reachable by keyboard",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: duplicate form submission produces one auth request",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: API rejection remains visible and retry available",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: interrupted network releases loading and preserves retry",
+      "status": "PASS"
+    },
+    {
+      "name": "login 1440: labels, contrast and no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "signup: confirmation and legal notice use a synthetic identity only",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "signup-375-double-submit",
+      "calls": 1,
+      "recoveryMs": 1168
+    },
+    {
+      "name": "signup-375-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/signup",
+      "width": 375,
+      "responseMs": 23,
+      "domContentLoadedMs": 55,
+      "resourceCount": 28,
+      "transferredBytes": 409431,
+      "decodedBytes": 1419085
+    },
+    {
+      "name": "signup-1440-double-submit",
+      "calls": 1,
+      "recoveryMs": 1165
+    },
+    {
+      "name": "signup-1440-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/signup",
+      "width": 1440,
+      "responseMs": 10,
+      "domContentLoadedMs": 21,
+      "resourceCount": 27,
+      "transferredBytes": 409115,
+      "decodedBytes": 1419069
+    },
+    {
+      "name": "login-375-double-submit",
+      "calls": 1,
+      "recoveryMs": 1165
+    },
+    {
+      "name": "login-375-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/login",
+      "width": 375,
+      "responseMs": 10,
+      "domContentLoadedMs": 24,
+      "resourceCount": 29,
+      "transferredBytes": 410581,
+      "decodedBytes": 1420605
+    },
+    {
+      "name": "login-1440-double-submit",
+      "calls": 1,
+      "recoveryMs": 1663
+    },
+    {
+      "name": "login-1440-axe",
+      "violations": []
+    },
+    {
+      "name": "local-page-metrics",
+      "path": "/login",
+      "width": 1440,
+      "responseMs": 33,
+      "domContentLoadedMs": 46,
+      "resourceCount": 29,
+      "transferredBytes": 410582,
+      "decodedBytes": 1420605
+    }
+  ],
+  "errors": [],
+  "unexpectedErrors": [],
+  "qualifiedEngineDiagnostics": [],
+  "blocked": [],
+  "mutations": [],
+  "readOnlyProbes": [],
+  "writes": [],
+  "acceptances": []
+}

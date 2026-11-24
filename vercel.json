@@ -91,5 +91,37 @@
       "maxDuration": 60
     }
   },
-  "installCommand": "git config --global url.\"https://${SMARANA_GIT_TOKEN}@github.com/\".insteadOf \"ssh://git@github.com/\" && npm install"
+  "installCommand": "git config --global url.\"https://${SMARANA_GIT_TOKEN}@github.com/\".insteadOf \"ssh://git@github.com/\" && npm install",
+  "git": {
+    "deploymentEnabled": {
+      "fix/sutra-contact-contract-20261124": false,
+      "fix/sutra-close-email-relay-20261122": false,
+      "fix/sutra-email-preferences-20261122": false,
+      "codex/sutra-accessible-minimal-subtitles-20261111": false,
+      "codex/sutra-t01-integration-20261012": false,
+      "codex/sutra-t02-security-final-20261012": false,
+      "codex/sutra-t03-pipeline-resume-20261012": false,
+      "codex/sutra-t04-providers-final-20261012": false,
+      "codex/sutra-t05-media-export-final-20261012": false,
+      "codex/sutra-t06-social-final-20261012": false,
+      "codex/sutra-t07-ux-ui-reprise-20261012": false,
+      "codex/sutra-t08-qa-integrated-20261012": false,
+      "codex/sutra-t04-provider-audit-20261013": false,
+      "codex/sutra-t05-provider-contract-20261013": false,
+      "codex/sutra-t02-provider-security-20261013": false,
+      "codex/sutra-t06-provider-audit-20261013": false,
+      "codex/sutra-t03-provider-complement-20261013": false,
+      "codex/sutra-final-providers-20261013": false,
+      "audit/promotion-esm-tests-20261109": false,
+      "repair/sutra-security-20261109": false,
+      "codex/sutra-multi-account-20261110": false,
+      "audit/sutra-stats-build-20261110": false,
+      "fix/sutra-analytics-evidence-20261110": false,
+      "audit/sutra-analytics-reconciled-20261110": false,
+      "codex/sutra-cinema-blender-higgsfield-20261111": false,
+      "audit/sutra-manual-mode-20261111": false,
+      "codex/sutra-account-onboarding-20261021": false,
+      "codex/sutra-verification-20261011": false
+    }
+  }
 }

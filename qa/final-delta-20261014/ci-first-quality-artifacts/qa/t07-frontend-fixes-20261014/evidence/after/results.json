@@ -1,0 +1,96 @@
+{
+  "observedAt": "2026-10-14T03:24:04.565Z",
+  "runtime": "v24.21.0",
+  "baseline": false,
+  "delayMs": 400,
+  "childExit": {
+    "code": 0,
+    "signal": null
+  },
+  "results": [
+    {
+      "name": "first visit: cookie acceptance text meets contrast and keyboard focus",
+      "status": "PASS"
+    },
+    {
+      "name": "375px consent dark: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "375px consent light: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "375px consent oled: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px consent dark: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px consent light: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "1440px consent oled: button contrast and visible focus",
+      "status": "PASS"
+    },
+    {
+      "name": "harness",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('load-more')\nExpected: visible\nTimeout: 30000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 30000ms\n  - waiting for getByTestId('load-more')\n"
+    }
+  ],
+  "metrics": [],
+  "requests": [],
+  "errors": [],
+  "violations": [
+    {
+      "name": "login-first-visit",
+      "violations": []
+    }
+  ],
+  "mockedConsents": [],
+  "unexpectedMutations": [],
+  "themeColors": [
+    {
+      "width": 375,
+      "theme": "dark",
+      "accept": 5.894955945733233,
+      "link": 4.849118887629971
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "accept": 5.894955945733233,
+      "link": 5.698586217871195
+    },
+    {
+      "width": 375,
+      "theme": "oled",
+      "accept": 5.894955945733233,
+      "link": 7.35917756777737
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "accept": 5.894955945733233,
+      "link": 4.849118887629971
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "accept": 5.894955945733233,
+      "link": 5.698586217871195
+    },
+    {
+      "width": 1440,
+      "theme": "oled",
+      "accept": 5.894955945733233,
+      "link": 7.35917756777737
+    }
+  ],
+  "blockedExternalOrigins": [],
+  "proof": "LOCAL_CHROMIUM_FIXTURES_ONLY; no secret/provider/publication/production build"
+}

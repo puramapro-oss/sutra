@@ -21,7 +21,7 @@ export default function TopVideos({ videos }: TopVideosProps) {
       <Card className="bg-white/[0.02] border-white/[0.06]" data-testid="top-videos">
         <CardContent className="p-0 divide-y divide-white/[0.04]">
           {videos.length === 0 ? (
-            <p className="text-white/40 text-sm text-center py-8">Aucune video creee</p>
+            <p className="text-white/60 text-sm text-center py-8">Aucune video creee</p>
           ) : (
             videos.map((video, i) => (
               <div

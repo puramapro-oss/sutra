@@ -1,0 +1,65 @@
+{
+  "status": "ambiguous",
+  "message": "Found 2 symbols matching 'runScenario'. Blast radius differs per candidate (max 1 impacted at risk LOW). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "runScenario"
+  },
+  "direction": "upstream",
+  "totalCandidates": 2,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 1,
+  "maxRisk": "LOW",
+  "candidates": [
+    {
+      "uid": "Function:qa/t07-final-ux-perf-20261015/run.mjs:runScenario",
+      "name": "runScenario",
+      "kind": "Function",
+      "filePath": "qa/t07-final-ux-perf-20261015/run.mjs",
+      "line": 50,
+      "score": 0.56,
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    },
+    {
+      "uid": "Function:qa/t07-frontend-journey-20261014/run.mjs:runScenario",
+      "name": "runScenario",
+      "kind": "Function",
+      "filePath": "qa/t07-frontend-journey-20261014/run.mjs",
+      "line": 38,
+      "score": 0.56,
+      "impactedCount": 1,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 1
+    }
+  ]
+}

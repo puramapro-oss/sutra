@@ -121,7 +121,7 @@ export default function DevenirAmbassadeurClient() {
               <div className="text-xl font-bold text-white tabular-nums">
                 {tier.prime_eur.toLocaleString('fr-FR')} €
               </div>
-              <div className="text-[11px] text-white/40 mt-1">
+              <div className="text-[11px] text-white/60 mt-1">
                 {tier.filleuls_required.toLocaleString('fr-FR')} filleuls
               </div>
             </motion.div>

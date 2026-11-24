@@ -19,6 +19,14 @@ import OpenTimestamps from 'javascript-opentimestamps'
 
 const NETWORK = process.env.OTS_NETWORK === '1'
 
+test('A pending proof serialized by 0.4.5 remains readable byte for byte', () => {
+  // Generated offline with the former library; this is not a Bitcoin attestation.
+  const legacy = Buffer.from('004f70656e54696d657374616d7073000050726f6f6600bf89e2e884e89294010855aa88cce0165b91f46b64728e5aacd8e7973e16f3b1a6a736b2390802436ec30083dfe30d2ef90c8e2e2d68747470733a2f2f616c6963652e6274632e63616c656e6461722e6f70656e74696d657374616d70732e6f7267', 'hex')
+  const proof = OpenTimestamps.DetachedTimestampFile.deserialize(legacy)
+  assert.equal(Buffer.from(proof.fileDigest()).toString('hex'), '55aa88cce0165b91f46b64728e5aacd8e7973e16f3b1a6a736b2390802436ec3')
+  assert.deepEqual(Buffer.from(proof.serializeToBytes()), legacy)
+})
+
 function sha256Of(data) {
   return createHash('sha256').update(data).digest()
 }

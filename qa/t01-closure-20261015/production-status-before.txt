@@ -1,0 +1,651 @@
+(node:45579) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45579) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ lookup denies anonymous before privileged read (1.929083ms)
+✖ lookup denies expired before privileged read (0.15475ms)
+✖ lookup denies revoked before privileged read (0.096792ms)
+✖ lookup rejects invalid or ambiguous identity:  (0.1025ms)
+✖ lookup rejects invalid or ambiguous identity: targetStep=script (0.108458ms)
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009 (0.108667ms)
+✖ lookup rejects invalid or ambiguous identity: requestId=bad&targetStep=script (0.082416ms)
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=cancel (0.117125ms)
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=thumbnail (0.08675ms)
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=script&targetStep=video (0.104708ms)
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&requestId=12000000-0000-4000-8000-000000000009&targetStep=script (0.077209ms)
+✖ lookup scopes script to authenticated owner and production kind (0.106209ms)
+✖ lookup scopes video to authenticated owner and production kind (0.061916ms)
+✖ lookup scopes voice to authenticated owner and production kind (0.051459ms)
+✖ lookup scopes music to authenticated owner and production kind (0.047959ms)
+✖ lookup scopes assembly to authenticated owner and production kind (0.0525ms)
+✖ lookup scopes all to authenticated owner and production kind (0.047958ms)
+✖ lookup returns stored queued without resubmitting (0.067416ms)
+✖ lookup returns stored processing without resubmitting (0.043958ms)
+✖ lookup returns stored cancelled without resubmitting (0.048625ms)
+✖ lookup returns stored failed without resubmitting (0.042666ms)
+✖ lookup returns stored uncertain without resubmitting (0.045208ms)
+✖ lookup returns stored done without resubmitting (0.047959ms)
+✖ a missing row remains 404, never falsely cancelled or created (0.051125ms)
+✖ lookup redacts session failure (0.061208ms)
+✖ lookup redacts service failure (0.052958ms)
+✖ lookup redacts throw failure (0.056875ms)
+✖ lookup redacts database failure (0.045125ms)
+✖ lost submit ACK then unconfirmed cancel can observe terminal completion without a new POST (0.049333ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 0
+ℹ fail 29
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 776.64025
+
+✖ failing tests:
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:2948
+✖ lookup denies anonymous before privileged read (1.929083ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:53:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:2948
+✖ lookup denies expired before privileged read (0.15475ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:53:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:2948
+✖ lookup denies revoked before privileged read (0.096792ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:53:23)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3484
+✖ lookup rejects invalid or ambiguous identity:  (0.1025ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:59:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3484
+✖ lookup rejects invalid or ambiguous identity: targetStep=script (0.108458ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:59:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3484
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009 (0.108667ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:59:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3484
+✖ lookup rejects invalid or ambiguous identity: requestId=bad&targetStep=script (0.082416ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:59:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3484
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=cancel (0.117125ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:59:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3484
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=thumbnail (0.08675ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:59:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3484
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&targetStep=script&targetStep=video (0.104708ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:59:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3484
+✖ lookup rejects invalid or ambiguous identity: requestId=12000000-0000-4000-8000-000000000009&requestId=12000000-0000-4000-8000-000000000009&targetStep=script (0.077209ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:59:25)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3696
+✖ lookup scopes script to authenticated owner and production kind (0.106209ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:65:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3696
+✖ lookup scopes video to authenticated owner and production kind (0.061916ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:65:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3696
+✖ lookup scopes voice to authenticated owner and production kind (0.051459ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:65:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3696
+✖ lookup scopes music to authenticated owner and production kind (0.047959ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:65:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3696
+✖ lookup scopes assembly to authenticated owner and production kind (0.0525ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:65:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:3696
+✖ lookup scopes all to authenticated owner and production kind (0.047958ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:65:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4290
+✖ lookup returns stored queued without resubmitting (0.067416ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:74:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4290
+✖ lookup returns stored processing without resubmitting (0.043958ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:74:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4290
+✖ lookup returns stored cancelled without resubmitting (0.048625ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:74:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4290
+✖ lookup returns stored failed without resubmitting (0.042666ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:74:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4290
+✖ lookup returns stored uncertain without resubmitting (0.045208ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:74:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4290
+✖ lookup returns stored done without resubmitting (0.047959ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:74:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4533
+✖ a missing row remains 404, never falsely cancelled or created (0.051125ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:80:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4839
+✖ lookup redacts session failure (0.061208ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:86:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4839
+✖ lookup redacts service failure (0.052958ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:86:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4839
+✖ lookup redacts throw failure (0.056875ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:86:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:4839
+✖ lookup redacts database failure (0.045125ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:86:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/production-status.test.mts:1:5104
+✖ lost submit ACK then unconfirmed cancel can observe terminal completion without a new POST (0.049333ms)
+  AssertionError [ERR_ASSERTION]: missing read-only reconciliation for original production intent
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at invoke (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:45:10)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/production-status.test.mts:92:38)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

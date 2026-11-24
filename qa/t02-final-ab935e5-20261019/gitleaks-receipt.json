@@ -1,0 +1,25 @@
+{
+  "head": "2b69a8feabb0e82e34939d96cb5176116baa244d",
+  "command": [
+    "gitleaks",
+    "stdin",
+    "--redact=100",
+    "--report-format=json",
+    "--report-path",
+    "/Users/matissdornier/purama-worktrees/sutra-t02-final-sha-security-20261015/qa/t02-final-ab935e5-20261019/gitleaks.json",
+    "--no-banner"
+  ],
+  "exitCode": 1,
+  "inputFiles": 928,
+  "inputSha256": "4c8af9347215fc2a5fc368a0c9d5e4dd6e24c52bbd993a2d5b3f2aba3ec73386",
+  "findings": [
+    {
+      "rule": "generic-api-key",
+      "file": "scripts/test-release-regressions.mts",
+      "line": 41,
+      "fileSha256": "385fd6ac175ecbd854bf0a04cdf38febd70c58e75826c4cffd398619253ecf5a"
+    }
+  ],
+  "scope": "source/scripts/SQL/packages/config plus this QA; no env/master/history/remote artifacts",
+  "rules": "default, redact100, no suppression"
+}

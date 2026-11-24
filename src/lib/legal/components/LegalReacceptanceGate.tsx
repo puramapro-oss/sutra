@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { LegalDocType } from '../types';
 
 const DOC_LABELS: Record<LegalDocType, string> = {
@@ -8,6 +8,13 @@ const DOC_LABELS: Record<LegalDocType, string> = {
   cgu: "Conditions générales d'utilisation",
   cgv: 'Conditions générales de vente',
   confidentialite: 'Politique de confidentialité',
+};
+
+const DOC_PATHS: Record<LegalDocType, string> = {
+  mentions: '/mentions-legales',
+  cgu: '/cgu',
+  cgv: '/cgv',
+  confidentialite: '/politique-confidentialite',
 };
 
 export interface LegalReacceptanceGateProps {
@@ -28,10 +35,30 @@ export default function LegalReacceptanceGate({ appName, docsEnAttente, onAccept
   const [pending, setPending] = useState<LegalDocType[]>(docsEnAttente);
   const [busy, setBusy] = useState<LegalDocType | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  if (pending.length === 0) return null;
-
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const titleId = useId();
+  const descriptionId = useId();
+  const open = pending.length > 0;
   const current = pending[0];
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!open || !dialog) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = 'hidden';
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus?.isConnected) previousFocus.focus();
+    };
+  }, [open]);
+
+  useEffect(() => { linkRef.current?.focus(); }, [current]);
+
+  if (!open) return null;
 
   async function handleAccept() {
     setBusy(current);
@@ -47,25 +74,40 @@ export default function LegalReacceptanceGate({ appName, docsEnAttente, onAccept
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4">
-      <div className="w-full max-w-md rounded-lg border border-border bg-background-soft p-6 space-y-4">
-        <h2 className="text-lg font-semibold">Mise à jour de nos conditions</h2>
-        <p className="text-sm text-foreground">
+    <dialog
+      ref={dialogRef}
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+      aria-busy={busy !== null}
+      onCancel={(event) => event.preventDefault()}
+      onKeyDown={(event) => {
+        if (event.key !== 'Tab') return;
+        const items = event.currentTarget.querySelectorAll<HTMLElement>('a[href], button:not([disabled])');
+        const first = items[0], last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault(); last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault(); first?.focus();
+        }
+      }}
+      className="fixed m-auto w-[calc(100%-2rem)] max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg border border-border bg-background-soft text-foreground p-6 space-y-4 backdrop:bg-black/70"
+    >
+        <h2 id={titleId} className="text-lg font-semibold">Mise à jour de nos conditions</h2>
+        <p id={descriptionId} className="text-sm text-foreground">
           {appName} a mis à jour son document « {DOC_LABELS[current]} ». Merci d&apos;en prendre connaissance avant de continuer.
         </p>
-        <a href={`/${current === 'confidentialite' ? 'politique-confidentialite' : current}`} target="_blank" rel="noopener noreferrer" className="text-sm underline text-primary-on-dark">
+        <a ref={linkRef} href={DOC_PATHS[current]} target="_blank" rel="noopener noreferrer" className="inline-block text-sm underline text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
           Lire « {DOC_LABELS[current]} »
         </a>
         <button
           type="button"
           onClick={handleAccept}
           disabled={busy === current}
-          className="min-h-11 w-full rounded-pill bg-primary px-5 text-sm font-medium text-white disabled:opacity-60"
+          className="min-h-11 w-full rounded-pill bg-violet-600 px-5 text-sm font-medium text-white disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
         >
           {busy === current ? 'Enregistrement…' : "J'ai lu, je continue"}
         </button>
-        {error && <p className="text-sm text-destructive">{error}</p>}
-      </div>
-    </div>
+        {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
+    </dialog>
   );
 }

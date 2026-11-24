@@ -1,0 +1,16 @@
+Error: expect(locator).toBeVisible() failed
+
+Locator: getByRole('heading', { name: 'Bibliothèque', exact: true })
+Expected: visible
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 5000ms
+  - waiting for getByRole('heading', { name: 'Bibliothèque', exact: true })
+
+    at Proxy.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright/lib/matchers/expect.js:213:24)
+    at enterTestSession (file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/session.mjs:18:82)
+    at async editorChecks (file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/editor-checks.mjs:6:3)
+    at async runScenario (file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/run.mjs:82:37)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/run.mjs:133:5

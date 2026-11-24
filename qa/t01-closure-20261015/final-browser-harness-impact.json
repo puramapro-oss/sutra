@@ -1,0 +1,97 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "status": "ambiguous",
+  "message": "Found 3 symbols matching 'runScenario'. Blast radius differs per candidate (max 158 impacted at risk CRITICAL). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "runScenario"
+  },
+  "direction": "upstream",
+  "totalCandidates": 3,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 158,
+  "maxRisk": "CRITICAL",
+  "candidates": [
+    {
+      "uid": "",
+      "name": "runScenario",
+      "kind": "",
+      "filePath": "qa/t07-final-ux-perf-20261015/run.mjs",
+      "line": 54,
+      "score": 0.5,
+      "impactedCount": 158,
+      "risk": "CRITICAL",
+      "riskSharedAxes": "CRITICAL",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 142
+    },
+    {
+      "uid": "",
+      "name": "runScenario",
+      "kind": "",
+      "filePath": "qa/t07-frontend-journey-20261014/run.mjs",
+      "line": 38,
+      "score": 0.5,
+      "impactedCount": 158,
+      "risk": "CRITICAL",
+      "riskSharedAxes": "CRITICAL",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 142
+    },
+    {
+      "uid": "",
+      "name": "runScenario",
+      "kind": "",
+      "filePath": "qa/t07-integrated-retest-20261015/run.mjs",
+      "line": 50,
+      "score": 0.5,
+      "impactedCount": 158,
+      "risk": "CRITICAL",
+      "riskSharedAxes": "CRITICAL",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 142
+    }
+  ],
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 3,
+    "hint": "⚠️ Index is 3 commits behind HEAD. Run analyze tool to update."
+  }
+}

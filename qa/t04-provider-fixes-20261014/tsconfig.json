@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "plugins": [],
+    "types": [
+      "node",
+      "next"
+    ]
+  },
+  "include": [
+    "../../src/lib/salad/**/*.ts",
+    "../../src/lib/salad/**/*.mts",
+    "../../src/lib/runpod.ts",
+    "../../src/lib/elevenlabs.ts",
+    "../../src/lib/suno.ts",
+    "../../src/lib/provider-response.ts",
+    "../../scripts/test-t04-provider-fixes.mts",
+    "../../scripts/test-salad-host.mts",
+    "../../scripts/test-salad-worker.mts",
+    "../../src/lib/storyboard.ts",
+    "../../src/app/api/production/route.ts",
+    "../../scripts/test-t04-pollinations.mts",
+    "../../src/types/javascript-opentimestamps.d.ts"
+  ],
+  "exclude": [
+    "../../node_modules"
+  ]
+}

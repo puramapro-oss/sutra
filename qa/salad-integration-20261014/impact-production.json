@@ -1,0 +1,801 @@
+
+  GitNexus Impact (1.6.12)
+{
+  "target": {
+    "name": "defaultProviders",
+    "type": "",
+    "filePath": "src/lib/production-pipeline.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 77,
+  "risk": "HIGH",
+  "riskSharedAxes": "HIGH",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 27,
+    "processes_affected": 2,
+    "modules_affected": 4
+  },
+  "byDepthCounts": {
+    "1": 27,
+    "2": 25,
+    "3": 25
+  },
+  "affected_processes": [
+    {
+      "name": "PartenaireDashboard",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/partenaire/page.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "KarmaHub → Refresh",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Status",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Hooks",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Landing",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Scripts",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Class:scripts/test-t03-salad-recovery.mts:Transport",
+        "name": "Transport",
+        "filePath": "scripts/test-t03-salad-recovery.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "name": "test-t02-salad-security-contract.mts",
+        "filePath": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-api-contracts.mts",
+        "name": "test-api-contracts.mts",
+        "filePath": "scripts/test-api-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-auth-session.mts",
+        "name": "test-auth-session.mts",
+        "filePath": "scripts/test-auth-session.mts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-editor-export.mts",
+        "name": "test-editor-export.mts",
+        "filePath": "scripts/test-editor-export.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-env-contracts.mts",
+        "name": "test-env-contracts.mts",
+        "filePath": "scripts/test-env-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-export-integration.mts",
+        "name": "test-export-integration.mts",
+        "filePath": "scripts/test-export-integration.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-integration.mts",
+        "name": "test-integration.mts",
+        "filePath": "scripts/test-integration.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-local-engine.mts",
+        "name": "test-local-engine.mts",
+        "filePath": "scripts/test-local-engine.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-ltx-v2-contracts.mts",
+        "name": "test-ltx-v2-contracts.mts",
+        "filePath": "scripts/test-ltx-v2-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-pipeline-interruptions.mts",
+        "name": "test-pipeline-interruptions.mts",
+        "filePath": "scripts/test-pipeline-interruptions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-production-queue.mts",
+        "name": "test-production-queue.mts",
+        "filePath": "scripts/test-production-queue.mts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-host.mts",
+        "name": "test-salad-host.mts",
+        "filePath": "scripts/test-salad-host.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-persistence.mts",
+        "name": "test-salad-persistence.mts",
+        "filePath": "scripts/test-salad-persistence.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-salad-worker.mts",
+        "name": "test-salad-worker.mts",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-security-account.mts",
+        "name": "test-security-account.mts",
+        "filePath": "scripts/test-security-account.mts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-security-points.mts",
+        "name": "test-security-points.mts",
+        "filePath": "scripts/test-security-points.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/landing/Hero3D.tsx",
+        "name": "Hero3D.tsx",
+        "filePath": "src/components/landing/Hero3D.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/publish/constants.tsx",
+        "name": "constants.tsx",
+        "filePath": "src/components/publish/constants.tsx",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/ltx-v2.ts",
+        "name": "ltx-v2.ts",
+        "filePath": "src/lib/ltx-v2.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/publication-journal.ts",
+        "name": "publication-journal.ts",
+        "filePath": "src/lib/publication-journal.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/config.ts",
+        "name": "config.ts",
+        "filePath": "src/lib/salad/config.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/lib/salad/contracts.ts",
+        "name": "contracts.ts",
+        "filePath": "src/lib/salad/contracts.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/(dashboard)/partenaire/page.tsx:PartenaireDashboard",
+        "name": "PartenaireDashboard",
+        "filePath": "src/app/(dashboard)/partenaire/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_201_partenairedashboard",
+            "label": "PartenaireDashboard → UseHydrated",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_180_partenairedashboard",
+            "label": "PartenaireDashboard → FormatDuration",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_335_partenairedashboard",
+            "label": "PartenaireDashboard → Cn",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/status/page.tsx:StatusPage",
+        "name": "StatusPage",
+        "filePath": "src/app/status/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/components/karma/SeedsBalance.tsx:SeedsBalance",
+        "name": "SeedsBalance",
+        "filePath": "src/components/karma/SeedsBalance.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_0_karmahub",
+            "label": "KarmaHub → Refresh",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_327_karmahub",
+            "label": "KarmaHub → Cn",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/components/landing/AppWelcome.tsx:AppWelcome",
+        "name": "AppWelcome",
+        "filePath": "src/components/landing/AppWelcome.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:scripts/helpers/social-database.mts",
+        "name": "social-database.mts",
+        "filePath": "scripts/helpers/social-database.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:scripts/test-provider-safety.mts",
+        "name": "test-provider-safety.mts",
+        "filePath": "scripts/test-provider-safety.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:scripts/test-t06-social-autonomy.mts",
+        "name": "test-t06-social-autonomy.mts",
+        "filePath": "scripts/test-t06-social-autonomy.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/(dashboard)/publish/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/publish/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/create/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/app/api/production/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/production/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/components/landing/Hero.tsx",
+        "name": "Hero.tsx",
+        "filePath": "src/components/landing/Hero.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/components/publish/VideoPublishCard.tsx",
+        "name": "VideoPublishCard.tsx",
+        "filePath": "src/components/publish/VideoPublishCard.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/auto-publication.ts",
+        "name": "auto-publication.ts",
+        "filePath": "src/lib/auto-publication.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/fallbacks.ts",
+        "name": "fallbacks.ts",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx-checkpoint.ts",
+        "name": "ltx-checkpoint.ts",
+        "filePath": "src/lib/ltx-checkpoint.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx-types.ts",
+        "name": "ltx-types.ts",
+        "filePath": "src/lib/ltx-types.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx-workflow.ts",
+        "name": "ltx-workflow.ts",
+        "filePath": "src/lib/ltx-workflow.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx.ts",
+        "name": "ltx.ts",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad-persistence.ts",
+        "name": "salad-persistence.ts",
+        "filePath": "src/lib/salad-persistence.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/application.ts",
+        "name": "application.ts",
+        "filePath": "src/lib/salad/application.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/checkpoint.ts",
+        "name": "checkpoint.ts",
+        "filePath": "src/lib/salad/checkpoint.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/client.ts",
+        "name": "client.ts",
+        "filePath": "src/lib/salad/client.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/engine.ts",
+        "name": "engine.ts",
+        "filePath": "src/lib/salad/engine.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/host.ts",
+        "name": "host.ts",
+        "filePath": "src/lib/salad/host.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/http.ts",
+        "name": "http.ts",
+        "filePath": "src/lib/salad/http.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/inspection.ts",
+        "name": "inspection.ts",
+        "filePath": "src/lib/salad/inspection.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/serve.mts",
+        "name": "serve.mts",
+        "filePath": "src/lib/salad/serve.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/salad/worker.ts",
+        "name": "worker.ts",
+        "filePath": "src/lib/salad/worker.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/social-publication.ts",
+        "name": "social-publication.ts",
+        "filePath": "src/lib/social-publication.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:scripts/test-local-engine-e2e.mts",
+        "name": "test-local-engine-e2e.mts",
+        "filePath": "scripts/test-local-engine-e2e.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-ltx-v2-media.mts",
+        "name": "test-ltx-v2-media.mts",
+        "filePath": "scripts/test-ltx-v2-media.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-release-regressions.mts",
+        "name": "test-release-regressions.mts",
+        "filePath": "scripts/test-release-regressions.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-social-publication.mts",
+        "name": "test-social-publication.mts",
+        "filePath": "scripts/test-social-publication.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t02-salad-security.mts",
+        "name": "test-t02-salad-security.mts",
+        "filePath": "scripts/test-t02-salad-security.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t06-social-final.mts",
+        "name": "test-t06-social-final.mts",
+        "filePath": "scripts/test-t06-social-final.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t06-social-routes.mts",
+        "name": "test-t06-social-routes.mts",
+        "filePath": "scripts/test-t06-social-routes.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t08-final-modes.mts",
+        "name": "test-t08-final-modes.mts",
+        "filePath": "scripts/test-t08-final-modes.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/(dashboard)/create/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/create/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/(dashboard)/production/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/production/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/health/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/health/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/social/publish/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/social/publish/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/video/capabilities/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/video/capabilities/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/create/AutoForm.tsx",
+        "name": "AutoForm.tsx",
+        "filePath": "src/components/create/AutoForm.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/create/wizard/ManualFormStep4.tsx",
+        "name": "ManualFormStep4.tsx",
+        "filePath": "src/components/create/wizard/ManualFormStep4.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/production/IdeaStep.tsx",
+        "name": "IdeaStep.tsx",
+        "filePath": "src/components/production/IdeaStep.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/hooks/useProductionGeneration.ts",
+        "name": "useProductionGeneration.ts",
+        "filePath": "src/hooks/useProductionGeneration.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/hooks/useVideoGeneration.ts",
+        "name": "useVideoGeneration.ts",
+        "filePath": "src/hooks/useVideoGeneration.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/create-utils.ts",
+        "name": "create-utils.ts",
+        "filePath": "src/lib/create-utils.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/local-engine.ts",
+        "name": "local-engine.ts",
+        "filePath": "src/lib/local-engine.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx-helpers.ts",
+        "name": "ltx-helpers.ts",
+        "filePath": "src/lib/ltx-helpers.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx-utils.ts",
+        "name": "ltx-utils.ts",
+        "filePath": "src/lib/ltx-utils.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/production-pipeline.ts",
+        "name": "production-pipeline.ts",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/sutra-auto.ts",
+        "name": "sutra-auto.ts",
+        "filePath": "src/lib/sutra-auto.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/video-pipeline.ts",
+        "name": "video-pipeline.ts",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ]
+  }
+}

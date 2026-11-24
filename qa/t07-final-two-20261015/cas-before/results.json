@@ -1,0 +1,79 @@
+{
+  "baseCommit": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: CAS snapshot is exact, double click once and lost ACK reread only",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ undefined\n- [\n-   {\n-     days: [\n-       'MO'\n-     ],\n-     extension: {\n-       version: 2\n-     },\n-     frequency: 'weekly',\n-     id: '11111111-1111-4111-8111-111111111111',\n-     is_active: true,\n-     name: 'Planning CAS',\n-     theme_ids: [\n-       'kept'\n-     ],\n-     time: '10:00',\n-     timezone: 'Europe/Paris'\n-   }\n- ]\n"
+    },
+    {
+      "name": "375: 409 rereads and reports target conflict without overwrite",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByText(/Ce planning a été modifié ailleurs/)\nExpected: visible\nTimeout: 2500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 2500ms\n  - waiting for getByText(/Ce planning a été modifié ailleurs/)\n"
+    },
+    {
+      "name": "375: 409 already applied reconciles from GET without replay",
+      "status": "FAIL",
+      "message": "expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Reprendre le planning Planning CAS', exact: true })\nExpected: enabled\nTimeout: 2500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.enabled\" with timeout 2500ms\n  - waiting for getByRole('button', { name: 'Reprendre le planning Planning CAS', exact: true })\n"
+    },
+    {
+      "name": "375: failed reconciliation after 409 stays unconfirmed",
+      "status": "FAIL",
+      "message": "expect(received).toBeGreaterThanOrEqual(expected)\n\nExpected: >= 4\nReceived:    3\n\nCall Log:\n- Timeout 2500ms exceeded while waiting on the predicate"
+    },
+    {
+      "name": "375: general settings only sends its nine editable fields",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    'auto_publish',\n    'default_aspect_ratio',\n    'default_duration',\n+   'default_language',\n+   'default_music_genre',\n    'default_style',\n    'default_voice_enabled',\n+   'default_voice_id',\n+   'is_active',\n    'preferred_model',\n    'publish_platforms',\n    'quality_level',\n    'require_approval_before_publish',\n+   'schedules',\n+   'user_id'\n  ]\n"
+    },
+    {
+      "name": "1440: CAS snapshot is exact, double click once and lost ACK reread only",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ undefined\n- [\n-   {\n-     days: [\n-       'MO'\n-     ],\n-     extension: {\n-       version: 2\n-     },\n-     frequency: 'weekly',\n-     id: '11111111-1111-4111-8111-111111111111',\n-     is_active: true,\n-     name: 'Planning CAS',\n-     theme_ids: [\n-       'kept'\n-     ],\n-     time: '10:00',\n-     timezone: 'Europe/Paris'\n-   }\n- ]\n"
+    },
+    {
+      "name": "1440: 409 rereads and reports target conflict without overwrite",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByText(/Ce planning a été modifié ailleurs/)\nExpected: visible\nTimeout: 2500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 2500ms\n  - waiting for getByText(/Ce planning a été modifié ailleurs/)\n"
+    },
+    {
+      "name": "1440: 409 already applied reconciles from GET without replay",
+      "status": "FAIL",
+      "message": "expect(locator).toBeEnabled() failed\n\nLocator: getByRole('button', { name: 'Reprendre le planning Planning CAS', exact: true })\nExpected: enabled\nTimeout: 2500ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.enabled\" with timeout 2500ms\n  - waiting for getByRole('button', { name: 'Reprendre le planning Planning CAS', exact: true })\n"
+    },
+    {
+      "name": "1440: failed reconciliation after 409 stays unconfirmed",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('schedule-add')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 5000ms\n  - waiting for getByTestId('schedule-add')\n"
+    },
+    {
+      "name": "1440: general settings only sends its nine editable fields",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    'auto_publish',\n    'default_aspect_ratio',\n    'default_duration',\n+   'default_language',\n+   'default_music_genre',\n    'default_style',\n    'default_voice_enabled',\n+   'default_voice_id',\n+   'is_active',\n    'preferred_model',\n    'publish_platforms',\n    'quality_level',\n    'require_approval_before_publish',\n+   'schedules',\n+   'user_id'\n  ]\n"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "cas-viewport-375",
+      "contract": "T01 2026-10-15T20:26:24Z; fixture only"
+    },
+    {
+      "name": "cas-viewport-1440",
+      "contract": "T01 2026-10-15T20:26:24Z; fixture only"
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "target": {
+    "id": "Function:qa/t04-salad-access-20261015/secure_setup.py:configure",
+    "name": "configure",
+    "type": "Function",
+    "filePath": "qa/t04-salad-access-20261015/secure_setup.py"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "T04-salad-access-20261015",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:qa/t04-salad-access-20261015/secure_setup.py:main",
+        "name": "main",
+        "filePath": "qa/t04-salad-access-20261015/secure_setup.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:qa/t04-salad-access-20261015/secure_setup.py",
+        "name": "secure_setup.py",
+        "filePath": "qa/t04-salad-access-20261015/secure_setup.py",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

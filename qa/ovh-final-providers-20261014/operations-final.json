@@ -1,0 +1,116 @@
+{
+  "observedAt": "2026-10-13T22:20:28.659941+00:00",
+  "source": "e3b17117256269e281304cd4ab83bc722a6f7894",
+  "container": {
+    "image": "purama/sutra-candidate:e3b17117256269e281304cd4ab83bc722a6f7894-1791928971340914000",
+    "id": "sha256:b0750d6f7552940017a0fcd06422304cafdde0d49aead7bc6e11af98b7d65a16",
+    "health": "healthy",
+    "restarts": 0,
+    "startedAt": "2026-10-13T22:19:32.893890464Z"
+  },
+  "backup": {
+    "directory": "/opt/purama/apps/sutra/backup-t01-coherent-ci1vi7kq",
+    "mode": "0o700",
+    "files": [
+      {
+        "name": "sutra.dump",
+        "bytes": 5195711,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "public-social.dump",
+        "bytes": 25703,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "public-social-dependencies.sql",
+        "bytes": 172,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "sutra-assets.tar.gz",
+        "bytes": 686,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "storage-metadata.json",
+        "bytes": 976,
+        "mode": "0o600",
+        "hashMatches": true
+      },
+      {
+        "name": "referenced-auth-ids.json",
+        "bytes": 829081,
+        "mode": "0o600",
+        "hashMatches": true
+      }
+    ],
+    "allHashesMatch": true
+  },
+  "rollback": {
+    "path": "/opt/purama/apps/sutra/rollback-e3b17117256269e281304cd4ab83bc722a6f7894",
+    "exists": true,
+    "files": [
+      {
+        "name": "migration-private.log",
+        "bytes": 0,
+        "mode": "0o644"
+      },
+      {
+        "name": "compose.yml",
+        "bytes": 1022,
+        "mode": "0o600"
+      },
+      {
+        "name": "runtime.env",
+        "bytes": 5376,
+        "mode": "0o600"
+      },
+      {
+        "name": "complete",
+        "bytes": 0,
+        "mode": "0o600"
+      },
+      {
+        "name": "candidate.runtime.env",
+        "bytes": 5426,
+        "mode": "0o600"
+      }
+    ]
+  },
+  "logs": {
+    "since": "2026-10-13T22:19:32.893890464Z",
+    "lineCount": 47,
+    "categories": {
+      "fatal": 0,
+      "db_connection": 0,
+      "permission": 0,
+      "application_error": 0,
+      "startup": 2
+    },
+    "rawContentNotExported": true
+  },
+  "database": {
+    "version": "15.8",
+    "recovery": false,
+    "connections": 42,
+    "maxConnections": "100",
+    "waitingLocks": 0,
+    "longTransactions": 0,
+    "sutraTables": 138,
+    "restoreTables": 1
+  },
+  "runtime": {
+    "matchesVerifiedCandidate": true,
+    "allPreviousBytesPreserved": true,
+    "changedVariables": [
+      "SUNO_API_BASE_URL"
+    ],
+    "appOriginsPreserved": true,
+    "noKeyRotation": true
+  }
+}

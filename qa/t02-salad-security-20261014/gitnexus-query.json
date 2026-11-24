@@ -1,0 +1,172 @@
+{
+  "processes": [
+    {
+      "id": "proc_86_get",
+      "summary": "GET → WithMediaOwner",
+      "priority": 0.107,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/private-media.ts:withMediaOwner",
+      "name": "withMediaOwner",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 10,
+      "endLine": 14,
+      "module": "Stripe",
+      "process_id": "proc_86_get",
+      "step_index": 3
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:scripts/comfyui-engine-server.mjs:submitAndWait",
+      "name": "submitAndWait",
+      "filePath": "scripts/comfyui-engine-server.mjs",
+      "startLine": 99,
+      "endLine": 128,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:scripts/comfyui-engine-server.mjs:uploadToInput",
+      "name": "uploadToInput",
+      "filePath": "scripts/comfyui-engine-server.mjs",
+      "startLine": 131,
+      "endLine": 139,
+      "module": "Scripts"
+    },
+    {
+      "id": "File:scripts/comfyui-engine-server.mjs",
+      "name": "comfyui-engine-server.mjs",
+      "filePath": "scripts/comfyui-engine-server.mjs"
+    },
+    {
+      "id": "Function:src/lib/local-engine.ts:localUrl",
+      "name": "localUrl",
+      "filePath": "src/lib/local-engine.ts",
+      "startLine": 13,
+      "endLine": 19,
+      "module": "Cluster_278"
+    },
+    {
+      "id": "Function:src/lib/local-engine.ts:generateLocalVideo",
+      "name": "generateLocalVideo",
+      "filePath": "src/lib/local-engine.ts",
+      "startLine": 55,
+      "endLine": 88,
+      "module": "Cluster_277"
+    },
+    {
+      "id": "File:src/lib/local-engine.ts",
+      "name": "local-engine.ts",
+      "filePath": "src/lib/local-engine.ts"
+    },
+    {
+      "id": "Function:src/lib/ltx.ts:generateVideoSmart",
+      "name": "generateVideoSmart",
+      "filePath": "src/lib/ltx.ts",
+      "startLine": 79,
+      "endLine": 155,
+      "module": "Cluster_279"
+    },
+    {
+      "id": "Function:src/lib/ltx.ts:generateAllScenes",
+      "name": "generateAllScenes",
+      "filePath": "src/lib/ltx.ts",
+      "startLine": 161,
+      "endLine": 187,
+      "module": "Scripts"
+    },
+    {
+      "id": "File:src/lib/ltx.ts",
+      "name": "ltx.ts",
+      "filePath": "src/lib/ltx.ts"
+    },
+    {
+      "id": "Const:scripts/test-local-engine-e2e.mts:OWNER",
+      "name": "OWNER",
+      "filePath": "scripts/test-local-engine-e2e.mts",
+      "startLine": 28,
+      "endLine": 28
+    },
+    {
+      "id": "Const:scripts/test-local-engine-e2e.mts:stubProc",
+      "name": "stubProc",
+      "filePath": "scripts/test-local-engine-e2e.mts",
+      "startLine": 49,
+      "endLine": 53
+    },
+    {
+      "id": "File:scripts/test-local-engine-e2e.mts",
+      "name": "test-local-engine-e2e.mts",
+      "filePath": "scripts/test-local-engine-e2e.mts"
+    },
+    {
+      "id": "Function:qa/postdeploy-20261013/media/free-runtime-probes.mjs:publicMediaChecks",
+      "name": "publicMediaChecks",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "startLine": 28,
+      "endLine": 48,
+      "module": "Media"
+    },
+    {
+      "id": "Function:qa/postdeploy-20261013/media/free-runtime-probes.mjs:authenticatedFreeChecks",
+      "name": "authenticatedFreeChecks",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "startLine": 54,
+      "endLine": 72,
+      "module": "Media"
+    },
+    {
+      "id": "File:qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "name": "free-runtime-probes.mjs",
+      "filePath": "qa/postdeploy-20261013/media/free-runtime-probes.mjs"
+    },
+    {
+      "id": "Const:src/lib/private-media.ts:owners",
+      "name": "owners",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 7,
+      "endLine": 7
+    },
+    {
+      "id": "Function:src/lib/private-media.ts:mediaOwner",
+      "name": "mediaOwner",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 15,
+      "endLine": 19,
+      "module": "[reference]"
+    },
+    {
+      "id": "Interface:src/lib/ltx-types.ts:LtxResult",
+      "name": "LtxResult",
+      "filePath": "src/lib/ltx-types.ts",
+      "startLine": 37,
+      "endLine": 44
+    },
+    {
+      "id": "Property:src/lib/ltx-types.ts:LtxResult.engine",
+      "name": "engine",
+      "filePath": "src/lib/ltx-types.ts",
+      "startLine": 40,
+      "endLine": 40
+    },
+    {
+      "id": "File:src/lib/ltx-types.ts",
+      "name": "ltx-types.ts",
+      "filePath": "src/lib/ltx-types.ts"
+    }
+  ],
+  "timing": {
+    "vector": 4.2,
+    "bm25": 183.3,
+    "merge": 0.1,
+    "symbol_lookup": 12.8,
+    "ranking": 0,
+    "formatting": 0.1,
+    "wall": 197.3
+  }
+}

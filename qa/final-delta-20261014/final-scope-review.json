@@ -1,0 +1,26 @@
+{
+  "observedAt": "2026-10-14T04:46:46.062605+00:00",
+  "status": "PASS_BOUNDED",
+  "stagedFilesReviewed": 172,
+  "foreignWipStaged": false,
+  "foreignAgentsHashUnchanged": true,
+  "protectedCommitsPresent": true,
+  "applicationCodeDeltaSince86d": false,
+  "gitnexusStaged": {
+    "risk": "low",
+    "indexedSymbols": 4,
+    "affectedProcesses": 0,
+    "scope": "documents; new QA scripts partially unindexed, reviewed directly"
+  },
+  "gitnexusCompareMain": {
+    "risk": "critical",
+    "files": 2235,
+    "symbols": 4234,
+    "processes": 359,
+    "listingCapped": true,
+    "exhaustivity": "UNKNOWN",
+    "scope": "historical comparison, not evidence of a new app change"
+  },
+  "gates": "CI86d reused for byte-identical application; SQL6800a8d targeted DB + browser proven",
+  "noNewHeavySuiteRequired": true
+}

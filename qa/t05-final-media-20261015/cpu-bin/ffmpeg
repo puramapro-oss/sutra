@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+import os,sys,subprocess,time,resource,json
+args=sys.argv[1:]
+if '-encoders' in args:
+ time.sleep(float(os.environ.get('T05_ENCODER_DELAY_MS','0'))/1000)
+ print(' V..... libx264 CPU-only fixture inventory');sys.exit(0)
+if any(any(x in a for x in ('videotoolbox','nvenc','qsv')) for a in args):sys.exit(99)
+# exec preserves PID so production cancellation kills the actual FFmpeg process.
+os.execv('/opt/homebrew/opt/ffmpeg-full/bin/ffmpeg', ['ffmpeg',*args])

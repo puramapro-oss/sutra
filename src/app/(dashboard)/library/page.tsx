@@ -51,6 +51,7 @@ export default function LibraryPage() {
     loadingMore,
     hasMore,
     totalCount,
+    error,
     loadMore,
     handleDelete,
     refetch,
@@ -89,11 +90,7 @@ export default function LibraryPage() {
   }
 
   return (
-    <LoadingTimeout
-      loading={loading}
-      onRetry={refetch}
-      skeleton={<LibrarySkeleton />}
-    >
+    <>
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -124,6 +121,13 @@ export default function LibraryPage() {
           onDeleteFolder={handleDeleteFolder}
         />
 
+        <LoadingTimeout loading={loading} onRetry={refetch} skeleton={<LibrarySkeleton />} >
+        {error && (
+          <div role="alert" data-testid="library-error" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-100">
+            <p>{error}</p>
+            <Button variant="secondary" size="sm" className="mt-3" onClick={refetch}>Réessayer</Button>
+          </div>
+        )}
         {displayedVideos.length > 0 ? (
           <>
             {viewMode === 'grid' ? (
@@ -147,29 +151,17 @@ export default function LibraryPage() {
                 onToggleFavorite={toggleFavorite}
               />
             )}
-
-            {hasMore && (
-              <div className="flex justify-center pt-4">
-                <Button
-                  data-testid="load-more"
-                  variant="secondary"
-                  size="md"
-                  loading={loadingMore}
-                  onClick={loadMore}
-                >
-                  {loadingMore ? 'Chargement...' : 'Charger plus'}
-                </Button>
-              </div>
-            )}
           </>
-        ) : (
+        ) : !error ? (
           <EmptyState
             icon={Film}
-            title="Aucune video trouvee"
+            title={hasMore ? 'Aucun résultat parmi les vidéos chargées' : 'Aucune video trouvee'}
             description={
-              search || filter !== 'all' || activeFolder
+              hasMore
+                ? 'Charge la suite pour rechercher dans les vidéos restantes.'
+                : search || filter !== 'all' || activeFolder
                 ? 'Aucune video ne correspond a tes filtres. Essaie de modifier ta recherche.'
-                : "Tu n&apos;as pas encore de video. Cree ta premiere !"
+                : "Tu n’as pas encore de vidéo. Crée ta première !"
             }
             action={
               search || filter !== 'all' || activeFolder
@@ -185,7 +177,21 @@ export default function LibraryPage() {
             }
             data-testid="empty-library"
           />
+        ) : null}
+        {hasMore && (
+          <div className="flex justify-center pt-4">
+            <Button
+              data-testid="load-more"
+              variant="secondary"
+              size="md"
+              loading={loadingMore}
+              onClick={loadMore}
+            >
+              {loadingMore ? 'Chargement...' : 'Charger plus'}
+            </Button>
+          </div>
         )}
+        </LoadingTimeout>
       </motion.div>
 
       <FolderModal
@@ -193,6 +199,6 @@ export default function LibraryPage() {
         onClose={() => setShowFolderModal(false)}
         onCreate={createFolder}
       />
-    </LoadingTimeout>
+    </>
   )
 }

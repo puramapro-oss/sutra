@@ -1,0 +1,103 @@
+{
+  "target": {
+    "id": "Function:src/lib/local-engine.ts:generateLocalVideo",
+    "name": "generateLocalVideo",
+    "type": "Function",
+    "filePath": "src/lib/local-engine.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 4
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1,
+    "3": 3
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_267",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_278",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_279",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/local-engine.ts:tryLocalRoute",
+        "name": "tryLocalRoute",
+        "filePath": "src/lib/local-engine.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/lib/ltx.ts:generateVideoSmart",
+        "name": "generateVideoSmart",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/lib/fallbacks.ts:generateVisualWithFallback",
+        "name": "generateVisualWithFallback",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/ltx.ts:generateAllScenes",
+        "name": "generateAllScenes",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/sutra-auto.ts:generateAutoVideoAssets",
+        "name": "generateAutoVideoAssets",
+        "filePath": "src/lib/sutra-auto.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

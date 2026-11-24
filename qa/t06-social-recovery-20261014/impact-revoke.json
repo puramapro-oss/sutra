@@ -1,0 +1,33 @@
+{
+  "target": {
+    "id": "Function:src/lib/social-account-revocation.ts:revokeSocialAccount",
+    "name": "revokeSocialAccount",
+    "type": "Function",
+    "filePath": "src/lib/social-account-revocation.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Stripe",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ]
+}

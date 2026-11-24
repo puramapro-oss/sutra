@@ -1,0 +1,150 @@
+{
+  "baseline": false,
+  "productionSuite": false,
+  "results": [
+    {
+      "name": "375: schedule labels, state and contrast",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     reasons: [\n+       'Fix any of the following:\\n' +\n+         '  Element has insufficient color contrast of 3.72 (foreground color: #6a696e, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1'\n+     ],\n+     targets: [\n+       [\n+         '.mt-1'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "375: failed schedule save preserves draft and rejects duplicate submissions",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: schedule labels, state and contrast",
+      "status": "FAIL",
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     id: 'color-contrast',\n+     reasons: [\n+       'Fix any of the following:\\n' +\n+         '  Element has insufficient color contrast of 3.72 (foreground color: #6a696e, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1'\n+     ],\n+     targets: [\n+       [\n+         '.mt-1'\n+       ]\n+     ]\n+   }\n+ ]\n- []\n"
+    },
+    {
+      "name": "1440: failed schedule save preserves draft and rejects duplicate submissions",
+      "status": "PASS"
+    },
+    {
+      "name": "failed delete preserves schedule and manual retry deletes once",
+      "status": "FAIL",
+      "message": "locator.evaluate: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Supprimer Planning test sans publication' })\u001b[22m\n"
+    },
+    {
+      "name": "lost save response has bounded wait, no automatic retry and stable draft ID",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "schedule load failure cannot become empty or allow overwriting existing schedules",
+      "status": "PASS"
+    },
+    {
+      "name": "malformed successful load cannot become an empty schedule",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "planning-375-axe",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".mt-1"
+            ]
+          ],
+          "reasons": [
+            "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6a696e, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "schedule-375-double-submit",
+      "calls": 1,
+      "draftRetained": true
+    },
+    {
+      "name": "planning-1440-axe",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".mt-1"
+            ]
+          ],
+          "reasons": [
+            "Fix any of the following:\n  Element has insufficient color contrast of 3.72 (foreground color: #6a696e, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "schedule-1440-double-submit",
+      "calls": 1,
+      "draftRetained": true
+    },
+    {
+      "name": "save-timeout",
+      "timeoutMs": 10899,
+      "requests": 1
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "mutations": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

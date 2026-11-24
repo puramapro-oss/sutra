@@ -1,0 +1,27 @@
+{
+  "baseCommit": "57e40428124850cbd1463538e7d9673069ceed64",
+  "milestone": "MODE-03 safe public errors; authenticated public GET evidence",
+  "finalIntegration": false,
+  "tests": {
+    "t08Modes": {
+      "pass": 4,
+      "fail": 0,
+      "skip": 0,
+      "sourceSha256": "d78087928340d579cb230c5bf5bf4d5245d6bfb8f9eb6c011dcc63bcc01dbe4d",
+      "method": "esbuild transform original T08 test in memory, node24 module mocks + tsx in T01/scripts, allowlisted fixture environment and offline preload"
+    },
+    "typecheck": {
+      "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
+      "exitCode": 0
+    },
+    "lint": {
+      "command": "npx --no-install eslint src/app/api/create/route.ts qa/provider-activation-20261014/authenticated-smoke.mjs",
+      "exitCode": 0
+    }
+  },
+  "limits": [
+    "Salad adapter and seven-owner final integration pending",
+    "No GPU or generation proof",
+    "GitNexus create POST has zero resolved callers and UNKNOWN risk; shared error function HIGH was not modified"
+  ]
+}

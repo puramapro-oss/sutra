@@ -1,0 +1,29 @@
+{
+  "owner": "T07",
+  "ack": "ACK T07",
+  "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+  "at": "2026-10-19T19:51:30.090491+00:00",
+  "branch": "codex/sutra-t07-automation-final-20261019",
+  "status": "PASS_TECHNIQUE_LOCAL_AVEC_RESERVES",
+  "pass": 32,
+  "failCurrentFunctionalRuns": 0,
+  "preservedHarnessFailures": 2,
+  "scope": [
+    "scheduler UI",
+    "create/production durable cancellation",
+    "accelerated continuity simulation"
+  ],
+  "productChanges": false,
+  "blockers": [
+    "Unconditional catch-up after long outage not satisfied: window now-1h to now+3h"
+  ],
+  "notTested": [
+    "24/7 wall-clock soak",
+    "live broadcasting",
+    "real providers/publication",
+    "remote dispatch",
+    "Safari/physical devices/screen reader"
+  ],
+  "noReleaseAuthorization": true,
+  "evidence": "qa/t07-automation-final-20261019/README.md"
+}

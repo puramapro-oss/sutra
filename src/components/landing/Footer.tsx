@@ -113,7 +113,7 @@ export default function Footer() {
                 SUTRA
               </span>
             </Link>
-            <p className="text-sm text-white/40 leading-relaxed max-w-xs">
+            <p className="text-sm text-white/60 leading-relaxed max-w-xs">
               La plateforme de generation de videos par IA. De l&apos;idee a la
               publication en quelques minutes.
             </p>
@@ -146,7 +146,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/40 hover:text-violet-400 transition-colors duration-200"
+                      className="text-sm text-white/60 hover:text-violet-400 transition-colors duration-200"
                     >
                       {link.label}
                     </Link>
@@ -159,10 +159,10 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/30">
+          <p className="text-xs text-white/60">
             &copy; {new Date().getFullYear()} Purama. Tous droits reserves.
           </p>
-          <p className="text-xs text-white/20">
+          <p className="text-xs text-white/60">
             Fait avec passion a Frasne
           </p>
         </div>

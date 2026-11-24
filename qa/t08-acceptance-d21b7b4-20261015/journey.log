@@ -1,0 +1,91 @@
+TAP version 13
+# (node:58072) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:58072) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication
+ok 1 - J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication
+  ---
+  duration_ms: 37.193084
+  type: 'test'
+  ...
+# Subtest: J02 bounded 12-click burst shares one queued job, project and provider intent; changed content conflicts
+ok 2 - J02 bounded 12-click burst shares one queued job, project and provider intent; changed content conflicts
+  ---
+  duration_ms: 21.578125
+  type: 'test'
+  ...
+# Subtest: J03 quota or submission DB refusal has no orphan project or provider effects
+ok 3 - J03 quota or submission DB refusal has no orphan project or provider effects
+  ---
+  duration_ms: 9.364458
+  type: 'test'
+  ...
+# Subtest: J04 upload failure resumes stored voice and other resolved assets, without resynthesis
+ok 4 - J04 upload failure resumes stored voice and other resolved assets, without resynthesis
+  ---
+  duration_ms: 13.666833
+  type: 'test'
+  ...
+# Subtest: J05 ready-write DB failure cannot publish; resume reuses verified media and settles once
+ok 5 - J05 ready-write DB failure cannot publish; resume reuses verified media and settles once
+  ---
+  duration_ms: 13.482334
+  type: 'test'
+  ...
+# Subtest: J06 created client project remains isolated across status, export and publication boundaries
+ok 6 - J06 created client project remains isolated across status, export and publication boundaries
+  ---
+  duration_ms: 11.480625
+  type: 'test'
+  ...
+# Subtest: J07 corrupt export validation preserves prior ready media and retry does not render again
+ok 7 - J07 corrupt export validation preserves prior ready media and retry does not render again
+  ---
+  duration_ms: 13.672625
+  type: 'test'
+  ...
+# Subtest: J08 two destination partial publication reconciles existing posts, never republishes the successful target
+ok 8 - J08 two destination partial publication reconciles existing posts, never republishes the successful target
+  ---
+  duration_ms: 10.611083
+  type: 'test'
+  ...
+# Subtest: J09 changed or missing final proof and revoked access block simulated publication
+ok 9 - J09 changed or missing final proof and revoked access block simulated publication
+  ---
+  duration_ms: 10.76525
+  type: 'test'
+  ...
+# Subtest: J10 lost remote render receipt stays uncertain across route retry without another submission
+ok 10 - J10 lost remote render receipt stays uncertain across route retry without another submission
+  ---
+  duration_ms: 8.835792
+  type: 'test'
+  ...
+# Subtest: J11 bounded 12-click publication burst sends one verified media intent and repairs projections
+ok 11 - J11 bounded 12-click publication burst sends one verified media intent and repairs projections
+  ---
+  duration_ms: 13.409333
+  type: 'test'
+  ...
+# Subtest: J12 re-export after a scheduled intent cannot silently replace the scheduled verified media
+ok 12 - J12 re-export after a scheduled intent cannot silently replace the scheduled verified media
+  ---
+  duration_ms: 14.713125
+  type: 'test'
+  ...
+# Subtest: J13 a past schedule cannot turn into immediate publication after successful export
+ok 13 - J13 a past schedule cannot turn into immediate publication after successful export
+  ---
+  duration_ms: 14.470209
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 614.674

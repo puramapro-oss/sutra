@@ -57,26 +57,27 @@ export function EditorHeader({
   return (
     <>
       <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap min-w-0">
           <button
             onClick={() => router.back()}
             data-testid="editor-back"
-            className="p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="Retour"
+            className="p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/70 hover:text-white hover:bg-white/10 transition-colors"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-white" data-testid="editor-title">
+            <h1 className="text-xl font-bold text-white break-words" data-testid="editor-title">
               {video.title ?? 'Sans titre'}
             </h1>
-            <p className="text-sm text-white/40">Sutra Studio</p>
+            <p className="text-sm text-white/70">Sutra Studio</p>
           </div>
           <Badge variant={video.status === 'ready' ? 'success' : 'default'}>
             {video.status}
           </Badge>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={onUndo}
             disabled={!canUndo}
@@ -84,7 +85,7 @@ export function EditorHeader({
             className={cn(
               'p-2 rounded-xl border border-white/[0.06] transition-colors',
               canUndo
-                ? 'text-white/60 hover:text-white hover:bg-white/10'
+                ? 'text-white/70 hover:text-white hover:bg-white/10'
                 : 'text-white/20 cursor-not-allowed'
             )}
             title="Annuler (Ctrl+Z)"
@@ -98,7 +99,7 @@ export function EditorHeader({
             className={cn(
               'p-2 rounded-xl border border-white/[0.06] transition-colors',
               canRedo
-                ? 'text-white/60 hover:text-white hover:bg-white/10'
+                ? 'text-white/70 hover:text-white hover:bg-white/10'
                 : 'text-white/20 cursor-not-allowed'
             )}
             title="Retablir (Ctrl+Y)"
@@ -110,7 +111,9 @@ export function EditorHeader({
             <button
               onClick={() => setShowVersions((prev) => !prev)}
               data-testid="editor-versions"
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Historique des versions"
+              aria-expanded={showVersions}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/70 hover:text-white hover:bg-white/10 transition-colors"
             >
               <Clock className="h-4 w-4" />
               <span className="hidden sm:inline">Versions</span>
@@ -125,10 +128,10 @@ export function EditorHeader({
                   className="absolute right-0 top-full mt-2 z-50 w-64 rounded-xl bg-[#0c0b14]/95 backdrop-blur-xl border border-white/[0.08] shadow-2xl overflow-hidden"
                 >
                   <div className="p-3 border-b border-white/[0.06]">
-                    <p className="text-xs font-medium text-white/50">Historique des versions</p>
+                    <p className="text-xs font-medium text-white/70">Historique des versions</p>
                   </div>
                   {versions.length === 0 ? (
-                    <div className="p-4 text-center text-sm text-white/30">
+                    <div className="p-4 text-center text-sm text-white/70">
                       Aucune version sauvegardee
                     </div>
                   ) : (
@@ -141,7 +144,7 @@ export function EditorHeader({
                           className="w-full flex items-center justify-between px-4 py-3 text-sm text-white/70 hover:bg-white/5 transition-colors"
                         >
                           <span>Version {v.version_number}</span>
-                          <span className="text-xs text-white/30">{formatDate(v.created_at)}</span>
+                          <span className="text-xs text-white/70">{formatDate(v.created_at)}</span>
                         </button>
                       ))}
                     </div>
@@ -154,17 +157,18 @@ export function EditorHeader({
           <button
             onClick={() => setShowShortcuts((prev) => !prev)}
             data-testid="editor-shortcuts"
-            className="p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/40 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-2 rounded-xl bg-white/5 border border-white/[0.06] text-white/70 hover:text-white hover:bg-white/10 transition-colors"
             title="Raccourcis clavier"
           >
             <Keyboard className="h-4 w-4" />
           </button>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <select
               value={exportQuality}
               onChange={(e) => onExportQualityChange(e.target.value)}
               data-testid="editor-quality-select"
+              aria-label="Qualité de l’export"
               className="px-3 py-2 rounded-xl bg-white/5 border border-white/[0.06] text-sm text-white/80 outline-none appearance-none cursor-pointer"
             >
               {QUALITY_OPTIONS.map((q) => (
@@ -205,7 +209,8 @@ export function EditorHeader({
                   <h3 className="text-sm font-semibold text-white">Raccourcis clavier</h3>
                   <button
                     onClick={() => setShowShortcuts(false)}
-                    className="text-white/40 hover:text-white"
+                    aria-label="Fermer les raccourcis"
+                    className="text-white/70 hover:text-white"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -218,10 +223,10 @@ export function EditorHeader({
                     ['Ctrl+?', 'Raccourcis'],
                   ].map(([key, desc]) => (
                     <div key={key} className="flex items-center gap-2">
-                      <kbd className="px-2 py-1 rounded bg-white/5 border border-white/[0.08] text-white/60 font-mono text-[10px]">
+                      <kbd className="px-2 py-1 rounded bg-white/5 border border-white/[0.08] text-white/70 font-mono text-[10px]">
                         {key}
                       </kbd>
-                      <span className="text-white/40">{desc}</span>
+                      <span className="text-white/70">{desc}</span>
                     </div>
                   ))}
                 </div>

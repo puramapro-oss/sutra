@@ -1,0 +1,1140 @@
+{
+  "target": {
+    "name": "LegalReacceptanceGateMount",
+    "type": ""
+  },
+  "direction": "upstream",
+  "impactedCount": 41,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "HIGH",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 16,
+    "processes_affected": 26,
+    "modules_affected": 9
+  },
+  "byDepthCounts": {
+    "1": 16,
+    "2": 20,
+    "3": 5
+  },
+  "affected_processes": [
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 7,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "VideosPage",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 3,
+      "total_hits": 7,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "PartenaireDashboard",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/partenaire/page.tsx",
+      "affected_process_count": 3,
+      "total_hits": 7,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "AdminWithdrawalsPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 3,
+      "total_hits": 5,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "PartnerCoachPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 3,
+      "total_hits": 4,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "CreatePage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/create/page.tsx",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "ProductionPage",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "LibraryPage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/library/page.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/create/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "AmbassadorDashboardPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "AutoPage",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "CanalRegistrationPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "LoginPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "ResetPasswordPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "WalletPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 2,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "AdminApiUsagePage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "AdminDashboard → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "AdminFinancesPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "AdminUsersPage → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 3
+    },
+    {
+      "name": "DashboardPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "PartenariatPage → UseHydrated",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "StoryboardPage",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "WalletCard → FormatDuration",
+      "type": "Function",
+      "filePath": "",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 2
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Hooks",
+      "hits": 13,
+      "impact": "direct"
+    },
+    {
+      "name": "Library",
+      "hits": 7,
+      "impact": "direct"
+    },
+    {
+      "name": "Create",
+      "hits": 4,
+      "impact": "indirect"
+    },
+    {
+      "name": "Production",
+      "hits": 4,
+      "impact": "indirect"
+    },
+    {
+      "name": "Scripts",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Status",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "(tabs)",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Publish",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "T08-integration-journey-20261014",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:scripts/test-pipeline-postgres.mts",
+        "name": "test-pipeline-postgres.mts",
+        "filePath": "scripts/test-pipeline-postgres.mts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:scripts/test-security-points.mts",
+        "name": "test-security-points.mts",
+        "filePath": "scripts/test-security-points.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/components/landing/Hero3D.tsx",
+        "name": "Hero3D.tsx",
+        "filePath": "src/components/landing/Hero3D.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:mobile/app/(tabs)/create.tsx:CreateScreen",
+        "name": "CreateScreen",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:mobile/hooks/useNotifications.ts:useNotifications",
+        "name": "useNotifications",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/(dashboard)/auto/page.tsx:AutoPage",
+        "name": "AutoPage",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_293_autopage",
+            "label": "AutoPage → Cn",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_191_autopage",
+            "label": "AutoPage → Error",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/(dashboard)/auto/page.tsx:StatCard",
+        "name": "StatCard",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/(dashboard)/auto/videos/page.tsx:VideosPage",
+        "name": "VideosPage",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_142_videospage",
+            "label": "VideosPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_173_videospage",
+            "label": "VideosPage → Cn",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_249_videospage",
+            "label": "VideosPage → Error",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/components/social/PublishEverywhereButton.tsx:PublishEverywhereButton",
+        "name": "PublishEverywhereButton",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/components/ui/Button.tsx:Button",
+        "name": "Button",
+        "filePath": "src/components/ui/Button.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_116_adminwithdrawalspage",
+            "label": "AdminWithdrawalsPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_156_adminwithdrawalspage",
+            "label": "AdminWithdrawalsPage → Cn",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_209_partenairedashboard",
+            "label": "PartenaireDashboard → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_222_resetpasswordpage",
+            "label": "ResetPasswordPage → Cn",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_177_resetpasswordpage",
+            "label": "ResetPasswordPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_160_loginpage",
+            "label": "LoginPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_214_loginpage",
+            "label": "LoginPage → Cn",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_200_partnercoachpage",
+            "label": "PartnerCoachPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_218_canalregistrationpag",
+            "label": "CanalRegistrationPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_226_partenariatpage",
+            "label": "PartenariatPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_340_partnercoachpage",
+            "label": "PartnerCoachPage → Cn",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_190_dashboardpage",
+            "label": "DashboardPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_358_canalregistrationpag",
+            "label": "CanalRegistrationPage → Cn",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_142_videospage",
+            "label": "VideosPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_173_videospage",
+            "label": "VideosPage → Cn",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_342_partenairedashboard",
+            "label": "PartenaireDashboard → Cn",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/hooks/useEditorHandlers.ts:useEditorHandlers.handleSceneClick@181:2",
+        "name": "handleSceneClick",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/auto-pipeline.ts:executeAutoJob",
+        "name": "executeAutoJob",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/export-pipeline.ts:executeExportJob",
+        "name": "executeExportJob",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/utils.ts:formatMoneyOrPilotPoints",
+        "name": "formatMoneyOrPilotPoints",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_187_partenairedashboard",
+            "label": "PartenaireDashboard → FormatDuration",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_17_walletpage",
+            "label": "WalletPage → FormatDuration",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_174_partnercoachpage",
+            "label": "PartnerCoachPage → FormatDuration",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_157_ambassadordashboardp",
+            "label": "AmbassadorDashboardPage → FormatDuration",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/utils.ts:formatNumber",
+        "name": "formatNumber",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/utils.ts:formatPrice",
+        "name": "formatPrice",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_260_adminapiusagepage",
+            "label": "AdminApiUsagePage → FormatDuration",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_157_ambassadordashboardp",
+            "label": "AmbassadorDashboardPage → FormatDuration",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_281_walletcard",
+            "label": "WalletCard → FormatDuration",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_139_adminuserspage",
+            "label": "AdminUsersPage → FormatDuration",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_17_walletpage",
+            "label": "WalletPage → FormatDuration",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_174_partnercoachpage",
+            "label": "PartnerCoachPage → FormatDuration",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_267_adminfinancespage",
+            "label": "AdminFinancesPage → FormatDuration",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_110_admindashboard",
+            "label": "AdminDashboard → FormatDuration",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_187_partenairedashboard",
+            "label": "PartenaireDashboard → FormatDuration",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_274_adminwithdrawalspage",
+            "label": "AdminWithdrawalsPage → FormatDuration",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:scripts/test-security-account.mts",
+        "name": "test-security-account.mts",
+        "filePath": "scripts/test-security-account.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/components/landing/Hero.tsx",
+        "name": "Hero.tsx",
+        "filePath": "src/components/landing/Hero.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/app/(dashboard)/create/page.tsx:CreatePage",
+        "name": "CreatePage",
+        "filePath": "src/app/(dashboard)/create/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_186_createpage",
+            "label": "CreatePage → Cn",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_7_createpage",
+            "label": "CreatePage → FetchPublicCapabilities",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_32_createpage",
+            "label": "CreatePage → ParsePublicCapabilities",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_63_createpage",
+            "label": "CreatePage → GetPipelineSteps",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/app/(dashboard)/library/page.tsx:LibraryPage",
+        "name": "LibraryPage",
+        "filePath": "src/app/(dashboard)/library/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_67_librarypage",
+            "label": "LibraryPage → LoadFolders",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_66_librarypage",
+            "label": "LibraryPage → LoadFavorites",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_11_librarypage",
+            "label": "LibraryPage → FetchVideos",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/app/(dashboard)/partenaire/page.tsx:PartenaireDashboard",
+        "name": "PartenaireDashboard",
+        "filePath": "src/app/(dashboard)/partenaire/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_209_partenairedashboard",
+            "label": "PartenaireDashboard → UseHydrated",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_187_partenairedashboard",
+            "label": "PartenaireDashboard → FormatDuration",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_342_partenairedashboard",
+            "label": "PartenaireDashboard → Cn",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/app/(dashboard)/production/page.tsx:ProductionPage",
+        "name": "ProductionPage",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_105_productionpage",
+            "label": "ProductionPage → FetchPublicCapabilities",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_118_productionpage",
+            "label": "ProductionPage → ParsePublicCapabilities",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_344_productionpage",
+            "label": "ProductionPage → Cn",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/app/(dashboard)/storyboard/page.tsx:StoryboardPage",
+        "name": "StoryboardPage",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_354_storyboardpage",
+            "label": "StoryboardPage → Cn",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/create/AutoForm.tsx:AutoForm",
+        "name": "AutoForm",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/create/ManualForm.tsx:ManualForm",
+        "name": "ManualForm",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/library/FolderModal.tsx:FolderModal",
+        "name": "FolderModal",
+        "filePath": "src/components/library/FolderModal.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/library/LibraryHeader.tsx:LibraryHeader",
+        "name": "LibraryHeader",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/library/VideoGrid.tsx:VideoGrid",
+        "name": "VideoGrid",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/library/VideoList.tsx:VideoList",
+        "name": "VideoList",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/production/ScriptStep.tsx:ScriptStep",
+        "name": "ScriptStep",
+        "filePath": "src/components/production/ScriptStep.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/production/StepGenerateCard.tsx:StepGenerateCard",
+        "name": "StepGenerateCard",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/production/ThumbnailStep.tsx:ThumbnailStep",
+        "name": "ThumbnailStep",
+        "filePath": "src/components/production/ThumbnailStep.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/storyboard/StoryboardInput.tsx:StoryboardInput",
+        "name": "StoryboardInput",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/ui/EmptyState.tsx:EmptyState",
+        "name": "EmptyState",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_116_adminwithdrawalspage",
+            "label": "AdminWithdrawalsPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_156_adminwithdrawalspage",
+            "label": "AdminWithdrawalsPage → Cn",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_142_videospage",
+            "label": "VideosPage → UseHydrated",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_173_videospage",
+            "label": "VideosPage → Cn",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/hooks/useEditorHandlers.ts:useEditorHandlers",
+        "name": "useEditorHandlers",
+        "filePath": "",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/video-worker.ts:runVideoJob",
+        "name": "runVideoJob",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_42_get",
+            "label": "GET → Run",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_43_get",
+            "label": "GET → Music",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_44_get",
+            "label": "GET → Script",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/auto/generate/route.ts:POST",
+        "name": "POST",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_224_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_76_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_213_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/create/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_300_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_168_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_79_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/cron/video-worker/route.ts:GET",
+        "name": "GET",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_43_get",
+            "label": "GET → Music",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_44_get",
+            "label": "GET → Script",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_279_get",
+            "label": "GET → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_41_get",
+            "label": "GET → Ok",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_40_get",
+            "label": "GET → Failure",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_301_get",
+            "label": "GET → Blocked",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_42_get",
+            "label": "GET → Run",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/production/route.ts:POST",
+        "name": "POST",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_331_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_124_post",
+            "label": "POST → Ok",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_292_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_123_post",
+            "label": "POST → Failure",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/video/export/route.ts:POST",
+        "name": "POST",
+        "filePath": "",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_130_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_133_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_343_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_182_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}
+
+  GitNexus Impact (1.6.12)

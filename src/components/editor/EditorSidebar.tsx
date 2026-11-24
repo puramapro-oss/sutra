@@ -36,7 +36,7 @@ export function EditorSidebar({
               ['Cree le', formatDate(video.created_at)],
             ].map(([label, value]) => (
               <div key={label} className="flex items-center justify-between text-sm">
-                <span className="text-white/40">{label}</span>
+                <span className="text-white/70">{label}</span>
                 <span className="text-white/70">{value}</span>
               </div>
             ))}
@@ -47,7 +47,7 @@ export function EditorSidebar({
       <Card>
         <CardContent>
           <h3 className="text-sm font-semibold text-white mb-3">Export rapide</h3>
-          <p className="text-xs text-white/40 mb-4">
+          <p className="text-xs text-white/70 mb-4">
             Qualite selectionnee : {exportQuality}
           </p>
           <Button

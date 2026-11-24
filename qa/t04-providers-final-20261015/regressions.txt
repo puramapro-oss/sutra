@@ -1,0 +1,27 @@
+✔ ElevenLabs generateVoice: succes (3.137125ms)
+✔ ElevenLabs generateVoice: 401 remonte explicitement (0.330584ms)
+✔ ElevenLabs generateVoice: 429 non rejoue, erreur explicite (0.178875ms)
+✔ ElevenLabs generateVoice: cle absente -> erreur SUTRA_ENV_MISSING explicite (0.2235ms)
+✔ ElevenLabs listVoices: 403 refuse + reponse invalide detectee (0.457667ms)
+✔ Pexels searchVideos: succes + format portrait dans la requête (1.285917ms)
+✔ Pexels searchVideos: 404 -> erreur explicite sans faux stock vide (0.200958ms)
+✔ Pexels searchVideos: clé absente -> erreur explicite sans appel réseau (0.0645ms)
+✔ generateVoiceWithFallback: 500 ne soumet jamais une seconde synthese (0.283417ms)
+✔ generateVoiceWithFallback: erreur permanente preservee sans attente ni retry (0.214542ms)
+(node:90253) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:90253) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ visual fallback never converts an uncertain paid outcome to stock or WAN (15.434416ms)
+✔ voice/music: uncertain spend is permanent for the existing queue, with safe provenance (3.882583ms)
+✔ visual: storage failure after paid WAN/LTX success retains job, never generates a fallback (1.673333ms)
+✔ voice refuses HTTP 200 JSON masquerading as MP3 without retry (10.488375ms)
+✔ voice bounds empty and oversized audio; valid MP3 transport succeeds once (3.036833ms)
+✔ Suno pending recovery stops at its deadline without resubmission or fallback (11.390417ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 538.587833

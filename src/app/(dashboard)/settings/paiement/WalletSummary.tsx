@@ -15,7 +15,7 @@ export default function WalletSummary({ principal }: { principal: number }) {
             <p className="text-2xl font-bold text-white">{principal.toFixed(2)}€</p>
           </div>
         </div>
-        <p className="text-xs text-white/40">
+        <p className="text-xs text-white/60">
           Seuil minimum retrait&nbsp;: <span className="font-mono text-white/70">{MIN_WITHDRAWAL}€</span>
         </p>
       </div>

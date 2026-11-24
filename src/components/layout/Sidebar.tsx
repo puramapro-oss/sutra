@@ -49,6 +49,8 @@ export default function Sidebar() {
           onClick={() => setCollapsed((prev) => !prev)}
           className="text-white/30 hover:text-white/60 transition-colors p-1 rounded-md hover:bg-white/5"
           data-testid="sidebar-toggle"
+          aria-label={collapsed ? 'Déployer le menu' : 'Réduire le menu'}
+          aria-expanded={!collapsed}
         >
           {collapsed ? (
             <ChevronRight className="w-4 h-4" />
@@ -59,7 +61,7 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5 scrollbar-thin">
+      <nav aria-label="Navigation du studio" className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5 scrollbar-thin">
         {mainNav.map((item) => {
           const active = isActive(item.href)
           const Icon = item.icon
@@ -68,6 +70,9 @@ export default function Sidebar() {
             <Link
               key={item.testId}
               href={item.href}
+              aria-label={item.label}
+              title={collapsed ? item.label : undefined}
+              aria-current={active ? 'page' : undefined}
               data-testid={item.testId}
               className={cn(
                 'relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group',

@@ -1,0 +1,96 @@
+{
+  "baseline": false,
+  "productionSuite": false,
+  "finalIntegrated": false,
+  "results": [
+    {
+      "name": "harness",
+      "status": "FAIL",
+      "message": "page.goto: Navigation to \"http://127.0.0.1:49773/settings/social\" is interrupted by another navigation to \"http://127.0.0.1:49773/library\"\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:49773/settings/social\", waiting until \"load\"\u001b[22m\n\n    at page.<computed> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-final-20261015/browser-harness/runtime-guard.mjs:125:26)\n    at page.<computed> (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs:72:14)\n    at async socialReloadChecks (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t01-closure-20261015/social-reload-checks.mjs:19:5)\n    at async runScenario (/private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t07-final-ux-perf-20261015/boundary-local.mjs:106:5)\n    at async file:///private/var/folders/92/_vfyprhx7b9dk6tbbv83yhnc0000gn/T/sutra-t01-final-social-8v32y4db/qa/t07-final-ux-perf-20261015/boundary-local.mjs:180:5"
+    }
+  ],
+  "details": [],
+  "errors": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json due to access control checks.",
+      "stack": "Fetch API cannot load http://127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (http://127.0.0.1:49773/_next/static/chunks/webpack.js?v=1792103806328:1374:25)",
+      "navigation": 2,
+      "at": 1792103812218
+    }
+  ],
+  "unexpectedErrors": [],
+  "qualifiedEngineDiagnostics": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json due to access control checks.",
+      "stack": "Fetch API cannot load http://127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json due to access control checks.\n    at unknown (web-inspector://bootstrap.js:47:27)\n    at unknown (http://127.0.0.1:49773/_next/static/chunks/webpack.js?v=1792103806328:1374:25)",
+      "navigation": 2,
+      "at": 1792103812218,
+      "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+      "matchingFetch": {
+        "kind": "unload-fetch",
+        "url": "http://127.0.0.1:49773/_next/static/webpack/90925cd4ef7f4d38.webpack.hot-update.json",
+        "method": "GET",
+        "document": "http://127.0.0.1:49773/library",
+        "navigation": 2,
+        "at": 1792103812218
+      }
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "readOnlyProbes": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

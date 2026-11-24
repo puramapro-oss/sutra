@@ -1,0 +1,49 @@
+FAIL all/favorites toggles reuse identical server result without requests: Expected values to be strictly equal:
+
+6 !== 0
+
+FAIL 375px favorites: incomplete page keeps honest state and pagination: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('load-more')
+Expected: visible
+Timeout: 1200ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 1200ms
+  - waiting for getByTestId('load-more')
+
+FAIL 375px folder: incomplete page keeps honest state and pagination: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('load-more')
+Expected: visible
+Timeout: 1200ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 1200ms
+  - waiting for getByTestId('load-more')
+
+FAIL 1440px favorites: incomplete page keeps honest state and pagination: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('load-more')
+Expected: visible
+Timeout: 1200ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 1200ms
+  - waiting for getByTestId('load-more')
+
+FAIL 1440px folder: incomplete page keeps honest state and pagination: expect(locator).toBeVisible() failed
+
+Locator: getByTestId('load-more')
+Expected: visible
+Timeout: 1200ms
+Error: element(s) not found
+
+Call log:
+  - Expect "to.be.visible" with timeout 1200ms
+  - waiting for getByTestId('load-more')
+
+PASS no JS or hydration errors

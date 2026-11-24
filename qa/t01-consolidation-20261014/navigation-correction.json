@@ -1,0 +1,40 @@
+{
+  "observedAt": "2026-10-14T15:57:19.663492+00:00",
+  "parent": "7be5789def5a1e3b0e3a51dc157b6cf494b424af",
+  "productChanged": false,
+  "previousCiRun": 38587559187,
+  "previousCiConclusion": "failure",
+  "reproduction": {
+    "command": "node qa/t01-consolidation-20261014/navigation-diagnostic.mjs",
+    "checks": 4,
+    "pass": 4,
+    "fail": 0,
+    "proof": "navigation-reproduction/results.json",
+    "cause": "Network silence is not an application readiness predicate. A pending background request reproduces timeout while original dashboard assertions pass.",
+    "historicalCiExactCause": "UNPROVEN"
+  },
+  "fix": "Only dashboard/editor goto readiness uses domcontentloaded plus existing unchanged UI assertions; no timeouts or assertions relaxed. Both browser runners capture bounded navigation metadata without headers, cookies, queries or bodies.",
+  "regression": {
+    "command": "node scripts/test-ui-isolated.mjs --editor-only",
+    "pass": 4,
+    "fail": 0,
+    "accessibilityScans": 10,
+    "accessibilityViolations": 0,
+    "proof": "navigation-correction/editor/results.json"
+  },
+  "lint": {
+    "command": "node node_modules/eslint/bin/eslint.js scripts/test-ui-isolated.mjs scripts/ui-isolated/t07-flows.mjs scripts/ui-isolated/navigation-diagnostics.mjs qa/t07-frontend-journey-20261014/run.mjs",
+    "exitCode": 0
+  },
+  "environment": "Allowlisted synthetic environment; qa/t08/offline.cjs blocks external network; no secrets or paid calls.",
+  "legalFailure": "Still unresolved in CI; original assertions and consent behavior unchanged; navigation diagnostics added, local historical reproduction 15 PASS is not a CI PASS.",
+  "gitnexus": "Pre-edit impact runEditorFlow LOW; run context LOW; legal runner absent index UNKNOWN. Index stale; direct caller/diff review required.",
+  "foreignWipUnchanged": true,
+  "deployment": "Not promoted; CI and independent T08 ACK required.",
+  "gitnexusDetectChanges": {
+    "staged": "LOW;16files,1mapped symbol,0process; stale/capped graph, bounded direct diff review",
+    "compareMain": "CRITICAL;2614files,2877symbols,99processes; entire historical branch, warning communicated; no new product edit",
+    "exhaustiveness": "UNKNOWN"
+  },
+  "gitleaks": "PASS staged --redact, 46836 bytes, zero findings"
+}

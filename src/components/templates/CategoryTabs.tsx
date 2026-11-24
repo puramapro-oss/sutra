@@ -19,7 +19,7 @@ export function CategoryTabs({ activeCategory, categoryCounts, onCategoryChange 
             'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-all duration-200 border shrink-0',
             activeCategory === cat.id
               ? 'bg-violet-500/15 text-violet-400 border-violet-500/30 shadow-[0_0_12px_rgba(139,92,246,0.1)]'
-              : 'bg-white/[0.02] text-white/40 border-white/[0.04] hover:bg-white/[0.04] hover:text-white/60'
+              : 'bg-white/[0.02] text-white/60 border-white/[0.04] hover:bg-white/[0.04] hover:text-white/60'
           )}
         >
           <span className="text-sm">{cat.icon}</span>
@@ -28,7 +28,7 @@ export function CategoryTabs({ activeCategory, categoryCounts, onCategoryChange 
             <span
               className={cn(
                 'ml-0.5 text-[10px]',
-                activeCategory === cat.id ? 'text-violet-400/60' : 'text-white/20'
+                activeCategory === cat.id ? 'text-violet-300' : 'text-white/60'
               )}
             >
               {categoryCounts[cat.id]}

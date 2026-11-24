@@ -1,0 +1,84 @@
+(node:57701) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:57701) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ R107: the actual cron recovers noon after a 20-hour interruption (397.058875ms)
+✔ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (697.875917ms)
+✔ lost commit response reconciles from durable cursor without a second job or quota (9.300541ms)
+✔ invalid receipt never claims success; subsequent read reconciles its committed jobs (4.459875ms)
+✔ SQL job, cursor and quota errors roll back the entire window before retry (37.127458ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (108.335333ms)
+✔ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (505.084875ms)
+✔ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (6.416333ms)
+✔ missing migration fails closed without falling back to the old lossy window (0.661083ms)
+✔ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (529.949083ms)
+✖ suppressed SQL cursor update cannot return success or retain partial jobs (7.775084ms)
+✖ malformed legacy schedules cannot silently advance a calendar (5.77475ms)
+✖ thrown transport exception is redacted and leaves the cursor retryable (11.250625ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 10
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3219.664875
+
+✖ failing tests:
+
+test at qa/t03-closure-20261020/recovery.test.mts:11:8982
+✖ suppressed SQL cursor update cannot return success or retain partial jobs (7.775084ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ok'
+  - 'partial_failure'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:196:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ok',
+    expected: 'partial_failure',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:11:9326
+✖ malformed legacy schedules cannot silently advance a calendar (5.77475ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ok'
+  - 'partial_failure'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:200:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ok',
+    expected: 'partial_failure',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:11:9622
+✖ thrown transport exception is redacted and leaves the cursor retryable (11.250625ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(!JSON.stringify(result).includes('PRIVATE'))
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:204:56)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

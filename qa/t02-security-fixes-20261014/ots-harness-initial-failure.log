@@ -1,0 +1,56 @@
+✔ A pending proof serialized by 0.4.5 remains readable byte for byte (1.015375ms)
+✔ API surface expected (0.064583ms)
+✔ DetachedTimestampFile.fromHash stores the exact digest (0.26575ms)
+✔ serializeToBytes returns non-empty Uint8Array with magic header (0.08275ms)
+✔ Different payloads produce different SHA-256 (collision sanity) (0.059417ms)
+✔ Base64 encode/decode of proof bytes is lossless (0.095041ms)
+✔ Purama sha256 contract : hex 64 chars lowercase (0.130375ms)
+﹣ NETWORK : real stamp() → deserialize → fileDigest round-trip (0.060208ms) # SKIP
+/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/@supabase/ssr/src/createBrowserClient.ts:111
+    throw new Error(
+          ^
+
+Error: @supabase/ssr: Your project's URL and API key are required to create a Supabase client!
+
+Check your Supabase project's API settings to find these values
+
+https://supabase.com/dashboard/project/_/settings/api
+    at createBrowserClient (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/@supabase/ssr/src/createBrowserClient.ts:111:11)
+    at createClient (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/supabase.ts:14:10)
+    at createSupabaseClient (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/supabase.ts:44:25)
+    at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/supabase.ts:44:38)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object.transformer (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/tsx/dist/register-OY9cqBEN.cjs:9:3619)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.require (node:internal/modules/cjs/loader:1674:12)
+    at require (node:internal/modules/helpers:157:16)
+    at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/private-media.ts:3:37)
+    at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/private-media.ts:89:23)
+    at Module._compile (node:internal/modules/cjs/loader:1929:14)
+    at Object.transformer (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/tsx/dist/register-OY9cqBEN.cjs:9:3619)
+    at Module.load (node:internal/modules/cjs/loader:1651:32)
+    at Module._load (node:internal/modules/cjs/loader:1443:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.require (node:internal/modules/cjs/loader:1674:12)
+    at require (node:internal/modules/helpers:157:16)
+    at https (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/media-download.ts:7:33)
+    at Object.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-security-fixes-20261014/src/lib/media-download.ts:102:23)
+
+Node.js v24.21.0
+✖ scripts/test-t02-security-fixes-ots.mts (375.069083ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 380.752208
+
+✖ failing tests:
+
+test at scripts/test-t02-security-fixes-ots.mts:1:1
+✖ scripts/test-t02-security-fixes-ots.mts (375.069083ms)
+  'test failed'

@@ -1,0 +1,30 @@
+(node:18369) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18369) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ production denies anonymous before privileged reads and RPCs (2.393583ms)
+✔ production denies expired before privileged reads and RPCs (0.254167ms)
+✔ production denies revoked before privileged reads and RPCs (0.264709ms)
+✔ two users with the same client intent get distinct user-scoped jobs and server-derived plans (7.095958ms)
+✔ client cannot inject another user or an elevated plan (0.364333ms)
+✔ diagnostic redaction at submit_video_job (0.308166ms)
+✔ diagnostic redaction at submit_video_job:throw (0.234417ms)
+✔ diagnostic redaction at claim_video_job_by_key (0.208333ms)
+✔ diagnostic redaction at claim_video_job_by_key:throw (0.23825ms)
+✔ diagnostic redaction at profile (0.170834ms)
+✔ exact public submission code remains 403: SUTRA_QUOTA_EXHAUSTED (0.207292ms)
+✔ embedded public code cannot expose a claim diagnostic: SUTRA_QUOTA_EXHAUSTED (0.197541ms)
+✔ exact public submission code remains 409: SUTRA_IDEMPOTENCY_CONFLICT (0.143792ms)
+✔ embedded public code cannot expose a claim diagnostic: SUTRA_IDEMPOTENCY_CONFLICT (0.150583ms)
+✔ exact public submission code remains 400: SUTRA_INVALID_REQUEST_ID (0.117583ms)
+✔ embedded public code cannot expose a claim diagnostic: SUTRA_INVALID_REQUEST_ID (0.115417ms)
+✔ worker diagnostic is redacted both from the response and the durable last_error (0.185167ms)
+✔ unconfirmed durable error write stays fail-closed (0.175458ms)
+✔ non-Error throw cannot escape diagnostic values (0.125208ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 789.312334

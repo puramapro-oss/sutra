@@ -1,0 +1,40 @@
+✔ waits for an exact current-document GET and its complete body, not just response headers (1.476083ms)
+✔ a read completed before goto is retained (0.148792ms)
+✔ POST never satisfies the GET barrier (41.198625ms)
+✔ PATCH never satisfies the GET barrier (41.532791ms)
+✔ DELETE never satisfies the GET barrier (39.522875ms)
+✔ HEAD never satisfies the GET barrier (41.141708ms)
+✔ missing read cannot satisfy the barrier (40.650667ms)
+✔ origin read cannot satisfy the barrier (41.460416ms)
+✔ query read cannot satisfy the barrier (39.8195ms)
+✔ duplicate read cannot satisfy the barrier (40.526334ms)
+✔ failed read {"status":503} prevents navigation (0.413167ms)
+✔ failed read {"fail":true} prevents navigation (0.164458ms)
+✔ a previous document success cannot satisfy the next document (40.624875ms)
+✔ completion of an old document request cannot satisfy the new document (41.459542ms)
+✔ chromium: native deferred read, barrier, genuine CORS and JS failures (1784.446959ms)
+✖ webkit: native deferred read, barrier, genuine CORS and JS failures (1167.859666ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 15
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3809.088083
+
+✖ failing tests:
+
+test at qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs:76:46
+✖ webkit: native deferred read, barrier, genuine CORS and JS failures (1167.859666ms)
+  AssertionError [ERR_ASSERTION]: WebKit native unknown-query teardown reproduced
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs:113:37)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

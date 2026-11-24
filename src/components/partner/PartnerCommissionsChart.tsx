@@ -28,8 +28,8 @@ export function PartnerCommissionsChart({
       <div className="h-64 flex items-center justify-center rounded-lg bg-white/[0.02] border border-dashed border-white/[0.08]">
         <div className="text-center">
           <TrendingUp className="h-8 w-8 text-white/15 mx-auto mb-2" />
-          <p className="text-sm text-white/30">Pas encore de données</p>
-          <p className="text-xs text-white/20 mt-1">
+          <p className="text-sm text-white/60">Pas encore de données</p>
+          <p className="text-xs text-white/60 mt-1">
             Tes commissions apparaîtront ici dès tes premiers filleuls.
           </p>
         </div>

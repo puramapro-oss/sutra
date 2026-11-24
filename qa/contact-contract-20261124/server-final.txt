@@ -1,0 +1,44 @@
+(node:12) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ an ordinary authenticated account cannot relay payment-confirmation to an arbitrary recipient (69.985335ms)
+✔ an ordinary authenticated account cannot relay support-reply to an arbitrary recipient (9.956571ms)
+✔ the closed route imports without provider configuration and never reads the body or identity (4.183845ms)
+✔ the existing subscription contract retains recipient and centimes without inventing a monthly period (54.548087ms)
+✔ transactional HTML escapes caller text and keeps video identifiers inside one query parameter (25.233959ms)
+✔ dynamic subjects are plain text without line breaks (27.52781ms)
+✔ invalid public email origin is rejected before any provider call: javascript:alert(1) (21.935336ms)
+✔ invalid public email origin is rejected before any provider call: https://user:password@example.invalid (18.934079ms)
+✔ invalid public email origin is rejected before any provider call: https://sutra.example/extra (17.370347ms)
+✔ invalid public email origin is rejected before any provider call: https://sutra.example/?x=1 (27.538857ms)
+✔ transactional and contact sends reject an invalid provider receipt: undefined (47.666142ms)
+✔ transactional and contact sends reject an invalid provider receipt: null (60.243216ms)
+✔ transactional and contact sends reject an invalid provider receipt: "" (27.718457ms)
+✔ transactional and contact sends reject an invalid provider receipt: "   " (29.547759ms)
+✔ transactional and contact sends reject an invalid provider receipt: 42 (33.293135ms)
+✔ transactional and contact sends reject an invalid provider receipt: {} (33.124055ms)
+✔ provider api-error remains an error without exposing provider diagnostics (27.264484ms)
+✔ provider transport-error remains an error without exposing provider diagnostics (33.660528ms)
+✔ contact accepts the help payload only for the fixed support recipient and a real provider receipt (12.530434ms)
+✔ contact preserves the submitted name and trims visible fields before provider admission (10.989986ms)
+✔ the existing escalation payload keeps its embedded name without a second name field (10.73953ms)
+✔ invalid supplied contact name is rejected before any provider call: null (15.71838ms)
+✔ invalid supplied contact name is rejected before any provider call: 42 (15.463708ms)
+✔ invalid supplied contact name is rejected before any provider call: {} (14.806208ms)
+✔ invalid supplied contact name is rejected before any provider call: "" (28.921838ms)
+✔ invalid supplied contact name is rejected before any provider call: "   " (14.740931ms)
+✔ invalid supplied contact name is rejected before any provider call: "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn" (13.831532ms)
+✔ contact subject bounds apply to meaningful trimmed content: 9 characters (15.231739ms)
+✔ contact subject bounds apply to meaningful trimmed content: 201 characters (17.95014ms)
+✔ contact message bounds apply to meaningful trimmed content: 13 characters (15.84504ms)
+✔ contact message bounds apply to meaningful trimmed content: 2001 characters (17.031217ms)
+✔ contact accepts the exact normalized field limits without truncating user content (21.51388ms)
+✔ contact still validates its existing contract and limits provider admission across forged identities (39.727477ms)
+✔ imports remain independent of email configuration and contact reports unavailability without sending (39.258911ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1532.951474

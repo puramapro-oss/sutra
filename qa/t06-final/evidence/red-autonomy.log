@@ -1,0 +1,394 @@
+✔ T06: une production peut cibler deux comptes distincts sans reposter au premier (3.815834ms)
+✔ T06: compte manquant conserve le partiel puis reprend uniquement cette destination (0.629791ms)
+✔ T06: compte revoked refuse avant POST (0.214416ms)
+✔ T06: compte disconnected refuse avant POST (0.139375ms)
+✔ T06: compte expired refuse avant POST (0.126291ms)
+✔ T06: compte invalid-expiry refuse avant POST (0.119625ms)
+✔ T06: revocation apres reservation empeche le POST (0.404833ms)
+✔ T06: revocation locale precedente a la panne distante; historique conserve et reprise possible (0.645416ms)
+✔ T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST (0.800333ms)
+✔ T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay (0.460458ms)
+✔ T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate (0.342583ms)
+✔ T06: replay refuse si revoked a change (0.563959ms)
+✔ T06: replay refuse si external-id a change (0.351167ms)
+✔ T06: replay refuse si media-hash a change (0.231625ms)
+✔ T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed (0.489875ms)
+✔ T06: panne de projection reparee depuis journal sans creation distante (0.243292ms)
+✔ T06: succes video ne valide pas un nouvel export url (0.2225ms)
+✔ T06: succes video ne valide pas un nouvel export sha256 (0.19ms)
+✔ T06: succes auto ne valide pas un nouvel export url (0.3985ms)
+✔ T06: succes auto ne valide pas un nouvel export sha256 (0.359ms)
+✔ T06: import PR3 multi-destination conserve le succes et les identifiants historiques (0.892416ms)
+✔ T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication (0.11875ms)
+✔ T06: autonomie refuse inactive (0.109792ms)
+✔ T06: autonomie refuse approval (0.077333ms)
+✔ T06: autonomie refuse not-due (0.105458ms)
+✔ T06: autonomie refuse invalid-date (0.085166ms)
+✔ T06: autonomie refuse no-proof (0.053125ms)
+✔ T06: approbation explicite autorise le media verifie meme avec mode automatique arrete (0.374458ms)
+✔ T06: autorisation retiree entre reservation et envoi ferme toute destination (0.229708ms)
+✔ T06: controle service isole utilisateur et production, sans nouvelle requete (0.24175ms)
+✖ T06: replay reautorise apres claim si revoked change (1.680792ms)
+✖ T06: replay reautorise apres claim si disconnected change (0.407583ms)
+✖ T06: replay reautorise apres claim si external-id change (0.334209ms)
+✖ T06: replay reautorise apres claim si media-hash change (0.349958ms)
+✖ T06: replay reautorise apres claim si profile-revoked change (0.441292ms)
+✖ T06: autonomie replay refuse une approbation retiree apres claim (0.416208ms)
+✖ T06: retry reautorise apres claim si revoked change (0.322166ms)
+✖ T06: retry reautorise apres claim si disconnected change (0.2805ms)
+✖ T06: retry reautorise apres claim si external-id change (0.28575ms)
+✖ T06: retry reautorise apres claim si media-hash change (0.301916ms)
+✖ T06: retry reautorise apres claim si profile-revoked change (0.294041ms)
+✖ T06: autonomie retry refuse une approbation retiree apres claim (0.333125ms)
+✖ T06: profil banned refuse la publication video service-role (0.200292ms)
+✖ T06: profil revoked refuse la publication video service-role (0.147667ms)
+✖ T06: profil missing refuse la publication video service-role (0.184208ms)
+✖ T06: profil unreadable refuse la publication video service-role (0.143417ms)
+✖ T06: profil banned refuse la publication auto service-role (0.269ms)
+✖ T06: profil revoked refuse la publication auto service-role (0.316167ms)
+✖ T06: profil missing refuse la publication auto service-role (1.279084ms)
+✖ T06: profil unreadable refuse la publication auto service-role (0.335167ms)
+✖ T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET (0.242958ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 30
+ℹ fail 21
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 294.668917
+
+✖ failing tests:
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: replay reautorise apres claim si revoked change (1.680792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: replay reautorise apres claim si disconnected change (0.407583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: replay reautorise apres claim si external-id change (0.334209ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: replay reautorise apres claim si media-hash change (0.349958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: replay reautorise apres claim si profile-revoked change (0.441292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:14402
+✖ T06: autonomie replay refuse une approbation retiree apres claim (0.416208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:247:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: retry reautorise apres claim si revoked change (0.322166ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: retry reautorise apres claim si disconnected change (0.2805ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: retry reautorise apres claim si external-id change (0.28575ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: retry reautorise apres claim si media-hash change (0.301916ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:12620
+✖ T06: retry reautorise apres claim si profile-revoked change (0.294041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:223:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:14402
+✖ T06: autonomie retry refuse une approbation retiree apres claim (0.333125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:247:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15285
+✖ T06: profil banned refuse la publication video service-role (0.200292ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:259:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ACCESS_DENIED|ACCESS_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15285
+✖ T06: profil revoked refuse la publication video service-role (0.147667ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:259:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ACCESS_DENIED|ACCESS_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15285
+✖ T06: profil missing refuse la publication video service-role (0.184208ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:259:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ACCESS_DENIED|ACCESS_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15285
+✖ T06: profil unreadable refuse la publication video service-role (0.143417ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:259:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ACCESS_DENIED|ACCESS_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15285
+✖ T06: profil banned refuse la publication auto service-role (0.269ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:259:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ACCESS_DENIED|ACCESS_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15285
+✖ T06: profil revoked refuse la publication auto service-role (0.316167ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:259:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ACCESS_DENIED|ACCESS_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15285
+✖ T06: profil missing refuse la publication auto service-role (1.279084ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:259:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ACCESS_DENIED|ACCESS_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15285
+✖ T06: profil unreadable refuse la publication auto service-role (0.335167ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:259:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ACCESS_DENIED|ACCESS_UNAVAILABLE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t06-social-autonomy.mts:1:15865
+✖ T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET (0.242958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  1 !== 0
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012/scripts/test-t06-social-autonomy.mts:269:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

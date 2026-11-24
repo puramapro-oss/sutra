@@ -1,0 +1,53 @@
+{
+  "newProofScriptLintExit": 0,
+  "newProofPythonSyntax": "PASS",
+  "pythonFiles": [
+    "promote.py",
+    "security-probe.py",
+    "dns-tls.py",
+    "operations-final.py.txt",
+    "backup-restore-executed.py.txt",
+    "readonly-preflight.py.txt"
+  ],
+  "productCodeChangedAfterCI": false,
+  "policy": "POLICY_OK",
+  "checks": [
+    {
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/ovh-final-providers-20261014/media-smoke.mjs",
+        "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/ovh-final-providers-20261014/public-browser.cjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/ovh-final-providers-20261014/media-smoke.mjs"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "node",
+        "--check",
+        "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/ovh-final-providers-20261014/public-browser.cjs"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "browserAndMediaReplay": {
+    "media": {
+      "passed": 30,
+      "failed": 0
+    },
+    "browser": {
+      "viewports": 2,
+      "status": "PASS",
+      "mutatingRequestsSent": 0
+    },
+    "reason": "Only new probe imports/stdout changed; no application delta"
+  }
+}

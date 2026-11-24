@@ -1,0 +1,142 @@
+PASS signup 375: password visibility reachable by keyboard
+PASS signup 375: duplicate form submission produces one auth request
+PASS signup 375: API rejection remains visible and retry available
+PASS signup 375: interrupted network releases loading and preserves retry
+PASS signup 375: labels, contrast and no horizontal overflow
+PASS signup 1440: password visibility reachable by keyboard
+PASS signup 1440: duplicate form submission produces one auth request
+PASS signup 1440: API rejection remains visible and retry available
+PASS signup 1440: interrupted network releases loading and preserves retry
+PASS signup 1440: labels, contrast and no horizontal overflow
+PASS login 375: password visibility reachable by keyboard
+PASS login 375: duplicate form submission produces one auth request
+PASS login 375: API rejection remains visible and retry available
+PASS login 375: interrupted network releases loading and preserves retry
+PASS login 375: labels, contrast and no horizontal overflow
+PASS login 1440: password visibility reachable by keyboard
+PASS login 1440: duplicate form submission produces one auth request
+PASS login 1440: API rejection remains visible and retry available
+PASS login 1440: interrupted network releases loading and preserves retry
+PASS login 1440: labels, contrast and no horizontal overflow
+PASS signup: confirmation and legal notice use a synthetic identity only
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS 375: social unavailable is persistent, never a disconnected summary
+PASS 375: explicit retry recovers and ignores duplicate requests
+PASS 1440: social unavailable is persistent, never a disconnected summary
+PASS 1440: explicit retry recovers and ignores duplicate requests
+PASS disconnect dialog is named
+PASS disconnect dialog traps focus, Escape restores trigger
+PASS unconfirmed revocation survives failed account refresh without false empty state
+PASS malformed account response is unavailable, not an empty account list
+PASS social slow response recovers within 12 seconds without late overwrite
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS 375: schedule labels, state and contrast
+PASS 375: failed schedule save preserves draft and rejects duplicate submissions
+PASS 1440: schedule labels, state and contrast
+PASS 1440: failed schedule save preserves draft and rejects duplicate submissions
+PASS failed delete preserves schedule and manual retry deletes once
+PASS lost save response has bounded wait, no automatic retry and stable draft ID
+PASS schedule load failure cannot become empty or allow overwriting existing schedules
+PASS malformed successful load cannot become an empty schedule
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS unaccepted test identity sees gate and no implicit acceptance
+PASS mentions link opens actual legal document (HTTP 200)
+PASS 375: modal semantics and initial focus
+PASS 375: keyboard remains in consent without dismissing on Escape
+PASS 375: no horizontal overflow
+PASS 1440: modal semantics and initial focus
+PASS 1440: keyboard remains in consent without dismissing on Escape
+PASS 1440: no horizontal overflow
+PASS consent contrast dark
+PASS consent contrast light
+PASS consent contrast oled
+PASS failed acceptance retains document and retry; no grant persisted
+PASS four explicit acceptances persist through actual local API and reload
+PASS stalled consent recovers within 12 seconds and never advances
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS login and explicit consent open empty library
+PASS 375: API account notice and keyboard generation form
+PASS 375: queued request, uncertain status, retry preserves intent without duplicate
+PASS 375: remote GPU disabled and production failure remains actionable
+PASS 375: library failure is not an empty success and retry works
+PASS 375: failed video never pretends to be generating and player is disabled
+PASS 375: missing sources refuse export with visible reason and no request
+PASS 375: draft without media has truthful state and disabled controls
+PASS 375: generating without media has truthful state and disabled controls
+PASS 375: ready without media has truthful state and disabled controls
+PASS 375: unverified result cannot be downloaded
+PASS 375: mismatched proof is not validation
+PASS 375: verified saved result downloads existing bytes without a render
+PASS 375: failed status with stale verified bytes never offers final download
+PASS 375: simulated export outage recovers, one request for simultaneous clicks
+PASS 375: editor no horizontal overflow
+PASS 375: social account absent; simulated consent unavailable does not navigate
+PASS 1440: API account notice and keyboard generation form
+PASS 1440: queued request, uncertain status, retry preserves intent without duplicate
+PASS 1440: remote GPU disabled and production failure remains actionable
+PASS 1440: library failure is not an empty success and retry works
+PASS 1440: failed video never pretends to be generating and player is disabled
+PASS 1440: missing sources refuse export with visible reason and no request
+PASS 1440: draft without media has truthful state and disabled controls
+PASS 1440: generating without media has truthful state and disabled controls
+PASS 1440: ready without media has truthful state and disabled controls
+PASS 1440: unverified result cannot be downloaded
+PASS 1440: mismatched proof is not validation
+PASS 1440: verified saved result downloads existing bytes without a render
+PASS 1440: failed status with stale verified bytes never offers final download
+PASS 1440: simulated export outage recovers, one request for simultaneous clicks
+PASS 1440: editor no horizontal overflow
+PASS 1440: social account absent; simulated consent unavailable does not navigate
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS login and explicit consent open empty library
+PASS 375: private media 307 to inline cross-origin storage downloads at keyboard
+PASS 1440: private media 307 to inline cross-origin storage downloads at keyboard
+PASS download denied: no file, sanitized visible error and retry enabled
+PASS download html: no file, sanitized visible error and retry enabled
+PASS download corrupt: no file, sanitized visible error and retry enabled
+PASS download retry after failure: one fetch for simultaneous clicks, hash preserved
+PASS download suspended body: bounded timeout and retry; no file
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS 375: dashboard failure, explicit retry and navigation
+PASS 375: unavailable capabilities, formats and cost disclosure
+PASS 375: manual brief step 1
+PASS 375: manual brief step 2
+PASS 375: manual brief step 3
+PASS 375: manual brief step 4
+PASS 375: manual brief step 5
+PASS 375: manual brief step 6
+PASS 375: editor script accessible
+PASS 375: editor scenes accessible
+PASS 375: editor audio accessible
+PASS 375: editor subtitles accessible
+PASS 375: editor brandkit accessible
+PASS 375: subtitle edit, delete and undo preserve draft
+PASS 1440: dashboard failure, explicit retry and navigation
+PASS 1440: unavailable capabilities, formats and cost disclosure
+PASS 1440: manual brief step 1
+PASS 1440: manual brief step 2
+PASS 1440: manual brief step 3
+PASS 1440: manual brief step 4
+PASS 1440: manual brief step 5
+PASS 1440: manual brief step 6
+PASS 1440: editor script accessible
+PASS 1440: editor scenes accessible
+PASS 1440: editor audio accessible
+PASS 1440: editor subtitles accessible
+PASS 1440: editor brandkit accessible
+PASS 1440: subtitle edit, delete and undo preserve draft
+PASS missing credits are distinct from provider availability, with no automatic retry
+PASS queued production stays pending until simulated completion
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS 375: subtitle add/edit/delete undo redo preserves initial narration
+PASS 375: script edit after undo replaces future history
+PASS 1440: subtitle add/edit/delete undo redo preserves initial narration
+PASS 1440: script edit after undo replaces future history
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS 375: settled social error and dialog visuals, labels and contrast
+PASS 1440: settled social error and dialog visuals, labels and contrast
+PASS no unexpected mutation, uncaught error or hydration mismatch
+PASS settled library has no runtime errors
+PASS normal client navigation library to create to library has no runtime errors
+PASS forced document navigation retains errors and qualifies only native teardown diagnostics
+PASS no unexpected mutation, uncaught error or hydration mismatch

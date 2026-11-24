@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "productionChanged": false,
+  "migrationSha256": "93b96256c604baaa857efe8064519ad552ccaaff2305628c139294f34579882c",
+  "database": "isolated restored SUTRA copy",
+  "protectedRollback": "/opt/purama/apps/sutra/backup-t01-coherent-118s7tek/checkpoint-93b96256c604-v2",
+  "tablesDataUnchanged": 138,
+  "definitionsRestoredExactly": true,
+  "replaySafe": true,
+  "aclAndOwnershipUnchanged": true,
+  "onlyConfigChange": "claim_video_job_by_key search_path hardened to sutra, pg_temp",
+  "permissions": [
+    {
+      "name": "checkpoint_video_job_v2",
+      "signature": "sutra.checkpoint_video_job_v2(uuid,text,jsonb,jsonb)",
+      "owner": "supabase_admin",
+      "acl": [
+        "supabase_admin=X/supabase_admin",
+        "service_role=X/supabase_admin"
+      ],
+      "config": [
+        "search_path=sutra, pg_temp"
+      ],
+      "securityDefiner": false,
+      "anonymousExecute": false,
+      "authenticatedExecute": false,
+      "serviceExecute": true
+    },
+    {
+      "name": "claim_video_job_by_key",
+      "signature": "sutra.claim_video_job_by_key(text,text,integer)",
+      "owner": "supabase_admin",
+      "acl": null,
+      "config": null,
+      "securityDefiner": false,
+      "anonymousExecute": true,
+      "authenticatedExecute": true,
+      "serviceExecute": true
+    },
+    {
+      "name": "finish_video_job",
+      "signature": "sutra.finish_video_job(uuid,text,text,text)",
+      "owner": "supabase_admin",
+      "acl": [
+        "supabase_admin=X/supabase_admin",
+        "service_role=X/supabase_admin"
+      ],
+      "config": [
+        "search_path=sutra, pg_temp"
+      ],
+      "securityDefiner": false,
+      "anonymousExecute": false,
+      "authenticatedExecute": false,
+      "serviceExecute": true
+    }
+  ],
+  "backupVerified": true,
+  "rollbackSha256": "7faf969887aca4192b19c8b2bfdb7937cd9988086d856c3b6a3c946518e028aa",
+  "beforeDefinitionsSha256": "7faca4db8a3c00b684da53289060d47b24a86669587d33ee3fd75d6079a38e51",
+  "afterDefinitionsSha256": "91078bc9e4cf723d360683e4f7bbc72d645ddf64a1428c0b8b62c63ec9def4af",
+  "observedAt": "2026-10-14T14:31:49.811329+00:00",
+  "command": "python3 qa/t01-consolidation-20261014/verify-checkpoint-restore.py"
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "phase": "typecheck",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--project",
+      "/Users/matissdornier/purama-worktrees/sutra-t08-closure-20261014/qa/t08-closure-20261014/tsconfig.json"
+    ],
+    "exitCode": 0
+  },
+  {
+    "phase": "lint",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "/Users/matissdornier/purama-worktrees/sutra-t08-closure-20261014/qa/t08-closure-20261014/production-error.test.mts",
+      "scripts/test-t08-integration-journey.mts",
+      "qa/t08-integration-journey-20261014/database.mts"
+    ],
+    "exitCode": 0
+  },
+  {
+    "phase": "python-syntax",
+    "command": "compile(run.py, ..., exec); no execution",
+    "exitCode": 0
+  }
+]

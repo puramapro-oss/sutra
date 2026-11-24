@@ -1,0 +1,422 @@
+{
+  "table": {
+    "acl": "{sutra_social_history_fixture=arwdDxtm/sutra_social_history_fixture,authenticated=r/sutra_social_history_fixture,service_role=r/sutra_social_history_fixture}",
+    "rls": true,
+    "name": "sutra.social_authorization_history",
+    "owner": "sutra_social_history_fixture",
+    "force_rls": false
+  },
+  "columns": [
+    {
+      "acl": null,
+      "name": "id",
+      "type": "uuid",
+      "default": "gen_random_uuid()",
+      "identity": "",
+      "not_null": true,
+      "position": 1,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "account_id",
+      "type": "uuid",
+      "default": null,
+      "identity": "",
+      "not_null": true,
+      "position": 2,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "user_id",
+      "type": "uuid",
+      "default": null,
+      "identity": "",
+      "not_null": true,
+      "position": 3,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "platform",
+      "type": "text",
+      "default": null,
+      "identity": "",
+      "not_null": true,
+      "position": 4,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "external_account_id",
+      "type": "text",
+      "default": null,
+      "identity": "",
+      "not_null": false,
+      "position": 5,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "zernio_profile_id",
+      "type": "text",
+      "default": null,
+      "identity": "",
+      "not_null": true,
+      "position": 6,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "revision_id",
+      "type": "uuid",
+      "default": null,
+      "identity": "",
+      "not_null": true,
+      "position": 7,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "event_type",
+      "type": "text",
+      "default": null,
+      "identity": "",
+      "not_null": true,
+      "position": 8,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "account_status",
+      "type": "text",
+      "default": null,
+      "identity": "",
+      "not_null": true,
+      "position": 9,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "requested_scopes",
+      "type": "text[]",
+      "default": null,
+      "identity": "",
+      "not_null": false,
+      "position": 10,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "granted_scopes",
+      "type": "text[]",
+      "default": null,
+      "identity": "",
+      "not_null": false,
+      "position": 11,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "grant_evidence",
+      "type": "text",
+      "default": "'unknown'::text",
+      "identity": "",
+      "not_null": true,
+      "position": 12,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "profile_provenance",
+      "type": "text",
+      "default": "'application_server_metadata'::text",
+      "identity": "",
+      "not_null": true,
+      "position": 13,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "remote_outcome",
+      "type": "text",
+      "default": null,
+      "identity": "",
+      "not_null": true,
+      "position": 14,
+      "generated": ""
+    },
+    {
+      "acl": null,
+      "name": "recorded_at",
+      "type": "timestamp with time zone",
+      "default": "clock_timestamp()",
+      "identity": "",
+      "not_null": true,
+      "position": 15,
+      "generated": ""
+    }
+  ],
+  "indexes": [
+    {
+      "name": "social_authorization_history_account_id_revision_id_event_t_key",
+      "ready": true,
+      "valid": true,
+      "unique": true,
+      "definition": "CREATE UNIQUE INDEX social_authorization_history_account_id_revision_id_event_t_key ON sutra.social_authorization_history USING btree (account_id, revision_id, event_type)"
+    },
+    {
+      "name": "social_authorization_history_owner_time",
+      "ready": true,
+      "valid": true,
+      "unique": false,
+      "definition": "CREATE INDEX social_authorization_history_owner_time ON sutra.social_authorization_history USING btree (user_id, recorded_at, id)"
+    },
+    {
+      "name": "social_authorization_history_pkey",
+      "ready": true,
+      "valid": true,
+      "unique": true,
+      "definition": "CREATE UNIQUE INDEX social_authorization_history_pkey ON sutra.social_authorization_history USING btree (id)"
+    }
+  ],
+  "policies": [
+    {
+      "name": "social_authorization_history_owner",
+      "check": "((user_id = auth.uid()) AND sutra.account_is_active())",
+      "roles": [
+        "authenticated"
+      ],
+      "using": "((user_id = auth.uid()) AND sutra.account_is_active())",
+      "command": "ALL",
+      "permissive": "RESTRICTIVE"
+    },
+    {
+      "name": "social_authorization_history_read",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "using": "((user_id = auth.uid()) AND sutra.account_is_active())",
+      "command": "SELECT",
+      "permissive": "PERMISSIVE"
+    }
+  ],
+  "triggers": [
+    {
+      "name": "sutra_social_history_immutable",
+      "table": "sutra.social_authorization_history",
+      "enabled": "O",
+      "definition": "CREATE TRIGGER sutra_social_history_immutable BEFORE DELETE OR UPDATE OR TRUNCATE ON sutra.social_authorization_history FOR EACH STATEMENT EXECUTE FUNCTION sutra.reject_social_history_mutation()"
+    }
+  ],
+  "functions": [
+    {
+      "acl": "{sutra_social_history_fixture=X/sutra_social_history_fixture}",
+      "name": "reject_social_history_mutation",
+      "owner": "sutra_social_history_fixture",
+      "config": [
+        "search_path=\"\""
+      ],
+      "definition": "CREATE OR REPLACE FUNCTION sutra.reject_social_history_mutation()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\nAS $function$\nBEGIN\n  RAISE EXCEPTION 'SUTRA_SOCIAL_HISTORY_APPEND_ONLY';\nEND $function$\n",
+      "security_definer": true
+    }
+  ],
+  "constraints": [
+    {
+      "name": "social_authorization_history_account_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL account_id",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_account_id_revision_id_event_t_key",
+      "type": "u",
+      "validated": true,
+      "deferrable": false,
+      "definition": "UNIQUE (account_id, revision_id, event_type)",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_account_status_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL account_status",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_event_type_check",
+      "type": "c",
+      "validated": true,
+      "deferrable": false,
+      "definition": "CHECK ((event_type = ANY (ARRAY['authorization_observed'::text, 'connection'::text, 'reconnection'::text, 'revocation_requested'::text, 'revocation_confirmed'::text])))",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_event_type_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL event_type",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_grant_evidence_check",
+      "type": "c",
+      "validated": true,
+      "deferrable": false,
+      "definition": "CHECK ((grant_evidence = 'unknown'::text))",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_grant_evidence_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL grant_evidence",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_granted_scopes_check",
+      "type": "c",
+      "validated": true,
+      "deferrable": false,
+      "definition": "CHECK ((granted_scopes IS NULL))",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL id",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_pkey",
+      "type": "p",
+      "validated": true,
+      "deferrable": false,
+      "definition": "PRIMARY KEY (id)",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_platform_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL platform",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_profile_provenance_check",
+      "type": "c",
+      "validated": true,
+      "deferrable": false,
+      "definition": "CHECK ((profile_provenance = 'application_server_metadata'::text))",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_profile_provenance_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL profile_provenance",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_recorded_at_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL recorded_at",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_remote_outcome_check",
+      "type": "c",
+      "validated": true,
+      "deferrable": false,
+      "definition": "CHECK ((remote_outcome = ANY (ARRAY['unknown'::text, 'confirmed_revoked'::text])))",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_remote_outcome_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL remote_outcome",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_requested_scopes_check",
+      "type": "c",
+      "validated": true,
+      "deferrable": false,
+      "definition": "CHECK (((requested_scopes IS NULL) OR (requested_scopes = ARRAY['posting'::text])))",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_revision_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL revision_id",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_user_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL user_id",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_zernio_profile_id_check",
+      "type": "c",
+      "validated": true,
+      "deferrable": false,
+      "definition": "CHECK ((zernio_profile_id ~ '^[a-fA-F0-9]{24}$'::text))",
+      "initially_deferred": false
+    },
+    {
+      "name": "social_authorization_history_zernio_profile_id_not_null",
+      "type": "n",
+      "validated": true,
+      "deferrable": false,
+      "definition": "NOT NULL zernio_profile_id",
+      "initially_deferred": false
+    }
+  ],
+  "role_privileges": [
+    {
+      "role": "anon",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "truncate": false
+    },
+    {
+      "role": "authenticated",
+      "delete": false,
+      "insert": false,
+      "select": true,
+      "update": false,
+      "truncate": false
+    },
+    {
+      "role": "service_role",
+      "delete": false,
+      "insert": false,
+      "select": true,
+      "update": false,
+      "truncate": false
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "target": {
+    "id": "Function:src/hooks/useProductionGeneration.ts:useProductionGeneration.generateAll@89:2",
+    "name": "generateAll",
+    "type": "Function",
+    "filePath": "src/hooks/useProductionGeneration.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "lower-bound",
+  "boundaries": [
+    "1 symbol references this callable as a VALUE rather than calling it (a registration table, a callback argument, a stored function pointer). The reference is recorded, but the call made THROUGH that value is not: it is dispatched later from wherever the value is stored. Callers reached that way are absent from this result — actual impact may be higher."
+  ],
+  "causes": {
+    "scopeExtractionFiles": 0,
+    "receiverTyping": 0,
+    "dispatchBoundary": 0,
+    "externalBoundary": 0,
+    "undecidedSatisfaction": 0,
+    "callableValueReferences": 1
+  },
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "ProductionPage",
+      "type": "Function",
+      "filePath": "src/app/(dashboard)/production/page.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Create",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/hooks/useProductionGeneration.ts:useProductionGeneration",
+        "name": "useProductionGeneration",
+        "filePath": "src/hooks/useProductionGeneration.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/app/(dashboard)/production/page.tsx:ProductionPage",
+        "name": "ProductionPage",
+        "filePath": "src/app/(dashboard)/production/page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_106_productionpage",
+            "label": "ProductionPage → FetchPublicCapabilities",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_119_productionpage",
+            "label": "ProductionPage → ParsePublicCapabilities",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_341_productionpage",
+            "label": "ProductionPage → Cn",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

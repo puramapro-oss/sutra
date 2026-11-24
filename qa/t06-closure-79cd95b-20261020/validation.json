@@ -1,0 +1,115 @@
+{
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "recordedAt": "2026-10-19T23:11:54.843587+00:00",
+  "productFiles": [
+    "src/app/(dashboard)/settings/social/page.tsx"
+  ],
+  "productSha256": "e93272a2a43310b10291d3b4f6585a6987a7f955a58bf4e19ea44d1fdfb67099",
+  "typecheck": {
+    "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
+    "exitCode": 0,
+    "log": "typecheck-final.log",
+    "scope": "after callback fix; final constant formatting only is semantically unchanged"
+  },
+  "lint": {
+    "command": "node node_modules/eslint/bin/eslint.js 'src/app/(dashboard)/settings/social/page.tsx' qa/t06-closure-79cd95b-20261020/journeys.mjs qa/t06-closure-79cd95b-20261020/callback-errors.mjs",
+    "exitCode": 0,
+    "log": "lint-corrected.log"
+  },
+  "syntax": {
+    "command": "node --check qa/t06-closure-79cd95b-20261020/journeys.mjs",
+    "exitCode": 0,
+    "note": "production branch unexecuted; only syntax and lint validated"
+  },
+  "diffCheck": {
+    "globalExitCode": 2,
+    "globalLog": "diff-check.log",
+    "cause": "raw logs preserve assertion whitespace and blank EOFs",
+    "sourceDocsCommand": "git diff --cached --check -- . ':!*.log'",
+    "sourceDocsExitCode": 0,
+    "sourceDocsLog": "diff-check-source.log"
+  },
+  "secrets": {
+    "rawExitCode": 1,
+    "rawFindings": 4,
+    "source": "journeys.mjs writes key from idempotency-key header on mocked local API only",
+    "classification": "four generated fixture UUIDs, no credential",
+    "reviewedFields": [
+      {
+        "file": "qa/t06-closure-79cd95b-20261020/journeys-before/results.json",
+        "jsonPath": "writes[3].key",
+        "kind": "synthetic idempotency-key request header",
+        "occurrences": 1
+      },
+      {
+        "file": "qa/t06-closure-79cd95b-20261020/journeys-before/results.json",
+        "jsonPath": "writes[4].key",
+        "kind": "synthetic idempotency-key request header",
+        "occurrences": 1
+      },
+      {
+        "file": "qa/t06-closure-79cd95b-20261020/journeys-after/results.json",
+        "jsonPath": "writes[2].key",
+        "kind": "synthetic idempotency-key request header",
+        "occurrences": 1
+      },
+      {
+        "file": "qa/t06-closure-79cd95b-20261020/journeys-after/results.json",
+        "jsonPath": "writes[3].key",
+        "kind": "synthetic idempotency-key request header",
+        "occurrences": 1
+      }
+    ],
+    "stagedDiffSha256": "da144c1fb3a556da90b4b031373865481d9e4a3b07fbbb0cd5d786a26caad54f",
+    "filteredDiffSha256": "81d196c3aef9066753f588ac401e9ef5d8e54496ae0d46c41f2f381cdf5b30d0",
+    "filter": "exact four JSON field values replaced only in scanner input; original evidence preserved; no permanent allowlist",
+    "filteredCommand": "gitleaks stdin --redact=100 --no-banner --ignore-gitleaks-allow --report-format json --report-path qa/t06-closure-79cd95b-20261020/secrets-scan-filtered.json",
+    "filteredExitCode": 0,
+    "filteredFindings": 0
+  },
+  "gitnexus": {
+    "impact": "UNKNOWN; unresolved upstream entry points; directly reviewed page and connection buttons",
+    "product": {
+      "files": 1,
+      "symbols": 6,
+      "flows": 2,
+      "risk": "medium",
+      "report": "detect-changes-product.json"
+    },
+    "staged": {
+      "files": 66,
+      "symbols": 70,
+      "flows": 2,
+      "risk": "medium",
+      "exitCode": 0,
+      "report": "detect-changes-final.txt",
+      "note": "before final metadata-only receipts; product/harness unchanged"
+    },
+    "compareMain": {
+      "files": 5564,
+      "symbols": 12455,
+      "flows": 397,
+      "risk": "critical",
+      "exitCode": 0,
+      "report": "detect-changes-main.txt",
+      "note": "entire integrated lineage, listing capped; not T06-only scope or exhaustive graph; risk reported before commit"
+    },
+    "limitations": "truncated graph; isAutopilotConfig/fetchAccounts/handleDisconnect position associations do not indicate changed logic"
+  },
+  "build": {
+    "status": "REUSED_EXACT_CANDIDATE",
+    "ci": "39328438907",
+    "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+    "deltaProductionBuild": "NOT_RUN; T01 owns mutualized production qualification"
+  },
+  "remainingFailures": [
+    "candidate English creation heading (T01)",
+    "development hydration/navigation qualification (T01)"
+  ],
+  "releaseVerdict": "NACK_GLOBAL_UX_ON_CANDIDATE; ACK_LOCAL_DELTA_ONLY",
+  "remoteMutations": 0,
+  "realConnections": 0,
+  "realPublications": 0,
+  "paidCalls": 0,
+  "macAI": 0
+}

@@ -1,0 +1,185 @@
+{
+  "schema_version": 1,
+  "status": "LOCAL_DELTA_VERIFIED_EXTERNAL_CONTRACTS_BLOCKED",
+  "base_commit": "589732cb49959c1a576a3ba381b310cd594600ac",
+  "delivery_commit": "commit containing this manifest; exact SHA and push receipt in PURAMA .coord/handoffs/SUTRA-20261012/T02-COORDINATION.md",
+  "branch": "codex/sutra-t02-security-final-20261012",
+  "node": "24.21.0",
+  "postgresql": "18.4",
+  "package_lock_sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+  "source_sha256": {
+    "src/app/api/points/route.ts": "b5b0320a619e55c7b85b54c144f456d4d0d82049d130131567d1f0c805254b83",
+    "migrations/20261012_t02_final_permissions.sql": "5c4cb0d80bc2937d6a3bbde1fe2afa0fc47e0ba332f0618042c9feb8e1d14790",
+    "scripts/test-security-rls.mjs": "a2010214e6f875acf59f6d2fa43520a594cca49fcd10d0a26ec6a8246243b4d8",
+    "scripts/test-security-account.mts": "752fb05d13eaceb755e8222a9c2321dc4a5c993d946608c6c625a35104bb54dc",
+    "scripts/test-security-points.mts": "f9073dc12c1ee4ca0a4ab744149cb2c1f608bf96c578082bb7f0ce9583098684",
+    "vercel.json": "a0a208631265eb0354e65aa11289742cde285ffaf8214e6bec57cb4b160d4dc9",
+    "qa/t02-final/run-free-gates.mjs": "145c2c3dd29351da5332a2f0dee913f77a8d69ef3f387f591b0fa66db8de3790",
+    "qa/t02-final/run-local-db-gates.mjs": "cf93fc4bfbb17953a769621cbab7552de866ca7eead5a91e7ca3d9e0f2d05920",
+    "qa/t02-final/fonts/google.css": "07ce6de865034b739626481689ff20dbc475410dde20c2f6705912cdf2e2b12c",
+    "qa/t02-final/fonts/sources.json": "5d0b6702944df5c7bb0158fad5eafa0e91beafdabf60d43e04c264de8bcf5b55",
+    "BATON.md": "ee4c4232a1aa399b0b95791196cc3e0573a2d59b15b71d82711dbce50020c288",
+    "task_plan.md": "8d4f8eaf15ce62ccc874337aa3548cd50f7e8ccf99f798dfbe902685433aa758",
+    "HANDOFF-SUTRA-T02-20261012.md": "9dfc5f86e057132d501ce800320f2f67bb14a8926140b5110766e0c9bde154a9"
+  },
+  "evidence_sha256": {
+    "qa/t02-final/evidence/actionlint-mobile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qa/t02-final/evidence/browser-browser.log": "e967afde996593b55b860dba5238ea88c81af5c3d47c62d3c3c219426cdcf3fe",
+    "qa/t02-final/evidence/browser-results.json": "2f290a21ee2e3657dc8e6289852274db1d2726968ec8a2d0b626ec2dbc471521",
+    "qa/t02-final/evidence/browser-server.log": "303eae18370a89d7c63e1e4ba9720c1cc9bfcfd080e116fe305f3c8c9846c8ed",
+    "qa/t02-final/evidence/browser-ui-results.json": "1b3d0f91ed4e2e1435b979a51f3d2ffd40f452a6369e3727f9079872ec5d440e",
+    "qa/t02-final/evidence/build-build.log": "a6af3178225bd0838ff6b91461344660595e92ca83337f70c564fcf4cdf956e5",
+    "qa/t02-final/evidence/build-results.json": "8180777970ffc9a9b472ae2bebd08cdf7f56d27a1de36ef886a630cb15fd50b1",
+    "qa/t02-final/evidence/contracts-composition.log": "1369c8f0c3bc8be25792371dd7b6889f53508679b40da99f1564ba886f6382dc",
+    "qa/t02-final/evidence/contracts-contracts.log": "20765650fba89db3452321961684877e8986e47f90a56629f5de5c471a48c224",
+    "qa/t02-final/evidence/contracts-publication.log": "012dc78da1d6bfdbb340ee8cb5f62f91f6434b69608bf83eeae2384fd0c1994e",
+    "qa/t02-final/evidence/contracts-results.json": "b272cd1b89b6c48d1ad66b9161af4bf3f7501752a92720ba3cb91a834dade7cf",
+    "qa/t02-final/evidence/contracts-schedule.log": "3f9b570102a57890eeeecaf1fe7cdb83ab8770d42c81be44df73ae72a2e92fe3",
+    "qa/t02-final/evidence/gitnexus-detect-final.log": "e556d6532db2304c501f3cf5a16acaee42f51e6d11f891ac2d0d353ed3d7ffb0",
+    "qa/t02-final/evidence/gitnexus-detect-staged.log": "43ea9f592b20f12647523b126733551eca4475c4395330babb604a3f391d305f",
+    "qa/t02-final/evidence/gitnexus-detect-working.log": "52547a8b53ce67ef6898ee7842faa16a6da6cb966c0c3d102194399bdf701a0e",
+    "qa/t02-final/evidence/gitnexus-impact-account-tests.log": "264b0d423c3f2e22bd194df495a052ea9e71b09fd8e9cb4fbd9d527e6a31332c",
+    "qa/t02-final/evidence/gitnexus-impact-points.log": "54ce5f0417a71a0cd4896d7b5957a6e54740d418f86ee03ceec0540de34eb444",
+    "qa/t02-final/evidence/gitnexus-index-final.log": "d42d94775f1b5ddcb8b7a416c8abb9a06c611672ac3557afc7476b3596ce5415",
+    "qa/t02-final/evidence/gitnexus-index.log": "404d62f74d5db2f716104784ce32d398c5c8ee83e6c122c4052a35067fc2dd88",
+    "qa/t02-final/evidence/legacy-results.json": "d88c325bbc4eed6cba2e867e4533bea8ea1415e5ddc5a81d59340745abb1efb6",
+    "qa/t02-final/evidence/legacy-server.log": "647fd8fd8fad4f306cb4cab47ba1ae280d27f7bdcaa9d69041d5356c092517e0",
+    "qa/t02-final/evidence/legacy-stats.json": "31b718d14f11e6e4d091ead02ca38be6e82c8a6c194dca1171b7fa7fa48af4c8",
+    "qa/t02-final/evidence/legacy.log": "d4b1cc7370a45111f8389c966ff30463bf3ad77523eaa4403c87aa3557b15301",
+    "qa/t02-final/evidence/lint-t02.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qa/t02-final/evidence/local-db.json": "d1812e6a1c5e0ec56b4f1b8ce0b3f606c93c709be6490d41d666eae88153463b",
+    "qa/t02-final/evidence/media-compositor.log": "940ed865581f4de794fa82b1bdd5fa6caca8119a066841ea1c41d78eaae72d4b",
+    "qa/t02-final/evidence/media-local-engine.log": "3af10b3719632079bb9120dc1a8acffdf0ae394444c1b898cb69ed40f996f006",
+    "qa/t02-final/evidence/media-results.json": "9e8a1c0eaba561da812a40ef0e665f95121c799458cc9dd665005aa0e24c2a8e",
+    "qa/t02-final/evidence/migration-local.log": "f5c7c4cd9bb06d635ddf560bc66102c985d8ea8bba9834bb63a8a265abab1794",
+    "qa/t02-final/evidence/npm-audit.json": "d0c76d9c7d27c7e55724ed6b10443a43c058c0f71da112efb75acde5f1bb7105",
+    "qa/t02-final/evidence/ovh-mocks.log": "ca18ffc8e8fdc6b71e49e9b4fd64e04661daa3243fb767d57a64ce80ea2d7b63",
+    "qa/t02-final/evidence/ownership.json": "05e23606a5ad959c2a453e9f5fce470ddbbb523e9a14079b11f161377a3cebed",
+    "qa/t02-final/evidence/pipeline-postgres.log": "cdedb7c17101d6f6b6ac8ddd25bb89871d830ec162a55bf5b9a95b9976a95d70",
+    "qa/t02-final/evidence/points-after.log": "2331073e22f5ae33aa03d2dd46be7b0ab0fd06b6a9aac00f8fb425ea9503019d",
+    "qa/t02-final/evidence/points-before.log": "68d131a969cf86d1343f8a0af7f0290f762b5d7bc6a1cd8674fdc4f2879a2862",
+    "qa/t02-final/evidence/quality-build.log": "04c429973c010fa89663ff077c542931fd34d8fe762d5ff9ee3bd8a3302eb660",
+    "qa/t02-final/evidence/quality-initial-build.log": "5769705146f35a09acb108c8334f7366e2f2d78668d259fb2e03002a73e1acea",
+    "qa/t02-final/evidence/quality-initial-lint.log": "71f50c3b65eb3374763a5417f4bda18a83acf9b9dbcc0deaf97cec479153cde3",
+    "qa/t02-final/evidence/quality-initial-results.json": "e5274d99f272cdae0ab9cca3994f327f8d4c9900e685d6abd2ebf7ef380d442b",
+    "qa/t02-final/evidence/quality-initial-typecheck.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qa/t02-final/evidence/quality-lint.log": "71f50c3b65eb3374763a5417f4bda18a83acf9b9dbcc0deaf97cec479153cde3",
+    "qa/t02-final/evidence/quality-results.json": "38a99844666737f429c12ddcd70f60be1f786d21ab2dfacadb5cae6be512e4a0",
+    "qa/t02-final/evidence/quality-typecheck.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qa/t02-final/evidence/rls-local-node24.log": "6e0ac76c890a2fff7aa1203cb0803c0719e5a94aa318a9d0f40751de6c11d0eb",
+    "qa/t02-final/evidence/rls-local.log": "a817d55f0dd00a085cd6c8d8aad33b5d3094a2806f954de1e32571ef9b8a84c4"
+  },
+  "excluded_from_manifest_hashes": [
+    "this manifest (self reference)",
+    "gitleaks.log and gitleaks.json (generated by final staged-patch scan)"
+  ],
+  "checks": [
+    {
+      "command": "node scripts/test-security-rls.mjs",
+      "result": "PASS",
+      "assertions": 147,
+      "kind": "real local PostgreSQL, synthetic roles/data; stopped private cluster"
+    },
+    {
+      "command": "node scripts/run-ci.mjs contracts",
+      "result": "PASS",
+      "passed": 437,
+      "skipped": 7,
+      "failed": 0,
+      "points_regressions_included": 10,
+      "kind": "offline transport/SDK fixtures; real handlers"
+    },
+    {
+      "command": "node scripts/run-ci.mjs media",
+      "result": "PASS",
+      "passed": 33,
+      "kind": "local real FFmpeg, synthetic media"
+    },
+    {
+      "command": "node qa/t02-final/run-local-db-gates.mjs",
+      "result": "PASS",
+      "migration_validations": 13,
+      "concurrency_tests": 9,
+      "kind": "real disposable local PostgreSQL; no remote migration"
+    },
+    {
+      "command": "node scripts/run-ci.mjs quality",
+      "result": "FAIL",
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "build": "T08_NETWORK_DENIED Google Fonts; canonical runner unchanged"
+    },
+    {
+      "command": "node qa/t02-final/run-free-gates.mjs quality",
+      "result": "PASS",
+      "typecheck": "PASS",
+      "lint_errors": 0,
+      "lint_warnings": 111,
+      "build_pages": 197,
+      "kind": "final code with pinned local public fonts, network deny retained"
+    },
+    {
+      "command": "node qa/t02-final/run-free-gates.mjs browser",
+      "result": "PASS",
+      "checks": 203,
+      "axe_audits": 155,
+      "violations": 0,
+      "browser_errors": 0,
+      "scope": "UI unchanged since run; API fixtures do not certify points reward"
+    },
+    {
+      "command": "node qa/t02-final/run-free-gates.mjs legacy",
+      "result": "PASS",
+      "passed": 1022,
+      "skipped": 25,
+      "failed": 0,
+      "scope": "before POST points change; route requalified by contracts and quality afterward"
+    },
+    {
+      "command": "python3 -m unittest discover -s deploy -p 'test_*.py'",
+      "result": "PASS",
+      "passed": 9,
+      "kind": "deployment mocked; no deploy"
+    },
+    {
+      "command": "actionlint (web + mobile workflows); shellcheck tooling/git-askpass.sh",
+      "result": "PASS"
+    },
+    {
+      "command": "npm audit --omit=dev --audit-level=high --json",
+      "result": "PASS_HIGH_THRESHOLD",
+      "critical": 0,
+      "high": 0,
+      "moderate": 5,
+      "low": 2
+    },
+    {
+      "command": "eslint (T02 route/tests/QA files)",
+      "result": "PASS",
+      "warnings": 0
+    },
+    {
+      "command": "gitnexus impact + detect-changes --scope staged",
+      "result": "BOUNDED",
+      "route_impact": "UNKNOWN; one HTTP client found by source search",
+      "staged_risk": "LOW",
+      "warning": "graph truncated; detect output abridged; no exhaustive coverage claim"
+    }
+  ],
+  "scope_limits": [
+    "private storage/signed URLs need shared stable owner/bucket/path contract and existing data migration",
+    "remote DB/Auth/Storage and organizations not qualified; OAuth limiter per process",
+    "T07 breathing reward POST disabled; UI toast needs owner correction",
+    "T01 canonical offline font runner and SMARANA CI credential",
+    "T06 publication/logging followups; do not merge foreign branch blindly"
+  ],
+  "actions": {
+    "push_authorized": true,
+    "vercel_branch_deployment_enabled": false,
+    "paid_provider_calls": false,
+    "deployment": false,
+    "real_social_publication": false,
+    "remote_database_access": false
+  },
+  "secret_scan_note": "Initial generic-api-key match was the public cron source SHA-256 (verified against file bytes), renamed ambiguous manifest key; no secret value found or displayed. Final redacted scan output stored separately."
+}

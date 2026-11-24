@@ -1,0 +1,400 @@
+[pexels] recherche videos: HTTP 401 — resultats vides
+[pexels] recherche videos: HTTP 403 — resultats vides
+[pexels] recherche videos: HTTP 404 — resultats vides
+[pexels] recherche videos: HTTP 429 — resultats vides
+[pexels] recherche videos: HTTP 500 — resultats vides
+[pexels] recherche photos: HTTP 401 — resultats vides
+[pexels] recherche photos: HTTP 403 — resultats vides
+[pexels] recherche photos: HTTP 404 — resultats vides
+[pexels] recherche photos: HTTP 429 — resultats vides
+[pexels] recherche photos: HTTP 500 — resultats vides
+✖ Pexels video: HTTP 401 is an explicit failure, one GET (9.302667ms)
+✖ Pexels video: HTTP 403 is an explicit failure, one GET (0.309459ms)
+✖ Pexels video: HTTP 404 is an explicit failure, one GET (0.357792ms)
+✖ Pexels video: HTTP 429 is an explicit failure, one GET (0.248792ms)
+✖ Pexels video: HTTP 500 is an explicit failure, one GET (0.191042ms)
+✖ Pexels video: malformed schema is not an empty search (0.389625ms)
+✖ Pexels video: missing credential is explicit and never calls network (0.084375ms)
+✖ Pexels video: real empty result remains empty; transport is bounded (0.470083ms)
+✖ Pexels video: unsafe result cannot escape as usable media (0.222041ms)
+✔ Pexels video: success preserves provenance and never fabricates cost (0.162208ms)
+✖ Pexels image: HTTP 401 is an explicit failure, one GET (0.190458ms)
+✖ Pexels image: HTTP 403 is an explicit failure, one GET (0.145709ms)
+✖ Pexels image: HTTP 404 is an explicit failure, one GET (0.550416ms)
+✖ Pexels image: HTTP 429 is an explicit failure, one GET (0.248833ms)
+✖ Pexels image: HTTP 500 is an explicit failure, one GET (0.171917ms)
+✖ Pexels image: malformed schema is not an empty search (0.139334ms)
+✖ Pexels image: missing credential is explicit and never calls network (0.069916ms)
+✖ Pexels image: real empty result remains empty; transport is bounded (0.157041ms)
+✖ Pexels image: unsafe result cannot escape as usable media (0.206291ms)
+✔ Pexels image: success preserves provenance and never fabricates cost (0.153083ms)
+✖ ElevenLabs clone: malformed voice ID cannot become success (0.460833ms)
+✖ ElevenLabs list: malformed entry cannot become a selectable voice (0.159792ms)
+✖ ElevenLabs clone/list: reject redirects and bound body parsing (0.247792ms)
+✖ Salad exact requested NAME fields work for free scoped reads (0.5165ms)
+✖ Salad conflicting legacy and NAME scopes fail before any request (1.349667ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 2
+ℹ fail 23
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 192.484083
+
+✖ failing tests:
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels video: HTTP 401 is an explicit failure, one GET (9.302667ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*401/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels video: HTTP 403 is an explicit failure, one GET (0.309459ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*403/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels video: HTTP 404 is an explicit failure, one GET (0.357792ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*404/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels video: HTTP 429 is an explicit failure, one GET (0.248792ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*429/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels video: HTTP 500 is an explicit failure, one GET (0.191042ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*500/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1363
+✖ Pexels video: malformed schema is not an empty search (0.389625ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:27:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*INVALID_RESPONSE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1558
+✖ Pexels video: missing credential is explicit and never calls network (0.084375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:32:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_ENV_MISSING/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1821
+✖ Pexels video: real empty result remains empty; transport is bounded (0.470083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + undefined
+  - 'error'
+
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:36:14)
+      at Object.apply (node:internal/test_runner/mock/mock:805:20)
+      at searchVideos (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/pexels.ts:121:21)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:39:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'error',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:2106
+✖ Pexels video: unsafe result cannot escape as usable media (0.222041ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:46:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*INVALID_RESPONSE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels image: HTTP 401 is an explicit failure, one GET (0.190458ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*401/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels image: HTTP 403 is an explicit failure, one GET (0.145709ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*403/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels image: HTTP 404 is an explicit failure, one GET (0.550416ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*404/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels image: HTTP 429 is an explicit failure, one GET (0.248833ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*429/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1071
+✖ Pexels image: HTTP 500 is an explicit failure, one GET (0.171917ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:22:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*500/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1363
+✖ Pexels image: malformed schema is not an empty search (0.139334ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:27:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*INVALID_RESPONSE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1558
+✖ Pexels image: missing credential is explicit and never calls network (0.069916ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:32:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /SUTRA_ENV_MISSING/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:1821
+✖ Pexels image: real empty result remains empty; transport is bounded (0.157041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + undefined
+  - 'error'
+
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:36:14)
+      at Object.apply (node:internal/test_runner/mock/mock:805:20)
+      at searchImages (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/pexels.ts:171:21)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:39:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'error',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:2106
+✖ Pexels image: unsafe result cannot escape as usable media (0.206291ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:46:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Pexels.*INVALID_RESPONSE/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:2805
+✖ ElevenLabs clone: malformed voice ID cannot become success (0.460833ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:57:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ElevenLabs.*invalide/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:3067
+✖ ElevenLabs list: malformed entry cannot become a selectable voice (0.159792ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:61:3)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /ElevenLabs.*invalide/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:3297
+✖ ElevenLabs clone/list: reject redirects and bound body parsing (0.247792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + undefined
+  - 'error'
+
+      at <anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:65:12)
+      at Object.apply (node:internal/test_runner/mock/mock:805:20)
+      at cloneVoice (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/src/lib/elevenlabs.ts:63:21)
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:68:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'error',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:3764
+✖ Salad exact requested NAME fields work for free scoped reads (0.5165ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  'BLOQUE' !== 'PASS'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:78:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'BLOQUE',
+    expected: 'PASS',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t04-providers-final-20261015/contracts.test.mts:1:4323
+✖ Salad conflicting legacy and NAME scopes fail before any request (1.349667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  'PASS' !== 'BLOQUE'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-providers-final-20261015/qa/t04-providers-final-20261015/contracts.test.mts:84:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'PASS',
+    expected: 'BLOQUE',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

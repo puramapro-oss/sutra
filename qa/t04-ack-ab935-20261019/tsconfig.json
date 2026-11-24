@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "incremental": false, "plugins": [], "types": ["node", "next"] },
+  "include": ["./*.mts", "../../src/lib/stock.ts", "../../src/app/api/stock/search/route.ts"],
+  "exclude": ["../../node_modules"]
+}

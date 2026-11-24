@@ -1,0 +1,310 @@
+⚠ Self-signed certificates are currently an experimental feature, use with caution.
+▲ Next.js 16.3.8 (webpack)
+- Local:         https://127.0.0.1:53316
+- Network:       https://127.0.0.1:53316
+✓ Ready in 232ms
+✓ Running next.config.ts took 119ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+ GET /login 200 in 2.3s (next.js: 2.1s, proxy.ts: 83ms, application-code: 160ms)
+ GET /login 200 in 26ms (next.js: 1.3ms, proxy.ts: 6ms, application-code: 18ms)
+ GET /login?next=/library 200 in 21ms (next.js: 0.9ms, proxy.ts: 2ms, application-code: 18ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 939ms (next.js: 866ms, proxy.ts: 23ms, application-code: 50ms)
+ GET /library 200 in 27ms (next.js: 1.2ms, proxy.ts: 5ms, application-code: 22ms)
+ POST /api/legal/accept 200 in 699ms (next.js: 395ms, proxy.ts: 3ms, application-code: 301ms)
+ POST /api/legal/accept 200 in 263ms (next.js: 0.9ms, proxy.ts: 3ms, application-code: 259ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 1.0ms, proxy.ts: 3ms, application-code: 256ms)
+ POST /api/legal/accept 200 in 261ms (next.js: 0.9ms, proxy.ts: 2ms, application-code: 258ms)
+ GET /production 200 in 540ms (next.js: 377ms, proxy.ts: 6ms, application-code: 158ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 45ms (next.js: 1.3ms, proxy.ts: 5ms, application-code: 39ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 44ms (next.js: 1.6ms, proxy.ts: 5ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 47ms (next.js: 1.2ms, proxy.ts: 6ms, application-code: 40ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 36ms (next.js: 0.7ms, proxy.ts: 3ms, application-code: 32ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 43ms (next.js: 1.0ms, proxy.ts: 5ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 1.0ms, proxy.ts: 4ms, application-code: 33ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 45ms (next.js: 2ms, proxy.ts: 5ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 43ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 38ms)
+[browser] Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously tries to update the component. Move this work to useEffect instead. 
+ GET /production 200 in 23ms (next.js: 1.3ms, proxy.ts: 5ms, application-code: 17ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>
+      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>
+        <ErrorBoundaryHandler pathname="/production" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>
+          <LoadingBoundary name="/" loading={null}>
+            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>
+              <HTTPAccessFallbackErrorBoundary pathname="/production" notFound={<SegmentViewNode>} forbidden={undefined} ...>
+                <RedirectBoundary>
+                  <RedirectErrorBoundary router={{...}}>
+                    <InnerLayoutRouter url="/production" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>
+                      <SegmentViewNode type="layout" pagePath="(dashboard...">
+                        <SegmentTrieNode>
+                        <DashboardLayout>
+                          <DashboardChrome>
+                            <div
++                             className="relative flex min-h-dvh bg-[#06050e]"
+-                             className={null}
+-                             hidden=""
+                            >
+                              <LoadableComponent>
+                              <Sidebar>
+                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>
++                                 <aside
++                                   className="hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu..."
++                                   data-testid="sidebar"
++                                   style={{}}
++                                   ref={function useMotionRef.useCallback}
++                                 >
+                              ...
+                    ...
+      ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at aside (<anonymous>)
+    at DashboardLayout (src/app/(dashboard)/layout.tsx:45:5)
+  43 |
+  44 |   return (
+> 45 |     <DashboardChrome>
+     |     ^
+  46 |       {docsEnAttente.length > 0 && <LegalReacceptanceGateMount docsEnAttente={docsEnAttente} />}
+  47 |       {children}
+  48 |     </DashboardChrome>
+ GET /production 200 in 21ms (next.js: 1.4ms, proxy.ts: 4ms, application-code: 15ms)
+ GET /production 200 in 47ms (next.js: 1.2ms, proxy.ts: 5ms, application-code: 41ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 1.7ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 26ms (next.js: 1.3ms, proxy.ts: 11ms, application-code: 14ms)
+ GET /production 200 in 64ms (next.js: 0.9ms, proxy.ts: 22ms, application-code: 42ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 25ms (next.js: 1.5ms, proxy.ts: 9ms, application-code: 14ms)
+ GET /production 200 in 51ms (next.js: 0.9ms, proxy.ts: 11ms, application-code: 39ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 53ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 48ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 36ms (next.js: 0.9ms, proxy.ts: 3ms, application-code: 32ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 33ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 33ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 0.9ms, proxy.ts: 5ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.7ms, proxy.ts: 3ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 2ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 43ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 38ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 1.0ms, proxy.ts: 4ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 1.1ms, proxy.ts: 6ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 48ms (next.js: 1.0ms, proxy.ts: 11ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 5ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 5ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 43ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 38ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.7ms, proxy.ts: 3ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 60ms (next.js: 1.2ms, proxy.ts: 15ms, application-code: 44ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 43ms (next.js: 0.9ms, proxy.ts: 6ms, application-code: 36ms)
+[browser] Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously tries to update the component. Move this work to useEffect instead. 
+ GET /production 200 in 20ms (next.js: 1.5ms, proxy.ts: 4ms, application-code: 14ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[browser] Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>
+      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>
+        <ErrorBoundaryHandler pathname="/production" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>
+          <LoadingBoundary name="/" loading={null}>
+            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>
+              <HTTPAccessFallbackErrorBoundary pathname="/production" notFound={<SegmentViewNode>} forbidden={undefined} ...>
+                <RedirectBoundary>
+                  <RedirectErrorBoundary router={{...}}>
+                    <InnerLayoutRouter url="/production" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>
+                      <SegmentViewNode type="layout" pagePath="(dashboard...">
+                        <SegmentTrieNode>
+                        <DashboardLayout>
+                          <DashboardChrome>
+                            <div
++                             className="relative flex min-h-dvh bg-[#06050e]"
+-                             className={null}
+-                             hidden=""
+                            >
+                              <LoadableComponent>
+                              <Sidebar>
+                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>
++                                 <aside
++                                   className="hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu..."
++                                   data-testid="sidebar"
++                                   style={{}}
++                                   ref={function useMotionRef.useCallback}
++                                 >
+                              ...
+                    ...
+      ...
+
+    at <unknown> (https://react.dev/link/hydration-mismatch)
+    at aside (<anonymous>)
+    at DashboardLayout (src/app/(dashboard)/layout.tsx:45:5)
+  43 |
+  44 |   return (
+> 45 |     <DashboardChrome>
+     |     ^
+  46 |       {docsEnAttente.length > 0 && <LegalReacceptanceGateMount docsEnAttente={docsEnAttente} />}
+  47 |       {children}
+  48 |     </DashboardChrome>
+ GET /production 200 in 38ms (next.js: 0.7ms, proxy.ts: 3ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 33ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.7ms, proxy.ts: 4ms, application-code: 37ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+ GET /production 200 in 40ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 51ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 47ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 43ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 38ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.7ms, proxy.ts: 3ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 43ms (next.js: 1.0ms, proxy.ts: 4ms, application-code: 38ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 36ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 33ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.7ms, proxy.ts: 3ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 43ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 38ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 0.9ms, proxy.ts: 5ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 38ms (next.js: 0.7ms, proxy.ts: 4ms, application-code: 34ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 39ms (next.js: 0.8ms, proxy.ts: 4ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 0.9ms, proxy.ts: 3ms, application-code: 38ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 41ms (next.js: 1.0ms, proxy.ts: 5ms, application-code: 36ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 42ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 38ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 125ms (next.js: 0.9ms, proxy.ts: 4ms, application-code: 121ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 47ms (next.js: 3ms, proxy.ts: 5ms, application-code: 39ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 40ms (next.js: 0.8ms, proxy.ts: 3ms, application-code: 35ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /production 200 in 134ms (next.js: 1.2ms, proxy.ts: 10ms, application-code: 123ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[?25h

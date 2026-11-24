@@ -1,5 +1,6 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { toast } from 'sonner'
+import { editorExportScenes, editorVolume } from '@/lib/editor-export'
 import type { Scene, VideoVersion } from '@/types'
 import type { SubtitleEntry, HistoryState } from '@/types/editor'
 import { useVideoPlayer } from '@/hooks/useVideoPlayer'
@@ -45,6 +46,11 @@ export function useEditorHandlers({
   setExporting,
   pushHistory,
 }: EditorHandlersProps) {
+  const activeExport = useRef<AbortController | null>(null)
+  useEffect(() => () => {
+    activeExport.current?.abort()
+    activeExport.current = null
+  }, [videoId])
   // Script changes
   const handleScriptChange = useCallback(
     (value: string) => {
@@ -83,64 +89,78 @@ export function useEditorHandlers({
   // Subtitle editing
   const updateSubtitle = useCallback(
     (id: string, field: 'text' | 'start' | 'end', value: string | number) => {
-      setSubtitles((prev) =>
-        prev.map((s) => (s.id === id ? { ...s, [field]: value } : s))
-      )
+      const next = subtitles.map((s) => (s.id === id ? { ...s, [field]: value } : s))
+      setSubtitles(next)
+      pushHistory({ script, scenes, subtitles: next, voiceVolume, musicVolume })
     },
-    [setSubtitles]
+    [script, scenes, subtitles, voiceVolume, musicVolume, pushHistory, setSubtitles]
   )
 
   const addSubtitle = useCallback(() => {
     const lastEnd = subtitles.length > 0 ? subtitles[subtitles.length - 1].end : 0
-    setSubtitles((prev) => [
-      ...prev,
+    const next = [
+      ...subtitles,
       {
         id: `sub-${Date.now()}`,
         text: '',
         start: lastEnd,
         end: lastEnd + 3,
       },
-    ])
-  }, [subtitles, setSubtitles])
+    ]
+    setSubtitles(next)
+    pushHistory({ script, scenes, subtitles: next, voiceVolume, musicVolume })
+  }, [script, scenes, subtitles, voiceVolume, musicVolume, pushHistory, setSubtitles])
 
   const removeSubtitle = useCallback(
     (id: string) => {
-      setSubtitles((prev) => prev.filter((s) => s.id !== id))
+      const next = subtitles.filter((s) => s.id !== id)
+      setSubtitles(next)
+      pushHistory({ script, scenes, subtitles: next, voiceVolume, musicVolume })
     },
-    [setSubtitles]
+    [script, scenes, subtitles, voiceVolume, musicVolume, pushHistory, setSubtitles]
   )
 
   // Export
   const handleExport = useCallback(async () => {
+    if (activeExport.current) return
+    const controller = new AbortController()
+    activeExport.current = controller
     setExporting(true)
     try {
       const res = await fetch('/api/video/export', {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           videoId,
           quality: exportQuality,
           script,
-          scenes,
+          scenes: editorExportScenes(scenes),
           subtitles,
-          voiceVolume,
-          musicVolume,
+          voiceVolume: editorVolume(voiceVolume),
+          musicVolume: editorVolume(musicVolume),
         }),
       })
 
-      if (!res.ok) throw new Error('Export failed')
-      toast.success('Export lance avec succes ! Tu seras notifie quand la video sera prete.')
-    } catch {
-      toast.error("Erreur lors de l&apos;export. Reessaie.")
+      const result = await res.json()
+      controller.signal.throwIfAborted()
+      if (!res.ok) throw new Error(result.error || 'Export indisponible')
+      toast.success(res.status === 202 ? 'Export en cours. Consulte la bibliotheque pour suivre son resultat.' : 'Export termine. La video est disponible dans la bibliotheque.')
+    } catch (error) {
+      if (controller.signal.aborted) return
+      toast.error(error instanceof Error ? error.message : 'Erreur lors de l’export. Reessaie.')
     } finally {
-      setExporting(false)
+      if (activeExport.current === controller) {
+        activeExport.current = null
+        if (!controller.signal.aborted) setExporting(false)
+      }
     }
   }, [videoId, exportQuality, script, scenes, subtitles, voiceVolume, musicVolume, setExporting])
 
   // Load version
   const loadVersion = useCallback(
     (version: VideoVersion) => {
-      toast.success(`Version ${version.version_number} chargee`)
+      toast.info(`Version ${version.version_number} : la restauration des reglages de cette version est indisponible.`)
     },
     []
   )

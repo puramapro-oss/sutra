@@ -1,0 +1,69 @@
+(node:72402) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:72402) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ R107: the actual cron recovers noon after a 20-hour interruption (563.973583ms)
+✔ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (689.808667ms)
+✔ lost commit response reconciles from durable cursor without a second job or quota (9.34025ms)
+✔ invalid receipt never claims success; subsequent read reconciles its committed jobs (5.156709ms)
+✔ SQL job, cursor and quota errors roll back the entire window before retry (48.644417ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (4.722417ms)
+✔ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (489.113166ms)
+✔ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (6.544625ms)
+✔ missing migration fails closed without falling back to the old lossy window (0.587292ms)
+✔ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (510.830167ms)
+✔ suppressed SQL cursor update cannot return success or retain partial jobs (65.197167ms)
+✔ malformed legacy schedules cannot silently advance a calendar (4.266791ms)
+✔ thrown transport exception is redacted and leaves the cursor retryable (3.663ms)
+✔ service role runs the real scheduler RPC and partner migration/rollback leaves durable functions intact (19.363542ms)
+✖ corrupt job receipt status is not accepted as scheduling success (7.001875ms)
+✖ known reconciliation-required receipt is not an overall success (5.453042ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 14
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3165.616292
+
+✖ failing tests:
+
+test at qa/t03-closure-20261020/recovery.test.mts:11:11266
+✖ corrupt job receipt status is not accepted as scheduling success (7.001875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ok'
+  - 'partial_failure'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:225:81)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ok',
+    expected: 'partial_failure',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t03-closure-20261020/recovery.test.mts:11:11539
+✖ known reconciliation-required receipt is not an overall success (5.453042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'ok'
+  - 'partial_failure'
+  
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-candidate-20261015/qa/t03-closure-20261020/recovery.test.mts:231:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ok',
+    expected: 'partial_failure',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

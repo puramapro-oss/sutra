@@ -1,0 +1,190 @@
+{
+  "baseline": false,
+  "multiScenario": true,
+  "finalIntegrated": true,
+  "results": [
+    {
+      "name": "settled library has no runtime errors",
+      "status": "PASS"
+    },
+    {
+      "name": "normal client navigation library to create to library has no runtime errors",
+      "status": "PASS"
+    },
+    {
+      "name": "forced document navigation retains errors and qualifies only native teardown diagnostics",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "forced-navigation-engine-diagnostics",
+      "qualified": [],
+      "unexpected": []
+    },
+    {
+      "name": "navigation-error-diagnostics",
+      "errors": [],
+      "failed": [
+        {
+          "phase": "hard-navigation-control",
+          "path": "/api/social/accounts",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749195
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/rest/v1/profiles",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/_next/static/chunks/_app-pages-browser_src_components_shared_CosmicParticlesWrapper_tsx.js",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/_next/static/chunks/_app-pages-browser_src_components_shared_SubconsciousEngine_tsx.js",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/_next/static/chunks/_app-pages-browser_src_components_shared_CinematicIntro_tsx.js",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/_next/static/chunks/_app-pages-browser_src_components_engagement_MagicMoment_tsx.js",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/rest/v1/user_notifications",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/_next/static/chunks/_app-pages-browser_src_components_shared_SpiritualLayer_tsx.js",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/_next/static/chunks/_app-pages-browser_src_components_shared_TutorialOverlay_tsx.js",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/_next/static/chunks/_app-pages-browser_src_components_shared_ConversionPopup_tsx.js",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/_next/static/chunks/_app-pages-browser_src_components_shared_FiscalBanner_tsx.js",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749360
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/api/auto/config",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069749932
+        },
+        {
+          "phase": "hard-navigation-control",
+          "path": "/api/status",
+          "rsc": false,
+          "reason": "net::ERR_ABORTED",
+          "time": 1792069751884
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "unexpectedErrors": [],
+  "qualifiedEngineDiagnostics": [],
+  "blocked": [],
+  "mutations": [],
+  "readOnlyProbes": [
+    {
+      "path": "/api/status",
+      "method": "HEAD"
+    }
+  ],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

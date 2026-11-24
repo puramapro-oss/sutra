@@ -28,13 +28,13 @@ export default function CookieConsentBanner({ appName, politiqueHref = '/politiq
       role="dialog"
       aria-label="Consentement cookies"
       data-testid="cookie-banner"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background-soft/95 backdrop-blur-xl p-4 sm:p-6"
+      className="fixed inset-x-0 bottom-0 z-[1100] max-h-[80dvh] overflow-y-auto border-t border-border bg-background-soft backdrop-blur-xl p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl"
     >
       <div className="mx-auto max-w-4xl space-y-4">
         <p className="text-sm text-foreground">
           {appName} utilise des cookies strictement nécessaires au fonctionnement du service, et — avec votre accord —
           des cookies de mesure d&apos;audience et de personnalisation. Voir notre{' '}
-          <a href={politiqueHref} className="underline text-primary-on-dark">
+          <a href={politiqueHref} className="underline text-primary">
             politique de confidentialité
           </a>
           .
@@ -62,7 +62,7 @@ export default function CookieConsentBanner({ appName, politiqueHref = '/politiq
             type="button"
             data-testid="cookie-accept"
             onClick={acceptAll}
-            className="min-h-11 rounded-pill bg-primary px-5 text-sm font-medium text-white"
+            className="min-h-11 rounded-pill bg-violet-600 px-5 text-sm font-medium text-white"
           >
             Tout accepter
           </button>

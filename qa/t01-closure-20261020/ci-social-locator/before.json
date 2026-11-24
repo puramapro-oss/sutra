@@ -1,0 +1,14 @@
+{
+  "candidate": "1d63ade0aa97222ebbaceb484b5f11319912db9b",
+  "ciRun": 39341713461,
+  "job": 118364596550,
+  "sourceLog": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1D63-20261020/ci-quality-118364596550.log",
+  "sourceLogSha256": "76419a0b55176aa5cb72c9a7662737ebb0433cc5e508c2eaee47cf7b4773dc7d",
+  "failures": [
+    "2026-10-19T23:40:23.7869999Z FAIL 375px social 409: safe actionable feedback without navigation: expect(locator).toBeVisible() failed",
+    "2026-10-19T23:40:24.1831035Z FAIL 375px social 503: safe actionable feedback without navigation: expect(locator).toBeVisible() failed",
+    "2026-10-19T23:40:24.8339854Z FAIL 1440px social 409: safe actionable feedback without navigation: expect(locator).toBeVisible() failed",
+    "2026-10-19T23:40:25.4926906Z FAIL 1440px social 503: safe actionable feedback without navigation: expect(locator).toBeVisible() failed"
+  ],
+  "cause": "Strict locator resolves to both persistent alert and toast after T06; no runtime/hydration or mutation failure"
+}

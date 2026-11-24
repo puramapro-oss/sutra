@@ -1,0 +1,296 @@
+{
+  "target": {
+    "id": "Function:src/lib/suno.ts:responseData",
+    "name": "responseData",
+    "type": "Function",
+    "filePath": "src/lib/suno.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 11,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 2,
+    "modules_affected": 5
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 6,
+    "3": 3
+  },
+  "affected_processes": [
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/music/generate/route.ts",
+      "affected_process_count": 9,
+      "total_hits": 15,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "src/app/api/cron/video-worker/route.ts",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 2
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Cluster_330",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Scripts",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_309",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Production",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Stripe",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/suno.ts:generateMusic",
+        "name": "generateMusic",
+        "filePath": "src/lib/suno.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_86_post",
+            "label": "POST → PublicOrigin",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_105_post",
+            "label": "POST → FetchWithRetry",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_112_post",
+            "label": "POST → BreakerKey",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_87_post",
+            "label": "POST → SunoBaseUrl",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_111_post",
+            "label": "POST → Blocked",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_119_post",
+            "label": "POST → MissingEnvError",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/suno.ts:pollSunoJob",
+        "name": "pollSunoJob",
+        "filePath": "src/lib/suno.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:scripts/test-suno-contract.mts",
+        "name": "test-suno-contract.mts",
+        "filePath": "scripts/test-suno-contract.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/app/api/music/generate/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/music/generate/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_105_post",
+            "label": "POST → FetchWithRetry",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_86_post",
+            "label": "POST → PublicOrigin",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_129_post",
+            "label": "POST → RateLimitResponse",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_87_post",
+            "label": "POST → SunoBaseUrl",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_111_post",
+            "label": "POST → Blocked",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_318_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_112_post",
+            "label": "POST → BreakerKey",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_119_post",
+            "label": "POST → MissingEnvError",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_121_post",
+            "label": "POST → BalayerEntreesExpirees",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/fallbacks.ts:generateMusicWithProvenance",
+        "name": "generateMusicWithProvenance",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/production-pipeline.ts:defaultProviders.music@110:4",
+        "name": "music",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/sutra-auto.ts:generateAutoVideoAssets",
+        "name": "generateAutoVideoAssets",
+        "filePath": "src/lib/sutra-auto.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob",
+        "name": "executeCreateJob",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/lib/auto-pipeline.ts:buildAutoProviders.assets@172:4",
+        "name": "assets",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/fallbacks.ts:generateMusicWithFallback",
+        "name": "generateMusicWithFallback",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/video-worker.ts:runVideoJob",
+        "name": "runVideoJob",
+        "filePath": "src/lib/video-worker.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_41_get",
+            "label": "GET → Script",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_83_get",
+            "label": "GET → WithMediaOwner",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_40_get",
+            "label": "GET → Music",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_82_get",
+            "label": "GET → WithPipelineLease",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      }
+    ]
+  }
+}

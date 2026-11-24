@@ -1,0 +1,12 @@
+Changes: 1 files, 1 symbols
+Affected processes: 4
+Risk level: medium
+
+Changed symbols:
+  Function POST → src/app/api/production/route.ts
+
+Affected execution flows:
+  • POST → Failure (4 steps) — changed: POST
+  • POST → Ok (4 steps) — changed: POST
+  • POST → CreateServiceClient (3 steps) — changed: POST
+  • POST → Denied (4 steps) — changed: POST

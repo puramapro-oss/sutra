@@ -1,0 +1,1139 @@
+{
+  "candidate": "d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2",
+  "ciRun": 38677062190,
+  "observedAt": "2026-10-15T04:11:05.310647+00:00",
+  "status": "PASS",
+  "groups": [
+    {
+      "name": "contracts",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=2",
+        "scripts/test-t03-final-durable.mts",
+        "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+        "scripts/test-t02-final-security-grants.mts",
+        "scripts/test-t06-final-social.mts",
+        "qa/t04-final-providers-20261015/container.test.mjs",
+        "qa/t04-final-providers-20261015/context.test.mjs",
+        "qa/t04-final-providers-20261015/salad-read.test.mjs",
+        "qa/t08-final-candidate-20261015/cancellation.test.mts",
+        "scripts/test-t06-social-validation.mts",
+        "qa/t04-provider-validation-20261014/probe.test.mjs",
+        "scripts/test-t02-final-validation-media.mts",
+        "qa/t02-final-validation-20261014/production-error.test.mts",
+        "qa/final-delta-20261014/social-feedback.test.mts",
+        "scripts/test-t03-orchestration-fixes.mts",
+        "scripts/test-t03-suno-recovery.mts",
+        "scripts/test-t04-provider-fixes.mts",
+        "scripts/test-t04-pollinations.mts",
+        "scripts/test-t02-security-fixes-storage.mts",
+        "scripts/test-t02-security-fixes-proof.mts",
+        "scripts/test-t02-security-fixes-session-media.mts",
+        "scripts/test-t02-security-fixes-ots.mts",
+        "scripts/test-t08-integration-journey.mts",
+        "scripts/test-salad-worker.mts",
+        "scripts/test-salad-host.mts",
+        "scripts/test-t03-salad-recovery.mts",
+        "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+        "scripts/test-t06-social-final.mts",
+        "scripts/test-t08-final-modes.mts",
+        "scripts/test-insee.mjs",
+        "scripts/test-editor-export.mts",
+        "scripts/test-export-integration.mts",
+        "scripts/test-integration.mts",
+        "scripts/test-ltx-tiers.mjs",
+        "scripts/test-karma-split.mjs",
+        "scripts/test-api-contracts.mts",
+        "scripts/test-env-contracts.mts",
+        "scripts/test-suno-contract.mts",
+        "qa/t03-provider-complement-20261013/music-recovery.test.mts",
+        "qa/t08/providers-20261013/provider-contract-redteam.test.mts",
+        "scripts/test-local-engine.mts",
+        "scripts/test-shotstack-contracts.mts",
+        "scripts/test-production-queue.mts",
+        "scripts/test-auto-export-queue.mts",
+        "scripts/test-release-regressions.mts",
+        "scripts/test-video-contracts.mjs",
+        "scripts/test-opentimestamps.mjs",
+        "scripts/test-ltx-v2-media.mts",
+        "scripts/test-social-publication.mts",
+        "scripts/test-auth-session.mts",
+        "scripts/test-public-origin.mts",
+        "tooling/disposable-database.test.mjs",
+        "scripts/test-pipeline-interruptions.mts",
+        "scripts/test-pipeline-submit.mts",
+        "scripts/test-release-oauth.mts",
+        "scripts/test-zernio-oauth-contracts.mts",
+        "scripts/test-security-account.mts",
+        "scripts/test-t02-oauth-boundaries.mts",
+        "scripts/test-private-media.mts",
+        "scripts/test-security-media.mts",
+        "scripts/test-security-routes.mts",
+        "scripts/test-security-storage.mts",
+        "scripts/test-t06-social-autonomy.mts",
+        "scripts/test-t06-social-routes.mts",
+        "scripts/test-ltx-v2-contracts.mts",
+        "scripts/test-provider-safety.mts",
+        "src/lib/video-compositor.test.mts",
+        "src/lib/ffmpeg-concurrency.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 28502,
+      "group": "contracts",
+      "counts": {
+        "tests": 962,
+        "pass": 955,
+        "fail": 0,
+        "skipped": 7
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/contracts/contracts.log"
+    },
+    {
+      "name": "durable-submission",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t03-durable-reliability.mts",
+        "qa/t03-durable-reliability-20261014/submission.test.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1272,
+      "group": "contracts",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/contracts/durable-submission.log"
+    },
+    {
+      "name": "schedule",
+      "command": [
+        "node",
+        "scripts/test-auto-schedule.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 108,
+      "group": "contracts",
+      "counts": {},
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/contracts/schedule.log"
+    },
+    {
+      "name": "composition",
+      "command": [
+        "node",
+        "scripts/test-auto-composition.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 82,
+      "group": "contracts",
+      "counts": {},
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/contracts/composition.log"
+    },
+    {
+      "name": "publication",
+      "command": [
+        "node",
+        "scripts/test-auto-publication.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 86,
+      "group": "contracts",
+      "counts": {},
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/contracts/publication.log"
+    },
+    {
+      "name": "retained-real-exports",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-real-export.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 61102,
+      "group": "media",
+      "counts": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/retained-real-exports.log"
+    },
+    {
+      "name": "composition-delta",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-composition-fix.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 11356,
+      "group": "media",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/composition-delta.log"
+    },
+    {
+      "name": "final-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-final-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 68501,
+      "group": "media",
+      "counts": {
+        "tests": 32,
+        "pass": 32,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/final-media.log"
+    },
+    {
+      "name": "salad-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-salad-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 8060,
+      "group": "media",
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/salad-media.log"
+    },
+    {
+      "name": "local-engine",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-local-engine-e2e.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1337,
+      "group": "media",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/local-engine.log"
+    },
+    {
+      "name": "compositor",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--import",
+        "./scripts/helpers/local-media-fixture.mts",
+        "--test",
+        "--test-concurrency=1",
+        "src/lib/ffmpeg-compositor.test.ts",
+        "src/lib/ffmpeg-compositor-formats.test.ts",
+        "src/lib/media-validation.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 60010,
+      "group": "media",
+      "counts": {
+        "tests": 31,
+        "pass": 31,
+        "fail": 0,
+        "skipped": 0
+      },
+      "receipt": "ci-d21b7b4-contract-artifacts/test-results/ci/media/compositor.log"
+    }
+  ],
+  "redteam": {
+    "profile": "redteam",
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "command": [
+      "/opt/hostedtoolcache/node/24.21.0/x64/bin/node",
+      "--test-reporter=tap",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-concurrency=1",
+      "qa/t08/integrated/offline.test.mjs",
+      "qa/t08/integrated/load.test.mts"
+    ],
+    "durationMs": 742
+  },
+  "realCpuExports": 17,
+  "contractSkipEvidence": [
+    "﹣ LIVE: INSEE_API_KEY configured (0.108984ms) # SKIP",
+    "﹣ LIVE : SIRET INSEE Paris Club (47832593900021) → 200 avec denomination (0.114435ms) # SKIP",
+    "﹣ LIVE : SIRET fictif (99999999999999) → header.statut=404 (0.103624ms) # SKIP",
+    "﹣ LIVE : mauvaise clé → 401/403 (0.097372ms) # SKIP",
+    "﹣ DB : applique split sur invoice fake → archive + pool_balances + pool_transactions (0.116939ms) # SKIP",
+    "﹣ DB : insert dans video_generations + lecture + cleanup (0.141014ms) # SKIP",
+    "﹣ NETWORK : real stamp() → deserialize → fileDigest round-trip (0.125295ms) # SKIP"
+  ],
+  "ciUrl": "https://github.com/puramapro-oss/sutra/actions/runs/38677062190",
+  "quality": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 16501
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "."
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 24302
+    },
+    {
+      "name": "build",
+      "command": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build",
+        "--webpack"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 78851
+    }
+  ],
+  "legacy": {
+    "command": "node scripts/run-ci.mjs legacy",
+    "runner": [
+      {
+        "name": "legacy",
+        "command": [
+          "node",
+          "scripts/test-ui-isolated.mjs",
+          "--legacy"
+        ],
+        "status": "PASS",
+        "exitCode": 0,
+        "signal": null,
+        "durationMs": 557912
+      }
+    ],
+    "stats": {
+      "startTime": "2026-10-15T03:57:35.436Z",
+      "duration": 501931.473,
+      "expected": 1022,
+      "skipped": 25,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "errors": 0,
+    "skipEvidence": [
+      {
+        "title": "locale API rejects invalid locale",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/v3-features.spec.ts",
+            "line": 96
+          }
+        ]
+      },
+      {
+        "title": "locale API sets cookie",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/v3-features.spec.ts",
+            "line": 86
+          }
+        ]
+      },
+      {
+        "title": "locale API rejects invalid locale",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/v3-features.spec.ts",
+            "line": 96
+          }
+        ]
+      },
+      {
+        "title": "locale API sets cookie",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/v3-features.spec.ts",
+            "line": 86
+          }
+        ]
+      },
+      {
+        "title": "financer API responds",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/v3-features.spec.ts",
+            "line": 29
+          }
+        ]
+      },
+      {
+        "title": "financer API responds",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/v3-features.spec.ts",
+            "line": 29
+          }
+        ]
+      },
+      {
+        "title": "sidebar has breathe link (desktop)",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Desktop only",
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 115
+          }
+        ]
+      },
+      {
+        "title": "POST returns 401 without auth",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 102
+          }
+        ]
+      },
+      {
+        "title": "returns 401 without auth",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 96
+          }
+        ]
+      },
+      {
+        "title": "POST returns 401 without auth",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 102
+          }
+        ]
+      },
+      {
+        "title": "returns 401 without auth",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "API test only on desktop",
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 96
+          }
+        ]
+      },
+      {
+        "title": "aide escalade form reveals on click",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": null,
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 72
+          }
+        ]
+      },
+      {
+        "title": "aide page has escalade section",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": null,
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 56
+          }
+        ]
+      },
+      {
+        "title": "aide is accessible on mobile",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Mobile only",
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 81
+          }
+        ]
+      },
+      {
+        "title": "aide escalade form reveals on click",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": null,
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 72
+          }
+        ]
+      },
+      {
+        "title": "aide page has escalade section",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": null,
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 56
+          }
+        ]
+      },
+      {
+        "title": "aide is accessible on mobile",
+        "projectName": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Mobile only",
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 81
+          }
+        ]
+      },
+      {
+        "title": "aide escalade form reveals on click",
+        "projectName": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": null,
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 72
+          }
+        ]
+      },
+      {
+        "title": "aide page has escalade section",
+        "projectName": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": null,
+            "source": "e2e/spiritual-pages.spec.ts",
+            "line": 56
+          }
+        ]
+      },
+      {
+        "title": "selecting each mediaMode toggles selected state",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "source": "e2e/media-mode.spec.ts",
+            "line": 40
+          }
+        ]
+      },
+      {
+        "title": "mediaMode cards visible on /create (auto mode)",
+        "projectName": "Mobile 375",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "source": "e2e/media-mode.spec.ts",
+            "line": 25
+          }
+        ]
+      },
+      {
+        "title": "selecting each mediaMode toggles selected state",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "source": "e2e/media-mode.spec.ts",
+            "line": 40
+          }
+        ]
+      },
+      {
+        "title": "mediaMode cards visible on /create (auto mode)",
+        "projectName": "Tablet 768",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "source": "e2e/media-mode.spec.ts",
+            "line": 25
+          }
+        ]
+      },
+      {
+        "title": "selecting each mediaMode toggles selected state",
+        "projectName": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "source": "e2e/media-mode.spec.ts",
+            "line": 40
+          }
+        ]
+      },
+      {
+        "title": "mediaMode cards visible on /create (auto mode)",
+        "projectName": "Desktop 1920",
+        "annotations": [
+          {
+            "type": "skip",
+            "description": "Auth wall in place; smoke test only",
+            "source": "e2e/media-mode.spec.ts",
+            "line": 25
+          }
+        ]
+      }
+    ]
+  },
+  "browserFinal": {
+    "command": "node qa/t07-final-ux-perf-20261015/run.mjs --final-integrated",
+    "singleBuild": true,
+    "nativeSafari": false,
+    "families": [
+      {
+        "engine": "chromium",
+        "options": [
+          "--final"
+        ],
+        "pass": 22,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--social"
+        ],
+        "pass": 10,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--planning"
+        ],
+        "pass": 9,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--legal"
+        ],
+        "pass": 15,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--journeys"
+        ],
+        "pass": 34,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--journeys",
+          "--private-download"
+        ],
+        "pass": 9,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--extra"
+        ],
+        "pass": 31,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--editor"
+        ],
+        "pass": 5,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--visual"
+        ],
+        "pass": 3,
+        "fail": 0
+      },
+      {
+        "engine": "chromium",
+        "options": [
+          "--navigation"
+        ],
+        "pass": 4,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--final"
+        ],
+        "pass": 22,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--social"
+        ],
+        "pass": 10,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--planning"
+        ],
+        "pass": 9,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--legal"
+        ],
+        "pass": 15,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--journeys"
+        ],
+        "pass": 34,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--journeys",
+          "--private-download"
+        ],
+        "pass": 9,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--extra"
+        ],
+        "pass": 31,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--editor"
+        ],
+        "pass": 5,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--visual"
+        ],
+        "pass": 3,
+        "fail": 0
+      },
+      {
+        "engine": "webkit",
+        "options": [
+          "--navigation"
+        ],
+        "pass": 4,
+        "fail": 0
+      }
+    ],
+    "runtimeDiagnostics": [
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/editor/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/extra/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/final/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/journey/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/legal/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/navigation/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/planning/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/private-download/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/social/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/chromium/visual/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/editor/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/extra/runtime-errors.json",
+        "errors": 20,
+        "qualified": 20,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/final/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/journey/runtime-errors.json",
+        "errors": 111,
+        "qualified": 111,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/legal/runtime-errors.json",
+        "errors": 16,
+        "qualified": 16,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/navigation/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/planning/runtime-errors.json",
+        "errors": 5,
+        "qualified": 5,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/private-download/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/social/runtime-errors.json",
+        "errors": 48,
+        "qualified": 48,
+        "unexpected": 0,
+        "domErrors": 0
+      },
+      {
+        "receipt": "qa/t01-final-20261015/browser-final/webkit/visual/runtime-errors.json",
+        "errors": 0,
+        "qualified": 0,
+        "unexpected": 0,
+        "domErrors": 0
+      }
+    ]
+  },
+  "browserRedteam": {
+    "profile": "browser-redteam",
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "command": [
+      "/opt/hostedtoolcache/node/24.21.0/x64/bin/node",
+      "--experimental-test-module-mocks",
+      "--import",
+      "./qa/t08/integrated/browser-extension.mjs",
+      "scripts/test-ui-isolated.mjs"
+    ],
+    "durationMs": 452891,
+    "checks": 210,
+    "widths": [
+      320,
+      375,
+      768,
+      1280,
+      1440
+    ],
+    "browserErrors": 0,
+    "axeChecks": 165,
+    "axeViolations": 0
+  },
+  "library": {
+    "command": "node qa/t07-frontend-fixes-20261014/browser.mjs --production",
+    "counts": {
+      "PASS": 25
+    },
+    "errors": 0,
+    "unexpectedMutations": 0,
+    "metrics": [
+      {
+        "filter": "favorites",
+        "iteration": 1,
+        "requests": 0,
+        "committedMs": 29,
+        "readyMs": 29
+      },
+      {
+        "filter": "all",
+        "iteration": 1,
+        "requests": 0,
+        "committedMs": 29,
+        "readyMs": 29
+      },
+      {
+        "filter": "favorites",
+        "iteration": 2,
+        "requests": 0,
+        "committedMs": 31,
+        "readyMs": 32
+      },
+      {
+        "filter": "all",
+        "iteration": 2,
+        "requests": 0,
+        "committedMs": 25,
+        "readyMs": 25
+      },
+      {
+        "filter": "favorites",
+        "iteration": 3,
+        "requests": 0,
+        "committedMs": 23,
+        "readyMs": 23
+      },
+      {
+        "filter": "all",
+        "iteration": 3,
+        "requests": 0,
+        "committedMs": 25,
+        "readyMs": 25
+      }
+    ],
+    "proof": "LOCAL_CHROMIUM_FIXTURES_ONLY; no secret/provider/publication"
+  },
+  "deliverySimulations": [
+    {
+      "command": "python3 -m unittest discover -s deploy -p 'test_*.py'",
+      "pass": 77,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'",
+      "pass": 25,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "python3 qa/t01-final-20261015/social-history-transition-test.py",
+      "pass": 12,
+      "fail": 0,
+      "skip": 0
+    },
+    {
+      "command": "python3 - <<'PY'\nimport sys, unittest\nfrom pathlib import Path\nsys.path.insert(0, 'deploy')\nimport test_salad_promotion as tests\ntests.SOURCE = Path('qa/t01-consolidation-20261014').resolve()\nresult = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(tests))\nraise SystemExit(not result.wasSuccessful())\nPY",
+      "pass": 8,
+      "fail": 0,
+      "skip": 0,
+      "overlaps": "deploy test group; alternate exact promotion source"
+    }
+  ],
+  "dependencyAudit": {
+    "command": "npm audit --omit=dev --audit-level=high",
+    "status": "PASS_AT_HIGH_THRESHOLD",
+    "low": 2,
+    "moderate": 5,
+    "high": 0,
+    "critical": 0,
+    "affectedChain": "javascript-opentimestamps / bitcore-lib / elliptic / request / request-promise / request-promise-core / uuid",
+    "reportedFix": "npm suggests breaking opentimestamps@0.0.0; not applied",
+    "advisories": [
+      "https://github.com/advisories/GHSA-848j-6mx2-7j84",
+      "https://github.com/advisories/GHSA-p8p7-x288-28g6",
+      "https://github.com/advisories/GHSA-w5hq-g745-h8pq"
+    ]
+  },
+  "artifactHashes": {
+    "ci-d21b7b4-quality-artifacts/test-results/ci/quality/results.json": "ea7d0c56555ec00fba99655daffb9f772abaac09c9069a210b8da5f0662f0715",
+    "ci-d21b7b4-quality-artifacts/test-results/legacy/results.json": "0a91337ecba16f5764dfff097d6cb959110a495e738f4cc1942c86a461b4bc5c",
+    "ci-d21b7b4-quality-artifacts/qa/t01-final-20261015/browser-final/summary.json": "28f861a3c348797cbdc6b78c956160106ad8478702af456f61a5c05634a72140",
+    "ci-d21b7b4-quality-artifacts/test-results/t08/browser/results.json": "875c72e61529ffc2a19f2b17281badc54697d9ddb2fd78164b31ed3b895f6317",
+    "ci-d21b7b4-full.log": "f454fef7f1c3151fcfea9be11b156c7ea7a74508e7460c80200b35d2a179c50f"
+  },
+  "proofBoundary": "CI fixtures and disposable PostgreSQL only; raw qualified WebKit diagnostics retained; no personal account, real AI, paid provider request, live publication, production migration or promotion."
+}

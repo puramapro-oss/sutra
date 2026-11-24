@@ -1,0 +1,42 @@
+✔ media: multi-scene 16:9 720p all required (2928.021262ms)
+✔ media: multi-scene 16:9 1080p all required (3499.758151ms)
+✔ media: multi-scene 16:9 4k all required (7391.016725ms)
+✔ media: multi-scene 9:16 720p all required (2808.661237ms)
+✔ media: multi-scene 9:16 1080p all required (3532.703476ms)
+✔ media: multi-scene 9:16 4k all required (7717.731526ms)
+✔ media: multi-scene 1:1 720p all required (2593.95148ms)
+✔ media: multi-scene 1:1 1080p all required (2998.927158ms)
+✔ media: multi-scene 1:1 4k all required (5406.229576ms)
+✔ media: MIME false, allowed wrong MIME, octet-stream signature and incorrect duration (944.324315ms)
+✔ media: invalid, truncated, corrupt and missing required assets release temporary storage (95.653865ms)
+✔ resource: release must reserve a queued slot before a newcomer (11.134967ms)
+✔ resource: timeout applies while queued and releases waiter (120.693585ms)
+✔ resource: total deadline cancels stalled download and cleans temp (41.691034ms)
+✔ resource: fractional concurrency cannot create zero slots (0.383919ms)
+✔ resource: real FFmpeg and probe timeout kill children (90.157309ms)
+✔ resource: resumable failure preserves owned checkpoints, successful retry removes them (744.312576ms)
+✔ resource: encoder discovery respects the total deadline (45.930092ms)
+✔ variants: 1080p video-only (1331.283432ms)
+✔ variants: 1080p music-only (1461.08081ms)
+✔ variants: 1080p voice-only (1449.400874ms)
+✔ variants: 1080p voice-music (1602.915582ms)
+✔ variants: 1080p subtitles (1847.18759ms)
+✔ variants: 1080p brand (2449.086684ms)
+✔ variants: 1080p all-optional (2947.396924ms)
+✔ variants: 1080p optional-absent (1342.408566ms)
+✔ limits: invalid budgets and excessive duration are refused before download (1.948228ms)
+[video-compositor] moteur FFmpeg local indisponible, secours Shotstack: Error
+✔ limits: queued cancellation does not consume or strand a slot (6.04419ms)
+✔ failures: both engines failing never return or upload raw video (1.050618ms)
+[video-compositor] moteur FFmpeg local indisponible, secours Shotstack: Error
+✔ failures: even a validated fallback cannot return the raw source URL (800.298899ms)
+✔ failures: required audio missing from a real rendered file is rejected (1604.820802ms)
+✔ failures: total composition timeout cannot trigger fallback or upload (42.278613ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 58130.740359

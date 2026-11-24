@@ -1,0 +1,28 @@
+{
+  "textScanExit": 1,
+  "rawScanExit": 1,
+  "rawFindingCount": 2,
+  "rawRules": [
+    "sourcegraph-access-token",
+    "sourcegraph-access-token"
+  ],
+  "exactOwnerBinaryHashesMatched": [
+    {
+      "lineHash": "dd404e2f5a440470170ead9700540954d131facb17f7ed9181332ad024b9cbab",
+      "header": "diff --git a/qa/t07-scheduler-cancel-20261015/reconcile-final/receipt-unknown-1440.png b/qa/t07-scheduler-cancel-20261015/reconcile-final/receipt-unknown-1440.png",
+      "binaryPatch": true,
+      "matchedLineType": "Git index object hash metadata before binary payload"
+    },
+    {
+      "lineHash": "9940a726325f2404ae722a1c791f4a313b20ccc8844ad0b87c3a5aad3850b874",
+      "header": "diff --git a/qa/t07-scheduler-cancel-20261015/reconcile-optimized/receipt-unknown-1440.png b/qa/t07-scheduler-cancel-20261015/reconcile-optimized/receipt-unknown-1440.png",
+      "binaryPatch": true,
+      "matchedLineType": "Git index object hash metadata before binary payload"
+    }
+  ],
+  "classification": "Two sourcegraph-access-token matches are Git index header object hashes for owner-identical PNGs, not source content or credential values. Text content scanned independently; no rule disabled.",
+  "textDiffSha256": "133c525d41315c68099d2f80c3f675c69bca0759ab22dd1fcacc7e4463f60b88",
+  "actualTextContentScanExit": 0,
+  "textFilesScanned": 245,
+  "binaryFilesExcludedFromTextScan": 34
+}

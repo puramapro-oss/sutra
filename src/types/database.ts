@@ -96,6 +96,8 @@ export interface ScriptData {
 }
 
 export interface Scene {
+  /** Original source retained with the scene when reordered in the editor. */
+  export_media?: { url: string; type: 'ia' | 'stock'; kind?: 'video' | 'photo' }
   visual_prompt: string
   duration_seconds: number
   use_stock: boolean

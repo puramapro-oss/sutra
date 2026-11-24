@@ -1,0 +1,2781 @@
+{
+  "candidate": "cabae2c155f54d095202df0494e2c17b41339e3d",
+  "sourceChanges": [
+    "src/app/(dashboard)/achievements/page.tsx",
+    "src/app/(dashboard)/auto/memory/page.tsx",
+    "src/app/(dashboard)/autopilot/page.tsx",
+    "src/app/(dashboard)/boutique/page.tsx",
+    "src/app/(dashboard)/chat/[id]/page.tsx",
+    "src/app/(dashboard)/classement/page.tsx",
+    "src/app/(dashboard)/contest/page.tsx",
+    "src/app/(dashboard)/fiscal/FiscalClient.tsx",
+    "src/app/(dashboard)/gratitude/page.tsx",
+    "src/app/(dashboard)/invoices/page.tsx",
+    "src/app/(dashboard)/karma/dharma/page.tsx",
+    "src/app/(dashboard)/karma/quete-rare/page.tsx",
+    "src/app/(dashboard)/lottery/page.tsx",
+    "src/app/(dashboard)/notifications/page.tsx",
+    "src/app/(dashboard)/partenaire/coach/page.tsx",
+    "src/app/(dashboard)/partenaire/outils/page.tsx",
+    "src/app/(dashboard)/partenaire/page.tsx",
+    "src/app/(dashboard)/referral/page.tsx",
+    "src/app/(dashboard)/settings/abonnement/AbonnementClient.tsx",
+    "src/app/(dashboard)/settings/notifications/page.tsx",
+    "src/app/(dashboard)/settings/paiement/PaiementClient.tsx",
+    "src/app/(dashboard)/settings/paiement/WalletSummary.tsx",
+    "src/app/(dashboard)/styles/page.tsx",
+    "src/app/(dashboard)/templates/page.tsx",
+    "src/app/(dashboard)/voices/page.tsx",
+    "src/app/(dashboard)/wallet/page.tsx",
+    "src/app/aide/page.tsx",
+    "src/app/changelog/page.tsx",
+    "src/app/devenir-ambassadeur/DevenirAmbassadeurClient.tsx",
+    "src/app/ecosystem/page.tsx",
+    "src/app/error.tsx",
+    "src/app/guide/page.tsx",
+    "src/app/help/page.tsx",
+    "src/app/how-it-works/page.tsx",
+    "src/app/legal/cgv/page.tsx",
+    "src/app/legal/cookies/page.tsx",
+    "src/app/legal/mentions/page.tsx",
+    "src/app/legal/page.tsx",
+    "src/app/legal/privacy/page.tsx",
+    "src/app/legal/terms/page.tsx",
+    "src/app/partenariat/page.tsx",
+    "src/app/status/page.tsx",
+    "src/components/analytics/DailyChart.tsx",
+    "src/components/analytics/EngineStats.tsx",
+    "src/components/analytics/KpiCards.tsx",
+    "src/components/analytics/PromptHistory.tsx",
+    "src/components/analytics/TopVideos.tsx",
+    "src/components/batch/BatchGlobalConfig.tsx",
+    "src/components/batch/BatchInputMode.tsx",
+    "src/components/community/CommunityWallTab.tsx",
+    "src/components/contest/PastContestsSection.tsx",
+    "src/components/engagement/AmbassadorTierBadge.tsx",
+    "src/components/karma/SeedsBalance.tsx",
+    "src/components/landing/Footer.tsx",
+    "src/components/landing/PricingSection.tsx",
+    "src/components/legal/LegalFooter.tsx",
+    "src/components/partner/PartnerCommissionsChart.tsx",
+    "src/components/referral/CommissionsHistory.tsx",
+    "src/components/referral/ReferralCodeCard.tsx",
+    "src/components/referral/ReferralStats.tsx",
+    "src/components/referral/ReferralTiers.tsx",
+    "src/components/referral/WalletCard.tsx",
+    "src/components/storyboard/StoryboardInput.tsx",
+    "src/components/templates/CategoryTabs.tsx",
+    "src/components/templates/TemplateCard.tsx"
+  ],
+  "sourcePatchSha256": "e526e5204d8ede778615642890dade1cbb836b79ae7a24bcc5627df6a8940ab6",
+  "mode": "development, local synthetic session, unknown APIs503",
+  "inventory": [
+    {
+      "file": "src/app/(dashboard)/achievements/page.tsx",
+      "route": "/achievements"
+    },
+    {
+      "file": "src/app/(dashboard)/ambassadeur/page.tsx",
+      "route": "/ambassadeur"
+    },
+    {
+      "file": "src/app/(dashboard)/analytics/page.tsx",
+      "route": "/analytics"
+    },
+    {
+      "file": "src/app/(dashboard)/auto/memory/page.tsx",
+      "route": "/auto/memory"
+    },
+    {
+      "file": "src/app/(dashboard)/autopilot/page.tsx",
+      "route": "/autopilot"
+    },
+    {
+      "file": "src/app/(dashboard)/batch/page.tsx",
+      "route": "/batch"
+    },
+    {
+      "file": "src/app/(dashboard)/boutique/page.tsx",
+      "route": "/boutique"
+    },
+    {
+      "file": "src/app/(dashboard)/chat/[id]/page.tsx",
+      "route": "/chat/33333333-3333-4333-8333-333333333333"
+    },
+    {
+      "file": "src/app/(dashboard)/classement-points/page.tsx",
+      "route": "/classement-points"
+    },
+    {
+      "file": "src/app/(dashboard)/classement/engagement/page.tsx",
+      "route": "/classement/engagement"
+    },
+    {
+      "file": "src/app/(dashboard)/classement/page.tsx",
+      "route": "/classement"
+    },
+    {
+      "file": "src/app/(dashboard)/community/page.tsx",
+      "route": "/community"
+    },
+    {
+      "file": "src/app/(dashboard)/contest/page.tsx",
+      "route": "/contest"
+    },
+    {
+      "file": "src/app/(dashboard)/fiscal/page.tsx",
+      "route": "/fiscal"
+    },
+    {
+      "file": "src/app/(dashboard)/gratitude/page.tsx",
+      "route": "/gratitude"
+    },
+    {
+      "file": "src/app/(dashboard)/invoices/page.tsx",
+      "route": "/invoices"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/dharma/page.tsx",
+      "route": "/karma/dharma"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/page.tsx",
+      "route": "/karma"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/quete-rare/page.tsx",
+      "route": "/karma/quete-rare"
+    },
+    {
+      "file": "src/app/(dashboard)/lottery/page.tsx",
+      "route": "/lottery"
+    },
+    {
+      "file": "src/app/(dashboard)/ma-memoire/page.tsx",
+      "route": "/ma-memoire"
+    },
+    {
+      "file": "src/app/(dashboard)/notifications/page.tsx",
+      "route": "/notifications"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/coach/page.tsx",
+      "route": "/partenaire/coach"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/outils/page.tsx",
+      "route": "/partenaire/outils"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/page.tsx",
+      "route": "/partenaire"
+    },
+    {
+      "file": "src/app/(dashboard)/referral/page.tsx",
+      "route": "/referral"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/abonnement/page.tsx",
+      "route": "/settings/abonnement"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/notifications/page.tsx",
+      "route": "/settings/notifications"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/paiement/page.tsx",
+      "route": "/settings/paiement"
+    },
+    {
+      "file": "src/app/(dashboard)/storyboard/page.tsx",
+      "route": "/storyboard"
+    },
+    {
+      "file": "src/app/(dashboard)/styles/page.tsx",
+      "route": "/styles"
+    },
+    {
+      "file": "src/app/(dashboard)/templates/page.tsx",
+      "route": "/templates"
+    },
+    {
+      "file": "src/app/(dashboard)/voices/page.tsx",
+      "route": "/voices"
+    },
+    {
+      "file": "src/app/(dashboard)/wallet/page.tsx",
+      "route": "/wallet"
+    },
+    {
+      "file": "src/app/aide/page.tsx",
+      "route": "/aide"
+    },
+    {
+      "file": "src/app/changelog/page.tsx",
+      "route": "/changelog"
+    },
+    {
+      "file": "src/app/devenir-ambassadeur/page.tsx",
+      "route": "/devenir-ambassadeur"
+    },
+    {
+      "file": "src/app/ecosystem/page.tsx",
+      "route": "/ecosystem"
+    },
+    {
+      "file": "src/app/guide/page.tsx",
+      "route": "/guide"
+    },
+    {
+      "file": "src/app/help/page.tsx",
+      "route": "/help"
+    },
+    {
+      "file": "src/app/how-it-works/page.tsx",
+      "route": "/how-it-works"
+    },
+    {
+      "file": "src/app/legal/cgv/page.tsx",
+      "route": "/legal/cgv"
+    },
+    {
+      "file": "src/app/legal/cookies/page.tsx",
+      "route": "/legal/cookies"
+    },
+    {
+      "file": "src/app/legal/mentions/page.tsx",
+      "route": "/legal/mentions"
+    },
+    {
+      "file": "src/app/legal/page.tsx",
+      "route": "/legal"
+    },
+    {
+      "file": "src/app/legal/privacy/page.tsx",
+      "route": "/legal/privacy"
+    },
+    {
+      "file": "src/app/legal/terms/page.tsx",
+      "route": "/legal/terms"
+    },
+    {
+      "file": "src/app/partenariat/page.tsx",
+      "route": "/partenariat"
+    },
+    {
+      "file": "src/app/pricing/page.tsx",
+      "route": "/pricing"
+    },
+    {
+      "file": "src/app/scan/[code]/page.tsx",
+      "route": "/scan/33333333-3333-4333-8333-333333333333"
+    },
+    {
+      "file": "src/app/status/page.tsx",
+      "route": "/status"
+    }
+  ],
+  "selectedRoutes": [
+    {
+      "file": "src/app/(dashboard)/achievements/page.tsx",
+      "route": "/achievements"
+    },
+    {
+      "file": "src/app/(dashboard)/ambassadeur/page.tsx",
+      "route": "/ambassadeur"
+    },
+    {
+      "file": "src/app/(dashboard)/analytics/page.tsx",
+      "route": "/analytics"
+    },
+    {
+      "file": "src/app/(dashboard)/auto/memory/page.tsx",
+      "route": "/auto/memory"
+    },
+    {
+      "file": "src/app/(dashboard)/autopilot/page.tsx",
+      "route": "/autopilot"
+    },
+    {
+      "file": "src/app/(dashboard)/batch/page.tsx",
+      "route": "/batch"
+    },
+    {
+      "file": "src/app/(dashboard)/boutique/page.tsx",
+      "route": "/boutique"
+    },
+    {
+      "file": "src/app/(dashboard)/chat/[id]/page.tsx",
+      "route": "/chat/33333333-3333-4333-8333-333333333333"
+    },
+    {
+      "file": "src/app/(dashboard)/classement-points/page.tsx",
+      "route": "/classement-points"
+    },
+    {
+      "file": "src/app/(dashboard)/classement/engagement/page.tsx",
+      "route": "/classement/engagement"
+    },
+    {
+      "file": "src/app/(dashboard)/classement/page.tsx",
+      "route": "/classement"
+    },
+    {
+      "file": "src/app/(dashboard)/community/page.tsx",
+      "route": "/community"
+    },
+    {
+      "file": "src/app/(dashboard)/contest/page.tsx",
+      "route": "/contest"
+    },
+    {
+      "file": "src/app/(dashboard)/fiscal/page.tsx",
+      "route": "/fiscal"
+    },
+    {
+      "file": "src/app/(dashboard)/gratitude/page.tsx",
+      "route": "/gratitude"
+    },
+    {
+      "file": "src/app/(dashboard)/invoices/page.tsx",
+      "route": "/invoices"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/dharma/page.tsx",
+      "route": "/karma/dharma"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/page.tsx",
+      "route": "/karma"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/quete-rare/page.tsx",
+      "route": "/karma/quete-rare"
+    },
+    {
+      "file": "src/app/(dashboard)/lottery/page.tsx",
+      "route": "/lottery"
+    },
+    {
+      "file": "src/app/(dashboard)/ma-memoire/page.tsx",
+      "route": "/ma-memoire"
+    },
+    {
+      "file": "src/app/(dashboard)/notifications/page.tsx",
+      "route": "/notifications"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/coach/page.tsx",
+      "route": "/partenaire/coach"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/outils/page.tsx",
+      "route": "/partenaire/outils"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/page.tsx",
+      "route": "/partenaire"
+    },
+    {
+      "file": "src/app/(dashboard)/referral/page.tsx",
+      "route": "/referral"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/abonnement/page.tsx",
+      "route": "/settings/abonnement"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/notifications/page.tsx",
+      "route": "/settings/notifications"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/paiement/page.tsx",
+      "route": "/settings/paiement"
+    },
+    {
+      "file": "src/app/(dashboard)/storyboard/page.tsx",
+      "route": "/storyboard"
+    },
+    {
+      "file": "src/app/(dashboard)/styles/page.tsx",
+      "route": "/styles"
+    },
+    {
+      "file": "src/app/(dashboard)/templates/page.tsx",
+      "route": "/templates"
+    },
+    {
+      "file": "src/app/(dashboard)/voices/page.tsx",
+      "route": "/voices"
+    },
+    {
+      "file": "src/app/(dashboard)/wallet/page.tsx",
+      "route": "/wallet"
+    },
+    {
+      "file": "src/app/aide/page.tsx",
+      "route": "/aide"
+    },
+    {
+      "file": "src/app/changelog/page.tsx",
+      "route": "/changelog"
+    },
+    {
+      "file": "src/app/devenir-ambassadeur/page.tsx",
+      "route": "/devenir-ambassadeur"
+    },
+    {
+      "file": "src/app/ecosystem/page.tsx",
+      "route": "/ecosystem"
+    },
+    {
+      "file": "src/app/guide/page.tsx",
+      "route": "/guide"
+    },
+    {
+      "file": "src/app/help/page.tsx",
+      "route": "/help"
+    },
+    {
+      "file": "src/app/how-it-works/page.tsx",
+      "route": "/how-it-works"
+    },
+    {
+      "file": "src/app/legal/cgv/page.tsx",
+      "route": "/legal/cgv"
+    },
+    {
+      "file": "src/app/legal/cookies/page.tsx",
+      "route": "/legal/cookies"
+    },
+    {
+      "file": "src/app/legal/mentions/page.tsx",
+      "route": "/legal/mentions"
+    },
+    {
+      "file": "src/app/legal/page.tsx",
+      "route": "/legal"
+    },
+    {
+      "file": "src/app/legal/privacy/page.tsx",
+      "route": "/legal/privacy"
+    },
+    {
+      "file": "src/app/legal/terms/page.tsx",
+      "route": "/legal/terms"
+    },
+    {
+      "file": "src/app/partenariat/page.tsx",
+      "route": "/partenariat"
+    },
+    {
+      "file": "src/app/pricing/page.tsx",
+      "route": "/pricing"
+    },
+    {
+      "file": "src/app/scan/[code]/page.tsx",
+      "route": "/scan/33333333-3333-4333-8333-333333333333"
+    },
+    {
+      "file": "src/app/status/page.tsx",
+      "route": "/status"
+    }
+  ],
+  "results": [
+    {
+      "file": "src/app/(dashboard)/achievements/page.tsx",
+      "route": "/achievements",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 886,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Achievements"
+        ],
+        "textLength": 162,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_achievements-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/achievements/page.tsx",
+      "route": "/achievements",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 886,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Achievements"
+        ],
+        "textLength": 442,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_achievements-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/ambassadeur/page.tsx",
+      "route": "/ambassadeur",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 650,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Ton parcours d'Ambassadeur"
+        ],
+        "textLength": 1279,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_ambassadeur-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/ambassadeur/page.tsx",
+      "route": "/ambassadeur",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 650,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Ton parcours d'Ambassadeur"
+        ],
+        "textLength": 1559,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_ambassadeur-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/analytics/page.tsx",
+      "route": "/analytics",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 658,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Analytics"
+        ],
+        "textLength": 499,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_analytics-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/analytics/page.tsx",
+      "route": "/analytics",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 658,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Analytics"
+        ],
+        "textLength": 779,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_analytics-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/auto/memory/page.tsx",
+      "route": "/auto/memory",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 711,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Mode Autonome"
+        ],
+        "textLength": 455,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_auto_memory-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/auto/memory/page.tsx",
+      "route": "/auto/memory",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 711,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Mode Autonome"
+        ],
+        "textLength": 735,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_auto_memory-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/autopilot/page.tsx",
+      "route": "/autopilot",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 679,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Autopilot"
+        ],
+        "textLength": 259,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_autopilot-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/autopilot/page.tsx",
+      "route": "/autopilot",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 679,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Autopilot"
+        ],
+        "textLength": 539,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_autopilot-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/batch/page.tsx",
+      "route": "/batch",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 815,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Generation par lot"
+        ],
+        "textLength": 522,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_batch-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/batch/page.tsx",
+      "route": "/batch",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 815,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Generation par lot"
+        ],
+        "textLength": 802,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_batch-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/boutique/page.tsx",
+      "route": "/boutique",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 676,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Boutique"
+        ],
+        "textLength": 213,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_boutique-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/boutique/page.tsx",
+      "route": "/boutique",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 676,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Boutique"
+        ],
+        "textLength": 493,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_boutique-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/chat/[id]/page.tsx",
+      "route": "/chat/33333333-3333-4333-8333-333333333333",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1089,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Nouvelle conversation"
+        ],
+        "textLength": 294,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_chat_33333333-3333-4333-8333-333333333333-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/chat/[id]/page.tsx",
+      "route": "/chat/33333333-3333-4333-8333-333333333333",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1089,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Nouvelle conversation"
+        ],
+        "textLength": 574,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_chat_33333333-3333-4333-8333-333333333333-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/classement-points/page.tsx",
+      "route": "/classement-points",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 683,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Perturbation detectee"
+        ],
+        "textLength": 148,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_classement-points-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/classement-points/page.tsx",
+      "route": "/classement-points",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 683,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Perturbation detectee"
+        ],
+        "textLength": 148,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_classement-points-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/classement/engagement/page.tsx",
+      "route": "/classement/engagement",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 807,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Mon engagement"
+        ],
+        "textLength": 774,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_classement_engagement-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/classement/engagement/page.tsx",
+      "route": "/classement/engagement",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 807,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Mon engagement"
+        ],
+        "textLength": 1054,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_classement_engagement-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/classement/page.tsx",
+      "route": "/classement",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 816,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Classement Purama Impact"
+        ],
+        "textLength": 305,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_classement-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/classement/page.tsx",
+      "route": "/classement",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 816,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Classement Purama Impact"
+        ],
+        "textLength": 585,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_classement-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/community/page.tsx",
+      "route": "/community",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1129,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Communaute"
+        ],
+        "textLength": 322,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_community-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/community/page.tsx",
+      "route": "/community",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1129,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Communaute"
+        ],
+        "textLength": 602,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_community-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/contest/page.tsx",
+      "route": "/contest",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 928,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Concours"
+        ],
+        "textLength": 268,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_contest-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/contest/page.tsx",
+      "route": "/contest",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 928,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Concours"
+        ],
+        "textLength": 548,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_contest-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/fiscal/page.tsx",
+      "route": "/fiscal",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1648,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Ma fiscalité 2026"
+        ],
+        "textLength": 1413,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_fiscal-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/fiscal/page.tsx",
+      "route": "/fiscal",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1648,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Ma fiscalité 2026"
+        ],
+        "textLength": 1693,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_fiscal-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/gratitude/page.tsx",
+      "route": "/gratitude",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1098,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Journal de gratitude"
+        ],
+        "textLength": 303,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_gratitude-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/gratitude/page.tsx",
+      "route": "/gratitude",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1098,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Journal de gratitude"
+        ],
+        "textLength": 583,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_gratitude-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/invoices/page.tsx",
+      "route": "/invoices",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1003,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Factures"
+        ],
+        "textLength": 389,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_invoices-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/invoices/page.tsx",
+      "route": "/invoices",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1003,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Factures"
+        ],
+        "textLength": 669,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_invoices-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/dharma/page.tsx",
+      "route": "/karma/dharma",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1205,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Roue du Dharma"
+        ],
+        "textLength": 255,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_karma_dharma-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/dharma/page.tsx",
+      "route": "/karma/dharma",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1205,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Roue du Dharma"
+        ],
+        "textLength": 535,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_karma_dharma-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/page.tsx",
+      "route": "/karma",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 998,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "KARMA"
+        ],
+        "textLength": 900,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_karma-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/page.tsx",
+      "route": "/karma",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 998,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "KARMA"
+        ],
+        "textLength": 1180,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_karma-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/quete-rare/page.tsx",
+      "route": "/karma/quete-rare",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 855,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Quête Rare — 21 jours"
+        ],
+        "textLength": 519,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_karma_quete-rare-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/karma/quete-rare/page.tsx",
+      "route": "/karma/quete-rare",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 855,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Quête Rare — 21 jours"
+        ],
+        "textLength": 799,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_karma_quete-rare-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/lottery/page.tsx",
+      "route": "/lottery",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 907,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Tirage Mensuel"
+        ],
+        "textLength": 545,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_lottery-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/lottery/page.tsx",
+      "route": "/lottery",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 907,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Tirage Mensuel"
+        ],
+        "textLength": 825,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_lottery-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/ma-memoire/page.tsx",
+      "route": "/ma-memoire",
+      "width": 375,
+      "status": "FAIL",
+      "http": 200,
+      "navigationMs": 932,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Ma mémoire"
+        ],
+        "textLength": 768,
+        "applicationError": false
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "count": 1,
+          "nodes": [
+            {
+              "target": [
+                ".bg-primary"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.95 (foreground color: #ffffff, background color: #a855f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+              "html": "<button type=\"button\" class=\"min-h-11 rounded-pill bg-primary px-5 text-sm font-medium text-white disabled:opacity-60\">Exporter mes données (JSON)</button>"
+            }
+          ]
+        }
+      ],
+      "capture": "_ma-memoire-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/ma-memoire/page.tsx",
+      "route": "/ma-memoire",
+      "width": 1440,
+      "status": "FAIL",
+      "http": 200,
+      "navigationMs": 932,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Ma mémoire"
+        ],
+        "textLength": 1048,
+        "applicationError": false
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "count": 1,
+          "nodes": [
+            {
+              "target": [
+                ".bg-primary"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.95 (foreground color: #ffffff, background color: #a855f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+              "html": "<button type=\"button\" class=\"min-h-11 rounded-pill bg-primary px-5 text-sm font-medium text-white disabled:opacity-60\">Exporter mes données (JSON)</button>"
+            }
+          ]
+        }
+      ],
+      "capture": "_ma-memoire-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/notifications/page.tsx",
+      "route": "/notifications",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1309,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Notifications"
+        ],
+        "textLength": 266,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_notifications-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/notifications/page.tsx",
+      "route": "/notifications",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1309,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Notifications"
+        ],
+        "textLength": 546,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_notifications-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/coach/page.tsx",
+      "route": "/partenaire/coach",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1196,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Coach Partenaire"
+        ],
+        "textLength": 425,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_partenaire_coach-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/coach/page.tsx",
+      "route": "/partenaire/coach",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1196,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Coach Partenaire"
+        ],
+        "textLength": 705,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_partenaire_coach-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/outils/page.tsx",
+      "route": "/partenaire/outils",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 971,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Outils Partenaire"
+        ],
+        "textLength": 612,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_partenaire_outils-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/outils/page.tsx",
+      "route": "/partenaire/outils",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 971,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Outils Partenaire"
+        ],
+        "textLength": 892,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_partenaire_outils-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/page.tsx",
+      "route": "/partenaire",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1457,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Dashboard Partenaire"
+        ],
+        "textLength": 690,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_partenaire-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/partenaire/page.tsx",
+      "route": "/partenaire",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1457,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Dashboard Partenaire"
+        ],
+        "textLength": 970,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_partenaire-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/referral/page.tsx",
+      "route": "/referral",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1012,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Parrainage & Wallet"
+        ],
+        "textLength": 1020,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_referral-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/referral/page.tsx",
+      "route": "/referral",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1012,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Parrainage & Wallet"
+        ],
+        "textLength": 1300,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_referral-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/abonnement/page.tsx",
+      "route": "/settings/abonnement",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1057,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Mon abonnement"
+        ],
+        "textLength": 452,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_settings_abonnement-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/abonnement/page.tsx",
+      "route": "/settings/abonnement",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1057,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Mon abonnement"
+        ],
+        "textLength": 732,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_settings_abonnement-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/notifications/page.tsx",
+      "route": "/settings/notifications",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 874,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Notifications"
+        ],
+        "textLength": 358,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_settings_notifications-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/notifications/page.tsx",
+      "route": "/settings/notifications",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 874,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Notifications"
+        ],
+        "textLength": 638,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_settings_notifications-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/paiement/page.tsx",
+      "route": "/settings/paiement",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1049,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Paiements & Retraits"
+        ],
+        "textLength": 389,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_settings_paiement-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/settings/paiement/page.tsx",
+      "route": "/settings/paiement",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1049,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Paiements & Retraits"
+        ],
+        "textLength": 669,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_settings_paiement-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/storyboard/page.tsx",
+      "route": "/storyboard",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1256,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Storyboard IA"
+        ],
+        "textLength": 322,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_storyboard-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/storyboard/page.tsx",
+      "route": "/storyboard",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1256,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Storyboard IA"
+        ],
+        "textLength": 602,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_storyboard-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/styles/page.tsx",
+      "route": "/styles",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 863,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Styles IA"
+        ],
+        "textLength": 1352,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_styles-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/styles/page.tsx",
+      "route": "/styles",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 863,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Styles IA"
+        ],
+        "textLength": 1632,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_styles-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/templates/page.tsx",
+      "route": "/templates",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1282,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Bibliotheque de templates"
+        ],
+        "textLength": 4897,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_templates-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/templates/page.tsx",
+      "route": "/templates",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1282,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Bibliotheque de templates"
+        ],
+        "textLength": 5177,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_templates-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/voices/page.tsx",
+      "route": "/voices",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1120,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Voix"
+        ],
+        "textLength": 284,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_voices-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/voices/page.tsx",
+      "route": "/voices",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1120,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Voix"
+        ],
+        "textLength": 564,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_voices-1440.png"
+    },
+    {
+      "file": "src/app/(dashboard)/wallet/page.tsx",
+      "route": "/wallet",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 851,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Wallet"
+        ],
+        "textLength": 395,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_wallet-375.png"
+    },
+    {
+      "file": "src/app/(dashboard)/wallet/page.tsx",
+      "route": "/wallet",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 851,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Wallet"
+        ],
+        "textLength": 675,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_wallet-1440.png"
+    },
+    {
+      "file": "src/app/aide/page.tsx",
+      "route": "/aide",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 780,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Centre d'aide"
+        ],
+        "textLength": 560,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_aide-375.png"
+    },
+    {
+      "file": "src/app/aide/page.tsx",
+      "route": "/aide",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 780,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Centre d'aide"
+        ],
+        "textLength": 560,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_aide-1440.png"
+    },
+    {
+      "file": "src/app/changelog/page.tsx",
+      "route": "/changelog",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 972,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Quoi de neuf ?"
+        ],
+        "textLength": 946,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_changelog-375.png"
+    },
+    {
+      "file": "src/app/changelog/page.tsx",
+      "route": "/changelog",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 972,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Quoi de neuf ?"
+        ],
+        "textLength": 946,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_changelog-1440.png"
+    },
+    {
+      "file": "src/app/devenir-ambassadeur/page.tsx",
+      "route": "/devenir-ambassadeur",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1469,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Gagne à vie en partageant SUTRA"
+        ],
+        "textLength": 866,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_devenir-ambassadeur-375.png"
+    },
+    {
+      "file": "src/app/devenir-ambassadeur/page.tsx",
+      "route": "/devenir-ambassadeur",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1469,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Gagne à vie en partageant SUTRA"
+        ],
+        "textLength": 866,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_devenir-ambassadeur-1440.png"
+    },
+    {
+      "file": "src/app/ecosystem/page.tsx",
+      "route": "/ecosystem",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1048,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "L'univers Purama"
+        ],
+        "textLength": 782,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_ecosystem-375.png"
+    },
+    {
+      "file": "src/app/ecosystem/page.tsx",
+      "route": "/ecosystem",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1048,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "L'univers Purama"
+        ],
+        "textLength": 782,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_ecosystem-1440.png"
+    },
+    {
+      "file": "src/app/guide/page.tsx",
+      "route": "/guide",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 837,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Tout savoir sur SUTRA"
+        ],
+        "textLength": 3163,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_guide-375.png"
+    },
+    {
+      "file": "src/app/guide/page.tsx",
+      "route": "/guide",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 837,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Tout savoir sur SUTRA"
+        ],
+        "textLength": 3163,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_guide-1440.png"
+    },
+    {
+      "file": "src/app/help/page.tsx",
+      "route": "/help",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 868,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Comment pouvons-nous t'aider ?"
+        ],
+        "textLength": 5554,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_help-375.png"
+    },
+    {
+      "file": "src/app/help/page.tsx",
+      "route": "/help",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 868,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Comment pouvons-nous t'aider ?"
+        ],
+        "textLength": 5554,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_help-1440.png"
+    },
+    {
+      "file": "src/app/how-it-works/page.tsx",
+      "route": "/how-it-works",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 957,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Comment ca marche"
+        ],
+        "textLength": 981,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_how-it-works-375.png"
+    },
+    {
+      "file": "src/app/how-it-works/page.tsx",
+      "route": "/how-it-works",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 957,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Comment ca marche"
+        ],
+        "textLength": 981,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_how-it-works-1440.png"
+    },
+    {
+      "file": "src/app/legal/cgv/page.tsx",
+      "route": "/legal/cgv",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 716,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Conditions Generales de Vente"
+        ],
+        "textLength": 3913,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_cgv-375.png"
+    },
+    {
+      "file": "src/app/legal/cgv/page.tsx",
+      "route": "/legal/cgv",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 716,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Conditions Generales de Vente"
+        ],
+        "textLength": 3913,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_cgv-1440.png"
+    },
+    {
+      "file": "src/app/legal/cookies/page.tsx",
+      "route": "/legal/cookies",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 922,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Politique de cookies"
+        ],
+        "textLength": 2566,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_cookies-375.png"
+    },
+    {
+      "file": "src/app/legal/cookies/page.tsx",
+      "route": "/legal/cookies",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 922,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Politique de cookies"
+        ],
+        "textLength": 2566,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_cookies-1440.png"
+    },
+    {
+      "file": "src/app/legal/mentions/page.tsx",
+      "route": "/legal/mentions",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 924,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Mentions legales"
+        ],
+        "textLength": 1905,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_mentions-375.png"
+    },
+    {
+      "file": "src/app/legal/mentions/page.tsx",
+      "route": "/legal/mentions",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 924,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Mentions legales"
+        ],
+        "textLength": 1905,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_mentions-1440.png"
+    },
+    {
+      "file": "src/app/legal/page.tsx",
+      "route": "/legal",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 724,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Informations legales"
+        ],
+        "textLength": 1062,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal-375.png"
+    },
+    {
+      "file": "src/app/legal/page.tsx",
+      "route": "/legal",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 724,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Informations legales"
+        ],
+        "textLength": 1062,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal-1440.png"
+    },
+    {
+      "file": "src/app/legal/privacy/page.tsx",
+      "route": "/legal/privacy",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1118,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Politique de confidentialite"
+        ],
+        "textLength": 4619,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_privacy-375.png"
+    },
+    {
+      "file": "src/app/legal/privacy/page.tsx",
+      "route": "/legal/privacy",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1118,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Politique de confidentialite"
+        ],
+        "textLength": 4619,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_privacy-1440.png"
+    },
+    {
+      "file": "src/app/legal/terms/page.tsx",
+      "route": "/legal/terms",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 987,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Conditions Generales d'Utilisation"
+        ],
+        "textLength": 4888,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_terms-375.png"
+    },
+    {
+      "file": "src/app/legal/terms/page.tsx",
+      "route": "/legal/terms",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 987,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Conditions Generales d'Utilisation"
+        ],
+        "textLength": 4888,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_legal_terms-1440.png"
+    },
+    {
+      "file": "src/app/partenariat/page.tsx",
+      "route": "/partenariat",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1185,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Deviens partenaire SUTRA"
+        ],
+        "textLength": 2497,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_partenariat-375.png"
+    },
+    {
+      "file": "src/app/partenariat/page.tsx",
+      "route": "/partenariat",
+      "width": 1440,
+      "status": "FAIL",
+      "http": 200,
+      "navigationMs": 1185,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Deviens partenaire SUTRA"
+        ],
+        "textLength": 2497,
+        "applicationError": false
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "count": 2,
+          "nodes": [
+            {
+              "target": [
+                "a[data-testid=\"channel-media\"] > .group.hover\\:border-white\\/\\[0\\.12\\].h-full > h3"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 1.41 (foreground color: #2c2c30, background color: #0b0b10, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 4.5:1",
+              "html": "<h3 class=\"text-lg font-semibold text-white mb-2 group-hover:text-violet-400 transition-colors\">Média</h3>"
+            },
+            {
+              "target": [
+                "a[data-testid=\"channel-media\"] > .group.hover\\:border-white\\/\\[0\\.12\\].h-full > .leading-relaxed.text-white\\/50.text-sm"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 1.14 (foreground color: #1b1b20, background color: #0b0b10, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+              "html": "<p class=\"text-sm text-white/50 leading-relaxed\">Journaliste, podcasteur ou créateur de contenu éditorial ? Parle de SUTRA et touche des commissions sur chaque inscription.</p>"
+            }
+          ]
+        }
+      ],
+      "capture": "_partenariat-1440.png"
+    },
+    {
+      "file": "src/app/pricing/page.tsx",
+      "route": "/pricing",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1097,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [],
+        "textLength": 2253,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_pricing-375.png"
+    },
+    {
+      "file": "src/app/pricing/page.tsx",
+      "route": "/pricing",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1097,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [],
+        "textLength": 2253,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_pricing-1440.png"
+    },
+    {
+      "file": "src/app/scan/[code]/page.tsx",
+      "route": "/scan/33333333-3333-4333-8333-333333333333",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1193,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [],
+        "textLength": 83,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_scan_33333333-3333-4333-8333-333333333333-375.png"
+    },
+    {
+      "file": "src/app/scan/[code]/page.tsx",
+      "route": "/scan/33333333-3333-4333-8333-333333333333",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1193,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [],
+        "textLength": 83,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_scan_33333333-3333-4333-8333-333333333333-1440.png"
+    },
+    {
+      "file": "src/app/status/page.tsx",
+      "route": "/status",
+      "width": 375,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1100,
+      "layout": {
+        "viewport": 375,
+        "scroll": 375,
+        "headings": [
+          "Statut des services"
+        ],
+        "textLength": 282,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_status-375.png"
+    },
+    {
+      "file": "src/app/status/page.tsx",
+      "route": "/status",
+      "width": 1440,
+      "status": "PASS",
+      "http": 200,
+      "navigationMs": 1100,
+      "layout": {
+        "viewport": 1440,
+        "scroll": 1440,
+        "headings": [
+          "Statut des services"
+        ],
+        "textLength": 282,
+        "applicationError": false
+      },
+      "violations": [],
+      "capture": "_status-1440.png"
+    }
+  ],
+  "errors": [],
+  "blocked": [
+    {
+      "origin": "https://connect-js.stripe.com",
+      "path": "/v1.0/connect.js"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/cinematic%20film%20scene%20dramatic%20lighting%20golden%20hour"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/anime%20style%20vibrant%20colorful%20scene%20japanese%20animation"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/pixel%20art%20retro%208bit%20game%20scene%20colorful"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/watercolor%20painting%20soft%20beautiful%20artistic"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/neon%20lights%20cyberpunk%20city%20night%20glowing%20purple"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/vintage%201970s%20film%20photography%20warm%20faded%20colors"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/futuristic%20sci-fi%20technology%20holographic%20blue"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/still%20life%20studio%20photography%20artistic%20composition"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/street%20art%20graffiti%20colorful%20urban%20wall%20mural"
+    },
+    {
+      "origin": "https://image.pollinations.ai",
+      "path": "/prompt/synthwave%20retrowave%2080s%20neon%20sunset%20purple%20grid"
+    }
+  ],
+  "writes": [],
+  "apiReads": [
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/achievements",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/referral",
+    "/api/referral",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/auto/memory",
+    "/api/auto/memory",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/boutique",
+    "/api/points",
+    "/api/daily-gift",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/purama-score",
+    "/api/purama-score",
+    "/api/social-feed",
+    "/api/purama-score",
+    "/api/purama-score",
+    "/api/social-feed",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/community/wall",
+    "/api/community/circles",
+    "/api/community/buddy",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/gratitude",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/karma/games/dharma",
+    "/api/karma/games/dharma",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/karma/seeds",
+    "/api/karma/seeds",
+    "/api/karma/seeds",
+    "/api/karma/seeds",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/karma/games/quete",
+    "/api/karma/games/quete",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/lottery",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/partner/stats",
+    "/api/partner/referrals",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/fiscal/status",
+    "/api/fiscal/status",
+    "/api/wallet",
+    "/api/magic-moment/check",
+    "/api/magic-moment/check",
+    "/api/wallet",
+    "/api/wallet",
+    "/api/flywheel",
+    "/api/flywheel",
+    "/api/partner/scan/33333333-3333-4333-8333-333333333333",
+    "/api/status",
+    "/api/status"
+  ],
+  "interactions": [
+    {
+      "route": "/batch",
+      "width": 375,
+      "name": "Four named selects usable by keyboard without submitting",
+      "status": "PASS"
+    },
+    {
+      "route": "/batch",
+      "width": 1440,
+      "name": "Four named selects usable by keyboard without submitting",
+      "status": "PASS"
+    },
+    {
+      "route": "/chat/33333333-3333-4333-8333-333333333333",
+      "width": 375,
+      "name": "Named message region and send control",
+      "status": "PASS"
+    },
+    {
+      "route": "/chat/33333333-3333-4333-8333-333333333333",
+      "width": 1440,
+      "name": "Named message region and send control",
+      "status": "PASS"
+    },
+    {
+      "route": "/partenaire/outils",
+      "width": 375,
+      "name": "Missing partner code is unavailable, not an invalid copy or stuck loading",
+      "status": "PASS"
+    },
+    {
+      "route": "/partenaire/outils",
+      "width": 1440,
+      "name": "Missing partner code is unavailable, not an invalid copy or stuck loading",
+      "status": "PASS"
+    },
+    {
+      "route": "/partenaire",
+      "width": 375,
+      "name": "Missing partner code is unavailable, not an invalid copy or stuck loading",
+      "status": "PASS"
+    },
+    {
+      "route": "/partenaire",
+      "width": 1440,
+      "name": "Missing partner code is unavailable, not an invalid copy or stuck loading",
+      "status": "PASS"
+    },
+    {
+      "route": "/settings/notifications",
+      "width": 375,
+      "name": "Unavailable persistence stated; no false save, no settings request",
+      "status": "PASS"
+    },
+    {
+      "route": "/settings/notifications",
+      "width": 1440,
+      "name": "Unavailable persistence stated; no false save, no settings request",
+      "status": "PASS"
+    },
+    {
+      "route": "/legal/cookies",
+      "width": 375,
+      "name": "Cookie tables keyboard focus",
+      "status": "PASS"
+    },
+    {
+      "route": "/legal/cookies",
+      "width": 1440,
+      "name": "Cookie tables keyboard focus",
+      "status": "PASS"
+    },
+    {
+      "route": "/partenariat",
+      "width": 375,
+      "name": "Named referrals slider changes by keyboard",
+      "status": "PASS"
+    },
+    {
+      "route": "/partenariat",
+      "width": 1440,
+      "name": "Named referrals slider changes by keyboard",
+      "status": "PASS"
+    }
+  ],
+  "realConnections": 0,
+  "realPublications": 0
+}

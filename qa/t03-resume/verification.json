@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "dateUTC": "2026-10-12T19:25:08.284850+00:00",
+  "status": "LOCAL_DELTA_VERIFIED_RELEASE_NOT_CERTIFIED",
+  "base": "589732cb49959c1a576a3ba381b310cd594600ac",
+  "codeCommit": "8103fff5f86fb3cfc60e2ed921f24b41897f0ded",
+  "codeTree": "bd0d0a25cfd750cd212da13c28009e006e23b841",
+  "branch": "codex/sutra-t03-pipeline-resume-20261012",
+  "worktree": "/Users/matissdornier/purama-worktrees/sutra-t03-pipeline-resume-20261012",
+  "sourceHashes": {
+    "migrations/v11_pipeline_checkpoints.sql": "704bcad695215f7892aea0cc3ae34591864a17353100417ae2a8f9ff42e9b6fc",
+    "qa/t03-resume/run-gate.mjs": "39e062288e4f115dab041b8ba4c63f01f368175664f3347fdd2ac7600a78860c",
+    "qa/t03-resume/run-postgres.mjs": "37fa93564f0b0805602a10af5745f5a1fb44c9680c40315d2b17a56b2b043442",
+    "scripts/test-pipeline-interruptions.mts": "e0fa9e9a741b96acad7ee014ceb429f42206d94c4896d3a21f767a4f6c5c21fe",
+    "scripts/test-pipeline-postgres.mts": "1301ec73892826efe522a38312ca65584f6a180379f0c7a28b55577625759c81",
+    "src/lib/pipeline-state.ts": "18f7e2b9cff27ffc0edb9a5c84c9274104597061a0e52f667ce42cf01bdc08f1",
+    "vercel.json": "ac21f30b9181202fc99c6878b01e1cba81508e3aab56ff7b64e33823e91d2fc4"
+  },
+  "contextHashes": {
+    "package.json": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e",
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+    "scripts/run-ci.mjs": "afa82c7ccda9006cfc203ed61fac085246d8402e435fdb41b3812f215458aed7",
+    "qa/t08/offline.cjs": "6a63e70d462d341048064acf952fc8db0db22efeba82b9f7390971cc45481b06",
+    "scripts/test-ui-isolated.mjs": "366fb9b5c3f3e13341d6ddcb7a4be748c0e14492139862d5893fe70b2e0a1955",
+    "scripts/test-security-rls.mjs": "32836c4764793b81cda87d6409bfaf2feef63497ecc828c26c09461bd78ea845",
+    "scripts/test-migration-local.mjs": "067936b15faf3f944ec9ab12b908259ffee1dc123e841668fc2aa7c707554c22",
+    "src/lib/video-queue.ts": "9cd69086881a2fa3ab314bfc6738dc5206c823b2ae3f3be4610635c94e9c8521",
+    "src/lib/video-worker.ts": "5acbc74eaf6e1b9ec48d175c3396b0421c5b7ec1b45581e1e294cd075a51ba26",
+    "src/lib/video-pipeline.ts": "1e422fce3e46a2d7a9cdccc15fe8c5038c1505c5b4796d3b12ebd7f05305cdaf",
+    "src/lib/production-pipeline.ts": "b86f15d17f4cee052511e9d33664a06d34d769088c4855a77da537d01b7905e5",
+    "src/lib/auto-pipeline.ts": "6748885d51b08820ba7edf427659b472e95051784be65fb98515c51eded9a7e5",
+    "src/lib/export-pipeline.ts": "42155179f8b185600751d9c0a7d0378b778ce36d311c7c4d0b8f292563e59d78"
+  },
+  "documentationHashes": {
+    "BATON.md": "f24a21d46d25ea24768ab028276935117dc17830ab7b83928bccd42f9cda6e8e",
+    "HANDOFF-SUTRA-T03-20261012.md": "ac2335759d6bca4147887ece414d4f5f4276b6c814f768d6f35a69b4ca7d66df",
+    "LOCKS-T03.md": "494ce101cc1aff60b93c2d7d116a280ee6f8e82d14e76db69ca4a4aebca65353",
+    "task_plan.md": "3154edcde2de62deda6221ebd7a28d1dafab90a2702893bfe0c1a028846a4e61",
+    "qa/t03-resume/README.md": "3b6716d1fa93cb723597a635bc6a308a0acbe7147c0d034be26634ecc3dc8c9d"
+  },
+  "evidenceHashes": {
+    "qa/t03-resume/evidence/baseline-run.txt": "36846a56044d5b649d4dddefd87b57ceee309f43ca1e79e040d72533b051122c",
+    "qa/t03-resume/evidence/browser-details.json": "2d3f9b763581fae16a4c3b26d28cf3ef2aae73cb609679f37f5d2ceabc966e47",
+    "qa/t03-resume/evidence/browser-result.json": "a6a74be0fdcd6f79a962cecf20c99c7b40b9d3d61602fe3191d1b47dc335a548",
+    "qa/t03-resume/evidence/browser.txt": "e967afde996593b55b860dba5238ea88c81af5c3d47c62d3c3c219426cdcf3fe",
+    "qa/t03-resume/evidence/build-before-font-cache.txt": "5e8d22c9e8206dc4dc0cd9107e431cd4267785eae8e3123cec66f2f03b498c6a",
+    "qa/t03-resume/evidence/build-result.json": "f547f58020a47f44cdbf1213fae68315c672a5dee3d8393f0d9a5fcae1440af2",
+    "qa/t03-resume/evidence/build.txt": "cc5d972720bc30ff5237ac35d3fe28aef194f40451ac054db82ed234ac9ed0ab",
+    "qa/t03-resume/evidence/ci-blocker.txt": "53e0fc138da3df14170d8d2629e977df8f8db7a0dfe36a7f461ae6ebb6efc58f",
+    "qa/t03-resume/evidence/compositor-before-ffmpeg.txt": "2ae4408e205e3a97761366c497711cf99919eba57faefed2b588097fa42fd9fb",
+    "qa/t03-resume/evidence/contracts-composition.txt": "7daf80913b4d370603183c0a00a86e38e655e8a9695dbc2dfbc9ec40f9bc62a4",
+    "qa/t03-resume/evidence/contracts-contracts.txt": "ee2380fb838f01f0ed74b101881c249c92b28ea08abcc6ac92bc7df9cdd73444",
+    "qa/t03-resume/evidence/contracts-final-run.txt": "bb6de5b08d42664d68709f714a2ffe573866ef942df2f414f1064eb04f68dc39",
+    "qa/t03-resume/evidence/contracts-publication.txt": "fc1504668164c9b90535dac00ab92886040fe53ad9102d69a053da07503b3057",
+    "qa/t03-resume/evidence/contracts-results.json": "7cf7b601f30fcc1335dc62e4a38d3b03483805dc3937293aa584329d9fee8a8e",
+    "qa/t03-resume/evidence/contracts-schedule.txt": "94c10993da14d82a81a96b15e9c8c8aceefd201d6371ea9fb1ae2693c26c16b7",
+    "qa/t03-resume/evidence/deploy-mocks.txt": "5684d13977a1f6829bcd5f644c72b35ab6f8d42951d571a5f230c4cc35a359f3",
+    "qa/t03-resume/evidence/detect-changes-docs.txt": "e28c00135332d8c5fa9de24a8732d4f06899e9e2f35707917bfd5ba9519059e4",
+    "qa/t03-resume/evidence/detect-changes-staged.txt": "3d942166fe52cc81df924cab583d76840d6b9e0dd0977081784ac3f82b2b48e7",
+    "qa/t03-resume/evidence/detect-changes-working.json": "b55c1a0deb4905d2a93088d1a7c85dc374bebeabfa7df140240ff5e814572e00",
+    "qa/t03-resume/evidence/font-cache.json": "fecdd04750b59409133c7ec8c3ee7ac65f0455413722c215e943f18c39fcdbe8",
+    "qa/t03-resume/evidence/impact-event.json": "7bdc1240062b12af1275e3e17a76c1bbe3c7067c7dfc0ecc1fa4250daafb73c5",
+    "qa/t03-resume/evidence/impact-final-media.json": "f52fd7b95196a26878aa6413121c62c1cd68defeb05c408b3f66e7d197990c98",
+    "qa/t03-resume/evidence/impact-finish.json": "591e8d9a45e4e23a237540bb38f2172879af5713b6bf73c44a0e4c6e67a40b35",
+    "qa/t03-resume/evidence/impact-persistence.json": "6bad286c8717c3e9cef6537b210b6134b92a86dc2dffae45f070c7c7c7bf6bc5",
+    "qa/t03-resume/evidence/index-final.txt": "2f429ce806a85e0f2e003b6427a712fcf6e5d8ea0fa49dc1296b7f5143440570",
+    "qa/t03-resume/evidence/index.txt": "f3fe11a9a92c190ff05e487340eb46de40019d182ea724521c66eab977363da9",
+    "qa/t03-resume/evidence/integration-ci.json": "2e29feb45b85c15b359563ad52c5156f7962cee5c5ab1d8e3b29fe63244195db",
+    "qa/t03-resume/evidence/interruptions-before-fix.txt": "f2111712c267915cd67b71682670340c2b8cc4bed122b08d4ff847458bdefdda",
+    "qa/t03-resume/evidence/interruptions.txt": "d74adc0c3b45d7cdd9563c23c9f82c203e8dcf5ceb2ed85ff4e94c660cb0f15b",
+    "qa/t03-resume/evidence/legacy-result.json": "b24c6dfcd5d3ec5d72ff8de3ff8a52dc72c9297ba71c85375a5b7c2f68e38b86",
+    "qa/t03-resume/evidence/legacy-summary.json": "41fe29a7d5f6bfebb7a8ed4b6983449dc9b09a1421b5b1ad1d4ecd06bbec6b6a",
+    "qa/t03-resume/evidence/legacy.txt": "a5e9ba9fc8d99f5533646b43d436e57dae9f3c24ad26f073e60ec5eaad9cba52",
+    "qa/t03-resume/evidence/lint-delta.txt": "cc382ef4a960abb3babebb4ab0dabbecb61b20180853dd4fa8e5cf4ddaf9e835",
+    "qa/t03-resume/evidence/lint-final.txt": "0a48617e9587843304a9d6af2c031e3b6ef7fbf42faf972af181b182fa41a20e",
+    "qa/t03-resume/evidence/media-compositor.txt": "8528957b5232dd6584d1573ab8379bac86a0c8f8cf49160d523f0c830af53748",
+    "qa/t03-resume/evidence/media-local-engine.txt": "c9e09dc1ce8cc4a3f0361f90dedcfbd342cfa2922be8c0a3aa2769726e5de62e",
+    "qa/t03-resume/evidence/media-results.json": "66069f72a5128a385e3a3c38dfe18477cde30121b46f0d9843bd438e3feddc12",
+    "qa/t03-resume/evidence/migration-postgres.txt": "f5c7c4cd9bb06d635ddf560bc66102c985d8ea8bba9834bb63a8a265abab1794",
+    "qa/t03-resume/evidence/npm-audit.json": "d0c76d9c7d27c7e55724ed6b10443a43c058c0f71da112efb75acde5f1bb7105",
+    "qa/t03-resume/evidence/pipeline-before-fix.txt": "9169019ec581310f214b50c8049d812a264102c3077725709f1adf392cfea349",
+    "qa/t03-resume/evidence/pipeline-postgres.txt": "e62fcca80eafd7de108784760be52195a599b9eb111c2a2ea0cf4586ee3a06e8",
+    "qa/t03-resume/evidence/postgres-final-run.txt": "6cbf4df47b7a71b5ce74fed9d47259648e126c19fd38fcdf0f3ed2317ea9bfa7",
+    "qa/t03-resume/evidence/postgres-run.txt": "accf79725679e2aa4d34cb5818c715a341bdc57c8254fac9f590968547f587f3",
+    "qa/t03-resume/evidence/quality-build.txt": "5e8d22c9e8206dc4dc0cd9107e431cd4267785eae8e3123cec66f2f03b498c6a",
+    "qa/t03-resume/evidence/quality-lint.txt": "a128d03318f5d4aa717d0cae0ff9f2641ef5a9360599d2040d455dc25994e2f3",
+    "qa/t03-resume/evidence/quality-results.json": "04e6b42cd1e2cd3bd12023c53ba3b1779ccbaa61072aa442e61550bd673fd4e0",
+    "qa/t03-resume/evidence/quality-typecheck.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "qa/t03-resume/evidence/runtime-versions.json": "2f35c6d26d8ed4925163afe1d148b88c8e7c9bba99c1089ffc6de35ab7b718f5",
+    "qa/t03-resume/evidence/security-rls.txt": "9575cbb200cfb22bdada03745db9e149063d8b4f36b65d3bb8bf590b094f57c0",
+    "qa/t03-resume/evidence/typecheck-final.txt": "cc382ef4a960abb3babebb4ab0dabbecb61b20180853dd4fa8e5cf4ddaf9e835"
+  },
+  "allDeliveryFiles": [
+    "BATON.md",
+    "HANDOFF-SUTRA-T03-20261012.md",
+    "LOCKS-T03.md",
+    "migrations/v11_pipeline_checkpoints.sql",
+    "qa/t03-resume/README.md",
+    "qa/t03-resume/evidence/baseline-run.txt",
+    "qa/t03-resume/evidence/browser-details.json",
+    "qa/t03-resume/evidence/browser-result.json",
+    "qa/t03-resume/evidence/browser.txt",
+    "qa/t03-resume/evidence/build-before-font-cache.txt",
+    "qa/t03-resume/evidence/build-result.json",
+    "qa/t03-resume/evidence/build.txt",
+    "qa/t03-resume/evidence/ci-blocker.txt",
+    "qa/t03-resume/evidence/compositor-before-ffmpeg.txt",
+    "qa/t03-resume/evidence/contracts-composition.txt",
+    "qa/t03-resume/evidence/contracts-contracts.txt",
+    "qa/t03-resume/evidence/contracts-final-run.txt",
+    "qa/t03-resume/evidence/contracts-publication.txt",
+    "qa/t03-resume/evidence/contracts-results.json",
+    "qa/t03-resume/evidence/contracts-schedule.txt",
+    "qa/t03-resume/evidence/deploy-mocks.txt",
+    "qa/t03-resume/evidence/detect-changes-docs.txt",
+    "qa/t03-resume/evidence/detect-changes-staged.txt",
+    "qa/t03-resume/evidence/detect-changes-working.json",
+    "qa/t03-resume/evidence/font-cache.json",
+    "qa/t03-resume/evidence/impact-event.json",
+    "qa/t03-resume/evidence/impact-final-media.json",
+    "qa/t03-resume/evidence/impact-finish.json",
+    "qa/t03-resume/evidence/impact-persistence.json",
+    "qa/t03-resume/evidence/index-final.txt",
+    "qa/t03-resume/evidence/index.txt",
+    "qa/t03-resume/evidence/integration-ci.json",
+    "qa/t03-resume/evidence/interruptions-before-fix.txt",
+    "qa/t03-resume/evidence/interruptions.txt",
+    "qa/t03-resume/evidence/legacy-result.json",
+    "qa/t03-resume/evidence/legacy-summary.json",
+    "qa/t03-resume/evidence/legacy.txt",
+    "qa/t03-resume/evidence/lint-delta.txt",
+    "qa/t03-resume/evidence/lint-final.txt",
+    "qa/t03-resume/evidence/media-compositor.txt",
+    "qa/t03-resume/evidence/media-local-engine.txt",
+    "qa/t03-resume/evidence/media-results.json",
+    "qa/t03-resume/evidence/migration-postgres.txt",
+    "qa/t03-resume/evidence/npm-audit.json",
+    "qa/t03-resume/evidence/pipeline-before-fix.txt",
+    "qa/t03-resume/evidence/pipeline-postgres.txt",
+    "qa/t03-resume/evidence/postgres-final-run.txt",
+    "qa/t03-resume/evidence/postgres-run.txt",
+    "qa/t03-resume/evidence/quality-build.txt",
+    "qa/t03-resume/evidence/quality-lint.txt",
+    "qa/t03-resume/evidence/quality-results.json",
+    "qa/t03-resume/evidence/quality-typecheck.txt",
+    "qa/t03-resume/evidence/runtime-versions.json",
+    "qa/t03-resume/evidence/security-rls.txt",
+    "qa/t03-resume/evidence/typecheck-final.txt",
+    "qa/t03-resume/run-gate.mjs",
+    "qa/t03-resume/run-postgres.mjs",
+    "qa/t03-resume/verification.json",
+    "scripts/test-pipeline-interruptions.mts",
+    "scripts/test-pipeline-postgres.mts",
+    "src/lib/pipeline-state.ts",
+    "task_plan.md",
+    "vercel.json"
+  ],
+  "environment": {
+    "versions": [
+      "ffmpeg version 6.0 Copyright (c) 2000-2023 the FFmpeg developers",
+      "postgres (PostgreSQL) 18.4 (Homebrew)",
+      "Python 3.14.7"
+    ],
+    "node": "24.21.0",
+    "browser": "145.0.7632.6",
+    "offlinePreload": "qa/t08/offline.cjs",
+    "env": "synthetic allowlist; no provider credentials"
+  },
+  "gates": {
+    "contracts": {
+      "pass": 428,
+      "skip": 7,
+      "fail": 0,
+      "includesInterruptionTests": 17,
+      "command": "npm exec --offline --package=node@24 -- node scripts/run-ci.mjs contracts",
+      "results": "contracts-results.json"
+    },
+    "scheduleCompositionPublication": {
+      "status": "PASS",
+      "results": [
+        "contracts-schedule.txt",
+        "contracts-composition.txt",
+        "contracts-publication.txt"
+      ]
+    },
+    "postgres": {
+      "v10": 13,
+      "v11": 12,
+      "rls": 49,
+      "fail": 0,
+      "remote": false,
+      "commands": [
+        "node qa/t03-resume/run-postgres.mjs --full",
+        "node qa/t03-resume/run-postgres.mjs (v11 after final changes)",
+        "node scripts/test-security-rls.mjs (sanitized environment)"
+      ]
+    },
+    "media": {
+      "pass": 33,
+      "fail": 0,
+      "results": "media-results.json",
+      "fixture": "real FFmpeg 6.0, synthetic inputs"
+    },
+    "browser": {
+      "checks": 203,
+      "axeAudits": 155,
+      "violations": 0,
+      "browserErrors": 0,
+      "results": "browser-result.json",
+      "scope": "unchanged UI and mocked API paths; last duration/SQL-type guard validated by contracts, SQL and final build"
+    },
+    "legacy": {
+      "pass": 1022,
+      "skip": 25,
+      "fail": 0,
+      "flaky": 0,
+      "results": "legacy-result.json",
+      "scope": "unchanged legacy UI/API fixture scenarios"
+    },
+    "typecheck": {
+      "status": "PASS",
+      "command": "tsc --noEmit --incremental false",
+      "results": "typecheck-final.txt"
+    },
+    "lint": {
+      "status": "PASS",
+      "errors": 0,
+      "warnings": 111,
+      "command": "eslint .",
+      "results": "lint-final.txt"
+    },
+    "build": {
+      "status": "PASS",
+      "pages": 197,
+      "results": "build-result.json",
+      "offlineRealCachedFonts": true
+    },
+    "pythonDeploymentMocks": {
+      "pass": 9,
+      "fail": 0,
+      "results": "deploy-mocks.txt",
+      "deployment": false
+    },
+    "audit": {
+      "critical": 0,
+      "high": 0,
+      "moderate": 5,
+      "low": 2,
+      "results": "npm-audit.json"
+    },
+    "gitnexus": {
+      "initialImpact": "CRITICAL",
+      "sqlImpact": "UNKNOWN",
+      "indexTruncated": true,
+      "codeDetect": {
+        "files": 7,
+        "symbols": 28,
+        "processes": 0,
+        "reportedRisk": "LOW"
+      },
+      "docsDetect": {
+        "files": 54,
+        "symbols": 10,
+        "processes": 0
+      },
+      "warning": "CLI LOW and zero reported processes do not supersede prior impact or certify exhaustive graph coverage"
+    }
+  },
+  "externalBlockers": [
+    "T01 run 38289517548: SMARANA_READ_TOKEN unavailable before tests",
+    "Clean offline build requires cached or local fonts; harness does not wire CI",
+    "Apply/reapply v11 locally tested only; keep T06 then T02 final permissions order",
+    "Other owners resumed deltas await T01 integration; providers and remote DB/runtime not qualified"
+  ],
+  "initialFailuresRetained": [
+    "interruptions-before-fix.txt",
+    "pipeline-before-fix.txt",
+    "compositor-before-ffmpeg.txt",
+    "build-before-font-cache.txt",
+    "quality-results.json"
+  ],
+  "boundaries": {
+    "paidCalls": 0,
+    "deployments": 0,
+    "realPublications": 0,
+    "remoteMigrations": 0,
+    "secretsRead": false,
+    "foreignWorktreesModified": false,
+    "cleanup": false
+  },
+  "pushConfirmation": "Final documentary commit SHA and origin SHA are recorded after push in PURAMA .coord/handoffs/SUTRA-20261012/T03-REPRISE-589732c.md"
+}

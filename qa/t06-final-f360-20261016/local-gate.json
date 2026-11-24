@@ -1,0 +1,25 @@
+{
+  "source": "f36013ae8b3bd7d9a702f7aebfdff1ac430c05f5",
+  "scope": "QA/docs only",
+  "newFunctionalTests": 0,
+  "sourceReconciliation": "PASS 46 hashes and 3 delivered blobs",
+  "syntax": "PASS ast.parse and JSON parse",
+  "diffCheck": "PASS",
+  "gitleaks": "PASS 0 findings on staged diff",
+  "gitnexus": "EXECUTED; 11 files, no indexed symbol overlap; stale index, exhaustive coverage UNKNOWN",
+  "productChanges": 0,
+  "ciContracts": "PASS 213 named social tests; part of 1199 total, 7 unrelated skips",
+  "ciDatabase": "PASS private PostgreSQL",
+  "ciQuality": "FAIL; T01 owns two harness failures",
+  "browserSubset": {
+    "pass": 71,
+    "fail": 1
+  },
+  "globalAcceptance": "BLOCKED next T01 SHA/CI",
+  "commands": [
+    "python3 qa/t06-final-f360-20261016/verify.py /Users/matissdornier/purama-worktrees/sutra-final-providers-20261013",
+    "node /Users/matissdornier/purama/.gitnexus/run.cjs detect_changes --scope staged --repo /Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015 --limit 30",
+    "git diff --cached --binary | gitleaks stdin --redact=100 --no-banner --report-format json --report-path qa/t06-final-f360-20261016/gitleaks.json",
+    "git diff --cached --check"
+  ]
+}

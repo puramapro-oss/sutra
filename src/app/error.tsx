@@ -61,7 +61,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             onClick={reset}
             data-testid="error-reset-button"
             type="button"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-[var(--primary)] hover:bg-[var(--primary-dark)] transition-all duration-200 glow-violet-sm hover:scale-[0.97] active:scale-95"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-violet-700 hover:bg-violet-800 transition-all duration-200 glow-violet-sm hover:scale-[0.97] active:scale-95"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -1,0 +1,21 @@
+[
+  {
+    "name": "load",
+    "command": [
+      "node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=T08 load: 32 publication",
+      "qa/t08/integrated/load.test.mts"
+    ],
+    "status": "FAIL",
+    "exitCode": 1,
+    "signal": null,
+    "durationMs": 451
+  }
+]

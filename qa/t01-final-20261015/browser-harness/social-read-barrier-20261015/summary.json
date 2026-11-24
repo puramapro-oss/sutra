@@ -1,0 +1,51 @@
+{
+  "base": "72f406b940b7e3cdfb27873751a4059375646f25",
+  "time": "2026-10-15T14:17:47.181146+00:00",
+  "tests": {
+    "command": "node --test qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs",
+    "pass": 18,
+    "fail": 0,
+    "skip": 0,
+    "duration_ms": 8075.699542
+  },
+  "native": {
+    "chromium": {
+      "file": "qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/results-pTDCQi/chromium.json",
+      "version": "145.0.7632.6",
+      "before_errors": 0,
+      "before_unexpected": 0,
+      "after_errors": 0,
+      "barrier_pass": "PASS",
+      "negative_unexpected": 6,
+      "negative_qualified": 0
+    },
+    "webkit": {
+      "file": "qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/results-pTDCQi/webkit.json",
+      "version": "26.0",
+      "before_errors": 1,
+      "before_unexpected": 1,
+      "after_errors": 0,
+      "barrier_pass": "PASS",
+      "negative_unexpected": 7,
+      "negative_qualified": 0
+    }
+  },
+  "protected_unchanged": {
+    "qa/t01-final-20261015/browser-harness/runtime-guard.mjs": true,
+    "qa/t01-final-20261015/browser-harness/guard.test.mjs": true,
+    "qa/t01-final-20261015/browser-harness/native-controls.mjs": true,
+    "qa/t07-final-ux-perf-20261015/social-checks.mjs": true
+  },
+  "sha256": {
+    "qa/t07-final-ux-perf-20261015/run.mjs": "7fc17d0a9f7292dc3fd31e45c62ba84372d99a7fffa68a3efb01758730f37e39",
+    "qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/fixture-read-barrier.mjs": "f9ac00ecd3fe29f476472446528779a135a4970352f3d1a28fe7369afca9df4b",
+    "qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs": "7cc81c8f29fd734416ca78492f5c2b201079e35379e85f31ab00514986f510c2"
+  },
+  "limits": [
+    "HTML control is not React causal proof",
+    "Application exact run delegated to T01",
+    "No native Safari certification",
+    "No product/provider/live/CORS production certification",
+    "GitNexus QA graph UNKNOWN"
+  ]
+}

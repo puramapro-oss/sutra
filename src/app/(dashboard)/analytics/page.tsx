@@ -13,10 +13,15 @@ import TopVideos from '@/components/analytics/TopVideos'
 import PromptHistory from '@/components/analytics/PromptHistory'
 
 export default function AnalyticsPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <AnalyticsPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function AnalyticsPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
   const router = useRouter()
 
-  const { loading, stats, recentVideos, dailyCounts, allVideos, engineStats, chartMax, chartLabels } =
+  const { loading, error, refresh, stats, recentVideos, dailyCounts, allVideos, engineStats, chartMax, chartLabels } =
     useAnalytics({
       userId: profile?.id,
       credits: profile?.credits,
@@ -45,6 +50,16 @@ export default function AnalyticsPage() {
       </div>
     )
   }
+
+  if (error) return (
+    <div role="alert" className="p-6 space-y-4" data-testid="analytics-load-error">
+      <h1 className="text-xl font-semibold text-white">Statistiques indisponibles</h1>
+      <p className="text-white/70">{error}</p>
+      <button type="button" onClick={() => void refresh()} className="rounded-xl bg-violet-600 px-4 py-2 text-white">
+        Réessayer
+      </button>
+    </div>
+  )
 
   return (
     <div className="flex-1 p-6 lg:p-8 space-y-8 max-w-7xl" data-testid="analytics-page">

@@ -88,7 +88,7 @@ export default function SettingsPage() {
         <h1 className="text-2xl font-bold text-white" data-testid="settings-title">
           Reglages
         </h1>
-        <p className="text-sm text-white/40 mt-1">Gere ton profil, ton abonnement et tes preferences</p>
+        <p className="text-sm text-white/65 mt-1">Gere ton profil, ton abonnement et tes preferences</p>
       </div>
 
       <Tabs tabs={SETTINGS_TABS} data-testid="settings-tabs">
@@ -145,7 +145,9 @@ export default function SettingsPage() {
                 emailPrefs={settingsState.emailPrefs}
                 toggleEmailPref={toggleEmailPref}
                 saveNotifications={settingsState.saveNotifications}
-                saving={settingsState.saving}
+                saving={settingsState.savingNotifications}
+                disabled={!settingsState.notificationsAvailable}
+                notice={settingsState.notificationNotice}
               />
             )}
 
@@ -154,7 +156,7 @@ export default function SettingsPage() {
                 theme={theme}
                 setTheme={setTheme}
                 brandLogo={settingsState.brandLogo}
-                setBrandLogo={settingsState.setBrandLogo}
+                selectBrandLogo={settingsState.selectBrandLogo}
                 brandPrimary={settingsState.brandPrimary}
                 setBrandPrimary={settingsState.setBrandPrimary}
                 brandSecondary={settingsState.brandSecondary}

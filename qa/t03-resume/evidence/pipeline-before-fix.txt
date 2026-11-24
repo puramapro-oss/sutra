@@ -1,0 +1,52 @@
+✔ 12 concurrent claims obtain one owner; 24 independent checkpoints survive parallel writes (82.435541ms)
+✔ expired/replaced/cancelled owner cannot heartbeat, checkpoint, finish or write business output (5.56575ms)
+✔ ready refuses raw URL, missing proof, missing stage and mandatory audio; verified export persists (26.930958ms)
+✔ AUTO ready effects are atomic and once-only across concurrent replays (14.210709ms)
+✔ finish requires result, settles once; missing quota rolls back status; exhausted jobs quarantine (3.945125ms)
+✔ notification writes deduplicate atomically; owner mismatch and missing row refuse success (9.359333ms)
+✔ 12 same-intent submissions atomically create one job, one video and one quota reservation (7.504917ms)
+✔ failed initial video insert rolls back quota and task; retry after lost response reuses committed task (2.7945ms)
+✔ cancellation settles original month once and never consumes a new month reservation (1.663291ms)
+✖ NULL lease or owner cannot authorize any mutation, even with a matching worker (3.020583ms)
+LOCAL_TEST_DATABASE=sutra_t03_46837_1791831833759
+✖ ready refuses unfinished checkpoints, invalid track values and zero-size export (1.977ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 9
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 287.23775
+
+✖ failing tests:
+
+test at scripts/test-pipeline-postgres.mts:8:9783
+✖ NULL lease or owner cannot authorize any mutation, even with a matching worker (3.020583ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-pipeline-resume-20261012/scripts/test-pipeline-postgres.mts:176:32)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /LEASE_LOST/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-pipeline-postgres.mts:8:10995
+✖ ready refuses unfinished checkpoints, invalid track values and zero-size export (1.977ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-pipeline-resume-20261012/scripts/test-pipeline-postgres.mts:190:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /STAGE_CHECKPOINT|TRACK_MISSING/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

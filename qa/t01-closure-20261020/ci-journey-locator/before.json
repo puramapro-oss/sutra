@@ -1,0 +1,232 @@
+{
+  "candidateSha": "1968d826b19b23f6c360884337599080fd6d8b3e",
+  "ciRun": 39343583135,
+  "source": "qa/t07-frontend-journey-20261014/journey-checks.mjs",
+  "results": [
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/editor/results.json",
+      "sha256": "f4fb3674a1ba10ab93b91bf184182a84c03aeabee4b897f343293d73b9bf71c9",
+      "pass": 5,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/extra/results.json",
+      "sha256": "e58e0c6f5ff063fb210ba468fa79e065f46bfe7b9128a3972c664b9e53d5b300",
+      "pass": 31,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/final/results.json",
+      "sha256": "2799098453eeb16b0d64c1bf8de6f205c765d849a0d17d4546186bcea92947d8",
+      "pass": 23,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/journey/results.json",
+      "sha256": "aeff4f70e90315fede78a9601ca0f36bf6fdb2ee309e30e701f41c4be25ff552",
+      "pass": 32,
+      "fail": 2,
+      "failures": [
+        {
+          "name": "375: social account absent; simulated consent unavailable does not navigate",
+          "status": "FAIL",
+          "message": "expect(locator).toBeVisible() failed\n\nLocator: getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true }) resolved to 2 elements:\n    1) <p role=\"alert\" data-testid=\"social-connect-error\" class=\"mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200\">Profil social non attribué. Contactez votre admin…</p> aka getByTestId('social-connect-error')\n    2) <div class=\"\" data-title=\"\">Profil social non attribué. Contactez votre admin…</div> aka getByLabel('Notifications alt+T').getByText('Profil social non attribué.')\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 5000ms\n  - waiting for getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true })\n"
+        },
+        {
+          "name": "1440: social account absent; simulated consent unavailable does not navigate",
+          "status": "FAIL",
+          "message": "expect(locator).toBeVisible() failed\n\nLocator: getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true }) resolved to 2 elements:\n    1) <p role=\"alert\" data-testid=\"social-connect-error\" class=\"mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200\">Profil social non attribué. Contactez votre admin…</p> aka getByTestId('social-connect-error')\n    2) <div class=\"\" data-title=\"\">Profil social non attribué. Contactez votre admin…</div> aka getByLabel('Notifications alt+T').getByText('Profil social non attribué.')\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 5000ms\n  - waiting for getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true })\n"
+        }
+      ],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/legal/results.json",
+      "sha256": "6793ccf9794ec455b152046eb446c28a19642eac0abcd3ce464e90d9699a38d6",
+      "pass": 15,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/navigation/results.json",
+      "sha256": "81307ddf6a344b3d72a0dc8e517ace484f6628ca66c292a6a9879281f54be2bc",
+      "pass": 4,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/planning/results.json",
+      "sha256": "522ae04fa66e4a2c7dc9d20055a63681563c5741475ff003c062f4470490579a",
+      "pass": 9,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/private-download/results.json",
+      "sha256": "7102d820274143871efe663af1caf76b790d49223da5ebedccf095b43ecaa329",
+      "pass": 9,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/production-reconcile/results.json",
+      "sha256": "b95e76e28174d7087e1eaca4e6640684a045f9416f1f188d41ba16aa10df1d58",
+      "pass": 52,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/schedule-cas/results.json",
+      "sha256": "2ac4e9ff04fdbf74df6277e10f0cded6e7faa16d15ef926d229c8b62f39b0424",
+      "pass": 11,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/scheduler-cancellation/results.json",
+      "sha256": "57fb5c5961790c36ad8e2058758469ae66d330c4891be996a2892f85a534f86f",
+      "pass": 46,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/social/results.json",
+      "sha256": "8469fd9085adfae75855fa31fe827f42441448c53f029e0823c144fdbc029803",
+      "pass": 10,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/social-reload/results.json",
+      "sha256": "91550b0f33a9d1c3fe4e8e207bab21b5e6273027794601558ab2fd6cd4dac2bc",
+      "pass": 6,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/chromium/visual/results.json",
+      "sha256": "0e87e30247960c6a3c6f7c24be61f6255f73c9a18ec0cb221766b91b3fe5a42f",
+      "pass": 3,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/editor/results.json",
+      "sha256": "f4fb3674a1ba10ab93b91bf184182a84c03aeabee4b897f343293d73b9bf71c9",
+      "pass": 5,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/extra/results.json",
+      "sha256": "e58e0c6f5ff063fb210ba468fa79e065f46bfe7b9128a3972c664b9e53d5b300",
+      "pass": 31,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/final/results.json",
+      "sha256": "f674b80254b68697da7fdd143e2609cd7d901223004b3b9fe01fa8f33ac5b5d4",
+      "pass": 23,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/journey/results.json",
+      "sha256": "8f458ef9b409ade279974d9acfdade26a9b4906108c56588261b0c684baf8b23",
+      "pass": 33,
+      "fail": 1,
+      "failures": [
+        {
+          "name": "375: social account absent; simulated consent unavailable does not navigate",
+          "status": "FAIL",
+          "message": "expect(locator).toBeVisible() failed\n\nLocator: getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true })\nExpected: visible\nError: strict mode violation: getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true }) resolved to 2 elements:\n    1) <p role=\"alert\" data-testid=\"social-connect-error\" class=\"mb-6 rounded-xl border border-amber-400/20 bg-amber-400/5 p-4 text-sm text-amber-200\">Profil social non attribué. Contactez votre admin…</p> aka getByTestId('social-connect-error')\n    2) <div class=\"\" data-title=\"\">Profil social non attribué. Contactez votre admin…</div> aka getByLabel('Notifications alt+T').getByText('Profil social non attribué.')\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 5000ms\n  - waiting for getByText('Profil social non attribué. Contactez votre administrateur.', { exact: true })\n"
+        }
+      ],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/legal/results.json",
+      "sha256": "0d7ffdcfa73a3295b06462eb5ce9b21dbbd850a8757813b6813402961a75d105",
+      "pass": 15,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/navigation/results.json",
+      "sha256": "41b5fde5a9151c62dcce12c80eb28d8a0b4cc70943500fed0fc8674ddeae04a9",
+      "pass": 4,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/planning/results.json",
+      "sha256": "29dd9da1f5c7e10caced88e5b14bdb8a7af6be524c084c2080243fae79c6dece",
+      "pass": 9,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/private-download/results.json",
+      "sha256": "60cf2fc689ad3f48baefe5c6bd7c8f372b294bb0661e5e1cfa973b3e6c5d245f",
+      "pass": 9,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/schedule-cas/results.json",
+      "sha256": "d8d49e34b70ebc3923783e075b2601bdb653bca21cf5ec65c915ab9abf58bb61",
+      "pass": 11,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/social/results.json",
+      "sha256": "aa609590051fb21ba33f89ee7996eeb58488d3242514a1fe8fda05fca4a70bc8",
+      "pass": 10,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/social-reload/results.json",
+      "sha256": "f8cf96b8de99ce17fb413bfd7c4d1b6220214bcc9d0e253a172137982766375e",
+      "pass": 6,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    },
+    {
+      "proof": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-1968-20261020/ci-quality-artifact/qa/t01-final-20261015/browser-final/webkit/visual/results.json",
+      "sha256": "53023de45b374d39482ac06f2fa8f23cdea36595d1f6de0ba1f26d1ecd9b5fed",
+      "pass": 3,
+      "fail": 0,
+      "failures": [],
+      "unexpectedErrors": 0
+    }
+  ]
+}

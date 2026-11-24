@@ -1,0 +1,316 @@
+{
+  "baseCommit": "d5d49a458e9e630ffbc1a433a7693a8cecd7dad5",
+  "results": [
+    {
+      "name": "375: scheduler load and keyboard double activation persist one absolute preference",
+      "status": "PASS"
+    },
+    {
+      "name": "375: scheduler pause through keyboard does not invoke cron or generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost activation acknowledgement reconciles by GET without another PATCH",
+      "status": "PASS"
+    },
+    {
+      "name": "375: unavailable API retries the same pause, preserving all scheduling fields",
+      "status": "PASS"
+    },
+    {
+      "name": "375: contradictory 200 response is not activation success",
+      "status": "PASS"
+    },
+    {
+      "name": "375: loading failure has an inline error and manual recovery, never false inactive",
+      "status": "PASS"
+    },
+    {
+      "name": "375: stalled read stops loading within deadline and can recover",
+      "status": "PASS"
+    },
+    {
+      "name": "375: malformed configuration stays unknown; accessible responsive controls",
+      "status": "PASS"
+    },
+    {
+      "name": "375: production double submission has one UUID and a successful step result",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancel queued task once using original requestId and target; strict server ACK",
+      "status": "PASS"
+    },
+    {
+      "name": "375: false and malformed cancellation do not clear the receipt; reload retains intent",
+      "status": "FAIL",
+      "message": "expect(locator).toBeEnabled() failed\n\nLocator: getByTestId('production-idea')\nExpected: enabled\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.enabled\" with timeout 15000ms\n  - waiting for getByTestId('production-idea')\n"
+    },
+    {
+      "name": "375: lost cancel acknowledgement is recoverable with identical cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: GET reconciles completion racing with a refused cancellation without POST replay",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost submission ACK resumes immutable request after reload, no new identity",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancelled request without jobId can only retry cancellation, not generation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: late inline success never overwrites confirmed cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: acknowledged task resumes with GET after reload and handles server reconciliation",
+      "status": "PASS"
+    },
+    {
+      "name": "375: provider unavailable and credits absent release only rejected pre-submission intent",
+      "status": "FAIL",
+      "message": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('main')\nExpected substring: \"GPU distant indisponible.\"\nReceived string:    \"Mode ProductionPipeline complet : de l'idee a la video finale, etape par etape.Avant de générerLe mode autorisé dépend de ton compte. Les options de création ne changent pas ce mode.Mode personnel distant : disponibilité non vérifiée sur cet écran.Modes, coûts et disponibilitéAPI clientServices externes soumis au plan, aux crédits et aux limites du compte. Choisir un moteur ne garantit ni sa disponibilité ni un coût nul.Personnel open source distantRéservé au compte propriétaire autorisé. La génération vidéo utilise un GPU distant ; elle ne tourne pas sur ton Mac. Le script, la voix, la musique et l’assemblage peuvent encore utiliser des API payantes. Open source ne signifie pas hébergement gratuit.Si le worker distant est désactivé ou indisponible, le mode personnel reste bloqué, sans bascule automatique vers une API payante.Aucun budget chiffré ni délai garanti n’est disponible ici. Vérifie tes crédits et le budget du service choisi avant de lancer. L’attente dépend de la file et des ressources disponibles, sans délai garanti.La disponibilité des fournisseurs API client n’a pas été vérifiée par cet encart. Les quotas restants du worker distant ne sont pas connus.Résultat de la génération non confirméUne erreur ou une interruption a empêché de confirmer le résultat. La demande peut déjà avoir été prise en compte.Vérifie la bibliothèque avant de relancer pour éviter une seconde demande. Si le résultat reste incertain, contacte le support.Vérifier la bibliothèqueSuivi et annulationDemande refusée avant exécution.L’annulation concerne la tâche SUTRA. Elle ne garantit ni l’arrêt d’un fournisseur déjà lancé, ni un remboursement. Fermer la page n’annule pas la tâche.IdeeScriptVideoVoixMusiqueMontageMiniatureTemplate de productionYouTube16:9 - 8-12 minTikTok9:16 - 30-60sReel9:16 - 15-30sDocumentaire16:9 - 10-20 minTutoriel16:9 - 3-8 minDecris ton idee de videoFixture : volcan sous-marinTon et styleprofessionneldecontractedramatiqueeducatifhumoristiqueinspirantMoteur video🎬CinemaLTX 2.3 Pro — qualite maximalePlan admin+⚡RapideLTX 2.3 Fast — generation rapide🎥ClassiqueWAN 2.2 — selon le mode et les quotasPrecedentTout generer“La seule facon de faire du bon travail est d'aimer ce que l'on fait.” — Steve Jobs\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"to.have.text\" with timeout 5000ms\n  - waiting for getByRole('main')\n    9 × locator resolved to <main class=\"flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden\">…</main>\n      - unexpected value \"Mode ProductionPipeline complet : de l'idee a la video finale, etape par etape.Avant de générerLe mode autorisé dépend de ton compte. Les options de création ne changent pas ce mode.Mode personnel distant : disponibilité non vérifiée sur cet écran.Modes, coûts et disponibilitéAPI clientServices externes soumis au plan, aux crédits et aux limites du compte. Choisir un moteur ne garantit ni sa disponibilité ni un coût nul.Personnel open source distantRéservé au compte propriétaire autorisé. La génération vidéo utilise un GPU distant ; elle ne tourne pas sur ton Mac. Le script, la voix, la musique et l’assemblage peuvent encore utiliser des API payantes. Open source ne signifie pas hébergement gratuit.Si le worker distant est désactivé ou indisponible, le mode personnel reste bloqué, sans bascule automatique vers une API payante.Aucun budget chiffré ni délai garanti n’est disponible ici. Vérifie tes crédits et le budget du service choisi avant de lancer. L’attente dépend de la file et des ressources disponibles, sans délai garanti.La disponibilité des fournisseurs API client n’a pas été vérifiée par cet encart. Les quotas restants du worker distant ne sont pas connus.Résultat de la génération non confirméUne erreur ou une interruption a empêché de confirmer le résultat. La demande peut déjà avoir été prise en compte.Vérifie la bibliothèque avant de relancer pour éviter une seconde demande. Si le résultat reste incertain, contacte le support.Vérifier la bibliothèqueSuivi et annulationDemande refusée avant exécution.L’annulation concerne la tâche SUTRA. Elle ne garantit ni l’arrêt d’un fournisseur déjà lancé, ni un remboursement. Fermer la page n’annule pas la tâche.IdeeScriptVideoVoixMusiqueMontageMiniatureTemplate de productionYouTube16:9 - 8-12 minTikTok9:16 - 30-60sReel9:16 - 15-30sDocumentaire16:9 - 10-20 minTutoriel16:9 - 3-8 minDecris ton idee de videoFixture : volcan sous-marinTon et styleprofessionneldecontractedramatiqueeducatifhumoristiqueinspirantMoteur video🎬CinemaLTX 2.3 Pro — qualite maximalePlan admin+⚡RapideLTX 2.3 Fast — generation rapide🎥ClassiqueWAN 2.2 — selon le mode et les quotasPrecedentTout generer“La seule facon de faire du bon travail est d'aimer ce que l'on fait.” — Steve Jobs\"\n"
+    },
+    {
+      "name": "375: submission timeout releases loader but retains immutable intent for recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "375: cancellation timeout never claims success and retry keeps same identity",
+      "status": "PASS"
+    },
+    {
+      "name": "375: complete pipeline keeps UUID and normal successful navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: scheduler load and keyboard double activation persist one absolute preference",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: scheduler pause through keyboard does not invoke cron or generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost activation acknowledgement reconciles by GET without another PATCH",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: unavailable API retries the same pause, preserving all scheduling fields",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: contradictory 200 response is not activation success",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: loading failure has an inline error and manual recovery, never false inactive",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: stalled read stops loading within deadline and can recover",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: malformed configuration stays unknown; accessible responsive controls",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: production double submission has one UUID and a successful step result",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: cancel queued task once using original requestId and target; strict server ACK",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: false and malformed cancellation do not clear the receipt; reload retains intent",
+      "status": "FAIL",
+      "message": "expect(locator).toBeEnabled() failed\n\nLocator: getByTestId('production-idea')\nExpected: enabled\nTimeout: 15000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.enabled\" with timeout 15000ms\n  - waiting for getByTestId('production-idea')\n"
+    },
+    {
+      "name": "1440: lost cancel acknowledgement is recoverable with identical cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: GET reconciles completion racing with a refused cancellation without POST replay",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost submission ACK resumes immutable request after reload, no new identity",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: cancelled request without jobId can only retry cancellation, not generation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: late inline success never overwrites confirmed cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: acknowledged task resumes with GET after reload and handles server reconciliation",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: provider unavailable and credits absent release only rejected pre-submission intent",
+      "status": "FAIL",
+      "message": "expect(locator).toContainText(expected) failed\n\nLocator: getByRole('main')\nExpected substring: \"GPU distant indisponible.\"\nReceived string:    \"Mode ProductionPipeline complet : de l'idee a la video finale, etape par etape.Avant de générerLe mode autorisé dépend de ton compte. Les options de création ne changent pas ce mode.Mode personnel distant : disponibilité non vérifiée sur cet écran.Modes, coûts et disponibilitéAPI clientServices externes soumis au plan, aux crédits et aux limites du compte. Choisir un moteur ne garantit ni sa disponibilité ni un coût nul.Personnel open source distantRéservé au compte propriétaire autorisé. La génération vidéo utilise un GPU distant ; elle ne tourne pas sur ton Mac. Le script, la voix, la musique et l’assemblage peuvent encore utiliser des API payantes. Open source ne signifie pas hébergement gratuit.Si le worker distant est désactivé ou indisponible, le mode personnel reste bloqué, sans bascule automatique vers une API payante.Aucun budget chiffré ni délai garanti n’est disponible ici. Vérifie tes crédits et le budget du service choisi avant de lancer. L’attente dépend de la file et des ressources disponibles, sans délai garanti.La disponibilité des fournisseurs API client n’a pas été vérifiée par cet encart. Les quotas restants du worker distant ne sont pas connus.Résultat de la génération non confirméUne erreur ou une interruption a empêché de confirmer le résultat. La demande peut déjà avoir été prise en compte.Vérifie la bibliothèque avant de relancer pour éviter une seconde demande. Si le résultat reste incertain, contacte le support.Vérifier la bibliothèqueSuivi et annulationDemande refusée avant exécution.L’annulation concerne la tâche SUTRA. Elle ne garantit ni l’arrêt d’un fournisseur déjà lancé, ni un remboursement. Fermer la page n’annule pas la tâche.IdeeScriptVideoVoixMusiqueMontageMiniatureTemplate de productionYouTube16:9 - 8-12 minTikTok9:16 - 30-60sReel9:16 - 15-30sDocumentaire16:9 - 10-20 minTutoriel16:9 - 3-8 minDecris ton idee de videoFixture : volcan sous-marinTon et styleprofessionneldecontractedramatiqueeducatifhumoristiqueinspirantMoteur video🎬CinemaLTX 2.3 Pro — qualite maximalePlan admin+⚡RapideLTX 2.3 Fast — generation rapide🎥ClassiqueWAN 2.2 — selon le mode et les quotasPrecedentTout generer“La seule facon de faire du bon travail est d'aimer ce que l'on fait.” — Steve Jobs\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"to.have.text\" with timeout 5000ms\n  - waiting for getByRole('main')\n    9 × locator resolved to <main class=\"flex-1 px-4 lg:px-6 py-6 pb-24 lg:pb-6 overflow-x-hidden\">…</main>\n      - unexpected value \"Mode ProductionPipeline complet : de l'idee a la video finale, etape par etape.Avant de générerLe mode autorisé dépend de ton compte. Les options de création ne changent pas ce mode.Mode personnel distant : disponibilité non vérifiée sur cet écran.Modes, coûts et disponibilitéAPI clientServices externes soumis au plan, aux crédits et aux limites du compte. Choisir un moteur ne garantit ni sa disponibilité ni un coût nul.Personnel open source distantRéservé au compte propriétaire autorisé. La génération vidéo utilise un GPU distant ; elle ne tourne pas sur ton Mac. Le script, la voix, la musique et l’assemblage peuvent encore utiliser des API payantes. Open source ne signifie pas hébergement gratuit.Si le worker distant est désactivé ou indisponible, le mode personnel reste bloqué, sans bascule automatique vers une API payante.Aucun budget chiffré ni délai garanti n’est disponible ici. Vérifie tes crédits et le budget du service choisi avant de lancer. L’attente dépend de la file et des ressources disponibles, sans délai garanti.La disponibilité des fournisseurs API client n’a pas été vérifiée par cet encart. Les quotas restants du worker distant ne sont pas connus.Résultat de la génération non confirméUne erreur ou une interruption a empêché de confirmer le résultat. La demande peut déjà avoir été prise en compte.Vérifie la bibliothèque avant de relancer pour éviter une seconde demande. Si le résultat reste incertain, contacte le support.Vérifier la bibliothèqueSuivi et annulationDemande refusée avant exécution.L’annulation concerne la tâche SUTRA. Elle ne garantit ni l’arrêt d’un fournisseur déjà lancé, ni un remboursement. Fermer la page n’annule pas la tâche.IdeeScriptVideoVoixMusiqueMontageMiniatureTemplate de productionYouTube16:9 - 8-12 minTikTok9:16 - 30-60sReel9:16 - 15-30sDocumentaire16:9 - 10-20 minTutoriel16:9 - 3-8 minDecris ton idee de videoFixture : volcan sous-marinTon et styleprofessionneldecontractedramatiqueeducatifhumoristiqueinspirantMoteur video🎬CinemaLTX 2.3 Pro — qualite maximalePlan admin+⚡RapideLTX 2.3 Fast — generation rapide🎥ClassiqueWAN 2.2 — selon le mode et les quotasPrecedentTout generer“La seule facon de faire du bon travail est d'aimer ce que l'on fait.” — Steve Jobs\"\n"
+    },
+    {
+      "name": "1440: complete pipeline keeps UUID and normal successful navigation",
+      "status": "PASS"
+    },
+    {
+      "name": "production recovery remains scoped to the authenticated user",
+      "status": "PASS"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "width": 375,
+      "measure": "auto_ready_ms_dev",
+      "value": 1212
+    },
+    {
+      "width": 375,
+      "measure": "activation_ack_ms_300ms_fixture",
+      "value": 371,
+      "requests": 1
+    },
+    {
+      "width": 375,
+      "measure": "stalled_config_error_ms",
+      "value": 11400
+    },
+    {
+      "label": "scheduler-error-375",
+      "geometry": {
+        "viewport": 375,
+        "content": 375
+      },
+      "accessibility": {
+        "violations": [],
+        "incomplete": []
+      }
+    },
+    {
+      "label": "scheduler-ready-375",
+      "geometry": {
+        "viewport": 375,
+        "content": 375
+      },
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "width": 375,
+      "measure": "cancellation_ack_ms_300ms_fixture",
+      "value": 365
+    },
+    {
+      "label": "production-cancelled-375",
+      "geometry": {
+        "viewport": 375,
+        "content": 375
+      },
+      "accessibility": {
+        "violations": [],
+        "incomplete": []
+      }
+    },
+    {
+      "width": 375,
+      "measure": "submission_timeout_ms",
+      "value": 32135
+    },
+    {
+      "width": 375,
+      "measure": "cancellation_timeout_ms",
+      "value": 10896
+    },
+    {
+      "width": 1440,
+      "measure": "auto_ready_ms_dev",
+      "value": 695
+    },
+    {
+      "width": 1440,
+      "measure": "activation_ack_ms_300ms_fixture",
+      "value": 365,
+      "requests": 1
+    },
+    {
+      "width": 1440,
+      "measure": "stalled_config_error_ms",
+      "value": 11432
+    },
+    {
+      "label": "scheduler-error-1440",
+      "geometry": {
+        "viewport": 1440,
+        "content": 1440
+      },
+      "accessibility": {
+        "violations": [],
+        "incomplete": []
+      }
+    },
+    {
+      "label": "scheduler-ready-1440",
+      "geometry": {
+        "viewport": 1440,
+        "content": 1440
+      },
+      "accessibility": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "color-contrast",
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "width": 1440,
+      "measure": "cancellation_ack_ms_300ms_fixture",
+      "value": 364
+    },
+    {
+      "label": "production-cancelled-1440",
+      "geometry": {
+        "viewport": 1440,
+        "content": 1440
+      },
+      "accessibility": {
+        "violations": [],
+        "incomplete": []
+      }
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

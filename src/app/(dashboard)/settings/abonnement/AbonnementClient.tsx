@@ -134,7 +134,7 @@ export function AbonnementClient({
       {!isActive && (
         <div className="glass-card p-6 text-center">
           <p className="text-white/70 mb-4">Aucun abonnement actif actuellement.</p>
-          <Link href="/pricing" className="inline-block px-5 py-2.5 rounded-xl bg-[var(--color-accent)] font-semibold">
+          <Link href="/pricing" className="inline-block px-5 py-2.5 rounded-xl bg-violet-700 text-white font-semibold">
             Voir les plans
           </Link>
         </div>

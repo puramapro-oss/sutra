@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "source": "e3b17117256269e281304cd4ab83bc722a6f7894",
+  "run": 38475022601,
+  "artifactMetadata": [
+    {
+      "id": 11854985329,
+      "name": "sutra-quality-results",
+      "size_in_bytes": 4859085,
+      "workflow_run": {
+        "id": 38475022601,
+        "repository_id": 1210671392,
+        "head_repository_id": 1210671392,
+        "head_branch": "codex/sutra-final-providers-20261013",
+        "head_sha": "e3b17117256269e281304cd4ab83bc722a6f7894"
+      }
+    },
+    {
+      "id": 11852434319,
+      "name": "sutra-contract-results",
+      "size_in_bytes": 22392,
+      "workflow_run": {
+        "id": 38475022601,
+        "repository_id": 1210671392,
+        "head_repository_id": 1210671392,
+        "head_branch": "codex/sutra-final-providers-20261013",
+        "head_sha": "e3b17117256269e281304cd4ab83bc722a6f7894"
+      }
+    }
+  ],
+  "files": [
+    {
+      "artifact": "quality",
+      "path": "test-results/ci-final-38475022601-quality/legacy/results.json",
+      "sha256": "5b54aea50f5286a3ece3f7e80817c7da5a15550105df258b9013d5006ac89d80"
+    },
+    {
+      "artifact": "quality",
+      "path": "test-results/ci-final-38475022601-quality/t08/browser-extra.json",
+      "sha256": "2817bbfaaf9b481b632eeb8a96c1726b5085b1c42ddb246c59c2429780e1ae15"
+    },
+    {
+      "artifact": "quality",
+      "path": "test-results/ci-final-38475022601-quality/t08/browser-redteam/result.json",
+      "sha256": "f5331b81e5e3c2493d659e31ed1100734729cfe796e15f1d701ebb5d65ebd141"
+    },
+    {
+      "artifact": "quality",
+      "path": "test-results/ci-final-38475022601-quality/t08/browser/results.json",
+      "sha256": "1fa04fff3489f7756b392c4ebe0d05bec327c58a5f9385eb328b51b6beb7d13e"
+    },
+    {
+      "artifact": "quality",
+      "path": "test-results/ci-final-38475022601-quality/ci/quality/results.json",
+      "sha256": "64da3710bc0a88b6401cca0685e6ea832d373038d3bbd0e24c46e4feed9d14b5"
+    },
+    {
+      "artifact": "quality",
+      "path": "test-results/ci-final-38475022601-quality/ci/legacy/results.json",
+      "sha256": "4a2d6c55b8009e1c3407484c453adb2aab721d89d27fec4bf1bb1f48a922bc6e"
+    },
+    {
+      "artifact": "contracts",
+      "path": "test-results/ci-final-38475022601-contracts/t08/redteam/result.json",
+      "sha256": "45dee886d35c9bc85ed29a47fc33234c139dda946415af26b0b994cf56ba7197"
+    },
+    {
+      "artifact": "contracts",
+      "path": "test-results/ci-final-38475022601-contracts/ci/contracts/results.json",
+      "sha256": "bb5a6133a4e2c3c610857758524fc48169d5eae1572c5b5e747d7ba3fb776771"
+    },
+    {
+      "artifact": "contracts",
+      "path": "test-results/ci-final-38475022601-contracts/ci/media/results.json",
+      "sha256": "4a20f77d443fcf49efbc90d700fa2168097e5dcc58d0a693eea0ea59f99a5684"
+    }
+  ],
+  "legacyStats": {
+    "startTime": "2026-10-13T22:11:39.595Z",
+    "duration": 332691.45999999996,
+    "expected": 1022,
+    "skipped": 25,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browserChecks": 210,
+  "apiDetailCaveat": "Per-step API/log endpoint remained stale after completed SUCCESS; final uploaded artifacts explicitly verified."
+}

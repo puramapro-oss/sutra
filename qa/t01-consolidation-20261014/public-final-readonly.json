@@ -1,0 +1,48 @@
+{
+  "observedAt": "2026-10-14T16:07:51.412038+00:00",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "redirectsToLogin": null
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "redirectsToLogin": null
+    },
+    {
+      "path": "/api/points",
+      "status": 401,
+      "redirectsToLogin": null
+    },
+    {
+      "path": "/library",
+      "status": 307,
+      "redirectsToLogin": true
+    },
+    {
+      "path": "/settings/social",
+      "status": 307,
+      "redirectsToLogin": true
+    }
+  ],
+  "tls": {
+    "verified": true,
+    "version": "TLSv1.3",
+    "notAfter": "Jan 10 22:26:54 2027 GMT",
+    "issuer": "Let's Encrypt"
+  },
+  "addresses": [
+    "144.217.14.210"
+  ],
+  "live": {
+    "source": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+    "imageId": "sha256:d1c8e9ee93fd7c647a92461acb192f934e6ddac6e9976459457e0fef693541fc",
+    "health": "healthy",
+    "restarts": 0
+  },
+  "candidateNotPromoted": true,
+  "paidCalls": 0,
+  "publicationCalls": 0
+}

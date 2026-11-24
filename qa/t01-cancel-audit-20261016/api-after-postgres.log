@@ -1,0 +1,25 @@
+(node:20180) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20180) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ lost submission ACK is reconciled by GET, then cancelled without a second logical job (163.334208ms)
+✔ a still-uncommitted submission remains absent; false cancel is not evidence of cancellation (8.050792ms)
+✔ lost cancel ACK after commit stays 503 until the durable receipt is read (3.111083ms)
+✔ malformed cancel ACK after commit stays 503 until the durable receipt is read (2.741291ms)
+✔ SQL cancellation failure rolls back quota release and job state; the same intent can cancel later (3.022625ms)
+✔ an SQL read error is 503 without a mutation; user binding prevents observing another owner (7.2015ms)
+✔ cancellation wins between a persisted checkpoint and finish: no success, no reacquisition (11.656ms)
+✔ finish wins before cancellation; disabled music null is a valid reusable terminal receipt (4.672167ms)
+✔ 12 concurrent HTTP deliveries share one worker, checkpoint and reservation (15.324708ms)
+✔ 12 cancellations after lease expiry release once and fence the obsolete worker checkpoint (7.853916ms)
+✔ an uncertain remote intention stays quarantined on HTTP redelivery and keeps acquired output (4.317625ms)
+✔ lost finish ACK is recovered from a valid SQL receipt without a second quota mutation (2.699583ms)
+✔ SQL failure during finish never returns success or consumes quota despite the acquired checkpoint (4.366292ms)
+T03_FINAL_SETTLEMENT {"reserved":0,"consumed":3,"released":10,"teardownCancellations":2,"providerCalls":0}
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 720.103

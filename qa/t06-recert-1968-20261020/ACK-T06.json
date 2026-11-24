@@ -1,0 +1,75 @@
+{
+  "owner": "T06",
+  "candidate": "fcd0559f611831a57909c693694b92ccb81eba45",
+  "branch": "codex/sutra-t06-recert-fcd0559-20261020",
+  "verdict": "ACK_SOCIAL_BOUNDED_NACK_GLOBAL_UX",
+  "newCorrection": "LOCAL_DELTA_VERIFIED_PENDING_T01_INTEGRATION",
+  "sourceManifest": "corrected-source-manifest.json",
+  "checks": [
+    {
+      "status": "PASS",
+      "proof": "reconciliation.json",
+      "detail": "1204 committed manifest inputs; delivered social page exact773fafef;42/46 historical intrants unchanged, four changed inputs explicitly identified."
+    },
+    {
+      "status": "PASS",
+      "proof": "targeted.json",
+      "detail": "53 route/adapter/social mocked tests +10 callback/feedback checks; separate overlapping suites."
+    },
+    {
+      "status": "FAIL",
+      "proof": "publish-before/results.json",
+      "detail": "Before correction:10 contrast/keyboard observations plus false-empty on503."
+    },
+    {
+      "status": "PASS",
+      "proof": "publish-after/results.json",
+      "detail": "15 Chrome DEV checks on candidate plus four-file patch; five widths, populated/empty, axe and keyboard, safe error/manual recovery."
+    },
+    {
+      "status": "PASS",
+      "proof": "validation.json",
+      "detail": "TypeScript exit0; lint exit0 with4 documented warnings."
+    },
+    {
+      "status": "FAIL",
+      "proof": "page-matrix.json",
+      "detail": "100 route templates inspected;52 routes with axe observations before correction; T07 owns51, publication locally corrected. Two DEV hydration mismatches delegated."
+    },
+    {
+      "status": "BLOQUE",
+      "detail": "T01 integration + final candidate production/CI qualification and T07 owned UI corrections."
+    },
+    {
+      "status": "NON_TESTE",
+      "detail": "Real accounts/consents/publications/provider-token crypto/rotation/revocation/scopes, physical devices/screen reader, production latency, real WanGP."
+    }
+  ],
+  "personalConsent": {
+    "url": "https://sutra.purama.dev/settings/social",
+    "required": true,
+    "performedByAgent": false,
+    "steps": [
+      "Wait for T01 to confirm site availability.",
+      "Open own SUTRA session, choose Se connecter or Se reconnecter for desired supported networks.",
+      "Personally choose account/page/channel and approve intended platform permissions.",
+      "Return in same session within10minutes; verify connected identity."
+    ]
+  },
+  "prohibitionsRespected": {
+    "realAccountsConnected": 0,
+    "realPublications": 0,
+    "paidGenerations": 0,
+    "deployments": 0,
+    "otherWorktreeEdits": 0,
+    "secretsRead": 0
+  },
+  "limits": [
+    "Synthetic route inventory is not100 fully tested business journeys.",
+    "19 redirected route observations do not certify restricted pages.",
+    "Two library failures are premature loading captures, not attributed software defects.",
+    "No independent native organization model: user/session/Zernio profile boundary only.",
+    "CI39406352519 still in progress at receipt; successful contracts/DB and check step are not global CI success.",
+    "No automatic ACK transfer to later candidate."
+  ]
+}

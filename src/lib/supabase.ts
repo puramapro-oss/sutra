@@ -1,4 +1,5 @@
-import { createBrowserClient } from '@supabase/ssr'
+import { createBrowserClient, parseCookieHeader, serializeCookieHeader } from '@supabase/ssr'
+import { sessionCookieOptions } from '@/lib/auth-navigation'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -12,6 +13,17 @@ const appSchema = process.env.NEXT_PUBLIC_APP_SCHEMA || 'sutra'
 export function createClient() {
   return createBrowserClient(supabaseUrl, supabaseAnonKey, {
     db: { schema: appSchema },
+    ...(typeof document !== 'undefined' ? {
+      cookies: {
+        getAll: () => parseCookieHeader(document.cookie).map(({ name, value }) => ({ name, value: value ?? '' })),
+        setAll: (items: { name: string; value: string; options: import('@supabase/ssr').CookieOptions }[]) => {
+          const remember = parseCookieHeader(document.cookie).find(c => c.name === 'sutra_persist')?.value
+          for (const { name, value, options } of items) {
+            document.cookie = serializeCookieHeader(name, value, sessionCookieOptions(options, remember))
+          }
+        },
+      },
+    } : {}),
   })
 }
 

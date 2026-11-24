@@ -1,0 +1,24 @@
+{
+  "status": "FAIL",
+  "exit": 1,
+  "command": [
+    "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts",
+    "qa/t03-durable-reliability-20261014/postgres.test.mts",
+    "qa/t06-social-recovery-20261014/test-postgres.mts",
+    "qa/t01-final-20261015/durable-postgres.test.mts"
+  ],
+  "fixture": "private loopback PostgreSQL18, providers blocked",
+  "sourceSha256": {
+    "qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts": "279e2620aca57730496ecda5208ec07d2cdbff71de435126bce85780c0a62edd",
+    "qa/t03-durable-reliability-20261014/postgres.test.mts": "14b0e416fc1c073c1c9df59aa749d0c1b68127c36d9fa92432c2074e822f5268",
+    "qa/t06-social-recovery-20261014/test-postgres.mts": "8c0b9465659bf567271d5203606feaf7b034de9bfae5ec50f34a2edba0f7507a",
+    "qa/t01-final-20261015/durable-postgres.test.mts": "5dbc6580e9bc261467e47d649e6b4d3436b085a3fdb9aca5e0f6ea2a550360fd",
+    "migrations/20261015_final_durable_integrity.sql": "e8befa9e9fa602d80c483245bc71d07831fe56aad9ee05ed83dc2261a1d7805c"
+  },
+  "observedAt": "2026-10-15T01:39:10.578378+00:00"
+}

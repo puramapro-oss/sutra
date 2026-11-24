@@ -1,0 +1,50 @@
+[
+  {
+    "browser": "chromium",
+    "errors": [],
+    "failures": [
+      {
+        "path": "/slow",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "path": "/slow",
+        "error": "net::ERR_ABORTED"
+      }
+    ]
+  },
+  {
+    "browser": "chromium",
+    "control": "caught fetch during pagehide",
+    "errors": []
+  },
+  {
+    "browser": "webkit",
+    "errors": [
+      {
+        "message": "TypeError: Load failed",
+        "stack": ""
+      },
+      {
+        "message": "/127.0.0.1:52881/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:52881/slow due to access control checks.\n    at unknown (https://127.0.0.1:52881/on-hide:1:173)"
+      }
+    ],
+    "failures": [
+      {
+        "path": "/slow",
+        "error": "cancelled"
+      }
+    ]
+  },
+  {
+    "browser": "webkit",
+    "control": "caught fetch during pagehide",
+    "errors": [
+      {
+        "message": "/127.0.0.1:52881/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:52881/slow due to access control checks.\n    at unknown (https://127.0.0.1:52881/on-hide:1:173)"
+      }
+    ]
+  }
+]

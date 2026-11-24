@@ -1,0 +1,99 @@
+{
+  "candidate": "72f406b940b7e3cdfb27873751a4059375646f25",
+  "observedAt": "2026-10-15T13:58:03.627595+00:00",
+  "checks": [
+    {
+      "command": "Python AST qa/t08-acceptance-72f406b-20261015/build_matrix.py",
+      "exitCode": 0
+    },
+    {
+      "command": "Python AST qa/t08-acceptance-72f406b-20261015/run.py",
+      "exitCode": 0
+    },
+    {
+      "command": "Python AST qa/t08-acceptance-72f406b-20261015/verify_ci.py",
+      "exitCode": 0
+    },
+    {
+      "command": "Python AST qa/t08-acceptance-72f406b-20261015/verify_sources.py",
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--check",
+        "qa/t08-acceptance-72f406b-20261015/evidence-output.cjs"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--check",
+        "qa/t08-acceptance-72f406b-20261015/harness-boundaries.test.mjs"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "--check",
+        "qa/t08-acceptance-72f406b-20261015/run-postgres.mjs"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+        "node_modules/eslint/bin/eslint.js",
+        "qa/t08-acceptance-72f406b-20261015/evidence-output.cjs",
+        "qa/t08-acceptance-72f406b-20261015/harness-boundaries.test.mjs",
+        "qa/t08-acceptance-72f406b-20261015/run-postgres.mjs"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "command": "Python AST qa/t08-acceptance-72f406b-20261015/build_matrix.py",
+      "exitCode": 0,
+      "reason": "new or changed after initial QA quality check"
+    },
+    {
+      "command": "Python AST qa/t08-acceptance-72f406b-20261015/verify_receipts.py",
+      "exitCode": 0,
+      "reason": "new or changed after initial QA quality check"
+    },
+    {
+      "command": "Python AST qa/t08-acceptance-72f406b-20261015/verify_ci.py",
+      "exitCode": 0,
+      "reason": "CI failure evidence handling; no test re-run"
+    },
+    {
+      "command": "Python AST qa/t08-acceptance-72f406b-20261015/build_matrix.py",
+      "exitCode": 0,
+      "reason": "CI failure evidence handling; no test re-run"
+    },
+    {
+      "command": "git diff --cached --check excluding original raw *.log only",
+      "exitCode": 0
+    },
+    {
+      "command": "gitleaks git --staged --redact --no-banner",
+      "exitCode": 0,
+      "findings": 0
+    },
+    {
+      "command": "gitnexus detect-changes --scope staged --limit 100",
+      "exitCode": 0,
+      "files": 60,
+      "symbols": 112,
+      "processes": 0,
+      "risk": "low",
+      "coverage": "TRUNCATED, see analyze log; no exhaustive graph claim"
+    }
+  ],
+  "updatedAt": "2026-10-15T14:16:09.407681+00:00"
+}

@@ -1,0 +1,62 @@
+{
+  "base": "11d4ea707f1a13f4c9e88fc453c21d85f0786b2c",
+  "baseline": {
+    "tests": 18,
+    "pass": 2,
+    "fail": 16,
+    "evidence": "before.log"
+  },
+  "local": {
+    "preferencesHelper": {
+      "status": "PASS",
+      "tests": 13,
+      "command": "node --import tsx --test scripts/test-email-preferences.mts"
+    },
+    "independentReactReview": {
+      "status": "PASS",
+      "tests": 2,
+      "scope": "Confirmation after same-owner refresh; visible second identity check failure"
+    },
+    "fixtureInitialization": {
+      "status": "PASS",
+      "scope": "JSDOM executes actual page bundle; six switches; zero writes; no browser globals shim"
+    },
+    "targetedTypecheck": {
+      "status": "PASS",
+      "command": "node --max-old-space-size=512 node_modules/typescript/bin/tsc -p qa/email-preferences-20261122/tsconfig.json --pretty false",
+      "scope": "Changed modules and imports; not whole application",
+      "detail": "Final candidate sources checked after candidate RPC and UI review fixes, exit0."
+    },
+    "fullLocalTypecheck": {
+      "status": "NON TESTÉ",
+      "detail": "Earlier attempts exited137; no complete successful local run claimed"
+    },
+    "localNativeBrowserAndPostgres": {
+      "status": "BLOQUÉ",
+      "detail": "Local socket permissions prevent native execution; CI gates retain real browser and PostgreSQL tests"
+    },
+    "unitContracts": {
+      "status": "PASS",
+      "tests": 38,
+      "pass": 38,
+      "fail": 0,
+      "skip": 0,
+      "command": "node --experimental-test-module-mocks --import tsx --test scripts/test-email-sequences.mts scripts/test-email-preferences.mts",
+      "evidence": "targeted.log"
+    },
+    "targetedLint": {
+      "status": "PASS",
+      "scope": "All changed product modules and new email tests/fixtures; preserve-symlinks required only by local dependency reuse"
+    },
+    "syntaxAndDiffCheck": {
+      "status": "PASS"
+    }
+  },
+  "externalEffects": {
+    "realEmails": false,
+    "remoteDatabaseMigration": false,
+    "mainMerge": false,
+    "deployment": false
+  },
+  "ci": "Exact published revision tracked in the pull request; pending at initial commit"
+}

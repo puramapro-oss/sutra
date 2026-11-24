@@ -1,0 +1,817 @@
+{
+  "timestampUtc": "2026-10-13T01:02:43.813786+00:00",
+  "baseUrl": "https://sutra.purama.dev",
+  "deployedSha": "3e5596ea287f36427f687d3f3882d35c3f7c407b",
+  "worktreeHead": "27a08a1330fd3ecc8b831ffd8ec41ccf9dc7c2da",
+  "command": "python3 qa/postdeploy-20261013/security/probe.py",
+  "scope": "Live unauthenticated negative paths only; no provider, valid token, valid OAuth code, account or database mutation.",
+  "cronRoutes": [
+    {
+      "path": "/api/cron/account-deletion",
+      "method": "GET",
+      "sourceSha256": "9ebaf4cd02012cb27ee4c4782fe80161d762f560b2fb12240ed5cffcfbccc8cb"
+    },
+    {
+      "path": "/api/cron/account-deletion",
+      "method": "POST",
+      "sourceSha256": "9ebaf4cd02012cb27ee4c4782fe80161d762f560b2fb12240ed5cffcfbccc8cb"
+    },
+    {
+      "path": "/api/cron/ambassador-check",
+      "method": "POST",
+      "sourceSha256": "1a3c4dc62b6f297aa9ee2cc3b3a98805c49d377be472b0e52a3d7be581c88963"
+    },
+    {
+      "path": "/api/cron/asso-transfer",
+      "method": "GET",
+      "sourceSha256": "8a47e910fc38c7f15bbf7dc11f61ff40aa19a73d9930013fbdda088eb019ff5c"
+    },
+    {
+      "path": "/api/cron/auto-learn",
+      "method": "GET",
+      "sourceSha256": "8c6b5124fa4b298a9c0b0e6b9a2b7e0283e38a57cde2000fd24e4f7969a102d7"
+    },
+    {
+      "path": "/api/cron/auto-plan",
+      "method": "GET",
+      "sourceSha256": "4cbc8562e12b35758c963855642ca6d5d9cfc478f158abe23227e23d4f3d88b4"
+    },
+    {
+      "path": "/api/cron/auto-trends",
+      "method": "GET",
+      "sourceSha256": "b69fc07e4bdbb9415c698509c6bb779af404aad88a364b237d05b3112d55940e"
+    },
+    {
+      "path": "/api/cron/contest-judge",
+      "method": "GET",
+      "sourceSha256": "1e178747be5cb7901b4a99763445bce04c02bd84e6e68a51048cd90456241f12"
+    },
+    {
+      "path": "/api/cron/contest-monthly",
+      "method": "GET",
+      "sourceSha256": "cc860b225b420e93d10875289583603c85ba246bfce5890f46623254fdbd260f"
+    },
+    {
+      "path": "/api/cron/contest-weekly",
+      "method": "GET",
+      "sourceSha256": "5157002393784bec6401731ad584605544fe03eb1660a60eaaf7908833b8ce5f"
+    },
+    {
+      "path": "/api/cron/email-sequences",
+      "method": "GET",
+      "sourceSha256": "9921a48add8456ac1b2056c652dcb02f096f68763b09a4d5b710f994957ef0d0"
+    },
+    {
+      "path": "/api/cron/fiscal-palier",
+      "method": "POST",
+      "sourceSha256": "7ae35bfdec47ca0d9f5ac8f0781a5d82eb20d1169bd59c94e6442c21935966d5"
+    },
+    {
+      "path": "/api/cron/karma-defi",
+      "method": "POST",
+      "sourceSha256": "438baedf6e87c9deb76ecaefce99d4fe24befdef982f190e79feea2f321113b4"
+    },
+    {
+      "path": "/api/cron/karma-lightning",
+      "method": "POST",
+      "sourceSha256": "ee4271ce1a59645af6205ec072d4f95f9d04b3310d5f0e942d1e057e74d7302e"
+    },
+    {
+      "path": "/api/cron/karma-split-distribute",
+      "method": "GET",
+      "sourceSha256": "0d61e1093507e9ec624dd177076c8799f21f7a48d6a46b3806c4e98017284bdc"
+    },
+    {
+      "path": "/api/cron/karma-tournoi",
+      "method": "POST",
+      "sourceSha256": "81a475470195067e45f4066bbca4e31748f5d3e1aefeba7ebd86627abfd26d0b"
+    },
+    {
+      "path": "/api/cron/smart-split",
+      "method": "POST",
+      "sourceSha256": "be7750d3f6abcc56edb9aa9e671b73a513fa7f080175644f4ff210121f06364f"
+    },
+    {
+      "path": "/api/cron/streak-update",
+      "method": "GET",
+      "sourceSha256": "94e7e0d3b716708ce108070b02c152c8f6dfcdc5980612375608d48e20ce91fc"
+    },
+    {
+      "path": "/api/cron/sutra-auto",
+      "method": "GET",
+      "sourceSha256": "9b6001ba258486410f76b2307d7bd9c8e4589a45a22b10d3d09a6e9a8dd7fab0"
+    },
+    {
+      "path": "/api/cron/upgrade-ots-proofs",
+      "method": "GET",
+      "sourceSha256": "745af64c61d9f02a3de6c8fe925a3c472930c5f821ea477e3da9b6176770ef6f"
+    },
+    {
+      "path": "/api/cron/video-worker",
+      "method": "GET",
+      "sourceSha256": "323164032047d58a704bbb7f6df87f72acdd195cef84728502f6ec8d0aa3cc73"
+    }
+  ],
+  "sourceHashes": {
+    "src/lib/cron-auth.ts": "9d02a80e5a255bb0c4d5d81adb950aebec74a38317129e636705caf3bc561323",
+    "src/app/api/social/connect/route.ts": "377616c913f03984f3d50ffa3b10aa64285b87ce47a96cf34464b6f7745184f6",
+    "src/app/api/social/callback/route.ts": "64664c0cbe73d5630a3f6404dc09e5fea01925eed6cab754a6caff8dd55e3137",
+    "src/lib/social-oauth-state.ts": "900b792db1ff4272ad4b48be0556781af689ef180cf187e65af162c489c859b3",
+    "src/app/auth/callback/route.ts": "9b8b711e608b7216d0c13378f8b987f54949dfebc7f4eadf4c2483697151cc0d",
+    "src/lib/auth-navigation.ts": "cf6e7cd96facfb47a9b084fb0ebacbc033762d87ed4c21a517b2d870c2b6989c",
+    "src/middleware.ts": "3f0440d40ada0410af40f17f2ade74b0b6b11917ad3efe2775a88063c49c4452"
+  },
+  "results": [
+    {
+      "name": "cron account-deletion GET missing",
+      "method": "GET",
+      "path": "/api/cron/account-deletion",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 407,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron account-deletion GET invalid",
+      "method": "GET",
+      "path": "/api/cron/account-deletion",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 551,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron account-deletion POST missing",
+      "method": "POST",
+      "path": "/api/cron/account-deletion",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 527,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron account-deletion POST invalid",
+      "method": "POST",
+      "path": "/api/cron/account-deletion",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 495,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron ambassador-check POST missing",
+      "method": "POST",
+      "path": "/api/cron/ambassador-check",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 342,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron ambassador-check POST invalid",
+      "method": "POST",
+      "path": "/api/cron/ambassador-check",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 515,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron asso-transfer GET missing",
+      "method": "GET",
+      "path": "/api/cron/asso-transfer",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 434,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron asso-transfer GET invalid",
+      "method": "GET",
+      "path": "/api/cron/asso-transfer",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 516,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron auto-learn GET missing",
+      "method": "GET",
+      "path": "/api/cron/auto-learn",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 411,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron auto-learn GET invalid",
+      "method": "GET",
+      "path": "/api/cron/auto-learn",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 515,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron auto-plan GET missing",
+      "method": "GET",
+      "path": "/api/cron/auto-plan",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 411,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron auto-plan GET invalid",
+      "method": "GET",
+      "path": "/api/cron/auto-plan",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 534,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron auto-trends GET missing",
+      "method": "GET",
+      "path": "/api/cron/auto-trends",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 595,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron auto-trends GET invalid",
+      "method": "GET",
+      "path": "/api/cron/auto-trends",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 445,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron contest-judge GET missing",
+      "method": "GET",
+      "path": "/api/cron/contest-judge",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 523,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron contest-judge GET invalid",
+      "method": "GET",
+      "path": "/api/cron/contest-judge",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 524,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron contest-monthly GET missing",
+      "method": "GET",
+      "path": "/api/cron/contest-monthly",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 525,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron contest-monthly GET invalid",
+      "method": "GET",
+      "path": "/api/cron/contest-monthly",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 526,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron contest-weekly GET missing",
+      "method": "GET",
+      "path": "/api/cron/contest-weekly",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 521,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron contest-weekly GET invalid",
+      "method": "GET",
+      "path": "/api/cron/contest-weekly",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 348,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron email-sequences GET missing",
+      "method": "GET",
+      "path": "/api/cron/email-sequences",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 417,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron email-sequences GET invalid",
+      "method": "GET",
+      "path": "/api/cron/email-sequences",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 448,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron fiscal-palier POST missing",
+      "method": "POST",
+      "path": "/api/cron/fiscal-palier",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 484,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron fiscal-palier POST invalid",
+      "method": "POST",
+      "path": "/api/cron/fiscal-palier",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 515,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron karma-defi POST missing",
+      "method": "POST",
+      "path": "/api/cron/karma-defi",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 407,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron karma-defi POST invalid",
+      "method": "POST",
+      "path": "/api/cron/karma-defi",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 333,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron karma-lightning POST missing",
+      "method": "POST",
+      "path": "/api/cron/karma-lightning",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 431,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron karma-lightning POST invalid",
+      "method": "POST",
+      "path": "/api/cron/karma-lightning",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 518,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron karma-split-distribute GET missing",
+      "method": "GET",
+      "path": "/api/cron/karma-split-distribute",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 349,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron karma-split-distribute GET invalid",
+      "method": "GET",
+      "path": "/api/cron/karma-split-distribute",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 389,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron karma-tournoi POST missing",
+      "method": "POST",
+      "path": "/api/cron/karma-tournoi",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 412,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron karma-tournoi POST invalid",
+      "method": "POST",
+      "path": "/api/cron/karma-tournoi",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 347,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron smart-split POST missing",
+      "method": "POST",
+      "path": "/api/cron/smart-split",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 421,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron smart-split POST invalid",
+      "method": "POST",
+      "path": "/api/cron/smart-split",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 356,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron streak-update GET missing",
+      "method": "GET",
+      "path": "/api/cron/streak-update",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 385,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron streak-update GET invalid",
+      "method": "GET",
+      "path": "/api/cron/streak-update",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 346,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron sutra-auto GET missing",
+      "method": "GET",
+      "path": "/api/cron/sutra-auto",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 347,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron sutra-auto GET invalid",
+      "method": "GET",
+      "path": "/api/cron/sutra-auto",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 340,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron upgrade-ots-proofs GET missing",
+      "method": "GET",
+      "path": "/api/cron/upgrade-ots-proofs",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 334,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron upgrade-ots-proofs GET invalid",
+      "method": "GET",
+      "path": "/api/cron/upgrade-ots-proofs",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 348,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron video-worker GET missing",
+      "method": "GET",
+      "path": "/api/cron/video-worker",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 349,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "cron video-worker GET invalid",
+      "method": "GET",
+      "path": "/api/cron/video-worker",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 344,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "social callback missing",
+      "method": "GET",
+      "path": "/api/social/callback",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 344,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=missing_params",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social callback denied",
+      "method": "GET",
+      "path": "/api/social/callback?error=access_denied",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 346,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=oauth_denied",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social callback missing-state",
+      "method": "GET",
+      "path": "/api/social/callback?code=postdeploy-invalid&platform=youtube",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 334,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=missing_params",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social callback invalid-platform",
+      "method": "GET",
+      "path": "/api/social/callback?code=postdeploy-invalid&state=postdeploy-invalid-state&platform=postdeploy-invalid",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 346,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=invalid_platform",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social callback no-session",
+      "method": "GET",
+      "path": "/api/social/callback?code=postdeploy-invalid&state=postdeploy-invalid-state&platform=youtube",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 340,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=session_required",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social callback legacy-user-state",
+      "method": "GET",
+      "path": "/api/social/callback?code=postdeploy-invalid&state=00000000-0000-0000-0000-000000000000&platform=youtube",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 344,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=session_required",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social callback redirect-in-state",
+      "method": "GET",
+      "path": "/api/social/callback?code=postdeploy-invalid&state=https%3A%2F%2Finvalid.example&platform=youtube",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 345,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=session_required",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social callback forwarded-host ignored",
+      "method": "GET",
+      "path": "/api/social/callback?error=access_denied",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 344,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=oauth_denied",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social callback repeated invalid session",
+      "method": "GET",
+      "path": "/api/social/callback?code=postdeploy-invalid&state=postdeploy-invalid-state&platform=youtube",
+      "expectedStatus": 302,
+      "status": 302,
+      "durationMs": 345,
+      "redirectLocation": "https://sutra.purama.dev/settings/social?error=session_required",
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "social connect no session",
+      "method": "POST",
+      "path": "/api/social/connect",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 356,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "social connect malformed body no session",
+      "method": "POST",
+      "path": "/api/social/connect",
+      "expectedStatus": 401,
+      "status": 401,
+      "durationMs": 346,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "social connect cross-origin",
+      "method": "POST",
+      "path": "/api/social/connect",
+      "expectedStatus": 403,
+      "status": 403,
+      "durationMs": 350,
+      "redirectLocation": null,
+      "setCookie": false,
+      "errorMatches": true,
+      "pass": true
+    },
+    {
+      "name": "social connect disallowed method",
+      "method": "GET",
+      "path": "/api/social/connect",
+      "expectedStatus": 405,
+      "status": 405,
+      "durationMs": 333,
+      "redirectLocation": null,
+      "setCookie": false,
+      "pass": true
+    },
+    {
+      "name": "auth callback missing code",
+      "method": "GET",
+      "path": "/auth/callback",
+      "expectedStatus": 307,
+      "status": 307,
+      "durationMs": 347,
+      "redirectLocation": "https://0.0.0.0:3000/login?error=missing_code",
+      "setCookie": false,
+      "pass": false
+    },
+    {
+      "name": "auth callback external next rejected without code",
+      "method": "GET",
+      "path": "/auth/callback?next=https%3A%2F%2Fpostdeploy.invalid",
+      "expectedStatus": 307,
+      "status": 307,
+      "durationMs": 330,
+      "redirectLocation": "https://0.0.0.0:3000/login?error=missing_code",
+      "setCookie": false,
+      "pass": false
+    },
+    {
+      "name": "auth callback forwarded-host ignored",
+      "method": "GET",
+      "path": "/auth/callback",
+      "expectedStatus": 307,
+      "status": 307,
+      "durationMs": 341,
+      "redirectLocation": "https://0.0.0.0:3000/login?error=missing_code",
+      "setCookie": false,
+      "pass": false
+    }
+  ],
+  "passed": 55,
+  "failed": 3,
+  "limits": [
+    "OAuth successful provider exchange not invoked.",
+    "Cron authenticated work intentionally not invoked.",
+    "OAuth atomic consumption/replay remains covered by unchanged CI; these live requests never have a valid session or state.",
+    "Source inspection establishes pre-effect returns; no outbound packet capture performed."
+  ]
+}

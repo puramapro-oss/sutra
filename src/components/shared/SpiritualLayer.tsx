@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, X } from "lucide-react";
+import { motion } from "framer-motion";
+import { Sparkles } from "lucide-react";
+import { Modal } from "@/components/ui/Modal";
 import { createClient } from "@/lib/supabase";
 import { getRandomQuote } from "@/lib/awakening";
 import type { Affirmation } from "@/lib/awakening";
@@ -25,7 +26,8 @@ export default function SpiritualLayer() {
   useEffect(() => {
     const key = "sutra_affirmation_shown";
     const today = new Date().toISOString().slice(0, 10);
-    const lastShown = localStorage.getItem(key);
+    let lastShown: string | null = null;
+    try { lastShown = localStorage.getItem(key); } catch { /* Private browsing can disable storage. */ }
 
     if (lastShown === today) return;
 
@@ -54,7 +56,7 @@ export default function SpiritualLayer() {
   const handleIntegrate = useCallback(() => {
     setIntegrated(true);
     const today = new Date().toISOString().slice(0, 10);
-    localStorage.setItem("sutra_affirmation_shown", today);
+    try { localStorage.setItem("sutra_affirmation_shown", today); } catch { /* Closing remains possible without storage. */ }
     setTimeout(() => {
       setShowAffirmation(false);
       setIntegrated(false);
@@ -63,45 +65,15 @@ export default function SpiritualLayer() {
 
   const handleDismiss = useCallback(() => {
     const today = new Date().toISOString().slice(0, 10);
-    localStorage.setItem("sutra_affirmation_shown", today);
+    try { localStorage.setItem("sutra_affirmation_shown", today); } catch { /* Closing remains possible without storage. */ }
     setShowAffirmation(false);
   }, []);
 
   return (
     <>
       {/* Affirmation modal */}
-      <AnimatePresence>
-        {showAffirmation && affirmation && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-          >
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-              onClick={handleDismiss}
-            />
-
-            {/* Card */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="relative max-w-md w-full bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 text-center shadow-[0_20px_60px_rgba(139,92,246,0.15)]"
-            >
-              <button
-                onClick={handleDismiss}
-                className="absolute top-4 right-4 text-white/30 hover:text-white/60 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
+      <Modal open={showAffirmation && Boolean(affirmation)} onClose={handleDismiss} title="Affirmation du jour">
+        {affirmation && <div className="text-center">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -114,7 +86,7 @@ export default function SpiritualLayer() {
               <p className="text-xl font-medium text-white mb-2 leading-relaxed">
                 &ldquo;{affirmation.text_fr}&rdquo;
               </p>
-              <p className="text-sm text-white/30 mb-6 capitalize">
+              <p className="text-sm text-white/65 mb-6 capitalize">
                 {affirmation.category === "love" && "Amour"}
                 {affirmation.category === "power" && "Puissance"}
                 {affirmation.category === "abundance" && "Abondance"}
@@ -131,14 +103,12 @@ export default function SpiritualLayer() {
               >
                 {integrated ? "Integre ✨" : "J'integre ✨"}
               </motion.button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </div>}
+      </Modal>
 
       {/* Footer quote (always visible in dashboard) */}
-      <div className="fixed bottom-20 lg:bottom-4 left-4 lg:left-[296px] right-4 z-30 pointer-events-none">
-        <p className="text-center text-xs text-white/20 italic">
+      <div data-testid="studio-quote" className="mt-8 px-2">
+        <p className="text-center text-xs text-white/65 italic">
           &ldquo;{quote.text}&rdquo; — {quote.author}
         </p>
       </div>

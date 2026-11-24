@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Modal } from '@/components/ui/Modal'
 import { motion } from 'framer-motion'
 import {
   Play,
@@ -53,13 +55,6 @@ export function VideoCard({
   const [showActions, setShowActions] = useState(false)
   const status = statusConfig[video.status] ?? statusConfig.draft
 
-  const handleClick = () => {
-    if (video.status === 'ready' || video.status === 'published') {
-      router.push(`/library/${video.id}`)
-    } else if (video.status === 'draft') {
-      router.push(`/create?draft=${video.id}`)
-    }
-  }
 
   return (
     <motion.div
@@ -69,18 +64,20 @@ export function VideoCard({
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       data-testid={testId ?? `video-card-${video.id}`}
       className={cn(
-        'group relative overflow-hidden rounded-2xl cursor-pointer',
+        'group relative overflow-hidden rounded-2xl',
         'bg-white/[0.03] backdrop-blur-xl border border-white/[0.06]',
         'hover:border-violet-500/20 hover:shadow-lg hover:shadow-violet-500/5',
         'transition-all duration-300',
         className
       )}
-      onClick={handleClick}
     >
       {/* Thumbnail area */}
       <div className="relative aspect-video w-full overflow-hidden bg-white/[0.02]">
+        {(video.status === 'draft' || video.status === 'ready' || video.status === 'published') && (
+          <Link href={video.status === 'draft' ? `/create?draft=${video.id}` : `/library/${video.id}`} aria-label={`Ouvrir : ${video.title ?? 'Vidéo sans titre'}`} className="absolute inset-0 z-10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-400" />
+        )}
         {video.thumbnail_url ? (
-          <img
+          <img loading="lazy" decoding="async"
             src={video.thumbnail_url}
             alt={video.title ?? 'Video'}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -124,14 +121,16 @@ export function VideoCard({
       {/* Info area */}
       <div className="p-4">
         <h3 className="text-sm font-semibold text-white/90 truncate mb-1">
-          {video.title ?? 'Video sans titre'}
+          {video.status === 'draft' || video.status === 'ready' || video.status === 'published' ? (
+            <Link href={video.status === 'draft' ? `/create?draft=${video.id}` : `/library/${video.id}`} className="hover:underline">{video.title ?? 'Video sans titre'}</Link>
+          ) : (video.title ?? 'Video sans titre')}
         </h3>
-        <div className="flex items-center gap-2 text-xs text-white/40">
+        <div className="flex items-center gap-2 text-xs text-white/65">
           <Calendar className="h-3 w-3 shrink-0" />
           <span>{formatRelativeDate(video.created_at)}</span>
           {video.format && (
             <>
-              <span className="text-white/20">|</span>
+              <span className="text-white/65">|</span>
               <span>{video.format}</span>
             </>
           )}
@@ -139,9 +138,12 @@ export function VideoCard({
       </div>
 
       {/* Actions menu */}
-      <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex justify-end px-4 pb-3">
         <button
           data-testid={`video-actions-${video.id}`}
+          aria-label={`Actions : ${video.title ?? 'Vidéo sans titre'}`}
+          aria-haspopup="dialog"
+          aria-expanded={showActions}
           onClick={(e) => {
             e.stopPropagation()
             setShowActions((prev) => !prev)
@@ -151,13 +153,7 @@ export function VideoCard({
           <MoreVertical className="h-4 w-4" />
         </button>
 
-        {showActions && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="absolute top-full right-0 mt-1 w-40 rounded-xl bg-[#0c0b14]/95 backdrop-blur-2xl border border-white/[0.08] shadow-2xl overflow-hidden z-30"
-          >
+        <Modal open={showActions} onClose={() => setShowActions(false)} title="Actions de la vidéo">
             <button
               onClick={(e) => {
                 e.stopPropagation()
@@ -170,15 +166,19 @@ export function VideoCard({
               Modifier
             </button>
             <button
-              onClick={(e) => {
+              onClick={async (e) => {
                 e.stopPropagation()
+                try {
                 if (video.video_url) {
-                  navigator.clipboard.writeText(video.video_url)
+                  await navigator.clipboard.writeText(video.video_url)
                 } else {
-                  navigator.clipboard.writeText(`${window.location.origin}/library/${video.id}`)
+                  await navigator.clipboard.writeText(`${window.location.origin}/library/${video.id}`)
                 }
                 setShowActions(false)
                 import('sonner').then(({ toast }) => toast.success('Lien copie'))
+                } catch {
+                  import('sonner').then(({ toast }) => toast.error('Impossible de copier le lien. Réessaie.'))
+                }
               }}
               className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
             >
@@ -199,8 +199,7 @@ export function VideoCard({
                 Supprimer
               </button>
             )}
-          </motion.div>
-        )}
+        </Modal>
       </div>
     </motion.div>
   )

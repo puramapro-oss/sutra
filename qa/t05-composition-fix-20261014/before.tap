@@ -1,0 +1,62 @@
+✔ 64 presence combinations: required/optional/disabled agree with Shotstack tracks and clock (293.730208ms)
+✖ required subtitle cannot fall wholly between two video frames (1.231375ms)
+✖ inherited Object names are not legal brief requirement keys (0.226375ms)
+✖ subtitle glyph size and lower margin stay proportional from 720p to 4K (136.853375ms)
+✔ CPU composition 16:9: all required tracks, measured files, corrupt/truncated rejection (1124.846125ms)
+✔ CPU composition 9:16: all required tracks, measured files, corrupt/truncated rejection (1063.309292ms)
+✔ CPU composition 1:1: all required tracks, measured files, corrupt/truncated rejection (1060.435833ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 4
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3869.462292
+
+✖ failing tests:
+
+test at scripts/test-t05-composition-fix.mts:1:5159
+✖ required subtitle cannot fall wholly between two video frames (1.231375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-composition-fix-20261014/scripts/test-t05-composition-fix.mts:100:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /Sous-titre/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at scripts/test-t05-composition-fix.mts:1:5451
+✖ inherited Object names are not legal brief requirement keys (0.226375ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-composition-fix-20261014/scripts/test-t05-composition-fix.mts:107:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /inconnue/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at scripts/test-t05-composition-fix.mts:1:5707
+✖ subtitle glyph size and lower margin stay proportional from 720p to 4K (136.853375ms)
+  AssertionError [ERR_ASSERTION]: [{"width":1280,"height":720,"glyphHeight":45,"glyphWidth":201,"margin":162},{"width":3840,"height":2160,"glyphHeight":398,"glyphWidth":1794,"margin":557}]
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t05-composition-fix-20261014/scripts/test-t05-composition-fix.mts:128:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

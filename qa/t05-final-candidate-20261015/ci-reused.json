@@ -1,0 +1,190 @@
+{
+  "candidate": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "run": 38797929920,
+  "receipt": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-cb3f893-contract-counts.json",
+  "receiptSha256": "3c8739c823ed69202d72d7c4b2f4dc1135ba575c16ddaa492b4447e6b13ea57d",
+  "groups": [
+    {
+      "name": "retained-real-exports",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-real-export.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 52537,
+      "sha256": "f2a0c2934913f9e45071f5261bd252138dd159c424f06e0b5cd1313b5234cd4a",
+      "counts": {
+        "tests": [
+          49
+        ],
+        "pass": [
+          49
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "composition-delta",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-composition-fix.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 9424,
+      "sha256": "7eb9c5b20ea4889b4fa130c70d76d4c47a4420f4d4834e7ba36e92c7c704465d",
+      "counts": {
+        "tests": [
+          12
+        ],
+        "pass": [
+          12
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "final-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-final-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 58165,
+      "sha256": "5cf089eb5d33bf78c54f975fb73dce23112e4e91f22ccb818a2dc4ca8e313834",
+      "counts": {
+        "tests": [
+          32
+        ],
+        "pass": [
+          32
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "salad-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-salad-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 7211,
+      "sha256": "50ef53f72c28899088eb67994ea11d14c14e2e79191aa304540a96757652bfb0",
+      "counts": {
+        "tests": [
+          25
+        ],
+        "pass": [
+          25
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "local-engine",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-local-engine-e2e.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1083,
+      "sha256": "bdf37dd2bb416c09e02370e9f63c78c3813728f9bfb2dbb4c0e8d220b37a88b9",
+      "counts": {
+        "tests": [
+          3
+        ],
+        "pass": [
+          3
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      }
+    },
+    {
+      "name": "compositor",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--import",
+        "./scripts/helpers/local-media-fixture.mts",
+        "--test",
+        "--test-concurrency=1",
+        "src/lib/ffmpeg-compositor.test.ts",
+        "src/lib/ffmpeg-compositor-formats.test.ts",
+        "src/lib/media-validation.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 51554,
+      "sha256": "3e41827abce74deaa2060deb2be7e24a09994d18eb9972a2a3828001bda600d0",
+      "counts": {
+        "tests": [
+          31
+        ],
+        "pass": [
+          31
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      }
+    }
+  ],
+  "artifactsMeasuredAndHashMatched": 17,
+  "scope": "Exact candidate Linux CPU CI; groups overlap, do not sum; paid providers not tested"
+}

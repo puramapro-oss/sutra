@@ -1,0 +1,242 @@
+{
+  "summary": {
+    "changed_count": 14,
+    "affected_count": 11,
+    "changed_files": 4,
+    "risk_level": "high"
+  },
+  "changed_symbols": [
+    {
+      "id": "Function:scripts/helpers/social-database.mts:socialDatabase",
+      "name": "socialDatabase",
+      "type": "Function",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.social_accounts@15:92",
+      "name": "social_accounts",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.sutra_auto_config@15:63",
+      "name": "sutra_auto_config",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.sutra_auto_videos@15:36",
+      "name": "sutra_auto_videos",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.videos@15:19",
+      "name": "videos",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.scheduled_posts@16:119",
+      "name": "scheduled_posts",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.social_posts@16:92",
+      "name": "social_posts",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.social_publication_journals@16:4",
+      "name": "social_publication_journals",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.video_jobs@16:149",
+      "name": "video_jobs",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/helpers/social-database.mts:socialDatabase.hook@20:4",
+      "name": "hook",
+      "type": "Property",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/helpers/social-database.mts:socialDatabase.from@21:41",
+      "name": "from",
+      "type": "Function",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/helpers/social-database.mts:socialDatabase.from@21:47.execute@25:4",
+      "name": "execute",
+      "type": "Function",
+      "filePath": "scripts/helpers/social-database.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/publication-journal.ts:runPublicationJournal",
+      "name": "runPublicationJournal",
+      "type": "Function",
+      "filePath": "src/lib/publication-journal.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/lib/publication-journal.ts:runPublicationJournal.authorize@95:2",
+      "name": "authorize",
+      "type": "Function",
+      "filePath": "src/lib/publication-journal.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_0_get",
+      "name": "GET → FetchWithRetry",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_16_get",
+      "name": "GET → BreakerKey",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_17_get",
+      "name": "GET → Abort",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_22_get",
+      "name": "GET → ContentWithTags",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_23_get",
+      "name": "GET → ProviderPlatform",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_24_get",
+      "name": "GET → Headers",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_37_get",
+      "name": "GET → PublicationOutcome",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_48_runpublicationjourna",
+      "name": "RunPublicationJournal → PublicPostUrl",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_115_runpublicationjourna",
+      "name": "RunPublicationJournal → ProviderPlatform",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_191_runpublicationjourna",
+      "name": "RunPublicationJournal → FetchWithRetry",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_202_get",
+      "name": "GET → CreateServiceClient",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "runPublicationJournal",
+          "step": 3
+        }
+      ]
+    }
+  ]
+}

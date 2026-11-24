@@ -1,0 +1,51 @@
+FAIL 375: schedule labels, state and contrast: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     reasons: [
++       'Fix any of the following:\n' +
++         '  Element has insufficient color contrast of 3.72 (foreground color: #6a696e, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1'
++     ],
++     targets: [
++       [
++         '.mt-1'
++       ]
++     ]
++   }
++ ]
+- []
+
+PASS 375: failed schedule save preserves draft and rejects duplicate submissions
+FAIL 1440: schedule labels, state and contrast: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     reasons: [
++       'Fix any of the following:\n' +
++         '  Element has insufficient color contrast of 3.72 (foreground color: #6a696e, background color: #06050e, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1'
++     ],
++     targets: [
++       [
++         '.mt-1'
++       ]
++     ]
++   }
++ ]
+- []
+
+PASS 1440: failed schedule save preserves draft and rejects duplicate submissions
+FAIL failed delete preserves schedule and manual retry deletes once: locator.evaluate: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('button', { name: 'Supprimer Planning test sans publication' })[22m
+
+FAIL lost save response has bounded wait, no automatic retry and stable draft ID: Expected values to be strictly equal:
+
+2 !== 1
+
+PASS schedule load failure cannot become empty or allow overwriting existing schedules
+PASS malformed successful load cannot become an empty schedule
+PASS no unexpected mutation, uncaught error or hydration mismatch

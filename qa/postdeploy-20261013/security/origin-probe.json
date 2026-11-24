@@ -1,0 +1,25 @@
+{
+  "timestampUtc": "2026-10-13T01:03:19.253019+00:00",
+  "url": "https://sutra.purama.dev/api/social/connect",
+  "cases": [
+    {
+      "origin": "https://sutra.purama.dev",
+      "status": 403,
+      "body": {
+        "error": "Origine refusee"
+      },
+      "expectedStatus": 401,
+      "pass": false
+    },
+    {
+      "origin": "https://postdeploy.invalid",
+      "status": 403,
+      "body": {
+        "error": "Origine refusee"
+      },
+      "expectedStatus": 403,
+      "pass": true
+    }
+  ],
+  "command": "Equivalent inline Python captured by origin-probe.py; same live requests already executed."
+}

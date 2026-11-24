@@ -1,0 +1,47 @@
+{
+  "owner": "T07",
+  "issuedAt": "2026-10-19T22:53:03.038346+00:00",
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "branch": "codex/sutra-t07-closure-20261020",
+  "status": "ACK_TECHNIQUE_BORNE_NACK_ACTIVATION_R107",
+  "activationAuthorized": false,
+  "runtimeSchedulerActivated": false,
+  "results": {
+    "sourceAndCI": {
+      "status": "PASS",
+      "checks": 1207,
+      "manifestBlobs": 1188,
+      "ciRun": 39328438907,
+      "ciHead": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+      "ciReusedNotRerun": true
+    },
+    "freshRecovery": {
+      "PASS": 2,
+      "FAIL": 1,
+      "NON TESTÉ": 1,
+      "failure": "R107 unprepared noon occurrence missing after20h and PostgreSQL restart"
+    },
+    "historicalLocal": {
+      "candidate": "ab935e59ca4e39776630f05b2ba6c0422c74ec62",
+      "commit": "8becf38d5f5c35b706eee9061d47bf16d679c838",
+      "pass": 32,
+      "rerun": false
+    }
+  },
+  "blockingOwner": "T03",
+  "blockingCondition": "R107 owner patch not integrated into candidate. New durable cursor/RPC contract awaited; candidate requires new independent retest.",
+  "limits": [
+    "No paid provider, publication, cron service or production action.",
+    "No 24/7 real soak, native Safari, device or platform concurrency proof.",
+    "Cancellation stops local tasks; a provider already submitted may continue remotely, receipt must be retained/reconciled.",
+    "Historical local proofs and candidate CI are separate from this fresh R107 test."
+  ],
+  "proofs": [
+    "verified-evidence.json",
+    "candidate-79cd-recovery/results.json",
+    "candidate-79cd-recovery/database.json",
+    "candidate-79cd-recovery-execution.json",
+    "validation.json"
+  ],
+  "gates": "Syntax, targeted ESLint, source/doc whitespace, scope and staged secret scan PASS. Raw evidence diff-check FAIL on three tool-log EOF blank lines retained. GitNexus CRITICAL/truncated retained; details validation.json."
+}

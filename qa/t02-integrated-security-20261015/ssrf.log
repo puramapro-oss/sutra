@@ -1,0 +1,396 @@
+TAP version 13
+# (node:33641) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:33641) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T02-C01 Salad disabled by default, no network or implicit credentials
+ok 1 - T02-C01 Salad disabled by default, no network or implicit credentials
+  ---
+  duration_ms: 0.727625
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects http
+ok 2 - T02-C02 Salad URL rejects http
+  ---
+  duration_ms: 1.302667
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects metadata
+ok 3 - T02-C02 Salad URL rejects metadata
+  ---
+  duration_ms: 0.157416
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects loopback
+ok 4 - T02-C02 Salad URL rejects loopback
+  ---
+  duration_ms: 0.107667
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects ipv6
+ok 5 - T02-C02 Salad URL rejects ipv6
+  ---
+  duration_ms: 0.07525
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects numeric
+ok 6 - T02-C02 Salad URL rejects numeric
+  ---
+  duration_ms: 0.081917
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects suffixSpoof
+ok 7 - T02-C02 Salad URL rejects suffixSpoof
+  ---
+  duration_ms: 0.077
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects credentials
+ok 8 - T02-C02 Salad URL rejects credentials
+  ---
+  duration_ms: 0.074542
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects query
+ok 9 - T02-C02 Salad URL rejects query
+  ---
+  duration_ms: 0.085542
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects fragment
+ok 10 - T02-C02 Salad URL rejects fragment
+  ---
+  duration_ms: 0.124625
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects customPort
+ok 11 - T02-C02 Salad URL rejects customPort
+  ---
+  duration_ms: 0.112917
+  type: 'test'
+  ...
+# Subtest: T02-C02 Salad URL rejects path
+ok 12 - T02-C02 Salad URL rejects path
+  ---
+  duration_ms: 0.057125
+  type: 'test'
+  ...
+# Subtest: T02-C03 Gateway and worker credentials must differ
+ok 13 - T02-C03 Gateway and worker credentials must differ
+  ---
+  duration_ms: 0.072541
+  type: 'test'
+  ...
+# Subtest: T02-C04 malformed credentials are rejected without reflecting their value
+ok 14 - T02-C04 malformed credentials are rejected without reflecting their value
+  ---
+  duration_ms: 0.247292
+  type: 'test'
+  ...
+# Subtest: T02-C05 capability GET sends both credentials only as headers and forbids redirects
+ok 15 - T02-C05 capability GET sends both credentials only as headers and forbids redirects
+  ---
+  duration_ms: 10.432833
+  type: 'test'
+  ...
+# Subtest: T02-C06 network errors never expose credentials to capability callers
+ok 16 - T02-C06 network errors never expose credentials to capability callers
+  ---
+  duration_ms: 0.279333
+  type: 'test'
+  ...
+# Subtest: T02-C07 foreign job scope/fingerprint rejected before accepting any result
+ok 17 - T02-C07 foreign job scope/fingerprint rejected before accepting any result
+  ---
+  duration_ms: 1.020042
+  type: 'test'
+  ...
+# Subtest: T02-C08 result download binds fixed job path, both auth headers, bytes hash and redirects
+ok 18 - T02-C08 result download binds fixed job path, both auth headers, bytes hash and redirects
+  ---
+  duration_ms: 0.742792
+  type: 'test'
+  ...
+# Subtest: T02-C09 private bridge accepts loopback only, never a remote/metadata host
+ok 19 - T02-C09 private bridge accepts loopback only, never a remote/metadata host
+  ---
+  duration_ms: 0.106334
+  type: 'test'
+  ...
+# Subtest: T02-C10 bridge refuses result URL https://evil.example/files without download
+ok 20 - T02-C10 bridge refuses result URL https://evil.example/files without download
+  ---
+  duration_ms: 0.207833
+  type: 'test'
+  ...
+# Subtest: T02-C10 bridge refuses result URL http://127.0.0.1:7861/admin without download
+ok 21 - T02-C10 bridge refuses result URL http://127.0.0.1:7861/admin without download
+  ---
+  duration_ms: 0.129959
+  type: 'test'
+  ...
+# Subtest: T02-C10 bridge refuses result URL http://127.0.0.1:7861/files\#fixture without download
+ok 22 - T02-C10 bridge refuses result URL http://127.0.0.1:7861/files\#fixture without download
+  ---
+  duration_ms: 0.133917
+  type: 'test'
+  ...
+# Subtest: T02-C11 worker rejects missing/forged auth before touching dependencies: /health
+ok 23 - T02-C11 worker rejects missing/forged auth before touching dependencies: /health
+  ---
+  duration_ms: 0.962417
+  type: 'test'
+  ...
+# Subtest: T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/capabilities
+ok 24 - T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/capabilities
+  ---
+  duration_ms: 0.319916
+  type: 'test'
+  ...
+# Subtest: T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs
+ok 25 - T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs
+  ---
+  duration_ms: 0.202084
+  type: 'test'
+  ...
+# Subtest: T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ok 26 - T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  ---
+  duration_ms: 0.226458
+  type: 'test'
+  ...
+# Subtest: T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/media
+ok 27 - T02-C11 worker rejects missing/forged auth before touching dependencies: /v1/jobs/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/media
+  ---
+  duration_ms: 0.151958
+  type: 'test'
+  ...
+# Subtest: T02-C12 credentials in query cannot substitute for worker authentication
+ok 28 - T02-C12 credentials in query cannot substitute for worker authentication
+  ---
+  duration_ms: 0.225083
+  type: 'test'
+  ...
+# Subtest: T02-C13 worker storage errors are expunged, no signed URL or credential returned
+ok 29 - T02-C13 worker storage errors are expunged, no signed URL or credential returned
+  ---
+  duration_ms: 0.265166
+  type: 'test'
+  ...
+# Subtest: T02-C14 replacing server credential invalidates old bearer for new worker instance
+ok 30 - T02-C14 replacing server credential invalidates old bearer for new worker instance
+  ---
+  duration_ms: 0.089541
+  type: 'test'
+  ...
+# Subtest: T02-C15 authenticated caller cannot use arbitrary bridge paths through worker wrapper
+ok 31 - T02-C15 authenticated caller cannot use arbitrary bridge paths through worker wrapper
+  ---
+  duration_ms: 0.266375
+  type: 'test'
+  ...
+# Subtest: audio and raster images use the pinned transport and preserve the downloaded bytes
+ok 32 - audio and raster images use the pinned transport and preserve the downloaded bytes
+  ---
+  duration_ms: 5.602083
+  type: 'test'
+  ...
+# Subtest: audio: mixed private/public DNS is rejected before any connection
+ok 33 - audio: mixed private/public DNS is rejected before any connection
+  ---
+  duration_ms: 0.244334
+  type: 'test'
+  ...
+# Subtest: audio: redirects into cloud metadata are rejected
+ok 34 - audio: redirects into cloud metadata are rejected
+  ---
+  duration_ms: 0.213042
+  type: 'test'
+  ...
+# Subtest: audio: compressed bodies and streamed overflow are rejected
+ok 35 - audio: compressed bodies and streamed overflow are rejected
+  ---
+  duration_ms: 0.294625
+  type: 'test'
+  ...
+# Subtest: image: mixed private/public DNS is rejected before any connection
+ok 36 - image: mixed private/public DNS is rejected before any connection
+  ---
+  duration_ms: 0.127083
+  type: 'test'
+  ...
+# Subtest: image: redirects into cloud metadata are rejected
+ok 37 - image: redirects into cloud metadata are rejected
+  ---
+  duration_ms: 0.306458
+  type: 'test'
+  ...
+# Subtest: image: compressed bodies and streamed overflow are rejected
+ok 38 - image: compressed bodies and streamed overflow are rejected
+  ---
+  duration_ms: 0.288
+  type: 'test'
+  ...
+# Subtest: audio: reject playlist, SVG or mismatched audio/mpeg
+ok 39 - audio: reject playlist, SVG or mismatched audio/mpeg
+  ---
+  duration_ms: 0.345291
+  type: 'test'
+  ...
+# Subtest: audio: reject playlist, SVG or mismatched audio/wav
+ok 40 - audio: reject playlist, SVG or mismatched audio/wav
+  ---
+  duration_ms: 0.275791
+  type: 'test'
+  ...
+# Subtest: image: reject playlist, SVG or mismatched image/svg+xml
+ok 41 - image: reject playlist, SVG or mismatched image/svg+xml
+  ---
+  duration_ms: 0.177958
+  type: 'test'
+  ...
+# Subtest: image: reject playlist, SVG or mismatched image/png
+ok 42 - image: reject playlist, SVG or mismatched image/png
+  ---
+  duration_ms: 0.221584
+  type: 'test'
+  ...
+# Subtest: DNS failure does not expose the requested host or signed URL
+ok 43 - DNS failure does not expose the requested host or signed URL
+  ---
+  duration_ms: 0.177667
+  type: 'test'
+  ...
+# Subtest: pre-cancelled downloads do not resolve DNS or connect
+ok 44 - pre-cancelled downloads do not resolve DNS or connect
+  ---
+  duration_ms: 0.23025
+  type: 'test'
+  ...
+# Subtest: cancellation interrupts pending DNS without exposing the caller reason
+ok 45 - cancellation interrupts pending DNS without exposing the caller reason
+  ---
+  duration_ms: 0.235417
+  type: 'test'
+  ...
+# (node:33664) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:33664) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# (node:33664) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t02-integrated-security-20261015/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+# Unknown operation tag:  73
+# Subtest: calendar submit and lookup retain upstream binary parsing and pinned transport
+ok 46 - calendar submit and lookup retain upstream binary parsing and pinned transport
+  ---
+  duration_ms: 6.426708
+  type: 'test'
+  ...
+# Subtest: invalid calendar origins are refused before DNS or transport
+ok 47 - invalid calendar origins are refused before DNS or transport
+  ---
+  duration_ms: 0.321042
+  type: 'test'
+  ...
+# Subtest: calendar redirect denied: http://127.0.0.1/private
+ok 48 - calendar redirect denied: http://127.0.0.1/private
+  ---
+  duration_ms: 0.331208
+  type: 'test'
+  ...
+# Subtest: calendar redirect denied: http://169.254.169.254/latest/meta-data
+ok 49 - calendar redirect denied: http://169.254.169.254/latest/meta-data
+  ---
+  duration_ms: 0.224667
+  type: 'test'
+  ...
+# Subtest: calendar redirect denied: https://evil.invalid/private
+ok 50 - calendar redirect denied: https://evil.invalid/private
+  ---
+  duration_ms: 0.203875
+  type: 'test'
+  ...
+# Subtest: Esplora rejects redirects without requesting an internal destination
+ok 51 - Esplora rejects redirects without requesting an internal destination
+  ---
+  duration_ms: 0.213167
+  type: 'test'
+  ...
+# Subtest: private or mixed DNS denies both adapters before connection
+ok 52 - private or mixed DNS denies both adapters before connection
+  ---
+  duration_ms: 0.153208
+  type: 'test'
+  ...
+# Subtest: calendar responses reject compression, declared/streamed overflow and truncated bodies
+ok 53 - calendar responses reject compression, declared/streamed overflow and truncated bodies
+  ---
+  duration_ms: 0.615
+  type: 'test'
+  ...
+# Subtest: raw DNS and parser diagnostics never escape the adapters
+ok 54 - raw DNS and parser diagnostics never escape the adapters
+  ---
+  duration_ms: 0.419125
+  type: 'test'
+  ...
+# Subtest: DNS and connection stalls have a bounded deadline
+ok 55 - DNS and connection stalls have a bounded deadline
+  ---
+  duration_ms: 2.279417
+  type: 'test'
+  ...
+# Submitting to remote calendar https://a.pool.opentimestamps.org
+# Submitting to remote calendar https://b.pool.opentimestamps.org
+# Submitting to remote calendar https://a.pool.eternitywall.com
+# Submitting to remote calendar https://ots.btc.catallaxy.com
+# Calendar https://alice.btc.calendar.opentimestamps.org: SUTRA_OTS_HTTP_REJECTED
+# Subtest: synchronous transport exceptions cannot leak request diagnostics
+ok 56 - synchronous transport exceptions cannot leak request diagnostics
+  ---
+  duration_ms: 0.131625
+  type: 'test'
+  ...
+# Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+# Subtest: Esplora validates block identifiers and response schema
+ok 57 - Esplora validates block identifiers and response schema
+  ---
+  duration_ms: 0.34475
+  type: 'test'
+  ...
+# Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+# Subtest: application stamp and pending verification use protected calendar adapters
+ok 58 - application stamp and pending verification use protected calendar adapters
+  ---
+  duration_ms: 2.49325
+  type: 'test'
+  ...
+# Lite-client verification, assuming block aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa is valid
+# Submitting to remote calendar https://a.pool.opentimestamps.org
+# Submitting to remote calendar https://b.pool.opentimestamps.org
+# Submitting to remote calendar https://a.pool.eternitywall.com
+# Submitting to remote calendar https://ots.btc.catallaxy.com
+# Subtest: actual OTS crypto accepts matching Merkle fixture and refuses mismatch; no Bitcoin node access
+ok 59 - actual OTS crypto accepts matching Merkle fixture and refuses mismatch; no Bitcoin node access
+  ---
+  duration_ms: 1.21875
+  type: 'test'
+  ...
+# Subtest: content digest mismatch refuses network before verification
+ok 60 - content digest mismatch refuses network before verification
+  ---
+  duration_ms: 0.116334
+  type: 'test'
+  ...
+# Subtest: all calendar failures cannot produce a successful empty stamp
+ok 61 - all calendar failures cannot produce a successful empty stamp
+  ---
+  duration_ms: 1.064917
+  type: 'test'
+  ...
+1..61
+# tests 61
+# suites 0
+# pass 61
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 419.194959

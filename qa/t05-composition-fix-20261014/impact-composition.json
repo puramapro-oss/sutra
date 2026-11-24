@@ -1,0 +1,556 @@
+{
+  "target": {
+    "id": "Function:src/lib/composition-contract.ts:compositionPlan",
+    "name": "compositionPlan",
+    "type": "Function",
+    "filePath": "src/lib/composition-contract.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 31,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 13,
+    "processes_affected": 6,
+    "modules_affected": 4
+  },
+  "byDepthCounts": {
+    "1": 13,
+    "2": 12,
+    "3": 6
+  },
+  "affected_processes": [
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "src/app/api/cron/video-worker/route.ts",
+      "affected_process_count": 6,
+      "total_hits": 12,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/video/export/route.ts",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/auto/generate/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/create/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/production/route.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "composeVideo",
+      "type": "Function",
+      "filePath": "src/lib/ffmpeg-compositor.ts",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 13,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_6",
+      "hits": 8,
+      "impact": "direct"
+    },
+    {
+      "name": "Production",
+      "hits": 6,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_329",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:scripts/test-editor-export.mts",
+        "name": "test-editor-export.mts",
+        "filePath": "scripts/test-editor-export.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/helpers/media-validation-fixture.ts:simulatedValidation",
+        "name": "simulatedValidation",
+        "filePath": "scripts/helpers/media-validation-fixture.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/ffmpeg-compositor.ts:composeVideo",
+        "name": "composeVideo",
+        "filePath": "src/lib/ffmpeg-compositor.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_101_composevideo",
+            "label": "ComposeVideo → GetResolution",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_44_composevideo",
+            "label": "ComposeVideo → FfmpegCompositorError",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/final-composition.ts:assembleFinalVideo",
+        "name": "assembleFinalVideo",
+        "filePath": "src/lib/final-composition.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/media-validation.ts:assertFinalMedia",
+        "name": "assertFinalMedia",
+        "filePath": "src/lib/media-validation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/media-validation.ts:compositionHash",
+        "name": "compositionHash",
+        "filePath": "src/lib/media-validation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/media-validation.ts:measureCompositionAudio",
+        "name": "measureCompositionAudio",
+        "filePath": "src/lib/media-validation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/media-validation.ts:mediaValidation",
+        "name": "mediaValidation",
+        "filePath": "src/lib/media-validation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/media-validation.ts:validateRenderedBuffer",
+        "name": "validateRenderedBuffer",
+        "filePath": "src/lib/media-validation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/media-validation.ts:validateRenderedMedia",
+        "name": "validateRenderedMedia",
+        "filePath": "src/lib/media-validation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/shotstack-timeline.ts:buildTracks",
+        "name": "buildTracks",
+        "filePath": "src/lib/shotstack-timeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/shotstack.ts:assembleFinalVideo",
+        "name": "assembleFinalVideo",
+        "filePath": "src/lib/shotstack.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/video-compositor.ts:composeVideoWithFallback",
+        "name": "composeVideoWithFallback",
+        "filePath": "src/lib/video-compositor.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:scripts/test-export-integration.mts",
+        "name": "test-export-integration.mts",
+        "filePath": "scripts/test-export-integration.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:scripts/test-auto-export-queue.mts:fn@40:77.validate@46:4",
+        "name": "validate",
+        "filePath": "scripts/test-auto-export-queue.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:scripts/test-export-integration.mts:fixture.validate@16:4",
+        "name": "validate",
+        "filePath": "scripts/test-export-integration.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:scripts/test-release-regressions.mts:fn@187:84.validate@191:22",
+        "name": "validate",
+        "filePath": "scripts/test-release-regressions.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/auto-pipeline.ts:buildAutoProviders.assemble@173:4",
+        "name": "assemble",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/auto-pipeline.ts:executeAutoJob",
+        "name": "executeAutoJob",
+        "filePath": "src/lib/auto-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/export-pipeline.ts:executeExportJob",
+        "name": "executeExportJob",
+        "filePath": "src/lib/export-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/production-pipeline.ts:defaultProviders.assemble@111:4",
+        "name": "assemble",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/production-pipeline.ts:runAssembly",
+        "name": "runAssembly",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/shotstack.ts:verifyAndStoreRenderedVideo",
+        "name": "verifyAndStoreRenderedVideo",
+        "filePath": "src/lib/shotstack.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/video-pipeline.ts:executeCreateJob",
+        "name": "executeCreateJob",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/video-worker.ts:runVideoJob",
+        "name": "runVideoJob",
+        "filePath": "src/lib/video-worker.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_41_get",
+            "label": "GET → Script",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_83_get",
+            "label": "GET → WithMediaOwner",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_40_get",
+            "label": "GET → Music",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_82_get",
+            "label": "GET → WithPipelineLease",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/auto/generate/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/auto/generate/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_205_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_73_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_217_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/create/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/create/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_163_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_281_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_76_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/cron/video-worker/route.ts:GET",
+        "name": "GET",
+        "filePath": "src/app/api/cron/video-worker/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_272_get",
+            "label": "GET → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_41_get",
+            "label": "GET → Script",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_83_get",
+            "label": "GET → WithMediaOwner",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_299_get",
+            "label": "GET → Blocked",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_82_get",
+            "label": "GET → WithPipelineLease",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_40_get",
+            "label": "GET → Music",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/production/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/production/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_324_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_279_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_88_post",
+            "label": "POST → SanitizeScriptData",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/video/export/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/video/export/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_336_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_175_post",
+            "label": "POST → IsSuperAdmin",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_130_post",
+            "label": "POST → GetMaxQuality",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_127_post",
+            "label": "POST → Canonical",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/production-pipeline.ts:executeProductionStep",
+        "name": "executeProductionStep",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_41_get",
+            "label": "GET → Script",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_40_get",
+            "label": "GET → Music",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      }
+    ]
+  }
+}

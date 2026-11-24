@@ -1,0 +1,37 @@
+
+  GitNexus Detect Changes (1.6.12)
+{"level":40,"time":1791764818072,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}
+Changes: 17 files, 127 symbols
+Affected processes: 254
+Risk level: critical
+
+Changed symbols:
+  Function fixture → scripts/test-security-account.mts
+  Property id → scripts/test-security-account.mts
+  Property subscription_status → scripts/test-security-account.mts
+  Method getUser → scripts/test-security-account.mts
+  Method select → scripts/test-security-account.mts
+  Method eq → scripts/test-security-account.mts
+  Method maybeSingle → scripts/test-security-account.mts
+  Property data → scripts/test-security-account.mts
+  Property error → scripts/test-security-account.mts
+  Method from → scripts/test-security-account.mts
+  Property auth → scripts/test-security-account.mts
+  Function identity → scripts/test-security-account.mts
+  Function queries → scripts/test-security-account.mts
+  Property client → scripts/test-security-account.mts
+  Function error → scripts/test-security-account.mts
+... and 112 more
+
+Affected execution flows:
+  • GET → Denied (5 steps) — changed: denied, enforceAccountAccess, createServerClient
+  • GET → Error (4 steps) — changed: error
+  • GET → ValidState (3 steps) — changed: GET
+  • GET → Digest (3 steps) — changed: GET
+  • GET → Execute (5 steps) — changed: enforceAccountAccess, createServerClient
+  • GET → Run (5 steps) — changed: enforceAccountAccess, createServerClient
+  • GET → Denied (5 steps) — changed: denied, enforceAccountAccess, createServerClient
+  • DELETE → Error (4 steps) — changed: error
+  • GET → Execute (5 steps) — changed: enforceAccountAccess, createServerClient
+  • GET → Run (5 steps) — changed: enforceAccountAccess, createServerClient
+... and 244 more

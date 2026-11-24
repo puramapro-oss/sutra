@@ -1,0 +1,208 @@
+
+  GitNexus Query (1.6.12)
+{
+  "processes": [
+    {
+      "id": "proc_116_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.102,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_135_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.102,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_72_get",
+      "summary": "GET → EstimateCost",
+      "priority": 0.102,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_498_submit",
+      "summary": "Submit → Blocked",
+      "priority": 0.062,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/logger.ts:estimateCost",
+      "name": "estimateCost",
+      "filePath": "src/lib/logger.ts",
+      "startLine": 109,
+      "endLine": 119,
+      "module": "Stripe",
+      "process_id": "proc_116_get",
+      "step_index": 3
+    },
+    {
+      "id": "Function:src/lib/salad/client.ts:createSaladClient.submit@66:2",
+      "name": "submit",
+      "filePath": "src/lib/salad/client.ts",
+      "startLine": 67,
+      "endLine": 110,
+      "module": "Salad",
+      "process_id": "proc_498_submit",
+      "step_index": 1
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:src/lib/fallbacks.ts:generateVisualWithFallback",
+      "name": "generateVisualWithFallback",
+      "filePath": "src/lib/fallbacks.ts",
+      "startLine": 38,
+      "endLine": 94,
+      "module": "Cluster_473"
+    },
+    {
+      "id": "Function:src/lib/fallbacks.ts:generateMusicWithProvenance",
+      "name": "generateMusicWithProvenance",
+      "filePath": "src/lib/fallbacks.ts",
+      "startLine": 127,
+      "endLine": 148,
+      "module": "Cluster_472"
+    },
+    {
+      "id": "File:src/lib/fallbacks.ts",
+      "name": "fallbacks.ts",
+      "filePath": "src/lib/fallbacks.ts"
+    },
+    {
+      "id": "Const:qa/t04-provider-validation-20261014/probe.mjs:names",
+      "name": "names",
+      "filePath": "qa/t04-provider-validation-20261014/probe.mjs",
+      "startLine": 7,
+      "endLine": 14
+    },
+    {
+      "id": "Function:qa/t04-provider-validation-20261014/probe.mjs:planReads",
+      "name": "planReads",
+      "filePath": "qa/t04-provider-validation-20261014/probe.mjs",
+      "startLine": 38,
+      "endLine": 49,
+      "module": "T04-provider-validation-20261014"
+    },
+    {
+      "id": "File:qa/t04-provider-validation-20261014/probe.mjs",
+      "name": "probe.mjs",
+      "filePath": "qa/t04-provider-validation-20261014/probe.mjs"
+    },
+    {
+      "id": "Function:src/lib/ltx.ts:generateVideoSmart",
+      "name": "generateVideoSmart",
+      "filePath": "src/lib/ltx.ts",
+      "startLine": 82,
+      "endLine": 166,
+      "module": "Cluster_487"
+    },
+    {
+      "id": "Function:src/lib/ltx.ts:generateAllScenes",
+      "name": "generateAllScenes",
+      "filePath": "src/lib/ltx.ts",
+      "startLine": 172,
+      "endLine": 198,
+      "module": "Cluster_487"
+    },
+    {
+      "id": "File:src/lib/ltx.ts",
+      "name": "ltx.ts",
+      "filePath": "src/lib/ltx.ts"
+    },
+    {
+      "id": "TypeAlias:src/lib/env.ts:ProviderId",
+      "name": "ProviderId",
+      "filePath": "src/lib/env.ts",
+      "startLine": 60,
+      "endLine": 81
+    },
+    {
+      "id": "Function:src/lib/env.ts:providerConfigStatus",
+      "name": "providerConfigStatus",
+      "filePath": "src/lib/env.ts",
+      "startLine": 128,
+      "endLine": 155,
+      "module": "Cluster_471"
+    },
+    {
+      "id": "File:src/lib/env.ts",
+      "name": "env.ts",
+      "filePath": "src/lib/env.ts"
+    },
+    {
+      "id": "Function:src/lib/ltx-utils.ts:selectEngine",
+      "name": "selectEngine",
+      "filePath": "src/lib/ltx-utils.ts",
+      "startLine": 53,
+      "endLine": 72,
+      "module": "Cluster_473"
+    },
+    {
+      "id": "Function:src/lib/ltx-utils.ts:estimateCost",
+      "name": "estimateCost",
+      "filePath": "src/lib/ltx-utils.ts",
+      "startLine": 146,
+      "endLine": 155,
+      "module": "Scripts"
+    },
+    {
+      "id": "File:src/lib/ltx-utils.ts",
+      "name": "ltx-utils.ts",
+      "filePath": "src/lib/ltx-utils.ts"
+    },
+    {
+      "id": "Variable:qa/t04-provider-fixes-20261014/run.py:scope",
+      "name": "scope",
+      "filePath": "qa/t04-provider-fixes-20261014/run.py",
+      "startLine": 13,
+      "endLine": 13
+    },
+    {
+      "id": "Variable:qa/t04-provider-fixes-20261014/run.py:commands",
+      "name": "commands",
+      "filePath": "qa/t04-provider-fixes-20261014/run.py",
+      "startLine": 15,
+      "endLine": 22
+    },
+    {
+      "id": "File:qa/t04-provider-fixes-20261014/run.py",
+      "name": "run.py",
+      "filePath": "qa/t04-provider-fixes-20261014/run.py"
+    },
+    {
+      "id": "Property:src/lib/ltx-v2.ts:LtxJob.provider",
+      "name": "provider",
+      "filePath": "src/lib/ltx-v2.ts",
+      "startLine": 12,
+      "endLine": 12
+    },
+    {
+      "id": "Function:src/lib/ltx-v2.ts:createLtxClient.wait@194:2",
+      "name": "wait",
+      "filePath": "src/lib/ltx-v2.ts",
+      "startLine": 195,
+      "endLine": 218,
+      "module": "Cluster_8"
+    }
+  ],
+  "timing": {
+    "vector": 2.9,
+    "bm25": 184.8,
+    "merge": 0.1,
+    "symbol_lookup": 12.9,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 198.6
+  }
+}

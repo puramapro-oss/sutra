@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useState, useMemo, useEffect } from 'react'
+import { Suspense, useState, useMemo, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -8,6 +8,7 @@ import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 import { toast } from 'sonner'
 import { signupSchema } from '@/lib/validators'
 import { useAuth } from '@/hooks/useAuth'
+import { useHydrated } from '@/hooks/useHydrated'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import LegalAcceptanceNotice from '@/lib/legal/components/LegalAcceptanceNotice'
@@ -23,6 +24,7 @@ export default function SignupPage() {
 }
 
 function SignupContent() {
+  const hydrated = useHydrated()
   const { signUp, signInWithGoogle } = useAuth()
   const searchParams = useSearchParams()
   const refCode = searchParams.get('ref') ?? ''
@@ -30,7 +32,7 @@ function SignupContent() {
   // Store referral code in localStorage for post-signup processing
   useEffect(() => {
     if (refCode) {
-      localStorage.setItem('sutra-referral-code', refCode)
+      try { localStorage.setItem('sutra-referral-code', refCode) } catch { /* Optional referral persistence. */ }
     }
   }, [refCode])
 
@@ -39,6 +41,7 @@ function SignupContent() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const submitting = useRef(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errors, setErrors] = useState<{
@@ -51,6 +54,7 @@ function SignupContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (submitting.current || googleLoading) return
     setErrors({})
 
     const result = signupSchema.safeParse({ name, email, password })
@@ -66,12 +70,14 @@ function SignupContent() {
       return
     }
 
+    submitting.current = true
     setLoading(true)
     try {
-      const storedRef = localStorage.getItem('sutra-referral-code') ?? refCode
+      let storedRef = refCode
+      try { storedRef = localStorage.getItem('sutra-referral-code') ?? refCode } catch { /* Optional preference. */ }
       await signUp(email, password, name, storedRef || undefined)
       // Preuve d'acceptation CGU/CGV/confidentialite — best-effort, no-op si pas encore de
-      // session (confirmation email requise) ; couvert aussi cote OAuth par auth/callback.
+      // session (confirmation email requise) ; le contrôle du dashboard redemande les consentements manquants.
       Promise.all(
         (['cgu', 'cgv', 'confidentialite'] as const).map((docType) =>
           fetch('/api/legal/accept', {
@@ -82,7 +88,7 @@ function SignupContent() {
         )
       )
       setSuccess(true)
-      localStorage.removeItem('sutra-referral-code')
+      try { localStorage.removeItem('sutra-referral-code') } catch { /* Optional preference. */ }
       toast.success('Compte cree avec succes !')
     } catch (err: unknown) {
       const message =
@@ -93,6 +99,7 @@ function SignupContent() {
         toast.error(message)
       }
     } finally {
+      submitting.current = false
       setLoading(false)
     }
   }
@@ -143,10 +150,10 @@ function SignupContent() {
             data-testid="google-button"
             variant="secondary"
             size="lg"
-            className="w-full mb-6"
+            className="w-full mb-6 px-4 text-sm sm:text-base"
             onClick={handleGoogle}
             loading={googleLoading}
-            disabled={loading}
+            disabled={loading || !hydrated}
           >
             <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
               <path
@@ -175,7 +182,7 @@ function SignupContent() {
               <div className="w-full border-t border-white/[0.06]" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-[#06050e] px-3 text-white/30">ou</span>
+              <span className="bg-[#06050e] px-3 text-white/60">ou</span>
             </div>
           </div>
 
@@ -183,6 +190,7 @@ function SignupContent() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               data-testid="name-input"
+              disabled={!hydrated}
               type="text"
               label="Prenom"
               value={name}
@@ -194,6 +202,7 @@ function SignupContent() {
 
             <Input
               data-testid="email-input"
+              disabled={!hydrated}
               type="email"
               label="Email"
               value={email}
@@ -205,6 +214,7 @@ function SignupContent() {
 
             <Input
               data-testid="password-input"
+              disabled={!hydrated}
               type={showPassword ? 'text' : 'password'}
               label="Mot de passe"
               value={password}
@@ -216,8 +226,8 @@ function SignupContent() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="text-white/30 hover:text-white/60 transition-colors pointer-events-auto"
-                  tabIndex={-1}
+                  className="text-white/60 hover:text-white/60 transition-colors pointer-events-auto"
+                  aria-pressed={showPassword}
                   aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -242,7 +252,7 @@ function SignupContent() {
                     />
                   ))}
                 </div>
-                <p className="text-xs text-white/40">
+                <p className="text-xs text-white/65">
                   Force :{' '}
                   <span
                     className={`font-medium ${
@@ -276,7 +286,7 @@ function SignupContent() {
           </form>
 
           {/* Login link */}
-          <p className="text-center text-sm text-white/40 mt-6">
+          <p className="text-center text-sm text-white/65 mt-6">
             Deja un compte ?{' '}
             <Link
               href="/login"
@@ -289,7 +299,7 @@ function SignupContent() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-white/20 mt-6">
+        <p className="text-center text-xs text-white/60 mt-6">
           SUTRA by Purama — Generation video IA
         </p>
       </motion.div>

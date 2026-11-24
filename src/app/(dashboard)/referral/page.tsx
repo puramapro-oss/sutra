@@ -13,7 +13,12 @@ import WalletCard from '@/components/referral/WalletCard'
 import CommissionsHistory from '@/components/referral/CommissionsHistory'
 
 export default function ReferralPage() {
-  const { profile, loading: authLoading } = useAuth()
+  const auth = useAuth()
+  return <ReferralPageContent key={auth.profile?.id ?? 'signed-out'} auth={auth} />
+}
+
+function ReferralPageContent({ auth }: { auth: ReturnType<typeof useAuth> }) {
+  const { profile, loading: authLoading } = auth
 
   const referralCode = profile?.referral_code ?? ''
   const shareUrl = typeof window !== 'undefined'
@@ -74,7 +79,7 @@ export default function ReferralPage() {
         {/* Header */}
         <div>
           <h1 className="text-2xl font-bold text-white">Parrainage & Wallet</h1>
-          <p className="text-sm text-white/40 mt-1">
+          <p className="text-sm text-white/60 mt-1">
             Invite des amis, gagne des commissions et retire tes gains
           </p>
         </div>

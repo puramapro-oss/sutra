@@ -1,0 +1,417 @@
+# Unix socket refusal
+
+Source: native-evidence/sutra-rls-before.log
+
+Local-only fixture retained: /tmp/sutra-t02-pg-cCm5cn
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /workspace/scratch/6a3b4f291e34/continuation/postgres-runtime/native-full/bin/pg_ctl -D /tmp/sutra-t02-pg-cCm5cn/data -l /tmp/sutra-t02-pg-cCm5cn/server.log -o -h '' -k /tmp/sutra-t02-pg-cCm5cn -p 55432 -w start
+pg_ctl: could not start server
+Examine the log output.
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1172:16)
+    at Socket.<anonymous> (node:internal/child_process:527:11)
+    at Socket.emit (node:events:514:28)
+    at Pipe.<anonymous> (node:net:362:12) {
+  code: 1,
+  killed: false,
+  signal: null,
+  cmd: "/workspace/scratch/6a3b4f291e34/continuation/postgres-runtime/native-full/bin/pg_ctl -D /tmp/sutra-t02-pg-cCm5cn/data -l /tmp/sutra-t02-pg-cCm5cn/server.log -o -h '' -k /tmp/sutra-t02-pg-cCm5cn -p 55432 -w start",
+  stdout: 'waiting for server to start.... stopped waiting\n',
+  stderr: 'pg_ctl: could not start server\nExamine the log output.\n'
+}
+
+Node.js v24.22.1
+
+# Legacy OAuth fixture
+
+Source: native-evidence/history-routes-before/postgres.log
+
+TAP version 13
+# (node:1416) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1416) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: PG routes: connection, revocation and reconnection retain consent history and clear credentials
+not ok 1 - PG routes: connection, revocation and reconnection retain consent history and clear credentials
+  ---
+  duration_ms: 76.690581
+  type: 'test'
+  location: '/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t06-integrated-retest-20261015/history-routes.test.mts:13:4218'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+
+    + 'https://sutra-test.invalid/settings/social?error=account_already_connected'
+    - 'https://sutra-test.invalid/settings/social?connected=youtube'
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'https://sutra-test.invalid/settings/social?connected=youtube'
+  actual: 'https://sutra-test.invalid/settings/social?error=account_already_connected'
+  operator: 'strictEqual'
+  stack: |-
+    consent (/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t06-integrated-retest-20261015/history-routes.test.mts:171:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async TestContext.<anonymous> (/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t06-integrated-retest-20261015/history-routes.test.mts:181:3)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# Subtest: PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect
+not ok 2 - PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect
+  ---
+  duration_ms: 14.8462
+  type: 'test'
+  location: '/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t06-integrated-retest-20261015/history-routes.test.mts:13:5116'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    200 !== 409
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 409
+  actual: 200
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/workspace/scratch/6a3b4f291e34/continuation/sutra/qa/t06-integrated-retest-20261015/history-routes.test.mts:192:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: PG routes: one state can produce only one successful callback under concurrency
+ok 3 - PG routes: one state can produce only one successful callback under concurrency
+  ---
+  duration_ms: 24.277071
+  type: 'test'
+  ...
+# Subtest: PG routes: state refuses another session, another user, profile change and expiry
+ok 4 - PG routes: state refuses another session, another user, profile change and expiry
+  ---
+  duration_ms: 9.016819
+  type: 'test'
+  ...
+# Subtest: PG routes: audit write failure rolls back account; callback state remains consumed
+ok 5 - PG routes: audit write failure rolls back account; callback state remains consumed
+  ---
+  duration_ms: 12.934637
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent pending cleanup retains one DELETE and confirms the original operation
+ok 6 - PG routes: concurrent pending cleanup retains one DELETE and confirms the original operation
+  ---
+  duration_ms: 34.170006
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent account change before-reload prevents false revocation confirmation
+ok 7 - PG routes: concurrent account change before-reload prevents false revocation confirmation
+  ---
+  duration_ms: 14.658027
+  type: 'test'
+  ...
+# Subtest: PG routes: concurrent account change after-reload prevents false revocation confirmation
+ok 8 - PG routes: concurrent account change after-reload prevents false revocation confirmation
+  ---
+  duration_ms: 11.743265
+  type: 'test'
+  ...
+# Subtest: PG routes: legacy scoped account without revision must still revoke locally
+ok 9 - PG routes: legacy scoped account without revision must still revoke locally
+  ---
+  duration_ms: 6.875723
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 7
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 628.852975
+
+# Legacy publication fixture
+
+Source: native-evidence/autonomy-before/countertest.log
+
+PASS API schedule CAS: double edit has one winner; invalid IANA and cursor writes rejected
+FAIL R107: microsecond cursor survives real PostgreSQL restart and 20h interruption, exactly one noon job: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL 12 concurrent ticks and repeated delivery reserve one occurrence; cancellation never resurrects it: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL lost committed RPC response then restart reconciles without a second occurrence, charge or inline retry: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL network-before-write and quota failure preserve cursor and roll back every occurrence before retry: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL multi-day outage reports bounded catchup; every daily occurrence recovered once: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL integrated SQL calendar: DST fold: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL integrated SQL calendar: DST spring gap: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL integrated SQL calendar: daily weekly biweekly monthly: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL expired lease resumes checkpoint; stale worker fenced; cancel preserves provider identity and unique audit/quota: Expected values to be strictly equal:
+
+400 !== 200
+
+PASS production API cancellation recovers lost submit and cancel ACK, restart and repeated request
+FAIL scheduler RPC permissions deny ordinary client; stale cursor and oversized window fail closed: Expected values to be strictly equal:
+
+400 !== 200
+
+FAIL activation and publication remain disabled; no worker or provider invoked by scheduler tests: Expected values to be strictly equal:
+
+true !== false
+
+(node:1830) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1830) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+
+# Initial PG16 workflow/client18
+
+Source: native-evidence/sutra16-workflow-receipt.json
+
+{
+  "commands": [
+    {
+      "label": "social-migration",
+      "argv": [
+        "node",
+        "scripts/test-social-multi-account-migration.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:07.510458+00:00",
+      "exit_code": 0,
+      "log": "sutra16-social-migration.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "durable-migration",
+      "argv": [
+        "npm",
+        "run",
+        "test:migration-local"
+      ],
+      "utc_start": "2026-11-10T14:52:07.925732+00:00",
+      "exit_code": 0,
+      "log": "sutra16-durable-migration.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "pipeline",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-pipeline-postgres.mts"
+      ],
+      "utc_start": "2026-11-10T14:52:08.293561+00:00",
+      "exit_code": 0,
+      "log": "sutra16-pipeline.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "rls",
+      "argv": [
+        "node",
+        "scripts/test-security-rls.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:09.666498+00:00",
+      "exit_code": 0,
+      "log": "sutra16-rls.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "permissions",
+      "argv": [
+        "node",
+        "scripts/test-final-write-permissions.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:12.792171+00:00",
+      "exit_code": 0,
+      "log": "sutra16-permissions.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "history",
+      "argv": [
+        "node",
+        "scripts/test-final-social-history.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:13.813964+00:00",
+      "exit_code": 0,
+      "log": "sutra16-history.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "history-routes",
+      "argv": [
+        "node",
+        "qa/t06-integrated-retest-20261015/run-postgres.mjs",
+        "history"
+      ],
+      "utc_start": "2026-11-10T14:52:15.985719+00:00",
+      "exit_code": 0,
+      "log": "sutra16-history-routes.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "schedule",
+      "argv": [
+        "node",
+        "qa/t01-closure-20261015/schedule-postgres-run.mjs"
+      ],
+      "utc_start": "2026-11-10T14:52:17.254049+00:00",
+      "exit_code": 0,
+      "log": "sutra16-schedule.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "partner",
+      "argv": [
+        "node",
+        "qa/t01-certification-20261019/partner-pg-run.mjs",
+        "partner-pg-ci"
+      ],
+      "utc_start": "2026-11-10T14:52:18.426618+00:00",
+      "exit_code": 1,
+      "log": "sutra16-partner.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "recovery",
+      "argv": [
+        "node",
+        "qa/t03-closure-20261020/run.mjs",
+        "ci-r107",
+        "security"
+      ],
+      "utc_start": "2026-11-10T14:52:19.647943+00:00",
+      "exit_code": 1,
+      "log": "sutra16-recovery.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "recovery-catalogue",
+      "argv": [
+        "python3",
+        "qa/t01-closure-20261020/verify_catalogue.py",
+        "qa/t03-closure-20261020/ci-r107/receipt.json"
+      ],
+      "utc_start": "2026-11-10T14:52:22.076510+00:00",
+      "exit_code": 1,
+      "log": "sutra16-recovery-catalogue.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "autonomy",
+      "argv": [
+        "node",
+        "qa/t07-autonomy-integrated-20261020/run.mjs",
+        "ci-countertest",
+        "846bf6ef7d65be9b9b179739b229ced6339deb8f"
+      ],
+      "utc_start": "2026-11-10T14:52:22.141828+00:00",
+      "exit_code": 0,
+      "log": "sutra16-autonomy.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "api",
+      "argv": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "qa/t03-final-candidate-20261015/api-postgres.test.mts"
+      ],
+      "utc_start": "2026-11-10T14:52:25.227258+00:00",
+      "exit_code": 0,
+      "log": "sutra16-api.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "salad",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-salad-persistence.mts"
+      ],
+      "utc_start": "2026-11-10T14:52:26.347583+00:00",
+      "exit_code": 0,
+      "log": "sutra16-salad.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    },
+    {
+      "label": "durable",
+      "argv": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=1",
+        "qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts",
+        "qa/t03-durable-reliability-20261014/postgres.test.mts",
+        "qa/t06-social-recovery-20261014/test-postgres.mts",
+        "qa/t01-final-20261015/durable-postgres.test.mts"
+      ],
+      "utc_start": "2026-11-10T14:52:27.018022+00:00",
+      "exit_code": 0,
+      "log": "sutra16-durable.log",
+      "engine": "PostgreSQL16.15 native",
+      "family_matches_workflow": true
+    }
+  ],
+  "stop_exit": 0
+}
+
+# Restore mismatch
+
+Source: native-evidence/pg16-client18-mismatch/t01-certification-20261019/partner-pg-ci/restore.log
+
+pg_restore: error: could not execute query: ERROR:  unrecognized configuration parameter "transaction_timeout"
+Command was: SET transaction_timeout = 0;

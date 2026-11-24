@@ -1,0 +1,331 @@
+{
+  "target": {
+    "id": "Function:src/lib/ltx-v2.ts:createLtxClient",
+    "name": "createLtxClient",
+    "type": "Function",
+    "filePath": "src/lib/ltx-v2.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 32,
+  "risk": "MEDIUM",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 7,
+    "3": 23
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:src/lib/ltx-v2.ts",
+        "name": "ltx-v2.ts",
+        "filePath": "src/lib/ltx-v2.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:scripts/test-ltx-v2-contracts.mts:harness",
+        "name": "harness",
+        "filePath": "scripts/test-ltx-v2-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:scripts/test-ltx-v2-contracts.mts",
+        "name": "test-ltx-v2-contracts.mts",
+        "filePath": "scripts/test-ltx-v2-contracts.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:scripts/test-provider-safety.mts",
+        "name": "test-provider-safety.mts",
+        "filePath": "scripts/test-provider-safety.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/fallbacks.ts",
+        "name": "fallbacks.ts",
+        "filePath": "src/lib/fallbacks.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx-checkpoint.ts",
+        "name": "ltx-checkpoint.ts",
+        "filePath": "src/lib/ltx-checkpoint.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx-types.ts",
+        "name": "ltx-types.ts",
+        "filePath": "src/lib/ltx-types.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx-workflow.ts",
+        "name": "ltx-workflow.ts",
+        "filePath": "src/lib/ltx-workflow.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/lib/ltx.ts",
+        "name": "ltx.ts",
+        "filePath": "src/lib/ltx.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:scripts/test-api-contracts.mts",
+        "name": "test-api-contracts.mts",
+        "filePath": "scripts/test-api-contracts.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-local-engine-e2e.mts",
+        "name": "test-local-engine-e2e.mts",
+        "filePath": "scripts/test-local-engine-e2e.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-ltx-v2-media.mts",
+        "name": "test-ltx-v2-media.mts",
+        "filePath": "scripts/test-ltx-v2-media.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-salad-worker.mts",
+        "name": "test-salad-worker.mts",
+        "filePath": "scripts/test-salad-worker.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t08-final-modes.mts",
+        "name": "test-t08-final-modes.mts",
+        "filePath": "scripts/test-t08-final-modes.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t08-integration-journey.mts",
+        "name": "test-t08-integration-journey.mts",
+        "filePath": "scripts/test-t08-integration-journey.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/(dashboard)/create/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/create/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/(dashboard)/production/page.tsx",
+        "name": "page.tsx",
+        "filePath": "src/app/(dashboard)/production/page.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/app/api/health/route.ts",
+        "name": "route.ts",
+        "filePath": "src/app/api/health/route.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/create/AutoForm.tsx",
+        "name": "AutoForm.tsx",
+        "filePath": "src/components/create/AutoForm.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/create/wizard/ManualFormStep4.tsx",
+        "name": "ManualFormStep4.tsx",
+        "filePath": "src/components/create/wizard/ManualFormStep4.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/components/production/IdeaStep.tsx",
+        "name": "IdeaStep.tsx",
+        "filePath": "src/components/production/IdeaStep.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/hooks/useProductionGeneration.ts",
+        "name": "useProductionGeneration.ts",
+        "filePath": "src/hooks/useProductionGeneration.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/hooks/useVideoGeneration.ts",
+        "name": "useVideoGeneration.ts",
+        "filePath": "src/hooks/useVideoGeneration.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/create-utils.ts",
+        "name": "create-utils.ts",
+        "filePath": "src/lib/create-utils.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/local-engine.ts",
+        "name": "local-engine.ts",
+        "filePath": "src/lib/local-engine.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx-helpers.ts",
+        "name": "ltx-helpers.ts",
+        "filePath": "src/lib/ltx-helpers.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/ltx-utils.ts",
+        "name": "ltx-utils.ts",
+        "filePath": "src/lib/ltx-utils.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/production-pipeline.ts",
+        "name": "production-pipeline.ts",
+        "filePath": "src/lib/production-pipeline.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/salad/application.ts",
+        "name": "application.ts",
+        "filePath": "src/lib/salad/application.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/salad/checkpoint.ts",
+        "name": "checkpoint.ts",
+        "filePath": "src/lib/salad/checkpoint.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/sutra-auto.ts",
+        "name": "sutra-auto.ts",
+        "filePath": "src/lib/sutra-auto.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/video-pipeline.ts",
+        "name": "video-pipeline.ts",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ]
+  }
+}

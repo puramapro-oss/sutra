@@ -5,6 +5,7 @@ import { Sparkles } from 'lucide-react'
 import { NICHES, VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constants'
 import { NICHE_LABELS } from '@/lib/create-utils'
 import { FORMAT_OPTIONS, QUALITY_OPTIONS, STYLE_OPTIONS } from '@/lib/create-constants'
+import { OutputQualityNotice } from './ExecutionModeNotice'
 import { cn } from '@/lib/utils'
 import { MediaModeCards, type MediaMode } from '@/components/create/MediaModeCards'
 import { OptionSection, OptionCard } from '@/components/create/CreateHelpers'
@@ -88,7 +89,7 @@ export default function AutoForm({
             'outline-none transition-all duration-200 resize-none'
           )}
         />
-        <p className="text-xs text-white/30 mt-1.5">
+        <p className="text-xs text-white/65 mt-1.5">
           Sois precis : plus ta description est detaillee, meilleur sera le resultat.
         </p>
       </div>
@@ -100,7 +101,7 @@ export default function AutoForm({
 
       {/* Format */}
       <OptionSection title="Format">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 min-[375px]:grid-cols-3 gap-3">
           {FORMAT_OPTIONS.map((opt) => (
             <OptionCard
               key={opt.id}
@@ -110,7 +111,7 @@ export default function AutoForm({
             >
               {opt.icon}
               <span className="text-sm font-semibold">{opt.label}</span>
-              <span className="text-[11px] text-white/40">{opt.desc}</span>
+              <span className="text-[11px] text-white/65">{opt.desc}</span>
             </OptionCard>
           ))}
         </div>
@@ -118,7 +119,7 @@ export default function AutoForm({
 
       {/* Quality */}
       <OptionSection title="Qualite">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 min-[375px]:grid-cols-3 gap-3">
           {QUALITY_OPTIONS.map((opt) => {
             const available = isQualityAvailable(opt.minPlan)
             return (
@@ -129,7 +130,7 @@ export default function AutoForm({
                 disabled={!available}
                 data-testid={`quality-${opt.id}`}
               >
-                <span className="text-sm font-semibold">{opt.label}</span>
+                <span className="text-sm font-semibold">{opt.id === '4k' ? '4K (sortie)' : opt.label}</span>
                 {!available && (
                   <span className="text-[10px] text-violet-400">
                     Plan {opt.minPlan}+
@@ -139,11 +140,12 @@ export default function AutoForm({
             )
           })}
         </div>
+        <OutputQualityNotice />
       </OptionSection>
 
       {/* Video Engine */}
       <OptionSection title="Moteur video">
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {VIDEO_ENGINES.map((eng) => {
             const available = isEngineAvailable(eng.minPlan)
             return (
@@ -156,7 +158,7 @@ export default function AutoForm({
               >
                 <span className="text-lg">{eng.icon}</span>
                 <span className="text-sm font-semibold">{eng.label}</span>
-                <span className="text-[11px] text-white/40">{eng.description}</span>
+                <span className="text-[11px] text-white/65">{eng.id === 'wan-classic' ? 'WAN 2.2 — selon le mode et les quotas' : eng.description}</span>
                 {!available && (
                   <span className="text-[10px] text-violet-400">
                     Plan {eng.minPlan}+
@@ -172,6 +174,7 @@ export default function AutoForm({
       <OptionSection title="Niche">
         <select
           data-testid="niche-select"
+          aria-label="Niche"
           value={niche}
           onChange={(e) => setNiche(e.target.value)}
           className={cn(
@@ -200,12 +203,13 @@ export default function AutoForm({
             <button
               key={opt.id}
               data-testid={`style-${opt.id}`}
+              aria-pressed={style === opt.id}
               onClick={() => setStyle(style === opt.id ? '' : opt.id)}
               className={cn(
                 'px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200',
                 style === opt.id
                   ? 'bg-violet-600/20 border-violet-500/40 text-violet-300'
-                  : 'bg-white/[0.03] border-white/[0.06] text-white/50 hover:text-white/70 hover:border-white/[0.12]'
+                  : 'bg-white/[0.03] border-white/[0.06] text-white/65 hover:text-white/70 hover:border-white/[0.12]'
               )}
             >
               <span className="mr-1.5">{opt.emoji}</span>
@@ -219,6 +223,7 @@ export default function AutoForm({
       <OptionSection title="Voix">
         <select
           data-testid="voice-select"
+          aria-label="Voix"
           value={voice}
           onChange={(e) => setVoice(e.target.value)}
           className={cn(

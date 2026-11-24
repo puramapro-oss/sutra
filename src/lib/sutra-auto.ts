@@ -9,12 +9,15 @@
  */
 
 import { smarana } from '@purama/smarana'
-import { createServiceClient } from '@/lib/supabase'
-import { generateVideoSmart } from '@/lib/ltx'
+import { z } from 'zod'
+import { generateVideoSmart, durableLtxJob, type LtxJobState } from '@/lib/ltx'
 import { generateMusic } from '@/lib/suno'
 import { generateVoice } from '@/lib/elevenlabs'
 import { uploadToStorage } from '@/lib/storage'
-import { publishToPlatforms, type SocialPlatform } from '@/lib/zernio'
+import { pipelineSteps } from '@/lib/pipeline-state'
+import { musicCheckpointed } from '@/lib/music-checkpoint'
+import { voiceB64Checkpointed } from '@/lib/production-pipeline'
+import type { Plan } from '@/types'
 
 // Re-export types from dedicated modules
 export type {
@@ -27,11 +30,40 @@ export type {
 } from './sutra-auto-types'
 
 // Re-export utils
-export { computeNextRun, pickTheme } from './sutra-auto-utils'
+export { computeNextRun, needsFinalComposition, pickTheme } from './sutra-auto-utils'
 export { analyzePerformance, loadAutoContext, recordMemory } from './sutra-auto-helpers'
 
 // Import for local use
 import type { AutoConfig, AutoTheme, AutoMemory, AutoVideoRecord, VideoPlan } from './sutra-auto-types'
+
+const videoPlanSchema = z.object({
+  title: z.string().trim().min(3).max(60),
+  description: z.string().trim().min(10).max(3000),
+  hashtags: z.array(z.string().trim().regex(/^#/)).min(3).max(15),
+  video_prompt: z.string().trim().min(30).max(3000),
+  music_prompt: z.string().trim().min(10).max(1000),
+  script: z.string().trim().min(10).max(10000).nullable(),
+  style_override: z.string().trim().max(100).nullable(),
+  theme_id: z.string().uuid().nullable(),
+  reasoning: z.string().trim().min(10).max(2000),
+  expected_engagement: z.enum(['high', 'medium', 'low']),
+  trend_leveraged: z.string().trim().max(300).nullable(),
+})
+
+function parseVideoPlan(raw: string): VideoPlan {
+  const cleaned = raw.replace(/```json\n?|\n?```/g, '').trim()
+  let value: unknown
+  try {
+    value = JSON.parse(cleaned)
+  } catch {
+    throw new Error('SUTRA_AUTO_PLAN_INVALID_JSON')
+  }
+  const parsed = videoPlanSchema.safeParse(value)
+  if (!parsed.success) {
+    throw new Error(`SUTRA_AUTO_PLAN_INVALID_SCHEMA: ${parsed.error.issues[0]?.message ?? 'unknown'}`)
+  }
+  return parsed.data
+}
 
 // ---------------------------------------------------------------
 // 1. PLANNING - Claude joue le role de directeur creatif
@@ -124,6 +156,10 @@ REGLES
 6. 10-15 hashtags pour decouvrabilite
 7. Respecte must_include / never_include du theme
 8. Privilegie les themes avec poids eleves et peu utilises recemment
+9. N'invente aucun fait, chiffre, temoignage, marque, tendance ou fonctionnalite
+10. N'ecris aucun texte ni logo dans video_prompt : ces elements sont ajoutes en postproduction
+11. Decris sujet, action, decor, cadrage, lumiere, camera et progression temporelle
+12. expected_engagement est une hypothese, jamais une garantie
 
 FORMAT (JSON strict, aucun texte autour)
 {
@@ -149,8 +185,7 @@ FORMAT (JSON strict, aucun texte autour)
     maxTokens: 2000,
   })
 
-  const cleaned = result.text.replace(/```json\n?|\n?```/g, '').trim()
-  return JSON.parse(cleaned) as VideoPlan
+  return parseVideoPlan(result.text)
 }
 
 // ---------------------------------------------------------------
@@ -162,7 +197,12 @@ export async function generateAutoVideoAssets(params: {
   plan: VideoPlan
   config: AutoConfig
   userEmail: string | null
-  plan_tier: 'free' | 'starter' | 'creator' | 'pro' | 'enterprise'
+  plan_tier: Plan
+  progress?: {
+    steps: Record<string, unknown>
+    onStepResolved?: (key: string, value: unknown) => Promise<void>
+    heartbeat?: () => Promise<void>
+  }
 }): Promise<{
   video_raw_url: string
   audio_music_url: string | null
@@ -170,116 +210,79 @@ export async function generateAutoVideoAssets(params: {
 }> {
   const { videoId, plan, config, userEmail, plan_tier } = params
 
+  if (config.default_voice_enabled && (!plan.script || !config.default_voice_id)) {
+    throw new Error('Voix demandee: script et identifiant vocal requis avant generation')
+  }
+  const done = params.progress?.steps ?? {}
+  const hooks = params.progress ?? {}
+  const step = pipelineSteps(done, hooks)
+  const save = async (key: string, value: unknown) => {
+    await params.progress?.onStepResolved?.(key, value)
+    done[key] = value
+  }
+  const asset = async (key: string, generate: () => Promise<string>): Promise<string> => {
+    if (typeof done[key] === 'string' && done[key]) return done[key] as string
+    const remote = done[`${key}:ltx`] as LtxJobState | undefined
+    if (done[`${key}:started`] && !(key === 'asset:video' && remote?.id)) throw new Error(`SUTRA_RECONCILIATION_REQUIRED: ${key}`)
+    await save(`${key}:started`, true)
+    const value = await generate()
+    if (!value) throw new Error(`Resultat obligatoire manquant: ${key}`)
+    await save(key, value)
+    return value
+  }
+
   // 1. Video brute (LTX/WAN)
-  const ltxResult = await generateVideoSmart(plan.video_prompt, plan_tier as never, userEmail, {
-    format: config.default_aspect_ratio,
-    quality: config.quality_level,
-    duration: config.default_duration,
+  const video_raw_url = await asset('asset:video', async () => {
+    const ltxResult = await generateVideoSmart(plan.video_prompt, plan_tier, userEmail, {
+      format: config.default_aspect_ratio,
+      quality: config.quality_level,
+      duration: config.default_duration,
+      userId: config.user_id,
+      videoId,
+      job: durableLtxJob(done, 'asset:video:ltx', params.progress?.onStepResolved),
+    })
+    return uploadToStorage(`auto/${videoId}/raw.mp4`, ltxResult.videoBuffer, 'video/mp4')
   })
 
-  const video_raw_url = await uploadToStorage(
-    `auto/${videoId}/raw.mp4`,
-    ltxResult.videoBuffer,
-    'video/mp4'
-  )
-
-  // 2. Musique (Suno) — best effort, ne bloque pas si echec
+  // Chaque piste demandée doit être obtenue et checkpointée séparément.
   let audio_music_url: string | null = null
-  try {
-    const music = await generateMusic({
-      prompt: plan.music_prompt,
-      style: (config.default_music_genre as never) ?? 'cinematic',
-      duration: config.default_duration,
-      instrumental: true,
+  if (config.default_music_genre && config.default_music_genre !== 'none') {
+    audio_music_url = await musicCheckpointed(done, hooks, step, 'asset:music', async job => {
+      const music = await generateMusic({
+        prompt: plan.music_prompt,
+        style: config.default_music_genre as never,
+        duration: config.default_duration,
+        instrumental: true,
+      }, job)
+      if (!music.audio_url?.trim()) throw new Error('SUTRA_REQUIRED_MUSIC_MISSING')
+      return music.audio_url
     })
-    audio_music_url = music.audio_url
-  } catch (err) {
-    console.error('[sutra-auto] music generation failed:', err)
   }
 
   // 3. Voix (ElevenLabs) si activee + script present
   let audio_voice_url: string | null = null
   if (config.default_voice_enabled && plan.script && config.default_voice_id) {
-    try {
-      const voiceBuffer = await generateVoice({
-        text: plan.script,
-        voice_id: config.default_voice_id,
-      })
-      audio_voice_url = await uploadToStorage(
+    // Older jobs stored only an intent, with no recoverable bytes. Keep them
+    // quarantined; a new worker cannot infer whether synthesis was charged.
+    if (!done['asset:voice'] && done['asset:voice:started'] && !done.voice_submission_started) {
+      throw new Error('SUTRA_RECONCILIATION_REQUIRED: asset:voice')
+    }
+    audio_voice_url = await step('asset:voice', async () => {
+      // Reuse the production manifest/chunks and paid intent. Storage can retry
+      // from the durable bytes without another ElevenLabs synthesis.
+      const b64 = await voiceB64Checkpointed(done, hooks, step, {
+        voice: (text) => generateVoice({ text, voice_id: config.default_voice_id! }),
+      }, plan.script!, config.default_voice_id)
+      if (!b64) throw new Error('SUTRA_VOICE_EMPTY_RESULT')
+      return uploadToStorage(
         `auto/${videoId}/voice.mp3`,
-        voiceBuffer,
+        Buffer.from(b64, 'base64'),
         'audio/mpeg'
       )
-    } catch (err) {
-      console.error('[sutra-auto] voice generation failed:', err)
-    }
+    })
   }
 
   return { video_raw_url, audio_music_url, audio_voice_url }
 }
 
-// ---------------------------------------------------------------
-// 3. PUBLICATION - via Zernio sur les plateformes connectees
-// ---------------------------------------------------------------
-
-const PLATFORM_ALIASES: Record<string, SocialPlatform> = {
-  youtube_shorts: 'youtube',
-  instagram_reels: 'instagram',
-  tiktok: 'tiktok',
-  youtube: 'youtube',
-  instagram: 'instagram',
-  facebook: 'facebook',
-  x: 'x',
-  twitter: 'x',
-  linkedin: 'linkedin',
-  pinterest: 'pinterest',
-  threads: 'threads',
-  snapchat: 'snapchat',
-  reddit: 'reddit',
-}
-
-export async function publishAutoVideo(params: {
-  config: AutoConfig
-  videoUrl: string
-  title: string
-  description: string
-  hashtags: string[]
-  scheduledFor?: string
-}): Promise<Array<{ platform: string; success: boolean; postId?: string; postUrl?: string; error?: string }>> {
-  const platforms = (params.config.publish_platforms ?? [])
-    .map((p) => PLATFORM_ALIASES[p] ?? (p as SocialPlatform))
-    .filter(Boolean) as SocialPlatform[]
-
-  if (!platforms.length) {
-    return [{ platform: 'none', success: false, error: 'no platforms configured' }]
-  }
-
-  const accountIds: Record<string, string> = {}
-  for (const conn of params.config.zernio_connected_platforms ?? []) {
-    accountIds[conn.platform] = conn.account_id
-  }
-
-  // Si aucun compte connecte, mode "stub" — on log mais ne fail pas
-  const missing = platforms.filter((p) => !accountIds[p])
-  if (missing.length === platforms.length) {
-    return platforms.map((p) => ({
-      platform: p,
-      success: false,
-      error: 'compte non connecte',
-    }))
-  }
-
-  const results = await publishToPlatforms({
-    videoUrl: params.videoUrl,
-    caption: `${params.title}\n\n${params.description}`,
-    hashtags: params.hashtags,
-    platforms: platforms.filter((p) => accountIds[p]),
-    accountIds: accountIds as Record<SocialPlatform, string>,
-    scheduledAt: params.scheduledFor,
-  })
-
-  return results
-}
-
-// Functions analyzePerformance, loadAutoContext, recordMemory
-// are re-exported from sutra-auto-helpers.ts
+export { publishAutoVideo, publishAutoVideoRecord } from './auto-publication'

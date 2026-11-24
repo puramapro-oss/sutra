@@ -1,0 +1,854 @@
+[
+  {
+    "file": "src/app/api/admin/users/[id]/route.ts",
+    "name": "requireAdmin"
+  },
+  {
+    "file": "src/app/api/admin/users/[id]/route.ts",
+    "name": "GET"
+  },
+  {
+    "file": "src/app/api/admin/users/[id]/route.ts",
+    "name": "PATCH"
+  },
+  {
+    "file": "src/app/api/social/callback/route.ts",
+    "name": "createPublicServiceClient"
+  },
+  {
+    "file": "src/app/api/social/callback/route.ts",
+    "name": "redirectToSettings"
+  },
+  {
+    "file": "src/app/api/social/callback/route.ts",
+    "name": "GET"
+  },
+  {
+    "file": "src/app/api/social/connect/route.ts",
+    "name": "POST"
+  },
+  {
+    "file": "src/lib/media-download.ts",
+    "name": "ipv6Number"
+  },
+  {
+    "file": "src/lib/media-download.ts",
+    "name": "isPublicMediaAddress"
+  },
+  {
+    "file": "src/lib/media-download.ts",
+    "name": "inRange"
+  },
+  {
+    "file": "src/lib/media-download.ts",
+    "name": "validateMediaUrl"
+  },
+  {
+    "file": "src/lib/media-download.ts",
+    "name": "resolvePublic"
+  },
+  {
+    "file": "src/lib/media-download.ts",
+    "name": "abort"
+  },
+  {
+    "file": "src/lib/media-download.ts",
+    "name": "downloadVideoBytes"
+  },
+  {
+    "file": "src/lib/media-download.ts",
+    "name": "fail"
+  },
+  {
+    "file": "src/lib/storage.ts",
+    "name": "uploadToStorage"
+  },
+  {
+    "file": "src/lib/storage.ts",
+    "name": "deleteFromStorage"
+  },
+  {
+    "file": "src/lib/storage.ts",
+    "name": "listStorageFiles"
+  },
+  {
+    "file": "src/lib/supabase-server.ts",
+    "name": "createServerClient"
+  },
+  {
+    "file": "src/lib/supabase-server.ts",
+    "name": "getAll"
+  },
+  {
+    "file": "src/lib/supabase-server.ts",
+    "name": "setAll"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "isPublicRoute"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "isAuthRoute"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "isAdminRoute"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "isInfluencerRoute"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "isStaticAsset"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "middleware"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "getAll"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "setAll"
+  },
+  {
+    "file": "src/middleware.ts",
+    "name": "redirect"
+  },
+  {
+    "file": "src/app/api/auto/generate/route.ts",
+    "name": "POST"
+  },
+  {
+    "file": "src/app/api/create/route.ts",
+    "name": "POST"
+  },
+  {
+    "file": "src/app/api/cron/sutra-auto/route.ts",
+    "name": "GET"
+  },
+  {
+    "file": "src/app/api/cron/video-worker/route.ts",
+    "name": "GET"
+  },
+  {
+    "file": "src/app/api/production/route.ts",
+    "name": "validateStepInputs"
+  },
+  {
+    "file": "src/app/api/production/route.ts",
+    "name": "POST"
+  },
+  {
+    "file": "src/app/api/video/export/route.ts",
+    "name": "payloadHash"
+  },
+  {
+    "file": "src/app/api/video/export/route.ts",
+    "name": "POST"
+  },
+  {
+    "file": "src/lib/auto-pipeline.ts",
+    "name": "executeAutoJob"
+  },
+  {
+    "file": "src/lib/auto-pipeline.ts",
+    "name": "step"
+  },
+  {
+    "file": "src/lib/auto-pipeline.ts",
+    "name": "buildAutoProviders"
+  },
+  {
+    "file": "src/lib/export-pipeline.ts",
+    "name": "persistExportResult"
+  },
+  {
+    "file": "src/lib/export-pipeline.ts",
+    "name": "executeExportJob"
+  },
+  {
+    "file": "src/lib/export-pipeline.ts",
+    "name": "step"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "defaultProviders"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "executeProductionStep"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "step"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "visual"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "resolveVoiceUrl"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "voiceB64Checkpointed"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "runAssembly"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "assemblyClipsFromClient"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "persistProductionResult"
+  },
+  {
+    "file": "src/lib/production-pipeline.ts",
+    "name": "persistVideo"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "createPublicServiceClient"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "triggerAutopilot"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "generateSubtitles"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "executeCreateJob"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "save"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "step"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "updateVideo"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "clipFromVisual"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "resolveSceneClip"
+  },
+  {
+    "file": "src/lib/video-pipeline.ts",
+    "name": "generateVisual"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "reserveQuota"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "completeQuota"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "completeQuotaForFinishedJob"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "releaseQuota"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "enqueueJob"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "claimJobs"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "claimJobByKey"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "heartbeat"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "getJobByKey"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "cancelJobByKey"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "checkpoint"
+  },
+  {
+    "file": "src/lib/video-queue.ts",
+    "name": "finishJob"
+  },
+  {
+    "file": "src/lib/fallbacks.ts",
+    "name": "generateVisualWithFallback"
+  },
+  {
+    "file": "src/lib/fallbacks.ts",
+    "name": "generateMusicWithFallback"
+  },
+  {
+    "file": "src/lib/fallbacks.ts",
+    "name": "generateVoiceWithFallback"
+  },
+  {
+    "file": "src/lib/ltx-helpers.ts",
+    "name": "generateWanVideoWithTracking"
+  },
+  {
+    "file": "src/lib/ltx-helpers.ts",
+    "name": "logVideoGeneration"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "LtxJobError"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "durableLtxJob"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "validJobId"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "ltxJson"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "callLtxApi"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "save"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "textToVideo"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "imageToVideo"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "retakeVideo"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "extendVideo"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "generateVideoSmart"
+  },
+  {
+    "file": "src/lib/ltx.ts",
+    "name": "generateAllScenes"
+  },
+  {
+    "file": "src/lib/runpod.ts",
+    "name": "isRunpodConfigured"
+  },
+  {
+    "file": "src/lib/runpod.ts",
+    "name": "getBaseUrl"
+  },
+  {
+    "file": "src/lib/runpod.ts",
+    "name": "submitVideoJob"
+  },
+  {
+    "file": "src/lib/runpod.ts",
+    "name": "pollVideoJob"
+  },
+  {
+    "file": "src/lib/runpod.ts",
+    "name": "generateAllScenes"
+  },
+  {
+    "file": "src/lib/wan.ts",
+    "name": "getWanDimensions"
+  },
+  {
+    "file": "src/lib/wan.ts",
+    "name": "generateWanVideo"
+  },
+  {
+    "file": "src/lib/media-probe.ts",
+    "name": "assertMediaProbeAvailable"
+  },
+  {
+    "file": "src/lib/media-probe.ts",
+    "name": "finitePositive"
+  },
+  {
+    "file": "src/lib/media-probe.ts",
+    "name": "fpsFrom"
+  },
+  {
+    "file": "src/lib/media-probe.ts",
+    "name": "verifyVideoBytes"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "verifyAndStoreRenderedVideo"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "durableRenderJob"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "save"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "baseUrl"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "qualityFor"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "formatFor"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "actualQualityFor"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "outputFor"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "validUrl"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "positive"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "buildTracks"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "assembleFinalVideo"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "pollShotstackRender"
+  },
+  {
+    "file": "src/lib/shotstack.ts",
+    "name": "generateSubtitlesFromScript"
+  },
+  {
+    "file": "src/app/api/auto/videos/[id]/route.ts",
+    "name": "PATCH"
+  },
+  {
+    "file": "src/app/api/auto/videos/[id]/route.ts",
+    "name": "DELETE"
+  },
+  {
+    "file": "src/app/api/social/accounts/route.ts",
+    "name": "createPublicServiceClient"
+  },
+  {
+    "file": "src/app/api/social/accounts/route.ts",
+    "name": "GET"
+  },
+  {
+    "file": "src/app/api/social/accounts/route.ts",
+    "name": "DELETE"
+  },
+  {
+    "file": "src/app/api/social/publish/route.ts",
+    "name": "POST"
+  },
+  {
+    "file": "src/lib/social-publication.ts",
+    "name": "publicationOutcome"
+  },
+  {
+    "file": "src/lib/social-publication.ts",
+    "name": "savePublicationHistory"
+  },
+  {
+    "file": "src/lib/social-publication.ts",
+    "name": "idFor"
+  },
+  {
+    "file": "src/lib/social-publication.ts",
+    "name": "publishVideoRecord"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "formatter"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "localParts"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "read"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "localDateToUtc"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "addLocalDays"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "localDayNumber"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "matchesFrequency"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "computeNextRun"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "needsFinalComposition"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "autoOccurrences"
+  },
+  {
+    "file": "src/lib/sutra-auto-utils.ts",
+    "name": "pickTheme"
+  },
+  {
+    "file": "src/lib/sutra-auto.ts",
+    "name": "parseVideoPlan"
+  },
+  {
+    "file": "src/lib/sutra-auto.ts",
+    "name": "planNextVideo"
+  },
+  {
+    "file": "src/lib/sutra-auto.ts",
+    "name": "generateAutoVideoAssets"
+  },
+  {
+    "file": "src/lib/sutra-auto.ts",
+    "name": "save"
+  },
+  {
+    "file": "src/lib/sutra-auto.ts",
+    "name": "asset"
+  },
+  {
+    "file": "src/lib/sutra-auto.ts",
+    "name": "publishAutoVideo"
+  },
+  {
+    "file": "src/lib/sutra-auto.ts",
+    "name": "publishAutoVideoRecord"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "headers"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "logError"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "getOAuthUrl"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "exchangeOAuthCode"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "providerPlatform"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "contentWithTags"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "publicPostUrl"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "buildPublishPayload"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "parsePublicationResults"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "publishToPlatforms"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "schedulePublication"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "getPublicationResults"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "getAccountAnalytics"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "deletePost"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "disconnectAccount"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "refreshAccessToken"
+  },
+  {
+    "file": "src/lib/zernio.ts",
+    "name": "getOptimalFormat"
+  },
+  {
+    "file": "src/app/(dashboard)/library/page.tsx",
+    "name": "LibraryPage"
+  },
+  {
+    "file": "src/app/(dashboard)/library/page.tsx",
+    "name": "handleAddToFolder"
+  },
+  {
+    "file": "src/app/(dashboard)/library/page.tsx",
+    "name": "handleDeleteFolder"
+  },
+  {
+    "file": "src/app/(dashboard)/library/page.tsx",
+    "name": "resetFilters"
+  },
+  {
+    "file": "src/app/(dashboard)/production/page.tsx",
+    "name": "ProductionPage"
+  },
+  {
+    "file": "src/components/create/AutoForm.tsx",
+    "name": "AutoForm"
+  },
+  {
+    "file": "src/components/create/CreateHelpers.tsx",
+    "name": "OptionSection"
+  },
+  {
+    "file": "src/components/create/CreateHelpers.tsx",
+    "name": "OptionCard"
+  },
+  {
+    "file": "src/components/create/CreateHelpers.tsx",
+    "name": "UploadZone"
+  },
+  {
+    "file": "src/components/create/CreateHelpers.tsx",
+    "name": "SummaryRow"
+  },
+  {
+    "file": "src/components/create/CreateHelpers.tsx",
+    "name": "CreateSkeleton"
+  },
+  {
+    "file": "src/components/create/ManualForm.tsx",
+    "name": "ManualForm"
+  },
+  {
+    "file": "src/components/create/ManualForm.tsx",
+    "name": "canProceed"
+  },
+  {
+    "file": "src/components/create/ManualForm.tsx",
+    "name": "formatToOrientation"
+  },
+  {
+    "file": "src/components/create/MediaModeCards.tsx",
+    "name": "MediaModeCards"
+  },
+  {
+    "file": "src/components/create/ModeToggle.tsx",
+    "name": "ModeToggle"
+  },
+  {
+    "file": "src/components/create/wizard/ManualFormStep1.tsx",
+    "name": "ManualFormStep1"
+  },
+  {
+    "file": "src/components/create/wizard/ManualFormStep3.tsx",
+    "name": "ManualFormStep3"
+  },
+  {
+    "file": "src/components/create/wizard/ManualFormStep3.tsx",
+    "name": "formatToOrientation"
+  },
+  {
+    "file": "src/components/create/wizard/ManualFormStep4.tsx",
+    "name": "ManualFormStep4"
+  },
+  {
+    "file": "src/components/dashboard/VideoCard.tsx",
+    "name": "formatDuration"
+  },
+  {
+    "file": "src/components/dashboard/VideoCard.tsx",
+    "name": "VideoCard"
+  },
+  {
+    "file": "src/components/dashboard/VideoCard.tsx",
+    "name": "handleClick"
+  },
+  {
+    "file": "src/components/home/AmbassadorBlock.tsx",
+    "name": "AmbassadorBlock"
+  },
+  {
+    "file": "src/components/layout/DashboardChrome.tsx",
+    "name": "DashboardChrome"
+  },
+  {
+    "file": "src/components/library/FolderModal.tsx",
+    "name": "FolderModal"
+  },
+  {
+    "file": "src/components/library/FolderModal.tsx",
+    "name": "handleClose"
+  },
+  {
+    "file": "src/components/library/FolderModal.tsx",
+    "name": "handleCreate"
+  },
+  {
+    "file": "src/components/library/FolderPills.tsx",
+    "name": "FolderPills"
+  },
+  {
+    "file": "src/components/library/LibraryFilters.tsx",
+    "name": "LibraryFilters"
+  },
+  {
+    "file": "src/components/library/LibraryHeader.tsx",
+    "name": "LibraryHeader"
+  },
+  {
+    "file": "src/components/library/LibrarySkeleton.tsx",
+    "name": "LibrarySkeleton"
+  },
+  {
+    "file": "src/components/library/VideoGrid.tsx",
+    "name": "VideoGrid"
+  },
+  {
+    "file": "src/components/library/VideoList.tsx",
+    "name": "VideoList"
+  },
+  {
+    "file": "src/components/production/IdeaStep.tsx",
+    "name": "IdeaStep"
+  },
+  {
+    "file": "src/components/production/MusicStep.tsx",
+    "name": "MusicStep"
+  },
+  {
+    "file": "src/components/production/ScriptStep.tsx",
+    "name": "ScriptStep"
+  },
+  {
+    "file": "src/components/production/StepGenerateCard.tsx",
+    "name": "StepGenerateCard"
+  },
+  {
+    "file": "src/components/production/StepProgressBar.tsx",
+    "name": "StepProgressBar"
+  },
+  {
+    "file": "src/components/production/VoiceStep.tsx",
+    "name": "VoiceStep"
+  },
+  {
+    "file": "src/components/settings/AbonnementTab.tsx",
+    "name": "AbonnementTab"
+  },
+  {
+    "file": "src/components/settings/CompteTab.tsx",
+    "name": "CompteTab"
+  },
+  {
+    "file": "src/components/settings/DonneesTab.tsx",
+    "name": "DonneesTab"
+  },
+  {
+    "file": "src/components/settings/NotificationsTab.tsx",
+    "name": "NotificationsTab"
+  },
+  {
+    "file": "src/components/settings/ProfilTab.tsx",
+    "name": "ProfilTab"
+  },
+  {
+    "file": "src/components/shared/SpiritualLayer.tsx",
+    "name": "SpiritualLayer"
+  },
+  {
+    "file": "src/components/shared/SpiritualLayer.tsx",
+    "name": "fetchAffirmation"
+  },
+  {
+    "file": "src/components/ui/Tabs.tsx",
+    "name": "Tabs"
+  },
+  {
+    "file": "src/components/ui/Tabs.tsx",
+    "name": "handleTabClick"
+  },
+  {
+    "file": "src/hooks/useLibraryVideos.ts",
+    "name": "useLibraryVideos"
+  }
+]

@@ -1,0 +1,113 @@
+{
+  "readOnly": true,
+  "observedAt": "2026-10-19T19:52:24.324636+00:00",
+  "databaseRuntime": {
+    "Status": "exited",
+    "Running": false,
+    "ExitCode": 0,
+    "OOMKilled": false,
+    "StartedAt": "2026-10-12T10:38:54.951613038Z",
+    "FinishedAt": "2026-10-17T07:23:17.46187042Z",
+    "health": "starting"
+  },
+  "backup": {
+    "directory": "/opt/purama/apps/sutra/backup-t01-coherent-ovgjp1a8",
+    "mode": "0o700",
+    "artifacts": {
+      "sutra.dump": {
+        "exists": true,
+        "mode": "0o600",
+        "sizeMatch": true,
+        "sha256Match": true
+      },
+      "public-social.dump": {
+        "exists": true,
+        "mode": "0o600",
+        "sizeMatch": true,
+        "sha256Match": true
+      },
+      "public-social-dependencies.sql": {
+        "exists": true,
+        "mode": "0o600",
+        "sizeMatch": true,
+        "sha256Match": true
+      },
+      "sutra-assets.tar.gz": {
+        "exists": true,
+        "mode": "0o600",
+        "sizeMatch": true,
+        "sha256Match": true
+      },
+      "storage-metadata.json": {
+        "exists": true,
+        "mode": "0o600",
+        "sizeMatch": true,
+        "sha256Match": true
+      },
+      "referenced-auth-ids.json": {
+        "exists": true,
+        "mode": "0o600",
+        "sizeMatch": true,
+        "sha256Match": true
+      }
+    }
+  },
+  "sqlRollback": {
+    "checkpoint": {
+      "directory": "/opt/purama/apps/sutra/backup-t01-coherent-ovgjp1a8/checkpoint-925fa5d28ee1-v2",
+      "directoryMode": "0o700",
+      "fileMode": "0o600",
+      "hashMatch": true
+    },
+    "client-permissions": {
+      "directory": "/opt/purama/apps/sutra/backup-t01-coherent-ovgjp1a8/permissions-3776c0c57fb8",
+      "directoryMode": "0o700",
+      "fileMode": "0o600",
+      "hashMatch": true
+    },
+    "social-history": {
+      "directory": "/opt/purama/apps/sutra/backup-t01-coherent-ovgjp1a8/social-history-d2f6a9cb380a",
+      "directoryMode": "0o700",
+      "fileMode": "0o600",
+      "hashMatch": true
+    }
+  },
+  "rollbackImage": {
+    "exists": true,
+    "mode": "0o700",
+    "files": [
+      "cas.json",
+      "complete",
+      "compose.yml",
+      "promoted-compose.yml",
+      "runtime.env"
+    ],
+    "imagePresent": true
+  },
+  "observerService": "Result=exit-code\nExecMainStatus=1",
+  "observerGuards": {
+    "privateNetwork": true,
+    "afUnixOnly": true,
+    "pinnedToCandidate": true
+  },
+  "observerRecent": [
+    {
+      "status": "UNAVAILABLE",
+      "mode": "observe-only"
+    },
+    {
+      "status": "UNAVAILABLE",
+      "mode": "observe-only"
+    },
+    {
+      "status": "UNAVAILABLE",
+      "mode": "observe-only"
+    }
+  ],
+  "logs": {
+    "readSucceeded": true,
+    "lineCount": 0,
+    "window": "24h",
+    "rawNotExported": true
+  }
+}

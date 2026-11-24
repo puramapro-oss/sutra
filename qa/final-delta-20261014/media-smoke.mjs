@@ -1,0 +1,9 @@
+import { writeFile } from 'node:fs/promises'
+import { publicMediaChecks } from 'file:///Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/postdeploy-20261013/media/free-runtime-probes.mjs'
+const report = await publicMediaChecks()
+report.deployedSha = '86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164'
+report.source = 'Unchanged media negative-path probe reused on the final production image.'
+await writeFile('/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/final-delta-20261014/public-media.json', JSON.stringify(report, null, 2) + '\n')
+const passed = report.checks.filter(c => c.status === 'PASS').length
+process.stdout.write(JSON.stringify({ passed, failed: report.checks.length - passed }) + '\n')
+if (passed !== report.checks.length) process.exitCode = 1

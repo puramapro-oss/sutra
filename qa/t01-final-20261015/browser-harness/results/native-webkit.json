@@ -1,0 +1,124 @@
+{
+  "engine": "webkit",
+  "browserVersion": "26.0",
+  "nativeSafari": false,
+  "keyboard": {
+    "engine": "webkit",
+    "key": "Alt+Tab",
+    "observations": [
+      {
+        "key": "Tab",
+        "focused": "next"
+      },
+      {
+        "key": "Alt+Tab",
+        "focused": "toggle"
+      }
+    ],
+    "negativeFocused": "next",
+    "nativeSafari": false
+  },
+  "caughtUnloadDiagnostic": true,
+  "caught": {
+    "errors": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:61576/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:61576/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:36:27)\n    at unknown (https://127.0.0.1:61576/caught:1:122)",
+        "navigation": 2,
+        "at": 1792029352295
+      }
+    ],
+    "qualified": [
+      {
+        "kind": "pageerror",
+        "message": "/127.0.0.1:61576/slow due to access control checks.",
+        "stack": "Fetch API cannot load https://127.0.0.1:61576/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:36:27)\n    at unknown (https://127.0.0.1:61576/caught:1:122)",
+        "navigation": 2,
+        "at": 1792029352295,
+        "qualification": "native-webkit-caught-fetch-during-explicit-document-teardown",
+        "matchingFetch": {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:61576/slow",
+          "document": "https://127.0.0.1:61576/caught",
+          "navigation": 2,
+          "at": 1792029352295
+        }
+      }
+    ],
+    "unexpected": [],
+    "events": [
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:61576/caught",
+        "navigation": 2,
+        "at": 1792029352294
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:61576/slow",
+        "document": "https://127.0.0.1:61576/caught",
+        "navigation": 2,
+        "at": 1792029352295
+      }
+    ],
+    "navigations": [
+      {
+        "id": 1,
+        "from": "nullblank",
+        "to": "https://127.0.0.1:61576/caught",
+        "startedAt": 1792029352258,
+        "finishedAt": 1792029352289
+      },
+      {
+        "id": 2,
+        "from": "https://127.0.0.1:61576/caught",
+        "to": "https://127.0.0.1:61576/next",
+        "startedAt": 1792029352289,
+        "finishedAt": 1792029352296
+      }
+    ],
+    "domErrors": []
+  },
+  "negativeControls": {
+    "realExceptionDetected": true,
+    "unhandledRejectionDetected": true
+  },
+  "negativeEvidence": [
+    {
+      "kind": "pageerror",
+      "message": "/127.0.0.1:61576/slow due to access control checks.",
+      "stack": "Fetch API cannot load https://127.0.0.1:61576/slow due to access control checks.\n    at unknown (web-inspector://bootstrap.js:36:27)\n    at unknown (https://127.0.0.1:61576/caught:1:122)",
+      "navigation": 2,
+      "at": 1792029352295
+    },
+    {
+      "kind": "pageerror",
+      "message": "NEGATIVE_CONTROL_REAL_EXCEPTION",
+      "stack": "Error: NEGATIVE_CONTROL_REAL_EXCEPTION\n    at unknown (undefined:1:43)",
+      "navigation": 2,
+      "at": 1792029352600
+    },
+    {
+      "kind": "pageerror",
+      "message": "Error: NEGATIVE_CONTROL_REAL_REJECTION",
+      "stack": "",
+      "navigation": 2,
+      "at": 1792029352702
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "Error: NEGATIVE_CONTROL_REAL_EXCEPTION",
+      "document": "https://127.0.0.1:61576/next",
+      "navigation": 2,
+      "at": 1792029352600
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "Error: NEGATIVE_CONTROL_REAL_REJECTION",
+      "document": "https://127.0.0.1:61576/next",
+      "navigation": 2,
+      "at": 1792029352702
+    }
+  ]
+}

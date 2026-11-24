@@ -1,0 +1,34 @@
+Changes: 372 files, 22 symbols
+Affected processes: 365
+Risk level: critical
+
+Changed symbols:
+  Section ERRORS.md — sutra → ERRORS.md
+  Section T07 — FRONTEND-JOURNEY, 2026-10-14 → ERRORS.md
+  Const scopeNames → qa/t04-final-providers-20261015/salad-read.mjs
+  Function selected → qa/t04-final-providers-20261015/salad-read.mjs
+  Property variables → qa/t04-final-providers-20261015/salad-read.mjs
+  Property status → qa/t04-final-providers-20261015/salad-read.mjs
+  Property reason → qa/t04-final-providers-20261015/salad-read.mjs
+  Const nodeTests → scripts/run-ci.mjs
+  Interface Schedule → src/app/(dashboard)/auto/schedules/page.tsx
+  Property id → src/app/(dashboard)/auto/schedules/page.tsx
+  Property frequency → src/app/(dashboard)/auto/schedules/page.tsx
+  Const upsertSchema → src/app/api/social/autopilot/route.ts
+  Function cloneVoice → src/lib/elevenlabs.ts
+  Function listVoices → src/lib/elevenlabs.ts
+  TypeAlias MediaFormat → src/lib/pexels.ts
+... and 7 more
+
+Affected execution flows:
+  • KarmaHub → Refresh (4 steps) — changed: selected, selected, selected, selected
+  • CommunityScreen → ApiFetch (3 steps) — changed: selected, selected, selected
+  • AdminContestPage → FetchData (3 steps) — changed: selected, selected, selected
+  • AdminUsersPage → FetchUsers (3 steps) — changed: selected, selected, selected
+  • AutoPage → RequestClientJson (3 steps) — changed: selected, selected, selected
+  • CommunityPage → FetchBuddy (3 steps) — changed: selected, selected, selected
+  • CommunityPage → FetchCircles (3 steps) — changed: selected, selected, selected
+  • CommunityPage → FetchWall (3 steps) — changed: selected, selected, selected
+  • CreatePage → FetchPublicCapabilities (3 steps) — changed: selected
+  • JeuCreatifPage → Load (3 steps) — changed: selected, selected, selected
+... and 355 more

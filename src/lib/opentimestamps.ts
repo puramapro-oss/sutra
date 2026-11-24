@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto'
 import OpenTimestamps from 'javascript-opentimestamps'
+import { parseOtsProof, serializeOtsProof } from './ots-transport'
 
 // ---------------------------------------------------------------------------
 // OpenTimestamps — Horodatage blockchain Bitcoin natif (remplace OriginStamp).
@@ -88,7 +89,11 @@ export async function stampMp4(data: Buffer | Uint8Array): Promise<StampResult> 
     digest,
   )
   await OpenTimestamps.stamp(detachedFile)
-  const proofBytes = detachedFile.serializeToBytes()
+  // Upstream soft-fails calendar errors: a resolved promise can still be empty.
+  if (!(detachedFile.timestamp as { getAttestations(): Set<unknown> }).getAttestations().size) {
+    throw new Error('SUTRA_OTS_STAMP_FAILED')
+  }
+  const proofBytes = serializeOtsProof(detachedFile)
   return {
     sha256Hex: hex,
     proofBase64: Buffer.from(proofBytes).toString('base64'),
@@ -115,10 +120,10 @@ export async function attemptUpgrade(
     const proofBytes = Buffer.from(proofBase64, 'base64')
     const digest = digestFromHex(sha256Hex)
 
-    const detachedProof = OpenTimestamps.DetachedTimestampFile.deserialize(proofBytes)
+    const detachedProof = parseOtsProof(proofBytes)
     await OpenTimestamps.upgrade(detachedProof)
 
-    const newBytes = detachedProof.serializeToBytes()
+    const newBytes = serializeOtsProof(detachedProof)
     const newProofBase64 = Buffer.from(newBytes).toString('base64')
 
     // verify() hit blockstream.info / esplora pour extraire le anchor Bitcoin réel.
@@ -126,7 +131,7 @@ export async function attemptUpgrade(
       new OpenTimestamps.Ops.OpSHA256(),
       digest,
     )
-    const result = await OpenTimestamps.verify(detachedProof, detachedOriginal)
+    const result = await OpenTimestamps.verify(detachedProof, detachedOriginal, { ignoreBitcoinNode: true })
 
     if (result.bitcoin) {
       return {
@@ -163,7 +168,7 @@ export async function verifyProof(
   try {
     const proofBytes = Buffer.from(proofBase64, 'base64')
     const digest = digestFromHex(sha256Hex)
-    const detachedProof = OpenTimestamps.DetachedTimestampFile.deserialize(proofBytes)
+    const detachedProof = parseOtsProof(proofBytes)
 
     const proofHashHex = Buffer.from(detachedProof.fileDigest()).toString('hex')
     if (proofHashHex !== sha256Hex.toLowerCase()) {
@@ -178,7 +183,7 @@ export async function verifyProof(
       new OpenTimestamps.Ops.OpSHA256(),
       digest,
     )
-    const result = await OpenTimestamps.verify(detachedProof, detachedOriginal)
+    const result = await OpenTimestamps.verify(detachedProof, detachedOriginal, { ignoreBitcoinNode: true })
 
     if (result.bitcoin) {
       return {

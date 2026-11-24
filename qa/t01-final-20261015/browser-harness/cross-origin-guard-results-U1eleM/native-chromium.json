@@ -1,0 +1,450 @@
+{
+  "engine": "chromium",
+  "browserVersion": "145.0.7632.6",
+  "nativeSafari": false,
+  "keyboard": {
+    "engine": "chromium",
+    "key": "Tab",
+    "observations": [
+      {
+        "key": "Tab",
+        "focused": "toggle"
+      },
+      {
+        "key": "Alt+Tab",
+        "focused": "toggle"
+      }
+    ],
+    "negativeFocused": "next",
+    "nativeSafari": false
+  },
+  "caughtUnloadDiagnostic": false,
+  "cases": [
+    {
+      "method": "goto",
+      "query": false,
+      "errors": [],
+      "qualified": []
+    },
+    {
+      "method": "goto",
+      "query": true,
+      "errors": [],
+      "qualified": []
+    },
+    {
+      "method": "reload",
+      "query": false,
+      "errors": [],
+      "qualified": []
+    },
+    {
+      "method": "reload",
+      "query": true,
+      "errors": [],
+      "qualified": []
+    }
+  ],
+  "caught": {
+    "errors": [],
+    "qualified": [],
+    "unexpected": [],
+    "events": [
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 2,
+        "at": 1792033315825
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 2,
+        "at": 1792033315833
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 2,
+        "at": 1792033315833
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:54765/next",
+        "navigation": 3,
+        "at": 1792033316148
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught-rsc",
+        "navigation": 4,
+        "at": 1792033316151
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:54765/caught-rsc",
+        "navigation": 4,
+        "at": 1792033316158
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught-rsc",
+        "navigation": 4,
+        "at": 1792033316159
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:54765/next",
+        "navigation": 5,
+        "at": 1792033316470
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 6,
+        "at": 1792033316472
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 6,
+        "at": 1792033316480
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 6,
+        "at": 1792033316480
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 7,
+        "at": 1792033316785
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 7,
+        "at": 1792033316796
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught",
+        "navigation": 7,
+        "at": 1792033316796
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught-rsc",
+        "navigation": 8,
+        "at": 1792033316798
+      },
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:54765/caught-rsc",
+        "navigation": 8,
+        "at": 1792033316804
+      },
+      {
+        "kind": "unload-fetch",
+        "url": "https://127.0.0.1:54765/slow?_rsc=fixture_token",
+        "method": "GET",
+        "document": "https://127.0.0.1:54765/caught-rsc",
+        "navigation": 8,
+        "at": 1792033316805
+      }
+    ],
+    "navigations": [
+      {
+        "id": 1,
+        "method": "goto",
+        "from": "nullblank",
+        "to": "https://127.0.0.1:54765/caught",
+        "startedAt": 1792033315765,
+        "finishedAt": 1792033315822
+      },
+      {
+        "id": 2,
+        "method": "goto",
+        "from": "https://127.0.0.1:54765/caught",
+        "to": "https://127.0.0.1:54765/next",
+        "startedAt": 1792033315822,
+        "finishedAt": 1792033315836
+      },
+      {
+        "id": 3,
+        "method": "goto",
+        "from": "https://127.0.0.1:54765/next",
+        "to": "https://127.0.0.1:54765/caught-rsc",
+        "startedAt": 1792033316139,
+        "finishedAt": 1792033316150
+      },
+      {
+        "id": 4,
+        "method": "goto",
+        "from": "https://127.0.0.1:54765/caught-rsc",
+        "to": "https://127.0.0.1:54765/next",
+        "startedAt": 1792033316150,
+        "finishedAt": 1792033316161
+      },
+      {
+        "id": 5,
+        "method": "goto",
+        "from": "https://127.0.0.1:54765/next",
+        "to": "https://127.0.0.1:54765/caught",
+        "startedAt": 1792033316463,
+        "finishedAt": 1792033316471
+      },
+      {
+        "id": 6,
+        "method": "reload",
+        "from": "https://127.0.0.1:54765/caught",
+        "to": "https://127.0.0.1:54765/caught",
+        "startedAt": 1792033316471,
+        "finishedAt": 1792033316482
+      },
+      {
+        "id": 7,
+        "method": "goto",
+        "from": "https://127.0.0.1:54765/caught",
+        "to": "https://127.0.0.1:54765/caught-rsc",
+        "startedAt": 1792033316784,
+        "finishedAt": 1792033316797
+      },
+      {
+        "id": 8,
+        "method": "reload",
+        "from": "https://127.0.0.1:54765/caught-rsc",
+        "to": "https://127.0.0.1:54765/caught-rsc",
+        "startedAt": 1792033316797,
+        "finishedAt": 1792033316806
+      }
+    ],
+    "domErrors": []
+  },
+  "crossOriginCaughtUnloadDiagnostic": false,
+  "crossOrigin": {
+    "engine": "chromium",
+    "fixtureOrigin": "https://127.0.0.1:54782",
+    "normalCrossOriginRead": "PASS",
+    "cases": [
+      {
+        "method": "goto",
+        "navigation": 3,
+        "qualified": []
+      },
+      {
+        "method": "reload",
+        "navigation": 5,
+        "qualified": []
+      }
+    ],
+    "caught": {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:54783/normal",
+          "navigation": 2,
+          "at": 1792033317866
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:54782/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 3,
+          "at": 1792033317869
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 3,
+          "at": 1792033317872
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:54782/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 3,
+          "at": 1792033317872
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:54783/next",
+          "navigation": 4,
+          "at": 1792033318380
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:54782/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 5,
+          "at": 1792033318383
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 5,
+          "at": 1792033318387
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:54782/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 5,
+          "at": 1792033318387
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:54782/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 6,
+          "at": 1792033318890
+        },
+        {
+          "kind": "pagehide",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 6,
+          "at": 1792033318897
+        },
+        {
+          "kind": "unload-fetch",
+          "url": "https://127.0.0.1:54782/rest/v1/affirmations?select=*&category=eq.wisdom",
+          "method": "GET",
+          "document": "https://127.0.0.1:54783/caught",
+          "navigation": 6,
+          "at": 1792033318897
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "https://127.0.0.1:54783/normal",
+          "startedAt": 1792033317525,
+          "finishedAt": 1792033317539
+        },
+        {
+          "id": 2,
+          "method": "goto",
+          "from": "https://127.0.0.1:54783/normal",
+          "to": "https://127.0.0.1:54783/caught",
+          "startedAt": 1792033317860,
+          "finishedAt": 1792033317867
+        },
+        {
+          "id": 3,
+          "method": "goto",
+          "from": "https://127.0.0.1:54783/caught",
+          "to": "https://127.0.0.1:54783/next",
+          "startedAt": 1792033317867,
+          "finishedAt": 1792033317874
+        },
+        {
+          "id": 4,
+          "method": "goto",
+          "from": "https://127.0.0.1:54783/next",
+          "to": "https://127.0.0.1:54783/caught",
+          "startedAt": 1792033318376,
+          "finishedAt": 1792033318382
+        },
+        {
+          "id": 5,
+          "method": "reload",
+          "from": "https://127.0.0.1:54783/caught",
+          "to": "https://127.0.0.1:54783/caught",
+          "startedAt": 1792033318382,
+          "finishedAt": 1792033318388
+        },
+        {
+          "id": 6,
+          "method": "goto",
+          "from": "https://127.0.0.1:54783/caught",
+          "to": "https://127.0.0.1:54783/normal",
+          "startedAt": 1792033318889,
+          "finishedAt": 1792033318899
+        }
+      ],
+      "domErrors": []
+    },
+    "reproduced": false,
+    "realCorsDenialDetected": true,
+    "negativeEvidence": [
+      {
+        "kind": "pageerror",
+        "message": "Failed to fetch",
+        "stack": "TypeError: Failed to fetch\n    at window.fetch (<anonymous>:28:22)\n    at window.runRead (https://127.0.0.1:54783/normal:3:30)\n    at eval (eval at evaluate (:290:30), <anonymous>:1:16)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+        "navigation": 6,
+        "at": 1792033319405
+      },
+      {
+        "kind": "dom-uncaught",
+        "message": "TypeError: Failed to fetch",
+        "document": "https://127.0.0.1:54783/normal",
+        "navigation": 6,
+        "at": 1792033319405
+      }
+    ]
+  },
+  "negativeControls": {
+    "realExceptionDetected": true,
+    "unhandledRejectionDetected": true
+  },
+  "negativeEvidence": [
+    {
+      "kind": "pageerror",
+      "message": "NEGATIVE_CONTROL_REAL_EXCEPTION",
+      "stack": "Error: NEGATIVE_CONTROL_REAL_EXCEPTION\n    at eval (eval at evaluate (:290:30), <anonymous>:1:34)",
+      "navigation": 8,
+      "at": 1792033317112
+    },
+    {
+      "kind": "pageerror",
+      "message": "NEGATIVE_CONTROL_REAL_REJECTION",
+      "stack": "Error: NEGATIVE_CONTROL_REAL_REJECTION\n    at eval (eval at evaluate (:290:30), <anonymous>:1:24)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+      "navigation": 8,
+      "at": 1792033317212
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "Uncaught Error: NEGATIVE_CONTROL_REAL_EXCEPTION",
+      "document": "https://127.0.0.1:54765/caught-rsc",
+      "navigation": 8,
+      "at": 1792033317110
+    },
+    {
+      "kind": "dom-uncaught",
+      "message": "Error: NEGATIVE_CONTROL_REAL_REJECTION",
+      "document": "https://127.0.0.1:54765/caught-rsc",
+      "navigation": 8,
+      "at": 1792033317212
+    }
+  ]
+}

@@ -16,7 +16,7 @@ export default function PastPostsList({ posts }: PastPostsListProps) {
       <Card>
         <CardContent className="py-8 text-center">
           <CheckCircle2 className="h-8 w-8 text-white/15 mx-auto mb-2" />
-          <p className="text-sm text-white/30">Aucune publication passee</p>
+          <p className="text-sm text-white/60">Aucune publication passee</p>
         </CardContent>
       </Card>
     )
@@ -39,7 +39,7 @@ export default function PastPostsList({ posts }: PastPostsListProps) {
               </Badge>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-xs text-white/30">{formatRelativeDate(post.created_at)}</span>
+              <span className="text-xs text-white/60">{formatRelativeDate(post.created_at)}</span>
             </div>
           </CardContent>
         </Card>

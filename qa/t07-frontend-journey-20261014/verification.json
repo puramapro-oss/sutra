@@ -1,0 +1,109 @@
+{
+  "base": "e09fdaeafbf1ec8554a7b689fe3c44dd696d0140",
+  "branch": "codex/sutra-t07-frontend-journey-20261014",
+  "recordedAt": "2026-10-14T14:30:17.982053+00:00",
+  "commands": [
+    {
+      "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node node_modules/typescript/bin/tsc --noEmit --incremental false",
+      "exitCode": 0,
+      "evidence": "qa/t07-frontend-journey-20261014/typecheck-final.txt",
+      "afterOwnDevServerStopped": true
+    },
+    {
+      "command": "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node node_modules/eslint/bin/eslint.js src/components/editor/VideoPlayerPanel.tsx src/components/legal/LegalReacceptanceGateMount.tsx src/lib/legal/components/LegalReacceptanceGate.tsx qa/t07-frontend-journey-20261014/*.mjs",
+      "exitCode": 0,
+      "evidence": "qa/t07-frontend-journey-20261014/lint-final-harness.txt"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "gitleaks dir qa/t07-frontend-journey-20261014 --redact --no-banner --report-format json --report-path qa/t07-frontend-journey-20261014/gitleaks-qa.json",
+      "exitCode": 1,
+      "classification": "six synthetic idempotency UUIDs; zero unresolved findings",
+      "evidence": "qa/t07-frontend-journey-20261014/gitleaks-disposition.json"
+    },
+    {
+      "command": "git diff --cached -- src/components/editor/VideoPlayerPanel.tsx src/components/legal/LegalReacceptanceGateMount.tsx src/lib/legal/components/LegalReacceptanceGate.tsx HANDOFF-SUTRA-T07-FRONTEND-JOURNEY-20261014.md BATON.md task_plan.md ERRORS.md | /opt/homebrew/bin/gitleaks stdin --redact --no-banner --report-format json --report-path qa/t07-frontend-journey-20261014/gitleaks-product-docs.json",
+      "exitCode": 0,
+      "evidence": "qa/t07-frontend-journey-20261014/gitleaks-product-docs.json"
+    },
+    {
+      "command": "gitleaks dir qa/t07-frontend-journey-20261014 --redact --no-banner --gitleaks-ignore-path qa/t07-frontend-journey-20261014/gitleaks-fixture.ignore --report-format json --report-path qa/t07-frontend-journey-20261014/gitleaks-reviewed.json",
+      "exitCode": 0,
+      "evidence": "qa/t07-frontend-journey-20261014/gitleaks-reviewed.json"
+    },
+    {
+      "command": "GitNexus LocalBackend.callTool('detect_changes', {repo: worktree, worktree, scope: 'staged'})",
+      "exitCode": 0,
+      "evidence": "qa/t07-frontend-journey-20261014/gitnexus-changes.json",
+      "scope": "17 indexed symbols; 0 resolved processes, low risk; new QA files not indexed, graph truncated, manual diff ownership review required"
+    }
+  ],
+  "assertions": "final-assertions.json",
+  "sourceSHA256": {
+    "src/lib/legal/components/LegalReacceptanceGate.tsx": "c0f5d75c520deb59b5298832ea902b41aa12d6cc753cf9d521f861e24a5ebb5a",
+    "src/components/legal/LegalReacceptanceGateMount.tsx": "872c331f821bdbb1dbd84a4aea21ee850b37652b1c4fbe31a95072c7a449f99e",
+    "src/components/editor/VideoPlayerPanel.tsx": "a1e617a2965137367c585a2b37c9c13a852fbf981ba48bb0919aacd519fa209f",
+    "package.json": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e",
+    "package-lock.json": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+    "tsconfig.json": "9945bb222ec3063c73dfb0e2225f7463621070d5307b3bd970c13da1382f66ce",
+    "qa/t08/offline.cjs": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+    "qa/t07-frontend-journey-20261014/fixture.mjs": "62ff497f83d5139e097f6c99ff4b8f3adf91bb14dd1341853fb480ce30cccbac",
+    "qa/t07-frontend-journey-20261014/journey-checks.mjs": "09d03899d070995ee27fcfcc5479e95a5a018ca728bb5fad5b05f365be908981",
+    "qa/t07-frontend-journey-20261014/legal-checks.mjs": "8a42af8ee2b8eadd6743e7cebab76f5693fd5a847f909d6366be387cb63aba73",
+    "qa/t07-frontend-journey-20261014/player-checks.mjs": "a98b6c12f3652d8632053a2f3c7b276ae7ce0166f51ad09ec1f3d67d5197def7",
+    "qa/t07-frontend-journey-20261014/private-download-checks.mjs": "bb0f9b579cb419d7fb13b7b0bb2a0cde8342dfe454604facb317b489084a2f83",
+    "qa/t07-frontend-journey-20261014/retry-checks.mjs": "1e1163bd5b3272d2485019e9079636c7a5a1fe9a2660a4d34a3d3916a7a6281f",
+    "qa/t07-frontend-journey-20261014/run.mjs": "bb51dbfd63e043c8c5afb9c82d5adcf48fbbee49d647b2023e32a0bb87376cae",
+    "qa/t07-frontend-journey-20261014/tls-fixture.mjs": "17009d162905b746fd5be8c9ecafb553513b92e303b21b5f7e8e3c65acca7b7f",
+    "qa/t07-frontend-journey-20261014/visual-checks.mjs": "3f65a717a0bfbd7281273f1fb57f8b5f601c32a3d108977a0a547626a247c44b",
+    "qa/t07-frontend-journey-20261014/fixture-video.mp4": "b9ebe80ebc87e1b589884fa3172c4a3758604fc6ba4314885464920a6294927c"
+  },
+  "priorEvidenceReuse": {
+    "commit": "654ae42a587d9934dbb29a63ec75eeec19062d72",
+    "reason": "Owned earlier library/settings/modes product files byte-identical in base T01; no global replay",
+    "performance": "library duplicate GET 6 to 0, median 452ms to 27.5ms from historical exact-source proof; not remeasured here"
+  },
+  "environment": {
+    "mode": "Next dev webpack / Chromium / loopback fixtures",
+    "identity": "legal-test@example.invalid",
+    "widths": [
+      375,
+      1440
+    ],
+    "envSource": "explicit synthetic run.mjs allowlist; master and .env files never read",
+    "database": "in-memory local HTTP/HTTPS fixture",
+    "legalRoute": "real local /api/legal/accept, four explicit clicks",
+    "privateRoute": "real local /api/media/[reference], 307 to synthetic HTTPS storage",
+    "paidCalls": 0,
+    "publications": 0,
+    "AIcomputations": 0,
+    "systemTrustModified": false
+  },
+  "nonTested": [
+    "production build performance",
+    "physical mobile device",
+    "Safari/Firefox/screen reader",
+    "large media memory usage",
+    "real storage CORS",
+    "live OAuth/provider/payment/generation/publication",
+    "T01 integration of this delta"
+  ],
+  "historicalFailure": "typecheck-download.txt TS6053 caused by simultaneous Next dev type regeneration; stopped own server then same compiler passed",
+  "T01HeadAtFinalCheck": "e09fdaeafbf1ec8554a7b689fe3c44dd696d0140",
+  "dependencyLockMatchesSharedNodeModulesOwner": true,
+  "scopeReview": {
+    "files": 114,
+    "productFiles": 3,
+    "foreignPaths": 0,
+    "generatedBuildOrDependencyFilesStaged": false,
+    "gitnexusSummary": {
+      "changed_count": 17,
+      "affected_count": 0,
+      "changed_files": 114,
+      "risk_level": "low"
+    }
+  }
+}

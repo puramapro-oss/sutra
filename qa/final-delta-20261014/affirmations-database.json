@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "database": "isolated restored SUTRA copy",
+  "checks": [
+    "reproduced_authenticated_read_denied",
+    "migration_idempotent",
+    "active_account_reads_30_rows",
+    "writes_remain_denied",
+    "revoked_account_reads_zero",
+    "unknown_account_reads_zero",
+    "anonymous_read_denied",
+    "revoke_rollback_and_outer_transaction_restored"
+  ],
+  "productionChanged": false,
+  "observedAt": "2026-10-14T04:29:54.700705+00:00",
+  "command": "python3 qa/final-delta-20261014/affirmations-database.py"
+}

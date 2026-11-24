@@ -1,0 +1,92 @@
+{
+  "engine": "chromium",
+  "browserVersion": "145.0.7632.6",
+  "normalCrossOriginGet": "PASS",
+  "denialDetected": true,
+  "caughtTeardownDiagnostics": [],
+  "events": [
+    {
+      "phase": "caught-goto",
+      "kind": "console-warning",
+      "message": "synthetic-event:beforeunload",
+      "at": 1792032053205
+    },
+    {
+      "phase": "caught-goto",
+      "kind": "console-warning",
+      "message": "synthetic-event:pagehide",
+      "at": 1792032053209
+    },
+    {
+      "phase": "caught-reload",
+      "kind": "console-warning",
+      "message": "synthetic-event:beforeunload",
+      "at": 1792032053721
+    },
+    {
+      "phase": "caught-reload",
+      "kind": "console-warning",
+      "message": "synthetic-event:pagehide",
+      "at": 1792032053727
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-warning",
+      "message": "synthetic-event:beforeunload",
+      "at": 1792032054231
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-warning",
+      "message": "synthetic-event:pagehide",
+      "at": 1792032054238
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-error",
+      "message": "Access to fetch at 'https://127.0.0.1:62933/denied' from origin 'https://127.0.0.1:62934' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+      "at": 1792032054245
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-error",
+      "message": "Failed to load resource: net::ERR_FAILED",
+      "at": 1792032054245
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "console-warning",
+      "message": "synthetic-dom-rejection:TypeError: Failed to fetch",
+      "at": 1792032054246
+    },
+    {
+      "phase": "true-cors-denial",
+      "kind": "pageerror",
+      "message": "Failed to fetch",
+      "stack": "TypeError: Failed to fetch\n    at window.runDenied (https://127.0.0.1:62934/normal:5:30)\n    at eval (eval at evaluate (:290:30), <anonymous>:1:16)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+      "at": 1792032054247
+    }
+  ],
+  "requests": [
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032052894
+    },
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032053207
+    },
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032053726
+    },
+    {
+      "path": "/rest/v1/affirmations",
+      "at": 1792032054238
+    },
+    {
+      "path": "/denied",
+      "at": 1792032054244
+    }
+  ]
+}

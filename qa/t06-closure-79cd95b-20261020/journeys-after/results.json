@@ -1,0 +1,403 @@
+{
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "engine": "chromium",
+  "checks": [
+    {
+      "name": "social empty: nine consent buttons, five unavailable platforms, no automatic writes",
+      "status": "PASS"
+    },
+    {
+      "name": "connect refuses safely, actionable administrator message, no raw provider body",
+      "status": "PASS"
+    },
+    {
+      "name": "connect rapid double activation creates only one OAuth state request",
+      "status": "PASS"
+    },
+    {
+      "name": "connect pending request expires and offers manual recovery within 11 seconds",
+      "status": "PASS"
+    },
+    {
+      "name": "callback error never reflects untrusted diagnostics and removes the query parameter",
+      "status": "PASS"
+    },
+    {
+      "name": "revoked account offers reconnection with personal consent, no connected badge",
+      "status": "PASS"
+    },
+    {
+      "name": "social 375px: no overflow and axe WCAG AA",
+      "status": "PASS"
+    },
+    {
+      "name": "social 1440px: no overflow and axe WCAG AA",
+      "status": "PASS"
+    },
+    {
+      "name": "create client: explicit costs and remote capability, no personal WanGP control",
+      "status": "PASS"
+    },
+    {
+      "name": "create unavailable: explicit costs and remote capability, no personal WanGP control",
+      "status": "PASS"
+    },
+    {
+      "name": "create ready: explicit costs and remote capability, no personal WanGP control",
+      "status": "PASS"
+    },
+    {
+      "name": "create form: empty blocked, named topic, submission refused without raw diagnostics",
+      "status": "PASS"
+    },
+    {
+      "name": "lost create response preserves intent; resume GET and cancel DELETE use same request, no new generation",
+      "status": "PASS"
+    },
+    {
+      "name": "English locale: translated creation heading",
+      "status": "FAIL",
+      "error": "expect(locator).toHaveText(expected) failed\n\nLocator: getByRole('heading', { level: 1 })\nExpected pattern: /create.*video/i\nReceived string:  \"Creer une video\"\nTimeout: 5000ms\n\nCall log:\n  - Expect \"to.have.text\" with timeout 5000ms\n  - waiting for getByRole('heading', { level: 1 })\n    7 × locator resolved to <h1 class=\"text-2xl lg:text-3xl font-bold text-white font-[var(--font-display)]\">Creer une video</h1>\n      - unexpected value \"Creer une video\"\n"
+    },
+    {
+      "name": "runtime: zero unexpected hydration/client errors; no external or real publication",
+      "status": "FAIL",
+      "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     at: 1792450749194,\n+     kind: 'pageerror',\n+     message: \"Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\\n\" +\n+       '\\n' +\n+       \"- A server/client branch `if (typeof window !== 'undefined')`.\\n\" +\n+       \"- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\\n\" +\n+       \"- Date formatting in a user's locale which doesn't match the server.\\n\" +\n+       '- External changing data without sending a snapshot of it along with the HTML.\\n' +\n+       '- Invalid HTML tag nesting.\\n' +\n+       '\\n' +\n+       'It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\\n' +\n+       '\\n' +\n+       'https://react.dev/link/hydration-mismatch\\n' +\n+       '\\n' +\n+       '  ...\\n' +\n+       '    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\\n' +\n+       '      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\\n' +\n+       '        <ErrorBoundaryHandler pathname=\"/create\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\\n' +\n+       '          <LoadingBoundary name=\"/\" loading={null}>\\n' +\n+       '            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\\n' +\n+       '              <HTTPAccessFallbackErrorBoundary pathname=\"/create\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\\n' +\n+       '                <RedirectBoundary>\\n' +\n+       '                  <RedirectErrorBoundary router={{...}}>\\n' +\n+       '                    <InnerLayoutRouter url=\"/create\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\\n' +\n+       '                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\\n' +\n+       '                        <SegmentTrieNode>\\n' +\n+       '                        <DashboardLayout>\\n' +\n+       '                          <DashboardChrome>\\n' +\n+       '                            <div\\n' +\n+       '+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\\n' +\n+       '-                             className={null}\\n' +\n+       '-                             hidden=\"\"\\n' +\n+       '                     "
+    }
+  ],
+  "axes": [
+    {
+      "page": "social",
+      "width": 375,
+      "violations": []
+    },
+    {
+      "page": "social",
+      "width": 1440,
+      "violations": []
+    }
+  ],
+  "observations": [
+    {
+      "locale": "en",
+      "heading": "Creer une video"
+    }
+  ],
+  "runtime": [
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/library",
+          "navigation": 1,
+          "at": 1792450731935
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/login",
+          "startedAt": 1792450725334,
+          "finishedAt": 1792450726308
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/settings/social",
+          "navigation": 1,
+          "at": 1792450743176
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/settings/social",
+          "startedAt": 1792450732027,
+          "finishedAt": 1792450732636
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/settings/social",
+          "navigation": 1,
+          "at": 1792450743967
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/settings/social",
+          "startedAt": 1792450743251,
+          "finishedAt": 1792450743850
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/settings/social",
+          "navigation": 1,
+          "at": 1792450746481
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/settings/social",
+          "startedAt": 1792450744054,
+          "finishedAt": 1792450744629
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/create",
+          "navigation": 1,
+          "at": 1792450748250
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/create",
+          "startedAt": 1792450746596,
+          "finishedAt": 1792450747352
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [
+        {
+          "kind": "pageerror",
+          "message": "Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/create\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/create\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/create\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n",
+          "stack": "Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/create\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/create\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/create\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:5525:11)\n    at beginWork (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:12398:17)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:1028:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19066:22)\n    at workLoopConcurrentByScheduler (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19060:9)\n    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19042:15)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:17897:11)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:20555:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)",
+          "navigation": 1,
+          "at": 1792450749194
+        }
+      ],
+      "qualified": [],
+      "unexpected": [
+        {
+          "kind": "pageerror",
+          "message": "Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/create\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/create\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/create\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n",
+          "stack": "Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/create\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/create\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/create\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:5525:11)\n    at beginWork (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:12398:17)\n    at runWithFiberInDEV (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:1028:30)\n    at performUnitOfWork (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19066:22)\n    at workLoopConcurrentByScheduler (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19060:9)\n    at renderRootConcurrent (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:19042:15)\n    at performWorkOnRoot (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:17897:11)\n    at performWorkOnRootViaSchedulerTask (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:20555:7)\n    at MessagePort.performWorkUntilDeadline (webpack-internal:///(app-pages-browser)/../sutra-t01-integration-20261012/node_modules/next/dist/compiled/scheduler/cjs/scheduler.development.js:45:48)",
+          "navigation": 1,
+          "at": 1792450749194
+        },
+        {
+          "kind": "dom-uncaught",
+          "message": "Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/create\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/create\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/create\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n",
+          "document": "http://127.0.0.1:50470/create",
+          "navigation": 1,
+          "at": 1792450749194
+        }
+      ],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/create",
+          "navigation": 1,
+          "at": 1792450750117
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/create",
+          "startedAt": 1792450748347,
+          "finishedAt": 1792450749169
+        }
+      ],
+      "domErrors": [
+        {
+          "kind": "uncaught",
+          "message": "Uncaught Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:\n\n- A server/client branch `if (typeof window !== 'undefined')`.\n- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.\n- Date formatting in a user's locale which doesn't match the server.\n- External changing data without sending a snapshot of it along with the HTML.\n- Invalid HTML tag nesting.\n\nIt can also happen if the client has a browser extension installed which messes with the HTML before React loaded.\n\nhttps://react.dev/link/hydration-mismatch\n\n  ...\n    <InnerScrollHandlerNew focusAndScrollRef={{scrollRef:null, ...}} cacheNode={{rsc:Promise, ...}}>\n      <ErrorBoundary errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} errorScripts={null}>\n        <ErrorBoundaryHandler pathname=\"/create\" errorComponent={function ErrorPage} errorStyles={<SegmentViewNode>} ...>\n          <LoadingBoundary name=\"/\" loading={null}>\n            <HTTPAccessFallbackBoundary notFound={<SegmentViewNode>} forbidden={undefined} unauthorized={undefined}>\n              <HTTPAccessFallbackErrorBoundary pathname=\"/create\" notFound={<SegmentViewNode>} forbidden={undefined} ...>\n                <RedirectBoundary>\n                  <RedirectErrorBoundary router={{...}}>\n                    <InnerLayoutRouter url=\"/create\" tree={[...]} params={{}} cacheNode={{rsc:Promise, ...}} ...>\n                      <SegmentViewNode type=\"layout\" pagePath=\"(dashboard...\">\n                        <SegmentTrieNode>\n                        <DashboardLayout>\n                          <DashboardChrome>\n                            <div\n+                             className=\"relative flex min-h-dvh bg-[#06050e]\"\n-                             className={null}\n-                             hidden=\"\"\n                            >\n                              <LoadableComponent>\n                              <Sidebar>\n                                <motion.aside animate={{width:256}} transition={{duration:0.2, ...}} ...>\n+                                 <aside\n+                                   className=\"hidden lg:flex flex-col h-dvh sticky top-0 bg-white/[0.02] backdrop-blu...\"\n+                                   data-testid=\"sidebar\"\n+                                   style={{}}\n+                                   ref={function useMotionRef.useCallback}\n+                                 >\n                              ...\n                    ...\n      ...\n",
+          "document": "http://127.0.0.1:50470/create",
+          "navigation": 1,
+          "at": 1792450749194
+        }
+      ]
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/create",
+          "navigation": 1,
+          "at": 1792450751836
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/create",
+          "startedAt": 1792450750230,
+          "finishedAt": 1792450750902
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/create",
+          "navigation": 2,
+          "at": 1792450753212
+        },
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/create",
+          "navigation": 2,
+          "at": 1792450754073
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/create",
+          "startedAt": 1792450751935,
+          "finishedAt": 1792450752667
+        },
+        {
+          "id": 2,
+          "method": "reload",
+          "from": "http://127.0.0.1:50470/create",
+          "to": "http://127.0.0.1:50470/create",
+          "startedAt": 1792450753144,
+          "finishedAt": 1792450753687
+        }
+      ],
+      "domErrors": []
+    },
+    {
+      "errors": [],
+      "qualified": [],
+      "unexpected": [],
+      "events": [
+        {
+          "kind": "pagehide",
+          "document": "http://127.0.0.1:50470/create",
+          "navigation": 1,
+          "at": 1792450759796
+        }
+      ],
+      "navigations": [
+        {
+          "id": 1,
+          "method": "goto",
+          "from": "nullblank",
+          "to": "http://127.0.0.1:50470/create",
+          "startedAt": 1792450754173,
+          "finishedAt": 1792450754770
+        }
+      ],
+      "domErrors": []
+    }
+  ],
+  "blocked": [],
+  "writes": [
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "body": {
+        "platform": "youtube"
+      }
+    },
+    {
+      "path": "/api/social/connect",
+      "method": "POST",
+      "body": {
+        "platform": "youtube"
+      }
+    },
+    {
+      "path": "/api/create",
+      "method": "POST",
+      "body": {
+        "topic": "Sujet synthétique, aucun média réel",
+        "format": "9:16",
+        "quality": "720p",
+        "engine": "ltx-fast",
+        "voice": "default_french_male",
+        "mode": "auto",
+        "mediaMode": "ai",
+        "stockSelections": []
+      },
+      "key": "72311ef4-b75e-4600-998a-09307b4c84b6"
+    },
+    {
+      "path": "/api/create",
+      "method": "POST",
+      "body": {
+        "topic": "Sujet synthétique, aucun média réel",
+        "format": "9:16",
+        "quality": "720p",
+        "engine": "ltx-fast",
+        "voice": "default_french_male",
+        "mode": "auto",
+        "mediaMode": "ai",
+        "stockSelections": []
+      },
+      "key": "ed4663cc-01c4-42b0-9b88-fba0b6ba13ab"
+    },
+    {
+      "path": "/api/create/status",
+      "method": "DELETE",
+      "body": null
+    }
+  ],
+  "realPublications": 0,
+  "realConnections": 0
+}

@@ -1,0 +1,38 @@
+▲ Next.js 16.3.8 (webpack)
+- Local:         http://127.0.0.1:51029
+- Network:       http://127.0.0.1:51029
+✓ Ready in 276ms
+✓ Running next.config.ts took 97ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+ GET /login 200 in 1961ms (next.js: 1613ms, proxy.ts: 83ms, application-code: 265ms)
+ GET /login?next=/library 200 in 26ms (next.js: 1.2ms, proxy.ts: 6ms, application-code: 19ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /library 200 in 1130ms (next.js: 1056ms, proxy.ts: 18ms, application-code: 56ms)
+ GET /library 200 in 48ms (next.js: 8ms, proxy.ts: 14ms, application-code: 26ms)
+ GET /library 200 in 48ms (next.js: 2ms, proxy.ts: 13ms, application-code: 33ms)
+ POST /api/legal/accept 200 in 1085ms (next.js: 747ms, proxy.ts: 4ms, application-code: 335ms)
+ GET /library 200 in 82ms (next.js: 40ms, proxy.ts: 9ms, application-code: 33ms)
+ GET /library 200 in 21ms (next.js: 1.7ms, proxy.ts: 5ms, application-code: 14ms)
+ POST /api/legal/accept 200 in 283ms (next.js: 0.8ms, proxy.ts: 2ms, application-code: 280ms)
+ GET /library 200 in 22ms (next.js: 1.9ms, proxy.ts: 5ms, application-code: 15ms)
+ GET /library 200 in 20ms (next.js: 1.5ms, proxy.ts: 7ms, application-code: 12ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.8ms, proxy.ts: 2ms, application-code: 258ms)
+ GET /library 200 in 19ms (next.js: 1.3ms, proxy.ts: 5ms, application-code: 13ms)
+ POST /api/legal/accept 200 in 260ms (next.js: 0.7ms, proxy.ts: 1.8ms, application-code: 258ms)
+⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[browser] Failed to fetch RSC payload for http://127.0.0.1:51029/library. Falling back to browser navigation. TypeError: Load failed
+ GET /editor/33333333-3333-4333-8333-333333333333 200 in 909ms (proxy.ts: 4ms)
+ GET /library 200 in 334ms (next.js: 3ms, proxy.ts: 4ms, application-code: 327ms)
+ GET /editor/33333333-3333-4333-8333-333333333333 200 in 144ms (next.js: 10ms, proxy.ts: 3ms, application-code: 131ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /editor/33333333-3333-4333-8333-333333333333 200 in 137ms (next.js: 62ms, proxy.ts: 16ms, application-code: 59ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+ GET /editor/33333333-3333-4333-8333-333333333333 200 in 165ms (next.js: 68ms, proxy.ts: 35ms, application-code: 62ms)
+[browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled
+[?25h

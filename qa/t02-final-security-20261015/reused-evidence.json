@@ -1,0 +1,361 @@
+{
+  "recordedAt": "2026-10-15T01:10:47.933945+00:00",
+  "base": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "ciSource": "3855665fa79e3cc2171124d864a834214d6ac617",
+  "ciRun": "38598361267",
+  "ciUrl": "https://github.com/puramapro-oss/sutra/actions/runs/38598361267",
+  "ciEvidence": "qa/t01-consolidation-20261014/ci-3855665-tests.json",
+  "ciEvidenceSha256": "f516539198c15d2e0d1afcbbc02962ecd404a8c883e6537a287f74decca0a621",
+  "scope": "Reused unchanged source/commands/dependencies only, not current runtime or new delta. No global gate rerun. OAuth/media/orchestration owners have pending new deltas outside this snapshot.",
+  "baseProductDeltaFromCI": [],
+  "priorT02Integrated": [
+    {
+      "path": "src/lib/storage.ts",
+      "priorBlob": "90c5097409ef0b4e7ef333cf9cdea38c4c51e01e",
+      "baseBlob": "90c5097409ef0b4e7ef333cf9cdea38c4c51e01e",
+      "sha256": "019ca6891dae95c24a78ecee0d581120dc156189903538621a6e4732a280b903"
+    },
+    {
+      "path": "src/lib/opentimestamps.ts",
+      "priorBlob": "c33b0fec6756c761988d8b818385c983050ac204",
+      "baseBlob": "c33b0fec6756c761988d8b818385c983050ac204",
+      "sha256": "e5f38f371d8854978d96b23b027c429fa908c4a547f8950e10bdf0632d0c7ab5"
+    },
+    {
+      "path": "src/lib/ots-transport.ts",
+      "priorBlob": "48ffe1ac0b28671e70bc967a483f47998691d5c6",
+      "baseBlob": "48ffe1ac0b28671e70bc967a483f47998691d5c6",
+      "sha256": "825c9b72c8505e8f73dacfb472460deef8f6ff662c70ce9478717f8759a87852"
+    },
+    {
+      "path": "src/app/api/verify/[videoId]/route.ts",
+      "priorBlob": "1339c10606868a0d0f291d4b6bed5c1ff222a57e",
+      "baseBlob": "1339c10606868a0d0f291d4b6bed5c1ff222a57e",
+      "sha256": "fc2959bcfd43df16e49b6bcd704f31cbb32ebb5b8e03115f38dfcd23b9ea3d33"
+    },
+    {
+      "path": "scripts/test-security-storage.mts",
+      "priorBlob": "ebecb243896c01b90d9a413626cbce4bc7ea8277",
+      "baseBlob": "ebecb243896c01b90d9a413626cbce4bc7ea8277",
+      "sha256": "87a386448ecc62a909fa06c21c8f88fdf14c559e35c524efd18d2744cd72946e"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-storage.mts",
+      "priorBlob": "93c9f3a2608d26432928a3a7fc8c5291d7ff32e9",
+      "baseBlob": "93c9f3a2608d26432928a3a7fc8c5291d7ff32e9",
+      "sha256": "fa4694c6c7fa64bf699515e8838d7bbbd52bfb70ae190fe3966ec28fd2125fc1"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-proof.mts",
+      "priorBlob": "61b9672f2e2f86a61a2316001962759200fd06a3",
+      "baseBlob": "61b9672f2e2f86a61a2316001962759200fd06a3",
+      "sha256": "ecc85aef721ded4bfe4b1b44df66798c872cccb454fc016eb68f607f6ffbad97"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-session-media.mts",
+      "priorBlob": "358a71ca9b2c8a3f852c5450e9d8d0fb58e92e20",
+      "baseBlob": "358a71ca9b2c8a3f852c5450e9d8d0fb58e92e20",
+      "sha256": "ec08289720ca359882ed5ff9822934ec0c4dca790ac3f0578bebd0d9eabe1900"
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-ots.mts",
+      "priorBlob": "27819d379f0235e4bc642f88af49f1afd27ac573",
+      "baseBlob": "27819d379f0235e4bc642f88af49f1afd27ac573",
+      "sha256": "7f31336b5921941e824d59b59a2096c0e8f7e8f24170abd688226d1ca1dbc494"
+    }
+  ],
+  "rpcDiagnosticFix": {
+    "sourceCommit": "47f689602d8a68be1c5d25c85c000eb921ee97ea",
+    "path": "src/lib/pipeline-submit.ts",
+    "identicalToBase": true
+  },
+  "socialJournalFix": {
+    "sourceCommit": "74655b154ccca6cfc4016f9bcca5c0b6f96e7cc5",
+    "path": "src/lib/publication-journal.ts",
+    "identicalToBase": true
+  },
+  "inputs": [
+    {
+      "path": "migrations/20261012_private_media.sql",
+      "ciBlob": "885882cc787f62cc9a4f447ba4fb2458dfc2c538",
+      "baseBlob": "885882cc787f62cc9a4f447ba4fb2458dfc2c538",
+      "workingSha256": "98769829e0de73382b9ed28af591c1dcf34fc4c44920e9ac7bc10ac1bfc77ae7",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "migrations/20261012_t02_account_permissions.sql",
+      "ciBlob": "85671fc7b948f08dba40a86c3c026e3ec8d24f2e",
+      "baseBlob": "85671fc7b948f08dba40a86c3c026e3ec8d24f2e",
+      "workingSha256": "b1c26b76c4f3d979d9e23122f9ce4750945c5a1e0f2773b8a10b367a31e2e5e5",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "migrations/20261012_t02_final_permissions.sql",
+      "ciBlob": "cc7ecba313771718d1eb0f6eb2ad4401e5ef4684",
+      "baseBlob": "cc7ecba313771718d1eb0f6eb2ad4401e5ef4684",
+      "workingSha256": "5c4cb0d80bc2937d6a3bbde1fe2afa0fc47e0ba332f0618042c9feb8e1d14790",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "migrations/20261013_feature_service_permissions.sql",
+      "ciBlob": "b1c636e3ee57fbf0e2c4162d528a9950705659e0",
+      "baseBlob": "b1c636e3ee57fbf0e2c4162d528a9950705659e0",
+      "workingSha256": "620778abea0c3642b22c7d7a22156dca28d56e603bb7cdeaed27a455de77126a",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "migrations/20261013_job_service_permissions.sql",
+      "ciBlob": "4b6a613191bbf05722978e3ec1fb1ca9b8e235ec",
+      "baseBlob": "4b6a613191bbf05722978e3ec1fb1ca9b8e235ec",
+      "workingSha256": "6f10b77b37c0fa343789c0831a17bc46f6804e262d5ce065a3e5fb9161295cb0",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "migrations/20261014_durable_checkpoint_integrity.sql",
+      "ciBlob": "9b1d27bced1de5f3d87ffe9d4ddaedad7c5794b7",
+      "baseBlob": "9b1d27bced1de5f3d87ffe9d4ddaedad7c5794b7",
+      "workingSha256": "93b96256c604baaa857efe8064519ad552ccaaff2305628c139294f34579882c",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "package-lock.json",
+      "ciBlob": "234d084957b6554239158da59d5e2b75befa6dba",
+      "baseBlob": "234d084957b6554239158da59d5e2b75befa6dba",
+      "workingSha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "package.json",
+      "ciBlob": "c1e36a2dc6f6c5e62da44786f088b7d5241ca099",
+      "baseBlob": "c1e36a2dc6f6c5e62da44786f088b7d5241ca099",
+      "workingSha256": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "qa/t02-final-validation-20261014/production-error.test.mts",
+      "ciBlob": "fb5f525b98bc607dabdee90f781ce8e507541c93",
+      "baseBlob": "fb5f525b98bc607dabdee90f781ce8e507541c93",
+      "workingSha256": "dd5d96a9a58ae91ba2563cc57455b1eb0402322bd36e8d925b4bd2d9c00c1c34",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "ciBlob": "f5f62ee394f97bc8b236b483992eee6f13ca9c66",
+      "baseBlob": "f5f62ee394f97bc8b236b483992eee6f13ca9c66",
+      "workingSha256": "3cfb35ad664802979dd02c5ba83d943f59f5f399ccdaa4e078ab8b2c38f1d041",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "qa/t08/offline.cjs",
+      "ciBlob": "053d6b59a516b72f61f88f52d0fd426e62323921",
+      "baseBlob": "053d6b59a516b72f61f88f52d0fd426e62323921",
+      "workingSha256": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/run-ci.mjs",
+      "ciBlob": "5edac73ed6d90cb315444a75aee08b1abd13315f",
+      "baseBlob": "5edac73ed6d90cb315444a75aee08b1abd13315f",
+      "workingSha256": "dc725d9236eb5478d993e55109bfc99cc32db1507d4daa710747fdf7fd5e4ea6",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-auth-session.mts",
+      "ciBlob": "61166b7f0185544bcb0661087b2842ce34afdd9e",
+      "baseBlob": "61166b7f0185544bcb0661087b2842ce34afdd9e",
+      "workingSha256": "5c759e09b10ce61efb9e5f00c759453fb769ac9026d06aa2755467278f23b7b8",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-public-origin.mts",
+      "ciBlob": "8675cff3e9361c7fb62d0449fb92ea00eab5254c",
+      "baseBlob": "8675cff3e9361c7fb62d0449fb92ea00eab5254c",
+      "workingSha256": "526f7057b6625592395b2d814ceb037bda0ee4db1e74b0960536548b85c7be9c",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-release-regressions.mts",
+      "ciBlob": "59d0fc2e718a721b041620da134452eef4ab6f21",
+      "baseBlob": "59d0fc2e718a721b041620da134452eef4ab6f21",
+      "workingSha256": "67e79befa01a6dcb9b33b85934d753e0ea39f8ca312a96cabc9f8f0e55fecacd",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-security-account.mts",
+      "ciBlob": "37c5ba36aa217bf4a7e32a061f29bd311fde9c6e",
+      "baseBlob": "37c5ba36aa217bf4a7e32a061f29bd311fde9c6e",
+      "workingSha256": "752fb05d13eaceb755e8222a9c2321dc4a5c993d946608c6c625a35104bb54dc",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-security-media.mts",
+      "ciBlob": "36978487d50f1fdbe46e3e8e8cb2c563203f9e85",
+      "baseBlob": "36978487d50f1fdbe46e3e8e8cb2c563203f9e85",
+      "workingSha256": "871858f45c6f8c17b96f33250005c9608a2a66f6398568ea356878c96980b9d2",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-security-rls.mjs",
+      "ciBlob": "d6f49d2d4982f6188de0d455cc6c041c6030392a",
+      "baseBlob": "d6f49d2d4982f6188de0d455cc6c041c6030392a",
+      "workingSha256": "9326be3cb3da607ff5d3756e8ec545729b952e2674354557c21b3f44e0732716",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-security-routes.mts",
+      "ciBlob": "cede71c90f5c9ffa54a3a242e1944a8ed2ad4c60",
+      "baseBlob": "cede71c90f5c9ffa54a3a242e1944a8ed2ad4c60",
+      "workingSha256": "d1e989e834312f27c3439f364c35a3b371aa7a9a1be7fbdde6d8c8176cc7cdb5",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-security-storage.mts",
+      "ciBlob": "ebecb243896c01b90d9a413626cbce4bc7ea8277",
+      "baseBlob": "ebecb243896c01b90d9a413626cbce4bc7ea8277",
+      "workingSha256": "87a386448ecc62a909fa06c21c8f88fdf14c559e35c524efd18d2744cd72946e",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-t02-final-validation-media.mts",
+      "ciBlob": "7c9f9e636680f6756fc1d96f3728c5e6c73cab9d",
+      "baseBlob": "7c9f9e636680f6756fc1d96f3728c5e6c73cab9d",
+      "workingSha256": "06a02b032c776c8bce344f4faf104ea70a34467611ca714a8d981ec89cb20dac",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-t02-oauth-boundaries.mts",
+      "ciBlob": "65a1b6a7e43adcca134567a95222cc6535b01d56",
+      "baseBlob": "65a1b6a7e43adcca134567a95222cc6535b01d56",
+      "workingSha256": "5ed47d1a79fd9ebf7cee6f2838cb1fbc7706cba8855a619f35e745db0a0a2803",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-ots.mts",
+      "ciBlob": "27819d379f0235e4bc642f88af49f1afd27ac573",
+      "baseBlob": "27819d379f0235e4bc642f88af49f1afd27ac573",
+      "workingSha256": "7f31336b5921941e824d59b59a2096c0e8f7e8f24170abd688226d1ca1dbc494",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-proof.mts",
+      "ciBlob": "61b9672f2e2f86a61a2316001962759200fd06a3",
+      "baseBlob": "61b9672f2e2f86a61a2316001962759200fd06a3",
+      "workingSha256": "ecc85aef721ded4bfe4b1b44df66798c872cccb454fc016eb68f607f6ffbad97",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-session-media.mts",
+      "ciBlob": "358a71ca9b2c8a3f852c5450e9d8d0fb58e92e20",
+      "baseBlob": "358a71ca9b2c8a3f852c5450e9d8d0fb58e92e20",
+      "workingSha256": "ec08289720ca359882ed5ff9822934ec0c4dca790ac3f0578bebd0d9eabe1900",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-t02-security-fixes-storage.mts",
+      "ciBlob": "93c9f3a2608d26432928a3a7fc8c5291d7ff32e9",
+      "baseBlob": "93c9f3a2608d26432928a3a7fc8c5291d7ff32e9",
+      "workingSha256": "fa4694c6c7fa64bf699515e8838d7bbbd52bfb70ae190fe3966ec28fd2125fc1",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "scripts/test-t06-social-validation.mts",
+      "ciBlob": "323b2d0f68e912f3f19699f5e3da5f78bc5780ca",
+      "baseBlob": "323b2d0f68e912f3f19699f5e3da5f78bc5780ca",
+      "workingSha256": "bc548f1e83d851bdcbcb72d4a71e8a8468abff6c3e51a2e04675d60f1f53be8e",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/app/api/media/[reference]/route.ts",
+      "ciBlob": "110b0c2a7bdd1f7f71f92e099b383b24622d9e1f",
+      "baseBlob": "110b0c2a7bdd1f7f71f92e099b383b24622d9e1f",
+      "workingSha256": "7b65590e1bcb72c1e7ddedc2a5f2c60bea770e207fb20bfefd663bbfbaa9b53a",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/app/api/verify/[videoId]/route.ts",
+      "ciBlob": "1339c10606868a0d0f291d4b6bed5c1ff222a57e",
+      "baseBlob": "1339c10606868a0d0f291d4b6bed5c1ff222a57e",
+      "workingSha256": "fc2959bcfd43df16e49b6bcd704f31cbb32ebb5b8e03115f38dfcd23b9ea3d33",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/lib/cron-auth.ts",
+      "ciBlob": "1d30128af1ba2623b0dc1d471b9c91fc04ed9b58",
+      "baseBlob": "1d30128af1ba2623b0dc1d471b9c91fc04ed9b58",
+      "workingSha256": "9d02a80e5a255bb0c4d5d81adb950aebec74a38317129e636705caf3bc561323",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/lib/media-download.ts",
+      "ciBlob": "a54d7030b0363f7e7b13f5dca3fe8effd5d65601",
+      "baseBlob": "a54d7030b0363f7e7b13f5dca3fe8effd5d65601",
+      "workingSha256": "9c4e3b8b5dcbfe700c11e6415acd8e6da4059988f89ff5d7af1a71433f559b66",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/lib/opentimestamps.ts",
+      "ciBlob": "c33b0fec6756c761988d8b818385c983050ac204",
+      "baseBlob": "c33b0fec6756c761988d8b818385c983050ac204",
+      "workingSha256": "e5f38f371d8854978d96b23b027c429fa908c4a547f8950e10bdf0632d0c7ab5",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/lib/ots-transport.ts",
+      "ciBlob": "48ffe1ac0b28671e70bc967a483f47998691d5c6",
+      "baseBlob": "48ffe1ac0b28671e70bc967a483f47998691d5c6",
+      "workingSha256": "825c9b72c8505e8f73dacfb472460deef8f6ff662c70ce9478717f8759a87852",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/lib/pipeline-submit.ts",
+      "ciBlob": "8465b8dcb750d956f58e9a71bb1b515ea2aa6470",
+      "baseBlob": "8465b8dcb750d956f58e9a71bb1b515ea2aa6470",
+      "workingSha256": "c1cc7887e43f084217aaecfef56d3c814b0f06402adbd057e2425b6e4cc43258",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/lib/private-media.ts",
+      "ciBlob": "478496e8c43c028d1f8448d7b23d0eb7ddf4fa2e",
+      "baseBlob": "478496e8c43c028d1f8448d7b23d0eb7ddf4fa2e",
+      "workingSha256": "9f1fc78a443a7269c4111396db89e0b95106189bd776b8af0c7951afcfab33b3",
+      "workingEqualsBase": false
+    },
+    {
+      "path": "src/lib/publication-journal.ts",
+      "ciBlob": "d43388c38f6b91f71571d55f9ace9ec64163b0b9",
+      "baseBlob": "d43388c38f6b91f71571d55f9ace9ec64163b0b9",
+      "workingSha256": "16c2cbccffae28889abb0742b3ace2a91a4c58149aaf9e3ff680a77c925be26e",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/lib/storage.ts",
+      "ciBlob": "90c5097409ef0b4e7ef333cf9cdea38c4c51e01e",
+      "baseBlob": "90c5097409ef0b4e7ef333cf9cdea38c4c51e01e",
+      "workingSha256": "019ca6891dae95c24a78ecee0d581120dc156189903538621a6e4732a280b903",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/lib/zernio.ts",
+      "ciBlob": "94d50b0e7b4cc4455fa65e3af0e96cebdbd74807",
+      "baseBlob": "94d50b0e7b4cc4455fa65e3af0e96cebdbd74807",
+      "workingSha256": "88bf6961c3824728f9722bcc7cb36f05e43417c35e54d7dabd57f65ee3133d4a",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "src/middleware.ts",
+      "ciBlob": "78cc632b660e4cbcc7c0b9681d62d9f596cde67a",
+      "baseBlob": "78cc632b660e4cbcc7c0b9681d62d9f596cde67a",
+      "workingSha256": "9e1179010a00ed87104c05c54122e59b54f209c91c5b7dafdfd68f35563e8ec8",
+      "workingEqualsBase": true
+    },
+    {
+      "path": "tsconfig.json",
+      "ciBlob": "6c860cd723b71ca8261d4a67f2535a7c849ab9c5",
+      "baseBlob": "6c860cd723b71ca8261d4a67f2535a7c849ab9c5",
+      "workingSha256": "9945bb222ec3063c73dfb0e2225f7463621070d5307b3bd970c13da1382f66ce",
+      "workingEqualsBase": true
+    }
+  ],
+  "secretProvenance": "No real secret or env file was read. New tests assign synthetic values inside a clean child environment; no local env copied.",
+  "runtimeVerified": false
+}

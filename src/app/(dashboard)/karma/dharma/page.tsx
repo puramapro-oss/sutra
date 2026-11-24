@@ -55,20 +55,30 @@ export default function DharmaPage() {
   const controls = useAnimation()
   const rotationRef = useRef(0)
 
-  const load = useCallback(async () => {
-    try {
-      const res = await fetch('/api/karma/games/dharma', { cache: 'no-store' })
+  const dataRequest = useRef<AbortController | null>(null)
+  const load = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/karma/games/dharma', { cache: 'no-store', signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (res.status === 401) return
       const data = await res.json()
-      setState(data)
-    } catch {
+      commit(() => setState(data))
+    }).catch(() => {
+      if (!active()) return
       toast.error('Impossible de charger la roue.')
-    } finally {
-      setLoading(false)
-    }
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => { load()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [load])
 
   const segmentAngle = 360 / 12
 
@@ -256,7 +266,7 @@ export default function DharmaPage() {
               <p className="text-xs uppercase tracking-wider text-white/50">7 derniers tirages</p>
               <ul className="mt-3 space-y-2 text-sm">
                 {(state?.history ?? []).length === 0 ? (
-                  <li className="text-white/40">Aucun tirage encore.</li>
+                  <li className="text-white/60">Aucun tirage encore.</li>
                 ) : (
                   state?.history.map((h, i) => (
                     <li key={i} className="flex items-center justify-between gap-2 text-white/80">

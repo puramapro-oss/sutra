@@ -1,0 +1,115 @@
+{
+  "integrationBase": "589732cb49959c1a576a3ba381b310cd594600ac",
+  "branch": "codex/sutra-t07-ux-ui-reprise-20261012",
+  "status": "LOCAL_T07_DELTA_VERIFIED_INTEGRATION_REQUIRED",
+  "environment": {
+    "node": "24.21.0",
+    "npm": "11.12.1",
+    "next": "16.3.8",
+    "browser": "Chromium 145.0.7632.6 headless",
+    "testIsolation": "Loopback fixtures, offline network guard, no paid calls or local environment files"
+  },
+  "quality": {
+    "typecheck": "PASS",
+    "lint": {
+      "errors": 0,
+      "warnings": 111
+    },
+    "build": {
+      "status": "PASS",
+      "command": "next build --webpack",
+      "pages": 197
+    }
+  },
+  "browser": {
+    "checks": 210,
+    "widths": [
+      320,
+      375,
+      768,
+      1280,
+      1440
+    ],
+    "axeAudits": 164,
+    "axeViolations": 0,
+    "browserErrors": 0,
+    "newRegressionChecks": 7,
+    "newAxeAudits": 9
+  },
+  "legacy": {
+    "passed": 1022,
+    "skipped": 25,
+    "failed": 0,
+    "flaky": 0,
+    "skipReasons": {
+      "Auth wall in place; smoke test only": 6,
+      "explicit skip without reason": 6,
+      "Mobile only": 2,
+      "API test only on desktop": 10,
+      "Desktop only": 1
+    }
+  },
+  "contracts": {
+    "passed": 427,
+    "skipped": 7,
+    "failed": 0,
+    "skipReasons": {
+      "live INSEE": 4,
+      "remote DB": 2,
+      "OpenTimestamps network": 1
+    },
+    "schedule": "PASS",
+    "composition": "PASS",
+    "publication": "PASS"
+  },
+  "media": {
+    "passed": 33,
+    "failed": 0,
+    "compatibleFfmpegRequired": true
+  },
+  "postgres": {
+    "migration": 13,
+    "concurrency": 9,
+    "rlsAssertions": 49,
+    "remote": false
+  },
+  "pythonDeployMocks": {
+    "passed": 9
+  },
+  "staticTooling": {
+    "actionlint .github/workflows/web-ci.yml": "PASS",
+    "shellcheck tooling/git-askpass.sh": "PASS"
+  },
+  "npmAuditProduction": {
+    "high": 0,
+    "critical": 0,
+    "moderate": 5,
+    "low": 2,
+    "threshold": "high",
+    "exitCode": 0
+  },
+  "protectedAncestors": 5,
+  "pr3AreasIdenticalToIntegration": 16,
+  "sourceManifestFiles": 44,
+  "gitnexus": {
+    "index": "TRUNCATED",
+    "risk": "MEDIUM",
+    "symbols": 19,
+    "flows": 5,
+    "exhaustive": false
+  },
+  "notQualified": [
+    "Native screen readers",
+    "Safari/Firefox and physical devices",
+    "Real OAuth, remote DB and providers",
+    "Docker/Linux/OVH runtime",
+    "Paid generation/export/publication",
+    "Release/deployment"
+  ],
+  "externalBlocker": {
+    "run": 38289517548,
+    "status": "failure",
+    "reason": "SMARANA_READ_TOKEN missing during setup-sutra before product tests on integration SHA"
+  },
+  "sourceCommit": "The commit containing this evidence; full SHA recorded in HANDOFF-SUTRA-T07-20261012.md by its documentation child commit."
+}

@@ -1,0 +1,39 @@
+[
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/eslint/bin/eslint.js",
+      "qa/t04-salad-access-20261015/validate-access.mjs",
+      "qa/t04-salad-access-20261015/validate-access.test.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "launcher-syntax",
+    "command": [
+      "/bin/sh",
+      "-n",
+      "qa/t04-salad-access-20261015/Saisie-Salad.command"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "validator-syntax",
+    "command": [
+      "node",
+      "--check",
+      "qa/t04-salad-access-20261015/validate-access.mjs"
+    ],
+    "exitCode": 0
+  },
+  {
+    "name": "test-syntax",
+    "command": [
+      "node",
+      "--check",
+      "qa/t04-salad-access-20261015/validate-access.test.mjs"
+    ],
+    "exitCode": 0
+  }
+]

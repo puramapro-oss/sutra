@@ -1,0 +1,34 @@
+{
+  "base": "e09fdaeafbf1ec8554a7b689fe3c44dd696d0140",
+  "scope": "tests/fixtures/proofs/docs only",
+  "unexpectedFiles": [],
+  "productFilesChanged": [],
+  "appendOnlyDocs": true,
+  "journeyAssertionLinesIdentical": true,
+  "matrixCountsVerified": {
+    "PASS": 37,
+    "NON TESTÉ": 9,
+    "BLOQUÉ": 2,
+    "FAIL": 5
+  },
+  "normalizedLogs": [
+    {
+      "file": "gitnexus-index.log",
+      "originalSHA256": "14e21c475ba7f7d55dcaaced038c7e8d868cecba84b1a2b88cd8897b9e3dac19",
+      "committedSHA256": "a5362f86bd5ede401229349faf1c740b95ff489df84c97160d3f44fe4aca800c",
+      "change": "Only trailing whitespace and final empty lines removed; failures unchanged"
+    },
+    {
+      "file": "production-error.log",
+      "originalSHA256": "218a7d36648c6168d9375b6f62b29101d24f2534561bc4a1685869837d3b1d05",
+      "committedSHA256": "40cda310c721c0d912ccd23f886f93abbb70d7f53ad202e9e9117cedc99d5e36",
+      "change": "Only trailing whitespace and final empty lines removed; failures unchanged"
+    }
+  ],
+  "gitnexus": {
+    "staged": "HIGH, 22 symbols,10 processes; nested fixture members mapped through journeyDatabase insertion, no product mutation. Direct diff and13 scenarios verified. User warned.",
+    "compareMain": "CRITICAL,2301 files7073 symbols231 processes incl historical integration. Not the T08 delta; listing capped. User warned.",
+    "completeness": "UNKNOWN truncated graph; no exhaustive certification"
+  },
+  "secretScan": "PASS, staged diff redacted, no leaks"
+}

@@ -1,0 +1,69 @@
+{
+  "baseCommit": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "serverMode": "dev",
+  "results": [
+    {
+      "name": "375: inactive schedule exposes status and per-schedule resume",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Reprendre le planning Planning existant', exact: true })\nExpected: visible\nTimeout: 1200ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 1200ms\n  - waiting for getByRole('button', { name: 'Reprendre le planning Planning existant', exact: true })\n"
+    },
+    {
+      "name": "375: configurable IANA timezone",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('schedule-timezone')\nExpected: visible\nTimeout: 1200ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 1200ms\n  - waiting for getByTestId('schedule-timezone')\n"
+    },
+    {
+      "name": "375: double click sends one PATCH",
+      "status": "PASS"
+    },
+    {
+      "name": "375: lost acknowledgement reconciles before any replay",
+      "status": "FAIL",
+      "message": "retry must consult persisted configuration"
+    },
+    {
+      "name": "1440: inactive schedule exposes status and per-schedule resume",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Reprendre le planning Planning existant', exact: true })\nExpected: visible\nTimeout: 1200ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 1200ms\n  - waiting for getByRole('button', { name: 'Reprendre le planning Planning existant', exact: true })\n"
+    },
+    {
+      "name": "1440: configurable IANA timezone",
+      "status": "FAIL",
+      "message": "expect(locator).toBeVisible() failed\n\nLocator: getByTestId('schedule-timezone')\nExpected: visible\nTimeout: 1200ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 1200ms\n  - waiting for getByTestId('schedule-timezone')\n"
+    },
+    {
+      "name": "1440: double click sends one PATCH",
+      "status": "PASS"
+    },
+    {
+      "name": "1440: lost acknowledgement reconciles before any replay",
+      "status": "FAIL",
+      "message": "retry must consult persisted configuration"
+    },
+    {
+      "name": "loopback only; no unexpected mutation, runtime or hydration error",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "name": "lost-ack-375",
+      "reads": 0,
+      "writes": 2
+    },
+    {
+      "name": "lost-ack-1440",
+      "reads": 0,
+      "writes": 2
+    }
+  ],
+  "blocked": [],
+  "mutations": [],
+  "errors": [],
+  "legalAcceptances": [
+    "mentions",
+    "cgu",
+    "cgv",
+    "confidentialite"
+  ]
+}

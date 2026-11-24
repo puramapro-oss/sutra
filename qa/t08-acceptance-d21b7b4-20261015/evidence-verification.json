@@ -1,0 +1,6384 @@
+{
+  "candidate": "d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2",
+  "documentaryReceipt": "56754679abed9aa1e51323c29aed5bef38bc17d0",
+  "observedAt": "2026-10-15T13:16:55.909136+00:00",
+  "command": "python3 qa/t08-acceptance-d21b7b4-20261015/verify_evidence.py",
+  "sourceCount": 1034,
+  "ciRun": 38677062190,
+  "ciUrl": "https://github.com/puramapro-oss/sutra/actions/runs/38677062190",
+  "counts": {
+    "PASS": 1110
+  },
+  "checks": [
+    {
+      "check": "candidate ancestor of documentary receipt",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt delta excludes tested sources",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact .github/actions/setup-sutra/action.yml",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact .github/workflows/mobile-build.yml",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact .github/workflows/web-ci.yml",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/README.md",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/candidate.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/ovh.Dockerfile",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/ovh.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/private-media-cutover.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/promotion_guards.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/scheduler-observer.service",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/scheduler-observer.timer",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/scheduler_observer.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/test_ovh.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/test_promotion_guards.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/test_salad_promotion.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact deploy/test_scheduler_observer.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact eslint.config.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261006_auto_occurrence_integrity.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261011_social_oauth_state.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261012_private_media.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261012_social_publication_journals.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261012_t02_account_permissions.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261012_t02_final_permissions.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261013_feature_service_permissions.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261013_job_service_permissions.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261014_affirmations_read_permission.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261014_durable_checkpoint_integrity.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261014_salad_worker_journal.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261015_client_write_permissions.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261015_final_durable_integrity.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/20261015_social_authorization_history.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/audit_completion.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/sutra_auto.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v10_durable_jobs_quota.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v11_pipeline_checkpoints.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v3_features.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v3_financer.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v3_spiritual.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v6_final.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v6_fiscal.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v6_parrainage_v4.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v6_smart_split.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v6_subscribe_prime.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v7_1_connect_karma_ots.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v7_1_storage_video_proofs.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v7_cross_promo.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact migrations/v7_karma_light.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact next.config.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact package-lock.json",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact package.json",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact playwright.config.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact playwright.offline.config.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact postcss.config.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/deployment-20261013/permission-repair.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/deployment-20261013/permissions-live-check.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/deployment-20261013/production-migrations.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/deployment-20261013/supabase-readonly-smoke.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/affirmations-database.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/apply-affirmations.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/authenticated-browser.cjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/authenticated-free-media.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/browser-session.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/dns-tls-final.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/media-smoke.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/promote.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/public-browser.cjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/run-authenticated.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/run-free-media.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/run-postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/run-runtime-providers.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/runtime-final.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/security-probe.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/social-browser.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-delta-20261014/social-feedback.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-integration-20261013/free-gates.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/final-integration-20261013/social-ui-check.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/ovh-final-providers-20261014/dns-tls.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/ovh-final-providers-20261014/media-smoke.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/ovh-final-providers-20261014/oauth-schema-check.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/ovh-final-providers-20261014/promote.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/ovh-final-providers-20261014/public-browser.cjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/ovh-final-providers-20261014/security-probe.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/postdeploy-20261013/media/free-runtime-probes.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/postdeploy-20261013/security/origin-probe.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/postdeploy-20261013/security/probe.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/production-20261012/backup-restore-remote.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/provider-activation-20261014/authenticated-smoke.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/provider-activation-20261014/remote.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/provider-activation-20261014/run-authenticated.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/provider-activation-20261014/run.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/provider-activation-20261014/runtime-probe.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/provider-activation-20261014/test_activation.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/provider-final-audit-20261013/audit.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/provider-final-audit-20261013/test_audit.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/release-20261012/run-postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/salad-integration-20261014/authenticated-smoke.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/salad-integration-20261014/promote.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/salad-integration-20261014/run-authenticated.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/salad-integration-20261014/run-postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/checkpoint-transition.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/navigation-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/navigation-diagnostic.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/promote.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/run-authenticated.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/run-postgres.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/scheduler-inventory.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/test_checkpoint_transition.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/verify-checkpoint-concurrency.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-consolidation-20261014/verify-checkpoint-restore.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/backup-restore.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/browser-harness/cross-origin-controls.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/browser-harness/cross-origin-reproduction.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/browser-harness/guard.test.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/browser-harness/native-controls.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/browser-harness/profile-reproduction.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/browser-harness/runtime-guard.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/client-permissions.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/durable-postgres.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/ovh-preflight.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/rls-metadata.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/rls-write-probe.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/social-history-metadata.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/social-history-rollback.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/social-history-transition-test.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t01-final-20261015/social-history-transition.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-final-security-20261015/rls-metadata-review.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-final-security-20261015/run.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-final-validation-20261014/production-error.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-final-validation-20261014/run.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-final/run-free-gates.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-final/run-local-db-gates.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-salad-security-20261014/run-t02-salad-security.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-security-fixes-20261014/probe-request-redirect.cjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t02-security-fixes-20261014/run.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-durable-reliability-20261014/postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-durable-reliability-20261014/postgres.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-durable-reliability-20261014/production-error.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-durable-reliability-20261014/proposal-durable-recovery.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-durable-reliability-20261014/restart-worker.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-durable-reliability-20261014/submission.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-durable-reliability-20261014/verify.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-final-durable-20261015/cancel-ack.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-final-durable-20261015/cancellation.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-final-durable-20261015/postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-final-durable-20261015/postgres.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-final-durable-20261015/proposal-final-durable.sql",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-final-durable-20261015/verify.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-orchestration-fixes-20261014/postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-orchestration-fixes-20261014/typecheck-with-t04.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-orchestration-fixes-20261014/verify.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-provider-complement-20261013/music-recovery.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-provider-complement-20261013/verify.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-resume/run-gate.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-resume/run-postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-salad-recovery-20261014/offline.cjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t03-salad-recovery-20261014/verify.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t04-final-providers-20261015/container.test.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t04-final-providers-20261015/context.test.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t04-final-providers-20261015/salad-read.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t04-final-providers-20261015/salad-read.test.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t04-provider-fixes-20261014/run.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t04-provider-validation-20261014/probe.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t04-provider-validation-20261014/probe.test.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t04-salad-20261014/run.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t05-composition-fix-20261014/run-targeted.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t05-final-media-20261015/helpers.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t05-final-media-20261015/run-targeted.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t05-real-export-20261014/helpers.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t05-real-export-20261014/run-targeted.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t05-salad-media-20261014/fixtures.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t05/providers-20261013/build.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t06-final-social-20261015/history-contract.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t06-final-social-20261015/run-postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t06-final-social-20261015/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t06-social-recovery-20261014/run-postgres.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t06-social-recovery-20261014/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t06-social-recovery-20261014/test-postgres.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t06-social-validation-20261014/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/editor-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/extra-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/keyboard-probe.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/keyboard-regression.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/native-safari-server.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/navigation-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/planning-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/session.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/social-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/visual-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-final-ux-perf-20261015/webkit-navigation-probe.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-fixes-20261014/browser.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-fixes-20261014/consent-contrast.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/fixture.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/journey-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/legal-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/player-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/private-download-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/retry-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/tls-fixture.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-frontend-journey-20261014/visual-checks.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-modes-20261014/browser.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-modes-20261014/capabilities-fixtures.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t07-modes-20261014/generation-fixtures.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-closure-20261014/production-error.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-closure-20261014/run.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-final-candidate-20261015/build_matrix.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-final-candidate-20261015/cancellation.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-final-candidate-20261015/run.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-final-candidate-20261015/verify_provenance.py",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-final-modes/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-integration-journey-20261014/database.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08-integration-journey-20261014/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/fake-db.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/integrated/browser-extension.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/integrated/font-cache.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/integrated/load.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/integrated/offline.test.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/offline.cjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/playwright.config.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/providers-20261013/provider-contract-redteam.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/providers-20261013/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact qa/t08/run.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/apply-migration.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/comfyui-engine-server.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/helpers/local-media-fixture.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/helpers/media-validation-fixture.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/helpers/social-database.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/local-engine-stub-server.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/run-ci.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/screenshot-landing.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-api-contracts.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-auth-session.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-auto-composition.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-auto-export-queue.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-auto-publication.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-auto-schedule.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-connect.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-editor-export.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-env-contracts.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-export-integration.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-final-social-history.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-final-write-permissions.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-insee.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-integration.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-karma-split.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-local-engine-e2e.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-local-engine.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-ltx-tiers.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-ltx-v2-contracts.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-ltx-v2-media.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-migration-local.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-opentimestamps.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-pipeline-interruptions.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-pipeline-postgres.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-pipeline-submit.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-private-media.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-production-queue.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-provider-safety.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-public-origin.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-release-oauth.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-release-regressions.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-salad-host.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-salad-persistence.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-salad-worker.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-security-account.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-security-media.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-security-points.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-security-rls.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-security-routes.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-security-storage.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-shotstack-contracts.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-social-publication.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-storage-video-proofs.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-suno-contract.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t02-final-security-grants.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t02-final-validation-media.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t02-oauth-boundaries.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t02-salad-security.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t02-security-fixes-ots.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t02-security-fixes-proof.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t02-security-fixes-session-media.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t02-security-fixes-storage.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t03-durable-reliability.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t03-final-durable.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t03-orchestration-fixes.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t03-salad-recovery.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t03-suno-recovery.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t04-pollinations.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t04-provider-fixes.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t05-composition-fix.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t05-final-media.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t05-real-export.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t05-salad-media.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t06-final-social.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t06-gate.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t06-social-autonomy.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t06-social-final.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t06-social-routes.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t06-social-validation.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t08-final-modes.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-t08-integration-journey.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-ui-isolated.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-video-contracts.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/test-zernio-oauth-contracts.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/ui-isolated/navigation-diagnostics.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/ui-isolated/production-server.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/ui-isolated/t07-flows.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/ui-isolated/t07-reprise.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact scripts/ui-isolated/t07-runtime.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact setup-db.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/forgot-password/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/forgot-password/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/login/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/login/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/reset-password/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/reset-password/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/signup/SuccessScreen.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/signup/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(auth)/signup/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/achievements/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/api-usage/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/classement/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/config/defaultConfig.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/config/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/config/types.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/contest/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/finances/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/finances/page.tsx.bak",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/health/health-config.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/health/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/users/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/admin/withdrawals/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/ambassadeur/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/analytics/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/auto/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/auto/memory/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/auto/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/auto/schedules/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/auto/settings/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/auto/themes/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/auto/videos/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/autopilot/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/batch/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/boutique/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/breathe/constants.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/breathe/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/chat/[id]/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/chat/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/classement-points/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/classement/engagement/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/classement/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/community/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/contest/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/create/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/create/page.tsx.bak",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/create/page.tsx.bak3",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/create/page.tsx.bak5",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/create/page.tsx.bak6",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/create/page.tsx.bak7",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/dashboard/DashboardSkeleton.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/dashboard/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/editor/[id]/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/editor/[id]/page.tsx.backup",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/fiscal/FiscalClient.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/fiscal/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/gratitude/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/influencer/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/invoices/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/defi-collectif/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/dharma/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/jeu-creatif/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/lightning/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/missions/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/quete-rare/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/tournoi/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/karma/vague/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/library/[id]/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/library/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/lottery/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/ma-memoire/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/notifications/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/partenaire/coach/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/partenaire/outils/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/partenaire/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/production/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/profile/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/publish/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/referral/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/abonnement/AbonnementClient.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/abonnement/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/notifications/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/paiement/PaiementClient.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/paiement/WalletSummary.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/paiement/WithdrawForm.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/paiement/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/paiement/types.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/settings/social/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/storyboard/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/styles/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/templates/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/voices/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/(dashboard)/wallet/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/aide/EscaladeForm.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/aide/aide-data.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/aide/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/account/delete/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/achievements/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/admin/health/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/admin/stats/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/admin/users/[id]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/admin/users/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/ai/chat/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/auto/config/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/auto/generate/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/auto/memory/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/auto/publish/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/auto/themes/[id]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/auto/themes/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/auto/videos/[id]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/auto/videos/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/boutique/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/chatbot/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/community/buddy/checkin/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/community/buddy/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/community/circles/join/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/community/circles/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/community/wall/react/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/community/wall/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/connect/account-session/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/connect/onboard/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/contact/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/create/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/account-deletion/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/ambassador-check/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/asso-transfer/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/auto-learn/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/auto-plan/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/auto-trends/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/contest-judge/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/contest-monthly/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/contest-weekly/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/email-sequences/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/fiscal-palier/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/karma-defi/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/karma-lightning/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/karma-split-distribute/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/karma-tournoi/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/smart-split/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/streak-update/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/sutra-auto/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/upgrade-ots-proofs/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/cron/video-worker/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/daily-gift/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/drafts/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/dream-goals/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/email/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/feedback/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/financer/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/fiscal/status/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/fiscal/summary/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/flywheel/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/gratitude/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/health/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/internal/stripe-fulfillment/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/creatif/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/creatif/vote/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/defi/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/dharma/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/lightning/claim/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/lightning/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/quete/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/tournoi/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/games/vague/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/missions/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/karma/seeds/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/legal/accept/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/legal/cookie-consent/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/legal/my-data/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/locale/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/lottery/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/magic-moment/ack/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/magic-moment/check/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/media/[reference]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/music/generate/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/notifications/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/og/route.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/partner/coach/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/partner/commissions/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/partner/payout/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/partner/qr/[code]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/partner/referrals/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/partner/register/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/partner/scan/[code]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/partner/stats/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/points/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/production/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/publish/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/publish/social/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/purama-score/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/referral/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/settings/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/setup/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/share/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/social-feed/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/social/accounts/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/social/autopilot/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/social/callback/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/social/connect/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/social/publish/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/status/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/stock/keywords/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/stock/search/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/storyboard/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/stripe/checkout/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/stripe/portal/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/stripe/subscription/cancel/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/stripe/subscription/pause/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/stripe/webhook/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/subtitles/export/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/subtitles/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/subtitles/translate/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/sutra/auto/generate/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/templates/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/verify-siret/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/verify/[videoId]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/video/capabilities/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/video/export/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/video/status/[jobId]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/voice/clone/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/voice/generate/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/voice/list/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/wallet/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/wallet/withdraw/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/wallet/withdraw/stripe/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/api/webhooks/suno/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/auth/callback/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/cgu/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/cgv/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/changelog/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/confidentialite/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/confirmation/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/contact/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/devenir-ambassadeur/DevenirAmbassadeurClient.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/devenir-ambassadeur/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/devenir-influenceur/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/ecosystem/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/error.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/favicon.ico",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/financer/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/fonts/OFL.txt",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/fonts/SpaceGrotesk-Variable.ttf",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/fonts/provenance.json",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/globals.css",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/go/[slug]/route.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/guide/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/help/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/help/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/how-it-works/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/legal/cgv/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/legal/cookies/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/legal/mentions/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/legal/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/legal/privacy/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/legal/terms/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/mentions-legales/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/not-found.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/offline/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/offline/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/partenariat/[canal]/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/partenariat/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/partenariat/page.tsx.bak",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/politique-confidentialite/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/pricing/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/robots.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/scan/[code]/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/sitemap.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/status/layout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/app/status/page.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/ActivityFeed.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/AdminComponents.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/AdminContestActive.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/AdminContestHallOfFame.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/AdminContestPast.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/AdminContestSubmissions.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/AdminRevenueChart.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/AdminUsersFilters.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/AdminUsersTable.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/CostsStation.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/GoldCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/MRRCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/ReferralStation.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/RefreshButton.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/RevenueStation.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/SaveButton.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/UserDetailModal.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/admin/UsersStation.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/analytics/DailyChart.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/analytics/EngineStats.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/analytics/KpiCards.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/analytics/PromptHistory.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/analytics/TopVideos.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/autopilot/AutopilotSeriesCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/autopilot/AutopilotSeriesForm.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/autopilot/AutopilotUpgradePrompt.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/batch/BatchActions.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/batch/BatchGlobalConfig.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/batch/BatchHeader.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/batch/BatchInputMode.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/batch/BatchPreviewTable.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/batch/BatchSummary.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/batch/BatchTableRow.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/boutique/DailyGiftChest.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/boutique/ShopItemCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/breathe/BreathingCircle.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/breathe/SessionCompleted.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/community/CommunityBuddyTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/community/CommunityCirclesTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/community/CommunityMissionsTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/community/CommunityTabs.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/community/CommunityWallTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/contest/ContestBanner.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/contest/ContestLeaderboard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/contest/ContestSubmissionForm.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/contest/HallOfFame.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/contest/PastContestsSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/AutoForm.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/AutoForm.tsx.bak4",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/CreateHelpers.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/ExecutionModeNotice.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/ManualForm.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/ManualForm.tsx.bak2",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/ManualForm.tsx.bak4",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/ManualForm.tsx.final",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/ManualForm.tsx.final2",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/MediaModeCards.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/ModeToggle.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/PipelineProgress.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/StockPicker.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/wizard/ManualFormStep1.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/wizard/ManualFormStep3.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/create/wizard/ManualFormStep4.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/dashboard/KPICard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/dashboard/VideoCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/editor/EditorHeader.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/editor/EditorSidebar.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/editor/EditorStates.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/editor/EditorTabs.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/editor/EditorTimeline.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/editor/VideoPlayerPanel.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/editor/tabs/BrandKitTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/engagement/AmbassadorTierBadge.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/engagement/Flywheel.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/engagement/ImpactDashboard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/engagement/MagicMoment.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/engagement/PuramaScoreCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/engagement/SeasonBanner.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/engagement/SocialFeed.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/financer/BackgroundAndNav.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/financer/Step1.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/financer/Step2.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/financer/Step3.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/financer/Step4.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/help/ContactForm.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/help/FAQAccordionItem.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/help/GuideSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/home/AmbassadorBlock.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/home/CrossPromoBlock.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/home/ReferralBlock.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/karma/SeedsBalance.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/AppWelcome.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/CTASection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/FAQ.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/Features.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/Footer.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/Hero.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/Hero3D.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/HowItWorks.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/LandingCTA.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/LandingFeatures.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/LandingFooter.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/LandingHero.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/LandingHowItWorks.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/LandingNav.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/PricingSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/Stats.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/landing/Testimonials.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/layout/AppClientProviders.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/layout/DashboardChrome.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/layout/Header.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/layout/MobileNav.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/layout/NotificationBell.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/layout/SearchModal.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/layout/Sidebar.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/legal/ContactSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/legal/CookieConsentBannerMount.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/legal/LegalFooter.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/legal/LegalNav.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/legal/LegalReacceptanceGateMount.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/legal/LegalSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/library/FolderModal.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/library/FolderPills.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/library/LibraryFilters.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/library/LibraryHeader.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/library/LibrarySkeleton.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/library/VideoGrid.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/library/VideoList.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/onboarding/OnboardingFlow.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/partner/PartnerCommissionsChart.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/production/IdeaStep.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/production/MusicStep.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/production/ScriptStep.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/production/SectionCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/production/StepGenerateCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/production/StepProgressBar.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/production/ThumbnailStep.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/production/VoiceStep.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/publish/PastPostsList.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/publish/ScheduledPostsTable.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/publish/VideoPublishCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/publish/constants.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/referral/CommissionsHistory.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/referral/FilleulsList.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/referral/ReferralCodeCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/referral/ReferralStats.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/referral/ReferralTiers.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/referral/WalletCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/AbonnementTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/ApparenceTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/CompteTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/DonneesTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/NotificationsTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/ProfilTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/ReseauxTab.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/social/AutopilotSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/social/ConnectionSummary.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/social/DisconnectConfirmModal.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/social/PageHeader.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/social/PlatformGrid.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/settings/social/ToggleRow.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/ChatBot.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/CinematicIntro.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/Confetti.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/ConversionPopup.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/CosmicParticles.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/CosmicParticlesWrapper.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/ErrorBoundary.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/FiscalBanner.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/Providers.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/ShareableCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/SpiritualLayer.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/SubconsciousEngine.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/TutorialOverlay.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/shared/TutorialSteps.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/PublishEverywhereButton.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/publish/PublishCaptionSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/publish/PublishModalFooter.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/publish/PublishModalHeader.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/publish/PublishPlatformGrid.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/publish/PublishResultsSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/publish/PublishScheduleSection.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/publish/PublishTriggerButton.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/social/publish/PublishVideoPreview.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/storyboard/SceneCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/storyboard/StoryboardInput.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/templates/CategoryTabs.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/templates/CommunityTemplateCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/templates/TemplateCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/templates/TemplateSearch.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/templates/UserTemplateCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/templates/index.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/AnimatedCounter.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/Avatar.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/Badge.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/Button.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/Card.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/EmptyState.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/Input.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/LoadingTimeout.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/Modal.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/ProgressBar.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/SiretInput.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/Skeleton.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/SortIcon.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/Tabs.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/VerifiedSiretCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/ui/siret-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/video/BlockchainProofBadge.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/voices/VoiceCard.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/components/wallet/SmartSplit.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/achievements.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/faq-data.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/financer-data.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/guide.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/help-constants.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/help-data.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/help-guides-data.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/pricing.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/setup-schema.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/sidebar-nav.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/template-data.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/avant-apres.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/categories.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/clip-musical.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/documentaire.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/index.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/presentation.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/pub-produit.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/stories-reels.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/teaser.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/tutoriel.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/types.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/ugc.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/data/templates/youtube-faceless.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useAdminContest.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useAdminUsers.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useAnalytics.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useAuth.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useAwakening.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useBatch.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useBreathingSession.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useCommunity.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useCountdown.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useEditorHandlers.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useEditorHistory.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useEmpowerment.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useHydrated.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useLibraryActions.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useLibraryFavorites.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useLibraryFolders.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useLibraryState.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useLibraryVideos.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useProductionGeneration.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/usePublish.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useReferralData.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useSeeds.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useSettingsState.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useStoryboard.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useTemplates.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useTheme.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useVideoGeneration.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useVideoPlayer.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/hooks/useVoices.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/i18n/request.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/account-access.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/admin-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ai/social-caption.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ambassador.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/analytics.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/auth-navigation.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/auth-session-store.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/auto-pipeline.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/auto-publication.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/awakening.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/batch-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/claude.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/composition-contract.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/connect.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/constants.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/create-constants.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/create-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/cron-auth.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/editor-export.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/editor-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/elevenlabs.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/emails.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/env.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/export-pipeline.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/fallbacks.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ffmpeg-compositor-formats.test.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ffmpeg-compositor.test.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ffmpeg-compositor.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ffmpeg-concurrency.test.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ffmpeg-concurrency.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ffmpeg-encoder.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ffmpeg-filters.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ffmpeg-io.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/final-composition.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/financer-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/generation-client.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/iban.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/insee.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/karma-level.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/karma-piliers.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/karma-split.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/company.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/components/AIDisclosure.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/components/AccountDeletionButton.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/components/CookieConsentBanner.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/components/LegalAcceptanceNotice.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/components/LegalPage.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/components/LegalReacceptanceGate.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/components/MaMemoirePage.tsx",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/content/cgu.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/content/cgv.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/content/mentions-legales.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/content/politique-confidentialite.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/hooks/useCookieConsent.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/index.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/processors.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/types.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/legal/versions.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/library-constants.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/library-helpers.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/limits.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/local-engine.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/logger.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ltx-checkpoint.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ltx-helpers.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ltx-types.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ltx-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ltx-v2-contract.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ltx-v2.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ltx-workflow.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ltx.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/media-download.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/media-inspection.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/media-probe.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/media-validation.test.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/media-validation.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/music-checkpoint.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/nama-muse.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/opentimestamps.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/ots-transport.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/password-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/pexels.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/phase.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/pipeline-state.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/pipeline-submit.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/private-media.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/production-constants.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/production-persistence.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/production-pipeline.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/production-schema.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/profile-image.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/provider-json.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/provider-pricing.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/provider-response.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/public-origin.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/publication-journal.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/purama-score.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/rate-limit.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/redis.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/riffusion.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/runpod.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad-persistence.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/application.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/checkpoint.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/client.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/config.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/Dockerfile",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/README.md",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/disabled.example.json",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/health.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/launch.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/package-lock.json",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/package.json",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/prepare-context.mjs",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/requirements.lock",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/container/requirements.txt",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/contracts.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/engine.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/host.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/http.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/inspection.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/serve.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/worker.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/salad/workflow-contract.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/seasons.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/shotstack-timeline.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/shotstack.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/smart-split.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/social-account-revocation.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/social-oauth-account.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/social-oauth-state.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/social-publication.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stable-audio.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stock.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/storage.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/storyboard.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stripe.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stripe/webhook-checkout.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stripe/webhook-connect.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stripe/webhook-dispatch.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stripe/webhook-invoices.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stripe/webhook-subscriptions.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/stripe/webhook-types.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/styles.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/subtitles.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/suno-config.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/suno.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/supabase-server.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/supabase.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/sutra-auto-helpers.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/sutra-auto-types.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/sutra-auto-utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/sutra-auto.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/template-helpers.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/utils.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/utils/api.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/validators.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/video-compositor.test.mts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/video-compositor.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/video-pipeline.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/video-proofs.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/video-queue.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/video-worker.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/wan.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/lib/zernio.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/middleware.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/batch.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/connect.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/database.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/editor.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/financer.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/index.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/javascript-opentimestamps.d.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/library.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/partner.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/production.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact src/types/stock.ts",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact tsconfig.json",
+      "status": "PASS"
+    },
+    {
+      "check": "source exact vercel.json",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt unchanged ci-d21b7b4-status.json",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt unchanged ci-d21b7b4-tests.json",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt unchanged ci-d21b7b4-database.json",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt unchanged backup-restore.json",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt unchanged checkpoint-restore.json",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt unchanged client-permissions-restore.json",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt unchanged social-history-restore.json",
+      "status": "PASS"
+    },
+    {
+      "check": "receipt unchanged provider-runtime.json",
+      "status": "PASS"
+    },
+    {
+      "check": "CI binds exact candidate and all three jobs",
+      "status": "PASS"
+    },
+    {
+      "check": "test and PG receipts exact candidate",
+      "status": "PASS"
+    },
+    {
+      "check": "CI artifact digest ci-d21b7b4-quality-artifacts/test-results/ci/quality/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "CI artifact digest ci-d21b7b4-quality-artifacts/test-results/legacy/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "CI artifact digest ci-d21b7b4-quality-artifacts/qa/t01-final-20261015/browser-final/summary.json",
+      "status": "PASS"
+    },
+    {
+      "check": "CI artifact digest ci-d21b7b4-quality-artifacts/test-results/t08/browser/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "CI artifact digest ci-d21b7b4-full.log",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/editor/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/editor/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/extra/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/extra/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/final/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/final/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/journey/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/journey/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/legal/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/legal/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/navigation/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/navigation/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/planning/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/planning/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/private-download/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/private-download/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/social/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/social/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions chromium/visual/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET chromium/visual/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/editor/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/editor/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/extra/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/extra/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/final/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/final/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/journey/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/journey/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/legal/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/legal/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/navigation/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/navigation/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/planning/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/planning/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/private-download/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/private-download/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/social/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/social/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "browser assertions webkit/visual/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "qualified diagnostics are actually GET webkit/visual/results.json",
+      "status": "PASS"
+    },
+    {
+      "check": "20 browser families",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 16-9-720p-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 16-9-1080p-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 16-9-4k-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 9-16-720p-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 9-16-1080p-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 9-16-4k-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 1-1-720p-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 1-1-1080p-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash 1-1-4k-multi",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash video-only",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash music-only",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash voice-only",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash voice-music",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash subtitles",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash brand",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash all-optional",
+      "status": "PASS"
+    },
+    {
+      "check": "retained CPU export hash optional-absent",
+      "status": "PASS"
+    },
+    {
+      "check": "17 retained real CPU exports",
+      "status": "PASS"
+    }
+  ],
+  "artifactHashes": {
+    "ci-d21b7b4-quality-artifacts/test-results/ci/quality/results.json": "ea7d0c56555ec00fba99655daffb9f772abaac09c9069a210b8da5f0662f0715",
+    "ci-d21b7b4-quality-artifacts/test-results/legacy/results.json": "0a91337ecba16f5764dfff097d6cb959110a495e738f4cc1942c86a461b4bc5c",
+    "ci-d21b7b4-quality-artifacts/qa/t01-final-20261015/browser-final/summary.json": "28f861a3c348797cbdc6b78c956160106ad8478702af456f61a5c05634a72140",
+    "ci-d21b7b4-quality-artifacts/test-results/t08/browser/results.json": "875c72e61529ffc2a19f2b17281badc54697d9ddb2fd78164b31ed3b895f6317",
+    "ci-d21b7b4-full.log": "f454fef7f1c3151fcfea9be11b156c7ea7a74508e7460c80200b35d2a179c50f"
+  },
+  "browser": [
+    {
+      "family": "chromium/editor",
+      "results": [
+        {
+          "name": "375: subtitle add/edit/delete undo redo preserves initial narration",
+          "status": "PASS"
+        },
+        {
+          "name": "375: script edit after undo replaces future history",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: subtitle add/edit/delete undo redo preserves initial narration",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: script edit after undo replaces future history",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "f4fb3674a1ba10ab93b91bf184182a84c03aeabee4b897f343293d73b9bf71c9",
+      "runtimeSHA256": "a971d6e597df2b0ca333d4987f7af889cc7e6b731227f8f86cb83c0e522122e7"
+    },
+    {
+      "family": "chromium/extra",
+      "results": [
+        {
+          "name": "375: dashboard failure, explicit retry and navigation",
+          "status": "PASS"
+        },
+        {
+          "name": "375: unavailable capabilities, formats and cost disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 1",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 2",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 3",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 4",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 5",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 6",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor script accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor scenes accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor audio accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor subtitles accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor brandkit accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: subtitle edit, delete and undo preserve draft",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: dashboard failure, explicit retry and navigation",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: unavailable capabilities, formats and cost disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 1",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 2",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 3",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 4",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 5",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 6",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor script accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor scenes accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor audio accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor subtitles accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor brandkit accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: subtitle edit, delete and undo preserve draft",
+          "status": "PASS"
+        },
+        {
+          "name": "missing credits are distinct from provider availability, with no automatic retry",
+          "status": "PASS"
+        },
+        {
+          "name": "queued production stays pending until simulated completion",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "e58e0c6f5ff063fb210ba468fa79e065f46bfe7b9128a3972c664b9e53d5b300",
+      "runtimeSHA256": "914c9a4526e0ad50bdb7b3ccaa3fb49a35a9763b0266666808715a06aee4eb84"
+    },
+    {
+      "family": "chromium/final",
+      "results": [
+        {
+          "name": "signup 375: password visibility reachable by keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 375: duplicate form submission produces one auth request",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 375: API rejection remains visible and retry available",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 375: interrupted network releases loading and preserves retry",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 375: labels, contrast and no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: password visibility reachable by keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: duplicate form submission produces one auth request",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: API rejection remains visible and retry available",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: interrupted network releases loading and preserves retry",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: labels, contrast and no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: password visibility reachable by keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: duplicate form submission produces one auth request",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: API rejection remains visible and retry available",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: interrupted network releases loading and preserves retry",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: labels, contrast and no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: password visibility reachable by keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: duplicate form submission produces one auth request",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: API rejection remains visible and retry available",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: interrupted network releases loading and preserves retry",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: labels, contrast and no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "signup: confirmation and legal notice use a synthetic identity only",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "64d43563cc8ccf9aacd378f722d09420f1ecb5b7a870b52e8127e12c2c7c4eb7",
+      "runtimeSHA256": "c9f394e15007dbff0e1cac30c926a4830b2124856d92f90df83ee5e4f6a783a1"
+    },
+    {
+      "family": "chromium/journey",
+      "results": [
+        {
+          "name": "login and explicit consent open empty library",
+          "status": "PASS"
+        },
+        {
+          "name": "375: API account notice and keyboard generation form",
+          "status": "PASS"
+        },
+        {
+          "name": "375: queued request, uncertain status, retry preserves intent without duplicate",
+          "status": "PASS"
+        },
+        {
+          "name": "375: remote GPU disabled and production failure remains actionable",
+          "status": "PASS"
+        },
+        {
+          "name": "375: library failure is not an empty success and retry works",
+          "status": "PASS"
+        },
+        {
+          "name": "375: failed video never pretends to be generating and player is disabled",
+          "status": "PASS"
+        },
+        {
+          "name": "375: missing sources refuse export with visible reason and no request",
+          "status": "PASS"
+        },
+        {
+          "name": "375: draft without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "375: generating without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "375: ready without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "375: unverified result cannot be downloaded",
+          "status": "PASS"
+        },
+        {
+          "name": "375: mismatched proof is not validation",
+          "status": "PASS"
+        },
+        {
+          "name": "375: verified saved result downloads existing bytes without a render",
+          "status": "PASS"
+        },
+        {
+          "name": "375: failed status with stale verified bytes never offers final download",
+          "status": "PASS"
+        },
+        {
+          "name": "375: simulated export outage recovers, one request for simultaneous clicks",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "375: social account absent; simulated consent unavailable does not navigate",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: API account notice and keyboard generation form",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: queued request, uncertain status, retry preserves intent without duplicate",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: remote GPU disabled and production failure remains actionable",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: library failure is not an empty success and retry works",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: failed video never pretends to be generating and player is disabled",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: missing sources refuse export with visible reason and no request",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: draft without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: generating without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: ready without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: unverified result cannot be downloaded",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: mismatched proof is not validation",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: verified saved result downloads existing bytes without a render",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: failed status with stale verified bytes never offers final download",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: simulated export outage recovers, one request for simultaneous clicks",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: social account absent; simulated consent unavailable does not navigate",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "9cdbd1a44eb3dd00ac45a76dec3d252deadec68cbee1e6e04f152538124aa48d",
+      "runtimeSHA256": "3d0aa758d3dfdb070fe7d3ca9607213b7046dff52bd8556f2763c20584c1652e"
+    },
+    {
+      "family": "chromium/legal",
+      "results": [
+        {
+          "name": "unaccepted test identity sees gate and no implicit acceptance",
+          "status": "PASS"
+        },
+        {
+          "name": "mentions link opens actual legal document (HTTP 200)",
+          "status": "PASS"
+        },
+        {
+          "name": "375: modal semantics and initial focus",
+          "status": "PASS"
+        },
+        {
+          "name": "375: keyboard remains in consent without dismissing on Escape",
+          "status": "PASS"
+        },
+        {
+          "name": "375: no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: modal semantics and initial focus",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: keyboard remains in consent without dismissing on Escape",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "consent contrast dark",
+          "status": "PASS"
+        },
+        {
+          "name": "consent contrast light",
+          "status": "PASS"
+        },
+        {
+          "name": "consent contrast oled",
+          "status": "PASS"
+        },
+        {
+          "name": "failed acceptance retains document and retry; no grant persisted",
+          "status": "PASS"
+        },
+        {
+          "name": "four explicit acceptances persist through actual local API and reload",
+          "status": "PASS"
+        },
+        {
+          "name": "stalled consent recovers within 12 seconds and never advances",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "15fb65fb8ecb1c32bcdb45627ff4173667f4d639b84c7d610c334fe355892ae1",
+      "runtimeSHA256": "c8eceb1b5291d6599e1f8cf42a5e8c8a0959c16ff899c5effba1eb7e81190e01"
+    },
+    {
+      "family": "chromium/navigation",
+      "results": [
+        {
+          "name": "settled library has no runtime errors",
+          "status": "PASS"
+        },
+        {
+          "name": "normal client navigation library to create to library has no runtime errors",
+          "status": "PASS"
+        },
+        {
+          "name": "forced document navigation retains errors and qualifies only native teardown diagnostics",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "acfd3e82f8b660521fddcced1690e354a164084aec6537b64fa912fafd98bf58",
+      "runtimeSHA256": "a505a8902bfa8b3132057f62bf4324922349fa90366fd124defbefaef27c3707"
+    },
+    {
+      "family": "chromium/planning",
+      "results": [
+        {
+          "name": "375: schedule labels, state and contrast",
+          "status": "PASS"
+        },
+        {
+          "name": "375: failed schedule save preserves draft and rejects duplicate submissions",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: schedule labels, state and contrast",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: failed schedule save preserves draft and rejects duplicate submissions",
+          "status": "PASS"
+        },
+        {
+          "name": "failed delete preserves schedule and manual retry deletes once",
+          "status": "PASS"
+        },
+        {
+          "name": "lost save response has bounded wait, no automatic retry and stable draft ID",
+          "status": "PASS"
+        },
+        {
+          "name": "schedule load failure cannot become empty or allow overwriting existing schedules",
+          "status": "PASS"
+        },
+        {
+          "name": "malformed successful load cannot become an empty schedule",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "511a640c2d7e59b9f0d7e289c473b33d54b4d3aad6c9ae07bd9cfe0638553590",
+      "runtimeSHA256": "9fcf29b12feefd1e9172208e85e202756bab62d97818cf90243b955d64965dac"
+    },
+    {
+      "family": "chromium/private-download",
+      "results": [
+        {
+          "name": "login and explicit consent open empty library",
+          "status": "PASS"
+        },
+        {
+          "name": "375: private media 307 to inline cross-origin storage downloads at keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: private media 307 to inline cross-origin storage downloads at keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "download denied: no file, sanitized visible error and retry enabled",
+          "status": "PASS"
+        },
+        {
+          "name": "download html: no file, sanitized visible error and retry enabled",
+          "status": "PASS"
+        },
+        {
+          "name": "download corrupt: no file, sanitized visible error and retry enabled",
+          "status": "PASS"
+        },
+        {
+          "name": "download retry after failure: one fetch for simultaneous clicks, hash preserved",
+          "status": "PASS"
+        },
+        {
+          "name": "download suspended body: bounded timeout and retry; no file",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "f93eb99fc9de53287a5a65c0a6bfca173d5ea76f43f213845e0f218bd33eb36f",
+      "runtimeSHA256": "f08fe20297bab290955e053fc76c9138da0a8674e8472f2519f0787dd88020bd"
+    },
+    {
+      "family": "chromium/social",
+      "results": [
+        {
+          "name": "375: social unavailable is persistent, never a disconnected summary",
+          "status": "PASS"
+        },
+        {
+          "name": "375: explicit retry recovers and ignores duplicate requests",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: social unavailable is persistent, never a disconnected summary",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: explicit retry recovers and ignores duplicate requests",
+          "status": "PASS"
+        },
+        {
+          "name": "disconnect dialog is named",
+          "status": "PASS"
+        },
+        {
+          "name": "disconnect dialog traps focus, Escape restores trigger",
+          "status": "PASS"
+        },
+        {
+          "name": "unconfirmed revocation survives failed account refresh without false empty state",
+          "status": "PASS"
+        },
+        {
+          "name": "malformed account response is unavailable, not an empty account list",
+          "status": "PASS"
+        },
+        {
+          "name": "social slow response recovers within 12 seconds without late overwrite",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "4b4cb70e948a7667b832a053de58b136319a848cf05733c823259c187014305a",
+      "runtimeSHA256": "0ec767dd53d94edb2ecab807f06e987464ca7397822c654286525d1dad887c4c"
+    },
+    {
+      "family": "chromium/visual",
+      "results": [
+        {
+          "name": "375: settled social error and dialog visuals, labels and contrast",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: settled social error and dialog visuals, labels and contrast",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "0e87e30247960c6a3c6f7c24be61f6255f73c9a18ec0cb221766b91b3fe5a42f",
+      "runtimeSHA256": "85d0f8c045f0cc7492a2ccf179eeb2250686e29975b16714c7bcb1ebea7479ac"
+    },
+    {
+      "family": "webkit/editor",
+      "results": [
+        {
+          "name": "375: subtitle add/edit/delete undo redo preserves initial narration",
+          "status": "PASS"
+        },
+        {
+          "name": "375: script edit after undo replaces future history",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: subtitle add/edit/delete undo redo preserves initial narration",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: script edit after undo replaces future history",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "f4fb3674a1ba10ab93b91bf184182a84c03aeabee4b897f343293d73b9bf71c9",
+      "runtimeSHA256": "9641dfd11440f72273a5c2d785ad34a7f9c1764135682e1a66fc71b12e21345c"
+    },
+    {
+      "family": "webkit/extra",
+      "results": [
+        {
+          "name": "375: dashboard failure, explicit retry and navigation",
+          "status": "PASS"
+        },
+        {
+          "name": "375: unavailable capabilities, formats and cost disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 1",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 2",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 3",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 4",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 5",
+          "status": "PASS"
+        },
+        {
+          "name": "375: manual brief step 6",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor script accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor scenes accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor audio accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor subtitles accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor brandkit accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "375: subtitle edit, delete and undo preserve draft",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: dashboard failure, explicit retry and navigation",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: unavailable capabilities, formats and cost disclosure",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 1",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 2",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 3",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 4",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 5",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: manual brief step 6",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor script accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor scenes accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor audio accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor subtitles accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor brandkit accessible",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: subtitle edit, delete and undo preserve draft",
+          "status": "PASS"
+        },
+        {
+          "name": "missing credits are distinct from provider availability, with no automatic retry",
+          "status": "PASS"
+        },
+        {
+          "name": "queued production stays pending until simulated completion",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 20,
+      "qualifiedMethods": {
+        "GET": 20
+      },
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "fd4a579252f35962e66056d543f142ca0b01817240a770b5c6d8a12275617662",
+      "runtimeSHA256": "c7ce312db8e141aa7c6077516b02b684ccceb57a19313007b44fe1f2cf895a07"
+    },
+    {
+      "family": "webkit/final",
+      "results": [
+        {
+          "name": "signup 375: password visibility reachable by keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 375: duplicate form submission produces one auth request",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 375: API rejection remains visible and retry available",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 375: interrupted network releases loading and preserves retry",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 375: labels, contrast and no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: password visibility reachable by keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: duplicate form submission produces one auth request",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: API rejection remains visible and retry available",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: interrupted network releases loading and preserves retry",
+          "status": "PASS"
+        },
+        {
+          "name": "signup 1440: labels, contrast and no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: password visibility reachable by keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: duplicate form submission produces one auth request",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: API rejection remains visible and retry available",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: interrupted network releases loading and preserves retry",
+          "status": "PASS"
+        },
+        {
+          "name": "login 375: labels, contrast and no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: password visibility reachable by keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: duplicate form submission produces one auth request",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: API rejection remains visible and retry available",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: interrupted network releases loading and preserves retry",
+          "status": "PASS"
+        },
+        {
+          "name": "login 1440: labels, contrast and no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "signup: confirmation and legal notice use a synthetic identity only",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "9d1796026c74ff9e4efa3b637771be88f091ee463a8f0664a0ff35b50f2a7bba",
+      "runtimeSHA256": "e63dbaf3b972595f5b327c1eb4d552dc6e493ed1dfa13fcca2e8851f10b0c7e3"
+    },
+    {
+      "family": "webkit/journey",
+      "results": [
+        {
+          "name": "login and explicit consent open empty library",
+          "status": "PASS"
+        },
+        {
+          "name": "375: API account notice and keyboard generation form",
+          "status": "PASS"
+        },
+        {
+          "name": "375: queued request, uncertain status, retry preserves intent without duplicate",
+          "status": "PASS"
+        },
+        {
+          "name": "375: remote GPU disabled and production failure remains actionable",
+          "status": "PASS"
+        },
+        {
+          "name": "375: library failure is not an empty success and retry works",
+          "status": "PASS"
+        },
+        {
+          "name": "375: failed video never pretends to be generating and player is disabled",
+          "status": "PASS"
+        },
+        {
+          "name": "375: missing sources refuse export with visible reason and no request",
+          "status": "PASS"
+        },
+        {
+          "name": "375: draft without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "375: generating without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "375: ready without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "375: unverified result cannot be downloaded",
+          "status": "PASS"
+        },
+        {
+          "name": "375: mismatched proof is not validation",
+          "status": "PASS"
+        },
+        {
+          "name": "375: verified saved result downloads existing bytes without a render",
+          "status": "PASS"
+        },
+        {
+          "name": "375: failed status with stale verified bytes never offers final download",
+          "status": "PASS"
+        },
+        {
+          "name": "375: simulated export outage recovers, one request for simultaneous clicks",
+          "status": "PASS"
+        },
+        {
+          "name": "375: editor no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "375: social account absent; simulated consent unavailable does not navigate",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: API account notice and keyboard generation form",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: queued request, uncertain status, retry preserves intent without duplicate",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: remote GPU disabled and production failure remains actionable",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: library failure is not an empty success and retry works",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: failed video never pretends to be generating and player is disabled",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: missing sources refuse export with visible reason and no request",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: draft without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: generating without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: ready without media has truthful state and disabled controls",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: unverified result cannot be downloaded",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: mismatched proof is not validation",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: verified saved result downloads existing bytes without a render",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: failed status with stale verified bytes never offers final download",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: simulated export outage recovers, one request for simultaneous clicks",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: editor no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: social account absent; simulated consent unavailable does not navigate",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 111,
+      "qualifiedMethods": {
+        "GET": 111
+      },
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "8ef2bd0ac095745a9b675842bdc68bdd6197e63b1eae0ad6b21d7d3ecc1d6d2b",
+      "runtimeSHA256": "8641ad735a607c850c3a65357a94b1a4f80464c3d417af028dcf91eb25a3ce51"
+    },
+    {
+      "family": "webkit/legal",
+      "results": [
+        {
+          "name": "unaccepted test identity sees gate and no implicit acceptance",
+          "status": "PASS"
+        },
+        {
+          "name": "mentions link opens actual legal document (HTTP 200)",
+          "status": "PASS"
+        },
+        {
+          "name": "375: modal semantics and initial focus",
+          "status": "PASS"
+        },
+        {
+          "name": "375: keyboard remains in consent without dismissing on Escape",
+          "status": "PASS"
+        },
+        {
+          "name": "375: no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: modal semantics and initial focus",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: keyboard remains in consent without dismissing on Escape",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: no horizontal overflow",
+          "status": "PASS"
+        },
+        {
+          "name": "consent contrast dark",
+          "status": "PASS"
+        },
+        {
+          "name": "consent contrast light",
+          "status": "PASS"
+        },
+        {
+          "name": "consent contrast oled",
+          "status": "PASS"
+        },
+        {
+          "name": "failed acceptance retains document and retry; no grant persisted",
+          "status": "PASS"
+        },
+        {
+          "name": "four explicit acceptances persist through actual local API and reload",
+          "status": "PASS"
+        },
+        {
+          "name": "stalled consent recovers within 12 seconds and never advances",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 16,
+      "qualifiedMethods": {
+        "GET": 16
+      },
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "cbc766c4ec1748aa4a9a72a46dc46f76dba950bdcd47b96d4eb99fa7f5d85f78",
+      "runtimeSHA256": "4ba0e230136b649091044de73a23f65a62921c77e69a524df22561d7d5243b24"
+    },
+    {
+      "family": "webkit/navigation",
+      "results": [
+        {
+          "name": "settled library has no runtime errors",
+          "status": "PASS"
+        },
+        {
+          "name": "normal client navigation library to create to library has no runtime errors",
+          "status": "PASS"
+        },
+        {
+          "name": "forced document navigation retains errors and qualifies only native teardown diagnostics",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "f0223b8729bbf5f6aac412cac121159fe7386f9781a020d46f252d10ee8abe3b",
+      "runtimeSHA256": "55605fe51b771f27db265f6d9794a78b053fba610c49477055b236349d9c7509"
+    },
+    {
+      "family": "webkit/planning",
+      "results": [
+        {
+          "name": "375: schedule labels, state and contrast",
+          "status": "PASS"
+        },
+        {
+          "name": "375: failed schedule save preserves draft and rejects duplicate submissions",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: schedule labels, state and contrast",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: failed schedule save preserves draft and rejects duplicate submissions",
+          "status": "PASS"
+        },
+        {
+          "name": "failed delete preserves schedule and manual retry deletes once",
+          "status": "PASS"
+        },
+        {
+          "name": "lost save response has bounded wait, no automatic retry and stable draft ID",
+          "status": "PASS"
+        },
+        {
+          "name": "schedule load failure cannot become empty or allow overwriting existing schedules",
+          "status": "PASS"
+        },
+        {
+          "name": "malformed successful load cannot become an empty schedule",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 5,
+      "qualifiedMethods": {
+        "GET": 5
+      },
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "9f1e22454a55ce61a299fedab9119c7f63304377b800712048498ef5fc2935f6",
+      "runtimeSHA256": "3474147ed21b2f84e5008f50dc76fee758a234bff624cfa2dd5ab6e430f79757"
+    },
+    {
+      "family": "webkit/private-download",
+      "results": [
+        {
+          "name": "login and explicit consent open empty library",
+          "status": "PASS"
+        },
+        {
+          "name": "375: private media 307 to inline cross-origin storage downloads at keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: private media 307 to inline cross-origin storage downloads at keyboard",
+          "status": "PASS"
+        },
+        {
+          "name": "download denied: no file, sanitized visible error and retry enabled",
+          "status": "PASS"
+        },
+        {
+          "name": "download html: no file, sanitized visible error and retry enabled",
+          "status": "PASS"
+        },
+        {
+          "name": "download corrupt: no file, sanitized visible error and retry enabled",
+          "status": "PASS"
+        },
+        {
+          "name": "download retry after failure: one fetch for simultaneous clicks, hash preserved",
+          "status": "PASS"
+        },
+        {
+          "name": "download suspended body: bounded timeout and retry; no file",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "f93eb99fc9de53287a5a65c0a6bfca173d5ea76f43f213845e0f218bd33eb36f",
+      "runtimeSHA256": "ca06cc5091ca962574dc2057df298addae192ee5a21d57767f1a00bbf651b8e8"
+    },
+    {
+      "family": "webkit/social",
+      "results": [
+        {
+          "name": "375: social unavailable is persistent, never a disconnected summary",
+          "status": "PASS"
+        },
+        {
+          "name": "375: explicit retry recovers and ignores duplicate requests",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: social unavailable is persistent, never a disconnected summary",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: explicit retry recovers and ignores duplicate requests",
+          "status": "PASS"
+        },
+        {
+          "name": "disconnect dialog is named",
+          "status": "PASS"
+        },
+        {
+          "name": "disconnect dialog traps focus, Escape restores trigger",
+          "status": "PASS"
+        },
+        {
+          "name": "unconfirmed revocation survives failed account refresh without false empty state",
+          "status": "PASS"
+        },
+        {
+          "name": "malformed account response is unavailable, not an empty account list",
+          "status": "PASS"
+        },
+        {
+          "name": "social slow response recovers within 12 seconds without late overwrite",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 48,
+      "qualifiedMethods": {
+        "GET": 48
+      },
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "ad6c65f38ef8105f6a5ea02cda56f45125f7944515a28b5d85edc255caa72bfa",
+      "runtimeSHA256": "3419d3d30e3d6161314d0c2eb759e3cbfa55fce0e29d80ec7277d2c004a1ab2b"
+    },
+    {
+      "family": "webkit/visual",
+      "results": [
+        {
+          "name": "375: settled social error and dialog visuals, labels and contrast",
+          "status": "PASS"
+        },
+        {
+          "name": "1440: settled social error and dialog visuals, labels and contrast",
+          "status": "PASS"
+        },
+        {
+          "name": "no unexpected mutation, uncaught error or hydration mismatch",
+          "status": "PASS"
+        }
+      ],
+      "rawDiagnostics": 0,
+      "qualifiedMethods": {},
+      "unexpected": 0,
+      "domErrors": 0,
+      "resultsSHA256": "0e87e30247960c6a3c6f7c24be61f6255f73c9a18ec0cb221766b91b3fe5a42f",
+      "runtimeSHA256": "a9ac92856df92a56ce8941095c05849ecf5c748ff090c1e715c3db12cee17235"
+    }
+  ],
+  "exports": [
+    {
+      "name": "16-9-720p-multi",
+      "sha256": "55dd972bf80153f19ca5a7d7597d37c43564612f126c8878dd5e6633d3faf6c8",
+      "bytes": 43473,
+      "video": {
+        "width": 1280,
+        "height": 720,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 26765,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/16-9-720p-multi.mp4"
+    },
+    {
+      "name": "16-9-1080p-multi",
+      "sha256": "d1abc8a7f5a1a764b47c82fcb101ded78f5e546793c66dcbf9d1663c7db965d0",
+      "bytes": 46511,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 41950,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/16-9-1080p-multi.mp4"
+    },
+    {
+      "name": "16-9-4k-multi",
+      "sha256": "e65c163fcbf024da5b52db35018a95310185510d42101be2e0f94b0b03791888",
+      "bytes": 60051,
+      "video": {
+        "width": 3840,
+        "height": 2160,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 109650,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/16-9-4k-multi.mp4"
+    },
+    {
+      "name": "9-16-720p-multi",
+      "sha256": "c0423f996572443f253d8a12d1a058d1c18173b3a41c9d8b113b096df81f8089",
+      "bytes": 42731,
+      "video": {
+        "width": 720,
+        "height": 1280,
+        "orientation": "portrait",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 23075,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/9-16-720p-multi.mp4"
+    },
+    {
+      "name": "9-16-1080p-multi",
+      "sha256": "f34e352c9cd19daa16e0caab2dff1123d0f3ef6029e3ef6e00000fd3ca755544",
+      "bytes": 45019,
+      "video": {
+        "width": 1080,
+        "height": 1920,
+        "orientation": "portrait",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 34510,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/9-16-1080p-multi.mp4"
+    },
+    {
+      "name": "9-16-4k-multi",
+      "sha256": "120f4ae4dbcfced513e4ae65dcfdb243d8e601c3189a8dff516e94e55b5f68a7",
+      "bytes": 57879,
+      "video": {
+        "width": 2160,
+        "height": 3840,
+        "orientation": "portrait",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 98810,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/9-16-4k-multi.mp4"
+    },
+    {
+      "name": "1-1-720p-multi",
+      "sha256": "7ca86f60cbfe35c59d9f3b77a9e0e9328211834702384ae9a1c00e9c041f9641",
+      "bytes": 41727,
+      "video": {
+        "width": 720,
+        "height": 720,
+        "orientation": "square",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 18060,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1-1-720p-multi.mp4"
+    },
+    {
+      "name": "1-1-1080p-multi",
+      "sha256": "7bb35bd816f898ee0cfaecc9868c77199e44fcb6d6b425374291400ac502696e",
+      "bytes": 43316,
+      "video": {
+        "width": 1080,
+        "height": 1080,
+        "orientation": "square",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 25995,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1-1-1080p-multi.mp4"
+    },
+    {
+      "name": "1-1-4k-multi",
+      "sha256": "0bd75c25d1d8de9c4a768f862e16fa424eb242187ad0cd9113dd94814c8f5eae",
+      "bytes": 51360,
+      "video": {
+        "width": 2160,
+        "height": 2160,
+        "orientation": "square",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 66215,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1-1-4k-multi.mp4"
+    },
+    {
+      "name": "video-only",
+      "sha256": "ffc62577590103036bbf7df8afea49d5685307a911e6ad04bf021c39997175c2",
+      "bytes": 6702,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 23946,
+        "start": 0,
+        "duration": 1.2,
+        "frames": 36
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 2390,
+          "start": 0,
+          "duration": 1.2
+        }
+      ],
+      "duration": 1.2,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1080p-video-only.mp4"
+    },
+    {
+      "name": "music-only",
+      "sha256": "2b0a93e949e6593bb44ad480a284f51121a0d780e39d78da5573bd1725f06e88",
+      "bytes": 33396,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 23946,
+        "start": 0,
+        "duration": 1.2,
+        "frames": 36
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 177242,
+          "start": 0,
+          "duration": 1.2
+        }
+      ],
+      "duration": 1.2,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1080p-music-only.mp4"
+    },
+    {
+      "name": "voice-only",
+      "sha256": "d914c4e2ecfda6e060fae53e9be46fed7badc4b573b8d30a7e702cc5637ffc52",
+      "bytes": 25829,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 23946,
+        "start": 0,
+        "duration": 1.2,
+        "frames": 36
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 127676,
+          "start": 0,
+          "duration": 1.2
+        }
+      ],
+      "duration": 1.2,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1080p-voice-only.mp4"
+    },
+    {
+      "name": "voice-music",
+      "sha256": "7cc3a7554636753115b22bb86a2ee02abbf45643a606d33952b781b44f2a1bd2",
+      "bytes": 34631,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 23946,
+        "start": 0,
+        "duration": 1.2,
+        "frames": 36
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 185331,
+          "start": 0,
+          "duration": 1.2
+        }
+      ],
+      "duration": 1.2,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1080p-voice-music.mp4"
+    },
+    {
+      "name": "subtitles",
+      "sha256": "9543f0741857299f52dc94e48775df984d36b6c746a9fb713d83765a9a4830bf",
+      "bytes": 7609,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 29993,
+        "start": 0,
+        "duration": 1.2,
+        "frames": 36
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 2390,
+          "start": 0,
+          "duration": 1.2
+        }
+      ],
+      "duration": 1.2,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1080p-subtitles.mp4"
+    },
+    {
+      "name": "brand",
+      "sha256": "b42e84d7f0a771df2ee3ea9f716a08defce8d55dd24809cb411de87dc1cfd8c8",
+      "bytes": 9404,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 28810,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 2333,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1080p-brand.mp4"
+    },
+    {
+      "name": "all-optional",
+      "sha256": "95752eee8357a1534b4547c8f20975dba96dfa4f9a951fc4af92d72b60b813bf",
+      "bytes": 44844,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 33635,
+        "start": 0,
+        "duration": 1.6,
+        "frames": 48
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 172440,
+          "start": 0,
+          "duration": 1.6
+        }
+      ],
+      "duration": 1.6,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1080p-all-optional.mp4"
+    },
+    {
+      "name": "optional-absent",
+      "sha256": "ffc62577590103036bbf7df8afea49d5685307a911e6ad04bf021c39997175c2",
+      "bytes": 6702,
+      "video": {
+        "width": 1920,
+        "height": 1080,
+        "orientation": "landscape",
+        "fps": 30,
+        "nominalFps": 30,
+        "codec": "h264",
+        "pixelFormat": "yuv420p",
+        "sar": "1:1",
+        "rotation": 0,
+        "bitrate": 23946,
+        "start": 0,
+        "duration": 1.2,
+        "frames": 36
+      },
+      "audio": [
+        {
+          "codec": "aac",
+          "channels": 2,
+          "sampleRate": 48000,
+          "bitrate": 2390,
+          "start": 0,
+          "duration": 1.2
+        }
+      ],
+      "duration": 1.2,
+      "source": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-final-20261015/ci-d21b7b4-contract-artifacts/qa/t05-final-media-20261015/exports/1080p-optional-absent.mp4"
+    }
+  ],
+  "mediaReceiptSHA256": "0b5605501b6033c535024672423d887c5b86658636c94ad702ca849a07183b07",
+  "backupAgeHours": 12.11,
+  "backupCurrentlyFreshUnder4h": false,
+  "limits": [
+    "CI evidence reused on exact candidate; no duplicate build or browser run",
+    "GET-only actual browser diagnostics do not close independent classifier mutation counterexamples",
+    "provider runtime receipt is old runtime 86d04c8, not a candidate provider execution",
+    "no paid AI, GPU, personal consent, live publication, production migration or deployment"
+  ]
+}

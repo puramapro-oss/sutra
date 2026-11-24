@@ -1,0 +1,126 @@
+{
+  "checkedAt": "2026-10-13T20:39:54.183873+00:00",
+  "branch": "codex/sutra-t06-provider-audit-20261013",
+  "testedBase": "48f2d5e9e45a2a49e267a8b5b3a57834b7bac1f4",
+  "status": "PASS_OWN_DOCUMENTARY_DELTA_ONLY",
+  "checks": {
+    "scopeWhitelist": {
+      "pass": true,
+      "filesBeforeValidation": [
+        "BATON.md",
+        "HANDOFF-SUTRA-T06-PROVIDER-AUDIT-20261013.md",
+        "qa/t06-provider-audit-20261013/README.md",
+        "qa/t06-provider-audit-20261013/SOCIAL-AUDIT.md",
+        "qa/t06-provider-audit-20261013/gitnexus-detect.json",
+        "qa/t06-provider-audit-20261013/source-manifest.json",
+        "qa/t06-provider-audit-20261013/t01-free-gates.json",
+        "qa/t06-provider-audit-20261013/t01-master-mac-normalized.json",
+        "qa/t06-provider-audit-20261013/t01-master-mac-raw.json",
+        "qa/t06-provider-audit-20261013/t01-suno-alternative-auth.json",
+        "qa/t06-provider-audit-20261013/t01-vps-attempt.json",
+        "qa/t06-provider-audit-20261013/t04-master-format.json",
+        "qa/t06-provider-audit-20261013/t04-master-mac-vps-normalized.json",
+        "qa/t06-provider-audit-20261013/t08-lint.json",
+        "qa/t06-provider-audit-20261013/t08-redteam.json",
+        "qa/t06-provider-audit-20261013/t08-redteam.log",
+        "qa/t06-provider-audit-20261013/t08-typecheck.json",
+        "qa/t06-provider-audit-20261013/t08-zernio-contract.json",
+        "task_plan.md",
+        "vercel.json"
+      ]
+    },
+    "requestedIntegrationCommitIsAncestor": true,
+    "productAndTestsUnchanged": true,
+    "sourceManifest": {
+      "pass": true,
+      "filesCompared": 752,
+      "method": "SHA256 of each local file equals source-manifest.json"
+    },
+    "ownerEvidenceSnapshots": {
+      "pass": true,
+      "filesCompared": 12,
+      "method": "SHA256 of each imported snapshot equals source-manifest.json",
+      "logNormalization": "Only trailing horizontal whitespace removed. Source hash at copy retained; current T08 log independently normalized to identical bytes."
+    },
+    "jsonSyntax": {
+      "pass": true,
+      "filesParsedBeforeThisReport": 14
+    },
+    "relativeMarkdownLinks": {
+      "pass": true,
+      "checked": [
+        {
+          "document": "qa/t06-provider-audit-20261013/README.md",
+          "target": "SOCIAL-AUDIT.md"
+        },
+        {
+          "document": "qa/t06-provider-audit-20261013/README.md",
+          "target": "SOCIAL-AUDIT.md"
+        }
+      ]
+    },
+    "deploymentGuard": {
+      "pass": true,
+      "onlyDelta": "git.deploymentEnabled[codex/sutra-t06-provider-audit-20261013] = false",
+      "otherConfigurationUnchanged": true
+    },
+    "gitDiffCheck": {
+      "pass": true,
+      "command": "git diff --check HEAD",
+      "initialFailure": "10 trailing whitespace lines in imported log; own snapshot normalized, source left untouched"
+    },
+    "secretScan": {
+      "pass": true,
+      "command": "gitleaks git --pre-commit --staged --redact=100 --no-banner --no-color --report-format json --report-path qa/t06-provider-audit-20261013/gitleaks.json .",
+      "exitCode": 0,
+      "findings": 0,
+      "scope": "Own staged delta; no secret file read",
+      "supplementalValueFormatFindings": 0
+    },
+    "gitnexus": {
+      "pass": true,
+      "operation": "detect_changes",
+      "scope": "staged",
+      "repo": "sutra-t01-20261012",
+      "worktree": "/Users/matissdornier/purama-worktrees/sutra-t06-social-autonomy-20261012",
+      "result": {
+        "changed_count": 3,
+        "affected_count": 0,
+        "changed_files": 18,
+        "risk_level": "low"
+      },
+      "limits": "Partial index six commits behind; documentary sections only; not exhaustive code graph certification."
+    }
+  },
+  "reusedOwnerValidation": {
+    "sourceFilesEqual": 752,
+    "contracts": {
+      "pass": 480,
+      "skip": 7,
+      "fail": 0
+    },
+    "scheduleCompositionPublication": "PASS",
+    "typeScript": "PASS",
+    "lint": {
+      "errors": 0,
+      "warnings": 111
+    },
+    "redteam": {
+      "pass": 1,
+      "fail": 5,
+      "status": "BLOCKING_ON_THIS_BASE"
+    },
+    "sources": [
+      "t01-free-gates.json",
+      "t08-typecheck.json",
+      "t08-lint.json",
+      "t08-redteam.json"
+    ]
+  },
+  "limits": [
+    "No product change, provider probe, shared suite or build rerun by T06. Fresh identical-source owner evidence reused.",
+    "T02/T04/T05 fixes are separate branches and not integrated here.",
+    "Secret scanner is a bounded local check, not proof of provider security.",
+    "Commit SHA and push receipt recorded outside the commit in coordinator handoff."
+  ]
+}

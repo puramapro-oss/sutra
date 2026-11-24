@@ -1,0 +1,29 @@
+Changes: 384 files, 120 symbols
+Affected processes: 6
+Risk level: high
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section T01 — clôture finale OVH, 14 octobre 2026 04:41 UTC → BATON.md
+  Section 2026-10-14 — T05 preuve export reel (base T01 e09fdae) → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section 2026-10-14 — correctifs démontrés T04, base b7cf848 → ERRORS.md
+  Section T05 vers T01 — montage et fichiers exportes reels → HANDOFF-SUTRA-T05-REAL-EXPORT-20261014.md
+  Section Déploiement OVH SUTRA — procédure et état observé le 14 octobre 2026 → deploy/README.md
+  Variable SQL → deploy/scheduler_observer.py
+  Variable COUNTS → deploy/scheduler_observer.py
+  Variable INSPECT → deploy/scheduler_observer.py
+  Variable QUERY → deploy/scheduler_observer.py
+  Variable spec → deploy/test_scheduler_observer.py
+  Variable observer → deploy/test_scheduler_observer.py
+  Variable SHA → deploy/test_scheduler_observer.py
+  Class ObserverTests → deploy/test_scheduler_observer.py
+... and 105 more
+
+Affected execution flows:
+  • GET → CreateServiceClient (6 steps) — changed: runPublicationJournal
+  • GET → Origin (6 steps) — changed: runPublicationJournal
+  • GET → Signature (5 steps) — changed: runPublicationJournal
+  • GET → ContentWithTags (5 steps) — changed: runPublicationJournal
+  • GET → ProviderPlatform (5 steps) — changed: runPublicationJournal
+  • GET → PublicationOutcome (4 steps) — changed: runPublicationJournal

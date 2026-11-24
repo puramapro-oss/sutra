@@ -72,7 +72,7 @@ export default function InvoicesPage() {
 
       {/* Company info */}
       <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5 mb-6">
-        <p className="text-xs text-white/40 leading-relaxed">
+        <p className="text-xs text-white/60 leading-relaxed">
           <strong className="text-white/60">SASU PURAMA</strong> — 8 Rue de la
           Chapelle, 25560 Frasne, France
           <br />
@@ -95,7 +95,7 @@ export default function InvoicesPage() {
           <h3 className="text-lg font-semibold text-white/60 mb-2">
             Aucune facture
           </h3>
-          <p className="text-sm text-white/30">
+          <p className="text-sm text-white/60">
             Tes factures apparaitront ici apres ton premier paiement.
           </p>
         </div>

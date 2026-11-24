@@ -1,0 +1,99 @@
+PASS first visit: cookie acceptance text meets contrast and keyboard focus
+PASS 375px consent dark: button contrast and visible focus
+PASS 375px consent light: button contrast and visible focus
+PASS 375px consent oled: button contrast and visible focus
+PASS 1440px consent dark: button contrast and visible focus
+PASS 1440px consent light: button contrast and visible focus
+FAIL 1440px consent oled: button contrast and visible focus: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     description: 'Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds',
++     help: 'Elements must meet minimum color contrast ratio thresholds',
++     helpUrl: 'https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=axeAPI',
++     id: 'color-contrast',
++     impact: 'serious',
++     nodes: [
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               bgColor: '#ffffff',
++               colorParse: undefined,
++               contrastRatio: 4.23,
++               expectedContrastRatio: '4.5:1',
++               fgColor: '#8b5cf6',
++               fontSize: '10.5pt (14px)',
++               fontWeight: 'normal',
++               messageKey: null,
++               shadowColor: undefined
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: 'Element has insufficient color contrast of 4.23 (foreground color: #8b5cf6, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1',
++             relatedNodes: [
++               {
++                 html: '<div role="dialog" aria-label="Consentement cookies" data-testid="cookie-banner" class="fixed inset-x-0 bottom-0 z-[1100] max-h-[80dvh] overflow-y-auto border-t border-border bg-background-soft backdrop-blur-xl p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl">',
++                 target: [
++                   '.fixed'
++                 ]
++               }
++             ]
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element has insufficient color contrast of 4.23 (foreground color: #8b5cf6, background color: #ffffff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1',
++         html: '<a href="/legal/privacy" class="underline text-primary-on-dark">politique de confidentialité</a>',
++         impact: 'serious',
++         none: [],
++         target: [
++           '.underline'
++         ]
++       }
++     ],
++     tags: [
++       'cat.color',
++       'wcag2aa',
++       'wcag143',
++       'TTv5',
++       'TT13.c',
++       'EN-301-549',
++       'EN-9.1.4.3',
++       'ACT',
++       'RGAAv4',
++       'RGAA-3.2.1'
++     ]
++   }
++ ]
+- []
+
+PASS all/favorites toggles reuse identical server result without requests
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+AssertionError [ERR_ASSERTION]: No mutating API allowed: /api/legal/cookie-consent
+
+'POST' !== 'GET'
+
+    at file:///Users/matissdornier/purama-worktrees/sutra-t07-frontend-fixes-20261014/qa/t07-frontend-fixes-20261014/browser.mjs:101:14
+    at RouteHandler._handleInternal (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright-core/lib/client/network.js:695:7)
+    at RouteHandler._handleImpl (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright-core/lib/client/network.js:662:25)
+    at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright-core/lib/client/network.js:656:55
+    at AsyncLocalStorage.run (node:internal/async_local_storage/async_context_frame:65:14)
+    at Zone.run (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright-core/lib/server/utils/zones.js:42:36)
+    at NodeZone.run (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright-core/lib/server/utils/nodePlatform.js:58:23)
+    at RouteHandler.handle (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright-core/lib/client/network.js:656:34)
+    at BrowserContext._onRoute (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright-core/lib/client/browserContext.js:216:42)
+    at Proxy.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/playwright-core/lib/client/browserContext.js:84:51) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'POST',
+  expected: 'GET',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

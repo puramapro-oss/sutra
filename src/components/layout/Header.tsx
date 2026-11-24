@@ -17,6 +17,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { useTheme } from '@/hooks/useTheme'
 import NotificationBell from '@/components/layout/NotificationBell'
 import SearchModal from '@/components/layout/SearchModal'
+import { toast } from 'sonner'
 
 export default function Header() {
   const router = useRouter()
@@ -35,13 +36,17 @@ export default function Header() {
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    const onEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && dropdownRef.current?.querySelector('#account-menu')) { setDropdownOpen(false); dropdownRef.current.querySelector('button')?.focus() }
+    }
+    document.addEventListener('keydown', onEscape)
+    return () => { document.removeEventListener('mousedown', handleClickOutside); document.removeEventListener('keydown', onEscape) }
   }, [])
 
   const handleSignOut = async () => {
     setDropdownOpen(false)
-    await signOut()
-    window.location.href = '/login'
+    try { await signOut(); window.location.assign('/login') }
+    catch { toast.error('La déconnexion n’a pas abouti. Vérifie la connexion et réessaie.') }
   }
 
   const displayName = profile?.name ?? user?.email?.split('@')[0] ?? 'Utilisateur'
@@ -59,6 +64,7 @@ export default function Header() {
             href="/dashboard"
             className="lg:hidden flex items-center gap-2"
             data-testid="header-logo"
+            aria-label="SUTRA — Accueil du studio"
           >
             <div className="w-7 h-7 rounded-md bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center">
               <span className="font-display text-[10px] font-bold text-white">
@@ -79,8 +85,9 @@ export default function Header() {
           {mounted && (
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors"
+              className="flex h-11 w-11 items-center justify-center rounded-lg text-white/65 hover:text-white hover:bg-white/5 transition-colors"
               data-testid="theme-toggle"
+              aria-label={`Changer de thème (actuel : ${theme === 'light' ? 'clair' : theme === 'oled' ? 'OLED' : 'sombre'})`}
             >
               {theme === 'dark' ? (
                 <Sun className="w-4.5 h-4.5" />
@@ -99,6 +106,9 @@ export default function Header() {
               onClick={() => setDropdownOpen((prev) => !prev)}
               className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-white/5 transition-colors"
               data-testid="user-menu"
+              aria-label={`Menu du compte de ${displayName}`}
+              aria-expanded={dropdownOpen}
+              aria-controls="account-menu"
             >
               {profile?.avatar_url ? (
                 <img
@@ -125,6 +135,7 @@ export default function Header() {
             <AnimatePresence>
               {dropdownOpen && (
                 <motion.div
+                  id="account-menu"
                   initial={{ opacity: 0, scale: 0.95, y: -4 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -4 }}

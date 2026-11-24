@@ -1,0 +1,51 @@
+(node:74592) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:74592) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ Stable Audio: processing output cannot become completed media (15.091959ms)
+✔ Stable Audio: response diagnostics never escape (0.406667ms)
+✔ Riffusion: documented nested completion returns the first track (0.848209ms)
+✔ Stable Audio: starting retains identity without accepting output (0.251708ms)
+✔ Stable Audio: processing retains identity without accepting output (0.165083ms)
+✔ Stable Audio: failed retains identity without accepting output (0.142708ms)
+✔ Stable Audio: canceled retains identity without accepting output (0.144792ms)
+✔ Stable Audio: unexpected retains identity without accepting output (0.172292ms)
+✔ Stable Audio: terminal success checks contract and retains identity (0.418584ms)
+✔ Stable Audio: invalid duration 0 never submits (0.121ms)
+✔ Stable Audio: invalid duration 191 never submits (0.066333ms)
+✔ Stable Audio: invalid duration 1.5 never submits (0.082458ms)
+✔ Stable Audio: invalid duration NaN never submits (0.061584ms)
+✔ Stable Audio: malformed output null fails closed (0.175208ms)
+✔ Stable Audio: malformed output {} fails closed (0.5595ms)
+✔ Stable Audio: malformed output "http://media.invalid/file" fails closed (0.1605ms)
+✔ Stable Audio: malformed output "https://user:password@media.invalid/file" fails closed (0.119ms)
+✔ stable-audio: HTTP 401 stops after one submission without diagnostics (0.148041ms)
+✔ stable-audio: HTTP 403 stops after one submission without diagnostics (0.0705ms)
+✔ stable-audio: HTTP 429 stops after one submission without diagnostics (0.064958ms)
+✔ stable-audio: HTTP 500 stops after one submission without diagnostics (0.065584ms)
+✔ stable-audio: malformed/oversized/transport response is bounded and sanitized (0.321333ms)
+✔ stable-audio: a hanging response body consumes the same deadline (15.439084ms)
+✔ riffusion: HTTP 401 stops after one submission without diagnostics (0.219458ms)
+✔ riffusion: HTTP 403 stops after one submission without diagnostics (0.092458ms)
+✔ riffusion: HTTP 429 stops after one submission without diagnostics (0.079042ms)
+✔ riffusion: HTTP 500 stops after one submission without diagnostics (0.076292ms)
+✔ riffusion: malformed/oversized/transport response is bounded and sanitized (0.281958ms)
+✔ riffusion: a hanging response body consumes the same deadline (16.293042ms)
+✔ Riffusion: poll HTTP 401 preserves the accepted job and never resubmits (0.572709ms)
+✔ Riffusion: poll HTTP 429 preserves the accepted job and never resubmits (0.271416ms)
+✔ Riffusion: poll HTTP 500 preserves the accepted job and never resubmits (0.168834ms)
+✔ Riffusion: invalid/failed completion stays explicit {"status":"unknown"} (0.199833ms)
+✔ Riffusion: invalid/failed completion stays explicit {"status":"failed","error":"PRIVATE_BODY_MARKER"} (0.138125ms)
+✔ Riffusion: invalid/failed completion stays explicit {"status":"complete","request_id":"other-job","audio_url":"https://media.invalid/song.mp3"} (0.122667ms)
+✔ Riffusion: invalid/failed completion stays explicit {"status":"complete","data":{"task_id":"other-job","data":[{"stream_audio_url":"https://media.invalid/song.mp3"}]}} (0.123083ms)
+✔ Riffusion: invalid/failed completion stays explicit {"status":"complete","audio_url":"http://media.invalid/song.mp3"} (0.129208ms)
+✔ Riffusion: legacy flat completion remains supported (0.158416ms)
+✔ Stable Audio wrapper preserves job/provenance for processing (4.038833ms)
+✔ Stable Audio wrapper preserves job/provenance for succeeded (0.268667ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 615.066084

@@ -1,0 +1,50 @@
+✔ Salad shutdown waits for an in-flight durable reservation and its execution (28.162084ms)
+✔ RunPod rejects missing/coerced job identity and malformed media (1.068875ms)
+✔ RunPod rejects numeric submission IDs without retry (0.473375ms)
+✔ voice refuses HTTP 200 JSON masquerading as MP3 without retry (0.28025ms)
+✖ Suno checkpoints accepted task before polling; ACK failure preserves ID and blocks GET (0.853666ms)
+✖ Suno resumes a durable task with GET only (0.620334ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 4
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 274.977333
+
+✖ failing tests:
+
+test at scripts/test-t04-provider-fixes.mts:1:6572
+✖ Suno checkpoints accepted task before polling; ACK failure preserves ID and blocks GET (0.853666ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-provider-fixes.mts:157:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at scripts/test-t04-provider-fixes.mts:1:7229
+✖ Suno resumes a durable task with GET only (0.620334ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    [
+  +   'POST',
+      'GET'
+    ]
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t04-provider-fixes-20261014/scripts/test-t04-provider-fixes.mts:176:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'POST', 'GET' ],
+    expected: [ 'GET' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

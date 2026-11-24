@@ -6,15 +6,32 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:video-contracts": "node --test scripts/test-video-contracts.mjs",
+    "test:api-contracts": "node --import tsx --test scripts/test-api-contracts.mts scripts/test-env-contracts.mts scripts/test-local-engine.mts scripts/test-shotstack-contracts.mts",
+    "test:migration-local": "node scripts/test-migration-local.mjs",
+    "test:local-engine-e2e": "node --import tsx --test scripts/test-local-engine-e2e.mts",
+    "test:production-queue": "node --import tsx --test scripts/test-production-queue.mts",
+    "test:auto-export-queue": "node --import tsx --test scripts/test-auto-export-queue.mts",
+    "test:release-regressions": "node --import tsx --test scripts/test-release-regressions.mts",
+    "test:auto-schedule": "node scripts/test-auto-schedule.mjs",
+    "test:ltx-v2-media": "node --import tsx --test scripts/test-ltx-v2-media.mts",
+    "test:social-publication": "node --import tsx --test scripts/test-social-publication.mts",
+    "test:auth-session": "node --import tsx --test scripts/test-auth-session.mts",
+    "test:ui-isolated": "node scripts/test-ui-isolated.mjs",
+    "typecheck": "tsc --noEmit --incremental false",
+    "test": "npm run test:contracts",
+    "test:contracts": "node scripts/run-ci.mjs contracts",
+    "test:media": "node scripts/run-ci.mjs media",
+    "check": "node scripts/run-ci.mjs quality"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.112.3",
     "@lottiefiles/dotlottie-react": "^0.18.7",
-    "@purama/smarana": "github:puramapro-oss/purama-smarana#main",
+    "@purama/smarana": "git+https://github.com/puramapro-oss/purama-smarana.git#7a6b5b8583ec9f0a5b1c1da5bf59f8486d545e47",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
-    "@sentry/nextjs": "^10.46.0",
+    "@sentry/nextjs": "^10.75.2",
     "@stripe/connect-js": "^3.3.35",
     "@stripe/react-connect-js": "^3.3.34",
     "@stripe/stripe-js": "^9.0.0",
@@ -31,10 +48,11 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.38.0",
     "gsap": "^3.14.2",
-    "javascript-opentimestamps": "^0.4.5",
+    "javascript-opentimestamps": "npm:opentimestamps@0.4.9",
     "lottie-react": "^2.4.1",
     "lucide-react": "^1.7.0",
-    "next": "^16.2.4",
+    "mediabunny": "1.66.0",
+    "next": "16.4.5",
     "next-intl": "^4.9.1",
     "next-themes": "^0.4.6",
     "pg": "^8.20.0",
@@ -53,12 +71,12 @@
     "tsparticles": "^3.9.1",
     "tsparticles-engine": "^2.12.0",
     "tsparticles-slim": "^2.12.0",
-    "zod": "^4.3.6"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
-    "@lhci/cli": "^0.15.1",
+    "@lhci/cli": "^0.16.0",
     "@playwright/test": "^1.58.2",
-    "@purama/eslint-config": "file:../packages/eslint-config-purama",
+    "@purama/eslint-config": "file:tooling/eslint-config-purama",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.11.0",
@@ -67,16 +85,44 @@
     "@types/react-dom": "^19",
     "@types/three": "^0.183.1",
     "eslint": "^9",
-    "eslint-config-next": "16.2.1",
+    "eslint-config-next": "16.4.5",
+    "esbuild": "0.28.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "tsx": "^4.23.13",
+    "typescript": "^5",
+    "axe-core": "4.11.1"
   },
   "overrides": {
     "crypto-js": "^4.2.0",
     "form-data": "^4.0.4",
     "tough-cookie": "^4.1.3",
-    "qs": "^6.14.1",
-    "sharp": "^0.35.3",
-    "postcss": "^8.5.18"
+    "qs": "^6.17.1",
+    "dompurify": "^3.4.17",
+    "fast-uri": "^3.1.9",
+    "sharp": "^0.35.5",
+    "source-map-js": "^1.2.2",
+    "postcss": "^8.5.18",
+    "@sentry/bundler-plugins": {
+      "glob": "14.0.2"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    },
+    "get-uri": {
+      "basic-ftp": "6.2.6"
+    },
+    "body-parser": "^1.20.9",
+    "proxy-addr": "^2.0.8",
+    "bitcore-lib": {
+      "bn.js": "4.12.5"
+    },
+    "request": {
+      ".": "npm:@cypress/request@4.0.1",
+      "tough-cookie": "5.1.2"
+    }
+  },
+  "engines": {
+    "node": ">=24 <25 || >=26 <27",
+    "npm": ">=11 <12"
   }
 }

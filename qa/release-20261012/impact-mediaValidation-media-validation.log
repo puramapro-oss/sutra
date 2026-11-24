@@ -1,0 +1,62 @@
+{
+  "target": {
+    "id": "Function:src/lib/media-validation.ts:mediaValidation",
+    "name": "mediaValidation",
+    "type": "Function",
+    "filePath": "src/lib/media-validation.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 13,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 4,
+    "processes_affected": 1,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 4,
+    "2": 5,
+    "3": 4
+  },
+  "affected_processes": [
+    {
+      "name": "composeVideo",
+      "type": "Function",
+      "filePath": "src/lib/ffmpeg-compositor.ts",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Scripts",
+      "hits": 9,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_2",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Cluster_230",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 2,
+    "hint": "⚠️ Index is 2 commits behind HEAD. Run analyze tool to update."
+  }
+}
+
+  GitNexus Impact (1.6.12)
+{"level":40,"time":1791834542665,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}

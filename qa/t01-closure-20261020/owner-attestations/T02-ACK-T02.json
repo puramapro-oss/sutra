@@ -1,0 +1,75 @@
+{
+  "owner": "T02",
+  "candidate": "79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a",
+  "ack": "PASS",
+  "qualification": "LOCAL_SECURITY_BOUNDED",
+  "branch": "codex/sutra-t02-closure-79cd95b-20261020",
+  "dateUtc": "2026-10-19T22:53:45.716288+00:00",
+  "previousT02Delivery": "fee35754890b442086e9dd4bbf069ca4c1e992b6",
+  "productModified": false,
+  "freshTests": {
+    "pass": 320,
+    "fail": 0,
+    "skip": 0,
+    "countsMayOverlap": true,
+    "groups": {
+      "partner-route": 9,
+      "coverr": 4,
+      "diagnostics-contact-csrf": 19,
+      "admin-webhook": 38,
+      "production": 19,
+      "oauth": 76,
+      "boundaries": 76,
+      "ssrf": 61,
+      "cli": 3,
+      "partner-postgres": 10,
+      "partner-isolation": 5
+    }
+  },
+  "newRegressionCases": 8,
+  "typecheck": "PASS",
+  "lint": "PASS",
+  "reusedProofs": "invariants.json",
+  "report": "README.md",
+  "wangpRequirements": "WANGP-ISOLATION.md",
+  "releaseVerdict": "BLOCKED_EXTERNAL_AND_OTHER_OWNERS",
+  "limits": [
+    {
+      "status": "FAIL",
+      "subject": "R107 long-outage cron catchup",
+      "owner": "T03"
+    },
+    {
+      "status": "BLOCKED",
+      "subject": "OVH app/DB stopped; stale backup; deployed RLS/catalog and runtime proof unavailable",
+      "owner": "T01"
+    },
+    {
+      "status": "BLOCKED",
+      "subject": "Partner atomic migration local only; missing RPC must return503",
+      "owner": "T01"
+    },
+    {
+      "status": "NOT_TESTED",
+      "subject": "Native two-organization/project/budget model absent; two users are not two organizations"
+    },
+    {
+      "status": "NOT_TESTED",
+      "subject": "Real OAuth consent/provider revocation, remote storage/logs/headers, distributed rate limits"
+    },
+    {
+      "status": "BLOCKED",
+      "subject": "WanGP personal connector unavailable",
+      "owner": "T09"
+    },
+    {
+      "status": "NOT_TESTED",
+      "subject": "Historical credential validity/rotation; code removal is not revocation",
+      "owner": "T01"
+    }
+  ],
+  "dependencies": "Unchanged lock and32 installed versions; recent audit reused; alerts retained",
+  "secrets": "Synthetic fixtures only; no master/env reads; known gitleaks fixture retained",
+  "forbiddenActionsPerformed": [],
+  "newShaRequiresDeltaRevalidation": true
+}

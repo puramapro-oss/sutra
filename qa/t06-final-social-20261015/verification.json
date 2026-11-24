@@ -1,0 +1,82 @@
+{
+  "base": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "branch": "codex/sutra-t06-final-social-20261015",
+  "node": "24.21.0",
+  "tests": [
+    {
+      "name": "delta",
+      "status": "PASS",
+      "counts": {
+        "tests": 15,
+        "pass": 15,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "delta.log"
+    },
+    {
+      "name": "oauth-regressions",
+      "status": "PASS",
+      "counts": {
+        "tests": 47,
+        "pass": 47,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "oauth-regressions.log"
+    },
+    {
+      "name": "security-consumers",
+      "status": "PASS",
+      "counts": {
+        "tests": 30,
+        "pass": 30,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "security-consumers.log"
+    },
+    {
+      "name": "revocation-consumer",
+      "status": "PASS",
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "revocation-consumer.log"
+    },
+    {
+      "name": "postgres",
+      "status": "PASS",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "postgres.log"
+    },
+    {
+      "name": "history-contract",
+      "status": "FAIL",
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "log": "history-contract.log"
+    }
+  ],
+  "typecheck": "PASS targeted, including history-contract",
+  "lint": "PASS changed product and tests, zero warnings",
+  "open_requirement": "T06-HISTORY-01: prior authorization lost after reconnect; atomic SQL contract reserved to T01. Software defect, not missing personal consent.",
+  "proof_reuse": "reused-proof.json",
+  "integration_build": "NON TESTE on this new delta; historical exact3855665 CI is not a new build proof",
+  "real_publication": "NON TESTE, prohibited",
+  "provider_tokens_rotation": "NON TESTE, Zernio custody",
+  "secrets": "No real .env or master secret read, copied or used; minimal system environment plus synthetic fixture constants; offline preload blocks .env access and external sockets.",
+  "counting": "100 passing test results in these distinct commands; one separate failing history contract. Do not add historical CI counts or count fixture red failures as new product defects."
+}

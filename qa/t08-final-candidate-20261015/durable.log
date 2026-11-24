@@ -1,0 +1,28 @@
+✔ submission exposes only exact allowed public code: 503 T03_SYNTHETIC_INTERNAL_DIAGNOSTIC (2.380666ms)
+✔ submission exposes only exact allowed public code: 403 SUTRA_QUOTA_EXHAUSTED (0.458375ms)
+✔ submission exposes only exact allowed public code: 409 SUTRA_IDEMPOTENCY_CONFLICT (1.512ms)
+✔ submission exposes only exact allowed public code: 400 SUTRA_INVALID_REQUEST_ID (0.63675ms)
+✔ submission exposes only exact allowed public code: 503 SUTRA_QUOTA_EXHAUSTED: T03_SYNTHETIC_INTERNAL_DIAGNOSTIC (0.481209ms)
+✔ submission transport exception is redacted and never retried by the helper (1.568125ms)
+(node:90964) [DEP0128] DeprecationWarning: Invalid 'main' field in '/Users/matissdornier/purama-worktrees/sutra-t08-final-candidate-20261015/node_modules/javascript-opentimestamps/package.json' of 'open-timestamps.js'. Please either fix that or report it to the module author
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ legacy null final checkpoint in create is quarantined without replaying paid work (3.140667ms)
+✔ legacy null final checkpoint in export is quarantined without replaying paid work (0.546333ms)
+✔ legacy null final checkpoint in auto is quarantined without replaying paid work (0.36525ms)
+✔ legacy null final checkpoint in production is quarantined without replaying paid work (0.297916ms)
+✔ null music requires explicit skip, matching empty value: ["cinematic",{"status":"skipped","value":null}] (0.387667ms)
+✔ null music requires explicit skip, matching empty value: ["none",{"status":"complete","value":null}] (0.295083ms)
+✔ null music requires explicit skip, matching empty value: ["none",{"status":"skipped","value":"https://wrong.fixture.invalid/music.mp3"}] (0.240375ms)
+✔ null music requires explicit skip, matching empty value: ["none",{"status":"skipped"}] (0.27925ms)
+✔ explicit music none still resumes its acknowledged skipped result (0.372209ms)
+✔ new music-none execution persists its skip and null result without invoking a provider (2.419417ms)
+✔ lost finish ACK rejects contradictory skipped-music value undefined (0.475542ms)
+✔ lost finish ACK rejects contradictory skipped-music value https://unexpected.fixture.invalid/music.mp3 (0.209125ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 954.933667

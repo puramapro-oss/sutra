@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, Loader2 } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import SectionCard from './SectionCard'
 
@@ -37,27 +37,24 @@ export default function StepGenerateCard({
             <Check className="h-4 w-4" />
             <span>Generation terminee</span>
           </div>
-          <Button variant="ghost" size="sm" onClick={onGenerate}>
+          <Button variant="ghost" size="sm" loading={isGenerating} onClick={onGenerate}>
             Regenerer
           </Button>
         </div>
       ) : (
         <div className="text-center py-6">
-          <p className="text-sm text-white/40 mb-4">{description}</p>
+          <p className="text-sm text-white/65 mb-4">{description}</p>
           {disabled && disabledMessage ? (
-            <p className="text-xs text-white/30 italic">{disabledMessage}</p>
+            <p className="text-xs text-white/65 italic">{disabledMessage}</p>
           ) : (
             <Button
               variant="primary"
               size="lg"
-              disabled={disabled || isGenerating}
+              disabled={disabled}
+              loading={isGenerating}
               onClick={onGenerate}
             >
-              {isGenerating && status === 'generating' ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Icon className="h-4 w-4" />
-              )}
+              <Icon className="h-4 w-4" />
               {buttonLabel}
             </Button>
           )}

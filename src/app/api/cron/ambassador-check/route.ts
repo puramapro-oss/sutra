@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { AMBASSADOR_TIERS } from '@/lib/ambassador'
@@ -9,10 +10,8 @@ import { sendNotification } from '@/lib/logger'
 // (unique par level → 1 seule fois) + prime en wallet + notif + social_feed
 
 export async function POST(req: Request) {
-  const auth = req.headers.get('authorization')
-  if (auth !== `Bearer ${process.env.CRON_SECRET ?? 'dev'}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(req)
+  if (authError) return authError
 
   const service = createServiceClient()
 

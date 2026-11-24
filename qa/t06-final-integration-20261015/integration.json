@@ -1,0 +1,732 @@
+{
+  "recordedAt": "2026-10-15T20:19:36.799569+00:00",
+  "candidate": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+  "ciRun": 38797929920,
+  "previousDelivery": "3edae7ae1d3c13ed2b385a9602a9ad8da6ca5b6d",
+  "mode": "read-only source and existing exact-candidate CI reconciliation, no test rerun",
+  "files": [
+    {
+      "path": "src/lib/social-account-revocation.ts",
+      "sha256": "18715b9d1cd68d2b911e2eb5f7b885e1a1fdb932a78bf70e7ba77326e39f7a1d",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/lib/social-oauth-account.ts",
+      "sha256": "40cdc2a097815d88429aec6057be3303dc84d3f5d13d5ea0e8c2d86a067760dd",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/lib/social-oauth-state.ts",
+      "sha256": "955733ec198560063bf4d3f141e56d88f7688b5ae52a7e69a2737e4fd8d8070d",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/lib/zernio.ts",
+      "sha256": "88bf6961c3824728f9722bcc7cb36f05e43417c35e54d7dabd57f65ee3133d4a",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/lib/publication-journal.ts",
+      "sha256": "16c2cbccffae28889abb0742b3ace2a91a4c58149aaf9e3ff680a77c925be26e",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/lib/sutra-auto-utils.ts",
+      "sha256": "5b400067f6d61c4dd182d23dc790b469dd9ef80b9887e7040fb915ba0c198d8e",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/app/api/social/accounts/route.ts",
+      "sha256": "867709a4a2f76d20e6664982c4b67cfb884e8977ba5ac91c47e9b48eb3665fcf",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/app/api/social/connect/route.ts",
+      "sha256": "d5cfa502aed2f91c071892f2f9b5509c4fcc1c99356437395c30a1020eefd2fa",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/app/api/social/callback/route.ts",
+      "sha256": "a7f032ff4b3bdb70d0bcb59dbc134ededfc3a25dedc7b51c5f818ee989274252",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "sql/social-autopilot.sql",
+      "sha256": "9c2f2c2184593d2475a8374d630cb9e8f1030f788a48c863002b4fc730c1b3ea",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "migrations/20261011_social_oauth_state.sql",
+      "sha256": "483101bbb0e66e91f09b550ceb2c877cde52b65f0dad36c0375b246017c11bc2",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "migrations/20261015_social_authorization_history.sql",
+      "sha256": "d2f6a9cb380a15285759085cdf602701f0d9d785d4a7f76f2061438d38ab9ddc",
+      "status": "MATCH",
+      "origin": "exact T01 SQL fixture already tested 9/9 locally"
+    },
+    {
+      "path": "package.json",
+      "sha256": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "9945bb222ec3063c73dfb0e2225f7463621070d5307b3bd970c13da1382f66ce",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "sha256": "f5be18dbcdbd78d3fc135f4be332906f1686ba407d16dde26cb8db3a2e0eb427",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "qa/t08/offline.cjs",
+      "sha256": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-t06-final-social.mts",
+      "sha256": "cd7e28d49f856898810dd8d9e74d3da45e3761387ff1274cc4c7e0c433cc5c29",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-t06-social-final.mts",
+      "sha256": "68231230644a63ad4fbd016c8504e0d62115e2772d8a033f763bb9c24f976334",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-t06-social-routes.mts",
+      "sha256": "e3148692e693bafdf4ea45615abb801f7c834187ad8494388c2b759b63b3fcca",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-t02-oauth-boundaries.mts",
+      "sha256": "5ed47d1a79fd9ebf7cee6f2838cb1fbc7706cba8855a619f35e745db0a0a2803",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-t06-social-autonomy.mts",
+      "sha256": "a86b77fe304b73be82e4ac9cb866a747b40d9467ecc7d80c7c8e37763c6bc37d",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-t06-social-validation.mts",
+      "sha256": "bc548f1e83d851bdcbcb72d4a71e8a8468abff6c3e51a2e04675d60f1f53be8e",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-social-publication.mts",
+      "sha256": "056943f524e7b9b912b9904b2f6471e1c2d8a451650887d1894fc8ca1dd2ceb3",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-auto-schedule.mjs",
+      "sha256": "d66fd00f649571aa7889c3dc1a65249cb56092407f68756f11e6768852a56146",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "scripts/test-auto-publication.mjs",
+      "sha256": "fdbc78f70d13d394563b4ed49d377dc025ca5b4f9240d31df8fd540448bcf0e5",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "qa/t06-social-recovery-20261014/test-postgres.mts",
+      "sha256": "8c0b9465659bf567271d5203606feaf7b034de9bfae5ec50f34a2edba0f7507a",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "qa/t06-final-social-20261015/tsconfig.json",
+      "sha256": "81879d0494aa65232c45e001f5aaaaa2f58f4db538c230b6f1244b49235cadff",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/run.mjs",
+      "sha256": "e29438214d077801f3a298a4d02d831d5a4bd01c2e4c00ca3da3cb17014a2a22",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/run-postgres.mjs",
+      "sha256": "ed2a665747540ffa0532cdee8acfc37efe3645e2613a3657e157d35c189b4f91",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/history-routes.test.mts",
+      "sha256": "d6e0ea65ad986fee57d608e774e8e287d005f75ca07de7d534959f57e00ceb58",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/tsconfig.json",
+      "sha256": "4677288641c8b941632a9a753d984c7921c8319741611d18908c40be382b8bbc",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "qa/t06-integrated-retest-20261015/t01-social-history.sql",
+      "sha256": "d2f6a9cb380a15285759085cdf602701f0d9d785d4a7f76f2061438d38ab9ddc",
+      "status": "MATCH",
+      "origin": "previous T06 source manifest"
+    },
+    {
+      "path": "src/app/api/auto/config/route.ts",
+      "sha256": "7c722042cc7beaf967c778790023b5de56fc9abd0338c789c6c1090fd1b21444",
+      "origin": "current candidate"
+    },
+    {
+      "path": "qa/t01-closure-20261015/auto-config.test.mts",
+      "sha256": "69664e218475b57f8e45aab6328b211bc69a4a8cc28e003ac1f01fdd821a8189",
+      "origin": "current candidate"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/social/page.tsx",
+      "sha256": "500ee26b85e9dc1d5ebba93ddd00eb796a1981f589fc9631a8aae63d74668370",
+      "origin": "current candidate"
+    },
+    {
+      "path": "src/components/settings/social/PlatformGrid.tsx",
+      "sha256": "86941aef352d38434648d3e4be5c7f33d9a7447e814b375e3da520dbc748a35c",
+      "origin": "current candidate"
+    },
+    {
+      "path": "scripts/run-ci.mjs",
+      "sha256": "a10968fd2ade80d909d3114d81ec90bd78beac6b16284554e6aa545484214d1d",
+      "origin": "current candidate"
+    },
+    {
+      "path": ".github/workflows/web-ci.yml",
+      "sha256": "bb2be535a1e40fc0ee8498ed42da981da09bdc13c7513b4954579e2881972a1b",
+      "origin": "current candidate"
+    },
+    {
+      "path": "src/lib/account-access.ts",
+      "sha256": "7c53d3a9deef87ede391b6058dcde6238f571adce640482d6b25913b4034f111",
+      "origin": "current candidate"
+    }
+  ],
+  "ciEvidence": [
+    {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-cb3f893-contract-artifacts/test-results/ci/contracts/composition.log",
+      "sha256": "1641f79e8eb75d531ce855b83189a937b087201d8dcd5f95b3c1dc75dba6ea7e",
+      "counts": {
+        "tests": [],
+        "pass": [],
+        "fail": [],
+        "skipped": []
+      }
+    },
+    {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-cb3f893-contract-artifacts/test-results/ci/contracts/contracts.log",
+      "sha256": "5f1c40c10d33410a65d69fefa36dd3b845d998b99faa42f7580289a5b985dbc7",
+      "counts": {
+        "tests": [
+          1061
+        ],
+        "pass": [
+          1054
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-cb3f893-contract-artifacts/test-results/ci/contracts/durable-submission.log",
+      "sha256": "754276ddddc2d9c69834c19cc32852815fd2f44f66f076abcd2bb80768722ee5",
+      "counts": {
+        "tests": [
+          18
+        ],
+        "pass": [
+          18
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-cb3f893-contract-artifacts/test-results/ci/contracts/publication.log",
+      "sha256": "b105ca5815a066ab670324749ddebe867ee0cec5c32699b2e62c883f9c77a97a",
+      "counts": {
+        "tests": [],
+        "pass": [],
+        "fail": [],
+        "skipped": []
+      }
+    },
+    {
+      "path": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-cb3f893-contract-artifacts/test-results/ci/contracts/schedule.log",
+      "sha256": "193cc7de6a931abf71c3fef62e112787609abf80bcc6f51720517e9d38a282f7",
+      "counts": {
+        "tests": [],
+        "pass": [],
+        "fail": [],
+        "skipped": []
+      }
+    }
+  ],
+  "groups": {
+    "oauth": {
+      "pass": 76,
+      "fail": 0,
+      "skip": 0,
+      "names": [
+        "T02 account list omits private metadata/tokens and another user account",
+        "T02 account list redacts error diagnostics",
+        "T02 account list redacts throw diagnostics",
+        "T02 anonymous account list does not reach the privileged database",
+        "T02 callback without verified session never consumes or exchanges state",
+        "T02 callback rejects a different user without burning the owner state",
+        "T02 callback rejects a platform switch",
+        "T02 callback rejects a missing or forged browser secret",
+        "T02 callback rejects an expired state before token exchange",
+        "T02 concurrent callbacks verify only once and never store or expose tokens",
+        "T02 database outage during callback cannot authorize an exchange",
+        "T02 uncertain exchange is sanitized and consumed state cannot be replayed",
+        "T02 callback from another login session cannot consume the current state",
+        "T02 callback cannot change server profile or use an unrelated provider account without verification",
+        "T06 FINAL callback rejects profile reassigned while provider GET is pending",
+        "T06 FINAL callback rejects profile removed while provider GET is pending",
+        "T06 FINAL revoke blocks remote DELETE on reassigned but retains local fence",
+        "T06 FINAL revoke blocks remote DELETE on removed but retains local fence",
+        "T06 FINAL revoke blocks remote DELETE on invalid-binding but retains local fence",
+        "T06 FINAL revoke blocks remote DELETE on missing-provenance but retains local fence",
+        "T06 FINAL revoke blocks remote DELETE on foreign-profile but retains local fence",
+        "T06 FINAL revoke blocks remote DELETE on foreign-custodian but retains local fence",
+        "T06 FINAL revoke blocks remote DELETE on after-claim but retains local fence",
+        "T06 FINAL unchanged tenant can connect, revoke and personally reconnect",
+        "T06 FINAL provider refusal keeps revocation fenced and does not repeat DELETE",
+        "T06 FINAL confirmed revocation is idempotent without a second remote DELETE",
+        "T06 FINAL revoke erases legacy token fields (already confirmed=false)",
+        "T06 FINAL revoke erases legacy token fields (already confirmed=true)",
+        "T06 FINAL pending revocation clears legacy credentials without retrying the provider",
+        "T06-FINAL OAuth route + adapter + atomic state: tiktok",
+        "T06-FINAL OAuth route + adapter + atomic state: youtube",
+        "T06-FINAL OAuth route + adapter + atomic state: instagram",
+        "T06-FINAL OAuth route + adapter + atomic state: facebook",
+        "T06-FINAL OAuth route + adapter + atomic state: x",
+        "T06-FINAL OAuth route + adapter + atomic state: linkedin",
+        "T06-FINAL OAuth route + adapter + atomic state: pinterest",
+        "T06-FINAL OAuth route + adapter + atomic state: reddit",
+        "T06-FINAL OAuth route + adapter + atomic state: threads",
+        "T06-FINAL profile binding absent and caller-supplied organisation never reach provider",
+        "T06-FINAL session rotation during hosted consent requires fresh state",
+        "T06-FINAL expired hosted consent never reaches identity lookup",
+        "T06-FINAL atomic duplicate callback invokes real identity adapter only once",
+        "T06-FINAL forged remote profile is rejected after real state consumption, never persisted",
+        "T06-FINAL lost POST response uses identical persisted wire request, then GET only",
+        "T06-FINAL missing account preserves partial outcome; next consent sends only missing destination",
+        "T06-FINAL reconnect replaces local identity but requires explicit new account selection",
+        "T06-FINAL separate productions on same account receive distinct keys and histories",
+        "T06-FINAL another session user cannot revoke the bound account",
+        "T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay",
+        "T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled",
+        "T06-FINAL wrong remote account cannot confirm or retry a known post",
+        "T06-FINAL revoked during claim never reaches real POST adapter",
+        "T06-FINAL unverified media and missing approval never reach real POST adapter",
+        "T06-FINAL UI regression: a revoked account must expose Se connecter again",
+        "T06-DELTA denied consent consumes the bound state even without account identity",
+        "T06-DELTA a forged denial cannot consume another session state",
+        "T06-DELTA consent issued before revocation must not reconnect the revoked account",
+        "T06-DELTA revocation while identity lookup is in flight must win over callback",
+        "T06-DELTA X denial accepts the documented provider platform alias and consumes state",
+        "T06-DELTA unknown provider error remains generic and still consumes state",
+        "T06-DELTA fresh consent after completed revoke can reconnect without reviving old state",
+        "T06-DELTA concurrent revoke sends one DELETE and blocks new consent until completion",
+        "T06-DELTA two initial consent callbacks cannot overwrite the winning account",
+        "T06-DELTA account snapshot read error fails closed before state consumption or provider GET",
+        "T06-DELTA interrupted revoke retains a fence and cannot silently reconnect or publish",
+        "T06-DELTA unconfirmed DELETE timeout keeps the reconnect fence against a late remote revoke",
+        "T06-DELTA unconfirmed DELETE 503 keeps the reconnect fence against a late remote revoke",
+        "T06 routes: session absente ne modifie ni compte ni production",
+        "T06 routes: partiel ne peut pas etre remis a ready ou supprime",
+        "T06 routes: occurrence non publiee conserve son identite de deduplication",
+        "T06 routes: journal reserve avant projection interdit reset et suppression",
+        "T06 routes: transition concurrente preserve publishing et refuse un faux acquittement",
+        "T06 routes: panne revoke distante rend 202 avec etat local revoque",
+        "T06 routes: compte absent rend 404 et panne DB rend 503 sans revoke distant",
+        "T06 routes: cron desactive reconcilie en lecture seule sans travail de generation",
+        "T06 routes: cron sans autorisation ne lit ni ne soumet rien"
+      ]
+    },
+    "publication": {
+      "pass": 92,
+      "fail": 0,
+      "skip": 0,
+      "names": [
+        "Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence",
+        "Zernio accepte 201 programme sans jamais annoncer publie",
+        "Zernio convertit x en twitter et transmet chaque caption propre",
+        "Zernio refuse une echeance passee au lieu de publier immediatement",
+        "Zernio refuse UUID local, plateforme indisponible et cle absente avant appel",
+        "Zernio succes pour un autre compte reste inconnu",
+        "Zernio resultat partiel conserve toutes les destinations demandees",
+        "Zernio ancienne reponse success=true sans preuve n'est pas acceptee",
+        "Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable",
+        "Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien",
+        "Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien",
+        "Publication: timeout laisse une reservation, reprise exacte apres le bail",
+        "Publication: succes partiel, GET puis retry du seul compte en echec",
+        "Publication: programmation puis reconciliation utilise GET sans POST supplementaire",
+        "Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation",
+        "Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee",
+        "Publication: historique secondaire reparable sans nouvelle publication",
+        "Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme",
+        "Publication: les trois routes historiques partagent le handler",
+        "Zernio reconciliation refuse les destinations supplementaires avant tout retry",
+        "Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible",
+        "Zernio retry vise le post original une seule fois et ne recree jamais de post",
+        "Zernio revoke 404 est idempotent et erreur sensible jamais loggee",
+        "T06: une production peut cibler deux comptes distincts sans reposter au premier",
+        "T06: compte manquant conserve le partiel puis reprend uniquement cette destination",
+        "T06: compte revoked refuse avant POST",
+        "T06: compte disconnected refuse avant POST",
+        "T06: compte expired refuse avant POST",
+        "T06: compte invalid-expiry refuse avant POST",
+        "T06: revocation apres reservation empeche le POST",
+        "T06: revocation locale precedente a la panne distante; historique conserve et aucune repetition aveugle",
+        "T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST",
+        "T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay",
+        "T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate",
+        "T06: replay refuse si revoked a change",
+        "T06: replay refuse si external-id a change",
+        "T06: replay refuse si media-hash a change",
+        "T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed",
+        "T06: panne de projection reparee depuis journal sans creation distante",
+        "T06: succes video ne valide pas un nouvel export url",
+        "T06: succes video ne valide pas un nouvel export sha256",
+        "T06: succes auto ne valide pas un nouvel export url",
+        "T06: succes auto ne valide pas un nouvel export sha256",
+        "T06: import PR3 multi-destination conserve le succes et les identifiants historiques",
+        "T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication",
+        "T06: autonomie refuse inactive",
+        "T06: autonomie refuse approval",
+        "T06: autonomie refuse not-due",
+        "T06: autonomie refuse invalid-date",
+        "T06: autonomie refuse no-proof",
+        "T06: approbation explicite autorise le media verifie meme avec mode automatique arrete",
+        "T06: autorisation retiree entre reservation et envoi ferme toute destination",
+        "T06: controle service isole utilisateur et production, sans nouvelle requete",
+        "T06: replay reautorise apres claim si revoked change",
+        "T06: replay reautorise apres claim si disconnected change",
+        "T06: replay reautorise apres claim si external-id change",
+        "T06: replay reautorise apres claim si media-hash change",
+        "T06: replay reautorise apres claim si profile-revoked change",
+        "T06: autonomie replay refuse une approbation retiree apres claim",
+        "T06: retry reautorise apres claim si revoked change",
+        "T06: retry reautorise apres claim si disconnected change",
+        "T06: retry reautorise apres claim si external-id change",
+        "T06: retry reautorise apres claim si media-hash change",
+        "T06: retry reautorise apres claim si profile-revoked change",
+        "T06: autonomie retry refuse une approbation retiree apres claim",
+        "T06: profil banned refuse la publication video service-role",
+        "T06: profil revoked refuse la publication video service-role",
+        "T06: profil missing refuse la publication video service-role",
+        "T06: profil unreadable refuse la publication video service-role",
+        "T06: profil banned refuse la publication auto service-role",
+        "T06: profil revoked refuse la publication auto service-role",
+        "T06: profil missing refuse la publication auto service-role",
+        "T06: profil unreadable refuse la publication auto service-role",
+        "T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET",
+        "T06 tenant: first refuses profile-changed",
+        "T06 tenant: first refuses binding-removed",
+        "T06 tenant: first refuses metadata-absent",
+        "T06 tenant: first refuses revocation-pending",
+        "T06 tenant: replay refuses profile-changed",
+        "T06 tenant: replay refuses binding-removed",
+        "T06 tenant: replay refuses metadata-absent",
+        "T06 tenant: replay refuses revocation-pending",
+        "T06 tenant: retry refuses profile-changed",
+        "T06 tenant: retry refuses binding-removed",
+        "T06 tenant: retry refuses metadata-absent",
+        "T06 tenant: retry refuses revocation-pending",
+        "T06 tenant: binding removed after durable claim prevents first POST",
+        "T06 tenant: automatic publication uses the same current profile authority",
+        "T06 tenant: read-only reconciliation preserves historical success after reassignment",
+        "T06 tenant: fresh consent in current profile permits one send and no duplicate",
+        "T06 CAS: real Supabase serializer preserves ownership and NULL predicates",
+        "T06 CAS: real Supabase serializer preserves ownership and JSONB predicates"
+      ]
+    },
+    "auto-config": {
+      "pass": 22,
+      "fail": 0,
+      "skip": 0,
+      "names": [
+        "GET rejects anonymous before privileged access",
+        "GET rejects expired before privileged access",
+        "GET rejects revoked before privileged access",
+        "GET redacts Error at auth",
+        "GET redacts object at auth",
+        "GET redacts Error at service",
+        "GET redacts object at service",
+        "GET redacts Error at read",
+        "GET redacts object at read",
+        "PATCH rejects anonymous before privileged access",
+        "PATCH rejects expired before privileged access",
+        "PATCH rejects revoked before privileged access",
+        "PATCH redacts Error at auth",
+        "PATCH redacts object at auth",
+        "PATCH redacts Error at service",
+        "PATCH redacts object at service",
+        "PATCH redacts Error at write",
+        "PATCH redacts object at write",
+        "two identities read only their own configuration",
+        "lazy configuration creation retains defaults and hides insertion diagnostics",
+        "patch uses authenticated owner and accepted fields only",
+        "unknown fields cannot trigger a write"
+      ]
+    },
+    "schedule-non-tap": {
+      "status": "PASS",
+      "assertions": [
+        "PASS: timezone, DST, weekly, monthly and invalid schedule cases",
+        "PASS: T06 folds, half-hour gap, date line, strict input, occurrence boundaries and conflicting identities"
+      ]
+    },
+    "publication-non-tap": {
+      "status": "PASS",
+      "assertions": [
+        "PASS: mixed accounts, aliases, scheduledAt, disconnected accounts, empty configuration"
+      ]
+    }
+  },
+  "commands": [
+    {
+      "name": "contracts",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=2",
+        "qa/t07-scheduler-cancel-20261015/client-contracts.test.mts",
+        "qa/t07-scheduler-cancel-20261015/status-panel.test.tsx",
+        "qa/t01-closure-20261015/production-status.test.mts",
+        "qa/t01-closure-20261015/auto-config.test.mts",
+        "qa/t04-salad-access-20261015/validate-access.test.mjs",
+        "scripts/test-t02-rpc-security-production.mts",
+        "scripts/test-t02-rpc-security-dependencies.mts",
+        "scripts/test-t03-final-durable.mts",
+        "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+        "scripts/test-t02-final-security-grants.mts",
+        "scripts/test-t06-final-social.mts",
+        "qa/t04-final-providers-20261015/container.test.mjs",
+        "qa/t04-final-providers-20261015/context.test.mjs",
+        "qa/t04-final-providers-20261015/salad-read.test.mjs",
+        "qa/t08-final-candidate-20261015/cancellation.test.mts",
+        "scripts/test-t06-social-validation.mts",
+        "qa/t04-provider-validation-20261014/probe.test.mjs",
+        "scripts/test-t02-final-validation-media.mts",
+        "qa/t02-final-validation-20261014/production-error.test.mts",
+        "qa/final-delta-20261014/social-feedback.test.mts",
+        "scripts/test-t03-orchestration-fixes.mts",
+        "scripts/test-t03-suno-recovery.mts",
+        "scripts/test-t04-provider-fixes.mts",
+        "scripts/test-t04-pollinations.mts",
+        "scripts/test-t02-security-fixes-storage.mts",
+        "scripts/test-t02-security-fixes-proof.mts",
+        "scripts/test-t02-security-fixes-session-media.mts",
+        "scripts/test-t02-security-fixes-ots.mts",
+        "scripts/test-t08-integration-journey.mts",
+        "scripts/test-salad-worker.mts",
+        "scripts/test-salad-host.mts",
+        "scripts/test-t03-salad-recovery.mts",
+        "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+        "scripts/test-t06-social-final.mts",
+        "scripts/test-t08-final-modes.mts",
+        "scripts/test-insee.mjs",
+        "scripts/test-editor-export.mts",
+        "scripts/test-export-integration.mts",
+        "scripts/test-integration.mts",
+        "scripts/test-ltx-tiers.mjs",
+        "scripts/test-karma-split.mjs",
+        "scripts/test-api-contracts.mts",
+        "scripts/test-env-contracts.mts",
+        "scripts/test-suno-contract.mts",
+        "qa/t03-provider-complement-20261013/music-recovery.test.mts",
+        "qa/t08/providers-20261013/provider-contract-redteam.test.mts",
+        "scripts/test-local-engine.mts",
+        "scripts/test-shotstack-contracts.mts",
+        "scripts/test-production-queue.mts",
+        "scripts/test-auto-export-queue.mts",
+        "scripts/test-release-regressions.mts",
+        "scripts/test-video-contracts.mjs",
+        "scripts/test-opentimestamps.mjs",
+        "scripts/test-ltx-v2-media.mts",
+        "scripts/test-social-publication.mts",
+        "scripts/test-auth-session.mts",
+        "scripts/test-public-origin.mts",
+        "tooling/disposable-database.test.mjs",
+        "scripts/test-pipeline-interruptions.mts",
+        "scripts/test-pipeline-submit.mts",
+        "scripts/test-release-oauth.mts",
+        "scripts/test-zernio-oauth-contracts.mts",
+        "scripts/test-security-account.mts",
+        "scripts/test-t02-oauth-boundaries.mts",
+        "scripts/test-private-media.mts",
+        "scripts/test-security-media.mts",
+        "scripts/test-security-routes.mts",
+        "scripts/test-security-storage.mts",
+        "scripts/test-t06-social-autonomy.mts",
+        "scripts/test-t06-social-routes.mts",
+        "scripts/test-ltx-v2-contracts.mts",
+        "scripts/test-provider-safety.mts",
+        "src/lib/video-compositor.test.mts",
+        "src/lib/ffmpeg-concurrency.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 24408
+    },
+    {
+      "name": "durable-submission",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t03-durable-reliability.mts",
+        "qa/t03-durable-reliability-20261014/submission.test.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1026
+    },
+    {
+      "name": "schedule",
+      "command": [
+        "node",
+        "scripts/test-auto-schedule.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 93
+    },
+    {
+      "name": "composition",
+      "command": [
+        "node",
+        "scripts/test-auto-composition.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 62
+    },
+    {
+      "name": "publication",
+      "command": [
+        "node",
+        "scripts/test-auto-publication.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 63
+    }
+  ],
+  "database": {
+    "source": "cb3f893c35599a6c9c50a4d23c82013c10c5f3ae",
+    "ciRun": 38797929920,
+    "jobId": 116639133693,
+    "status": "PASS",
+    "countsInJobOrder": {
+      "tests": [
+        16,
+        7,
+        46
+      ],
+      "pass": [
+        16,
+        7,
+        46
+      ],
+      "fail": [
+        0,
+        0,
+        0
+      ],
+      "skipped": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rlsAssertions": 261,
+    "clientPermissions": 30,
+    "socialHistory": 27,
+    "t06History": "PASS",
+    "notAdditive": true,
+    "logSha256": "6431f178414733211d39d2a24229d883b378c185f9f4754495e7cf97e80008d6",
+    "logPath": "/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/ci-cb3f893-database.log",
+    "t06HistoryCaseNames": [
+      "PG routes: connection, revocation and reconnection retain consent history and clear credentials",
+      "PG routes: unknown remote deletion preserves fence; repeat cannot delete or reconnect",
+      "PG routes: one state can produce only one successful callback under concurrency",
+      "PG routes: state refuses another session, another user, profile change and expiry",
+      "PG routes: audit write failure rolls back account; callback state remains consumed",
+      "PG routes: concurrent pending cleanup retains one DELETE and confirms the original operation",
+      "PG routes: concurrent account change before-reload prevents false revocation confirmation",
+      "PG routes: concurrent account change after-reload prevents false revocation confirmation",
+      "PG routes: legacy scoped account without revision must still revoke locally"
+    ],
+    "countQualification": "CI step PASS; nine cases from identical fixture and previous local TAP, not nine printed CI assertions"
+  },
+  "status": "PASS_INTEGRATED_SOCIAL_MOCK_CONTRACTS",
+  "limits": [
+    "No production/OAuth consent/provider publication test or claim",
+    "Remote token encryption, rotation, actual granted scopes, organization membership not proven by mocks",
+    "Application tenant model is user UUID bound to unique Zernio profile, no native organization dimension",
+    "Candidate acceptance/production status remain T01/T08, not inferred from social CI jobs",
+    "No new functional test run; exact-candidate CI and immutable previous test names reconciled"
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "baseline": true,
+  "productionSuite": false,
+  "results": [
+    {
+      "name": "disconnect dialog is named",
+      "status": "FAIL",
+      "message": "expect(locator).toHaveAccessibleName(expected) failed\n\nLocator:  getByRole('dialog')\nExpected: \"Deconnecter YouTube ?\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.have.accessible.name\" with timeout 5000ms\n  - waiting for getByRole('dialog')\n    9 × locator resolved to <div role=\"dialog\" aria-modal=\"true\" class=\"w-full max-w-md bg-[#0A0A0F] border border-white/[0.08] rounded-2xl p-6 shadow-2xl\">…</div>\n      - unexpected value \"\"\n"
+    },
+    {
+      "name": "disconnect dialog traps focus, Escape restores trigger",
+      "status": "FAIL",
+      "message": "expect(locator).toBeFocused() failed\n\nLocator:  getByTestId('cancel-disconnect')\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.be.focused\" with timeout 5000ms\n  - waiting for getByTestId('cancel-disconnect')\n    9 × locator resolved to <button tabindex=\"0\" type=\"button\" data-testid=\"cancel-disconnect\" class=\"relative inline-flex items-center justify-center font-medium transition-all duration-200 overflow-hidden select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06050e] disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none bg-white/5 backdrop-blur-xl border border-white/[0.08] text-white/90 hover:bg-white/10 hover:…>…</button>\n      - unexpected value \"inactive\"\n"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [],
+  "errors": [],
+  "blocked": [],
+  "mutations": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

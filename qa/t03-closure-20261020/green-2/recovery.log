@@ -1,0 +1,21 @@
+(node:55652) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:55652) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✔ R107: the actual cron recovers noon after a 20-hour interruption (501.988167ms)
+✔ 12 concurrent cron deliveries reserve once; cancelled occurrences never resurrect (411.306541ms)
+✔ lost commit response reconciles from durable cursor without a second job or quota (9.0015ms)
+✔ invalid receipt never claims success; subsequent read reconciles its committed jobs (5.831542ms)
+✔ SQL job, cursor and quota errors roll back the entire window before retry (46.500167ms)
+✔ read outage gives 503 and an inactive/edit race cannot submit a stale schedule (6.187959ms)
+✔ bounded multi-day catch-up drains without missing a day and survives PostgreSQL restart (492.172042ms)
+✔ service-only RPC and owner cursor protection; wrong window, isolation and stale CAS fail closed (8.012667ms)
+✔ missing migration fails closed without falling back to the old lossy window (0.782875ms)
+✔ migration replay, synthetic backup/restore, drift guard and rollback preserve all durable rows (593.358166ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3070.798584

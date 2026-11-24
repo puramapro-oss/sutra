@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 /**
  * CRON quotidien (6h)
  * Detecte les tendances pour chaque user actif (via Tavily) et stocke
@@ -8,7 +9,6 @@ import { createServiceClient } from '@/lib/supabase'
 import { recordMemory, type AutoTheme } from '@/lib/sutra-auto'
 
 export const maxDuration = 180
-const CRON_SECRET = process.env.CRON_SECRET
 const TAVILY_API_KEY = process.env.TAVILY_API_KEY
 
 interface TavilyResult {
@@ -41,9 +41,8 @@ async function searchTrends(niche: string): Promise<string[]> {
 }
 
 export async function GET(request: Request) {
-  if (CRON_SECRET && request.headers.get('authorization') !== `Bearer ${CRON_SECRET}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   const supabase = createServiceClient()
   const { data: configs } = await supabase
@@ -52,6 +51,7 @@ export async function GET(request: Request) {
     .eq('is_active', true)
 
   let total_trends = 0
+  let failed_trends = 0
 
   for (const c of configs ?? []) {
     const { data: themes } = await supabase
@@ -67,17 +67,23 @@ export async function GET(request: Request) {
     for (const niche of niches.slice(0, 3)) {
       const trends = await searchTrends(niche)
       for (const trend of trends.slice(0, 3)) {
-        await recordMemory({
-          userId: c.user_id,
-          type: 'trend',
-          content: `[${niche}] ${trend}`,
-          importance: 0.7,
-          expiresInDays: 7,
-        })
-        total_trends++
+        try {
+          const saved = await recordMemory({
+            userId: c.user_id,
+            type: 'trend',
+            content: `[${niche}] ${trend}`,
+            importance: 0.7,
+            expiresInDays: 7,
+          })
+          if (saved) total_trends++
+          else failed_trends++
+        } catch {
+          // One unavailable write does not erase later confirmed observations.
+          failed_trends++
+        }
       }
     }
   }
 
-  return NextResponse.json({ status: 'ok', total_trends })
+  return NextResponse.json({ status: failed_trends > 0 ? 'partial' : 'ok', total_trends, failed_trends })
 }

@@ -1,0 +1,27 @@
+[
+  {
+    "browser": "chromium",
+    "errors": [],
+    "failures": [
+      {
+        "path": "/slow",
+        "error": "net::ERR_ABORTED"
+      }
+    ]
+  },
+  {
+    "browser": "webkit",
+    "errors": [
+      {
+        "message": "TypeError: Load failed",
+        "stack": ""
+      }
+    ],
+    "failures": [
+      {
+        "path": "/slow",
+        "error": "cancelled"
+      }
+    ]
+  }
+]

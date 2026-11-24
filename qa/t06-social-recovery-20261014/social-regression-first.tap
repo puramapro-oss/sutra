@@ -1,0 +1,656 @@
+TAP version 13
+# Subtest: OAUTH: utilisateur, plateforme et navigateur doivent correspondre sans consommer le bon etat
+ok 1 - OAUTH: utilisateur, plateforme et navigateur doivent correspondre sans consommer le bon etat
+  ---
+  duration_ms: 2.05875
+  type: 'test'
+  ...
+# Subtest: OAUTH: expiration et rejeu concurrent refusés
+ok 2 - OAUTH: expiration et rejeu concurrent refusés
+  ---
+  duration_ms: 0.799541
+  type: 'test'
+  ...
+# Subtest: OAUTH: erreur de base bloque initiation et consommation
+ok 3 - OAUTH: erreur de base bloque initiation et consommation
+  ---
+  duration_ms: 0.298875
+  type: 'test'
+  ...
+# Subtest: OAUTH: profile reassignment or another login session cannot consume a pending state
+ok 4 - OAUTH: profile reassignment or another login session cannot consume a pending state
+  ---
+  duration_ms: 0.130958
+  type: 'test'
+  ...
+# Subtest: Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence
+ok 5 - Zernio contrat officiel /posts, content, mediaItems, compte externe et idempotence
+  ---
+  duration_ms: 3.203708
+  type: 'test'
+  ...
+# Subtest: Zernio accepte 201 programme sans jamais annoncer publie
+ok 6 - Zernio accepte 201 programme sans jamais annoncer publie
+  ---
+  duration_ms: 0.329834
+  type: 'test'
+  ...
+# Subtest: Zernio convertit x en twitter et transmet chaque caption propre
+ok 7 - Zernio convertit x en twitter et transmet chaque caption propre
+  ---
+  duration_ms: 0.111417
+  type: 'test'
+  ...
+# Subtest: Zernio refuse une echeance passee au lieu de publier immediatement
+ok 8 - Zernio refuse une echeance passee au lieu de publier immediatement
+  ---
+  duration_ms: 0.205791
+  type: 'test'
+  ...
+# Subtest: Zernio refuse UUID local, plateforme indisponible et cle absente avant appel
+ok 9 - Zernio refuse UUID local, plateforme indisponible et cle absente avant appel
+  ---
+  duration_ms: 0.259209
+  type: 'test'
+  ...
+# Subtest: Zernio succes pour un autre compte reste inconnu
+ok 10 - Zernio succes pour un autre compte reste inconnu
+  ---
+  duration_ms: 0.075459
+  type: 'test'
+  ...
+# Subtest: Zernio resultat partiel conserve toutes les destinations demandees
+ok 11 - Zernio resultat partiel conserve toutes les destinations demandees
+  ---
+  duration_ms: 0.076833
+  type: 'test'
+  ...
+# Subtest: Zernio ancienne reponse success=true sans preuve n'est pas acceptee
+ok 12 - Zernio ancienne reponse success=true sans preuve n'est pas acceptee
+  ---
+  duration_ms: 0.070958
+  type: 'test'
+  ...
+# Subtest: Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable
+ok 13 - Zernio timeout ou HTTP 5xx ne devient jamais un echec rejouable
+  ---
+  duration_ms: 0.27925
+  type: 'test'
+  ...
+# Subtest: Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien
+ok 14 - Publication: proprietaire incorrect, media non pret et non verifie ne soumettent rien
+  ---
+  duration_ms: 0.7905
+  type: 'test'
+  ...
+# Subtest: Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien
+ok 15 - Publication: deux requetes concurrentes, captions modifiees et replay ne dupliquent rien
+  ---
+  duration_ms: 2.537792
+  type: 'test'
+  ...
+# Subtest: Publication: timeout laisse une reservation, reprise exacte apres le bail
+ok 16 - Publication: timeout laisse une reservation, reprise exacte apres le bail
+  ---
+  duration_ms: 0.854083
+  type: 'test'
+  ...
+# Subtest: Publication: succes partiel, GET puis retry du seul compte en echec
+ok 17 - Publication: succes partiel, GET puis retry du seul compte en echec
+  ---
+  duration_ms: 1.903
+  type: 'test'
+  ...
+# Subtest: Publication: programmation puis reconciliation utilise GET sans POST supplementaire
+ok 18 - Publication: programmation puis reconciliation utilise GET sans POST supplementaire
+  ---
+  duration_ms: 0.523625
+  type: 'test'
+  ...
+# Subtest: Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation
+ok 19 - Publication: echec DB apres fournisseur reprend avec cle originale, jamais une nouvelle creation
+  ---
+  duration_ms: 0.637292
+  type: 'test'
+  ...
+# Subtest: Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee
+ok 20 - Publication: export concurrent conserve resultat distant sans marquer une nouvelle version publiee
+  ---
+  duration_ms: 0.222375
+  type: 'test'
+  ...
+# Subtest: Publication: historique secondaire reparable sans nouvelle publication
+ok 21 - Publication: historique secondaire reparable sans nouvelle publication
+  ---
+  duration_ms: 0.371625
+  type: 'test'
+  ...
+# Subtest: Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme
+ok 22 - Publication: comptes absents/ambigus restent explicites, lecture en erreur ferme
+  ---
+  duration_ms: 0.286
+  type: 'test'
+  ...
+# Subtest: Publication: les trois routes historiques partagent le handler
+ok 23 - Publication: les trois routes historiques partagent le handler
+  ---
+  duration_ms: 37.978792
+  type: 'test'
+  ...
+# Subtest: Zernio reconciliation refuse les destinations supplementaires avant tout retry
+ok 24 - Zernio reconciliation refuse les destinations supplementaires avant tout retry
+  ---
+  duration_ms: 0.46025
+  type: 'test'
+  ...
+# Subtest: Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible
+ok 25 - Zernio statut distant ne propage pas un corps JSON invalide ou une erreur transport sensible
+  ---
+  duration_ms: 1182.937333
+  type: 'test'
+  ...
+# Subtest: Zernio retry vise le post original une seule fois et ne recree jamais de post
+ok 26 - Zernio retry vise le post original une seule fois et ne recree jamais de post
+  ---
+  duration_ms: 1.114917
+  type: 'test'
+  ...
+# Subtest: Zernio revoke 404 est idempotent et erreur sensible jamais loggee
+ok 27 - Zernio revoke 404 est idempotent et erreur sensible jamais loggee
+  ---
+  duration_ms: 0.521291
+  type: 'test'
+  ...
+# Subtest: T06: une production peut cibler deux comptes distincts sans reposter au premier
+ok 28 - T06: une production peut cibler deux comptes distincts sans reposter au premier
+  ---
+  duration_ms: 5.656083
+  type: 'test'
+  ...
+# Subtest: T06: compte manquant conserve le partiel puis reprend uniquement cette destination
+ok 29 - T06: compte manquant conserve le partiel puis reprend uniquement cette destination
+  ---
+  duration_ms: 0.703958
+  type: 'test'
+  ...
+# Subtest: T06: compte revoked refuse avant POST
+ok 30 - T06: compte revoked refuse avant POST
+  ---
+  duration_ms: 0.168041
+  type: 'test'
+  ...
+# Subtest: T06: compte disconnected refuse avant POST
+ok 31 - T06: compte disconnected refuse avant POST
+  ---
+  duration_ms: 0.113833
+  type: 'test'
+  ...
+# Subtest: T06: compte expired refuse avant POST
+ok 32 - T06: compte expired refuse avant POST
+  ---
+  duration_ms: 0.116416
+  type: 'test'
+  ...
+# Subtest: T06: compte invalid-expiry refuse avant POST
+ok 33 - T06: compte invalid-expiry refuse avant POST
+  ---
+  duration_ms: 0.110875
+  type: 'test'
+  ...
+# Subtest: T06: revocation apres reservation empeche le POST
+ok 34 - T06: revocation apres reservation empeche le POST
+  ---
+  duration_ms: 0.424834
+  type: 'test'
+  ...
+# Subtest: T06: revocation locale precedente a la panne distante; historique conserve et reprise possible
+ok 35 - T06: revocation locale precedente a la panne distante; historique conserve et reprise possible
+  ---
+  duration_ms: 0.741
+  type: 'test'
+  ...
+# Subtest: T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST
+ok 36 - T06: statut distant lisible apres revocation et arret autonomie, sans nouvelle autorisation POST
+  ---
+  duration_ms: 0.791834
+  type: 'test'
+  ...
+# Subtest: T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay
+ok 37 - T06: timeout au-dela de la fenetre fournisseur conserve l incertitude sans replay
+  ---
+  duration_ms: 0.562208
+  type: 'test'
+  ...
+# Subtest: T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate
+ok 38 - T06: horaire depasse apres reponse perdue ne devient jamais une publication immediate
+  ---
+  duration_ms: 0.459333
+  type: 'test'
+  ...
+# Subtest: T06: replay refuse si revoked a change
+ok 39 - T06: replay refuse si revoked a change
+  ---
+  duration_ms: 0.472458
+  type: 'test'
+  ...
+# Subtest: T06: replay refuse si external-id a change
+ok 40 - T06: replay refuse si external-id a change
+  ---
+  duration_ms: 0.375292
+  type: 'test'
+  ...
+# Subtest: T06: replay refuse si media-hash a change
+ok 41 - T06: replay refuse si media-hash a change
+  ---
+  duration_ms: 0.274417
+  type: 'test'
+  ...
+# Subtest: T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed
+ok 42 - T06: retry a reponse perdue ne peut jamais relancer un deuxieme retry sur statut failed
+  ---
+  duration_ms: 0.594041
+  type: 'test'
+  ...
+# Subtest: T06: panne de projection reparee depuis journal sans creation distante
+ok 43 - T06: panne de projection reparee depuis journal sans creation distante
+  ---
+  duration_ms: 0.275
+  type: 'test'
+  ...
+# Subtest: T06: succes video ne valide pas un nouvel export url
+ok 44 - T06: succes video ne valide pas un nouvel export url
+  ---
+  duration_ms: 0.261667
+  type: 'test'
+  ...
+# Subtest: T06: succes video ne valide pas un nouvel export sha256
+ok 45 - T06: succes video ne valide pas un nouvel export sha256
+  ---
+  duration_ms: 0.200791
+  type: 'test'
+  ...
+# Subtest: T06: succes auto ne valide pas un nouvel export url
+ok 46 - T06: succes auto ne valide pas un nouvel export url
+  ---
+  duration_ms: 0.471917
+  type: 'test'
+  ...
+# Subtest: T06: succes auto ne valide pas un nouvel export sha256
+ok 47 - T06: succes auto ne valide pas un nouvel export sha256
+  ---
+  duration_ms: 0.450166
+  type: 'test'
+  ...
+# Subtest: T06: import PR3 multi-destination conserve le succes et les identifiants historiques
+ok 48 - T06: import PR3 multi-destination conserve le succes et les identifiants historiques
+  ---
+  duration_ms: 0.390959
+  type: 'test'
+  ...
+# Subtest: T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication
+ok 49 - T06: ancien partiel PR2 sans identite compte reste intact, sans inference ni publication
+  ---
+  duration_ms: 0.133958
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse inactive
+ok 50 - T06: autonomie refuse inactive
+  ---
+  duration_ms: 0.103875
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse approval
+ok 51 - T06: autonomie refuse approval
+  ---
+  duration_ms: 0.103709
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse not-due
+ok 52 - T06: autonomie refuse not-due
+  ---
+  duration_ms: 0.075875
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse invalid-date
+ok 53 - T06: autonomie refuse invalid-date
+  ---
+  duration_ms: 0.119208
+  type: 'test'
+  ...
+# Subtest: T06: autonomie refuse no-proof
+ok 54 - T06: autonomie refuse no-proof
+  ---
+  duration_ms: 0.1725
+  type: 'test'
+  ...
+# Subtest: T06: approbation explicite autorise le media verifie meme avec mode automatique arrete
+ok 55 - T06: approbation explicite autorise le media verifie meme avec mode automatique arrete
+  ---
+  duration_ms: 0.590791
+  type: 'test'
+  ...
+# Subtest: T06: autorisation retiree entre reservation et envoi ferme toute destination
+ok 56 - T06: autorisation retiree entre reservation et envoi ferme toute destination
+  ---
+  duration_ms: 0.306917
+  type: 'test'
+  ...
+# Subtest: T06: controle service isole utilisateur et production, sans nouvelle requete
+ok 57 - T06: controle service isole utilisateur et production, sans nouvelle requete
+  ---
+  duration_ms: 0.316333
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si revoked change
+ok 58 - T06: replay reautorise apres claim si revoked change
+  ---
+  duration_ms: 0.836583
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si disconnected change
+ok 59 - T06: replay reautorise apres claim si disconnected change
+  ---
+  duration_ms: 0.659167
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si external-id change
+ok 60 - T06: replay reautorise apres claim si external-id change
+  ---
+  duration_ms: 0.651417
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si media-hash change
+ok 61 - T06: replay reautorise apres claim si media-hash change
+  ---
+  duration_ms: 0.5825
+  type: 'test'
+  ...
+# Subtest: T06: replay reautorise apres claim si profile-revoked change
+ok 62 - T06: replay reautorise apres claim si profile-revoked change
+  ---
+  duration_ms: 0.817458
+  type: 'test'
+  ...
+# Subtest: T06: autonomie replay refuse une approbation retiree apres claim
+ok 63 - T06: autonomie replay refuse une approbation retiree apres claim
+  ---
+  duration_ms: 0.677667
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si revoked change
+ok 64 - T06: retry reautorise apres claim si revoked change
+  ---
+  duration_ms: 0.752709
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si disconnected change
+ok 65 - T06: retry reautorise apres claim si disconnected change
+  ---
+  duration_ms: 0.667625
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si external-id change
+ok 66 - T06: retry reautorise apres claim si external-id change
+  ---
+  duration_ms: 0.619917
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si media-hash change
+ok 67 - T06: retry reautorise apres claim si media-hash change
+  ---
+  duration_ms: 0.541792
+  type: 'test'
+  ...
+# Subtest: T06: retry reautorise apres claim si profile-revoked change
+ok 68 - T06: retry reautorise apres claim si profile-revoked change
+  ---
+  duration_ms: 0.591792
+  type: 'test'
+  ...
+# Subtest: T06: autonomie retry refuse une approbation retiree apres claim
+ok 69 - T06: autonomie retry refuse une approbation retiree apres claim
+  ---
+  duration_ms: 0.444958
+  type: 'test'
+  ...
+# Subtest: T06: profil banned refuse la publication video service-role
+ok 70 - T06: profil banned refuse la publication video service-role
+  ---
+  duration_ms: 1.199625
+  type: 'test'
+  ...
+# Subtest: T06: profil revoked refuse la publication video service-role
+ok 71 - T06: profil revoked refuse la publication video service-role
+  ---
+  duration_ms: 0.184583
+  type: 'test'
+  ...
+# Subtest: T06: profil missing refuse la publication video service-role
+ok 72 - T06: profil missing refuse la publication video service-role
+  ---
+  duration_ms: 0.120625
+  type: 'test'
+  ...
+# Subtest: T06: profil unreadable refuse la publication video service-role
+ok 73 - T06: profil unreadable refuse la publication video service-role
+  ---
+  duration_ms: 0.124042
+  type: 'test'
+  ...
+# Subtest: T06: profil banned refuse la publication auto service-role
+ok 74 - T06: profil banned refuse la publication auto service-role
+  ---
+  duration_ms: 0.145625
+  type: 'test'
+  ...
+# Subtest: T06: profil revoked refuse la publication auto service-role
+ok 75 - T06: profil revoked refuse la publication auto service-role
+  ---
+  duration_ms: 0.134583
+  type: 'test'
+  ...
+# Subtest: T06: profil missing refuse la publication auto service-role
+ok 76 - T06: profil missing refuse la publication auto service-role
+  ---
+  duration_ms: 0.129167
+  type: 'test'
+  ...
+# Subtest: T06: profil unreadable refuse la publication auto service-role
+ok 77 - T06: profil unreadable refuse la publication auto service-role
+  ---
+  duration_ms: 0.127792
+  type: 'test'
+  ...
+# Subtest: T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET
+ok 78 - T06: profil revoque bloque le premier POST apres claim mais permet reconciliation GET
+  ---
+  duration_ms: 0.596208
+  type: 'test'
+  ...
+# [zernio:disconnectAccount] SUTRA_PROVIDER_REQUEST_FAILED
+# (node:61515) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:61515) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: tiktok
+ok 79 - T06-FINAL OAuth route + adapter + atomic state: tiktok
+  ---
+  duration_ms: 7.938291
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: youtube
+ok 80 - T06-FINAL OAuth route + adapter + atomic state: youtube
+  ---
+  duration_ms: 1.016834
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: instagram
+ok 81 - T06-FINAL OAuth route + adapter + atomic state: instagram
+  ---
+  duration_ms: 0.727
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: facebook
+ok 82 - T06-FINAL OAuth route + adapter + atomic state: facebook
+  ---
+  duration_ms: 0.626291
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: x
+ok 83 - T06-FINAL OAuth route + adapter + atomic state: x
+  ---
+  duration_ms: 0.5665
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: linkedin
+ok 84 - T06-FINAL OAuth route + adapter + atomic state: linkedin
+  ---
+  duration_ms: 0.46475
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: pinterest
+ok 85 - T06-FINAL OAuth route + adapter + atomic state: pinterest
+  ---
+  duration_ms: 0.384667
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: reddit
+ok 86 - T06-FINAL OAuth route + adapter + atomic state: reddit
+  ---
+  duration_ms: 0.361833
+  type: 'test'
+  ...
+# Subtest: T06-FINAL OAuth route + adapter + atomic state: threads
+ok 87 - T06-FINAL OAuth route + adapter + atomic state: threads
+  ---
+  duration_ms: 0.399666
+  type: 'test'
+  ...
+# Subtest: T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+ok 88 - T06-FINAL profile binding absent and caller-supplied organisation never reach provider
+  ---
+  duration_ms: 0.471958
+  type: 'test'
+  ...
+# Subtest: T06-FINAL session rotation during hosted consent requires fresh state
+ok 89 - T06-FINAL session rotation during hosted consent requires fresh state
+  ---
+  duration_ms: 0.353875
+  type: 'test'
+  ...
+# Subtest: T06-FINAL expired hosted consent never reaches identity lookup
+ok 90 - T06-FINAL expired hosted consent never reaches identity lookup
+  ---
+  duration_ms: 0.510375
+  type: 'test'
+  ...
+# Subtest: T06-FINAL atomic duplicate callback invokes real identity adapter only once
+ok 91 - T06-FINAL atomic duplicate callback invokes real identity adapter only once
+  ---
+  duration_ms: 0.872708
+  type: 'test'
+  ...
+# Subtest: T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+ok 92 - T06-FINAL forged remote profile is rejected after real state consumption, never persisted
+  ---
+  duration_ms: 0.497458
+  type: 'test'
+  ...
+# Subtest: T06-FINAL lost POST response uses identical persisted wire request, then GET only
+ok 93 - T06-FINAL lost POST response uses identical persisted wire request, then GET only
+  ---
+  duration_ms: 2.765
+  type: 'test'
+  ...
+# Subtest: T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+ok 94 - T06-FINAL missing account preserves partial outcome; next consent sends only missing destination
+  ---
+  duration_ms: 1.337042
+  type: 'test'
+  ...
+# Subtest: T06-FINAL reconnect replaces local identity but requires explicit new account selection
+ok 95 - T06-FINAL reconnect replaces local identity but requires explicit new account selection
+  ---
+  duration_ms: 1.428125
+  type: 'test'
+  ...
+# Subtest: T06-FINAL separate productions on same account receive distinct keys and histories
+ok 96 - T06-FINAL separate productions on same account receive distinct keys and histories
+  ---
+  duration_ms: 1.00075
+  type: 'test'
+  ...
+# Subtest: T06-FINAL another session user cannot revoke the bound account
+ok 97 - T06-FINAL another session user cannot revoke the bound account
+  ---
+  duration_ms: 0.67425
+  type: 'test'
+  ...
+# Subtest: T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+ok 98 - T06-FINAL DELETE 503 retains history, returns 202, and blocks uncertain POST replay
+  ---
+  duration_ms: 1.878917
+  type: 'test'
+  ...
+# Subtest: T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+ok 99 - T06-FINAL revoked account allows remote GET reconciliation with autonomy disabled
+  ---
+  duration_ms: 1.3815
+  type: 'test'
+  ...
+# Subtest: T06-FINAL wrong remote account cannot confirm or retry a known post
+ok 100 - T06-FINAL wrong remote account cannot confirm or retry a known post
+  ---
+  duration_ms: 0.779666
+  type: 'test'
+  ...
+# Subtest: T06-FINAL revoked during claim never reaches real POST adapter
+ok 101 - T06-FINAL revoked during claim never reaches real POST adapter
+  ---
+  duration_ms: 0.579958
+  type: 'test'
+  ...
+# Subtest: T06-FINAL unverified media and missing approval never reach real POST adapter
+ok 102 - T06-FINAL unverified media and missing approval never reach real POST adapter
+  ---
+  duration_ms: 0.517041
+  type: 'test'
+  ...
+# Subtest: T06-FINAL UI regression: a revoked account must expose Se connecter again
+ok 103 - T06-FINAL UI regression: a revoked account must expose Se connecter again
+  ---
+  duration_ms: 10.878292
+  type: 'test'
+  ...
+# Subtest: T06-DELTA denied consent consumes the bound state even without account identity
+ok 104 - T06-DELTA denied consent consumes the bound state even without account identity
+  ---
+  duration_ms: 0.765708
+  type: 'test'
+  ...
+# Subtest: T06-DELTA a forged denial cannot consume another session state
+ok 105 - T06-DELTA a forged denial cannot consume another session state
+  ---
+  duration_ms: 0.377917
+  type: 'test'
+  ...
+# Subtest: T06-DELTA consent issued before revocation must not reconnect the revoked account
+ok 106 - T06-DELTA consent issued before revocation must not reconnect the revoked account
+  ---
+  duration_ms: 0.6865
+  type: 'test'
+  ...
+# Subtest: T06-DELTA revocation while identity lookup is in flight must win over callback
+ok 107 - T06-DELTA revocation while identity lookup is in flight must win over callback
+  ---
+  duration_ms: 0.677916
+  type: 'test'
+  ...
+1..107
+# tests 107
+# suites 0
+# pass 107
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1484.556209

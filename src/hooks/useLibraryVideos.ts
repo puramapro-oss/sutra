@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { createClient } from '@/lib/supabase'
 import { PAGE_SIZE } from '@/lib/library-constants'
 import type { Video } from '@/types'
@@ -6,107 +6,98 @@ import type { FilterId } from '@/types/library'
 
 const supabase = createClient()
 
-export function useLibraryVideos(
-  userId: string | undefined,
-  filter: FilterId,
-  search: string,
-  sort: string
-) {
+export function useLibraryVideos(userId: string | undefined, filter: FilterId, search: string, sort: string) {
   const [videos, setVideos] = useState<Video[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [hasMore, setHasMore] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
+  const [error, setError] = useState<string | null>(null)
+  const pending = useRef<AbortController | null>(null)
+  // Favorites are filtered locally, like folders. Switching all/favorites must
+  // preserve the loaded pages and an in-flight request for the same query.
+  const statusFilter = filter === 'favorites' ? 'all' : filter
+  const queryKey = JSON.stringify([userId, statusFilter, search, sort])
+  const [loadedQuery, setLoadedQuery] = useState<string | null>(null)
 
-  const fetchVideos = useCallback(
-    async (offset: number, append: boolean) => {
-      if (!userId) return
-
-      if (offset === 0) setLoading(true)
-      else setLoadingMore(true)
-
-      try {
-        let query = supabase
-          .from('videos')
-          .select('*', { count: 'exact' })
-          .eq('user_id', userId)
-
-        // For "favorites" filter we still fetch all and filter client-side
-        if (filter !== 'all' && filter !== 'favorites') {
-          query = query.eq('status', filter)
+  const loadVideos = useCallback((offset: number, append: boolean) => {
+    // State updates are asynchronous: the ref also blocks two clicks in the same frame.
+    if (append && pending.current) return
+    pending.current?.abort()
+    if (!userId) return
+    const controller = new AbortController()
+    pending.current = controller
+    const read = async () => {
+      let query = supabase.from('videos').select('*', { count: 'exact' }).eq('user_id', userId)
+      if (statusFilter !== 'all') query = query.eq('status', statusFilter)
+      if (search.trim()) query = query.ilike('title', `%${search.trim()}%`)
+      query = query.order(sort === 'title' ? 'title' : 'created_at', { ascending: sort === 'oldest' || sort === 'title' })
+      return await query.range(offset, offset + PAGE_SIZE - 1).abortSignal(controller.signal)
+    }
+    return read().then(({ data, count, error: queryError }) => {
+      if (controller.signal.aborted || pending.current !== controller) return
+      if (queryError) throw queryError
+      const fetched = (data as Video[]) ?? []
+      setTotalCount(count ?? 0)
+      setHasMore((count ?? 0) > offset + fetched.length)
+      setVideos(prev => append ? [...prev, ...fetched] : fetched)
+      setError(null)
+    }).catch(() => {
+      if (!controller.signal.aborted && pending.current === controller) {
+        setError(append ? 'Impossible de charger la suite des vidéos. Réessaie.' : 'Impossible de charger la bibliothèque. Réessaie.')
+        if (!append) {
+          setVideos([])
+          setTotalCount(0)
+          setHasMore(false)
         }
-
-        if (search.trim()) {
-          query = query.ilike('title', `%${search.trim()}%`)
-        }
-
-        switch (sort) {
-          case 'oldest':
-            query = query.order('created_at', { ascending: true })
-            break
-          case 'title':
-            query = query.order('title', { ascending: true })
-            break
-          default:
-            query = query.order('created_at', { ascending: false })
-        }
-
-        query = query.range(offset, offset + PAGE_SIZE - 1)
-
-        const { data, count } = await query
-
-        const fetched = (data as Video[]) ?? []
-        setTotalCount(count ?? 0)
-        setHasMore((count ?? 0) > offset + fetched.length)
-
-        if (append) {
-          setVideos((prev) => [...prev, ...fetched])
-        } else {
-          setVideos(fetched)
-        }
-      } catch {
-        if (!append) setVideos([])
-      } finally {
+      }
+    }).finally(() => {
+      if (pending.current === controller && !controller.signal.aborted) {
+        pending.current = null
+        setLoadedQuery(queryKey)
         setLoading(false)
         setLoadingMore(false)
       }
-    },
-    [userId, filter, search, sort]
-  )
+    })
+  }, [userId, statusFilter, search, sort, queryKey])
+
+  const fetchVideos = useCallback((offset: number, append: boolean) => {
+    if (!userId || (append && pending.current)) return
+    setError(null)
+    setLoading(!append)
+    setLoadingMore(append)
+    return loadVideos(offset, append)
+  }, [userId, loadVideos])
 
   useEffect(() => {
-    fetchVideos(0, false)
-  }, [fetchVideos])
+    void loadVideos(0, false)
+    return () => { pending.current?.abort(); pending.current = null }
+  }, [loadVideos])
 
   const loadMore = useCallback(() => {
-    if (!loadingMore) {
-      fetchVideos(videos.length, true)
-    }
-  }, [fetchVideos, videos.length, loadingMore])
+    if (hasMore) void fetchVideos(videos.length, true)
+  }, [fetchVideos, videos.length, hasMore])
 
   const handleDelete = useCallback(async (videoId: string) => {
-    const confirmed = window.confirm('Supprimer cette video ? Cette action est irreversible.')
-    if (!confirmed) return
-
-    const { error } = await supabase.from('videos').delete().eq('id', videoId)
-    if (!error) {
-      setVideos((prev) => prev.filter((v) => v.id !== videoId))
-      setTotalCount((prev) => prev - 1)
+    if (!window.confirm('Supprimer cette video ? Cette action est irreversible.')) return
+    try {
+      const { error: deleteError } = await supabase.from('videos').delete().eq('id', videoId)
+      if (deleteError) throw deleteError
+    } catch {
+      setError('Impossible de supprimer cette vidéo. Réessaie depuis son bouton Supprimer.')
+      return
     }
+    setVideos(prev => prev.filter(v => v.id !== videoId))
+    setTotalCount(prev => Math.max(0, prev - 1))
+    setError(null)
   }, [])
 
-  const refetch = useCallback(() => {
-    fetchVideos(0, false)
-  }, [fetchVideos])
-
+  const refetch = useCallback(() => { void fetchVideos(0, false) }, [fetchVideos])
+  const visible = !!userId && loadedQuery === queryKey
   return {
-    videos,
-    loading,
-    loadingMore,
-    hasMore,
-    totalCount,
-    loadMore,
-    handleDelete,
-    refetch,
+    videos: visible ? videos : [], loading: !!userId && (loading || !visible),
+    loadingMore: visible && loadingMore, hasMore: visible && hasMore,
+    totalCount: visible ? totalCount : 0, error: visible ? error : null,
+    loadMore, handleDelete, refetch,
   }
 }

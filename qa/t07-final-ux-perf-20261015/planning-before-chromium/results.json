@@ -1,0 +1,83 @@
+{
+  "baseline": true,
+  "productionSuite": false,
+  "results": [
+    {
+      "name": "375: schedule labels, state and contrast",
+      "status": "FAIL",
+      "message": "expect(locator).toHaveAccessibleName(expected) failed\n\nLocator:  getByTestId('schedule-time')\nExpected: \"Heure (Europe/Paris)\"\nReceived: \"\"\nTimeout:  5000ms\n\nCall log:\n  - Expect \"to.have.accessible.name\" with timeout 5000ms\n  - waiting for getByTestId('schedule-time')\n    9 × locator resolved to <input type=\"time\" value=\"10:00\" data-testid=\"schedule-time\" class=\"w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-violet-500/40\"/>\n      - unexpected value \"\"\n"
+    },
+    {
+      "name": "375: failed schedule save preserves draft and rejects duplicate submissions",
+      "status": "FAIL",
+      "message": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "harness",
+      "status": "FAIL",
+      "message": "locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTestId('schedule-add')\u001b[22m\n\n    at planningChecks (/Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/planning-checks.mjs:26:44)\n    at async runScenario (/Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/run.mjs:81:39)\n    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-final-ux-perf-20261015/qa/t07-final-ux-perf-20261015/run.mjs:130:5"
+    }
+  ],
+  "details": [
+    {
+      "name": "schedule-375-double-submit",
+      "calls": 2,
+      "draftRetained": false
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "mutations": [],
+  "writes": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0",
+      "ip": "loopback",
+      "user_agent": "redacted-fixture-browser"
+    }
+  ],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

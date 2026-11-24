@@ -1,0 +1,54 @@
+FAIL signup 375: password visibility reachable by keyboard: expect(locator).toBeFocused() failed
+
+Locator:  getByRole('button', { name: 'Afficher le mot de passe' })
+Expected: focused
+Received: inactive
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.be.focused" with timeout 5000ms
+  - waiting for getByRole('button', { name: 'Afficher le mot de passe' })
+    9 × locator resolved to <button type="button" tabindex="-1" aria-label="Afficher le mot de passe" class="text-white/60 hover:text-white/60 transition-colors pointer-events-auto">…</button>
+      - unexpected value "inactive"
+
+FAIL signup 375: duplicate form submission produces one auth request: Expected values to be strictly equal:
+
+2 !== 1
+
+PASS signup 375: API rejection remains visible and retry available
+PASS signup 375: labels, contrast and no horizontal overflow
+FAIL signup 1440: password visibility reachable by keyboard: expect(locator).toBeFocused() failed
+
+Locator:  getByRole('button', { name: 'Afficher le mot de passe' })
+Expected: focused
+Received: inactive
+Timeout:  5000ms
+
+Call log:
+  - Expect "to.be.focused" with timeout 5000ms
+  - waiting for getByRole('button', { name: 'Afficher le mot de passe' })
+    9 × locator resolved to <button type="button" tabindex="-1" aria-label="Afficher le mot de passe" class="text-white/60 hover:text-white/60 transition-colors pointer-events-auto">…</button>
+      - unexpected value "inactive"
+
+FAIL signup 1440: duplicate form submission produces one auth request: Expected values to be strictly equal:
+
+2 !== 1
+
+PASS signup 1440: API rejection remains visible and retry available
+PASS signup 1440: labels, contrast and no horizontal overflow
+PASS login 375: password visibility reachable by keyboard
+FAIL login 375: duplicate form submission produces one auth request: Expected values to be strictly equal:
+
+2 !== 1
+
+PASS login 375: API rejection remains visible and retry available
+PASS login 375: labels, contrast and no horizontal overflow
+PASS login 1440: password visibility reachable by keyboard
+FAIL login 1440: duplicate form submission produces one auth request: Expected values to be strictly equal:
+
+2 !== 1
+
+PASS login 1440: API rejection remains visible and retry available
+PASS login 1440: labels, contrast and no horizontal overflow
+PASS signup: confirmation and legal notice use a synthetic identity only
+PASS no unexpected mutation, uncaught error or hydration mismatch

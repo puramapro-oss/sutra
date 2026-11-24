@@ -1,0 +1,119 @@
+{
+  "source": "c7a7ebd876d36c521b1c30f6d487b7bb07f000a8",
+  "run": "38750974353",
+  "status": "PASS",
+  "job": "disposable-database",
+  "logSha256": "f72cc65cbfb32c9cdcc2918b91f0c092e4c909a94a555ac9089265870a6c06de",
+  "groupsOverlap": true,
+  "groups": [
+    {
+      "command": "node --import tsx --test scripts/test-pipeline-postgres.mts",
+      "counts": {
+        "tests": [
+          16
+        ],
+        "pass": [
+          16
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      },
+      "receipts": [],
+      "status": "PASS"
+    },
+    {
+      "command": "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-security-rls.mjs",
+      "counts": {
+        "tests": [],
+        "pass": [],
+        "fail": [],
+        "skipped": []
+      },
+      "receipts": [],
+      "status": "PASS",
+      "rlsAssertions": 261
+    },
+    {
+      "command": "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-final-write-permissions.mjs",
+      "counts": {
+        "tests": [],
+        "pass": [],
+        "fail": [],
+        "skipped": []
+      },
+      "receipts": [
+        {
+          "status": "PASS",
+          "checks": 30,
+          "failures": 0,
+          "skips": 0,
+          "remote": false
+        },
+        {
+          "status": "PASS",
+          "checks": 27,
+          "failures": 0,
+          "skips": 0,
+          "remote": false,
+          "ownClusterStopped": true
+        }
+      ],
+      "status": "PASS"
+    },
+    {
+      "command": "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node qa/t06-integrated-retest-20261015/run-postgres.mjs history",
+      "counts": {
+        "tests": [],
+        "pass": [],
+        "fail": [],
+        "skipped": []
+      },
+      "receipts": [],
+      "status": "PASS",
+      "t06CommandCompleted": true
+    },
+    {
+      "command": "node --import tsx --test scripts/test-salad-persistence.mts",
+      "counts": {
+        "tests": [
+          7
+        ],
+        "pass": [
+          7
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      },
+      "receipts": [],
+      "status": "PASS"
+    },
+    {
+      "command": "node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t03-durable-reliability-20261014/postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts qa/t01-final-20261015/durable-postgres.test.mts",
+      "counts": {
+        "tests": [
+          46
+        ],
+        "pass": [
+          46
+        ],
+        "fail": [
+          0
+        ],
+        "skipped": [
+          0
+        ]
+      },
+      "receipts": [],
+      "status": "PASS"
+    }
+  ],
+  "productionDatabaseAccess": false
+}

@@ -1,0 +1,55 @@
+{
+  "target": {
+    "id": "Function:src/lib/social-account-revocation.ts:revokeSocialAccount",
+    "name": "revokeSocialAccount",
+    "type": "Function",
+    "filePath": "src/lib/social-account-revocation.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "T06-social-recovery-20261014",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:qa/t06-social-recovery-20261014/test-postgres.mts",
+        "name": "test-postgres.mts",
+        "filePath": "qa/t06-social-recovery-20261014/test-postgres.mts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/social/accounts/route.ts:DELETE",
+        "name": "DELETE",
+        "filePath": "src/app/api/social/accounts/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

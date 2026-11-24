@@ -1,0 +1,440 @@
+(node:96117) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96117) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ schedule replacement requires explicit precondition before privileged query (3.160292ms)
+✖ two concurrent intents on one snapshot have exactly one winner (0.837834ms)
+✔ authenticated owner filter cannot replace another user schedules (0.259375ms)
+✖ missing row is conflict, never lazy upsert or overwrite (0.315792ms)
+✖ lost acknowledgment leaves saved schedules intact and retry cannot duplicate (0.265666ms)
+✔ unrelated settings retain schedules and their existing contract (0.196584ms)
+✔ historical extension fields and textual identities survive valid edit (0.168416ms)
+✔ invalid historical schedule can be removed using exact snapshot (0.142834ms)
+✖ invalid schedule name rejected before write (0.213042ms)
+✖ invalid schedule id rejected before write (0.151917ms)
+✖ invalid schedule is_active rejected before write (0.172208ms)
+✖ invalid schedule frequency rejected before write (0.150292ms)
+✖ invalid schedule days rejected before write (0.114416ms)
+✖ invalid schedule time rejected before write (0.122708ms)
+✖ invalid schedule timezone rejected before write (0.10975ms)
+✖ invalid schedule theme_ids rejected before write (0.106291ms)
+✖ invalid schedules null rejected (0.105042ms)
+✖ invalid schedules object rejected (0.089917ms)
+✖ invalid schedules scalar rejected (0.093292ms)
+✖ invalid schedules duplicate rejected (0.510667ms)
+✖ invalid schedules missing rejected (0.083166ms)
+✖ invalid schedules days rejected (0.096166ms)
+✖ malformed precondition null rejected (0.091083ms)
+✖ malformed precondition {} rejected (0.065542ms)
+✖ malformed precondition "[]" rejected (0.072792ms)
+✔ database error is redacted (0.080708ms)
+✔ database throw is redacted (0.087667ms)
+✔ anonymous request is rejected before all privileged access (0.054625ms)
+✖ invalid request envelope null is 400 (0.090667ms)
+✔ invalid request envelope [] is 400 (0.072625ms)
+✖ invalid request envelope "text" is 400 (0.082416ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 8
+ℹ fail 23
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 193.741875
+
+✖ failing tests:
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:2574
+✖ schedule replacement requires explicit precondition before privileged query (3.160292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 428
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:48:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 428,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:2781
+✖ two concurrent intents on one snapshot have exactly one winner (0.837834ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    [
+      200,
+  +   200
+  -   409
+    ]
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:52:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 200, 200 ],
+    expected: [ 200, 409 ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:3428
+✖ missing row is conflict, never lazy upsert or overwrite (0.315792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 409
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:61:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 409,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:3628
+✖ lost acknowledgment leaves saved schedules intact and retry cannot duplicate (0.265666ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 500
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:65:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 500,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5081
+✖ invalid schedule name rejected before write (0.213042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:85:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5081
+✖ invalid schedule id rejected before write (0.151917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:85:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5081
+✖ invalid schedule is_active rejected before write (0.172208ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:85:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5081
+✖ invalid schedule frequency rejected before write (0.150292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:85:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5081
+✖ invalid schedule days rejected before write (0.114416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:85:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5081
+✖ invalid schedule time rejected before write (0.122708ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:85:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5081
+✖ invalid schedule timezone rejected before write (0.10975ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:85:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5081
+✖ invalid schedule theme_ids rejected before write (0.106291ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:85:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5454
+✖ invalid schedules null rejected (0.105042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:91:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5454
+✖ invalid schedules object rejected (0.089917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:91:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5454
+✖ invalid schedules scalar rejected (0.093292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:91:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5454
+✖ invalid schedules duplicate rejected (0.510667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:91:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5454
+✖ invalid schedules missing rejected (0.083166ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:91:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5454
+✖ invalid schedules days rejected (0.096166ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:91:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5649
+✖ malformed precondition null rejected (0.091083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:96:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5649
+✖ malformed precondition {} rejected (0.065542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:96:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:5649
+✖ malformed precondition "[]" rejected (0.072792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  200 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:96:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 200,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:6353
+✖ invalid request envelope null is 400 (0.090667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  500 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:107:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at qa/t01-closure-20261015/schedule-cas.test.mts:1:6353
+✖ invalid request envelope "text" is 400 (0.082416ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  500 !== 400
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/qa/t01-closure-20261015/schedule-cas.test.mts:107:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

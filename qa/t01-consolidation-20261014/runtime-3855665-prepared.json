@@ -1,0 +1,39 @@
+{
+  "observedAt": "2026-10-14T16:41:22.795520+00:00",
+  "productionUnchanged": true,
+  "containers": [
+    {
+      "name": "/purama-sutra",
+      "source": "86d04c85bdb19cbe7f59fbd1d9c29fe4c536f164",
+      "imageId": "sha256:d1c8e9ee93fd7c647a92461acb192f934e6ddac6e9976459457e0fef693541fc",
+      "running": true,
+      "health": "healthy",
+      "restarts": 0
+    },
+    {
+      "name": "/sutra-candidate-3855665fa79e3cc2171124d864a834214d6ac617-1791995387901345000",
+      "source": "3855665fa79e3cc2171124d864a834214d6ac617",
+      "imageId": "sha256:4d8f5358f6eaa2785028cf6cce20122e7225060a66ff89f777b24da3b2a76407",
+      "running": false,
+      "health": null,
+      "restarts": 0
+    }
+  ],
+  "publicChecks": [
+    {
+      "path": "/",
+      "status": 200,
+      "tlsValidated": true
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "tlsValidated": true
+    }
+  ],
+  "providerCalls": 0,
+  "generationCalls": 0,
+  "publicationCalls": 0,
+  "migrationExecuted": false,
+  "promotionExecuted": false
+}

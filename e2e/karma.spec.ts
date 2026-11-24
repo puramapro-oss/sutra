@@ -51,12 +51,12 @@ test.describe('KARMA LIGHT — protection auth & API', () => {
     expect(res.status()).toBe(401)
   })
 
-  test('CRON /api/cron/karma-defi sans secret → 401', async ({ request }) => {
+  test('CRON /api/cron/karma-defi sans secret refuses execution', async ({ request }) => {
     const res = await request.post('/api/cron/karma-defi', {
       headers: { authorization: 'Bearer invalid' },
     })
-    // Si CRON_SECRET n'est pas configuré, la route passe (200) — sinon 401
-    expect([200, 401]).toContain(res.status())
+    // Missing configuration fails closed (503); an invalid bearer is unauthorized (401).
+    expect([401, 503]).toContain(res.status())
   })
 
   const KARMA_PAGES = [

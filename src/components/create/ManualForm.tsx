@@ -1,20 +1,17 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, ChevronRight, ChevronLeft, Mic, Music, FileVideo } from 'lucide-react'
+import { Sparkles, ChevronRight, ChevronLeft } from 'lucide-react'
 import ManualFormStep3 from "./wizard/ManualFormStep3"
 import ManualFormStep1 from "./wizard/ManualFormStep1"
 import ManualFormStep4 from "./wizard/ManualFormStep4"
-import { NICHES, VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constants'
+import { VOICE_STYLES, VIDEO_ENGINES } from '@/lib/constants'
 import { MANUAL_STEPS, NICHE_LABELS } from '@/lib/create-utils'
-import { FORMAT_OPTIONS, QUALITY_OPTIONS, STYLE_OPTIONS } from '@/lib/create-constants'
 import { cn } from '@/lib/utils'
-import { MediaModeCards, type MediaMode } from '@/components/create/MediaModeCards'
-import { SceneStockPicker, type StockResult } from '@/components/create/StockPicker'
-import { OptionSection, OptionCard, UploadZone, SummaryRow } from '@/components/create/CreateHelpers'
+import { MediaModeCards } from '@/components/create/MediaModeCards'
+import { type StockResult } from '@/components/create/StockPicker'
+import { SummaryRow } from '@/components/create/CreateHelpers'
 import { Button } from '@/components/ui/Button'
-import type { Plan, VideoFormat, VideoQuality } from '@/types'
-import type { VideoEngine } from '@/lib/ltx'
 import type { AutoFormProps } from './AutoForm'
 
 interface SceneStockState {
@@ -82,9 +79,6 @@ export default function ManualForm({
     }
   }
 
-  const formatToOrientation = (f: VideoFormat): 'landscape' | 'portrait' | 'square' =>
-    f === '16:9' ? 'landscape' : f === '9:16' ? 'portrait' : 'square'
-
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -94,33 +88,30 @@ export default function ManualForm({
       className="space-y-6"
     >
       {/* Step indicator */}
-      <div className="flex items-center gap-2 justify-center">
+      <nav aria-label="Étapes de création manuelle" className="grid grid-cols-6 gap-1">
         {MANUAL_STEPS.map((s, i) => (
-          <div key={s} className="flex items-center gap-2">
+          <div key={s} className="min-w-0">
             <button
-              onClick={() => i <= step && setStep(i)}
+              type="button"
+              aria-label={`${i + 1}. ${s}`}
+              aria-current={i === step ? 'step' : undefined}
+              disabled={i > step}
+              onClick={() => setStep(i)}
               className={cn(
-                'h-8 w-8 rounded-full text-xs font-semibold flex items-center justify-center transition-all duration-200 border',
+                'h-11 w-full rounded-xl text-xs font-semibold flex items-center justify-center transition-all duration-200 border',
                 i === step
                   ? 'bg-violet-600 border-violet-500 text-white'
                   : i < step
                     ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-400'
-                    : 'bg-white/[0.03] border-white/[0.06] text-white/30'
+                    : 'bg-white/[0.03] border-white/[0.06] text-white/65'
               )}
             >
               {i + 1}
             </button>
-            {i < MANUAL_STEPS.length - 1 && (
-              <div
-                className={cn(
-                  'w-8 h-px',
-                  i < step ? 'bg-emerald-500/40' : 'bg-white/[0.06]'
-                )}
-              />
-            )}
+
           </div>
         ))}
-      </div>
+      </nav>
 
       {/* Step content */}
       <AnimatePresence mode="wait">
@@ -136,7 +127,7 @@ export default function ManualForm({
               <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
                 Etape 1 — Type de medias
               </h2>
-              <p className="text-sm text-white/40">
+              <p className="text-sm text-white/65">
                 Choisis comment composer ta video : 100% IA, 100% reel ou un mix.
               </p>
               <MediaModeCards value={mediaMode} onChange={setMediaMode} />
@@ -149,11 +140,12 @@ export default function ManualForm({
               <h2 className="text-lg font-semibold text-white font-[var(--font-display)]">
                 Etape 3 — Script
               </h2>
-              <p className="text-sm text-white/40">
+              <p className="text-sm text-white/65">
                 Ecris ou colle ton script. Chaque paragraphe deviendra une scene.
               </p>
               <textarea
                 data-testid="script-input"
+                aria-label="Script de la vidéo"
                 value={script}
                 onChange={(e) => setScript(e.target.value)}
                 placeholder="Ecris ton script ici... Chaque paragraphe sera une scene distincte."
@@ -166,7 +158,7 @@ export default function ManualForm({
                   'font-mono'
                 )}
               />
-              <p className="text-xs text-white/30">
+              <p className="text-xs text-white/65">
                 {script.split('\n').filter((l) => l.trim()).length} scene(s) detectee(s)
               </p>
             </div>
@@ -215,7 +207,7 @@ export default function ManualForm({
       </AnimatePresence>
 
       {/* Navigation */}
-      <div className="flex items-center justify-between pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
         <Button
           variant="ghost"
           size="md"

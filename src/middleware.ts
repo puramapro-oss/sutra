@@ -1,5 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { safeNextPath, sessionCookieOptions } from '@/lib/auth-navigation';
+import { enforceAccountAccess } from '@/lib/account-access';
+import { publicOrigin } from '@/lib/public-origin';
 
 const PUBLIC_ROUTES = [
   "/",
@@ -13,6 +16,7 @@ const PUBLIC_ROUTES = [
   "/privacy",
   "/terms",
   "/signup",
+  "/reset-password",
   "/mentions-legales",
   "/politique-confidentialite",
   "/cgv",
@@ -83,16 +87,42 @@ function isStaticAsset(pathname: string): boolean {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method) && pathname.startsWith('/api/')) {
+    const origin = request.headers.get('origin');
+    if (origin && origin !== publicOrigin(request.url)) return NextResponse.json({ error: 'Origine refusee' }, { status: 403 });
+    if (['/api/create', '/api/production', '/api/auto/generate', '/api/video/export'].includes(pathname)
+      && request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
+      return NextResponse.json({ error: 'JSON requis' }, { status: 415 });
+    }
+  }
 
   if (isStaticAsset(pathname)) {
     return NextResponse.next();
   }
 
+  // Sur Vercel, la plateforme intercepte /_vercel/* AVANT le middleware.
+  // En local / self-host, on sert un stub JS vide : sans lui, les balises
+  // script d'Analytics/SpeedInsights recevraient la page /login en HTML
+  // (pageerror « Unexpected token '<' ») — ou un 404 console.
+  if (pathname.startsWith("/_vercel/")) {
+    return new NextResponse(
+      "/* stub local — servi par la plateforme Vercel en production */",
+      {
+        status: 200,
+        headers: { "Content-Type": "application/javascript; charset=utf-8" },
+      }
+    );
+  }
+
+  // Public pages do not need a remote auth round trip. API handlers authenticate
+  // their own requests; the callback exchanges its own one-time code.
+  if (isPublicRoute(pathname)) return NextResponse.next();
+
   let supabaseResponse = NextResponse.next({
     request,
   });
 
-  const supabase = createServerClient(
+  const supabase = enforceAccountAccess(createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -109,27 +139,30 @@ export async function middleware(request: NextRequest) {
             request,
           });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, sessionCookieOptions(options, request.cookies.get('sutra_persist')?.value))
           );
         },
       },
     }
-  );
+  ));
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (isPublicRoute(pathname)) {
-    return supabaseResponse;
+  function redirect(url: URL) {
+    const target = new URL(publicOrigin(request.url));
+    target.pathname = url.pathname;
+    target.search = url.search;
+    target.hash = url.hash;
+    const response = NextResponse.redirect(target);
+    supabaseResponse.cookies.getAll().forEach(cookie => response.cookies.set(cookie));
+    return response;
   }
 
   if (isAuthRoute(pathname)) {
     if (user) {
-      const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/dashboard";
-      redirectUrl.search = "";
-      return NextResponse.redirect(redirectUrl);
+      return redirect(new URL(safeNextPath(request.nextUrl.searchParams.get('next')), request.url));
     }
     return supabaseResponse;
   }
@@ -137,8 +170,9 @@ export async function middleware(request: NextRequest) {
   if (!user) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/login";
-    redirectUrl.searchParams.set("next", pathname);
-    return NextResponse.redirect(redirectUrl);
+    redirectUrl.search = "";
+    redirectUrl.searchParams.set("next", pathname + request.nextUrl.search);
+    return redirect(redirectUrl);
   }
 
   if (isAdminRoute(pathname) || isInfluencerRoute(pathname)) {
@@ -157,7 +191,7 @@ export async function middleware(request: NextRequest) {
         const redirectUrl = request.nextUrl.clone();
         redirectUrl.pathname = "/dashboard";
         redirectUrl.search = "";
-        return NextResponse.redirect(redirectUrl);
+        return redirect(redirectUrl);
       }
     }
 
@@ -169,14 +203,14 @@ export async function middleware(request: NextRequest) {
         .single();
 
       const isAuthorized =
-        influencerProfile !== null ||
+        Boolean(influencerProfile?.id) ||
         (profile?.is_admin === true && profile?.email === SUPER_ADMIN_EMAIL);
 
       if (!isAuthorized) {
         const redirectUrl = request.nextUrl.clone();
         redirectUrl.pathname = "/devenir-influenceur";
         redirectUrl.search = "";
-        return NextResponse.redirect(redirectUrl);
+        return redirect(redirectUrl);
       }
     }
   }

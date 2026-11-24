@@ -62,7 +62,7 @@ export default function PricingSection() {
           <span
             className={cn(
               'text-sm font-medium transition-colors',
-              !isAnnual ? 'text-white' : 'text-white/40'
+              !isAnnual ? 'text-white' : 'text-white/60'
             )}
           >
             Mensuel
@@ -92,7 +92,7 @@ export default function PricingSection() {
           <span
             className={cn(
               'text-sm font-medium transition-colors',
-              isAnnual ? 'text-white' : 'text-white/40'
+              isAnnual ? 'text-white' : 'text-white/60'
             )}
           >
             Annuel
@@ -188,11 +188,11 @@ export default function PricingSection() {
                         {formatPrice(price)}
                       </motion.span>
                     </AnimatePresence>
-                    <span className="text-lg text-white/40 font-medium">
+                    <span className="text-lg text-white/60 font-medium">
                       EUR
                     </span>
                   </div>
-                  <p className="text-xs text-white/30 mt-0.5">
+                  <p className="text-xs text-white/60 mt-0.5">
                     {plan.monthlyPrice === 0
                       ? 'Pour toujours'
                       : isAnnual
@@ -224,7 +224,7 @@ export default function PricingSection() {
                       />
                       <span
                         className={
-                          f.included ? 'text-white/70' : 'text-white/25'
+                          f.included ? 'text-white/70' : 'text-white/60'
                         }
                       >
                         {f.text}
@@ -251,7 +251,7 @@ export default function PricingSection() {
         </div>
 
         {/* Sub-note */}
-        <p className="text-center text-xs text-white/30 mt-8">
+        <p className="text-center text-xs text-white/60 mt-8">
           Tous les prix sont en euros. TVA non applicable, art. 293B du CGI.
           Annule a tout moment.
         </p>

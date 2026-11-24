@@ -1,0 +1,168 @@
+{
+  "base": "49c166d4c15412d2a3c1246c216cf0df319f2df0",
+  "branch": "codex/sutra-t03-final-durable-20261015",
+  "scope": "local source delta; no integrated or production verdict",
+  "files": [
+    {
+      "path": "src/lib/video-queue.ts",
+      "sha256": "23a432fd7228bd77f16fc9bf85cbc253ef34880fbf94ca9927418f16a0ae6d3f"
+    },
+    {
+      "path": "src/lib/pipeline-state.ts",
+      "sha256": "be88e636733523e9e0499febe000b02882966b39d618b42f5fceb4fdce3d0e35"
+    },
+    {
+      "path": "src/lib/production-pipeline.ts",
+      "sha256": "78efb9c0a85301ed8ad2596f927c759946ddee683c8e8a23c42fcd778eb7b931"
+    },
+    {
+      "path": "scripts/test-t03-orchestration-fixes.mts",
+      "sha256": "5c5a5b2c794fbf063d3c781fe75d4cbbc7c01385d868c746915819f7ed99345f"
+    },
+    {
+      "path": "scripts/test-t03-final-durable.mts",
+      "sha256": "ba9a1f4d5835a59f950981150be298315ba320711b215773207f07ccfd9eace4"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/proposal-final-durable.sql",
+      "sha256": "d8dc2ef1bcb52e3eba614748812fb491b36a5e87f7679cd8cd606da17849d630"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/postgres.test.mts",
+      "sha256": "01b7b150b061568e7930912366263f6c4f5bb7a06a14d0ebb146c36fc01d008f"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/postgres.mjs",
+      "sha256": "95b179ebf7da9e457cca7cd069df27d82dc53dd53b81cf227955354fcb997e8f"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/cancellation.test.mts",
+      "sha256": "f53d3c1eccc7e2eb39bb8d593898474226339487bd43e60a5fb59155885a705d"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+      "sha256": "1c95b768612092913efbd75dc694f9c36c1d59ba3db90380f3f6fbd124f92757"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/verify.py",
+      "sha256": "962434092fc45305235fc5ff06c4d63a03bd725ee11576903d3372af72b184f2"
+    },
+    {
+      "path": "qa/t03-final-durable-20261015/tsconfig.json",
+      "sha256": "3ee47813b78dc82484f0ebca42c728ef24e894574c9addd8d117e34135afbc0d"
+    },
+    {
+      "path": "qa/t03-salad-recovery-20261014/offline.cjs",
+      "sha256": "a94c8a76296e1372c49c8928e76f537b50cd64775469a0840b2513464e68d7f1"
+    },
+    {
+      "path": "qa/t08/offline.cjs",
+      "sha256": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465"
+    },
+    {
+      "path": "package.json",
+      "sha256": "941878f30c10cc551f03cfb89eff2c5a223d6ab50158e712a50630ea98de1b5e"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "0fff63bc4148f77c18cfcdf8fe1340af1a307397493e30b91de0b0edf9ef1eb5"
+    }
+  ],
+  "checks": [
+    {
+      "suite": "new",
+      "receipt": "qa/t03-final-durable-20261015/after-new.json",
+      "receipt_sha256": "65ebfd1c1d0c5e2a185781add91a4f6882468e771673bcfeeea6a66308997b38",
+      "log_sha256": "fc24be4a29d8fb7a1e72093a37f1253f44547cf014c12141ace1d59acee2d1fd",
+      "exit_code": 0,
+      "tests": 25,
+      "pass": 25,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "affected",
+      "receipt": "qa/t03-final-durable-20261015/after-affected.json",
+      "receipt_sha256": "8346c1a2c58d24e24f9374d34be5e9c2bd38da7dd18e06934c1edfa8e92f8688",
+      "log_sha256": "ac8d55b34d9d1ba81328ff5a2f9add15cf7d53fda84e1569d5aad3f1d6506d90",
+      "exit_code": 0,
+      "tests": 69,
+      "pass": 69,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "salad_recovery",
+      "receipt": "qa/t03-final-durable-20261015/after-salad_recovery.json",
+      "receipt_sha256": "e3c0e97af122b6623dadf88fb6578e56c36cb5b1efd775341c5c84fa06b5849c",
+      "log_sha256": "143a58b9072d8078e6149a7c960179eeca73dffced55e13761d1720fb487999e",
+      "exit_code": 0,
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "auto_export",
+      "receipt": "qa/t03-final-durable-20261015/after-auto_export.json",
+      "receipt_sha256": "a97e70d7d65cf61ded67a143521430a2e6995a1c22ad0a0ae1138196b508681e",
+      "log_sha256": "35a65336d07e2ff8841f2b0579baa16e936d684b1de1f65d65549a0cbcbf77e9",
+      "exit_code": 0,
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "cancellation",
+      "receipt": "qa/t03-final-durable-20261015/after-cancellation.json",
+      "receipt_sha256": "530fdc0080ce6b2903ce770a84c06ae9eed475ada0cf8d5c5bfbf222163b0337",
+      "log_sha256": "c59fc425d29d57152309daad8eaff4af143c4103b4fb873fa05f6c0895f830c5",
+      "exit_code": 0,
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "cancel_ack",
+      "receipt": "qa/t03-final-durable-20261015/after-cancel_ack.json",
+      "receipt_sha256": "8dcab6302330fac8148cfa8ffdf44cc511c58135614aa12d64287261c28226bb",
+      "log_sha256": "cbc6eecd2f3caad9031dde07c8bf84324437e10707614822f1b981b2cb012d69",
+      "exit_code": 0,
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "postgres",
+      "receipt": "qa/t03-final-durable-20261015/after-postgres.json",
+      "receipt_sha256": "af84f9a692f94fb1356225a0612703f1a3438027544ec2c6c10a602202da6ff6",
+      "log_sha256": "b0163ff3de2686769cbaea9090a5f5bb91da484d9e87a4dd587d0fc441b35272",
+      "exit_code": 0,
+      "tests": 20,
+      "pass": 20,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "typecheck",
+      "receipt": "qa/t03-final-durable-20261015/after-typecheck.json",
+      "receipt_sha256": "d30f7d4c4dbaaf16ff9463d914a40005171a809275985c83281806cdc4c50531",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0
+    },
+    {
+      "suite": "lint",
+      "receipt": "qa/t03-final-durable-20261015/after-lint.json",
+      "receipt_sha256": "3364333539d69fbecb9569703f17719d8437d23601dee551cea7c8e1d4d4f0b6",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit_code": 0
+    }
+  ],
+  "pass": 148,
+  "fail": 0,
+  "skip": 0,
+  "log_format": "Captured output with trailing whitespace and trailing blank lines normalized; results unchanged."
+}

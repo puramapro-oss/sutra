@@ -1,0 +1,21 @@
+✔ 12 concurrent claims obtain one owner; 24 independent checkpoints survive parallel writes (103.902ms)
+✔ expired/replaced/cancelled owner cannot heartbeat, checkpoint, finish or write business output (6.917917ms)
+✔ ready refuses raw URL, missing proof, missing stage and mandatory audio; verified export persists (33.17825ms)
+✔ AUTO ready effects are atomic and once-only across concurrent replays (17.264167ms)
+✔ finish requires result, settles once; missing quota rolls back status; exhausted jobs quarantine (3.655584ms)
+✔ notification writes deduplicate atomically; owner mismatch and missing row refuse success (9.233083ms)
+✔ 12 same-intent submissions atomically create one job, one video and one quota reservation (7.958375ms)
+✔ failed initial video insert rolls back quota and task; retry after lost response reuses committed task (2.694459ms)
+✔ cancellation settles original month once and never consumes a new month reservation (2.43875ms)
+✔ NULL lease or owner cannot authorize any mutation, even with a matching worker (16.174583ms)
+✔ ready refuses unfinished checkpoints, invalid track values and zero-size export (146.346208ms)
+LOCAL_TEST_DATABASE=sutra_t03_84958_1791832814628
+✔ silent export can skip optional tracks, but cannot skip scenes or use string validation flags (27.1905ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 512.537291

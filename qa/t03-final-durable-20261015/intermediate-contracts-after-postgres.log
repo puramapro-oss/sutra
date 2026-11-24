@@ -1,0 +1,86 @@
+✔ SQL refuses invalid terminal result false without consuming quota (123.281041ms)
+✔ SQL refuses invalid terminal result true without consuming quota (6.752042ms)
+✔ SQL refuses invalid terminal result "" without consuming quota (6.337084ms)
+✔ SQL refuses invalid terminal result 0 without consuming quota (6.033208ms)
+✔ SQL refuses invalid terminal result [] without consuming quota (6.896833ms)
+✔ SQL refuses invalid terminal result {} without consuming quota (6.474917ms)
+✔ SQL refuses invalid terminal result {"videoUrl":"raw.mp4"} without consuming quota (5.997084ms)
+✔ generation RPC cannot enter social states without media or publication journal (16.297667ms)
+✔ retry has durable backoff shared by targeted and batch claims, including concurrent restart (13.967417ms)
+✔ uncertain operation is quarantined directly, with reservation and completed video retained (2.959167ms)
+✔ completed prior-month reservation is settled once, current-month budget untouched (3.608667ms)
+✔ expired lease cannot cancel the new worker result through stale finish or checkpoint (11.171458ms)
+✖ valid measured results finish once for every generation kind and production assembly (6.963917ms)
+✖ substep results agree with their complete checkpoint; invalid string sentinels are refused (11.362292ms)
+✖ SQL rejects missing stages, missing required tracks, raw or unmeasured final output (40.267417ms)
+✔ quota SQL failure rolls back done, preserves acquired result and permits settlement-only retry (6.532708ms)
+✔ legacy compositing_failed is refused; generation states remain SQL-compatible and acquired data survives failure (13.023166ms)
+✔ backoff grows on retry and exhausted jobs are quarantined without releasing uncertain budget (3.124417ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 15
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 499.061083
+
+✖ failing tests:
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:7207
+✖ valid measured results finish once for every generation kind and production assembly (6.963917ms)
+  error: SUTRA_VIDEO_OWNER_MISMATCH
+      at /Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/node_modules/pg-pool/index.js:45:11
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async job (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:50:16)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:130:15)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    length: 187,
+    severity: 'ERROR',
+    code: 'P0001',
+    detail: undefined,
+    hint: undefined,
+    position: undefined,
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: 'PL/pgSQL function submit_video_job(uuid,text,uuid,jsonb,text,text,integer,jsonb) line 17 at RAISE',
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'pl_exec.c',
+    line: '3923',
+    routine: 'exec_stmt_raise'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:7693
+✖ substep results agree with their complete checkpoint; invalid string sentinels are refused (11.362292ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:153:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at qa/t03-final-durable-20261015/postgres.test.mts:5:8819
+✖ SQL rejects missing stages, missing required tracks, raw or unmeasured final output (40.267417ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t03-final-durable-20261015/qa/t03-final-durable-20261015/postgres.test.mts:170:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /RESULT_CHECKPOINT_REQUIRED/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

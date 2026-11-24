@@ -98,6 +98,7 @@ export function AmbassadorBlock() {
             <div
               className="h-2 rounded-full bg-white/10 overflow-hidden"
               role="progressbar"
+              aria-label={`Progression vers ${nextTier.display}`}
               aria-valuenow={Math.round(progressPct)}
               aria-valuemin={0}
               aria-valuemax={100}

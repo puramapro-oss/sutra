@@ -1,0 +1,265 @@
+TAP version 13
+# (node:1919) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1919) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: contact preserves legitimate message as text without attacker-controlled HTML
+ok 1 - contact preserves legitimate message as text without attacker-controlled HTML
+  ---
+  duration_ms: 3.652583
+  type: 'test'
+  ...
+# Subtest: contact never exposes thrown provider diagnostics
+ok 2 - contact never exposes thrown provider diagnostics
+  ---
+  duration_ms: 0.439459
+  type: 'test'
+  ...
+# Subtest: contact does not report success for a provider refusal
+ok 3 - contact does not report success for a provider refusal
+  ---
+  duration_ms: 0.3235
+  type: 'test'
+  ...
+# Subtest: contact repeated anonymous calls have a process cap that forged identity cannot bypass
+ok 4 - contact repeated anonymous calls have a process cap that forged identity cannot bypass
+  ---
+  duration_ms: 1.914833
+  type: 'test'
+  ...
+# Subtest: contact rejects malformed inputs before sending mail
+ok 5 - contact rejects malformed inputs before sending mail
+  ---
+  duration_ms: 0.380167
+  type: 'test'
+  ...
+# (node:1920) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1920) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: autopilot GET refuses anonymous before privileged access
+ok 6 - autopilot GET refuses anonymous before privileged access
+  ---
+  duration_ms: 1.656334
+  type: 'test'
+  ...
+# Subtest: autopilot GET refuses expired before privileged access
+ok 7 - autopilot GET refuses expired before privileged access
+  ---
+  duration_ms: 0.216334
+  type: 'test'
+  ...
+# Subtest: autopilot GET refuses revoked before privileged access
+ok 8 - autopilot GET refuses revoked before privileged access
+  ---
+  duration_ms: 0.239334
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes thrown auth diagnostics
+ok 9 - autopilot GET sanitizes thrown auth diagnostics
+  ---
+  duration_ms: 0.724125
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes thrown service diagnostics
+ok 10 - autopilot GET sanitizes thrown service diagnostics
+  ---
+  duration_ms: 0.262208
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes returned database diagnostics
+ok 11 - autopilot GET sanitizes returned database diagnostics
+  ---
+  duration_ms: 0.263541
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes thrown database diagnostics
+ok 12 - autopilot GET sanitizes thrown database diagnostics
+  ---
+  duration_ms: 0.164792
+  type: 'test'
+  ...
+# Subtest: autopilot POST refuses anonymous before privileged access
+ok 13 - autopilot POST refuses anonymous before privileged access
+  ---
+  duration_ms: 0.502709
+  type: 'test'
+  ...
+# Subtest: autopilot POST refuses expired before privileged access
+ok 14 - autopilot POST refuses expired before privileged access
+  ---
+  duration_ms: 0.19675
+  type: 'test'
+  ...
+# Subtest: autopilot POST refuses revoked before privileged access
+ok 15 - autopilot POST refuses revoked before privileged access
+  ---
+  duration_ms: 0.164167
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes thrown auth diagnostics
+ok 16 - autopilot POST sanitizes thrown auth diagnostics
+  ---
+  duration_ms: 0.138167
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes thrown service diagnostics
+ok 17 - autopilot POST sanitizes thrown service diagnostics
+  ---
+  duration_ms: 0.65875
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes returned database diagnostics
+ok 18 - autopilot POST sanitizes returned database diagnostics
+  ---
+  duration_ms: 3.816041
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes thrown database diagnostics
+ok 19 - autopilot POST sanitizes thrown database diagnostics
+  ---
+  duration_ms: 0.27025
+  type: 'test'
+  ...
+# Subtest: autopilot lazy insertion sanitizes returned diagnostics
+ok 20 - autopilot lazy insertion sanitizes returned diagnostics
+  ---
+  duration_ms: 0.139791
+  type: 'test'
+  ...
+# Subtest: autopilot lazy insertion sanitizes thrown diagnostics
+ok 21 - autopilot lazy insertion sanitizes thrown diagnostics
+  ---
+  duration_ms: 0.109
+  type: 'test'
+  ...
+# Subtest: autopilot preserves saved configuration and user isolation
+ok 22 - autopilot preserves saved configuration and user isolation
+  ---
+  duration_ms: 0.18425
+  type: 'test'
+  ...
+# Subtest: autopilot lazy defaults never enable publication
+ok 23 - autopilot lazy defaults never enable publication
+  ---
+  duration_ms: 0.088916
+  type: 'test'
+  ...
+# Subtest: autopilot deduplicates destinations in first-selected order
+ok 24 - autopilot deduplicates destinations in first-selected order
+  ---
+  duration_ms: 0.222875
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {}
+ok 25 - autopilot rejects invalid input {}
+  ---
+  duration_ms: 0.332375
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":"true"}
+ok 26 - autopilot rejects invalid input {"enabled":"true"}
+  ---
+  duration_ms: 0.163041
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":false,"default_platforms":["unknown"]}
+ok 27 - autopilot rejects invalid input {"enabled":false,"default_platforms":["unknown"]}
+  ---
+  duration_ms: 0.166458
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":false,"max_hashtags":31}
+ok 28 - autopilot rejects invalid input {"enabled":false,"max_hashtags":31}
+  ---
+  duration_ms: 0.252583
+  type: 'test'
+  ...
+# (node:1921) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1921) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication
+ok 29 - J01 session -> project -> quota -> simulated generation -> resume -> edit -> validation -> export -> schedule -> publication
+  ---
+  duration_ms: 42.870917
+  type: 'test'
+  ...
+# Subtest: J02 bounded 12-click burst shares one queued job, project and provider intent; changed content conflicts
+ok 30 - J02 bounded 12-click burst shares one queued job, project and provider intent; changed content conflicts
+  ---
+  duration_ms: 19.516792
+  type: 'test'
+  ...
+# Subtest: J03 quota or submission DB refusal has no orphan project or provider effects
+ok 31 - J03 quota or submission DB refusal has no orphan project or provider effects
+  ---
+  duration_ms: 10.278792
+  type: 'test'
+  ...
+# Subtest: J04 upload failure resumes stored voice and other resolved assets, without resynthesis
+ok 32 - J04 upload failure resumes stored voice and other resolved assets, without resynthesis
+  ---
+  duration_ms: 12.253
+  type: 'test'
+  ...
+# Subtest: J05 ready-write DB failure cannot publish; resume reuses verified media and settles once
+ok 33 - J05 ready-write DB failure cannot publish; resume reuses verified media and settles once
+  ---
+  duration_ms: 13.764958
+  type: 'test'
+  ...
+# Subtest: J06 created client project remains isolated across status, export and publication boundaries
+ok 34 - J06 created client project remains isolated across status, export and publication boundaries
+  ---
+  duration_ms: 9.667
+  type: 'test'
+  ...
+# Subtest: J07 corrupt export validation preserves prior ready media and retry does not render again
+ok 35 - J07 corrupt export validation preserves prior ready media and retry does not render again
+  ---
+  duration_ms: 12.73875
+  type: 'test'
+  ...
+# Subtest: J08 two destination partial publication reconciles existing posts, never republishes the successful target
+ok 36 - J08 two destination partial publication reconciles existing posts, never republishes the successful target
+  ---
+  duration_ms: 10.648333
+  type: 'test'
+  ...
+# Subtest: J09 changed or missing final proof and revoked access block simulated publication
+ok 37 - J09 changed or missing final proof and revoked access block simulated publication
+  ---
+  duration_ms: 9.602292
+  type: 'test'
+  ...
+# Subtest: J10 lost remote render receipt stays uncertain across route retry without another submission
+ok 38 - J10 lost remote render receipt stays uncertain across route retry without another submission
+  ---
+  duration_ms: 7.916458
+  type: 'test'
+  ...
+# Subtest: J11 bounded 12-click publication burst sends one verified media intent and repairs projections
+ok 39 - J11 bounded 12-click publication burst sends one verified media intent and repairs projections
+  ---
+  duration_ms: 11.902959
+  type: 'test'
+  ...
+# Subtest: J12 re-export after a scheduled intent cannot silently replace the scheduled verified media
+ok 40 - J12 re-export after a scheduled intent cannot silently replace the scheduled verified media
+  ---
+  duration_ms: 12.97
+  type: 'test'
+  ...
+# Subtest: J13 a past schedule cannot turn into immediate publication after successful export
+ok 41 - J13 a past schedule cannot turn into immediate publication after successful export
+  ---
+  duration_ms: 13.120459
+  type: 'test'
+  ...
+1..41
+# tests 41
+# suites 0
+# pass 41
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 668.058042

@@ -1,0 +1,55 @@
+[
+  {
+    "name": "history-contract",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "--require",
+      "./qa/t08/offline.cjs",
+      "--experimental-test-module-mocks",
+      "--experimental-vm-modules",
+      "--import",
+      "tsx",
+      "--test",
+      "--test-reporter=tap",
+      "qa/t06-final-social-20261015/history-contract.test.mts"
+    ],
+    "status": "FAIL",
+    "exitCode": 1,
+    "signal": null,
+    "durationMs": 356
+  },
+  {
+    "name": "typecheck",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--project",
+      "qa/t06-final-social-20261015/tsconfig.json"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1611
+  },
+  {
+    "name": "lint",
+    "command": [
+      "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+      "node_modules/eslint/bin/eslint.js",
+      "--max-warnings=0",
+      "src/app/api/social/callback/route.ts",
+      "src/lib/social-account-revocation.ts",
+      "scripts/test-t06-final-social.mts",
+      "scripts/test-t06-social-routes.mts",
+      "qa/t06-social-recovery-20261014/test-postgres.mts",
+      "qa/t06-final-social-20261015/history-contract.test.mts",
+      "qa/t06-final-social-20261015/run.mjs",
+      "qa/t06-final-social-20261015/run-postgres.mjs"
+    ],
+    "status": "PASS",
+    "exitCode": 0,
+    "signal": null,
+    "durationMs": 1480
+  }
+]

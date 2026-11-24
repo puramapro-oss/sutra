@@ -1,0 +1,46 @@
+{
+  "directory": "/opt/purama/apps/sutra/backup-t01-coherent-xufez2uj",
+  "database": "sutra_restore_t01_xufez2uj",
+  "snapshotShared": true,
+  "productionDdl": false,
+  "artifacts": {
+    "sutra.dump": {
+      "bytes": 5198709,
+      "sha256": "1d32725f25150126b0b4c031b3368f73e69b355878889740709ba0b170719916"
+    },
+    "public-social.dump": {
+      "bytes": 25703,
+      "sha256": "a58fb1e9a0b90b4258be8c9d44c142a3cc4f5b085f733b4e09d6137370ab93c4"
+    },
+    "public-social-dependencies.sql": {
+      "bytes": 172,
+      "sha256": "1471875b23e7c3f43ff3750aeea91fd5fa155612f51fd5b40c817b077e71d5d7"
+    },
+    "sutra-assets.tar.gz": {
+      "bytes": 686,
+      "sha256": "dd14eccd14962eee3bcf4fb1de0eb57f5843f776e2bd832eff5c7021f68adac8"
+    },
+    "storage-metadata.json": {
+      "bytes": 976,
+      "sha256": "bf76786f84e596b28366cf3de63c8d43b684173b41a1157afa23371c71dcc4d4"
+    },
+    "referenced-auth-ids.json": {
+      "bytes": 829081,
+      "sha256": "dfd47115f6bffe1210cac75e64a8367c759511f1b2fa022baf0f89cc5b89df89"
+    }
+  },
+  "migrations": [],
+  "restoredTables": 141,
+  "rowCountsMatch": true,
+  "restoredSchema": {
+    "jobs": true,
+    "quota": true,
+    "journals": true,
+    "mediaOwnership": true
+  },
+  "limitations": [
+    "Auth is an ID-only fixture, not a complete Supabase auth backup.",
+    "Blob archive is not transactionally frozen; application media references were not modified by this release.",
+    "Production was not migrated. Private restore database retained; no public access."
+  ]
+}

@@ -1,0 +1,76 @@
+(node:67946) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:67946) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ T02 account list omits private metadata/tokens and another user account (3.605458ms)
+✖ T02 account list redacts error diagnostics (0.333166ms)
+✖ T02 account list redacts throw diagnostics (0.234792ms)
+✔ T02 anonymous account list does not reach the privileged database (0.125875ms)
+✔ T02 callback without verified session never consumes or exchanges state (4.456458ms)
+✔ T02 callback rejects a different user without burning the owner state (0.529041ms)
+✔ T02 callback rejects a platform switch (0.192625ms)
+✔ T02 callback rejects a missing or forged browser secret (0.240333ms)
+✔ T02 callback rejects an expired state before token exchange (0.126167ms)
+✔ T02 concurrent callbacks exchange only once and never expose tokens (0.257333ms)
+✔ T02 database outage during callback cannot authorize an exchange (0.148667ms)
+✔ T02 uncertain exchange is sanitized and consumed state cannot be replayed (0.168083ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 9
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 335.199708
+
+✖ failing tests:
+
+test at scripts/test-t02-oauth-boundaries.mts:1:4477
+✖ T02 account list omits private metadata/tokens and another user account (3.605458ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /synthetic-private-diagnostic|synthetic-access-token|synthetic-refresh-token|metadata|bob/. Input:
+
+  '{"accounts":[{"id":"alice","platform":"youtube","username":"alice","status":"connected","metadata":{"privateDiagnostic":"synthetic-private-diagnostic"}}]}'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-provider-security-20261013/scripts/test-t02-oauth-boundaries.mts:89:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{"accounts":[{"id":"alice","platform":"youtube","username":"alice","status":"connected","metadata":{"privateDiagnostic":"synthetic-private-diagnostic"}}]}',
+    expected: /synthetic-private-diagnostic|synthetic-access-token|synthetic-refresh-token|metadata|bob/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-oauth-boundaries.mts:1:4887
+✖ T02 account list redacts error diagnostics (0.333166ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /synthetic-private-diagnostic|details/. Input:
+
+  '{"error":"Erreur récupération comptes","details":"synthetic-private-diagnostic"}'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-provider-security-20261013/scripts/test-t02-oauth-boundaries.mts:97:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{"error":"Erreur récupération comptes","details":"synthetic-private-diagnostic"}',
+    expected: /synthetic-private-diagnostic|details/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at scripts/test-t02-oauth-boundaries.mts:1:4887
+✖ T02 account list redacts throw diagnostics (0.234792ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /synthetic-private-diagnostic|details/. Input:
+
+  '{"error":"Erreur interne","details":"synthetic-private-diagnostic"}'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t02-provider-security-20261013/scripts/test-t02-oauth-boundaries.mts:97:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '{"error":"Erreur interne","details":"synthetic-private-diagnostic"}',
+    expected: /synthetic-private-diagnostic|details/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

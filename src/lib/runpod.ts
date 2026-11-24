@@ -1,9 +1,34 @@
 import { fetchWithRetry, sleep } from '@/lib/utils/api'
+import { requireEnv, optionalEnv, isEnvSet } from '@/lib/env'
 import { isSuperAdmin } from '@/lib/utils'
+import { providerRecord } from '@/lib/provider-response'
 
-const RUNPOD_API_KEY = process.env.RUNPOD_API_KEY!
-const RUNPOD_ENDPOINT_ID = process.env.RUNPOD_ENDPOINT_ID!
-const RUNPOD_POD_URL = process.env.RUNPOD_POD_URL ?? ''
+export type RunpodFormat = '9:16' | '16:9' | '1:1'
+
+export type RunpodRemoteStatus = 'unknown' | 'IN_QUEUE' | 'IN_PROGRESS' | 'COMPLETED' | 'FAILED' | 'CANCELLED' | 'TIMED_OUT'
+export interface RunpodProvenance {
+  provider: 'runpod'
+  id: string | null
+  remoteStatus: RunpodRemoteStatus
+  timeoutMs: number
+  lastHttpStatus: number | null
+  cost: { currency: 'USD'; estimated: null; actual: null; actualStatus: 'not_reported'; basis: 'worker_gpu_profile_required' }
+  quota: { remaining: null; retryAfterSeconds: number | null }
+  source: 'https://docs.runpod.io/serverless/endpoints/send-requests'
+}
+export function runpodProvenance(id: string | null, remoteStatus: RunpodRemoteStatus, timeoutMs: number, lastHttpStatus: number | null = null): RunpodProvenance {
+  return { provider: 'runpod', id, remoteStatus, timeoutMs, lastHttpStatus,
+    cost: { currency: 'USD', estimated: null, actual: null, actualStatus: 'not_reported', basis: 'worker_gpu_profile_required' },
+    quota: { remaining: null, retryAfterSeconds: null }, source: 'https://docs.runpod.io/serverless/endpoints/send-requests' }
+}
+export class RunpodJobError extends Error {
+  readonly retrySubmission = false
+  readonly fallbackAllowed = false
+  constructor(readonly code: string, readonly provenance: RunpodProvenance) {
+    super(`RunPod: ${code}${provenance.id ? ` (job ${provenance.id})` : ''}; resoumission non autorisee`)
+    this.name = 'RunpodJobError'
+  }
+}
 
 interface VideoGenRequest {
   prompt: string
@@ -16,26 +41,56 @@ interface VideoGenRequest {
   cfg_scale?: number
 }
 
+export function isRunpodConfigured(): boolean {
+  return isEnvSet('RUNPOD_API_KEY') && isEnvSet('RUNPOD_ENDPOINT_ID')
+}
+
 function getBaseUrl(userEmail?: string | null): string {
+  const endpointId = requireEnv('RUNPOD_ENDPOINT_ID', 'generation video WAN/RunPod')
+  const podUrl = optionalEnv('RUNPOD_POD_URL', '')
   // Super admin uses dedicated GPU pod if configured
-  if (userEmail && isSuperAdmin(userEmail) && RUNPOD_POD_URL) {
-    return RUNPOD_POD_URL.replace(/\/$/, '')
+  if (userEmail && isSuperAdmin(userEmail) && podUrl) {
+    return podUrl.replace(/\/$/, '')
   }
   // Everyone else (and super admin fallback) uses serverless
-  return `https://api.runpod.ai/v2/${RUNPOD_ENDPOINT_ID}`
+  return `https://api.runpod.ai/v2/${endpointId}`
+}
+
+/** This is the SUTRA worker output contract, not a RunPod-wide model guarantee. */
+function runpodMedia(raw: unknown, provenance: RunpodProvenance): string {
+  let value = raw
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const item = value as Record<string, unknown>
+    value = item.type === 's3_url' ? item.data : item.type === 'base64' && typeof item.data === 'string'
+      ? `data:video/mp4;base64,${item.data}` : null
+  }
+  if (typeof value === 'string') {
+    if (value.startsWith('data:video/mp4;base64,')) {
+      const payload = value.slice('data:video/mp4;base64,'.length)
+      if (payload.length % 4 === 0 && /^[A-Za-z0-9+/]+={0,2}$/.test(payload)) return value
+    }
+    try {
+      const url = new URL(value)
+      if (value.length <= 8192 && url.protocol === 'https:' && !url.username && !url.password && !url.hash) return value
+    } catch { /* reject malformed worker output, never coerce it to base64 */ }
+  }
+  throw new RunpodJobError('OUTPUT_INVALID', provenance)
 }
 
 export async function submitVideoJob(
   req: VideoGenRequest,
   userEmail?: string | null
-): Promise<{ jobId: string; baseUrl: string }> {
+): Promise<{ jobId: string; baseUrl: string; provenance: RunpodProvenance }> {
+  const apiKey = requireEnv('RUNPOD_API_KEY', 'generation video WAN/RunPod')
   const baseUrl = getBaseUrl(userEmail)
+  const signal = AbortSignal.timeout(30_000)
 
-  const res = await fetchWithRetry(`${baseUrl}/run`, {
-    method: 'POST',
+  let res: Response
+  try { res = await fetchWithRetry(`${baseUrl}/run`, {
+    method: 'POST', cache: 'no-store', redirect: 'error', signal, timeoutMs: 30_000,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${RUNPOD_API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
       input: {
@@ -49,11 +104,17 @@ export async function submitVideoJob(
         seed: req.seed,
       },
     }),
-  })
+  }) } catch { throw new RunpodJobError('SUBMISSION_UNKNOWN', runpodProvenance(null, 'unknown', 300_000)) }
 
-  const data = await res.json()
-  if (!data.id) throw new Error(`RunPod: ${data.error ?? 'pas de job ID'}`)
-  return { jobId: data.id, baseUrl }
+  const provenance = runpodProvenance(null, 'unknown', 300_000, res.status)
+  const retry = Number(res.headers.get('retry-after'))
+  if (res.headers.has('retry-after') && Number.isFinite(retry) && retry >= 0) provenance.quota.retryAfterSeconds = retry
+  if (!res.ok) throw new RunpodJobError(`HTTP ${res.status}`, provenance)
+  const data = await providerRecord(res, signal).catch(() => null)
+  if (typeof data?.id !== 'string' || !/^[A-Za-z0-9_-]{1,200}$/.test(data.id)) throw new RunpodJobError('pas de job ID / SUBMISSION_UNKNOWN', provenance)
+  provenance.id = data.id
+  if (data.status === 'IN_QUEUE' || data.status === 'IN_PROGRESS') provenance.remoteStatus = data.status
+  return { jobId: data.id, baseUrl, provenance }
 }
 
 export async function pollVideoJob(
@@ -61,44 +122,75 @@ export async function pollVideoJob(
   baseUrl?: string,
   timeoutMs = 300_000
 ): Promise<string> {
-  const pollUrl = baseUrl ?? `https://api.runpod.ai/v2/${RUNPOD_ENDPOINT_ID}`
+  const apiKey = requireEnv('RUNPOD_API_KEY', 'generation video WAN/RunPod')
+  const endpointId = requireEnv('RUNPOD_ENDPOINT_ID', 'generation video WAN/RunPod')
+  const pollUrl = baseUrl ?? `https://api.runpod.ai/v2/${endpointId}`
   const start = Date.now()
+  const provenance = runpodProvenance(jobId, 'unknown', timeoutMs)
+  if (!/^[A-Za-z0-9_-]{1,200}$/.test(jobId) || !Number.isFinite(timeoutMs) || timeoutMs <= 0) throw new RunpodJobError('INVALID_POLL_CONTEXT', provenance)
 
   while (Date.now() - start < timeoutMs) {
-    const res = await fetch(`${pollUrl}/status/${jobId}`, {
-      headers: { Authorization: `Bearer ${RUNPOD_API_KEY}` },
-    })
-    const data = await res.json()
+    let res: Response
+    const signal = AbortSignal.timeout(Math.max(1, Math.min(15_000, timeoutMs - (Date.now() - start))))
+    try { res = await fetch(`${pollUrl}/status/${encodeURIComponent(jobId)}`, {
+      cache: 'no-store', redirect: 'error',
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal,
+    }) } catch { throw new RunpodJobError('POLL_NETWORK_UNKNOWN', provenance) }
+    provenance.lastHttpStatus = res.status
+    if (!res.ok) {
+      // 401/403/404 : clé invalide ou job inconnu → inutile de re-sonder.
+      if (res.status === 401 || res.status === 403 || res.status === 404) {
+        throw new RunpodJobError(`HTTP ${res.status}`, provenance)
+      }
+      if (res.status !== 429 && res.status < 500) throw new RunpodJobError(`HTTP ${res.status}`, provenance)
+      const retry = Number(res.headers.get('retry-after'))
+      provenance.quota.retryAfterSeconds = res.headers.has('retry-after') && Number.isFinite(retry) && retry >= 0 ? retry : null
+      const pause = Math.max(3000, (provenance.quota.retryAfterSeconds ?? 0) * 1000)
+      if (Date.now() - start + pause >= timeoutMs) break
+      await sleep(pause)
+      continue
+    }
+    // Output may include inline base64; explicit local cap, not a provider quota.
+    const data = await providerRecord(res, signal, 64 * 1024 * 1024).catch(() => null)
 
+    if (!data || data.id !== jobId || typeof data.status !== 'string' || !['IN_QUEUE', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED', 'TIMED_OUT'].includes(data.status)) throw new RunpodJobError('INVALID_POLL_RESPONSE', provenance)
+    provenance.remoteStatus = data.status as RunpodRemoteStatus
     if (data.status === 'COMPLETED') {
-      const output = data.output?.images?.[0] ?? data.output?.video_url ?? data.output
-      if (!output) throw new Error('RunPod: pas de video dans la reponse')
-      if (typeof output === 'string') return output
-      return output.type === 's3_url'
-        ? output.data
-        : `data:video/mp4;base64,${output.data}`
+      const output = data.output
+      let raw: unknown
+      if (typeof output === 'string') {
+        raw = output
+      } else if (output && typeof output === 'object' && !Array.isArray(output)) {
+        const record = output as Record<string, unknown>
+        raw = Array.isArray(record.images) ? record.images[0] : record.video_url
+      }
+      if (!raw) throw new RunpodJobError('OUTPUT_MISSING', provenance)
+      return runpodMedia(raw, provenance)
     }
 
-    if (data.status === 'FAILED') {
-      throw new Error(`RunPod: generation echouee - ${data.error ?? 'erreur inconnue'}`)
-    }
+    if (['FAILED', 'CANCELLED', 'TIMED_OUT'].includes(data.status!)) throw new RunpodJobError(`REMOTE_${data.status}`, provenance)
 
+    if (Date.now() - start + 3000 >= timeoutMs) break
     await sleep(3000)
   }
-  throw new Error('RunPod: timeout apres 5 minutes')
+  throw new RunpodJobError('WAIT_TIMEOUT_REMOTE_UNCHANGED', provenance)
 }
 
 export async function generateAllScenes(
   scenes: Array<{ prompt: string; duration_seconds: number }>,
   quality: '720p' | '1080p' | '4k',
-  userEmail?: string | null
+  userEmail?: string | null,
+  format: RunpodFormat = '16:9'
 ): Promise<string[]> {
-  const dimensions = {
-    '720p': { width: 768, height: 512 },
-    '1080p': { width: 1024, height: 576 },
-    '4k': { width: 1280, height: 720 },
+  // Dimensions natives WAN par format — cohérentes avec src/lib/wan.ts.
+  // NB : le palier « 4k » reste du 1280x720 natif WAN, jamais de l'UHD.
+  const dimensions: Record<'720p' | '1080p' | '4k', Record<RunpodFormat, { width: number; height: number }>> = {
+    '720p': { '16:9': { width: 896, height: 512 }, '9:16': { width: 512, height: 896 }, '1:1': { width: 768, height: 768 } },
+    '1080p': { '16:9': { width: 1024, height: 576 }, '9:16': { width: 576, height: 1024 }, '1:1': { width: 896, height: 896 } },
+    '4k': { '16:9': { width: 1280, height: 720 }, '9:16': { width: 720, height: 1280 }, '1:1': { width: 1024, height: 1024 } },
   }
-  const { width, height } = dimensions[quality]
+  const { width, height } = dimensions[quality][format]
 
   const jobs = await Promise.all(
     scenes.map((scene) =>

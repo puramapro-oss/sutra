@@ -1,0 +1,55 @@
+{
+  "baseline": false,
+  "results": [
+    {
+      "name": "real login transition reaches the unaccepted synthetic identity gate",
+      "status": "PASS"
+    },
+    {
+      "name": "networkidle times out while dashboard is rendered and usable",
+      "status": "PASS"
+    },
+    {
+      "name": "DOMContentLoaded plus original dashboard assertions tolerate background activity",
+      "status": "PASS"
+    },
+    {
+      "name": "no unexpected mutation, uncaught error or hydration mismatch",
+      "status": "PASS"
+    }
+  ],
+  "details": [
+    {
+      "injectedBackgroundRequest": true,
+      "oldNetworkIdleTimedOut": true,
+      "exactCauseOfHistoricalCIFailure": "UNPROVEN",
+      "productChanged": false
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "mutations": [],
+  "writes": [],
+  "acceptances": [
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "mentions",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgu",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "cgv",
+      "version": "1.0"
+    },
+    {
+      "user_id": "11111111-1111-4111-8111-111111111111",
+      "doc_type": "confidentialite",
+      "version": "1.0"
+    }
+  ]
+}

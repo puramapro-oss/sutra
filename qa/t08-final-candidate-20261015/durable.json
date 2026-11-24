@@ -1,0 +1,30 @@
+{
+  "phase": "durable",
+  "candidate": "3855665fa79e3cc2171124d864a834214d6ac617",
+  "utc": "2026-10-15T01:02:37.937468+00:00",
+  "command": [
+    "/Users/matissdornier/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+    "--experimental-test-module-mocks",
+    "--experimental-vm-modules",
+    "--import",
+    "tsx",
+    "--test",
+    "--test-concurrency=1",
+    "scripts/test-t03-durable-reliability.mts",
+    "qa/t03-durable-reliability-20261014/submission.test.mts"
+  ],
+  "exitCode": 0,
+  "counts": {
+    "tests": 18,
+    "pass": 18,
+    "fail": 0,
+    "skipped": 0
+  },
+  "testFilesSHA256": {
+    "scripts/test-t03-durable-reliability.mts": "7db02b0804debd6e49e9607fd4a9ddddd118535ee5766a958a9ea48074791522",
+    "qa/t03-durable-reliability-20261014/submission.test.mts": "1b0c8a1defc754ddd66b708bfa0fe336df1b05b5071b1c27c3e63fd5f20e67a0"
+  },
+  "environment": "allowlist; synthetic configuration; offline preload; env files denied",
+  "databaseFixtureURL": "https://db.fixture.invalid",
+  "log": "durable.log"
+}

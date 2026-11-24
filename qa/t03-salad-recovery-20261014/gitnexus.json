@@ -1,0 +1,25 @@
+{
+  "qualification": "GRAPH_SCOPE_UNKNOWN_DIRECT_DIFF_VERIFIED",
+  "impact_source_repo": "sutra-final-providers-20261013",
+  "impact_source_index_head": "48f2d5e",
+  "impact_index_stale": true,
+  "impacts_before_edit": [
+    { "symbol": "runVideoJob", "risk": "CRITICAL", "direct_callers": 5, "flows": 5 },
+    { "symbol": "pipelineSteps", "risk": "CRITICAL", "direct_callers": 8, "flows": 5 },
+    { "symbol": "createLtxClient", "risk": "LOW", "direct_callers": 2, "flows": 0 }
+  ],
+  "critical_warning_reported": true,
+  "product_symbols_modified": false,
+  "detect_changes": {
+    "command": "node /Users/matissdornier/purama-worktrees/sutra-final-providers-20261013/.gitnexus/run.cjs detect-changes --scope staged --repo sutra-t03-salad-recovery-20261014",
+    "exit_code": 1,
+    "error": "Repository sutra-t03-salad-recovery-20261014 not found",
+    "reason": "Isolated QA-only worktree not registered or indexed; no claim of exhaustive graph certification"
+  },
+  "direct_verification": {
+    "base_sha": "14617333bfb21efe1f2a1c91888d3322dde20f5b",
+    "allowed_paths": ["scripts/test-t03-salad-recovery.mts", "qa/t03-salad-recovery-20261014/**"],
+    "product_integrity_evidence": "source-integrity.json",
+    "staged_diff_check_exit_code": 0
+  }
+}

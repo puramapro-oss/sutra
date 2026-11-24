@@ -1,0 +1,143 @@
+✖ callback error safely explains fixture_private_token_never_display (2.537959ms)
+✖ callback error safely explains invalid_or_expired_state (0.468708ms)
+✖ callback error safely explains session_required (0.346416ms)
+✖ callback error safely explains oauth_denied (0.313083ms)
+✖ callback error safely explains oauth_empty_profile (0.290417ms)
+✖ callback error safely explains db_error (0.283834ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 133.292
+
+✖ failing tests:
+
+test at qa/t06-closure-79cd95b-20261020/callback-errors.mjs:27:4
+✖ callback error safely explains fixture_private_token_never_display (2.537959ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Connexion indisponible/. Input:
+  
+  'Connexion echouee : fixture_private_token_never_display'
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-closure-79cd95b-20261020/callback-errors.mjs:30:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.start (node:internal/test_runner/test:1096:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Connexion echouee : fixture_private_token_never_display',
+    expected: /Connexion indisponible/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at qa/t06-closure-79cd95b-20261020/callback-errors.mjs:27:4
+✖ callback error safely explains invalid_or_expired_state (0.468708ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /expiré|déjà utilisé/. Input:
+  
+  'Connexion echouee : invalid_or_expired_state'
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-closure-79cd95b-20261020/callback-errors.mjs:30:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Connexion echouee : invalid_or_expired_state',
+    expected: /expiré|déjà utilisé/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at qa/t06-closure-79cd95b-20261020/callback-errors.mjs:27:4
+✖ callback error safely explains session_required (0.346416ms)
+  AssertionError [ERR_ASSERTION]: persistent accessible error mirrors safe toast
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-closure-79cd95b-20261020/callback-errors.mjs:32:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at qa/t06-closure-79cd95b-20261020/callback-errors.mjs:27:4
+✖ callback error safely explains oauth_denied (0.313083ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /refusée/. Input:
+  
+  'Connexion echouee : oauth_denied'
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-closure-79cd95b-20261020/callback-errors.mjs:30:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Connexion echouee : oauth_denied',
+    expected: /refusée/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at qa/t06-closure-79cd95b-20261020/callback-errors.mjs:27:4
+✖ callback error safely explains oauth_empty_profile (0.290417ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Aucun compte/. Input:
+  
+  'Connexion echouee : oauth_empty_profile'
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-closure-79cd95b-20261020/callback-errors.mjs:30:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Connexion echouee : oauth_empty_profile',
+    expected: /Aucun compte/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at qa/t06-closure-79cd95b-20261020/callback-errors.mjs:27:4
+✖ callback error safely explains db_error (0.283834ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /enregistrer/. Input:
+  
+  'Connexion echouee : db_error'
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-closure-79cd95b-20261020/callback-errors.mjs:30:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Connexion echouee : db_error',
+    expected: /enregistrer/,
+    operator: 'match',
+    diff: 'simple'
+  }

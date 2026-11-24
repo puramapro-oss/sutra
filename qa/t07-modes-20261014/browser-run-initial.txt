@@ -1,0 +1,59 @@
+PASS 320px /create: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 320px /production: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 320px manual quality wording and keyboard navigation
+PASS 375px /create: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 375px /production: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 375px manual quality wording and keyboard navigation
+PASS 768px /create: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 768px /production: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 768px manual quality wording and keyboard navigation
+PASS 1280px /create: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 1280px /production: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 1280px manual quality wording and keyboard navigation
+PASS 1440px /create: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 1440px /production: modes, keyboard, budget, unknown readiness, axe and layout
+PASS 1440px manual quality wording and keyboard navigation
+AssertionError [ERR_ASSERTION]: axe /create-waiting
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     impact: 'serious',
++     targets: [
++       [
++         '.mt-0\\.5'
++       ],
++       [
++         '.space-y-3 > .duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(1) > .flex-1.text-white\\/30.text-sm'
++       ],
++       [
++         '.text-\\[11px\\]'
++       ],
++       [
++         '.space-y-2 > .duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(1) > .flex-1.text-white\\/30.text-sm'
++       ],
++       [
++         '.duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(2) > .flex-1.text-white\\/30.text-sm'
++       ],
++       [
++         '.space-y-2 > .duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(3) > .flex-1.text-white\\/30.text-sm'
++       ],
++       [
++         '.space-y-3 > .duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(3) > .flex-1.text-white\\/30.text-sm'
++       ],
++       [
++         '.duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(4) > .flex-1.text-white\\/30.text-sm'
++       ],
++       [
++         '.duration-300.py-3.bg-white\\/\\[0\\.03\\]:nth-child(5) > .flex-1.text-white\\/30.text-sm'
++       ]
++     ]
++   }
++ ]
+- []
+
+    at axe (file:///Users/matissdornier/purama-worktrees/sutra-t07-modes-ux-20261014/qa/t07-modes-20261014/browser.mjs:66:10)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-modes-ux-20261014/qa/t07-modes-20261014/browser.mjs:158:11
+    at async check (file:///Users/matissdornier/purama-worktrees/sutra-t07-modes-ux-20261014/qa/t07-modes-20261014/browser.mjs:51:35)
+    at async file:///Users/matissdornier/purama-worktrees/sutra-t07-modes-ux-20261014/qa/t07-modes-20261014/browser.mjs:149:7

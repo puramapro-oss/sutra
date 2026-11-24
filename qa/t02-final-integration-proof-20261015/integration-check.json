@@ -1,0 +1,119 @@
+{
+  "status": "PASS",
+  "verifiedCorrections": [
+    {
+      "path": "src/app/api/admin/health/route.ts",
+      "sha256": "b23446a861e209ac6925655735294b2eccaec60621bf95bc3c3b4de2584ca0cc",
+      "status": "PASS"
+    },
+    {
+      "path": "src/app/api/admin/stats/route.ts",
+      "sha256": "acfb5fc9cc7d6c16cfeaf3a5bccfdb4043aa2c332f26debdf05ce4bd18f9ded7",
+      "status": "PASS"
+    },
+    {
+      "path": "src/app/api/admin/users/[id]/route.ts",
+      "sha256": "8072f104c5e89f69ebedee918bfef9c1dba5db05f6947bac648de7376d167cc1",
+      "status": "PASS"
+    },
+    {
+      "path": "src/app/api/admin/users/route.ts",
+      "sha256": "29ea6cc19563039ba5c728de69df84eb570a4ac12d609b61b5a8cb3794d1bc55",
+      "status": "PASS"
+    },
+    {
+      "path": "src/app/api/stripe/webhook/route.ts",
+      "sha256": "f4c903f732f2e13cb469796518a3aab750513eda57f953d656a50116a21e782b",
+      "status": "PASS"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/admin-webhook.test.mts",
+      "sha256": "038ad51d2f45960b10098ea107b8f06b100c44608e8f629a402c06d08a90672c",
+      "status": "PASS"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/run.py",
+      "sha256": "c3f9e57b92aad60afd4eabbbdfa31167a8f88e030e7103cc755bee6ccd45f956",
+      "status": "PASS"
+    },
+    {
+      "path": "qa/t02-final-sha-security-20261015/tsconfig.json",
+      "sha256": "d77016ff4a6c8a033d986bec550f1d59c6b0b04b06229235c0749fe5686273e2",
+      "status": "PASS"
+    },
+    {
+      "path": "qa/t08/offline.cjs",
+      "sha256": "28e170150f0d5c885820b6bb156e44a5d604b5b00675a0b66be8d87d60187465",
+      "status": "PASS"
+    }
+  ],
+  "previousFiles": 843,
+  "invariant": 830,
+  "changed": [
+    {
+      "path": "scripts/run-ci.mjs",
+      "old": "a10968fd2ade80d909d3114d81ec90bd78beac6b16284554e6aa545484214d1d",
+      "current": "52cc8fe44e5a6540147e4afb4193d729c72b1e36654a559b340f620099be37f6"
+    },
+    {
+      "path": "scripts/test-api-contracts.mts",
+      "old": "ad782079ecaa72c36106a99646023a788e7c96eddfea91335cae2d7a98921770",
+      "current": "c071382ad766853e61cc11b928c759091c87bed50fc60e7b7cd1ddaa515aa4f4"
+    },
+    {
+      "path": "scripts/test-video-contracts.mjs",
+      "old": "f7244c5e5c216ea2c846e9f95f9359333912eebda0523b09b5819096fd6f4734",
+      "current": "ebaeb0a44c7c7dfc6b6fb8335c83613a324a9e57353d81034ead74715963fd44"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/schedules/page.tsx",
+      "old": "fb9dc0665efe8e92f5d9de808804fd048446e09d259faf55d039cf0e333581c6",
+      "current": "820582f83809da16ecd7e3196f3137b46c4f2d4fd3d5387992e0e5bb96ef91d0"
+    },
+    {
+      "path": "src/app/(dashboard)/auto/settings/page.tsx",
+      "old": "041f8779149b9e4825e7606d437c01d7583d85e33cac99f63f8c6f133a2e839d",
+      "current": "d01613116e351a63dd58255d74c0e35f85a1d61eb639c1a2d283ec2c59bb8d8e"
+    },
+    {
+      "path": "src/app/(dashboard)/settings/social/page.tsx",
+      "old": "500ee26b85e9dc1d5ebba93ddd00eb796a1981f589fc9631a8aae63d74668370",
+      "current": "5f0e8f8fad7724c46d33a34575ca6be71fff7f17e5d4d4fdad657257e37a3a64"
+    },
+    {
+      "path": "src/app/api/auto/config/route.ts",
+      "old": "7c722042cc7beaf967c778790023b5de56fc9abd0338c789c6c1090fd1b21444",
+      "current": "5961645eacb18dcc2fa51a21a0ae9aaf4bb515235280b5cdae0b099bd390860c"
+    },
+    {
+      "path": "src/app/api/social/autopilot/route.ts",
+      "old": "89c7b68a7589760c0dbfb61c25ef93851611103c3154f535f3a7a6169d9e0f5a",
+      "current": "84b6d6f2e3063952b31cd8c7edb6556c171b53f361832feedc78e0938204ad34"
+    },
+    {
+      "path": "src/lib/elevenlabs.ts",
+      "old": "8219f6d8425d9b283c3496f3098a2e9ebb09e3ec47d145601b4f6a5bca2367f2",
+      "current": "ceff8eba5ef9b4f8655b6051ed5341d7b9aab4eb64f787e367c35a14c2c9eb33"
+    },
+    {
+      "path": "src/lib/ltx-v2.ts",
+      "old": "3cd6c7d310fa11f826bd3ff56d9b4f882056f5c4974f61712a4d5fd2559549af",
+      "current": "169377a74674371bfaed1030845c94808b631a9526bead0d5eed0642918bd217"
+    },
+    {
+      "path": "src/lib/pexels.ts",
+      "old": "1a27f4ba5d6080911f01439d5563bb2c22b9911abd5b0c536de33e7bca949706",
+      "current": "dcb32cab63936d9f40c79db38c6f29d042b89fca0e9d9523fee2111696e40382"
+    },
+    {
+      "path": "src/lib/shotstack.ts",
+      "old": "1feefca0ad03c663f472a55ed31cd6c074859f96cd44518ecfb6c6ad1e1da554",
+      "current": "6a470819e803ee17a4be1fc08401bc9278484916f2409b4981e7b906110546e8"
+    },
+    {
+      "path": "src/lib/video-pipeline.ts",
+      "old": "5e1e1e5cc0b3b155505800b83aca6d94de0227d2c297e01ccce31fa216813ec7",
+      "current": "429877932460ede905177be20a82f894e72f148afcb4c84adf9f7e23e630f9a9"
+    }
+  ]
+}

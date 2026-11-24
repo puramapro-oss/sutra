@@ -1,0 +1,25 @@
+✔ HTTP 401 cannot become a successful empty search or retry (14.3585ms)
+✔ HTTP 403 cannot become a successful empty search or retry (0.200666ms)
+✔ HTTP 429 cannot become a successful empty search or retry (0.154959ms)
+✔ HTTP 500 cannot become a successful empty search or retry (0.134667ms)
+✔ malformed HTTP 200 is not an empty catalogue (3.529084ms)
+✔ one failed configured source does not disappear behind successful sources (0.910459ms)
+✔ Pixabay unsafe media URL is rejected (2.8345ms)
+✔ GET transport has a finite deadline, forbids redirects and adds Coverr auth/urls (0.954208ms)
+✔ valid empty catalogues remain empty (1.787625ms)
+✔ valid media keeps dimensions, provenance and quality (0.52575ms)
+✔ Pixabay and Unsplash valid responses retain author and source (0.874833ms)
+✔ Pexels ignores dimensionless/non-MP4 variants rather than relabeling them HD (0.427417ms)
+✔ Coverr previews cannot inherit max dimensions; download URL is preferred (0.351125ms)
+✔ missing Coverr key causes no anonymous request; no sources is an explicit failure (0.252ms)
+✔ oversized and non-object response bodies fail without echoing body contents (0.613875ms)
+✔ deadline includes stalled headers, no retry (21.055709ms)
+✔ deadline includes stalled body, no retry (20.894042ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 266.296833

@@ -33,12 +33,12 @@ export default function ReferralTiers({ activeFilleuls }: ReferralTiersProps) {
                   'relative rounded-xl p-3 text-center border transition-all',
                   reached
                     ? 'border-white/20 bg-gradient-to-br opacity-100'
-                    : 'border-white/[0.04] bg-white/[0.02] opacity-50'
+                    : 'border-white/[0.04] bg-white/[0.02]'
                 )}
               >
                 <div className="text-2xl mb-1">{tier.icon}</div>
-                <p className={cn('text-xs font-bold', reached ? 'text-white' : 'text-white/40')}>{tier.name}</p>
-                <p className="text-[10px] text-white/30 mt-0.5">{tier.min} filleuls</p>
+                <p className={cn('text-xs font-bold', reached ? 'text-white' : 'text-white/60')}>{tier.name}</p>
+                <p className="text-[10px] text-white/60 mt-0.5">{tier.min} filleuls</p>
                 {reached && (
                   <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center">
                     <Check className="h-2.5 w-2.5 text-white" />
@@ -57,7 +57,7 @@ export default function ReferralTiers({ activeFilleuls }: ReferralTiersProps) {
               className="h-full bg-gradient-to-r from-violet-600 to-purple-500 rounded-full"
             />
           </div>
-          <span className="text-xs text-white/30 shrink-0">{activeFilleuls}/100</span>
+          <span className="text-xs text-white/60 shrink-0">{activeFilleuls}/100</span>
         </div>
       </CardContent>
     </Card>

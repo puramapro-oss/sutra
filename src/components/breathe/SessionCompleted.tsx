@@ -6,11 +6,10 @@ import Button from '@/components/ui/Button'
 
 interface SessionCompletedProps {
   cycleCount: number
-  xpReward: number
   onReset: () => void
 }
 
-export default function SessionCompleted({ cycleCount, xpReward, onReset }: SessionCompletedProps) {
+export default function SessionCompleted({ cycleCount, onReset }: SessionCompletedProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -24,7 +23,7 @@ export default function SessionCompleted({ cycleCount, xpReward, onReset }: Sess
           {cycleCount} cycles completes en 3 minutes
         </p>
         <div className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
-          +{xpReward} points
+          Recompenses temporairement suspendues
         </div>
       </div>
       <Button

@@ -33,11 +33,11 @@ export function EditorTimeline({
     <Card>
       <CardContent className="py-3">
         <div className="flex items-center gap-2 mb-2">
-          <Film className="h-4 w-4 text-violet-400" />
-          <span className="text-xs font-medium text-white/50">Timeline</span>
+          <Film className="h-4 w-4 text-violet-300" />
+          <span className="text-xs font-medium text-white/70">Timeline</span>
         </div>
         {scenes.length === 0 ? (
-          <div className="h-12 flex items-center justify-center text-xs text-white/30">
+          <div className="h-12 flex items-center justify-center text-xs text-white/70">
             Aucune scene
           </div>
         ) : (
@@ -63,7 +63,7 @@ export function EditorTimeline({
                   )}
                   style={{ width: `${widthPercent}%`, minWidth: '24px' }}
                 >
-                  <span className="absolute inset-0 flex items-center justify-center text-[10px] text-white/60 font-mono truncate px-1">
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] text-white/70 font-mono truncate px-1">
                     {scene.duration_seconds}s
                   </span>
                 </button>

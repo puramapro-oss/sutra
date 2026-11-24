@@ -146,7 +146,7 @@ export default function HowItWorksPage() {
 
                 {/* Content */}
                 <div className="pb-8">
-                  <span className="text-xs font-mono text-white/30 uppercase tracking-wider">
+                  <span className="text-xs font-mono text-white/60 uppercase tracking-wider">
                     Etape {step.number}
                   </span>
                   <h3 className="text-xl font-bold text-white mt-1 mb-2">
@@ -171,7 +171,7 @@ export default function HowItWorksPage() {
             Creer ma premiere video
             <ArrowRight className="w-5 h-5" />
           </Link>
-          <p className="text-white/30 text-sm mt-4">
+          <p className="text-white/60 text-sm mt-4">
             Gratuit pour commencer. Aucune carte requise.
           </p>
         </div>
@@ -181,7 +181,7 @@ export default function HowItWorksPage() {
       <div className="border-t border-white/[0.06] py-8 text-center">
         <Link
           href="/"
-          className="text-sm text-white/40 hover:text-white/60 transition-colors"
+          className="text-sm text-white/60 hover:text-white/60 transition-colors"
         >
           Retour a l&apos;accueil
         </Link>

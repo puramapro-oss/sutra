@@ -1,0 +1,38 @@
+{
+  "engine": "webkit",
+  "browserVersion": "26.0",
+  "nativeSafari": false,
+  "scope": "HTML scheduling control only, not a reproduction of React effect timing",
+  "before": {
+    "errors": [],
+    "qualified": [],
+    "unexpected": [],
+    "events": [
+      {
+        "kind": "pagehide",
+        "document": "https://127.0.0.1:52284/settings/social",
+        "navigation": 2,
+        "at": 1792073643694
+      }
+    ],
+    "navigations": [
+      {
+        "id": 1,
+        "method": "goto",
+        "from": "nullblank",
+        "to": "https://127.0.0.1:52284/settings/social",
+        "startedAt": 1792073643625,
+        "finishedAt": 1792073643677
+      },
+      {
+        "id": 2,
+        "method": "goto",
+        "from": "https://127.0.0.1:52284/settings/social",
+        "to": "https://127.0.0.1:52284/next",
+        "startedAt": 1792073643677,
+        "finishedAt": 1792073643698
+      }
+    ],
+    "domErrors": []
+  }
+}

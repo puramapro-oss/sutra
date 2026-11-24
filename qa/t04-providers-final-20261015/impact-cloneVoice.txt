@@ -1,0 +1,88 @@
+{
+  "target": {
+    "id": "Function:src/lib/elevenlabs.ts:cloneVoice",
+    "name": "cloneVoice",
+    "type": "Function",
+    "filePath": "src/lib/elevenlabs.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [
+    {
+      "name": "POST",
+      "type": "Function",
+      "filePath": "src/app/api/voice/clone/route.ts",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Stripe",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/app/api/voice/clone/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/voice/clone/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_203_post",
+            "label": "POST → EstimateCost",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_344_post",
+            "label": "POST → Denied",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_106_post",
+            "label": "POST → HttpErrorMessage",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_293_post",
+            "label": "POST → CreateServiceClient",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_154_post",
+            "label": "POST → MissingEnvError",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}
+
+  GitNexus Impact (1.6.12)

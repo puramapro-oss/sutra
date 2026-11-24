@@ -1,0 +1,234 @@
+{
+  "processes": [
+    {
+      "id": "proc_91_runpublicationjourna",
+      "summary": "RunPublicationJournal → ContentWithTags",
+      "priority": 0.115,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_92_runpublicationjourna",
+      "summary": "RunPublicationJournal → ProviderPlatform",
+      "priority": 0.115,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_121_runpublicationjourna",
+      "summary": "RunPublicationJournal → Signature",
+      "priority": 0.104,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_13_get",
+      "summary": "GET → Blocked",
+      "priority": 0.104,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 7
+    },
+    {
+      "id": "proc_14_get",
+      "summary": "GET → Query",
+      "priority": 0.104,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 7
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/publication-journal.ts:runPublicationJournal",
+      "name": "runPublicationJournal",
+      "filePath": "src/lib/publication-journal.ts",
+      "startLine": 42,
+      "endLine": 226,
+      "module": "Stripe",
+      "process_id": "proc_91_runpublicationjourna",
+      "step_index": 1
+    },
+    {
+      "id": "Function:src/lib/zernio.ts:buildPublishPayload",
+      "name": "buildPublishPayload",
+      "filePath": "src/lib/zernio.ts",
+      "startLine": 96,
+      "endLine": 113,
+      "module": "Cluster_504",
+      "process_id": "proc_91_runpublicationjourna",
+      "step_index": 2
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Const:src/lib/social-oauth-account.ts:SOCIAL_OAUTH_ACCOUNT_COLUMNS",
+      "name": "SOCIAL_OAUTH_ACCOUNT_COLUMNS",
+      "filePath": "src/lib/social-oauth-account.ts",
+      "startLine": 12,
+      "endLine": 12
+    },
+    {
+      "id": "Function:src/lib/social-oauth-account.ts:readSocialOAuthAccount",
+      "name": "readSocialOAuthAccount",
+      "filePath": "src/lib/social-oauth-account.ts",
+      "startLine": 14,
+      "endLine": 19,
+      "module": "Stripe"
+    },
+    {
+      "id": "Function:src/lib/social-oauth-account.ts:socialOAuthAccountRevision",
+      "name": "socialOAuthAccountRevision",
+      "filePath": "src/lib/social-oauth-account.ts",
+      "startLine": 22,
+      "endLine": 26,
+      "module": "Connect"
+    },
+    {
+      "id": "Const:src/lib/social-oauth-state.ts:SOCIAL_OAUTH_TTL_SECONDS",
+      "name": "SOCIAL_OAUTH_TTL_SECONDS",
+      "filePath": "src/lib/social-oauth-state.ts",
+      "startLine": 5,
+      "endLine": 5
+    },
+    {
+      "id": "Function:src/lib/social-oauth-state.ts:issueSocialOAuthState",
+      "name": "issueSocialOAuthState",
+      "filePath": "src/lib/social-oauth-state.ts",
+      "startLine": 19,
+      "endLine": 33,
+      "module": "Connect"
+    },
+    {
+      "id": "Function:src/lib/social-oauth-state.ts:consumeSocialOAuthState",
+      "name": "consumeSocialOAuthState",
+      "filePath": "src/lib/social-oauth-state.ts",
+      "startLine": 36,
+      "endLine": 50,
+      "module": "Stripe"
+    },
+    {
+      "id": "Function:src/lib/social-account-revocation.ts:revokeSocialAccount",
+      "name": "revokeSocialAccount",
+      "filePath": "src/lib/social-account-revocation.ts",
+      "startLine": 8,
+      "endLine": 62,
+      "module": "Stripe"
+    },
+    {
+      "id": "Function:src/lib/social-account-revocation.ts:revokeSocialAccount.accounts@9:2",
+      "name": "accounts",
+      "filePath": "src/lib/social-account-revocation.ts",
+      "startLine": 10,
+      "endLine": 10,
+      "module": "Stripe"
+    },
+    {
+      "id": "Property:src/lib/social-account-revocation.ts:revokeSocialAccount.metadata@28:4",
+      "name": "metadata",
+      "filePath": "src/lib/social-account-revocation.ts",
+      "startLine": 29,
+      "endLine": 29
+    },
+    {
+      "id": "Function:scripts/test-final-social-history.mjs:insert",
+      "name": "insert",
+      "filePath": "scripts/test-final-social-history.mjs",
+      "startLine": 41,
+      "endLine": 44,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:scripts/test-final-social-history.mjs:update",
+      "name": "update",
+      "filePath": "scripts/test-final-social-history.mjs",
+      "startLine": 45,
+      "endLine": 46,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:scripts/test-final-social-history.mjs:parentMetadata",
+      "name": "parentMetadata",
+      "filePath": "scripts/test-final-social-history.mjs",
+      "startLine": 88,
+      "endLine": 91,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:qa/t06-social-recovery-20261014/test-postgres.mts:service.from.maybeSingle@30:4",
+      "name": "maybeSingle",
+      "filePath": "qa/t06-social-recovery-20261014/test-postgres.mts",
+      "startLine": 31,
+      "endLine": 42,
+      "module": "T06-social-recovery-20261014"
+    },
+    {
+      "id": "Function:qa/t06-social-recovery-20261014/test-postgres.mts:authorizeFixture",
+      "name": "authorizeFixture",
+      "filePath": "qa/t06-social-recovery-20261014/test-postgres.mts",
+      "startLine": 50,
+      "endLine": 53
+    },
+    {
+      "id": "File:qa/t06-social-recovery-20261014/test-postgres.mts",
+      "name": "test-postgres.mts",
+      "filePath": "qa/t06-social-recovery-20261014/test-postgres.mts"
+    },
+    {
+      "id": "Function:qa/t06-integrated-retest-20261015/history-routes.test.mts:account",
+      "name": "account",
+      "filePath": "qa/t06-integrated-retest-20261015/history-routes.test.mts",
+      "startLine": 151,
+      "endLine": 151,
+      "module": "Scripts"
+    },
+    {
+      "id": "Const:qa/t06-integrated-retest-20261015/history-routes.test.mts:fn@175:104.revision@176:2",
+      "name": "revision",
+      "filePath": "qa/t06-integrated-retest-20261015/history-routes.test.mts",
+      "startLine": 177,
+      "endLine": 177
+    },
+    {
+      "id": "Function:qa/t06-integrated-retest-20261015/history-routes.test.mts:fn@235:157.change@237:2",
+      "name": "change",
+      "filePath": "qa/t06-integrated-retest-20261015/history-routes.test.mts",
+      "startLine": 238,
+      "endLine": 238,
+      "module": "T06-integrated-retest-20261015"
+    },
+    {
+      "id": "Function:src/lib/publication-journal.ts:runPublicationJournal.accountsQuery@90:2",
+      "name": "accountsQuery",
+      "filePath": "src/lib/publication-journal.ts",
+      "startLine": 91,
+      "endLine": 92,
+      "module": "Stripe"
+    },
+    {
+      "id": "Function:src/lib/publication-journal.ts:runPublicationJournal.authorize@96:2",
+      "name": "authorize",
+      "filePath": "src/lib/publication-journal.ts",
+      "startLine": 97,
+      "endLine": 120,
+      "module": "Stripe"
+    }
+  ],
+  "timing": {
+    "vector": 2.8,
+    "bm25": 192,
+    "merge": 0.1,
+    "symbol_lookup": 14.1,
+    "ranking": 0,
+    "formatting": 0.1,
+    "wall": 207.2
+  },
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 3,
+    "hint": "⚠️ Index is 3 commits behind HEAD. Run analyze tool to update."
+  }
+}

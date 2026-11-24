@@ -1,0 +1,132 @@
+(node:69535) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:69535) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+✖ OVH callback missing code uses canonical origin despite forwarded host (2.665625ms)
+✖ OVH callback failures use canonical origin and never expose errors (0.303417ms)
+✖ OVH callback success retains safe next and session cookies (0.324709ms)
+✖ OVH mutating APIs accept only canonical browser origin, retaining originless API support (1.380292ms)
+✖ OVH protected-page redirects preserve path, query and refreshed cookies (0.988833ms)
+✖ OVH authenticated and denied-role redirects use canonical origin (0.387917ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 329.769625
+
+✖ failing tests:
+
+test at scripts/test-public-origin.mts:1:2137
+✖ OVH callback missing code uses canonical origin despite forwarded host (2.665625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'http://0.0.0.0:3000/login?error=missing_code'
+  - 'https://sutra.example/login?error=missing_code'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/scripts/test-public-origin.mts:46:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'http://0.0.0.0:3000/login?error=missing_code',
+    expected: 'https://sutra.example/login?error=missing_code',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-public-origin.mts:1:2439
+✖ OVH callback failures use canonical origin and never expose errors (0.303417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'http://0.0.0.0:3000/login?error=callback_failed'
+  - 'https://sutra.example/login?error=callback_failed'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/scripts/test-public-origin.mts:52:12)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'http://0.0.0.0:3000/login?error=callback_failed',
+    expected: 'https://sutra.example/login?error=callback_failed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-public-origin.mts:1:2786
+✖ OVH callback success retains safe next and session cookies (0.324709ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'http://0.0.0.0:3000/studio?tab=projects'
+  - 'https://sutra.example/studio?tab=projects'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/scripts/test-public-origin.mts:58:12)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'http://0.0.0.0:3000/studio?tab=projects',
+    expected: 'https://sutra.example/studio?tab=projects',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-public-origin.mts:1:3247
+✖ OVH mutating APIs accept only canonical browser origin, retaining originless API support (1.380292ms)
+  AssertionError [ERR_ASSERTION]: POST https://sutra.example
+
+  403 !== 200
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/scripts/test-public-origin.mts:67:14)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 403,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-public-origin.mts:1:3746
+✖ OVH protected-page redirects preserve path, query and refreshed cookies (0.988833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'http://0.0.0.0:3000'
+  - 'https://sutra.example'
+         ^
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/scripts/test-public-origin.mts:74:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'http://0.0.0.0:3000',
+    expected: 'https://sutra.example',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/test-public-origin.mts:1:4229
+✖ OVH authenticated and denied-role redirects use canonical origin (0.387917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + null
+  - 'https://sutra.example/studio'
+
+      at TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t01-integration-20261012/scripts/test-public-origin.mts:82:12)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'https://sutra.example/studio',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

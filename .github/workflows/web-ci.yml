@@ -1,0 +1,303 @@
+name: SUTRA web verification
+
+on:
+  pull_request:
+  push:
+    branches: [main, 'codex/sutra-t01-integration-20261012']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sutra-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-sutra
+        with:
+          smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
+      - name: Prepare pinned FFmpeg and Blender without APT
+        run: python3 scripts/ci/prepare-contract-tools.py
+      - run: npm run test:contracts
+      - name: Closed email relay and verified contact receipts (provider simulated)
+        run: node --experimental-vm-modules --test scripts/test-email-contact.mjs
+        env:
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
+      - name: Offline account onboarding planner (no remote actions)
+        run: node qa/account-onboarding/run.mjs
+      - run: npm run test:media
+      - name: Editable cinema project in native Blender
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict'
+          import { spawnSync } from 'node:child_process'
+          const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot'].flatMap(key =>
+            process.env[key] ? [[key, process.env[key]]] : []))
+          env.CI = '1'
+          const probe = spawnSync('blender', ['--version'], { env, encoding: 'utf8', timeout: 15_000 })
+          assert.equal(probe.error, undefined, 'Native Blender must be available in the isolated PATH')
+          assert.equal(probe.status, 0, probe.stderr)
+          assert.ok(probe.stdout.startsWith('Blender 4.5.16'), 'Unexpected Blender version')
+          process.stdout.write(probe.stdout)
+          NODE
+          node scripts/run-ci.mjs cinema-blender
+          python3 scripts/ci/prepare-contract-tools.py \
+            --verify-cinema-log test-results/ci/cinema-blender/cinema-blender.log \
+            | tee "$RUNNER_TEMP/sutra-contract-tools-evidence/cinema-native-receipt.json"
+      - name: Salad secure setup and redacted input diagnostics (synthetic inputs only)
+        run: |
+          python3 -m unittest discover -s qa/t04-salad-access-20261015 -p test_secure_setup.py -v
+          python3 -m unittest discover -s qa/t04-salad-auth-20261015 -p test_input_diagnostic.py -v
+      - run: node qa/t08/run.mjs redteam
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sutra-contract-results
+          path: |
+            test-results/ci
+            test-results/t08
+            qa/t05-real-export-20261014/exports
+            qa/t05-real-export-20261014/measurements.json
+            qa/t05-final-media-20261015/exports
+            qa/t05-final-media-20261015/media-ci.json
+            ${{ runner.temp }}/sutra-contract-tools-evidence
+          if-no-files-found: warn
+
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble@sha256:6446946a1d9fd62d9ae501312a2d76a43ee688542b21622056a372959b65d63d
+      options: --user 1001 --shm-size=1g
+    defaults:
+      run:
+        shell: bash
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: /ms-playwright
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-sutra
+        with:
+          smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12.14'
+      - run: npm run check
+      - name: Verify matching preinstalled browsers and isolated cache lookup
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict'
+          import { lstatSync, mkdirSync, readFileSync, realpathSync, symlinkSync } from 'node:fs'
+          import { homedir } from 'node:os'
+          import { dirname, join } from 'node:path'
+          import { spawnSync } from 'node:child_process'
+          const version = '1.58.2'
+          assert.equal(process.getuid(), 1001, 'Browser checks must run as the configured non-root user')
+          assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, '/ms-playwright')
+          const lock = JSON.parse(readFileSync('package-lock.json', 'utf8'))
+          for (const name of ['@playwright/test', 'playwright', 'playwright-core']) {
+            assert.equal(lock.packages[`node_modules/${name}`].version, version, `${name}: image/lockfile mismatch`)
+            assert.equal(JSON.parse(readFileSync(`node_modules/${name}/package.json`, 'utf8')).version, version, `${name}: installed version mismatch`)
+          }
+          // Existing isolated wrappers deliberately keep HOME and discard other environment.
+          // Give their default browser lookup the same preinstalled, version-checked files.
+          const cache = join(homedir(), '.cache', 'ms-playwright')
+          mkdirSync(dirname(cache), { recursive: true })
+          try { symlinkSync('/ms-playwright', cache, 'dir') } catch (error) {
+            if (error.code !== 'EEXIST') throw error
+            assert.ok(lstatSync(cache).isSymbolicLink(), 'Unexpected browser cache; refusing to replace it')
+          }
+          assert.equal(realpathSync(cache), '/ms-playwright')
+          const env = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'TMP', 'TEMP', 'SystemRoot'].flatMap(key =>
+            process.env[key] ? [[key, process.env[key]]] : []))
+          const probe = spawnSync(process.execPath, ['--input-type=module', '-e', `
+            import { accessSync, constants } from 'node:fs'
+            import { chromium, webkit } from '@playwright/test'
+            for (const browser of [chromium, webkit]) {
+              accessSync(browser.executablePath(), constants.X_OK)
+              console.log(browser.name() + ': ' + browser.executablePath())
+            }
+          `], { env, encoding: 'utf8', timeout: 10_000 })
+          assert.equal(probe.error, undefined)
+          assert.equal(probe.status, 0, probe.stderr)
+          process.stdout.write(probe.stdout)
+          console.log(`Preinstalled browser lookup verified for Playwright ${version}`)
+          NODE
+      - name: Durable request and admin recovery in isolated browser fixtures
+        run: node scripts/run-ci.mjs browser-recovery
+      - name: Help form to actual contact handler in Chromium and WebKit (provider simulated)
+        run: node --experimental-vm-modules --test --test-concurrency=1 scripts/test-email-contact-ui.mjs scripts/test-contact-forms-ui.mjs
+        env:
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
+      - name: Explicit social accounts, truthful outcomes and accessible controls
+        run: node scripts/run-ci.mjs browser-social
+      - name: Cinema storyboard exports and explicit preview consent
+        run: node scripts/run-ci.mjs browser-cinema
+      - name: Native browser error guard method boundaries
+        run: node --test qa/t01-final-20261015/browser-harness/guard.test.mjs qa/t01-final-20261015/browser-harness/social-read-barrier-20261015/barrier.test.mjs qa/t08/integrated/stored-markup-readiness.test.mjs
+      - run: node qa/t08/run.mjs browser-redteam
+      - name: Library pagination and consent contrast regressions
+        run: node qa/t07-frontend-fixes-20261014/browser.mjs --production
+      - name: Integrated desktop/mobile Chromium and WebKit journeys (synthetic identity, one build)
+        run: node qa/t07-final-ux-perf-20261015/run.mjs --final-integrated
+      - name: OAuth connection, recovery and creation modes in production browsers
+        run: |
+          node --test qa/t06-closure-79cd95b-20261020/callback-errors.mjs
+          node qa/t06-closure-79cd95b-20261020/journeys.mjs --production --both-engines --out=ci-production
+      - run: node scripts/run-ci.mjs legacy
+      - run: python3 -m unittest discover -s deploy -p 'test_*.py'
+      - run: python3 -m unittest discover -s qa/t01-closure-20261020 -p 'test_*.py'
+      - run: python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'
+      - name: Atomic social history transition and retained rollback simulations
+        run: python3 qa/t01-final-20261015/social-history-transition-test.py
+      - name: Exact candidate promotion and rollback simulations
+        run: |
+          python3 - <<'PY'
+          import sys, unittest
+          from pathlib import Path
+          sys.path.insert(0, 'deploy')
+          import test_salad_promotion as tests
+          tests.SOURCE = Path('qa/t01-consolidation-20261014').resolve()
+          result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(tests))
+          raise SystemExit(not result.wasSuccessful())
+          PY
+      - name: Audit production dependencies
+        # npm audit uploads the dependency graph; PR checks keep private graph data local.
+        if: always() && github.event_name != 'pull_request'
+        run: npm audit --omit=dev --audit-level=high
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sutra-quality-results
+          path: |
+            test-results/ci
+            test-results/ui-isolated
+            test-results/legacy
+            test-results/t08
+            qa/t07-frontend-fixes-20261014/evidence/after
+            qa/t01-final-20261015/browser-final
+            qa/t01-final-20261015/browser-harness/method-boundary-20261015
+            qa/t06-closure-79cd95b-20261020/ci-production
+          if-no-files-found: warn
+
+  disposable-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: fixture
+          POSTGRES_PASSWORD: fixture
+          POSTGRES_DB: sutra_ci_actions
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U fixture -d sutra_ci_actions"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/setup-sutra
+        with:
+          smarana-read-token: ${{ secrets.SMARANA_READ_TOKEN }}
+      - name: Social multi-account migration, permissions, history and repeat application
+        run: node scripts/test-social-multi-account-migration.mjs
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          DATABASE_URL_LOCAL: postgres://fixture:fixture@127.0.0.1:5432/sutra_ci_actions
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
+      - name: Email reservations, receipts and concurrent admission on disposable PostgreSQL
+        run: node scripts/test-email-sequences-postgres.mjs
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          DATABASE_URL_LOCAL: postgres://fixture:fixture@127.0.0.1:5432/sutra_ci_actions
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
+      - run: npm run test:migration-local
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          DATABASE_URL_LOCAL: postgres://fixture:fixture@127.0.0.1:5432/sutra_ci_actions
+      - name: Pipeline concurrency on disposable PostgreSQL
+        run: node --import tsx --test scripts/test-pipeline-postgres.mts
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          PGHOST: 127.0.0.1
+          PGPORT: '5432'
+          PGUSER: fixture
+          PGPASSWORD: fixture
+      - name: Account and integrated migration permissions on a private cluster
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-security-rls.mjs
+      - name: Durable social batch admission, leases and restart on native PostgreSQL
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-social-durable-postgres.mjs
+      - name: Client write permissions and atomic social history
+        run: |
+          SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-final-write-permissions.mjs
+          SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node scripts/test-final-social-history.mjs
+      - name: Social revocation routes with canonical timestamp and history triggers
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t06-integrated-retest-20261015/run-postgres.mjs history
+      - name: Schedule compare-and-swap through the actual route and query builder
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t01-closure-20261015/schedule-postgres-run.mjs
+      - name: Atomic partner quota, historical compatibility, backup and rollback
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t01-certification-20261019/partner-pg-run.mjs partner-pg-ci
+      - name: Atomic scheduler catch-up, cursor permissions, backup and rollback
+        run: |
+          SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t03-closure-20261020/run.mjs ci-r107 security
+          python3 qa/t01-closure-20261020/verify_catalogue.py qa/t03-closure-20261020/ci-r107/receipt.json
+      - name: Independent scheduler API, restart and cancellation countertests
+        run: SUTRA_TEST_PG_BIN="$(pg_config --bindir)" node qa/t07-autonomy-integrated-20261020/run.mjs ci-countertest "$(git rev-parse HEAD)"
+      - name: Durable HTTP route acknowledgement loss against disposable PostgreSQL
+        run: node --experimental-test-module-mocks --import tsx --test --test-concurrency=1 qa/t03-final-candidate-20261015/api-postgres.test.mts
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          PGHOST: 127.0.0.1
+          PGPORT: '5432'
+          PGUSER: fixture
+          PGPASSWORD: fixture
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
+          NEXT_PUBLIC_SUPABASE_URL: https://db.fixture.invalid
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: fixture-anon
+          SUPABASE_SERVICE_ROLE_KEY: fixture-service
+      - name: Salad isolated journal, concurrency and immutable artifacts
+        run: node --import tsx --test scripts/test-salad-persistence.mts
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          PGHOST: 127.0.0.1
+          PGPORT: '5432'
+          PGUSER: fixture
+          PGPASSWORD: fixture
+      - name: Lost completion acknowledgement and OAuth revocation races
+        run: node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t03-durable-reliability-20261014/postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts qa/t01-final-20261015/durable-postgres.test.mts
+        env:
+          SUTRA_DISPOSABLE_DB: '1'
+          PGHOST: 127.0.0.1
+          PGPORT: '5432'
+          PGUSER: fixture
+          PGPASSWORD: fixture
+          NODE_OPTIONS: --require=./qa/t08/offline.cjs
+          NEXT_PUBLIC_SUPABASE_URL: https://sutra-test.invalid
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: fixture-anon
+          SUPABASE_SERVICE_ROLE_KEY: fixture-service
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: sutra-database-results
+          path: |
+            test-results/ci/social-durable-postgres.json
+            qa/t03-closure-20261020/ci-r107
+            qa/t07-autonomy-integrated-20261020/ci-countertest
+            qa/t01-certification-20261019/partner-pg-ci
+          if-no-files-found: warn

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-const BASE = 'https://sutra.purama.dev'
+const BASE = process.env.E2E_BASE_URL ?? 'https://sutra.purama.dev'
 
 test.describe('Page /guide', () => {
   test('guide page requires auth - redirects to login', async ({ page }) => {

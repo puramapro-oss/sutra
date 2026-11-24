@@ -1,26 +1,15 @@
 import { NextResponse } from 'next/server'
+import { randomUUID } from 'node:crypto'
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-import { exchangeOAuthCode, type SocialPlatform } from '@/lib/zernio'
+import { getConnectedAccount, getAuthorizedProfileId, OAUTH_PLATFORMS, type SocialPlatform } from '@/lib/zernio'
+import { cookies } from 'next/headers'
+import { createServerClient } from '@/lib/supabase-server'
+import { consumeSocialOAuthState, socialOAuthCookieName } from '@/lib/social-oauth-state'
+import { publicOrigin } from '@/lib/public-origin'
+import { isSocialAccountId, readSocialOAuthAccount, readSocialOAuthExternalAccount, updateSocialOAuthAccount } from '@/lib/social-oauth-account'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
-
-const ALLOWED_PLATFORMS: readonly string[] = [
-  'tiktok',
-  'youtube',
-  'instagram',
-  'facebook',
-  'x',
-  'linkedin',
-  'pinterest',
-  'reddit',
-  'threads',
-  'snapchat',
-  'tumblr',
-  'mastodon',
-  'bluesky',
-  'vimeo',
-]
 
 function createPublicServiceClient() {
   return createSupabaseClient(
@@ -42,80 +31,109 @@ function redirectToSettings(baseUrl: string, params: Record<string, string>) {
 }
 
 export async function GET(req: Request) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin
+  const siteUrl = publicOrigin('https://sutra.purama.dev')
   try {
     const url = new URL(req.url)
-    const code = url.searchParams.get('code')
+    const connected = url.searchParams.get('connected')
+    const returnedProfileId = url.searchParams.get('profileId')
+    const accountId = url.searchParams.get('accountId')
+    const localAccountId = url.searchParams.get('sutraAccountId')
     const state = url.searchParams.get('state')
-    const platformParam = url.searchParams.get('platform')
+    const returnedPlatform = url.searchParams.get('platform')
+    const platformParam = returnedPlatform === 'twitter' ? 'x' : returnedPlatform
     const errorParam = url.searchParams.get('error')
 
-    if (errorParam) {
-      return redirectToSettings(siteUrl, { error: errorParam })
-    }
-
-    if (!code || !state || !platformParam) {
+    if (!state || !platformParam || (!errorParam && (!connected || !returnedProfileId || !accountId))) {
       return redirectToSettings(siteUrl, { error: 'missing_params' })
     }
 
-    if (!ALLOWED_PLATFORMS.includes(platformParam)) {
+    if (!(OAUTH_PLATFORMS as readonly string[]).includes(platformParam)) {
       return redirectToSettings(siteUrl, { error: 'invalid_platform' })
+    }
+    if (localAccountId !== null && !isSocialAccountId(localAccountId)) {
+      return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
     }
 
     const platform = platformParam as SocialPlatform
 
-    // State format: "userId:platform:random"
-    const stateParts = state.split(':')
-    if (stateParts.length < 3) {
-      return redirectToSettings(siteUrl, { error: 'invalid_state' })
+    const session = await createServerClient()
+    const { data: { user }, error: authError } = await session.auth.getUser()
+    if (authError || !user) return redirectToSettings(siteUrl, { error: 'session_required' })
+    const { data: claimsData, error: claimsError } = await session.auth.getClaims()
+    const sessionId = claimsData?.claims.session_id
+    if (claimsError || claimsData?.claims.sub !== user.id || typeof sessionId !== 'string') return redirectToSettings(siteUrl, { error: 'session_required' })
+    const profileId = getAuthorizedProfileId(user.id)
+    if (((!errorParam || returnedProfileId) && returnedProfileId !== profileId)
+      || ((!errorParam || connected) && connected !== (platform === 'x' ? 'twitter' : platform))) {
+      return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
     }
-    const userId = stateParts[0]
-    const statePlatform = stateParts[1]
-
-    if (statePlatform !== platform) {
-      return redirectToSettings(siteUrl, { error: 'state_mismatch' })
-    }
-
-    // Exchange OAuth code for account profile + tokens
-    const profile = await exchangeOAuthCode(platform, code, state)
-
+    const binding = { profileId, sessionId, ...(localAccountId ? { accountId: localAccountId } : {}) }
+    const cookieStore = await cookies()
+    const cookieName = socialOAuthCookieName(state)
     const client = createPublicServiceClient()
+    const account = await readSocialOAuthAccount(user.id, platform, client, localAccountId ?? undefined)
+    if (localAccountId && !account) return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
+    const consumed = await consumeSocialOAuthState(user.id, platform, state, cookieStore.get(cookieName)?.value, binding, undefined, account)
+    if (!consumed) return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
+    cookieStore.set(cookieName, '', { path: '/api/social', maxAge: 0, httpOnly: true,
+      secure: new URL(siteUrl).protocol === 'https:', sameSite: 'lax' })
+    // A denial ends this attempt too. It must not leave a reusable state or
+    // accept an unbound error query as a verified provider callback.
+    if (errorParam) return redirectToSettings(siteUrl, {
+      error: ['oauth_denied', 'access_denied'].includes(errorParam) ? 'oauth_denied' : 'oauth_failed',
+    })
+    const userId = user.id
+
+    // Zernio holds all platform tokens; verify the hosted result by a scoped server GET.
+    const profile = await getConnectedAccount(platform, profileId, accountId!)
+
+    // The provider GET awaited remote I/O. A reassigned profile must not become
+    // a new local authorization using the binding captured before that wait.
+    if (getAuthorizedProfileId(userId) !== profileId) {
+      return redirectToSettings(siteUrl, { error: 'invalid_or_expired_state' })
+    }
 
     if (!profile.externalId || !profile.username) {
       return redirectToSettings(siteUrl, { error: 'oauth_empty_profile' })
     }
+    if (account && profile.externalId !== account.external_id) {
+      return redirectToSettings(siteUrl, { error: 'account_identity_mismatch' })
+    }
+    // An add cannot reactivate/replace an existing account, especially one
+    // fenced by revocation. Reconnection requires its explicit, revision-bound ID.
+    if (!account && await readSocialOAuthExternalAccount(userId, platform, profile.externalId, client)) {
+      return redirectToSettings(siteUrl, { error: 'account_already_connected' })
+    }
 
-    const { error: upsertError } = await client
-      .from('social_accounts')
-      .upsert(
-        {
-          user_id: userId,
-          platform,
-          external_id: profile.externalId,
-          username: profile.username,
-          display_name: profile.displayName ?? null,
-          avatar_url: profile.avatarUrl ?? null,
-          access_token: profile.accessToken ?? null,
-          refresh_token: profile.refreshToken ?? null,
-          token_expires_at: profile.tokenExpiresAt ?? null,
-          status: 'connected',
-          metadata: {},
-          connected_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'user_id,platform' }
-      )
+    const record = {
+      user_id: userId,
+      platform,
+      external_id: profile.externalId,
+      username: profile.username,
+      display_name: profile.displayName ?? null,
+      avatar_url: profile.avatarUrl ?? null,
+      access_token: null,
+      refresh_token: null,
+      token_expires_at: null,
+      status: 'connected',
+      metadata: { zernio_profile_id: profileId, credential_owner: 'zernio', sutra_oauth_revision: randomUUID() },
+      connected_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }
+    // Adds rely on (user_id, platform, external_id) uniqueness, including races
+    // between independent callbacks. Reconnection keeps the row and uses CAS.
+    const saved = account
+      ? await updateSocialOAuthAccount(userId, account, record, client)
+      : await client.from('social_accounts').insert(record).select('id').maybeSingle()
 
-    if (upsertError) {
+    if (saved.error || !saved.data) {
       return redirectToSettings(siteUrl, {
-        error: 'db_error',
-        message: upsertError.message,
+        error: !account && saved.error?.code === '23505' ? 'account_already_connected' : 'db_error',
       })
     }
 
     return redirectToSettings(siteUrl, { connected: platform })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'oauth_exchange_failed'
-    return redirectToSettings(siteUrl, { error: 'oauth_failed', message })
+  } catch {
+    return redirectToSettings(siteUrl, { error: 'oauth_failed' })
   }
 }

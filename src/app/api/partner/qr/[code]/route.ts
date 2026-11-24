@@ -50,8 +50,7 @@ export async function GET(
         'Cache-Control': 'public, max-age=86400, s-maxage=86400',
       },
     })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur generation QR', details: message }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Erreur generation QR' }, { status: 500 })
   }
 }

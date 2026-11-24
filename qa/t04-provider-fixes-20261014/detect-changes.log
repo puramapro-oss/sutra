@@ -1,0 +1,34 @@
+Changes: 46 files, 32 symbols
+Affected processes: 16
+Risk level: critical
+
+Changed symbols:
+  Section BATON — SUTRA T01, production autorisée → BATON.md
+  Section 2026-10-14 — T01 clôture intégration et OVH, d8691d8 → BATON.md
+  Section ERRORS.md — sutra → ERRORS.md
+  Section Stratégie confirmée → ERRORS.md
+  Function inspectionFixture → scripts/test-salad-host.mts
+  Const probes → scripts/test-salad-host.mts
+  Property architecture → scripts/test-salad-host.mts
+  Property platform → scripts/test-salad-host.mts
+  Method fetcher → scripts/test-salad-host.mts
+  Function POST → src/app/api/production/route.ts
+  Function generateVoice → src/lib/elevenlabs.ts
+  Function cloneVoice → src/lib/elevenlabs.ts
+  Function submitVideoJob → src/lib/runpod.ts
+  Function pollVideoJob → src/lib/runpod.ts
+  Function generateAllScenes → src/lib/runpod.ts
+... and 17 more
+
+Affected execution flows:
+  • POST → PublicOrigin (3 steps) — changed: generateMusic
+  • POST → SunoBaseUrl (3 steps) — changed: generateMusic
+  • POST → SanitizeScriptData (3 steps) — changed: POST
+  • POST → HttpErrorMessage (3 steps) — changed: cloneVoice
+  • POST → FetchWithRetry (3 steps) — changed: generateMusic
+  • POST → Blocked (5 steps) — changed: generateMusic
+  • POST → BreakerKey (5 steps) — changed: generateMusic
+  • POST → Abort (5 steps) — changed: generateVoice
+  • POST → MissingEnvError (4 steps) — changed: generateMusic
+  • POST → FetchWithRetry (3 steps) — changed: generateVoice
+... and 6 more

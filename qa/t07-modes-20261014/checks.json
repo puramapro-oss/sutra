@@ -1,0 +1,59 @@
+{
+  "base": "14617333bfb21efe1f2a1c91888d3322dde20f5b",
+  "scope": "T07 UI local fixtures only",
+  "checks": [
+    {
+      "command": "node qa/t07-modes-20261014/browser.mjs",
+      "exitCode": 0,
+      "checks": 26,
+      "axeRuns": 27
+    },
+    {
+      "command": "node qa/t07-modes-20261014/browser.mjs --social-only",
+      "exitCode": 0,
+      "checks": 8,
+      "axeRuns": 7,
+      "reuse": "social product files unchanged since proof"
+    },
+    {
+      "command": "node qa/t07-modes-20261014/browser.mjs --capabilities-only",
+      "exitCode": 0,
+      "checks": 18,
+      "axeRuns": 17,
+      "reuse": "capabilities functions unchanged; subsequent product delta is GenerationErrorNotice only"
+    },
+    {
+      "command": "node qa/t07-modes-20261014/browser.mjs --capabilities-only --visual-only",
+      "exitCode": 0,
+      "checks": 4,
+      "axeRuns": 3,
+      "purpose": "missing complete notice screenshots"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
+      "exitCode": 0
+    },
+    {
+      "command": "ESLint nine changed product files and QA harness/fixtures, delta runs in lint*.txt",
+      "exitCode": 0,
+      "warnings": "22 preexisting unused imports in create/page.tsx; no new warnings"
+    },
+    {
+      "command": "gitleaks git --pre-commit --staged --redact=100 --no-banner --no-color",
+      "exitCode": 0,
+      "findings": 0
+    },
+    {
+      "command": "git diff --cached --check",
+      "exitCode": 0,
+      "note": "trailing blank lines in five tool-output logs normalized before final check"
+    }
+  ],
+  "limitations": [
+    "no live provider or generation",
+    "no production build repeated",
+    "no VoiceOver session",
+    "GitNexus truncated; HIGH expected UI flows",
+    "T01/T04 integration and real worker qualification pending"
+  ]
+}

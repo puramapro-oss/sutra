@@ -1,0 +1,36 @@
+
+  GitNexus Detect Changes (1.6.12)
+Changes: 722 files, 79 symbols
+Affected processes: 45
+Risk level: critical
+
+Changed symbols:
+  Const page → qa/t06-ux-social-ab935-20261019/browser.mjs
+  Const scenario → qa/t06-ux-social-ab935-20261019/browser.mjs
+  Const start → qa/t06-ux-social-ab935-20261019/browser.mjs
+  Function AchievementsPage → src/app/(dashboard)/achievements/page.tsx
+  Function MemoryPage → src/app/(dashboard)/auto/memory/page.tsx
+  Function AutopilotPage → src/app/(dashboard)/autopilot/page.tsx
+  Function BoutiquePage → src/app/(dashboard)/boutique/page.tsx
+  Function ChatPage → src/app/(dashboard)/chat/[id]/page.tsx
+  Function ClassementPage → src/app/(dashboard)/classement/page.tsx
+  Function ContestPage → src/app/(dashboard)/contest/page.tsx
+  Function FiscalClient → src/app/(dashboard)/fiscal/FiscalClient.tsx
+  Function GratitudePage → src/app/(dashboard)/gratitude/page.tsx
+  Function InvoicesPage → src/app/(dashboard)/invoices/page.tsx
+  Function DharmaPage → src/app/(dashboard)/karma/dharma/page.tsx
+  Function QueteRarePage → src/app/(dashboard)/karma/quete-rare/page.tsx
+... and 64 more
+
+Affected execution flows:
+  • GratitudePage → GetAwakeningLevel (4 steps) — changed: GratitudePage
+  • ClassementPage → Tick (3 steps) — changed: ClassementPage
+  • FiscalPage → Stat (3 steps) — changed: FiscalClient
+  • PublishPage → FetchData (3 steps) — changed: fetchData, usePublish, PublishPage
+  • TemplatesPage → FetchTemplates (3 steps) — changed: TemplatesPage
+  • VoicesPage → FetchVoices (3 steps) — changed: VoicesPage
+  • WalletPage → FormatDuration (5 steps) — changed: WalletPage
+  • GratitudePage → CreateClient (4 steps) — changed: GratitudePage
+  • MemoryPage → Error (3 steps) — changed: MemoryPage
+  • PartnerCoachPage → FormatDuration (4 steps) — changed: PartnerCoachPage
+... and 35 more

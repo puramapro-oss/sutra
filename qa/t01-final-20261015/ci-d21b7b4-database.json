@@ -1,0 +1,86 @@
+{
+  "candidate": "d21b7b4cdaf4d0a7699560af78cdd38cfb20d2b2",
+  "ciRun": 38677062190,
+  "jobId": 116232958643,
+  "observedAt": "2026-10-15T03:47:58.360191+00:00",
+  "status": "PASS",
+  "productionDatabaseTouched": false,
+  "groups": [
+    {
+      "step": "npm run test:migration-local",
+      "commands": [
+        "npm run test:migration-local"
+      ],
+      "status": "PASS",
+      "counts": {},
+      "summaryLines": []
+    },
+    {
+      "step": "node --import tsx --test scripts/test-pipeline-postgres.mts",
+      "commands": [
+        "node --import tsx --test scripts/test-pipeline-postgres.mts"
+      ],
+      "status": "PASS",
+      "counts": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      "summaryLines": []
+    },
+    {
+      "step": "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-security-rls.mjs",
+      "commands": [
+        "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-security-rls.mjs"
+      ],
+      "status": "PASS",
+      "counts": {},
+      "summaryLines": [
+        "RLS_LOCAL_PASS 261 assertions; baseline escalation reproduced; migration replayed; no remote DB"
+      ]
+    },
+    {
+      "step": "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-final-write-permissions.mjs",
+      "commands": [
+        "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-final-write-permissions.mjs",
+        "SUTRA_TEST_PG_BIN=\"$(pg_config --bindir)\" node scripts/test-final-social-history.mjs"
+      ],
+      "status": "PASS",
+      "counts": {},
+      "summaryLines": [
+        "{\"status\":\"PASS\",\"checks\":30,\"failures\":0,\"skips\":0,\"remote\":false}",
+        "{\"status\":\"PASS\",\"checks\":23,\"failures\":0,\"skips\":0,\"remote\":false,\"ownClusterStopped\":true}"
+      ]
+    },
+    {
+      "step": "node --import tsx --test scripts/test-salad-persistence.mts",
+      "commands": [
+        "node --import tsx --test scripts/test-salad-persistence.mts"
+      ],
+      "status": "PASS",
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      },
+      "summaryLines": []
+    },
+    {
+      "step": "node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t03-durable-reliability-20261014/postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts qa/t01-final-20261015/durable-postgres.test.mts",
+      "commands": [
+        "node --import tsx --test --test-concurrency=1 qa/t03-orchestration-fixes-20261014/finish-postgres.test.mts qa/t03-durable-reliability-20261014/postgres.test.mts qa/t06-social-recovery-20261014/test-postgres.mts qa/t01-final-20261015/durable-postgres.test.mts"
+      ],
+      "status": "PASS",
+      "counts": {
+        "tests": 46,
+        "pass": 46,
+        "fail": 0,
+        "skipped": 0
+      },
+      "summaryLines": []
+    }
+  ],
+  "source": "GitHub job log; step statuses confirmed in ci-d21b7b4-status.json"
+}

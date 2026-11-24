@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "image": "purama/sutra-candidate:e3b17117256269e281304cd4ab83bc722a6f7894-1791928971340914000",
+  "network": "none",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/login",
+      "status": 200
+    },
+    {
+      "path": "/api/points",
+      "status": 401
+    },
+    {
+      "path": "/api/video/status/00000000-0000-0000-0000-000000000000",
+      "status": 401
+    },
+    {
+      "path": "/api/media/b3duZXJzL3UvdGVzdC5tcDQ",
+      "status": 401
+    }
+  ]
+}

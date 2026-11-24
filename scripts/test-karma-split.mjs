@@ -10,24 +10,10 @@
 
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
-import { resolve, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
 
-const __dirname = dirname(fileURLToPath(import.meta.url))
-const rootDir = resolve(__dirname, '..')
-
-const envRaw = readFileSync(resolve(rootDir, '.env.local'), 'utf8')
-const env = Object.fromEntries(
-  envRaw
-    .split('\n')
-    .filter((l) => l && !l.startsWith('#') && l.includes('='))
-    .map((l) => {
-      const idx = l.indexOf('=')
-      return [l.slice(0, idx).trim(), l.slice(idx + 1).trim().replace(/^["']|["']$/g, '')]
-    }),
-)
+// Credentials, if explicitly used outside CI, must be injected by the operator.
+const env = process.env
 
 const DB = process.env.KARMA_SPLIT_DB === '1'
 

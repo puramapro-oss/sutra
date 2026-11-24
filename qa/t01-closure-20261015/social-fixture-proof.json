@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-10-15T21:24:50.401306+00:00",
+  "base": "e67998be01fe119f070af7071cadc63f8ff326e2",
+  "changedFile": "qa/final-delta-20261014/social-browser.mjs",
+  "sha256": "c24cf7a81d1d4c4c378dbe34c4a5f4995d72dfd4fefe9e4b695dc44d53d745b7",
+  "cause": "e679 quality CI: generic GET fixture lacks authoritative autopilot config; application correctly fails closed",
+  "before": {
+    "ci": 38807196677,
+    "pass": 21,
+    "fail": 4,
+    "skip": 0
+  },
+  "afterTargeted": {
+    "pass": 7,
+    "fail": 0,
+    "skip": 0,
+    "production": false,
+    "externalRequestsBlocked": true
+  },
+  "command": "SUTRA_T07_OUTPUT=<proof>/social-helper-final node qa/t07-frontend-fixes-20261014/t01-social-targeted.mjs",
+  "scope": "four unchanged socialFeedbackChecks + initial login + unexpected mutation and JS guards; targeted runner derives existing harness, CI still runs full original optimized suite",
+  "productChanges": false,
+  "remaining": "exact new commit CI production suite required"
+}

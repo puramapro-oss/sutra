@@ -1,0 +1,428 @@
+{
+  "candidateSha": "fcd0559f611831a57909c693694b92ccb81eba45",
+  "run": 39406352519,
+  "capturedAt": "2026-10-20T10:50:15.455165+00:00",
+  "complete": true,
+  "contracts": [
+    {
+      "name": "contracts",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "--test-concurrency=2",
+        "qa/t04-closure-79cd-20261020/music-contracts.test.mts",
+        "qa/t04-closure-79cd-20261020/music-provenance.test.mts",
+        "qa/t01-certification-20261019/coverr.test.mts",
+        "qa/t01-certification-20261019/partner-route.test.mts",
+        "qa/t02-final-ab935e5-20261019/diagnostics.test.mts",
+        "qa/t02-final-ab935e5-20261019/contact.test.mts",
+        "qa/t02-final-ab935e5-20261019/csrf-replay.test.mts",
+        "qa/t04-ack-ab935-20261019/stock-contracts.test.mts",
+        "qa/t04-ack-ab935-20261019/stock-route.test.mts",
+        "qa/t01-create-cancel-20261016/control.test.mts",
+        "qa/t01-create-cancel-20261016/client.test.mts",
+        "qa/t01-create-cancel-20261016/submission.test.mts",
+        "qa/t04-providers-final-20261015/contracts.test.mts",
+        "qa/t04-providers-final-20261015/ltx-body.test.mts",
+        "qa/t02-final-sha-security-20261015/admin-webhook.test.mts",
+        "qa/t06-final-integration-20261015/autopilot.test.mts",
+        "qa/t07-final-two-20261015/contracts.test.mjs",
+        "qa/t01-closure-20261015/schedule-cas.test.mts",
+        "qa/t01-closure-20261015/stock-boundary.test.mts",
+        "qa/t01-closure-20261015/shotstack-boundary.test.mts",
+        "qa/t07-scheduler-cancel-20261015/client-contracts.test.mts",
+        "qa/t07-scheduler-cancel-20261015/status-panel.test.tsx",
+        "qa/t01-closure-20261015/production-status.test.mts",
+        "qa/t01-closure-20261015/auto-config.test.mts",
+        "qa/t04-salad-access-20261015/validate-access.test.mjs",
+        "scripts/test-t02-rpc-security-production.mts",
+        "scripts/test-t02-rpc-security-dependencies.mts",
+        "scripts/test-t03-final-durable.mts",
+        "qa/t03-final-durable-20261015/cancel-ack.test.mts",
+        "scripts/test-t02-final-security-grants.mts",
+        "scripts/test-t06-final-social.mts",
+        "qa/t04-final-providers-20261015/container.test.mjs",
+        "qa/t04-final-providers-20261015/context.test.mjs",
+        "qa/t04-final-providers-20261015/salad-read.test.mjs",
+        "qa/t08-final-candidate-20261015/cancellation.test.mts",
+        "scripts/test-t06-social-validation.mts",
+        "qa/t04-provider-validation-20261014/probe.test.mjs",
+        "scripts/test-t02-final-validation-media.mts",
+        "qa/t02-final-validation-20261014/production-error.test.mts",
+        "qa/final-delta-20261014/social-feedback.test.mts",
+        "scripts/test-t03-orchestration-fixes.mts",
+        "scripts/test-t03-suno-recovery.mts",
+        "scripts/test-t04-provider-fixes.mts",
+        "scripts/test-t04-pollinations.mts",
+        "scripts/test-t02-security-fixes-storage.mts",
+        "scripts/test-t02-security-fixes-proof.mts",
+        "scripts/test-t02-security-fixes-session-media.mts",
+        "scripts/test-t02-security-fixes-ots.mts",
+        "scripts/test-t08-integration-journey.mts",
+        "scripts/test-salad-worker.mts",
+        "scripts/test-salad-host.mts",
+        "scripts/test-t03-salad-recovery.mts",
+        "qa/t02-salad-security-20261014/test-t02-salad-security-contract.mts",
+        "qa/t03-salad-recovery-20261014/adapter-recovery.test.mts",
+        "scripts/test-t06-social-final.mts",
+        "scripts/test-t08-final-modes.mts",
+        "scripts/test-insee.mjs",
+        "scripts/test-editor-export.mts",
+        "scripts/test-export-integration.mts",
+        "scripts/test-integration.mts",
+        "scripts/test-ltx-tiers.mjs",
+        "scripts/test-karma-split.mjs",
+        "scripts/test-api-contracts.mts",
+        "scripts/test-env-contracts.mts",
+        "scripts/test-suno-contract.mts",
+        "qa/t03-provider-complement-20261013/music-recovery.test.mts",
+        "qa/t08/providers-20261013/provider-contract-redteam.test.mts",
+        "scripts/test-local-engine.mts",
+        "scripts/test-shotstack-contracts.mts",
+        "scripts/test-production-queue.mts",
+        "scripts/test-auto-export-queue.mts",
+        "scripts/test-release-regressions.mts",
+        "scripts/test-video-contracts.mjs",
+        "scripts/test-opentimestamps.mjs",
+        "scripts/test-ltx-v2-media.mts",
+        "scripts/test-social-publication.mts",
+        "scripts/test-auth-session.mts",
+        "scripts/test-public-origin.mts",
+        "tooling/disposable-database.test.mjs",
+        "scripts/test-pipeline-interruptions.mts",
+        "scripts/test-pipeline-submit.mts",
+        "scripts/test-release-oauth.mts",
+        "scripts/test-zernio-oauth-contracts.mts",
+        "scripts/test-security-account.mts",
+        "scripts/test-t02-oauth-boundaries.mts",
+        "scripts/test-private-media.mts",
+        "scripts/test-security-media.mts",
+        "scripts/test-security-routes.mts",
+        "scripts/test-security-storage.mts",
+        "scripts/test-t06-social-autonomy.mts",
+        "scripts/test-t06-social-routes.mts",
+        "scripts/test-ltx-v2-contracts.mts",
+        "scripts/test-provider-safety.mts",
+        "src/lib/video-compositor.test.mts",
+        "src/lib/ffmpeg-concurrency.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 36531,
+      "counts": {
+        "tests": 1309,
+        "pass": 1302,
+        "fail": 0,
+        "skipped": 7
+      },
+      "log": "ci-contracts-artifact/test-results/ci/contracts/contracts.log",
+      "logSha256": "e19568374d98f8119d9b43e095acc7bbf2b669c6ce5b89c232e14da879b78dfa",
+      "skips": [
+        "﹣ LIVE: INSEE_API_KEY configured (0.135051ms) # SKIP",
+        "﹣ LIVE : SIRET INSEE Paris Club (47832593900021) → 200 avec denomination (0.158314ms) # SKIP",
+        "﹣ LIVE : SIRET fictif (99999999999999) → header.statut=404 (0.111687ms) # SKIP",
+        "﹣ LIVE : mauvaise clé → 401/403 (0.101359ms) # SKIP",
+        "﹣ DB : applique split sur invoice fake → archive + pool_balances + pool_transactions (0.124832ms) # SKIP",
+        "﹣ DB : insert dans video_generations + lecture + cleanup (0.11313ms) # SKIP",
+        "﹣ NETWORK : real stamp() → deserialize → fileDigest round-trip (0.157072ms) # SKIP"
+      ]
+    },
+    {
+      "name": "durable-submission",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t03-durable-reliability.mts",
+        "qa/t03-durable-reliability-20261014/submission.test.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1290,
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "ci-contracts-artifact/test-results/ci/contracts/durable-submission.log",
+      "logSha256": "9fe67b9e543620dfe366953f2770cec71a94735b37f64c079146008bc12edb6a"
+    },
+    {
+      "name": "schedule",
+      "command": [
+        "node",
+        "scripts/test-auto-schedule.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 106,
+      "counts": {},
+      "log": "ci-contracts-artifact/test-results/ci/contracts/schedule.log",
+      "logSha256": "54bf4634c01ee5a5638c3a9424aae237317f38388721938cb78dc023ea74f7f5"
+    },
+    {
+      "name": "composition",
+      "command": [
+        "node",
+        "scripts/test-auto-composition.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 86,
+      "counts": {},
+      "log": "ci-contracts-artifact/test-results/ci/contracts/composition.log",
+      "logSha256": "00aae1c052168aa3bb14a37dc14b2591ceb21a3f8ac06508b18ad2cf75a42725"
+    },
+    {
+      "name": "publication",
+      "command": [
+        "node",
+        "scripts/test-auto-publication.mjs"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 83,
+      "counts": {},
+      "log": "ci-contracts-artifact/test-results/ci/contracts/publication.log",
+      "logSha256": "f19352a492cc77c32ba0620803452edb76b9b10260ddf045f0ff3d190cdd3033"
+    }
+  ],
+  "media": [
+    {
+      "name": "retained-real-exports",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-real-export.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 62769,
+      "counts": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "ci-contracts-artifact/test-results/ci/media/retained-real-exports.log",
+      "logSha256": "8485f68105ec6a4e6ecc9f32db02b8f5e6fa5d6715e2f28bfa468931976d1934"
+    },
+    {
+      "name": "composition-delta",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-composition-fix.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 12030,
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "ci-contracts-artifact/test-results/ci/media/composition-delta.log",
+      "logSha256": "d033fa327d503931994757bed1290940dee7149d2577d0395e2b770844d0a49a"
+    },
+    {
+      "name": "final-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-final-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 73508,
+      "counts": {
+        "tests": 32,
+        "pass": 32,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "ci-contracts-artifact/test-results/ci/media/final-media.log",
+      "logSha256": "b5cd16e96046741d768ec8bc4b88b3d655d4d1aa11f5e1d69623136eda4454a0"
+    },
+    {
+      "name": "salad-media",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-t05-salad-media.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 8847,
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "ci-contracts-artifact/test-results/ci/media/salad-media.log",
+      "logSha256": "9db8c2f8cae344abee4c9aa0a2e40cc392957e7e366f0af864831f94eb338406"
+    },
+    {
+      "name": "local-engine",
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "--test",
+        "scripts/test-local-engine-e2e.mts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 1364,
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "ci-contracts-artifact/test-results/ci/media/local-engine.log",
+      "logSha256": "2f45983e822309d31ea5844703b4a31acb438f9855115095ef0309ec60decd79"
+    },
+    {
+      "name": "compositor",
+      "command": [
+        "node",
+        "--experimental-test-module-mocks",
+        "--import",
+        "tsx",
+        "--import",
+        "./scripts/helpers/local-media-fixture.mts",
+        "--test",
+        "--test-concurrency=1",
+        "src/lib/ffmpeg-compositor.test.ts",
+        "src/lib/ffmpeg-compositor-formats.test.ts",
+        "src/lib/media-validation.test.ts"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 63302,
+      "counts": {
+        "tests": 31,
+        "pass": 31,
+        "fail": 0,
+        "skipped": 0
+      },
+      "log": "ci-contracts-artifact/test-results/ci/media/compositor.log",
+      "logSha256": "7874fbca904f6073240ef60c59bf2d652f055017ad295e07b2de56e21c4a3c96"
+    }
+  ],
+  "overlapNotSummed": true,
+  "conclusion": "PASS",
+  "noGrandTotal": true,
+  "quality": {
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "productionBuild": "PASS",
+    "nativeHarness": {
+      "pass": 118,
+      "fail": 0,
+      "skip": 0
+    },
+    "t08BrowserRedteam": {
+      "checks": 210,
+      "status": "PASS"
+    },
+    "libraryPaginationContrast": {
+      "pass": 25,
+      "fail": 0,
+      "skip": 0
+    },
+    "integratedJourneys": {
+      "chromium": {
+        "pass": 258,
+        "fail": 0,
+        "skip": 0
+      },
+      "webkit": {
+        "pass": 160,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "oauthCreation": {
+      "chromium": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      },
+      "webkit": {
+        "pass": 15,
+        "fail": 0,
+        "skip": 0
+      }
+    },
+    "legacy": {
+      "startTime": "2026-10-20T10:39:50.437Z",
+      "duration": 476839.222,
+      "expected": 1022,
+      "skipped": 25,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "legacySkipDetail": "ci-legacy-skips.json",
+    "pythonGroups": [
+      77,
+      5,
+      25,
+      12,
+      8
+    ],
+    "pythonGroupsOverlap": true,
+    "npmProductionAudit": {
+      "exit": 0,
+      "low": 2,
+      "moderate": 5,
+      "high": 0,
+      "critical": 0
+    }
+  },
+  "scopeLimit": "Exact fcd0559 only; subsequent T06/T07/CI changes require new candidate validation. No provider, production DB, GPU, publication or deploy proof.",
+  "artifactManifests": {
+    "ci-quality-artifact": {
+      "files": 283,
+      "sha256": "2d2dbff63cb13cf301512d646df29164f44713c11098ef0cbf159a5b5ae708f4"
+    },
+    "ci-contracts-artifact": {
+      "files": 71,
+      "sha256": "efe35458b09a4e3a14bf7427046ad8d90410c1d44ec90e6f18fbc29a8495f743"
+    },
+    "ci-database-artifact": {
+      "files": 20,
+      "sha256": "4d0a699a39ef43c07f9437467f3a1246314da5c63414ed17afd568df34eb5fb2"
+    }
+  },
+  "scopeWarning": "PREDECESSOR ONLY: exact fcd0559, not post-fcd publication/UI/SQL countertest changes",
+  "evidenceDirectory": "/Users/matissdornier/purama/.coord/handoffs/SUTRA-20261012/T01-POSTCOMMIT-FCD0559-20261020"
+}

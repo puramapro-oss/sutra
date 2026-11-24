@@ -1,13 +1,8 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 
 // CRON toutes les 4h: génère 0-1 lightning deal aléatoire + clôt expirés
-function verifyCron(request: NextRequest): boolean {
-  const auth = request.headers.get('authorization')
-  const expected = process.env.CRON_SECRET
-  if (!expected) return true
-  return auth === `Bearer ${expected}`
-}
 
 const DEAL_TEMPLATES = [
   { title: 'Crée une vidéo en 10 min', action_label: 'Créer maintenant', action_type: 'create_video' as const, seeds: 1000 },
@@ -18,9 +13,8 @@ const DEAL_TEMPLATES = [
 ]
 
 export async function POST(request: NextRequest) {
-  if (!verifyCron(request)) {
-    return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   try {
     const service = createServiceClient()

@@ -1,0 +1,367 @@
+TAP version 13
+# (node:88244) ExperimentalWarning: Module mocking is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:88244) DeprecationWarning: mock.module(): options.namedExports is deprecated. Use options.exports instead.
+# Subtest: autopilot GET refuses anonymous before privileged access
+ok 1 - autopilot GET refuses anonymous before privileged access
+  ---
+  duration_ms: 2.403417
+  type: 'test'
+  ...
+# Subtest: autopilot GET refuses expired before privileged access
+ok 2 - autopilot GET refuses expired before privileged access
+  ---
+  duration_ms: 0.243958
+  type: 'test'
+  ...
+# Subtest: autopilot GET refuses revoked before privileged access
+ok 3 - autopilot GET refuses revoked before privileged access
+  ---
+  duration_ms: 0.198208
+  type: 'test'
+  ...
+# Subtest: autopilot GET sanitizes thrown auth diagnostics
+not ok 4 - autopilot GET sanitizes thrown auth diagnostics
+  ---
+  duration_ms: 1.904792
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3246'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+
+      {
+    +   details: 'T06_SYNTHETIC_PRIVATE_AUTOPILOT_DIAGNOSTIC',
+        error: 'Erreur interne'
+      }
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    error: 'Erreur interne'
+  actual:
+    error: 'Erreur interne'
+    details: 'T06_SYNTHETIC_PRIVATE_AUTOPILOT_DIAGNOSTIC'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:67:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot GET sanitizes thrown service diagnostics
+not ok 5 - autopilot GET sanitizes thrown service diagnostics
+  ---
+  duration_ms: 0.499375
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3246'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+
+      {
+    +   details: 'T06_SYNTHETIC_PRIVATE_AUTOPILOT_DIAGNOSTIC',
+        error: 'Erreur interne'
+      }
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    error: 'Erreur interne'
+  actual:
+    error: 'Erreur interne'
+    details: 'T06_SYNTHETIC_PRIVATE_AUTOPILOT_DIAGNOSTIC'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:67:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot GET sanitizes returned database diagnostics
+not ok 6 - autopilot GET sanitizes returned database diagnostics
+  ---
+  duration_ms: 0.302834
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3504'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    true !== false
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:76:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot GET sanitizes thrown database diagnostics
+not ok 7 - autopilot GET sanitizes thrown database diagnostics
+  ---
+  duration_ms: 0.174958
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3504'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    true !== false
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:76:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot POST refuses anonymous before privileged access
+ok 8 - autopilot POST refuses anonymous before privileged access
+  ---
+  duration_ms: 0.485333
+  type: 'test'
+  ...
+# Subtest: autopilot POST refuses expired before privileged access
+ok 9 - autopilot POST refuses expired before privileged access
+  ---
+  duration_ms: 0.159541
+  type: 'test'
+  ...
+# Subtest: autopilot POST refuses revoked before privileged access
+ok 10 - autopilot POST refuses revoked before privileged access
+  ---
+  duration_ms: 0.149167
+  type: 'test'
+  ...
+# Subtest: autopilot POST sanitizes thrown auth diagnostics
+not ok 11 - autopilot POST sanitizes thrown auth diagnostics
+  ---
+  duration_ms: 0.196708
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3246'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+
+      {
+    +   details: 'T06_SYNTHETIC_PRIVATE_AUTOPILOT_DIAGNOSTIC',
+        error: 'Erreur interne'
+      }
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    error: 'Erreur interne'
+  actual:
+    error: 'Erreur interne'
+    details: 'T06_SYNTHETIC_PRIVATE_AUTOPILOT_DIAGNOSTIC'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:67:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot POST sanitizes thrown service diagnostics
+not ok 12 - autopilot POST sanitizes thrown service diagnostics
+  ---
+  duration_ms: 0.633916
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3246'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+
+      {
+    +   details: 'T06_SYNTHETIC_PRIVATE_AUTOPILOT_DIAGNOSTIC',
+        error: 'Erreur interne'
+      }
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    error: 'Erreur interne'
+  actual:
+    error: 'Erreur interne'
+    details: 'T06_SYNTHETIC_PRIVATE_AUTOPILOT_DIAGNOSTIC'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:67:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot POST sanitizes returned database diagnostics
+not ok 13 - autopilot POST sanitizes returned database diagnostics
+  ---
+  duration_ms: 3.852209
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3504'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    true !== false
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:76:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot POST sanitizes thrown database diagnostics
+not ok 14 - autopilot POST sanitizes thrown database diagnostics
+  ---
+  duration_ms: 0.327416
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3504'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    true !== false
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:76:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot lazy insertion sanitizes returned diagnostics
+not ok 15 - autopilot lazy insertion sanitizes returned diagnostics
+  ---
+  duration_ms: 0.188042
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3902'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    true !== false
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:87:12)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot lazy insertion sanitizes thrown diagnostics
+not ok 16 - autopilot lazy insertion sanitizes thrown diagnostics
+  ---
+  duration_ms: 0.225625
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:3902'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+
+    true !== false
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:87:12)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot preserves saved configuration and user isolation
+ok 17 - autopilot preserves saved configuration and user isolation
+  ---
+  duration_ms: 0.207875
+  type: 'test'
+  ...
+# Subtest: autopilot lazy defaults never enable publication
+ok 18 - autopilot lazy defaults never enable publication
+  ---
+  duration_ms: 0.080917
+  type: 'test'
+  ...
+# Subtest: autopilot deduplicates destinations in first-selected order
+not ok 19 - autopilot deduplicates destinations in first-selected order
+  ---
+  duration_ms: 0.245625
+  type: 'test'
+  location: '/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:1:4802'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+
+      [
+        'youtube',
+        'x',
+    +   'youtube',
+    +   'x'
+      ]
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'youtube'
+    1: 'x'
+  actual:
+    0: 'youtube'
+    1: 'x'
+    2: 'youtube'
+    3: 'x'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/Users/matissdornier/purama-worktrees/sutra-t06-integrated-retest-20261015/qa/t06-final-integration-20261015/autopilot.test.mts:113:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: autopilot rejects invalid input {}
+ok 20 - autopilot rejects invalid input {}
+  ---
+  duration_ms: 0.276209
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":"true"}
+ok 21 - autopilot rejects invalid input {"enabled":"true"}
+  ---
+  duration_ms: 0.130042
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":false,"default_platforms":["unknown"]}
+ok 22 - autopilot rejects invalid input {"enabled":false,"default_platforms":["unknown"]}
+  ---
+  duration_ms: 0.142792
+  type: 'test'
+  ...
+# Subtest: autopilot rejects invalid input {"enabled":false,"max_hashtags":31}
+ok 23 - autopilot rejects invalid input {"enabled":false,"max_hashtags":31}
+  ---
+  duration_ms: 0.206125
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 12
+# fail 11
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 304.203

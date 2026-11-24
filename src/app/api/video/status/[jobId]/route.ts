@@ -1,55 +1,24 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase-server'
+import { createServiceClient } from '@/lib/supabase'
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ jobId: string }> }
-) {
+export async function GET(_req: Request, { params }: { params: Promise<{ jobId: string }> }) {
   try {
     const { jobId } = await params
-
-    const supabase = await createServerClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
-    }
-
-    if (!jobId || jobId.length < 5) {
+    const session = await createServerClient()
+    const { data: { user }, error: authError } = await session.auth.getUser()
+    if (authError || !user) return NextResponse.json({ error: 'Non autorise' }, { status: 401 })
+    if (!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(jobId)) {
       return NextResponse.json({ error: 'Job ID invalide' }, { status: 400 })
     }
-
-    const RUNPOD_API_KEY = process.env.RUNPOD_API_KEY
-    const RUNPOD_ENDPOINT_ID = process.env.RUNPOD_ENDPOINT_ID
-
-    if (!RUNPOD_API_KEY || !RUNPOD_ENDPOINT_ID) {
-      return NextResponse.json({ error: 'RunPod non configure' }, { status: 503 })
-    }
-
-    const res = await fetch(
-      `https://api.runpod.ai/v2/${RUNPOD_ENDPOINT_ID}/status/${jobId}`,
-      { headers: { Authorization: `Bearer ${RUNPOD_API_KEY}` } }
-    )
-
-    if (!res.ok) {
-      return NextResponse.json({ error: 'Impossible de recuperer le statut' }, { status: 502 })
-    }
-
-    const data = await res.json()
-
-    if (data.status === 'COMPLETED') {
-      const output = data.output?.images?.[0] ?? data.output?.video_url ?? data.output
-      const url = typeof output === 'string' ? output : output?.data ?? null
-      return NextResponse.json({ status: 'completed', url })
-    }
-
-    if (data.status === 'FAILED') {
-      return NextResponse.json({ status: 'failed', error: data.error ?? 'Generation echouee' })
-    }
-
-    return NextResponse.json({ status: data.status?.toLowerCase() ?? 'in_queue' })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Erreur interne'
-    return NextResponse.json({ error: 'Erreur verification statut', details: message }, { status: 500 })
+    const { data: job, error } = await createServiceClient().from('video_jobs')
+      .select('id,status,video_id,kind,progress').eq('id', jobId).eq('user_id', user.id).maybeSingle()
+    if (error) return NextResponse.json({ error: 'Statut indisponible' }, { status: 503 })
+    if (!job) return NextResponse.json({ error: 'Tache introuvable' }, { status: 404 })
+    return NextResponse.json({ jobId: job.id, videoId: job.video_id, status: job.status,
+      ...(job.kind === 'production' && job.status === 'done' ? { data: job.progress?.result } : {}),
+    }, { headers: { 'Cache-Control': 'no-store' } })
+  } catch {
+    return NextResponse.json({ error: 'Statut indisponible' }, { status: 503 })
   }
 }

@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 import { transferInternal, normalizeSubWallets } from '@/lib/smart-split'
@@ -10,10 +11,8 @@ import { sendNotification } from '@/lib/logger'
 const SOLIDAIRE_ASSO_USER_ID = process.env.ASSO_PURAMA_USER_ID // wallet dédié asso
 
 export async function POST(req: Request) {
-  const auth = req.headers.get('authorization')
-  if (auth !== `Bearer ${process.env.CRON_SECRET ?? 'dev'}`) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const authError = assertCronAuth(req)
+  if (authError) return authError
 
   const service = createServiceClient()
   const now = new Date()

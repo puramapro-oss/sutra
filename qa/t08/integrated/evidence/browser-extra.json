@@ -1,0 +1,33 @@
+[
+  {
+    "name": "T08 browser: stored markup remains inert in library and editor",
+    "status": "PASS",
+    "durationMs": 1344
+  },
+  {
+    "name": "T08 browser: failed export announces inert error and restores retry",
+    "status": "PASS",
+    "durationMs": 371
+  },
+  {
+    "name": "T08 browser: export retry preserves source clips and marks accepted work pending",
+    "status": "PASS",
+    "durationMs": 364
+  },
+  {
+    "name": "T08 browser: transport timeout restores export controls",
+    "status": "PASS",
+    "durationMs": 366
+  },
+  {
+    "name": "T08 browser: same-frame duplicate export dispatches one request",
+    "status": "FAIL",
+    "error": "AssertionError [ERR_ASSERTION]: duplicate export submissions\n\n2 !== 1\n",
+    "durationMs": 362
+  },
+  {
+    "name": "T08 browser: editor error/retry state remains accessible at 320px",
+    "status": "PASS",
+    "durationMs": 794
+  }
+]

@@ -1,3 +1,4 @@
+import { assertCronAuth } from '@/lib/cron-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase'
 
@@ -13,17 +14,10 @@ const THEMES_ROTATION = [
   { theme: 'Route ouverte', description: 'Mouvement, horizon, déplacement. Ton film de voyage en 20s.' },
 ]
 
-function verifyCron(request: NextRequest): boolean {
-  const auth = request.headers.get('authorization')
-  const expected = process.env.CRON_SECRET
-  if (!expected) return true
-  return auth === `Bearer ${expected}`
-}
 
 export async function POST(request: NextRequest) {
-  if (!verifyCron(request)) {
-    return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
-  }
+  const authError = assertCronAuth(request)
+  if (authError) return authError
 
   try {
     const service = createServiceClient()

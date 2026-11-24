@@ -81,7 +81,7 @@ export default function BatchInputMode({
               disabled={isProcessing}
             />
             <div className="mt-3 flex items-center justify-between">
-              <span className="text-xs text-white/40">
+              <span className="text-xs text-white/60">
                 {textInput.trim().split('\n').filter(Boolean).length} / {maxItems} lignes
               </span>
               <Button

@@ -1,18 +1,21 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { Modal } from '@/components/ui/Modal'
 import { toast } from 'sonner'
-import { cn } from '@/lib/utils'
 import { type SocialPlatform } from '@/lib/zernio'
+import { accountLabel, isAccountAvailable, MAX_SELECTED_ACCOUNTS, readSocialAccounts, type SocialAccount } from '@/components/settings/social/accounts'
 import { PublishTriggerButton } from './publish/PublishTriggerButton'
-import { PublishModalHeader } from './publish/PublishModalHeader'
 import { PublishVideoPreview } from './publish/PublishVideoPreview'
 import { PublishPlatformGrid } from './publish/PublishPlatformGrid'
 import { PublishCaptionSection } from './publish/PublishCaptionSection'
-import { PublishScheduleSection } from './publish/PublishScheduleSection'
+import { PublishScheduleSection, localDateTime } from './publish/PublishScheduleSection'
 import { PublishResultsSection, type PublishResultUI } from './publish/PublishResultsSection'
 import { PublishModalFooter } from './publish/PublishModalFooter'
+import { mergePublicationResults, normalizePublicationResults, readDurablePublicationReceipt, unknownPublicationResults } from './publish/publication-results'
+import { usePublicationReconciliation } from './publish/usePublicationReconciliation'
+import type { PublicationIntent, PublicationSnapshot } from './publish/publication-intent'
 
 export interface PublishEverywhereButtonProps {
   videoId: string
@@ -20,32 +23,33 @@ export interface PublishEverywhereButtonProps {
   videoUrl?: string
   variant?: 'primary' | 'secondary' | 'compact'
   defaultPlatforms?: SocialPlatform[]
+  defaultAccountIds?: string[]
   onPublishComplete?: (
-    results: Array<{ platform: SocialPlatform; success: boolean; postUrl?: string }>
-  ) => void
+    results: Array<{ platform: SocialPlatform; localAccountId?: string; accountId?: string; success: boolean; postUrl?: string }>
+  ) => void | Promise<void>
 }
 
-interface SocialAccount {
-  id: string
-  platform: SocialPlatform
-  username: string
+export function PublishEverywhereButton(props: PublishEverywhereButtonProps) {
+  return <PublishEverywhereButtonContent key={props.videoId} {...props} />
 }
 
-export function PublishEverywhereButton({
+function PublishEverywhereButtonContent({
   videoId,
   videoTitle,
   videoUrl,
   variant = 'primary',
   defaultPlatforms,
+  defaultAccountIds,
   onPublishComplete,
 }: PublishEverywhereButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [accounts, setAccounts] = useState<SocialAccount[]>([])
+  const [ownedAccounts, setOwnedAccounts] = useState<SocialAccount[]>([])
   const [accountsLoading, setAccountsLoading] = useState(false)
   const [accountsError, setAccountsError] = useState<string | null>(null)
-  const [selectedPlatforms, setSelectedPlatforms] = useState<Set<SocialPlatform>>(
-    new Set(defaultPlatforms ?? [])
-  )
+  const [selectedAccountIds, setSelectedAccountIds] = useState<Set<string>>(new Set())
+  const initialDefaults = useRef({ platforms: defaultPlatforms ?? [], accountIds: defaultAccountIds })
+  const defaultsApplied = useRef(false)
   const [captionMode, setCaptionMode] = useState<'auto' | 'custom'>('auto')
   const [customCaption, setCustomCaption] = useState('')
   const [autoHashtags, setAutoHashtags] = useState(true)
@@ -54,236 +58,232 @@ export function PublishEverywhereButton({
   const [publishing, setPublishing] = useState(false)
   const [results, setResults] = useState<PublishResultUI[] | null>(null)
 
-  const connectedPlatforms = useMemo(() => {
-    const set = new Set<SocialPlatform>()
-    accounts.forEach((a) => set.add(a.platform))
-    return set
-  }, [accounts])
+  const [submissionError, setSubmissionError] = useState<string | null>(null)
+  const accountRequest = useRef<AbortController | null>(null)
+  const publicationRequest = useRef<AbortController | null>(null)
+  const publicationVersion = useRef(0)
+  const submitting = useRef(false)
+  const submitted = useRef<{ payload: PublicationIntent; accounts: SocialAccount[] } | null>(null)
+  const [submittedSnapshot, setSubmittedSnapshot] = useState<PublicationSnapshot | null>(null)
+  const { canVerify, verifying, readingJournal, verificationError, verify, cancelJournalRead, canPrepare, pollingPaused, resetPolling } = usePublicationReconciliation({
+    videoId, isOpen, accounts: ownedAccounts, setSnapshot: setSubmittedSnapshot,
+    snapshot: submittedSnapshot, results, setResults, submittingRef: submitting, requestRef: publicationRequest, versionRef: publicationVersion,
+  })
+  // A sibling account's success or uncertainty must not affect a confirmed failure.
+  // Reconnection to a different external identity is never a retry destination.
+  const retryAccountIds = new Set((results ?? []).filter(result => (submittedSnapshot?.durable === true
+    ? result.canRequestRetry === true && (result.status === 'failed' || (result.status === 'unknown' && result.deliveryState === 'blocked'))
+    : result.status === 'failed' && result.retryEligible === true) && result.localAccountId
+    && submittedSnapshot?.accounts.some(original => original.id === result.localAccountId
+      && original.platform === result.platform
+      && accounts.some(current => current.id === original.id && current.platform === original.platform
+        && current.external_id === original.external_id && isAccountAvailable(current))))
+    .map(result => result.localAccountId!))
+  const targets = results ? retryAccountIds : selectedAccountIds
 
-  const fetchAccounts = useCallback(async () => {
-    setAccountsLoading(true)
-    setAccountsError(null)
-    try {
-      const res = await fetch('/api/social/accounts', { credentials: 'include' })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = (await res.json()) as {
-        accounts?: Array<{ id: string; platform: string; username: string }>
-      }
-      const list = (data.accounts ?? []).map((a) => ({
-        id: a.id,
-        platform: a.platform as SocialPlatform,
-        username: a.username,
-      }))
+  const loadAccounts = useCallback(() => {
+    accountRequest.current?.abort()
+    const controller = new AbortController()
+    accountRequest.current = controller
+    const timer = setTimeout(() => controller.abort(), 8000)
+    return fetch('/api/social/accounts', { credentials: 'include', cache: 'no-store', signal: controller.signal }).then(async res => {
+      if (!res.ok) throw new Error('accounts_unavailable')
+      const data = await res.json()
+      const owned = readSocialAccounts(data.accounts)
+      const list = owned.filter(account => isAccountAvailable(account))
+      if (accountRequest.current !== controller) return
+      controller.signal.throwIfAborted()
+      setOwnedAccounts(owned)
       setAccounts(list)
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Erreur chargement comptes'
-      setAccountsError(msg)
-    } finally {
-      setAccountsLoading(false)
-    }
+      if (!defaultsApplied.current) {
+        defaultsApplied.current = true
+        const explicit = initialDefaults.current.accountIds
+        const defaults = list.filter(account => explicit !== undefined
+          ? explicit.includes(account.id)
+          : initialDefaults.current.platforms.includes(account.platform)
+            && list.filter(other => other.platform === account.platform).length === 1)
+        setSelectedAccountIds(new Set(defaults.length <= MAX_SELECTED_ACCOUNTS ? defaults.map(account => account.id) : []))
+      } else {
+        setSelectedAccountIds(previous => new Set([...previous].filter(id => list.some(account => account.id === id))))
+      }
+    }).catch(() => {
+      if (accountRequest.current === controller) setAccountsError('Impossible de vérifier les comptes. Réessaie ou ouvre les paramètres sociaux.')
+    }).finally(() => {
+      clearTimeout(timer)
+      if (accountRequest.current === controller) setAccountsLoading(false)
+    })
   }, [])
 
   useEffect(() => {
-    if (isOpen) {
-      void fetchAccounts()
-      setResults(null)
-    }
-  }, [isOpen, fetchAccounts])
+    if (isOpen) void loadAccounts()
+    return () => { accountRequest.current?.abort(); accountRequest.current = null }
+  }, [isOpen, loadAccounts])
 
-  const togglePlatform = useCallback(
-    (platform: SocialPlatform) => {
-      if (!connectedPlatforms.has(platform)) return
-      setSelectedPlatforms((prev) => {
+  useEffect(() => () => { publicationVersion.current++; publicationRequest.current?.abort(); publicationRequest.current = null }, [])
+
+  const fetchAccounts = useCallback(() => {
+    setAccountsLoading(true)
+    setAccountsError(null)
+    setAccounts([])
+    return loadAccounts()
+  }, [loadAccounts])
+
+  const open = () => {
+    resetPolling()
+    setAccountsLoading(true)
+    setAccountsError(null)
+    setAccounts([])
+    setIsOpen(true)
+  }
+
+  const toggleAccount = useCallback(
+    (accountId: string) => {
+      if (submitting.current || results) return
+      setSelectedAccountIds((prev) => {
         const next = new Set(prev)
-        if (next.has(platform)) next.delete(platform)
-        else next.add(platform)
+        if (next.has(accountId)) next.delete(accountId)
+        else if (next.size < MAX_SELECTED_ACCOUNTS && accounts.some(account => account.id === accountId && isAccountAvailable(account))) next.add(accountId)
         return next
       })
     },
-    [connectedPlatforms]
+    [accounts, results]
   )
 
   const selectAll = useCallback(() => {
-    const all = new Set<SocialPlatform>()
-    accounts.forEach((a) => all.add(a.platform))
-    setSelectedPlatforms(all)
-  }, [accounts])
+    if (submitting.current || results) return
+    const available = accounts.filter(account => isAccountAvailable(account))
+    if (available.length <= MAX_SELECTED_ACCOUNTS) setSelectedAccountIds(new Set(available.map(account => account.id)))
+  }, [accounts, results])
 
   const deselectAll = useCallback(() => {
-    setSelectedPlatforms(new Set())
-  }, [])
+    if (submitting.current || results) return
+    setSelectedAccountIds(new Set())
+  }, [results])
 
-  const handlePublish = useCallback(async () => {
-    if (selectedPlatforms.size === 0) {
-      toast.error('Selectionne au moins une plateforme')
+  const handlePublish = async () => {
+    if (submitting.current || !canPrepare || accountsLoading || accountsError || !targets.size) return
+    if (results && !retryAccountIds.size) return
+    const selectedAccounts = accounts.filter(account => targets.has(account.id) && isAccountAvailable(account))
+    if (selectedAccounts.length !== targets.size) {
+      setSubmissionError('Un compte sélectionné n’est plus disponible. Vérifie les connexions avant de confirmer.')
       return
     }
-    if (schedule === 'later' && !scheduledAt) {
-      toast.error('Choisis une date de programmation')
+    if (!selectedAccounts.length || selectedAccounts.length > MAX_SELECTED_ACCOUNTS) return
+    const platforms = [...new Set(selectedAccounts.map(account => account.platform))]
+    const destinations = selectedAccounts.map(account => ({ platform: account.platform, accountId: account.id }))
+    setSubmissionError(null)
+    let instant: Date | undefined
+    if (!submitted.current && !submittedSnapshot?.durable && schedule === 'later') {
+      instant = new Date(scheduledAt)
+      if (!Number.isFinite(instant.getTime()) || localDateTime(instant) !== scheduledAt || instant.getTime() <= Date.now()) {
+        setSubmissionError('Choisis une date et une heure futures valides dans le fuseau indiqué. Une heure supprimée par le changement d’heure est refusée.')
+        return
+      }
+    }
+    if (!submitted.current && !submittedSnapshot?.durable && captionMode === 'custom' && !customCaption.trim()) {
+      setSubmissionError('Ajoute une légende avant de confirmer la publication.')
       return
     }
-    if (captionMode === 'custom' && customCaption.trim().length === 0) {
-      toast.error('Saisis une caption ou choisis le mode auto')
-      return
-    }
-
+    const payload: PublicationIntent = submittedSnapshot?.durable === true
+      ? { videoId, platforms, destinations, autoCaption: false }
+      : submitted.current
+      ? { ...submitted.current.payload, platforms, destinations }
+      : { videoId, platforms, destinations,
+        autoCaption: captionMode === 'auto', ...(captionMode === 'custom' ? { caption: customCaption.trim() } : {}),
+        ...(!autoHashtags ? { hashtags: [] } : {}), ...(instant ? { scheduledAt: instant.toISOString() } : {}) }
+    submitted.current ??= { payload, accounts: selectedAccounts.map(account => ({ ...account })) }
+    const intentSnapshot: PublicationSnapshot = submittedSnapshot?.durable === true ? submittedSnapshot
+      : { ...submitted.current, videoId, destinations: submitted.current.payload.destinations }
+    setSubmittedSnapshot(intentSnapshot)
+    submitting.current = true
+    const controller = new AbortController()
+    const version = ++publicationVersion.current
+    let receivedResults: PublishResultUI[] | null = null
+    publicationRequest.current = controller
+    const current = () => publicationRequest.current === controller
+    const timeout = setTimeout(() => controller.abort(), 30_000)
     setPublishing(true)
-    setResults(null)
-
     try {
-      const payload: Record<string, unknown> = {
-        videoId,
-        platforms: Array.from(selectedPlatforms),
-        autoCaption: captionMode === 'auto',
-      }
-      if (captionMode === 'custom') {
-        payload.caption = customCaption
-      }
-      if (!autoHashtags) {
-        payload.hashtags = []
-      }
-      if (schedule === 'later' && scheduledAt) {
-        payload.scheduledAt = new Date(scheduledAt).toISOString()
-      }
-
       const res = await fetch('/api/social/publish', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(payload),
+        method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload), signal: controller.signal,
       })
-
-      const data = (await res.json().catch(() => ({}))) as {
-        results?: PublishResultUI[]
-        error?: string
-        message?: string
-      }
-
-      if (!res.ok) {
-        throw new Error(data.message ?? data.error ?? `HTTP ${res.status}`)
-      }
-
-      const list = data.results ?? []
-      setResults(list)
-
-      const successCount = list.filter((r) => r.success).length
-      const failCount = list.length - successCount
-
-      if (successCount > 0 && failCount === 0) {
-        toast.success(
-          schedule === 'later'
-            ? `Programme sur ${successCount} plateforme(s)`
-            : `Publie sur ${successCount} plateforme(s)`
-        )
-      } else if (successCount > 0) {
-        toast.warning(`${successCount} reussie(s), ${failCount} echouee(s)`)
+      if (!res.ok) throw new Error('publication_unconfirmed')
+      const data = await res.json()
+      if (!current()) return
+      controller.signal.throwIfAborted()
+      if (!Array.isArray(data.results) || !data.results.length) throw new Error('publication_unconfirmed')
+      let list: PublishResultUI[]
+      if (data.durable === true) {
+        const receipt = readDurablePublicationReceipt({ ...data, destinations: data.destinations ?? payload.destinations },
+          videoId, ownedAccounts, intentSnapshot)
+        list = receipt.results
+        setSubmittedSnapshot(receipt.snapshot)
       } else {
-        toast.error('Toutes les publications ont echoue')
+        list = normalizePublicationResults(data.results, selectedAccounts).map(result => ({ ...result, retryEligible: result.status === 'failed' }))
+        setSubmittedSnapshot({ ...intentSnapshot, durable: false })
       }
-
-      onPublishComplete?.(
-        list.map((r) => ({ platform: r.platform, success: r.success, postUrl: r.postUrl }))
-      )
-
-      if (failCount === 0 && successCount > 0) {
-        setTimeout(() => setIsOpen(false), 3000)
-      }
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Erreur publication'
-      toast.error(msg)
+      receivedResults = list
+      setResults(previous => mergePublicationResults(previous, list))
+      if (list.every(r => r.status === 'published')) toast.success('Publication confirmée sur les destinations sélectionnées.')
+      else if (list.every(r => r.status === 'scheduled')) toast.info('Publication programmée. Elle n’a pas encore été publiée.')
+    } catch {
+      if (!current()) return
+      // A lost response is not a confirmed failure. Never offer a second POST.
+      setResults(previous => mergePublicationResults(previous, unknownPublicationResults(selectedAccounts)))
+      setSubmissionError('Le résultat n’est pas confirmé. Consulte le suivi avant toute nouvelle action : la publication a peut-être été reçue.')
     } finally {
-      setPublishing(false)
+      clearTimeout(timeout)
+      if (current()) { publicationRequest.current = null; submitting.current = false; setPublishing(false) }
     }
-  }, [
-    selectedPlatforms,
-    schedule,
-    scheduledAt,
-    captionMode,
-    customCaption,
-    autoHashtags,
-    videoId,
-    onPublishComplete,
-  ])
+    if (receivedResults && publicationVersion.current === version) {
+      // Refreshing the parent is separate from the provider's publication evidence.
+      try {
+        await onPublishComplete?.(receivedResults.map(r => ({ platform: r.platform, localAccountId: r.localAccountId, accountId: r.accountId, success: r.success, postUrl: r.postUrl })))
+      } catch {
+        if (publicationVersion.current === version) setSubmissionError('Les résultats de publication sont conservés. L’actualisation de la page a échoué ; consulte le suivi des publications.')
+      }
+    }
+  }
 
+  const close = () => {
+    if (submitting.current && !cancelJournalRead()) return
+    setIsOpen(false)
+  }
+  const labeledResults = results?.map(result => {
+    const account = ownedAccounts.find(item => item.id === result.localAccountId && item.platform === result.platform
+      && item.external_id === result.accountId)
+    return account ? { ...result, accountLabel: accountLabel(account) } : result
+  }) ?? null
   return (
     <>
-      <PublishTriggerButton videoId={videoId} variant={variant} onClick={() => setIsOpen(true)} />
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => !publishing && setIsOpen(false)}
-            className="fixed inset-0 z-[1000] flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-sm p-0 sm:p-4"
-            data-testid="publish-everywhere-modal"
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 40, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 40, scale: 0.96 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              onClick={(e) => e.stopPropagation()}
-              className={cn(
-                'relative w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto',
-                'bg-[#0c0b14]/95 backdrop-blur-2xl',
-                'border border-white/[0.06] rounded-t-2xl sm:rounded-2xl',
-                'shadow-2xl shadow-violet-500/10'
-              )}
-            >
-              <PublishModalHeader
-                videoTitle={videoTitle}
-                onClose={() => setIsOpen(false)}
-                publishing={publishing}
-              />
-
-              <div className="px-5 py-5 space-y-6">
-                <PublishVideoPreview videoUrl={videoUrl} />
-
-                <PublishPlatformGrid
-                  accounts={accounts}
-                  selectedPlatforms={selectedPlatforms}
-                  onTogglePlatform={togglePlatform}
-                  onSelectAll={selectAll}
-                  onDeselectAll={deselectAll}
-                  accountsLoading={accountsLoading}
-                  accountsError={accountsError}
-                  onRetryFetch={fetchAccounts}
-                />
-
-                <PublishCaptionSection
-                  captionMode={captionMode}
-                  customCaption={customCaption}
-                  autoHashtags={autoHashtags}
-                  onCaptionModeChange={setCaptionMode}
-                  onCustomCaptionChange={setCustomCaption}
-                  onAutoHashtagsChange={setAutoHashtags}
-                />
-
-                <PublishScheduleSection
-                  schedule={schedule}
-                  scheduledAt={scheduledAt}
-                  onScheduleChange={setSchedule}
-                  onScheduledAtChange={setScheduledAt}
-                />
-
-                <PublishResultsSection results={results} />
-              </div>
-
-              <PublishModalFooter
-                onCancel={() => setIsOpen(false)}
-                onPublish={handlePublish}
-                publishing={publishing}
-                selectedPlatforms={selectedPlatforms}
-                schedule={schedule}
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <PublishTriggerButton videoId={videoId} variant={variant} onClick={open} />
+      <Modal open={isOpen} onClose={close} title="Publier sur les réseaux sociaux" className="sm:max-w-2xl" data-testid="publish-everywhere-modal">
+        <p className="mb-4 break-words text-sm text-white/70">{videoTitle}</p>
+        <div className="space-y-5" aria-busy={publishing || verifying}>
+          <PublishVideoPreview videoUrl={videoUrl} />
+          <PublishPlatformGrid accounts={accounts} selectedAccountIds={selectedAccountIds}
+            onToggleAccount={toggleAccount} onSelectAll={selectAll} onDeselectAll={deselectAll}
+            selectionLocked={publishing || verifying || results !== null}
+            accountsLoading={accountsLoading} accountsError={accountsError} onRetryFetch={fetchAccounts} />
+          <fieldset disabled={publishing || verifying || results !== null} className="min-w-0 space-y-5">
+            <legend className="sr-only">Préparer la publication</legend>
+            <PublishCaptionSection captionMode={captionMode} customCaption={customCaption} autoHashtags={autoHashtags}
+              onCaptionModeChange={setCaptionMode} onCustomCaptionChange={setCustomCaption} onAutoHashtagsChange={setAutoHashtags} />
+            <PublishScheduleSection schedule={schedule} scheduledAt={scheduledAt} onScheduleChange={setSchedule} onScheduledAtChange={setScheduledAt} />
+          </fieldset>
+          {submissionError && <p role="alert" className="text-sm text-red-300">{submissionError}</p>}
+          {verificationError && <p role="alert" className="text-sm text-amber-200">{verificationError}</p>}
+          {pollingPaused && <p className="text-sm text-white/70">L’actualisation automatique est en pause. Le traitement continue en arrière-plan ; utilise « Vérifier l’état » pour actualiser le suivi.</p>}
+          <PublishResultsSection results={labeledResults} />
+          {results ? <Link href="/publish" className="inline-block text-sm text-violet-300 underline">Consulter le suivi des publications</Link>
+            : <p className="text-sm text-white/70">Vérifie la vidéo, les comptes et la date. Le bouton ci-dessous confirme ton envoi vers les destinations sélectionnées.</p>}
+          <PublishModalFooter onCancel={close} onPublish={handlePublish} publishing={publishing} verifying={verifying} canVerify={canVerify}
+            canCloseWhileVerifying={readingJournal}
+            onVerify={results || verificationError ? () => { setSubmissionError(null); void verify() } : undefined}
+            selectedCount={!canPrepare || accountsLoading || accountsError ? 0 : targets.size} schedule={schedule} retry={results !== null} />
+        </div>
+      </Modal>
     </>
   )
 }

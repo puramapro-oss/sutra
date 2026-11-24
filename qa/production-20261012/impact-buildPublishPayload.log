@@ -1,0 +1,392 @@
+{
+  "target": {
+    "id": "Function:src/lib/zernio.ts:buildPublishPayload",
+    "name": "buildPublishPayload",
+    "type": "Function",
+    "filePath": "src/lib/zernio.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 16,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 2,
+    "modules_affected": 4
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 6,
+    "3": 8
+  },
+  "affected_processes": [
+    {
+      "name": "GET",
+      "type": "Function",
+      "filePath": "src/app/api/cron/sutra-auto/route.ts",
+      "affected_process_count": 8,
+      "total_hits": 24,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "runPublicationJournal",
+      "type": "Function",
+      "filePath": "src/lib/publication-journal.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Publish",
+      "hits": 5,
+      "impact": "indirect"
+    },
+    {
+      "name": "Cluster_229",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Scripts",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Stripe",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/lib/publication-journal.ts:runPublicationJournal",
+        "name": "runPublicationJournal",
+        "filePath": "src/lib/publication-journal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_17_get",
+            "label": "GET → Abort",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_24_get",
+            "label": "GET → Headers",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_37_get",
+            "label": "GET → PublicationOutcome",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_0_get",
+            "label": "GET → FetchWithRetry",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_16_get",
+            "label": "GET → BreakerKey",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_22_get",
+            "label": "GET → ContentWithTags",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_202_get",
+            "label": "GET → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_48_runpublicationjourna",
+            "label": "RunPublicationJournal → PublicPostUrl",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_23_get",
+            "label": "GET → ProviderPlatform",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_115_runpublicationjourna",
+            "label": "RunPublicationJournal → ProviderPlatform",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_191_runpublicationjourna",
+            "label": "RunPublicationJournal → FetchWithRetry",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/lib/zernio.ts:publishToPlatforms",
+        "name": "publishToPlatforms",
+        "filePath": "src/lib/zernio.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:src/lib/publication-journal.ts",
+        "name": "publication-journal.ts",
+        "filePath": "src/lib/publication-journal.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/auto-publication.ts:publishAutoVideo",
+        "name": "publishAutoVideo",
+        "filePath": "src/lib/auto-publication.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/auto-publication.ts:publishAutoVideoRecord",
+        "name": "publishAutoVideoRecord",
+        "filePath": "src/lib/auto-publication.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_24_get",
+            "label": "GET → Headers",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_37_get",
+            "label": "GET → PublicationOutcome",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_0_get",
+            "label": "GET → FetchWithRetry",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_16_get",
+            "label": "GET → BreakerKey",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_22_get",
+            "label": "GET → ContentWithTags",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_202_get",
+            "label": "GET → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_17_get",
+            "label": "GET → Abort",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_23_get",
+            "label": "GET → ProviderPlatform",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/social-publication.ts:publishVideoRecord",
+        "name": "publishVideoRecord",
+        "filePath": "src/lib/social-publication.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/zernio.ts:replayPublication",
+        "name": "replayPublication",
+        "filePath": "src/lib/zernio.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/lib/zernio.ts:schedulePublication",
+        "name": "schedulePublication",
+        "filePath": "src/lib/zernio.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:scripts/helpers/social-database.mts",
+        "name": "social-database.mts",
+        "filePath": "scripts/helpers/social-database.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:scripts/test-t06-social-autonomy.mts",
+        "name": "test-t06-social-autonomy.mts",
+        "filePath": "scripts/test-t06-social-autonomy.mts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/auto-publication.ts",
+        "name": "auto-publication.ts",
+        "filePath": "src/lib/auto-publication.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/lib/social-publication.ts",
+        "name": "social-publication.ts",
+        "filePath": "src/lib/social-publication.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/auto/publish/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/auto/publish/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/cron/sutra-auto/route.ts:GET",
+        "name": "GET",
+        "filePath": "src/app/api/cron/sutra-auto/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_24_get",
+            "label": "GET → Headers",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_37_get",
+            "label": "GET → PublicationOutcome",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_0_get",
+            "label": "GET → FetchWithRetry",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_16_get",
+            "label": "GET → BreakerKey",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_22_get",
+            "label": "GET → ContentWithTags",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_202_get",
+            "label": "GET → CreateServiceClient",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_17_get",
+            "label": "GET → Abort",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_23_get",
+            "label": "GET → ProviderPlatform",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/app/api/social/publish/route.ts:POST",
+        "name": "POST",
+        "filePath": "src/app/api/social/publish/route.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/lib/video-pipeline.ts:triggerAutopilot",
+        "name": "triggerAutopilot",
+        "filePath": "src/lib/video-pipeline.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "status": "behind",
+    "commitsBehind": 3,
+    "hint": "⚠️ Index is 3 commits behind HEAD. Run analyze tool to update."
+  }
+}
+
+  GitNexus Impact (1.6.12)
+{"level":40,"time":1791839724852,"name":"gitnexus","name":"samaya-rgpd-rate-review","storagePath":"/private/tmp/gitnexus-samaya-rgpd-rate-limit","state":"owned","hasCodeIndexDB":false,"msg":"Skipping registry entry during validation because its storage is not a usable owned code index."}

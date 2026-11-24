@@ -1,0 +1,19 @@
+# T08 → T01/T09 — recette indépendante79cd
+
+**NON PRÊT**. SHA examiné **79cd95bfdb3e5837e2a78e45efaea444cb8dcf8a**, branche QA `codex/sutra-t08-closure-79cd95b-20261020`. Aucun produit modifié, aucune fusion/push, production, migration distante, dépense, GPU ou publication réelle.
+
+Rapport complet : [qa/t08-closure-20261020/README.md](qa/t08-closure-20261020/README.md). Matrice : [MATRIX.md](qa/t08-closure-20261020/MATRIX.md), [JSON](qa/t08-closure-20261020/matrix.json). **89 PASS /12 FAIL /6 BLOCKED /12 NOT TESTED** sur119 exigences. Les FAIL de banc et de disponibilité sont identifiés séparément des défauts produit; aucun rouge ignoré.
+
+T08 a vérifié directement les métadonnées de CI39328438907, les digests des artefacts et logs quality/PG, et1188blobs du candidat. Installation propre/typecheck/lint/build CI PASS; aucun rebuild global identique. Contrats1261PASS/7SKIP, legacy1022PASS/25SKIP,26familles Chromium/WebKit vertes : couverture bornée qui ne ferme pas les nouveaux contre-exemples.
+
+Réexécutions indépendantes : parcours intégré simulé13PASS; sécurité23PASS; Coverr4PASS;5contre-exemples anciens corrigés PASS; musique3FAIL; callback6FAIL; navigateur publication25PASS dans chacun des moteurs, mais suites complètes NON PASS (Chrome28/1, WebKit arrêt après25); nouveau parcours social9PASS/5FAIL. Voir commandes/dates/SHA/logs dans les enveloppes JSON. CPU médias synthétiques réels et PostgreSQL privé réel viennent des preuves CI/propriétaires clairement attribuées; aucun fournisseur réel génératif.
+
+Dix anciens FAIL clos sur79cd : R80,R100–106,R108,R109. R107 (T03, rattrapage longue panne) et R92 (T01, OVH arrêtée et sourceab935) restent FAIL. Nouveaux R110–112 musiqueT04, R114–115 doublePOST/timeout socialT06, R116 langueT01/T07, R113banc navigateurT06/T01, R117hydratationT01/T07 et R118diagnostic callbackT06 et R119gate migration partenaireT01. Tous les FAIL ont été immédiatement notifiés dans les miroirs concernés. Correctifs WIP non importés.
+
+ACK personnels vérifiés : T02 commit5fcfd7868553ebaa3605d6b81b11c4ecca3e1c54 (sécurité bornée); T05c63464a171ecf6e2dd35b1c4a604083aaa1a424e (média borné); T072f94037e551140b51894da4f41bf67a3ed15f364 (technique borné/NACK activation). Tous parents79cd. T03 livre5fbdb238aceaf2c2ef937e7ebbedd692eadb282c et T04 livre a87fefe8a3c33d09bb1a09cc5d6b20fa85aaf451 avec NACK79cd/PASS de leurs seuls deltas; aucun nouveau candidat intégré annoncé. T06 reste en correction; aucun résumé T01 ni brouillon n'est substitué à leur ACK. **Les conditions T09/WanGP ne sont pas satisfaites**; aucune notification de disponibilité.
+
+Blocages distincts : cronOFF; sauvegarde périmée; Salad/Pexels configuration locale impropre; ElevenLabs401; erreur workspace requirements sans contexte reproductible. Les12tests réels non exécutés restent explicites, dont OAuth personnel, GPU/budget, publication publique, mobile physique, alertes/SLA et migration/rollback production. La preuve RunPodhealth200/Shotstacktemplates200 est une lecture gratuite datée, jamais une génération.
+
+Prochain point d'entrée : **nouveau SHA intégré unique fourni par T01** après livraison T03/T04/T06 et qualification shell/langue. Rejouer seulement les contre-tests affectés (incluant permissionsRPC INSERT/DELETE, concurrence/reprise/annulation, erreurs corps fournisseur et doubleclic/timeoutOAuth), puis la chaîne simulée finale et la CI exacte du candidat. Renouveler ACK et revue des deltas. Ne pas répéter les PASS inchangés ni utiliser ce rapport pour autoriser une remise en service.
+
+Le commit de cette livraison est celui qui contient ce handoff; le miroir partagé T08-CLOSURE-20261020.md en porte le SHA après commit. Les limites GitNexus et la validation de la livraison sont dans `qa/t08-closure-20261020/qa-quality.json` et les reçus `gitnexus-*`. Aucun `CERTIFIED.md` créé.

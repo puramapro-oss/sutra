@@ -1,0 +1,283 @@
+{
+  "source": "3855665fa79e3cc2171124d864a834214d6ac617",
+  "run": 38598361267,
+  "url": "https://github.com/puramapro-oss/sutra/actions/runs/38598361267",
+  "observedAt": "2026-10-14T16:48:27.282674+00:00",
+  "quality": "PASS",
+  "contractArtifact": 11913031274,
+  "families": [
+    {
+      "receipt": "ci-3855665-contract-artifacts/test-results/ci/contracts/contracts.log",
+      "sha256": "eea548fcb3b42e18ab1fc83eba1c3899f6cc7d95270fbb6735086ee6d59e3b85",
+      "counts": {
+        "tests": 859,
+        "pass": 852,
+        "fail": 0,
+        "skipped": 7
+      }
+    },
+    {
+      "receipt": "ci-3855665-contract-artifacts/test-results/ci/contracts/durable-submission.log",
+      "sha256": "7771110f77430b18fbc16ed860946a65bbd3d8b867fd5433da66fd81c97471c4",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": "ci-3855665-contract-artifacts/test-results/ci/media/composition-delta.log",
+      "sha256": "70076c0e66a8a32da46fa35e0945d7362f320221e3609d533f626c9a46baa499",
+      "counts": {
+        "tests": 12,
+        "pass": 12,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": "ci-3855665-contract-artifacts/test-results/ci/media/compositor.log",
+      "sha256": "06d8eeda45e33f22fe0d857703064bed15047c51a18519329a4d20260dad113f",
+      "counts": {
+        "tests": 31,
+        "pass": 31,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": "ci-3855665-contract-artifacts/test-results/ci/media/local-engine.log",
+      "sha256": "955da756b7d7c6c2206f51d44128c2bfbb7252d470ebc4d4dad3f7c03123d6a8",
+      "counts": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": "ci-3855665-contract-artifacts/test-results/ci/media/retained-real-exports.log",
+      "sha256": "433c865400127738c5914a579e34cef42bd6ecfb1a3bbaf6bb47efd8e39c9c76",
+      "counts": {
+        "tests": 49,
+        "pass": 49,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "receipt": "ci-3855665-contract-artifacts/test-results/ci/media/salad-media.log",
+      "sha256": "4526c8bfebc65a751c750d9087751c1f96188d84bc050cab85815c531db8fd5b",
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "counting": "Do not sum overlapping commands, owner tests, CI/local reruns, or assertions into unique scenario coverage.",
+  "database": {
+    "commandSet": "web-ci.yml disposable-database",
+    "migration": "PASS",
+    "pipeline": 16,
+    "saladPersistence": 7,
+    "lostCompletionAndOauthRaces": 26,
+    "rlsAssertions": 259,
+    "fail": 0,
+    "skipped": 0,
+    "logSha256": "274bdd8546c21ab90af42ba27cc3a52e67257e4731c7bcbda7334a8794c2ae44"
+  },
+  "contracts": {
+    "command": "npm run test:contracts",
+    "pass": 870,
+    "fail": 0,
+    "skip": 7,
+    "additionalCommandsPass": [
+      "schedule",
+      "composition",
+      "publication"
+    ],
+    "skipped": [
+      "INSEE configured",
+      "INSEE known SIRET",
+      "INSEE missing SIRET",
+      "INSEE invalid credential",
+      "remote invoice split DB",
+      "remote video_generations DB",
+      "network OpenTimestamps stamp"
+    ]
+  },
+  "media": {
+    "command": "npm run test:media",
+    "pass": 120,
+    "fail": 0,
+    "skip": 0,
+    "syntheticCpuOnly": true
+  },
+  "limitations": [
+    "No paid provider generation or publication",
+    "No personal legal or social consent",
+    "T08 independent final ACK missing",
+    "Deployment and migration not executed"
+  ],
+  "security": {
+    "command": "node qa/t08/run.mjs redteam",
+    "counts": {
+      "tests": 14,
+      "pass": 14,
+      "fail": 0,
+      "skipped": 0
+    },
+    "offlineOnly": true
+  },
+  "ciConclusion": "success",
+  "qualityArtifact": 11913258848,
+  "qualityCommands": [
+    {
+      "name": "typecheck",
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 10227
+    },
+    {
+      "name": "lint",
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "."
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 15432
+    },
+    {
+      "name": "build",
+      "command": [
+        "node",
+        "node_modules/next/dist/bin/next",
+        "build",
+        "--webpack"
+      ],
+      "status": "PASS",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 52732
+    }
+  ],
+  "browserRedteam": {
+    "command": "node qa/t08/run.mjs browser-redteam",
+    "checks": 210,
+    "extraChecks": 7,
+    "axeAudits": 165,
+    "axeViolations": 0,
+    "browserErrors": 0,
+    "synthetic": true
+  },
+  "library": {
+    "command": "node qa/t07-frontend-fixes-20261014/browser.mjs --production",
+    "pass": 25,
+    "fail": 0,
+    "observedAt": "2026-10-14T16:38:54.559Z",
+    "errors": 0,
+    "unexpectedMutations": 0
+  },
+  "productionJourneys": {
+    "command": "node qa/t07-frontend-journey-20261014/run.mjs --production-suite",
+    "singleBuild": true,
+    "families": [
+      {
+        "mode": "legal",
+        "pass": 15,
+        "fail": 0,
+        "errors": 0,
+        "unexpectedMutations": 0,
+        "blockedExternalRequests": 0,
+        "fixtureWrites": 5,
+        "personalConsents": 0,
+        "ciStepIntervalUTC": [
+          "2026-10-14T16:38:54Z",
+          "2026-10-14T16:40:20Z"
+        ]
+      },
+      {
+        "mode": "journey",
+        "pass": 34,
+        "fail": 0,
+        "errors": 0,
+        "unexpectedMutations": 0,
+        "blockedExternalRequests": 0,
+        "fixtureWrites": 4,
+        "personalConsents": 0,
+        "ciStepIntervalUTC": [
+          "2026-10-14T16:38:54Z",
+          "2026-10-14T16:40:20Z"
+        ]
+      },
+      {
+        "mode": "private-download",
+        "pass": 9,
+        "fail": 0,
+        "errors": 0,
+        "unexpectedMutations": 0,
+        "blockedExternalRequests": 0,
+        "fixtureWrites": 4,
+        "personalConsents": 0,
+        "ciStepIntervalUTC": [
+          "2026-10-14T16:38:54Z",
+          "2026-10-14T16:40:20Z"
+        ]
+      }
+    ],
+    "screenshotsViewed": [
+      "legal/legal-375.png",
+      "journey/download-1440.png"
+    ],
+    "limitation": "Same login/no-error assertions overlap across families; not a distinct combined test count. Synthetic account and media; no personal consent or provider generation."
+  },
+  "legacy": {
+    "command": "node scripts/run-ci.mjs legacy",
+    "startTime": "2026-10-14T16:40:56.455Z",
+    "duration": 350514.273,
+    "expected": 1022,
+    "skipped": 25,
+    "unexpected": 0,
+    "flaky": 0,
+    "errors": 0
+  },
+  "qualityLogSha256": "22ae93fb91ad193721f7d88b5ce2234a846e74c86375b73a2072c3898e3b50ae",
+  "deploymentSimulation": {
+    "command": "python3 -m unittest discover -s deploy -p 'test_*.py'",
+    "pass": 34,
+    "fail": 0
+  },
+  "migrationSimulation": {
+    "command": "python3 -m unittest discover -s qa/t01-consolidation-20261014 -p 'test_*.py'",
+    "pass": 16,
+    "fail": 0
+  },
+  "exactPromotionSimulation": {
+    "command": "web-ci.yml: Exact candidate promotion and rollback simulations (SOURCE=qa/t01-consolidation-20261014)",
+    "pass": 7,
+    "fail": 0
+  },
+  "dependencyAudit": {
+    "command": "npm audit --omit=dev --audit-level=high",
+    "status": "PASS",
+    "critical": 0,
+    "high": 0,
+    "moderate": 5,
+    "low": 2
+  },
+  "limitsNotPromoted": "All suites are exact3855665 CI. Runtime86d unchanged; independent T08 ACK absent. No sums across overlapping suites."
+}

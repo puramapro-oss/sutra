@@ -1,0 +1,100 @@
+✔ ordinary error without an observed teardown stays visible (1.147208ms)
+✖ native GET evidence cannot qualify same-origin POST (0.628166ms)
+✖ native GET evidence cannot qualify same-origin PATCH (0.087ms)
+✖ native GET evidence cannot qualify same-origin DELETE (0.074583ms)
+✖ native GET evidence cannot qualify same-origin unknown method (0.067167ms)
+✔ synthetic profile GET requires its resource-specific native proof (0.2295ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 2
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 75.195208
+
+✖ failing tests:
+
+test at ../sutra-t08-acceptance-d21b7b4-20261015/qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs:25:3
+✖ native GET evidence cannot qualify same-origin POST (0.628166ms)
+  AssertionError [ERR_ASSERTION]: Mutation or unknown method must retain its failure
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t08-acceptance-d21b7b4-20261015/qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs:27:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../sutra-t08-acceptance-d21b7b4-20261015/qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs:25:3
+✖ native GET evidence cannot qualify same-origin PATCH (0.087ms)
+  AssertionError [ERR_ASSERTION]: Mutation or unknown method must retain its failure
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t08-acceptance-d21b7b4-20261015/qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs:27:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../sutra-t08-acceptance-d21b7b4-20261015/qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs:25:3
+✖ native GET evidence cannot qualify same-origin DELETE (0.074583ms)
+  AssertionError [ERR_ASSERTION]: Mutation or unknown method must retain its failure
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t08-acceptance-d21b7b4-20261015/qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs:27:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../sutra-t08-acceptance-d21b7b4-20261015/qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs:25:3
+✖ native GET evidence cannot qualify same-origin unknown method (0.067167ms)
+  AssertionError [ERR_ASSERTION]: Mutation or unknown method must retain its failure
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/matissdornier/purama-worktrees/sutra-t08-acceptance-d21b7b4-20261015/qa/t08-acceptance-d21b7b4-20261015/harness-boundaries.test.mjs:27:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1201:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+      at Test.postRun (node:internal/test_runner/test:1330:19)
+      at Test.run (node:internal/test_runner/test:1258:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

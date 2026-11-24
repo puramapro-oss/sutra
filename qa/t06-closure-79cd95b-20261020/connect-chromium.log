@@ -1,0 +1,5 @@
+PASS different platforms in the same turn share one pending OAuth request
+PASS timeout is bounded; manual retry sends exactly one fresh request
+PASS SPA unmount aborts a pending connection and prevents its late redirect
+PASS reconnection opens only simulated consent once, with no automatic acceptance
+PASS runtime: zero unexpected hydration/client errors; no external or real publication

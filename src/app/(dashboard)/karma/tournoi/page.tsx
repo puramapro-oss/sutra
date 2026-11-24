@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { Trophy, Loader2 } from 'lucide-react'
 import { PILIERS } from '@/lib/karma-piliers'
@@ -35,22 +35,32 @@ export default function TournoiPage() {
   const [period, setPeriod] = useState<string>('')
   const [loading, setLoading] = useState(true)
 
-  const load = useCallback(async () => {
-    try {
-      const res = await fetch('/api/karma/games/tournoi', { cache: 'no-store' })
+  const dataRequest = useRef<AbortController | null>(null)
+  const load = useCallback(() => {
+    dataRequest.current?.abort()
+    const controller = new AbortController()
+    dataRequest.current = controller
+    const active = () => dataRequest.current === controller && !controller.signal.aborted
+    const commit = (write: () => void) => { if (active()) write() }
+    return fetch('/api/karma/games/tournoi', { cache: 'no-store', signal: controller.signal }).then(async (res) => {
+      if (!active()) return
       if (res.status === 401) return
       const data = await res.json()
-      setLeaderboard(data.leaderboard ?? [])
-      setMyScore(data.my_score ?? null)
-      setPeriod(data.period_month ?? '')
-    } catch {
-      // silent
-    } finally {
-      setLoading(false)
-    }
+      commit(() => setLeaderboard(data.leaderboard ?? []))
+      commit(() => setMyScore(data.my_score ?? null))
+      commit(() => setPeriod(data.period_month ?? ''))
+    }).catch(() => {
+      if (!active()) return
+      // Keep the last confirmed result after a failed refresh.
+    }).finally(() => {
+      commit(() => setLoading(false))
+      if (dataRequest.current === controller) dataRequest.current = null
+    })
   }, [])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => { load()
+    return () => { dataRequest.current?.abort(); dataRequest.current = null }
+  }, [load])
 
   const monthLabel = period
     ? new Date(period).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })

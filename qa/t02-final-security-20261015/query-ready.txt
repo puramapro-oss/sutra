@@ -1,0 +1,205 @@
+
+  GitNexus Query (1.6.12)
+{
+  "processes": [
+    {
+      "id": "proc_14_get",
+      "summary": "GET → CreateServiceClient",
+      "priority": 0.081,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 6
+    },
+    {
+      "id": "proc_15_get",
+      "summary": "GET → Origin",
+      "priority": 0.081,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 6
+    },
+    {
+      "id": "proc_22_get",
+      "summary": "GET → Signature",
+      "priority": 0.081,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_23_get",
+      "summary": "GET → ContentWithTags",
+      "priority": 0.081,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_24_get",
+      "summary": "GET → ProviderPlatform",
+      "priority": 0.081,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/lib/auto-publication.ts:publishAutoVideoRecord",
+      "name": "publishAutoVideoRecord",
+      "filePath": "src/lib/auto-publication.ts",
+      "startLine": 87,
+      "endLine": 158,
+      "module": "Publish",
+      "process_id": "proc_14_get",
+      "step_index": 2
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Function:src/lib/media-download.ts:resolvePublic",
+      "name": "resolvePublic",
+      "filePath": "src/lib/media-download.ts",
+      "startLine": 46,
+      "endLine": 62,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:src/lib/media-download.ts:resolvePublic.fn@50:123.abort@51:4",
+      "name": "abort",
+      "filePath": "src/lib/media-download.ts",
+      "startLine": 52,
+      "endLine": 52
+    },
+    {
+      "id": "Function:src/lib/media-download.ts:downloadMediaBytes",
+      "name": "downloadMediaBytes",
+      "filePath": "src/lib/media-download.ts",
+      "startLine": 102,
+      "endLine": 162,
+      "module": "Scripts"
+    },
+    {
+      "id": "Function:qa/t07-frontend-journey-20261014/private-download-checks.mjs:privateDownloadChecks",
+      "name": "privateDownloadChecks",
+      "filePath": "qa/t07-frontend-journey-20261014/private-download-checks.mjs",
+      "startLine": 7,
+      "endLine": 70,
+      "module": "T07-frontend-journey-20261014"
+    },
+    {
+      "id": "Const:qa/t07-frontend-journey-20261014/private-download-checks.mjs:privateDownloadChecks.mediaFetches@14:2",
+      "name": "mediaFetches",
+      "filePath": "qa/t07-frontend-journey-20261014/private-download-checks.mjs",
+      "startLine": 15,
+      "endLine": 15
+    },
+    {
+      "id": "File:qa/t07-frontend-journey-20261014/private-download-checks.mjs",
+      "name": "private-download-checks.mjs",
+      "filePath": "qa/t07-frontend-journey-20261014/private-download-checks.mjs"
+    },
+    {
+      "id": "Function:scripts/test-t02-final-validation-media.mts:download",
+      "name": "download",
+      "filePath": "scripts/test-t02-final-validation-media.mts",
+      "startLine": 32,
+      "endLine": 32
+    },
+    {
+      "id": "File:scripts/test-t02-final-validation-media.mts",
+      "name": "test-t02-final-validation-media.mts",
+      "filePath": "scripts/test-t02-final-validation-media.mts"
+    },
+    {
+      "id": "Function:scripts/test-ltx-v2-media.mts:fn@228:65.fn@230:23.download@231:4",
+      "name": "download",
+      "filePath": "scripts/test-ltx-v2-media.mts",
+      "startLine": 232,
+      "endLine": 232
+    },
+    {
+      "id": "Property:scripts/test-ltx-v2-media.mts:fn@235:93.download@237:22",
+      "name": "download",
+      "filePath": "scripts/test-ltx-v2-media.mts",
+      "startLine": 238,
+      "endLine": 238
+    },
+    {
+      "id": "File:scripts/test-ltx-v2-media.mts",
+      "name": "test-ltx-v2-media.mts",
+      "filePath": "scripts/test-ltx-v2-media.mts"
+    },
+    {
+      "id": "Const:src/lib/private-media.ts:MEDIA_BUCKET",
+      "name": "MEDIA_BUCKET",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 8,
+      "endLine": 8
+    },
+    {
+      "id": "Function:src/lib/private-media.ts:resolveMediaUrl",
+      "name": "resolveMediaUrl",
+      "filePath": "src/lib/private-media.ts",
+      "startLine": 62,
+      "endLine": 65,
+      "module": "[reference]"
+    },
+    {
+      "id": "File:src/lib/private-media.ts",
+      "name": "private-media.ts",
+      "filePath": "src/lib/private-media.ts"
+    },
+    {
+      "id": "Function:src/lib/salad/engine.ts:createComfyBridge",
+      "name": "createComfyBridge",
+      "filePath": "src/lib/salad/engine.ts",
+      "startLine": 9,
+      "endLine": 46,
+      "module": "Salad"
+    },
+    {
+      "id": "Function:src/lib/salad/engine.ts:createComfyBridge.generate@23:2",
+      "name": "generate",
+      "filePath": "src/lib/salad/engine.ts",
+      "startLine": 24,
+      "endLine": 44,
+      "module": "Salad"
+    },
+    {
+      "id": "File:src/lib/salad/engine.ts",
+      "name": "engine.ts",
+      "filePath": "src/lib/salad/engine.ts"
+    },
+    {
+      "id": "Property:src/lib/pexels.ts:PexelsVideoResult.author",
+      "name": "author",
+      "filePath": "src/lib/pexels.ts",
+      "startLine": 50,
+      "endLine": 50
+    },
+    {
+      "id": "Interface:src/lib/pexels.ts:PexelsImageResult",
+      "name": "PexelsImageResult",
+      "filePath": "src/lib/pexels.ts",
+      "startLine": 55,
+      "endLine": 64
+    },
+    {
+      "id": "Property:src/lib/pexels.ts:PexelsImageResult.author",
+      "name": "author",
+      "filePath": "src/lib/pexels.ts",
+      "startLine": 61,
+      "endLine": 61
+    }
+  ],
+  "timing": {
+    "vector": 3.1,
+    "bm25": 192.8,
+    "merge": 0.1,
+    "symbol_lookup": 17.8,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 211.7
+  }
+}

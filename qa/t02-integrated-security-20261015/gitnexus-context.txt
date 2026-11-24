@@ -1,0 +1,105 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/lib/social-account-revocation.ts:revokeSocialAccount",
+    "name": "revokeSocialAccount",
+    "kind": "Function",
+    "filePath": "src/lib/social-account-revocation.ts",
+    "startLine": 8,
+    "endLine": 62
+  },
+  "epistemic": "exact",
+  "incoming": {
+    "calls": [
+      {
+        "uid": "File:qa/t06-social-recovery-20261014/test-postgres.mts",
+        "name": "test-postgres.mts",
+        "filePath": "qa/t06-social-recovery-20261014/test-postgres.mts"
+      },
+      {
+        "uid": "Function:src/app/api/social/accounts/route.ts:DELETE",
+        "name": "DELETE",
+        "filePath": "src/app/api/social/accounts/route.ts"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Function:qa/t06-social-recovery-20261014/test-postgres.mts:fn@97:93.disconnect@102:2",
+        "name": "disconnect",
+        "filePath": "qa/t06-social-recovery-20261014/test-postgres.mts"
+      },
+      {
+        "uid": "Function:src/lib/social-account-revocation.ts:revokeSocialAccount.accounts@9:2",
+        "name": "accounts",
+        "filePath": "src/lib/social-account-revocation.ts"
+      },
+      {
+        "uid": "Function:src/lib/social-oauth-account.ts:readSocialOAuthAccount",
+        "name": "readSocialOAuthAccount",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Function:src/lib/social-oauth-account.ts:updateSocialOAuthAccount",
+        "name": "updateSocialOAuthAccount",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Function:src/lib/supabase.ts:createServiceClient",
+        "name": "createServiceClient",
+        "filePath": "src/lib/supabase.ts"
+      },
+      {
+        "uid": "Function:src/lib/zernio.ts:getAuthorizedProfileId",
+        "name": "getAuthorizedProfileId",
+        "filePath": "src/lib/zernio.ts"
+      }
+    ],
+    "accesses": [
+      {
+        "uid": "Property:src/lib/social-oauth-account.ts:SocialOAuthAccount.external_id",
+        "name": "external_id",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Property:src/lib/social-oauth-account.ts:SocialOAuthAccount.id",
+        "name": "id",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Property:src/lib/social-oauth-account.ts:SocialOAuthAccount.metadata",
+        "name": "metadata",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Property:src/lib/social-oauth-account.ts:SocialOAuthAccount.metadata",
+        "name": "metadata",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Property:src/lib/social-oauth-account.ts:SocialOAuthAccount.metadata",
+        "name": "metadata",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Property:src/lib/social-oauth-account.ts:SocialOAuthAccount.metadata",
+        "name": "metadata",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Property:src/lib/social-oauth-account.ts:SocialOAuthAccount.metadata",
+        "name": "metadata",
+        "filePath": "src/lib/social-oauth-account.ts"
+      },
+      {
+        "uid": "Property:src/lib/social-oauth-account.ts:SocialOAuthAccount.status",
+        "name": "status",
+        "filePath": "src/lib/social-oauth-account.ts"
+      }
+    ]
+  },
+  "processes": []
+}
+
+  GitNexus Context (1.6.12)

@@ -51,7 +51,7 @@ export default function PromptHistory({ videos, onReuse }: PromptHistoryProps) {
       <Card className="bg-white/[0.02] border-white/[0.06]" data-testid="prompt-history">
         <CardContent className="p-0 divide-y divide-white/[0.04]">
           {filteredPrompts.length === 0 ? (
-            <p className="text-white/40 text-sm text-center py-8">
+            <p className="text-white/60 text-sm text-center py-8">
               {promptSearch ? 'Aucun prompt correspondant' : 'Aucun prompt enregistre'}
             </p>
           ) : (

@@ -99,7 +99,7 @@ export default function GuidePage() {
             >
               <stat.icon className="w-5 h-5 text-violet-400 mx-auto mb-2" />
               <div className="text-lg font-semibold text-white">{stat.value}</div>
-              <div className="text-xs text-white/40">{stat.label}</div>
+              <div className="text-xs text-white/60">{stat.label}</div>
             </div>
           ))}
         </motion.div>
